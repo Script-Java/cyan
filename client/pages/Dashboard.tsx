@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { LogOut, ShoppingBag, User, FileText, Package, AlertCircle } from "lucide-react";
 import Header from "@/components/Header";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import GreetingBanner from "@/components/dashboard/GreetingBanner";
 import ProfileCard from "@/components/dashboard/ProfileCard";
 import OrdersSection from "@/components/dashboard/OrdersSection";
 
