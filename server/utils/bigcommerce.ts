@@ -6,6 +6,19 @@ interface BigCommerceCustomer {
   first_name: string;
   last_name: string;
   password?: string;
+  phone?: string;
+  company?: string;
+}
+
+interface BigCommerceAddress {
+  first_name: string;
+  last_name: string;
+  street_1: string;
+  street_2?: string;
+  city: string;
+  state_or_province: string;
+  postal_code: string;
+  country_code: string;
 }
 
 interface BigCommerceOrder {
