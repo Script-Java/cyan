@@ -148,20 +148,34 @@ export default function Header() {
               </a>
 
               <div className="pt-4 border-t border-white/20 space-y-3">
-                <Link
-                  to="/login"
-                  className="block w-full px-4 py-2 rounded-lg border border-white/20 text-white text-center hover:bg-white/5 transition-colors font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Log in
-                </Link>
-                <Link
-                  to="/signup"
-                  className="block w-full px-4 py-2 rounded-lg bg-[#FFD713] text-[#030140] text-center hover:bg-[#FFD713]/90 transition-colors font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Sign up
-                </Link>
+                {isAuthenticated ? (
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="block w-full px-4 py-2 rounded-lg border border-white/20 text-white text-center hover:bg-white/5 transition-colors font-medium"
+                  >
+                    Log out
+                  </button>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      className="block w-full px-4 py-2 rounded-lg border border-white/20 text-white text-center hover:bg-white/5 transition-colors font-medium"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Log in
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="block w-full px-4 py-2 rounded-lg bg-[#FFD713] text-[#030140] text-center hover:bg-[#FFD713]/90 transition-colors font-medium"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Sign up
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
