@@ -1,0 +1,122 @@
+import { RefreshCw, ArrowRight } from "lucide-react";
+
+interface Product {
+  id: string;
+  name: string;
+  href: string;
+  imageUrl: string;
+  dropShadowColor: string;
+}
+
+const PRODUCT_CATEGORIES: Product[] = [
+  {
+    id: "vinyl",
+    name: "Vinyl →",
+    href: "https://www.stickershuttle.com/products/vinyl-stickers",
+    imageUrl: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593599/Alien_Rocket_mkwlag.png",
+    dropShadowColor: "rgba(168, 242, 106, 0.3)",
+  },
+  {
+    id: "holographic",
+    name: "Holographic →",
+    href: "https://www.stickershuttle.com/products/holographic-stickers",
+    imageUrl: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593621/PurpleAlien_StickerShuttle_HolographicIcon_ukdotq.png",
+    dropShadowColor: "rgba(168, 85, 247, 0.3)",
+  },
+  {
+    id: "glitter",
+    name: "Glitter →",
+    href: "https://www.stickershuttle.com/products/glitter-stickers",
+    imageUrl: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593602/BlueAlien_StickerShuttle_GlitterIcon_rocwpi.png",
+    dropShadowColor: "rgba(59, 130, 246, 0.3)",
+  },
+  {
+    id: "chrome",
+    name: "Chrome →",
+    href: "https://www.stickershuttle.com/products/chrome-stickers",
+    imageUrl: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593680/yELLOWAlien_StickerShuttle_ChromeIcon_nut4el.png",
+    dropShadowColor: "rgba(220, 220, 220, 0.3)",
+  },
+  {
+    id: "sheets",
+    name: "Sheets →",
+    href: "https://www.stickershuttle.com/products/sticker-sheets",
+    imageUrl: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749847809/StickerShuttle_StickerSheetsIcon_2_g61dty.svg",
+    dropShadowColor: "rgba(196, 181, 253, 0.3)",
+  },
+];
+
+export default function QuickOrderSection() {
+  return (
+    <div
+      className="rounded-2xl border overflow-hidden backdrop-blur-lg"
+      style={{
+        backgroundColor: "rgba(255, 255, 255, 0.05)",
+        borderColor: "rgba(255, 255, 255, 0.1)",
+      }}
+    >
+      {/* Header */}
+      <div className="border-b border-white/10 p-6" style={{ borderColor: "rgba(255, 255, 255, 0.1)" }}>
+        <div className="flex items-center justify-between">
+          <h2 className="flex items-center gap-3 text-lg sm:text-xl font-bold text-white">
+            <RefreshCw className="w-5 h-5 text-white" />
+            Quick Order
+          </h2>
+          <a
+            href="https://www.stickershuttle.com/products"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-sm font-medium transition-colors"
+            style={{ color: "oklch(0.714 0.203 305.504)" }}
+          >
+            <span>View All Products</span>
+            <ArrowRight className="w-4 h-4" />
+          </a>
+        </div>
+      </div>
+
+      {/* Product Grid */}
+      <div className="p-6">
+        <div className="grid grid-cols-5 gap-4">
+          {PRODUCT_CATEGORIES.map((product) => (
+            <a
+              key={product.id}
+              href={product.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <div
+                className="rounded-2xl border p-4 text-center transition-all duration-500 backdrop-blur-lg hover:bg-white/10 flex flex-col items-center"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  borderColor: "rgba(255, 255, 255, 0.1)",
+                }}
+              >
+                {/* Image Container */}
+                <div
+                  className="w-24 h-24 flex items-center justify-center mb-3 rounded-lg transition-transform duration-500 group-hover:scale-110"
+                  style={{
+                    filter: `drop-shadow(${product.dropShadowColor} 0px 0px 8px)`,
+                  }}
+                >
+                  <img
+                    src={product.imageUrl}
+                    alt={product.name}
+                    className="max-w-full max-h-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+
+                {/* Title */}
+                <h3 className="text-sm font-semibold text-white text-center transition-colors group-hover:text-purple-300">
+                  {product.name}
+                </h3>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
