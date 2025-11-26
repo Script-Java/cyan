@@ -71,20 +71,7 @@ export const handleLogin: RequestHandler = async (req, res) => {
 
 export const handleSignup: RequestHandler = async (req, res) => {
   try {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      company,
-      phone,
-      addressLine1,
-      addressLine2,
-      city,
-      country,
-      state,
-      zip,
-    } = req.body as SignupRequest;
+    const { firstName, lastName, email, password } = req.body as SignupRequest;
 
     if (!firstName || !lastName || !email || !password || !addressLine1 || !city || !country || !state || !zip) {
       return res
