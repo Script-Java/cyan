@@ -54,8 +54,6 @@ export default function Signup() {
     setIsLoading(true);
 
     try {
-      // TODO: Integrate with BigCommerce registration
-      // This would call your backend API endpoint that handles BigCommerce customer creation
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -69,13 +67,16 @@ export default function Signup() {
       });
 
       if (!response.ok) {
-        throw new Error("Signup failed. Please try again.");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Signup failed. Please try again.");
       }
 
       const data = await response.json();
-      // Store auth token and redirect
+      // Store auth token
       localStorage.setItem("authToken", data.token);
-      navigate("/dashboard");
+      localStorage.setItem("customerId", data.customer.id.toString());
+      // Redirect to home (or dashboard if you create one)
+      navigate("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Signup failed");
     } finally {
