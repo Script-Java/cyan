@@ -2,6 +2,13 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import {
+  handleLogin,
+  handleSignup,
+  handleBigCommerceAuth,
+  handleBigCommerceCallback,
+  handleLogout,
+} from "./routes/auth";
 
 export function createServer() {
   const app = express();
@@ -18,6 +25,14 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Authentication routes
+  app.post("/api/auth/login", handleLogin);
+  app.post("/api/auth/signup", handleSignup);
+  app.get("/api/auth/bigcommerce", handleBigCommerceAuth);
+  app.get("/api/auth/bigcommerce/callback", handleBigCommerceCallback);
+  app.post("/api/auth/logout", handleLogout);
+  app.get("/api/auth/bigcommerce/signup", handleBigCommerceAuth);
 
   return app;
 }
