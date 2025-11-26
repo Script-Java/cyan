@@ -159,7 +159,7 @@ export const handleBigCommerceCallback: RequestHandler = async (req, res) => {
     const { code } = req.query;
 
     if (!code || typeof code !== "string") {
-      return res.status(400).json({ error: "Authorization code not provided" });
+      return res.redirect(`/auth/callback?error=no_code`);
     }
 
     // Exchange code for access token
@@ -180,11 +180,11 @@ export const handleBigCommerceCallback: RequestHandler = async (req, res) => {
     // Generate JWT token for our application
     const token = generateToken(customerId, email);
 
-    // Redirect to dashboard with token
-    res.redirect(`/?auth_token=${token}&customer_id=${customerId}`);
+    // Redirect to auth callback page with token in query string
+    res.redirect(`/auth/callback?auth_token=${token}&customer_id=${customerId}`);
   } catch (error) {
     console.error("BigCommerce callback error:", error);
-    res.redirect(`/?error=auth_failed`);
+    res.redirect(`/auth/callback?error=auth_failed`);
   }
 };
 
