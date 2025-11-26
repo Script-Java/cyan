@@ -17,8 +17,6 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      // TODO: Integrate with BigCommerce authentication
-      // This would call your backend API endpoint that handles BigCommerce OAuth
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -28,13 +26,16 @@ export default function Login() {
       });
 
       if (!response.ok) {
-        throw new Error("Login failed. Please check your credentials.");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Login failed. Please check your credentials.");
       }
 
       const data = await response.json();
-      // Store auth token and redirect
+      // Store auth token and customer ID
       localStorage.setItem("authToken", data.token);
-      navigate("/dashboard");
+      localStorage.setItem("customerId", data.customer.id.toString());
+      // Redirect to home
+      navigate("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {
