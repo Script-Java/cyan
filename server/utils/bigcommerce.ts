@@ -152,6 +152,60 @@ class BigCommerceAPI {
   }
 
   /**
+   * Create a customer address in BigCommerce
+   */
+  async createCustomerAddress(
+    customerId: number,
+    address: BigCommerceAddress
+  ): Promise<any> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}/addresses`;
+
+    try {
+      const addressData: any = {
+        first_name: address.first_name,
+        last_name: address.last_name,
+        street_1: address.street_1,
+        city: address.city,
+        state_or_province: address.state_or_province,
+        postal_code: address.postal_code,
+        country_code: address.country_code,
+      };
+
+      if (address.street_2) {
+        addressData.street_2 = address.street_2;
+      }
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(addressData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Customer address creation failed:", {
+          status: response.status,
+          statusText: response.statusText,
+          error: data,
+        });
+        throw new Error(
+          data.errors?.[0]?.message ||
+            "Failed to create customer address in BigCommerce"
+        );
+      }
+
+      return data.data;
+    } catch (error) {
+      console.error("Customer address creation error:", error);
+      throw error;
+    }
+  }
+
+  /**
    * Get customer by email
    */
   async getCustomerByEmail(email: string): Promise<any> {
