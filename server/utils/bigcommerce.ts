@@ -263,20 +263,32 @@ class BigCommerceAPI {
   async getCustomer(customerId: number): Promise<any> {
     const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}`;
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "X-Auth-Token": this.accessToken,
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch customer from BigCommerce");
+      if (!response.ok) {
+        throw new Error("Failed to fetch customer from BigCommerce");
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse customer response:", parseError);
+        throw new Error("Failed to parse customer data from BigCommerce");
+      }
+
+      return data?.data;
+    } catch (error) {
+      console.error("Get customer error:", error);
+      throw error;
     }
-
-    const data = await response.json();
-    return data.data;
   }
 
   /**
@@ -285,20 +297,32 @@ class BigCommerceAPI {
   async getCustomerOrders(customerId: number): Promise<BigCommerceOrder[]> {
     const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/orders?customer_id:in=${customerId}`;
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "X-Auth-Token": this.accessToken,
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch orders from BigCommerce");
+      if (!response.ok) {
+        throw new Error("Failed to fetch orders from BigCommerce");
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse orders response:", parseError);
+        throw new Error("Failed to parse orders data from BigCommerce");
+      }
+
+      return data?.data || [];
+    } catch (error) {
+      console.error("Get customer orders error:", error);
+      throw error;
     }
-
-    const data = await response.json();
-    return data.data || [];
   }
 
   /**
@@ -307,23 +331,42 @@ class BigCommerceAPI {
   async createOrder(orderData: any): Promise<any> {
     const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/orders`;
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "X-Auth-Token": this.accessToken,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-    });
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
 
-    if (!response.ok) {
-      const error = await response.text();
-      console.error("Order creation failed:", error);
-      throw new Error("Failed to create order in BigCommerce");
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse order response:", parseError);
+        throw new Error("Failed to parse order data from BigCommerce");
+      }
+
+      if (!response.ok) {
+        console.error("Order creation failed:", {
+          status: response.status,
+          statusText: response.statusText,
+          error: data,
+        });
+        throw new Error(
+          data?.errors?.[0]?.message ||
+            data?.error_description ||
+            "Failed to create order in BigCommerce"
+        );
+      }
+
+      return data?.data || data;
+    } catch (error) {
+      console.error("Create order error:", error);
+      throw error;
     }
-
-    const data = await response.json();
-    return data.data;
   }
 
   /**
@@ -332,20 +375,32 @@ class BigCommerceAPI {
   async getOrder(orderId: number): Promise<any> {
     const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/orders/${orderId}`;
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "X-Auth-Token": this.accessToken,
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch order from BigCommerce");
+      if (!response.ok) {
+        throw new Error("Failed to fetch order from BigCommerce");
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse order response:", parseError);
+        throw new Error("Failed to parse order data from BigCommerce");
+      }
+
+      return data?.data;
+    } catch (error) {
+      console.error("Get order error:", error);
+      throw error;
     }
-
-    const data = await response.json();
-    return data.data;
   }
 
   /**
@@ -357,21 +412,33 @@ class BigCommerceAPI {
   ): Promise<any> {
     const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}`;
 
-    const response = await fetch(url, {
-      method: "PATCH",
-      headers: {
-        "X-Auth-Token": this.accessToken,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ password }),
-    });
+    try {
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to update customer password");
+      if (!response.ok) {
+        throw new Error("Failed to update customer password");
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse password update response:", parseError);
+        throw new Error("Failed to parse password update response from BigCommerce");
+      }
+
+      return data?.data;
+    } catch (error) {
+      console.error("Update customer password error:", error);
+      throw error;
     }
-
-    const data = await response.json();
-    return data.data;
   }
 
   /**
