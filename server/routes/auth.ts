@@ -73,10 +73,10 @@ export const handleSignup: RequestHandler = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body as SignupRequest;
 
-    if (!firstName || !lastName || !email || !password || !addressLine1 || !city || !country || !state || !zip) {
+    if (!firstName || !lastName || !email || !password) {
       return res
         .status(400)
-        .json({ error: "All required fields must be provided" });
+        .json({ error: "First name, last name, email, and password are required" });
     }
 
     console.log("Signup attempt for:", email);
