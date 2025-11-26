@@ -100,8 +100,6 @@ export const handleSignup: RequestHandler = async (req, res) => {
       first_name: firstName,
       last_name: lastName,
       password,
-      phone: phone || undefined,
-      company: company || undefined,
     });
 
     if (!newCustomer || !newCustomer.id) {
