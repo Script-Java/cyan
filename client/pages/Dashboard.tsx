@@ -108,17 +108,14 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* Header Section */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                Welcome, {customer?.firstName}!
-              </h1>
-              <p className="text-blue-200">Manage your account and orders</p>
-            </div>
+          {/* Greeting Banner */}
+          {customer && <GreetingBanner firstName={customer.firstName} />}
+
+          {/* Header with Logout */}
+          <div className="flex justify-end mb-8">
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors w-fit"
+              className="flex items-center gap-2 px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors"
             >
               <LogOut className="w-5 h-5" />
               Log Out
