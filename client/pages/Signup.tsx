@@ -77,6 +77,8 @@ export default function Signup() {
     setIsLoading(true);
 
     try {
+      const countryCode = countryMap[formData.country] || formData.country;
+
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -92,7 +94,7 @@ export default function Signup() {
           addressLine1: formData.addressLine1,
           addressLine2: formData.addressLine2 || undefined,
           city: formData.city,
-          country: formData.country,
+          country: countryCode,
           state: formData.state,
           zip: formData.zip,
         }),
