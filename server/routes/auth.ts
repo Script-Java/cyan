@@ -79,12 +79,25 @@ export const handleLogin: RequestHandler = async (req, res) => {
 
 export const handleSignup: RequestHandler = async (req, res) => {
   try {
-    const { name, email, password } = req.body as SignupRequest;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      company,
+      phone,
+      addressLine1,
+      addressLine2,
+      city,
+      country,
+      state,
+      zip,
+    } = req.body as SignupRequest;
 
-    if (!name || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !addressLine1 || !city || !country || !state || !zip) {
       return res
         .status(400)
-        .json({ error: "Name, email, and password required" });
+        .json({ error: "All required fields must be provided" });
     }
 
     console.log("Signup attempt for:", email);
@@ -95,10 +108,6 @@ export const handleSignup: RequestHandler = async (req, res) => {
       console.log("Email already registered:", email);
       return res.status(409).json({ error: "Email already registered" });
     }
-
-    // Parse name into first and last name
-    const [firstName, ...lastNameParts] = name.split(" ");
-    const lastName = lastNameParts.join(" ") || "";
 
     console.log("Creating customer in BigCommerce:", {
       email,
@@ -112,6 +121,8 @@ export const handleSignup: RequestHandler = async (req, res) => {
       first_name: firstName,
       last_name: lastName,
       password,
+      phone: phone || undefined,
+      company: company || undefined,
     });
 
     if (!newCustomer || !newCustomer.id) {
@@ -119,6 +130,33 @@ export const handleSignup: RequestHandler = async (req, res) => {
     }
 
     console.log("Customer created successfully:", newCustomer.id);
+
+    // Create customer address in BigCommerce
+    console.log("Creating customer address in BigCommerce:", {
+      customerId: newCustomer.id,
+      firstName,
+      lastName,
+      city,
+      state,
+      zip,
+      country,
+    });
+
+    const customerAddress = await bigCommerceAPI.createCustomerAddress(
+      newCustomer.id,
+      {
+        first_name: firstName,
+        last_name: lastName,
+        street_1: addressLine1,
+        street_2: addressLine2 || "",
+        city,
+        state_or_province: state,
+        postal_code: zip,
+        country_code: country,
+      }
+    );
+
+    console.log("Customer address created successfully:", customerAddress?.id);
 
     // Generate JWT token
     const token = generateToken(newCustomer.id, newCustomer.email);
