@@ -234,17 +234,23 @@ class BigCommerceAPI {
         },
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
         console.error("Get customer failed:", {
           status: response.status,
-          error: data,
+          statusText: response.statusText,
         });
         return null;
       }
 
-      return data.data && data.data.length > 0 ? data.data[0] : null;
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse customer response:", parseError);
+        return null;
+      }
+
+      return data?.data && data.data.length > 0 ? data.data[0] : null;
     } catch (error) {
       console.error("Get customer error:", error);
       return null;
