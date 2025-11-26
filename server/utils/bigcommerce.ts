@@ -213,7 +213,8 @@ class BigCommerceAPI {
         );
       }
 
-      return data?.data || data;
+      const addresses = data?.data || [];
+      return addresses[0] || data;
     } catch (error) {
       console.error("Customer address creation error:", error);
       throw error;
