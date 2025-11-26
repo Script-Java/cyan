@@ -52,29 +52,38 @@ class BigCommerceAPI {
   async exchangeCodeForToken(code: string): Promise<TokenExchangeResponse> {
     const tokenUrl = "https://login.bigcommerce.com/oauth2/token";
 
-    const response = await fetch(tokenUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        client_id: this.clientId,
-        client_secret: this.clientSecret,
-        code: code,
-        grant_type: "authorization_code",
-        redirect_uri:
-          process.env.APP_URL + "/api/auth/bigcommerce/callback" ||
-          "http://localhost:8080/api/auth/bigcommerce/callback",
-      }).toString(),
-    });
+    try {
+      const response = await fetch(tokenUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          client_id: this.clientId,
+          client_secret: this.clientSecret,
+          code: code,
+          grant_type: "authorization_code",
+          redirect_uri:
+            process.env.APP_URL + "/api/auth/bigcommerce/callback" ||
+            "http://localhost:8080/api/auth/bigcommerce/callback",
+        }).toString(),
+      });
 
-    if (!response.ok) {
-      const error = await response.text();
-      console.error("Token exchange failed:", error);
-      throw new Error("Failed to exchange authorization code for token");
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Token exchange failed:", {
+          status: response.status,
+          error: data,
+        });
+        throw new Error("Failed to exchange authorization code for token");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Token exchange error:", error);
+      throw error;
     }
-
-    return response.json();
   }
 
   /**
