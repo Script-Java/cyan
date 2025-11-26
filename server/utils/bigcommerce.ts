@@ -106,18 +106,28 @@ class BigCommerceAPI {
     const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers`;
 
     try {
+      const customerData: any = {
+        email: customer.email,
+        first_name: customer.first_name,
+        last_name: customer.last_name,
+        password: customer.password,
+      };
+
+      if (customer.phone) {
+        customerData.phone = customer.phone;
+      }
+
+      if (customer.company) {
+        customerData.company = customer.company;
+      }
+
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "X-Auth-Token": this.accessToken,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: customer.email,
-          first_name: customer.first_name,
-          last_name: customer.last_name,
-          password: customer.password,
-        }),
+        body: JSON.stringify(customerData),
       });
 
       const data = await response.json();
