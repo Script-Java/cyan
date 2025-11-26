@@ -12,14 +12,6 @@ interface SignupRequest {
   lastName: string;
   email: string;
   password: string;
-  company?: string;
-  phone?: string;
-  addressLine1: string;
-  addressLine2?: string;
-  city: string;
-  country: string;
-  state: string;
-  zip: string;
 }
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production";
