@@ -127,7 +127,7 @@ class BigCommerceAPI {
           "X-Auth-Token": this.accessToken,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(customerData),
+        body: JSON.stringify([customerData]),
       });
 
       let data: any;
