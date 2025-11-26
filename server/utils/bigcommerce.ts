@@ -130,7 +130,13 @@ class BigCommerceAPI {
         body: JSON.stringify(customerData),
       });
 
-      const data = await response.json();
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse response JSON:", parseError);
+        throw new Error(`Failed to parse BigCommerce response: ${response.statusText}`);
+      }
 
       if (!response.ok) {
         console.error("Customer creation failed:", {
@@ -139,12 +145,13 @@ class BigCommerceAPI {
           error: data,
         });
         throw new Error(
-          data.errors?.[0]?.message ||
+          data?.errors?.[0]?.message ||
+            data?.error_description ||
             "Failed to create customer in BigCommerce"
         );
       }
 
-      return data.data;
+      return data?.data || data;
     } catch (error) {
       console.error("Customer creation error:", error);
       throw error;
@@ -184,7 +191,13 @@ class BigCommerceAPI {
         body: JSON.stringify(addressData),
       });
 
-      const data = await response.json();
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse response JSON:", parseError);
+        throw new Error(`Failed to parse BigCommerce response: ${response.statusText}`);
+      }
 
       if (!response.ok) {
         console.error("Customer address creation failed:", {
@@ -193,12 +206,13 @@ class BigCommerceAPI {
           error: data,
         });
         throw new Error(
-          data.errors?.[0]?.message ||
+          data?.errors?.[0]?.message ||
+            data?.error_description ||
             "Failed to create customer address in BigCommerce"
         );
       }
 
-      return data.data;
+      return data?.data || data;
     } catch (error) {
       console.error("Customer address creation error:", error);
       throw error;
