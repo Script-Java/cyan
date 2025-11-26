@@ -6,6 +6,10 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import GreetingBanner from "@/components/dashboard/GreetingBanner";
 import ProfileCard from "@/components/dashboard/ProfileCard";
 import OrdersSection from "@/components/dashboard/OrdersSection";
+import DashboardNavigation from "@/components/dashboard/DashboardNavigation";
+import PromoBanner from "@/components/dashboard/PromoBanner";
+import ActiveOrdersSummary from "@/components/dashboard/ActiveOrdersSummary";
+import QuickOrderSection from "@/components/dashboard/QuickOrderSection";
 
 interface Customer {
   id: number;
@@ -111,68 +115,19 @@ export default function Dashboard() {
           {/* Greeting Banner */}
           {customer && <GreetingBanner firstName={customer.firstName} />}
 
-          {/* Header with Logout */}
-          <div className="flex justify-end mb-8">
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors"
-            >
-              <LogOut className="w-5 h-5" />
-              Log Out
-            </button>
-          </div>
+          {/* Dashboard Navigation Grid */}
+          <DashboardNavigation onLogout={handleLogout} />
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white/5 border border-blue-300/20 rounded-xl p-6 hover:border-blue-300/40 transition-colors">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-500/20 rounded-lg">
-                  <ShoppingBag className="w-6 h-6 text-blue-300" />
-                </div>
-                <div>
-                  <p className="text-blue-200 text-sm font-medium">Total Orders</p>
-                  <p className="text-3xl font-bold text-white">{orders.length}</p>
-                </div>
-              </div>
-            </div>
+          {/* Promotional Banner */}
+          <PromoBanner />
 
-            <div className="bg-white/5 border border-blue-300/20 rounded-xl p-6 hover:border-blue-300/40 transition-colors">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-yellow-500/20 rounded-lg">
-                  <Package className="w-6 h-6 text-yellow-300" />
-                </div>
-                <div>
-                  <p className="text-blue-200 text-sm font-medium">Total Spent</p>
-                  <p className="text-3xl font-bold text-white">
-                    ${orders.reduce((sum, order) => sum + order.total, 0).toFixed(2)}
-                  </p>
-                </div>
-              </div>
-            </div>
+          {/* Active Orders Summary */}
+          <ActiveOrdersSummary
+            activeOrderCount={orders.filter((o) => o.status !== "completed").length}
+          />
 
-            <div className="bg-white/5 border border-blue-300/20 rounded-xl p-6 hover:border-blue-300/40 transition-colors">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-green-500/20 rounded-lg">
-                  <FileText className="w-6 h-6 text-green-300" />
-                </div>
-                <div>
-                  <p className="text-blue-200 text-sm font-medium">Active Orders</p>
-                  <p className="text-3xl font-bold text-white">
-                    {orders.filter((o) => o.status !== "completed").length}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Profile Card */}
-            <ProfileCard customer={customer} />
-
-            {/* Orders Section */}
-            <OrdersSection orders={orders} />
-          </div>
+          {/* Quick Order Section */}
+          <QuickOrderSection />
         </DashboardLayout>
       </main>
     </>
