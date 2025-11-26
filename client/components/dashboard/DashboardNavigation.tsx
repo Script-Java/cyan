@@ -14,7 +14,7 @@ export default function DashboardNavigation({ onLogout }: DashboardNavigationPro
       title: "Start New Mission",
       description: "Create custom stickers",
       colors: "from-blue-600 to-blue-400",
-      borderColor: "rgba(59, 130, 246, 0.4)",
+      borderColor: "rgba(59, 130, 246, 0.3)",
       isLink: true,
     },
     {
@@ -24,7 +24,7 @@ export default function DashboardNavigation({ onLogout }: DashboardNavigationPro
       title: "Dashboard",
       description: "Mission overview",
       colors: "from-purple-600/40 to-purple-400/10",
-      borderColor: "rgba(139, 92, 246, 0.4)",
+      borderColor: "rgba(139, 92, 246, 0.3)",
       isLink: false,
     },
   ];
@@ -34,25 +34,25 @@ export default function DashboardNavigation({ onLogout }: DashboardNavigationPro
       icon: Bookmark,
       title: "Orders",
       description: "0 active orders",
-      color: "text-emerald-400",
-      borderColor: "rgba(255, 255, 255, 0.1)",
-      bgColor: "rgba(255, 255, 255, 0.05)",
+      color: "text-emerald-600",
+      borderColor: "rgba(5, 150, 105, 0.2)",
+      bgColor: "rgba(16, 185, 129, 0.05)",
     },
     {
       icon: BarChart3,
       title: "Finances",
       description: "Manage finances",
-      color: "text-blue-400",
-      borderColor: "rgba(255, 255, 255, 0.1)",
-      bgColor: "rgba(255, 255, 255, 0.05)",
+      color: "text-blue-600",
+      borderColor: "rgba(59, 130, 246, 0.2)",
+      bgColor: "rgba(59, 130, 246, 0.05)",
     },
     {
       icon: Cloud,
       title: "Designs",
       description: "Manage designs",
-      color: "text-pink-400",
-      borderColor: "rgba(255, 255, 255, 0.1)",
-      bgColor: "rgba(255, 255, 255, 0.05)",
+      color: "text-pink-600",
+      borderColor: "rgba(236, 72, 153, 0.2)",
+      bgColor: "rgba(236, 72, 153, 0.05)",
     },
   ];
 
@@ -61,33 +61,33 @@ export default function DashboardNavigation({ onLogout }: DashboardNavigationPro
       icon: Eye,
       title: "Proofs",
       description: "Review designs",
-      color: "text-orange-400",
-      borderColor: "rgba(255, 255, 255, 0.1)",
-      bgColor: "rgba(255, 255, 255, 0.05)",
+      color: "text-orange-600",
+      borderColor: "rgba(249, 115, 22, 0.2)",
+      bgColor: "rgba(249, 115, 22, 0.05)",
     },
     {
       icon: MessageCircle,
       title: "Support",
       description: "Contact ground crew",
-      color: "text-red-400",
-      borderColor: "rgba(255, 255, 255, 0.1)",
-      bgColor: "rgba(255, 255, 255, 0.05)",
+      color: "text-red-600",
+      borderColor: "rgba(239, 68, 68, 0.2)",
+      bgColor: "rgba(239, 68, 68, 0.05)",
     },
     {
       icon: Settings,
       title: "Settings",
       description: "Manage account",
-      color: "text-gray-400",
-      borderColor: "rgba(255, 255, 255, 0.1)",
-      bgColor: "rgba(255, 255, 255, 0.05)",
+      color: "text-gray-600",
+      borderColor: "rgba(107, 114, 128, 0.2)",
+      bgColor: "rgba(107, 114, 128, 0.05)",
     },
     {
       icon: LogOut,
       title: "Log Out",
       description: "End session",
-      color: "text-gray-500",
-      borderColor: "rgba(255, 255, 255, 0.1)",
-      bgColor: "rgba(255, 255, 255, 0.05)",
+      color: "text-gray-700",
+      borderColor: "rgba(107, 114, 128, 0.2)",
+      bgColor: "rgba(107, 114, 128, 0.05)",
       isLogout: true,
     },
   ];
@@ -100,19 +100,19 @@ export default function DashboardNavigation({ onLogout }: DashboardNavigationPro
           const Icon = item.icon;
           const content = (
             <div
-              className={`w-full p-4 rounded-2xl border transition-all duration-500 flex gap-3 items-center cursor-pointer group`}
+              className={`w-full p-4 rounded-2xl border transition-all duration-500 flex gap-3 items-center cursor-pointer group hover:shadow-md`}
               style={{
                 backgroundImage: `linear-gradient(135deg, ${item.colors})`,
                 borderColor: item.borderColor,
-                borderWidth: "1.33333px",
+                borderWidth: "1px",
               }}
             >
-              <div className="p-2 bg-white/10 rounded-lg flex-shrink-0">
+              <div className="p-2 bg-white/20 rounded-lg flex-shrink-0">
                 <Icon className="w-7 h-7 text-white" />
               </div>
               <div>
                 <h4 className="text-sm font-semibold text-white">{item.title}</h4>
-                <p className="text-xs text-white/80">{item.description}</p>
+                <p className="text-xs text-white/90">{item.description}</p>
               </div>
             </div>
           );
@@ -142,19 +142,19 @@ export default function DashboardNavigation({ onLogout }: DashboardNavigationPro
           return (
             <button
               key={item.title}
-              className="p-4 rounded-2xl border transition-all duration-500 flex gap-3 items-center backdrop-blur-lg hover:bg-white/10"
+              className="p-4 rounded-2xl border transition-all duration-500 flex gap-3 items-center hover:shadow-md hover:bg-gray-50"
               style={{
                 backgroundColor: item.bgColor,
                 borderColor: item.borderColor,
-                borderWidth: "1.33333px",
+                borderWidth: "1px",
               }}
             >
-              <div className="p-2 bg-white/10 rounded-lg flex-shrink-0">
+              <div className="p-2 bg-gray-100 rounded-lg flex-shrink-0">
                 <Icon className={`w-7 h-7 ${item.color}`} />
               </div>
               <div className="text-left">
-                <h4 className="text-sm font-semibold text-white">{item.title}</h4>
-                <p className="text-xs text-white/80">{item.description}</p>
+                <h4 className="text-sm font-semibold text-gray-900">{item.title}</h4>
+                <p className="text-xs text-gray-600">{item.description}</p>
               </div>
             </button>
           );
@@ -167,20 +167,20 @@ export default function DashboardNavigation({ onLogout }: DashboardNavigationPro
             const buttonContent = (
               <button
                 onClick={item.isLogout ? onLogout : undefined}
-                className="w-full p-4 rounded-2xl border transition-all duration-500 flex gap-3 items-center backdrop-blur-lg hover:bg-white/10"
+                className="w-full p-4 rounded-2xl border transition-all duration-500 flex gap-3 items-center hover:shadow-md hover:bg-gray-50"
                 style={{
                   backgroundColor: item.bgColor,
                   borderColor: item.borderColor,
-                  borderWidth: "1.33333px",
-                  opacity: item.isLogout ? 0.75 : 1,
+                  borderWidth: "1px",
+                  opacity: item.isLogout ? 0.85 : 1,
                 }}
               >
-                <div className="p-2 bg-white/10 rounded-lg flex-shrink-0">
+                <div className="p-2 bg-gray-100 rounded-lg flex-shrink-0">
                   <Icon className={`w-7 h-7 ${item.color}`} />
                 </div>
                 <div className="text-left">
-                  <h4 className="text-sm font-semibold text-white">{item.title}</h4>
-                  <p className="text-xs text-white/80">{item.description}</p>
+                  <h4 className="text-sm font-semibold text-gray-900">{item.title}</h4>
+                  <p className="text-xs text-gray-600">{item.description}</p>
                 </div>
               </button>
             );
