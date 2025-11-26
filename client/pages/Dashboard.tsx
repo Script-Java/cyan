@@ -89,10 +89,10 @@ export default function Dashboard() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-gradient-to-br from-[#030140] to-[#1a0055] py-20">
+        <main className="min-h-screen bg-white py-20">
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex justify-center items-center h-64">
-              <div className="text-white text-lg">Loading your dashboard...</div>
+              <div className="text-gray-600 text-lg">Loading your dashboard...</div>
             </div>
           </div>
         </main>
@@ -103,7 +103,7 @@ export default function Dashboard() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-br from-[#030140] to-[#1a0055]">
+      <main className="min-h-screen bg-white">
         <DashboardLayout>
           {error && (
             <div className="mb-6 p-4 bg-red-50/10 border border-red-500/30 rounded-lg flex gap-3">

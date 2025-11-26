@@ -31,15 +31,15 @@ export default function GreetingBanner({ firstName, avatarUrl }: GreetingBannerP
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-4 z-20 transition-opacity duration-200">
           <button
             title="Choose Banner Template"
-            className="p-3 bg-purple-500/20 hover:bg-purple-500/30 rounded-full backdrop-blur-md border border-purple-300/30 transition-all"
+            className="p-3 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-md border border-white/40 transition-all"
           >
-            <Edit3 className="w-6 h-6 text-purple-300" />
+            <Edit3 className="w-6 h-6 text-white" />
           </button>
           <button
             title="Reset to Default Banner"
-            className="p-3 bg-blue-500/20 hover:bg-blue-500/30 rounded-full backdrop-blur-md border border-blue-300/30 transition-all"
+            className="p-3 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-md border border-white/40 transition-all"
           >
-            <RotateCcw className="w-6 h-6 text-blue-300" />
+            <RotateCcw className="w-6 h-6 text-white" />
           </button>
         </div>
       )}

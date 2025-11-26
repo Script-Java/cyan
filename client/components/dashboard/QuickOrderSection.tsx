@@ -49,25 +49,23 @@ const PRODUCT_CATEGORIES: Product[] = [
 export default function QuickOrderSection() {
   return (
     <div
-      className="rounded-2xl border overflow-hidden backdrop-blur-lg"
+      className="rounded-2xl border overflow-hidden bg-white shadow-sm"
       style={{
-        backgroundColor: "rgba(255, 255, 255, 0.05)",
-        borderColor: "rgba(255, 255, 255, 0.1)",
+        borderColor: "rgba(100, 116, 139, 0.2)",
       }}
     >
       {/* Header */}
-      <div className="border-b border-white/10 p-6" style={{ borderColor: "rgba(255, 255, 255, 0.1)" }}>
+      <div className="border-b p-6" style={{ borderColor: "rgba(100, 116, 139, 0.1)" }}>
         <div className="flex items-center justify-between">
-          <h2 className="flex items-center gap-3 text-lg sm:text-xl font-bold text-white">
-            <RefreshCw className="w-5 h-5 text-white" />
+          <h2 className="flex items-center gap-3 text-lg sm:text-xl font-bold text-gray-900">
+            <RefreshCw className="w-5 h-5 text-gray-700" />
             Quick Order
           </h2>
           <a
             href="https://www.stickershuttle.com/products"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm font-medium transition-colors"
-            style={{ color: "oklch(0.714 0.203 305.504)" }}
+            className="flex items-center gap-2 text-sm font-medium transition-colors text-purple-600 hover:text-purple-700"
           >
             <span>View All Products</span>
             <ArrowRight className="w-4 h-4" />
@@ -87,10 +85,9 @@ export default function QuickOrderSection() {
               className="group"
             >
               <div
-                className="rounded-2xl border p-4 text-center transition-all duration-500 backdrop-blur-lg hover:bg-white/10 flex flex-col items-center"
+                className="rounded-2xl border p-4 text-center transition-all duration-500 hover:shadow-md hover:bg-gray-50 flex flex-col items-center bg-white"
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  borderColor: "rgba(255, 255, 255, 0.1)",
+                  borderColor: "rgba(100, 116, 139, 0.2)",
                 }}
               >
                 {/* Image Container */}
@@ -109,7 +106,7 @@ export default function QuickOrderSection() {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-sm font-semibold text-white text-center transition-colors group-hover:text-purple-300">
+                <h3 className="text-sm font-semibold text-gray-900 text-center transition-colors group-hover:text-purple-600">
                   {product.name}
                 </h3>
               </div>
