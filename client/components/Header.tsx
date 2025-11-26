@@ -83,18 +83,30 @@ export default function Header() {
 
             {/* Desktop Auth Buttons */}
             <div className="hidden lg:flex items-center gap-3">
-              <Link
-                to="/login"
-                className="px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-colors font-medium"
-              >
-                Log in
-              </Link>
-              <Link
-                to="/signup"
-                className="px-4 py-2 rounded-lg bg-[#FFD713] text-[#030140] hover:bg-[#FFD713]/90 transition-colors font-medium shadow-lg shadow-[#CfAF13]/50"
-              >
-                Sign up
-              </Link>
+              {isAuthenticated ? (
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-colors font-medium"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Log out
+                </button>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-colors font-medium"
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="px-4 py-2 rounded-lg bg-[#FFD713] text-[#030140] hover:bg-[#FFD713]/90 transition-colors font-medium shadow-lg shadow-[#CfAF13]/50"
+                  >
+                    Sign up
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
