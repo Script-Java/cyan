@@ -158,15 +158,24 @@ export default function Header() {
 
               <div className="pt-4 border-t border-white/20 space-y-3">
                 {isAuthenticated ? (
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setIsMenuOpen(false);
-                    }}
-                    className="block w-full px-4 py-2 rounded-lg border border-white/20 text-white text-center hover:bg-white/5 transition-colors font-medium"
-                  >
-                    Log out
-                  </button>
+                  <>
+                    <Link
+                      to="/dashboard"
+                      className="block w-full px-4 py-2 rounded-lg border border-white/20 text-white text-center hover:bg-white/5 transition-colors font-medium"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsMenuOpen(false);
+                      }}
+                      className="block w-full px-4 py-2 rounded-lg border border-white/20 text-white text-center hover:bg-white/5 transition-colors font-medium"
+                    >
+                      Log out
+                    </button>
+                  </>
                 ) : (
                   <>
                     <Link
