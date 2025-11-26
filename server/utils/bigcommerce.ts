@@ -83,28 +83,40 @@ class BigCommerceAPI {
   async createCustomer(customer: BigCommerceCustomer): Promise<any> {
     const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers`;
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "X-Auth-Token": this.accessToken,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: customer.email,
-        first_name: customer.first_name,
-        last_name: customer.last_name,
-        password: customer.password,
-      }),
-    });
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: customer.email,
+          first_name: customer.first_name,
+          last_name: customer.last_name,
+          password: customer.password,
+        }),
+      });
 
-    if (!response.ok) {
-      const error = await response.text();
-      console.error("Customer creation failed:", error);
-      throw new Error("Failed to create customer in BigCommerce");
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Customer creation failed:", {
+          status: response.status,
+          statusText: response.statusText,
+          error: data,
+        });
+        throw new Error(
+          data.errors?.[0]?.message ||
+            "Failed to create customer in BigCommerce"
+        );
+      }
+
+      return data.data;
+    } catch (error) {
+      console.error("Customer creation error:", error);
+      throw error;
     }
-
-    const data = await response.json();
-    return data.data;
   }
 
   /**
