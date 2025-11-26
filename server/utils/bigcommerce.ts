@@ -340,7 +340,7 @@ class BigCommerceAPI {
           "X-Auth-Token": this.accessToken,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(orderData),
+        body: JSON.stringify([orderData]),
       });
 
       let data: any;
@@ -364,7 +364,8 @@ class BigCommerceAPI {
         );
       }
 
-      return data?.data || data;
+      const orders = data?.data || [];
+      return orders[0] || data;
     } catch (error) {
       console.error("Create order error:", error);
       throw error;
