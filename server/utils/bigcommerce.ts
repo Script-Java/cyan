@@ -125,20 +125,30 @@ class BigCommerceAPI {
   async getCustomerByEmail(email: string): Promise<any> {
     const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers?email:in=${email}`;
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "X-Auth-Token": this.accessToken,
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch customer from BigCommerce");
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Get customer failed:", {
+          status: response.status,
+          error: data,
+        });
+        return null;
+      }
+
+      return data.data && data.data.length > 0 ? data.data[0] : null;
+    } catch (error) {
+      console.error("Get customer error:", error);
+      return null;
     }
-
-    const data = await response.json();
-    return data.data && data.data.length > 0 ? data.data[0] : null;
   }
 
   /**
