@@ -84,13 +84,22 @@ export default function Header() {
             {/* Desktop Auth Buttons */}
             <div className="hidden lg:flex items-center gap-3">
               {isAuthenticated ? (
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-colors font-medium"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Log out
-                </button>
+                <>
+                  <Link
+                    to="/dashboard"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-colors font-medium"
+                  >
+                    <User className="w-4 h-4" />
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-colors font-medium"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Log out
+                  </button>
+                </>
               ) : (
                 <>
                   <Link
