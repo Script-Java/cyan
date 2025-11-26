@@ -108,41 +108,6 @@ export const handleSignup: RequestHandler = async (req, res) => {
 
     console.log("Customer created successfully:", newCustomer.id);
 
-    // Create customer address in BigCommerce (non-blocking - log errors but don't fail signup)
-    try {
-      console.log("Creating customer address in BigCommerce:", {
-        customerId: newCustomer.id,
-        firstName,
-        lastName,
-        city,
-        state,
-        zip,
-        country,
-      });
-
-      const addressPayload: any = {
-        first_name: firstName,
-        last_name: lastName,
-        street_1: addressLine1,
-        city,
-        state_or_province: state,
-        postal_code: zip,
-        country_code: country,
-      };
-
-      // Only include street_2 if provided
-      if (addressLine2) {
-        addressPayload.street_2 = addressLine2;
-      }
-
-      await bigCommerceAPI.createCustomerAddress(newCustomer.id, addressPayload);
-
-      console.log("Customer address created successfully");
-    } catch (addressError) {
-      console.error("Warning: Failed to create address, but customer account was created:", addressError);
-      // Don't fail the signup if address creation fails - customer account is created
-    }
-
     // Generate JWT token
     const token = generateToken(newCustomer.id, newCustomer.email);
 
