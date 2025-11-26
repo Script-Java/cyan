@@ -1,4 +1,6 @@
 import { RequestHandler } from "express";
+import { bigCommerceAPI } from "../utils/bigcommerce";
+import jwt from "jsonwebtoken";
 
 interface LoginRequest {
   email: string;
@@ -11,6 +13,19 @@ interface SignupRequest {
   password: string;
 }
 
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production";
+
+/**
+ * Generate JWT token for session
+ */
+function generateToken(customerId: number, email: string): string {
+  return jwt.sign(
+    { customerId, email, iat: Math.floor(Date.now() / 1000) },
+    JWT_SECRET,
+    { expiresIn: "30d" }
+  );
+}
+
 export const handleLogin: RequestHandler = async (req, res) => {
   try {
     const { email, password } = req.body as LoginRequest;
@@ -19,17 +34,32 @@ export const handleLogin: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Email and password required" });
     }
 
-    // TODO: Implement BigCommerce authentication
-    // This is a placeholder that should:
-    // 1. Verify credentials against BigCommerce API
-    // 2. Create or update user session
-    // 3. Return authentication token
+    // Validate credentials against BigCommerce
+    const isValid = await bigCommerceAPI.validateCredentials(email, password);
+    if (!isValid) {
+      return res
+        .status(401)
+        .json({ error: "Invalid email or password" });
+    }
 
-    const mockToken = Buffer.from(`${email}:${Date.now()}`).toString("base64");
+    // Get customer from BigCommerce
+    const customer = await bigCommerceAPI.getCustomerByEmail(email);
+    if (!customer) {
+      return res.status(401).json({ error: "Customer not found" });
+    }
+
+    // Generate JWT token
+    const token = generateToken(customer.id, customer.email);
 
     res.json({
       success: true,
-      token: mockToken,
+      token,
+      customer: {
+        id: customer.id,
+        email: customer.email,
+        firstName: customer.first_name,
+        lastName: customer.last_name,
+      },
       message: "Login successful",
     });
   } catch (error) {
@@ -48,39 +78,61 @@ export const handleSignup: RequestHandler = async (req, res) => {
         .json({ error: "Name, email, and password required" });
     }
 
-    // TODO: Implement BigCommerce customer creation
-    // This is a placeholder that should:
-    // 1. Create new customer in BigCommerce
-    // 2. Set up initial account
-    // 3. Return authentication token
+    // Check if customer already exists
+    const existingCustomer = await bigCommerceAPI.getCustomerByEmail(email);
+    if (existingCustomer) {
+      return res.status(409).json({ error: "Email already registered" });
+    }
 
-    const mockToken = Buffer.from(`${email}:${Date.now()}`).toString("base64");
+    // Parse name into first and last name
+    const [firstName, ...lastNameParts] = name.split(" ");
+    const lastName = lastNameParts.join(" ") || "";
 
-    res.json({
+    // Create customer in BigCommerce
+    const newCustomer = await bigCommerceAPI.createCustomer({
+      email,
+      first_name: firstName,
+      last_name: lastName,
+      password,
+    });
+
+    if (!newCustomer || !newCustomer.id) {
+      throw new Error("Failed to create customer");
+    }
+
+    // Generate JWT token
+    const token = generateToken(newCustomer.id, newCustomer.email);
+
+    res.status(201).json({
       success: true,
-      token: mockToken,
+      token,
+      customer: {
+        id: newCustomer.id,
+        email: newCustomer.email,
+        firstName: newCustomer.first_name,
+        lastName: newCustomer.last_name,
+      },
       message: "Account created successfully",
     });
   } catch (error) {
     console.error("Signup error:", error);
-    res.status(500).json({ error: "Signup failed" });
+    const errorMessage =
+      error instanceof Error ? error.message : "Signup failed";
+    res.status(500).json({ error: errorMessage });
   }
 };
 
 export const handleBigCommerceAuth: RequestHandler = (req, res) => {
   try {
-    // TODO: Implement BigCommerce OAuth flow
-    // This should:
-    // 1. Redirect to BigCommerce OAuth endpoint
-    // 2. Handle callback and token exchange
-    // 3. Create session
-
     const clientId = process.env.BIGCOMMERCE_CLIENT_ID || "";
-    const redirectUri = `${process.env.APP_URL || "http://localhost:8080"}/api/auth/bigcommerce/callback`;
+    const appUrl = process.env.APP_URL || "http://localhost:8080";
+    const redirectUri = `${appUrl}/api/auth/bigcommerce/callback`;
     const state = Buffer.from(Math.random().toString()).toString("base64");
 
     if (!clientId) {
-      return res.status(500).json({ error: "BigCommerce client ID not configured" });
+      return res
+        .status(500)
+        .json({ error: "BigCommerce client ID not configured" });
     }
 
     const bigCommerceAuthUrl = new URL(
@@ -90,7 +142,10 @@ export const handleBigCommerceAuth: RequestHandler = (req, res) => {
     bigCommerceAuthUrl.searchParams.append("redirect_uri", redirectUri);
     bigCommerceAuthUrl.searchParams.append("response_type", "code");
     bigCommerceAuthUrl.searchParams.append("state", state);
-    bigCommerceAuthUrl.searchParams.append("scope", "store_v2_customers");
+    bigCommerceAuthUrl.searchParams.append(
+      "scope",
+      "store_v2_customers store_v2_orders"
+    );
 
     res.redirect(bigCommerceAuthUrl.toString());
   } catch (error) {
@@ -103,36 +158,40 @@ export const handleBigCommerceCallback: RequestHandler = async (req, res) => {
   try {
     const { code } = req.query;
 
-    if (!code) {
+    if (!code || typeof code !== "string") {
       return res.status(400).json({ error: "Authorization code not provided" });
     }
 
-    // TODO: Implement BigCommerce OAuth callback handler
-    // This should:
-    // 1. Exchange code for access token
-    // 2. Get customer information
-    // 3. Create/update session
-    // 4. Redirect to dashboard
+    // Exchange code for access token
+    const tokenData = await bigCommerceAPI.exchangeCodeForToken(code);
 
-    console.log("BigCommerce OAuth callback received with code:", code);
+    if (!tokenData.access_token) {
+      throw new Error("No access token received");
+    }
 
-    // For now, redirect to dashboard with a mock token
-    const mockToken = Buffer.from(`oauth:${Date.now()}`).toString("base64");
-    res.redirect(`/?token=${mockToken}`);
+    // Get customer ID from context or user info
+    const customerId = tokenData.user?.id;
+    const email = tokenData.user?.email;
+
+    if (!customerId || !email) {
+      throw new Error("Failed to get customer information");
+    }
+
+    // Generate JWT token for our application
+    const token = generateToken(customerId, email);
+
+    // Redirect to dashboard with token
+    res.redirect(`/?auth_token=${token}&customer_id=${customerId}`);
   } catch (error) {
     console.error("BigCommerce callback error:", error);
-    res.status(500).json({ error: "Callback handling failed" });
+    res.redirect(`/?error=auth_failed`);
   }
 };
 
 export const handleLogout: RequestHandler = (req, res) => {
   try {
-    // TODO: Implement logout functionality
-    // This should:
-    // 1. Invalidate session/token
-    // 2. Clear cookies
-    // 3. Redirect to home
-
+    // JWT tokens are stateless, so logout is handled client-side
+    // Client should remove token from localStorage
     res.json({ success: true, message: "Logged out successfully" });
   } catch (error) {
     console.error("Logout error:", error);
