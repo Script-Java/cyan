@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, User, AlertCircle, Eye, EyeOff, Check, MapPin, Phone } from "lucide-react";
+import { Mail, Lock, User, AlertCircle, Eye, EyeOff, Check } from "lucide-react";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -11,14 +11,6 @@ export default function Signup() {
     email: "",
     password: "",
     confirmPassword: "",
-    company: "",
-    phone: "",
-    addressLine1: "",
-    addressLine2: "",
-    city: "",
-    country: "",
-    state: "",
-    zip: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -45,12 +37,7 @@ export default function Signup() {
   const requiredFieldsFilled =
     formData.firstName &&
     formData.lastName &&
-    formData.email &&
-    formData.addressLine1 &&
-    formData.city &&
-    formData.country &&
-    formData.state &&
-    formData.zip;
+    formData.email;
 
   const canSubmit =
     isPasswordValid && passwordsMatch && agreeTerms && requiredFieldsFilled;
@@ -77,8 +64,6 @@ export default function Signup() {
     setIsLoading(true);
 
     try {
-      const countryCode = countryMap[formData.country] || formData.country;
-
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -89,14 +74,6 @@ export default function Signup() {
           lastName: formData.lastName,
           email: formData.email,
           password: formData.password,
-          company: formData.company || undefined,
-          phone: formData.phone || undefined,
-          addressLine1: formData.addressLine1,
-          addressLine2: formData.addressLine2 || undefined,
-          city: formData.city,
-          country: countryCode,
-          state: formData.state,
-          zip: formData.zip,
         }),
       });
 
@@ -120,25 +97,6 @@ export default function Signup() {
     window.location.href = "/api/auth/bigcommerce/signup";
   };
 
-  const countryMap: { [key: string]: string } = {
-    "United States": "US",
-    "Canada": "CA",
-    "United Kingdom": "GB",
-    "Australia": "AU",
-    "Germany": "DE",
-    "France": "FR",
-    "Japan": "JP",
-    "China": "CN",
-    "India": "IN",
-    "Mexico": "MX",
-    "Brazil": "BR",
-    "Spain": "ES",
-    "Italy": "IT",
-    "Netherlands": "NL",
-    "South Korea": "KR",
-  };
-
-  const countries = Object.keys(countryMap);
 
   return (
     <>
@@ -309,142 +267,6 @@ export default function Signup() {
                     Passwords match ✓
                   </p>
                 )}
-              </div>
-
-              <div className="pt-4 border-t border-gray-200">
-                <h3 className="text-lg font-semibold text-[#030140] mb-4">
-                  Shipping Address
-                </h3>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="sm:col-span-2">
-                    <label className="block text-sm font-semibold text-[#030140] mb-2">
-                      Company Name
-                    </label>
-                    <input
-                      type="text"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
-                      placeholder="Your company (optional)"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#030140] mb-2">
-                      Phone Number
-                    </label>
-                    <div className="relative">
-                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
-                        placeholder="(555) 123-4567"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label className="block text-sm font-semibold text-[#030140] mb-2">
-                      Street Address <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                      <input
-                        type="text"
-                        name="addressLine1"
-                        required
-                        value={formData.addressLine1}
-                        onChange={handleChange}
-                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
-                        placeholder="123 Main Street"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label className="block text-sm font-semibold text-[#030140] mb-2">
-                      Apartment, Suite, etc. (optional)
-                    </label>
-                    <input
-                      type="text"
-                      name="addressLine2"
-                      value={formData.addressLine2}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
-                      placeholder="Apartment or suite number"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#030140] mb-2">
-                      City <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="city"
-                      required
-                      value={formData.city}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
-                      placeholder="New York"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#030140] mb-2">
-                      State/Province <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="state"
-                      required
-                      value={formData.state}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
-                      placeholder="NY"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#030140] mb-2">
-                      Zip/Postal Code <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="zip"
-                      required
-                      value={formData.zip}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
-                      placeholder="10001"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#030140] mb-2">
-                      Country <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      name="country"
-                      required
-                      value={formData.country}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
-                    >
-                      <option value="">Select a country</option>
-                      {countries.map((country) => (
-                        <option key={country} value={country}>
-                          {country}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
               </div>
 
               <label className="flex items-start gap-3">
