@@ -1,0 +1,76 @@
+import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production";
+
+declare global {
+  namespace Express {
+    interface Request {
+      customerId?: number;
+      email?: string;
+    }
+  }
+}
+
+/**
+ * Middleware to verify JWT token and extract customer info
+ */
+export const verifyToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).json({ error: "No authorization token provided" });
+      return;
+    }
+
+    const token = authHeader.substring(7);
+
+    const decoded = jwt.verify(token, JWT_SECRET) as {
+      customerId: number;
+      email: string;
+    };
+
+    req.customerId = decoded.customerId;
+    req.email = decoded.email;
+
+    next();
+  } catch (error) {
+    console.error("Token verification error:", error);
+    res.status(401).json({ error: "Invalid or expired token" });
+  }
+};
+
+/**
+ * Middleware to optionally verify token (doesn't fail if missing)
+ */
+export const optionalVerifyToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const token = authHeader.substring(7);
+      const decoded = jwt.verify(token, JWT_SECRET) as {
+        customerId: number;
+        email: string;
+      };
+
+      req.customerId = decoded.customerId;
+      req.email = decoded.email;
+    }
+
+    next();
+  } catch (error) {
+    // Token verification failed, but we continue
+    // This is useful for endpoints that work with or without auth
+    next();
+  }
+};
