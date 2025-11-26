@@ -151,7 +151,8 @@ class BigCommerceAPI {
         );
       }
 
-      return data?.data || data;
+      const customers = data?.data || [];
+      return customers[0] || data;
     } catch (error) {
       console.error("Customer creation error:", error);
       throw error;
