@@ -77,11 +77,8 @@ export default function QuickOrderSection() {
       <div className="p-6">
         <div className="grid grid-cols-5 gap-4">
           {PRODUCT_CATEGORIES.map((product) => (
-            <a
+            <div
               key={product.id}
-              href={product.href}
-              target="_blank"
-              rel="noopener noreferrer"
               className="group"
             >
               <div
@@ -105,12 +102,17 @@ export default function QuickOrderSection() {
                   />
                 </div>
 
-                {/* Title */}
-                <h3 className="text-sm font-semibold text-gray-900 text-center transition-colors group-hover:text-purple-600">
+                {/* Title Link */}
+                <a
+                  href={product.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-semibold text-gray-900 text-center transition-colors hover:text-purple-600 hover:underline"
+                >
                   {product.name}
-                </h3>
+                </a>
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </div>
