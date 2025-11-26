@@ -118,24 +118,25 @@ export default function Signup() {
     window.location.href = "/api/auth/bigcommerce/signup";
   };
 
-  const countries = [
-    "United States",
-    "Canada",
-    "United Kingdom",
-    "Australia",
-    "Germany",
-    "France",
-    "Japan",
-    "China",
-    "India",
-    "Mexico",
-    "Brazil",
-    "Spain",
-    "Italy",
-    "Netherlands",
-    "South Korea",
-    "Other",
-  ];
+  const countryMap: { [key: string]: string } = {
+    "United States": "US",
+    "Canada": "CA",
+    "United Kingdom": "GB",
+    "Australia": "AU",
+    "Germany": "DE",
+    "France": "FR",
+    "Japan": "JP",
+    "China": "CN",
+    "India": "IN",
+    "Mexico": "MX",
+    "Brazil": "BR",
+    "Spain": "ES",
+    "Italy": "IT",
+    "Netherlands": "NL",
+    "South Korea": "KR",
+  };
+
+  const countries = Object.keys(countryMap);
 
   return (
     <>
