@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LogOut, ShoppingBag, User, FileText, Package, AlertCircle } from "lucide-react";
+import {
+  LogOut,
+  ShoppingBag,
+  User,
+  FileText,
+  Package,
+  AlertCircle,
+} from "lucide-react";
 import Header from "@/components/Header";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import GreetingBanner from "@/components/dashboard/GreetingBanner";
@@ -38,7 +45,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    
+
     if (!token) {
       navigate("/login");
       return;
@@ -70,7 +77,9 @@ export default function Dashboard() {
           setOrders(ordersData.orders || []);
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load dashboard");
+        setError(
+          err instanceof Error ? err.message : "Failed to load dashboard",
+        );
       } finally {
         setIsLoading(false);
       }
@@ -92,7 +101,9 @@ export default function Dashboard() {
         <main className="min-h-screen bg-white py-20">
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex justify-center items-center h-64">
-              <div className="text-gray-600 text-lg">Loading your dashboard...</div>
+              <div className="text-gray-600 text-lg">
+                Loading your dashboard...
+              </div>
             </div>
           </div>
         </main>
@@ -123,7 +134,9 @@ export default function Dashboard() {
 
           {/* Active Orders Summary */}
           <ActiveOrdersSummary
-            activeOrderCount={orders.filter((o) => o.status !== "completed").length}
+            activeOrderCount={
+              orders.filter((o) => o.status !== "completed").length
+            }
           />
 
           {/* Quick Order Section */}

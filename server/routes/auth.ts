@@ -14,7 +14,8 @@ interface SignupRequest {
   password: string;
 }
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production";
+const JWT_SECRET =
+  process.env.JWT_SECRET || "your-secret-key-change-in-production";
 
 /**
  * Generate JWT token for session
@@ -23,7 +24,7 @@ function generateToken(customerId: number, email: string): string {
   return jwt.sign(
     { customerId, email, iat: Math.floor(Date.now() / 1000) },
     JWT_SECRET,
-    { expiresIn: "30d" }
+    { expiresIn: "30d" },
   );
 }
 
@@ -38,9 +39,7 @@ export const handleLogin: RequestHandler = async (req, res) => {
     // Validate credentials against BigCommerce
     const isValid = await bigCommerceAPI.validateCredentials(email, password);
     if (!isValid) {
-      return res
-        .status(401)
-        .json({ error: "Invalid email or password" });
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
     // Get customer from BigCommerce
@@ -76,7 +75,9 @@ export const handleSignup: RequestHandler = async (req, res) => {
     if (!firstName || !lastName || !email || !password) {
       return res
         .status(400)
-        .json({ error: "First name, last name, email, and password are required" });
+        .json({
+          error: "First name, last name, email, and password are required",
+        });
     }
 
     console.log("Signup attempt for:", email);
@@ -144,7 +145,7 @@ export const handleBigCommerceAuth: RequestHandler = (req, res) => {
     }
 
     const bigCommerceAuthUrl = new URL(
-      "https://login.bigcommerce.com/oauth2/authorize"
+      "https://login.bigcommerce.com/oauth2/authorize",
     );
     bigCommerceAuthUrl.searchParams.append("client_id", clientId);
     bigCommerceAuthUrl.searchParams.append("redirect_uri", redirectUri);
@@ -152,7 +153,7 @@ export const handleBigCommerceAuth: RequestHandler = (req, res) => {
     bigCommerceAuthUrl.searchParams.append("state", state);
     bigCommerceAuthUrl.searchParams.append(
       "scope",
-      "store_v2_customers store_v2_orders"
+      "store_v2_customers store_v2_orders",
     );
 
     res.redirect(bigCommerceAuthUrl.toString());
@@ -189,7 +190,9 @@ export const handleBigCommerceCallback: RequestHandler = async (req, res) => {
     const token = generateToken(customerId, email);
 
     // Redirect to auth callback page with token in query string
-    res.redirect(`/auth/callback?auth_token=${token}&customer_id=${customerId}`);
+    res.redirect(
+      `/auth/callback?auth_token=${token}&customer_id=${customerId}`,
+    );
   } catch (error) {
     console.error("BigCommerce callback error:", error);
     res.redirect(`/auth/callback?error=auth_failed`);

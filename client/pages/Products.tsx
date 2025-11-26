@@ -13,7 +13,8 @@ export default function Products() {
               Products Coming Soon
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              We're building our product catalog. Check back soon to browse and customize your stickers!
+              We're building our product catalog. Check back soon to browse and
+              customize your stickers!
             </p>
             <Link
               to="/"

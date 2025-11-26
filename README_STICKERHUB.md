@@ -5,6 +5,7 @@ A modern, production-ready ecommerce platform for custom sticker creation and sa
 ## Features
 
 ### 🎨 Core Features
+
 - **Custom Sticker Designer**: Intuitive interface for creating custom stickers
 - **Multiple Sticker Types**:
   - Vinyl Stickers - Durable, waterproof
@@ -16,12 +17,14 @@ A modern, production-ready ecommerce platform for custom sticker creation and sa
 - **User Accounts**: Registration and authentication
 
 ### 🔐 Authentication
+
 - **Traditional Login/Signup**: Email and password authentication
 - **BigCommerce Integration**: OAuth 2.0 authentication with BigCommerce
 - **Password Validation**: Strong password requirements
 - **Session Management**: Secure token-based authentication
 
 ### 📱 Responsive Design
+
 - Mobile-first responsive design
 - Desktop, tablet, and mobile optimized
 - Touch-friendly navigation
@@ -30,6 +33,7 @@ A modern, production-ready ecommerce platform for custom sticker creation and sa
 ## Tech Stack
 
 ### Frontend
+
 - **React 18**: Modern UI framework
 - **TypeScript**: Type-safe development
 - **React Router 6**: Client-side routing
@@ -38,12 +42,14 @@ A modern, production-ready ecommerce platform for custom sticker creation and sa
 - **React Query**: Server state management
 
 ### Backend
+
 - **Express.js**: Node.js web framework
 - **TypeScript**: Type-safe backend
 - **CORS**: Cross-origin resource sharing
 - **Zod**: Schema validation
 
 ### Build Tools
+
 - **Vite**: Lightning-fast build tool
 - **PostCSS**: CSS processing
 - **Autoprefixer**: CSS vendor prefixes
@@ -130,9 +136,11 @@ pnpm format.fix
 ## Pages Overview
 
 ### 🏠 Homepage (/)
+
 The landing page showcasing the StickerHub brand and value proposition.
 
 **Features:**
+
 - Hero section with call-to-action
 - Sticker type showcase (Vinyl, Holographic, Chrome, Glitter)
 - Feature highlights
@@ -141,9 +149,11 @@ The landing page showcasing the StickerHub brand and value proposition.
 **Responsive:** ✅ Mobile, Tablet, Desktop
 
 ### 🔐 Login Page (/login)
+
 User authentication with email and password.
 
 **Features:**
+
 - Email and password input fields
 - Remember me checkbox
 - Forgot password link
@@ -154,9 +164,11 @@ User authentication with email and password.
 **Responsive:** ✅ Mobile, Tablet, Desktop
 
 ### ���� Signup Page (/signup)
+
 New user registration with validation.
 
 **Features:**
+
 - Full name, email, and password inputs
 - Password strength indicator
 - Password confirmation field
@@ -168,24 +180,26 @@ New user registration with validation.
 **Responsive:** ✅ Mobile, Tablet, Desktop
 
 ### 🛍️ Products Page (/products)
+
 Product catalog and sticker designer (placeholder).
 
 **Status:** Placeholder - Ready for implementation
 
 ### 🛒 Cart Page (/cart)
+
 Shopping cart management (placeholder).
 
 **Status:** Placeholder - Ready for implementation
 
 ## Color Scheme
 
-| Color | Value | Usage |
-|-------|-------|-------|
-| Navy | #030140 | Header background, text |
-| Gold | #FFD713 | Primary CTA buttons |
-| Gold Hover | #FFA500 | Button hover state |
-| White | #FFFFFF | Text, icons, borders |
-| Light Gray | #F3F4F6 | Backgrounds |
+| Color      | Value   | Usage                   |
+| ---------- | ------- | ----------------------- |
+| Navy       | #030140 | Header background, text |
+| Gold       | #FFD713 | Primary CTA buttons     |
+| Gold Hover | #FFA500 | Button hover state      |
+| White      | #FFFFFF | Text, icons, borders    |
+| Light Gray | #F3F4F6 | Backgrounds             |
 
 ## API Endpoints
 
@@ -210,6 +224,7 @@ GET    /api/ping                          # Health check
 ## BigCommerce Integration
 
 The platform supports OAuth 2.0 authentication with BigCommerce, allowing customers to:
+
 - Log in with their BigCommerce account
 - Access their BigCommerce store data
 - Place orders and manage account from one dashboard
@@ -219,6 +234,7 @@ For detailed setup instructions, see [BIGCOMMERCE_SETUP.md](./BIGCOMMERCE_SETUP.
 ## Design System
 
 The application uses a clean, modern design system with:
+
 - **Typography**: Inter font family, multiple font weights
 - **Spacing**: Consistent 4px grid system
 - **Rounded Corners**: 8px default border radius for components
@@ -265,6 +281,7 @@ The application uses a clean, modern design system with:
 ## Contributing
 
 When making changes:
+
 1. Follow the existing code style and conventions
 2. Maintain TypeScript type safety
 3. Keep components modular and reusable
@@ -274,16 +291,19 @@ When making changes:
 ## Troubleshooting
 
 ### Dev server not starting?
+
 - Clear node_modules: `rm -rf node_modules pnpm-lock.yaml`
 - Reinstall: `pnpm install`
 - Clear cache: `pnpm run build --force`
 
 ### Tailwind styles not working?
+
 - Ensure all template files are in `content` array in `tailwind.config.ts`
 - Check that classes use proper Tailwind format
 - Clear build cache and restart dev server
 
 ### BigCommerce OAuth not working?
+
 - Verify environment variables are set correctly
 - Check BigCommerce app credentials
 - Ensure redirect URI matches in BigCommerce settings
@@ -296,5 +316,6 @@ This project is created for StickerHub ecommerce platform.
 ## Support
 
 For issues or questions about the implementation, refer to:
+
 - [BIGCOMMERCE_SETUP.md](./BIGCOMMERCE_SETUP.md) - BigCommerce integration
 - [AGENTS.md](./AGENTS.md) - Project architecture and conventions

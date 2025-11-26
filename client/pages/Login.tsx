@@ -27,7 +27,9 @@ export default function Login() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Login failed. Please check your credentials.");
+        throw new Error(
+          errorData.error || "Login failed. Please check your credentials.",
+        );
       }
 
       const data = await response.json();
@@ -59,9 +61,7 @@ export default function Login() {
               <h1 className="text-3xl font-bold text-[#030140] mb-2">
                 Welcome Back
               </h1>
-              <p className="text-gray-600">
-                Log in to your StickerHub account
-              </p>
+              <p className="text-gray-600">Log in to your StickerHub account</p>
             </div>
 
             {error && (
@@ -147,7 +147,9 @@ export default function Login() {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-600">Or continue with</span>
+                <span className="px-2 bg-white text-gray-600">
+                  Or continue with
+                </span>
               </div>
             </div>
 
@@ -173,11 +175,17 @@ export default function Login() {
 
           <p className="text-center text-sm text-gray-600 mt-8">
             By logging in, you agree to our{" "}
-            <a href="#" className="text-[#FFD713] hover:text-[#FFA500] transition-colors">
+            <a
+              href="#"
+              className="text-[#FFD713] hover:text-[#FFA500] transition-colors"
+            >
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="#" className="text-[#FFD713] hover:text-[#FFA500] transition-colors">
+            <a
+              href="#"
+              className="text-[#FFD713] hover:text-[#FFA500] transition-colors"
+            >
               Privacy Policy
             </a>
           </p>

@@ -8,9 +8,7 @@ export default function PromoBanner() {
       rel="noopener noreferrer"
       className="block mb-6 group"
     >
-      <div
-        className="relative rounded-2xl overflow-hidden p-4 sm:p-6 border border-pink-200 transition-all duration-300 shadow-sm hover:shadow-md bg-gradient-to-br from-pink-50 to-red-50"
-      >
+      <div className="relative rounded-2xl overflow-hidden p-4 sm:p-6 border border-pink-200 transition-all duration-300 shadow-sm hover:shadow-md bg-gradient-to-br from-pink-50 to-red-50">
         {/* Shimmer effect */}
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity"
@@ -29,7 +27,9 @@ export default function PromoBanner() {
             <div className="flex-1">
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-0">
                 <span className="block">Shop Black Friday</span>
-                <span className="text-sm sm:text-base text-gray-700">Deals Early</span>
+                <span className="text-sm sm:text-base text-gray-700">
+                  Deals Early
+                </span>
               </h3>
             </div>
           </div>

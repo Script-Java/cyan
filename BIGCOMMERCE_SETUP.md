@@ -50,6 +50,7 @@ The application implements a standard OAuth 2.0 flow:
 ## Implementation Details
 
 The authentication system is located in:
+
 - Frontend: `client/pages/Login.tsx` and `client/pages/Signup.tsx`
 - Backend: `server/routes/auth.ts` and `server/index.ts`
 

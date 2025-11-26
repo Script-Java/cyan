@@ -1,7 +1,15 @@
 import Header from "@/components/Header";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, User, AlertCircle, Eye, EyeOff, Check } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  User,
+  AlertCircle,
+  Eye,
+  EyeOff,
+  Check,
+} from "lucide-react";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -35,15 +43,13 @@ export default function Signup() {
   const isPasswordValid = passwordRequirements.every((req) => req.met);
 
   const requiredFieldsFilled =
-    formData.firstName &&
-    formData.lastName &&
-    formData.email;
+    formData.firstName && formData.lastName && formData.email;
 
   const canSubmit =
     isPasswordValid && passwordsMatch && agreeTerms && requiredFieldsFilled;
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -57,7 +63,9 @@ export default function Signup() {
     setError("");
 
     if (!canSubmit) {
-      setError("Please ensure all required fields are filled and requirements are met");
+      setError(
+        "Please ensure all required fields are filled and requirements are met",
+      );
       return;
     }
 
@@ -96,7 +104,6 @@ export default function Signup() {
   const handleBigCommerceSignup = () => {
     window.location.href = "/api/auth/bigcommerce/signup";
   };
-
 
   return (
     <>

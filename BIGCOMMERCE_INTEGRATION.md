@@ -29,6 +29,7 @@ JWT_SECRET=your-secure-secret-key
 **Endpoint:** `POST /api/auth/signup`
 
 Request:
+
 ```json
 {
   "name": "John Doe",
@@ -38,6 +39,7 @@ Request:
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -55,6 +57,7 @@ Response:
 **Endpoint:** `POST /api/auth/login`
 
 Request:
+
 ```json
 {
   "email": "john@example.com",
@@ -63,6 +66,7 @@ Request:
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -91,6 +95,7 @@ Response:
 8. Frontend stores token in localStorage and redirects to home
 
 **Scopes:**
+
 - `store_v2_customers` - Customer management
 - `store_v2_orders` - Order management
 
@@ -105,6 +110,7 @@ Authorization: Bearer <JWT_TOKEN>
 ### Authentication Endpoints (No Auth Required)
 
 #### Sign Up
+
 ```
 POST /api/auth/signup
 Content-Type: application/json
@@ -117,6 +123,7 @@ Content-Type: application/json
 ```
 
 #### Login
+
 ```
 POST /api/auth/login
 Content-Type: application/json
@@ -128,18 +135,23 @@ Content-Type: application/json
 ```
 
 #### BigCommerce OAuth Initiate
+
 ```
 GET /api/auth/bigcommerce
 ```
+
 Redirects to BigCommerce login page.
 
 #### BigCommerce OAuth Callback
+
 ```
 GET /api/auth/bigcommerce/callback?code=<AUTH_CODE>
 ```
+
 Internal endpoint for BigCommerce to redirect back to. Automatically redirects to `/auth/callback` with token.
 
 #### Logout
+
 ```
 POST /api/auth/logout
 ```
@@ -147,12 +159,14 @@ POST /api/auth/logout
 ### Customer Endpoints (Protected)
 
 #### Get Current Customer Profile
+
 ```
 GET /api/customers/me
 Authorization: Bearer <JWT_TOKEN>
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -169,6 +183,7 @@ Response:
 ```
 
 #### Update Customer Profile
+
 ```
 PATCH /api/customers/me
 Authorization: Bearer <JWT_TOKEN>
@@ -182,12 +197,14 @@ Content-Type: application/json
 ```
 
 #### Get Customer Addresses
+
 ```
 GET /api/customers/me/addresses
 Authorization: Bearer <JWT_TOKEN>
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -209,12 +226,14 @@ Response:
 ### Order Endpoints (Protected)
 
 #### Get Customer Orders
+
 ```
 GET /api/orders
 Authorization: Bearer <JWT_TOKEN>
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -233,12 +252,14 @@ Response:
 ```
 
 #### Get Single Order
+
 ```
 GET /api/orders/:orderId
 Authorization: Bearer <JWT_TOKEN>
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -258,6 +279,7 @@ Response:
 ```
 
 #### Create Order
+
 ```
 POST /api/orders
 Authorization: Bearer <JWT_TOKEN>
@@ -298,6 +320,7 @@ Content-Type: application/json
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -331,9 +354,9 @@ const token = localStorage.getItem("authToken");
 const response = await fetch("/api/customers/me", {
   method: "GET",
   headers: {
-    "Authorization": `Bearer ${token}`,
-    "Content-Type": "application/json"
-  }
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  },
 });
 ```
 
@@ -363,6 +386,7 @@ const handleLogout = () => {
 ### BigCommerce API Utility (`server/utils/bigcommerce.ts`)
 
 Provides methods for:
+
 - `exchangeCodeForToken()` - OAuth token exchange
 - `createCustomer()` - Create new customer
 - `getCustomerByEmail()` - Find customer by email
@@ -385,6 +409,7 @@ Extracts JWT token from Authorization header and sets `req.customerId` and `req.
 ### Common Error Responses
 
 #### 400 Bad Request
+
 ```json
 {
   "error": "Email and password required"
@@ -392,6 +417,7 @@ Extracts JWT token from Authorization header and sets `req.customerId` and `req.
 ```
 
 #### 401 Unauthorized
+
 ```json
 {
   "error": "Invalid email or password"
@@ -399,6 +425,7 @@ Extracts JWT token from Authorization header and sets `req.customerId` and `req.
 ```
 
 #### 409 Conflict
+
 ```json
 {
   "error": "Email already registered"
@@ -406,6 +433,7 @@ Extracts JWT token from Authorization header and sets `req.customerId` and `req.
 ```
 
 #### 500 Server Error
+
 ```json
 {
   "error": "Login failed"
@@ -442,6 +470,7 @@ Extracts JWT token from Authorization header and sets `req.customerId` and `req.
 ### Manual Testing
 
 1. **Test Signup:**
+
    ```bash
    curl -X POST http://localhost:8080/api/auth/signup \
      -H "Content-Type: application/json" \
@@ -449,6 +478,7 @@ Extracts JWT token from Authorization header and sets `req.customerId` and `req.
    ```
 
 2. **Test Login:**
+
    ```bash
    curl -X POST http://localhost:8080/api/auth/login \
      -H "Content-Type: application/json" \
@@ -464,20 +494,24 @@ Extracts JWT token from Authorization header and sets `req.customerId` and `req.
 ## Troubleshooting
 
 ### BigCommerce OAuth Fails
+
 - Check that `APP_URL` matches your redirect URI in BigCommerce settings
 - Verify Client ID and Client Secret are correct
 - Check that OAuth scopes are properly configured
 
 ### Token Validation Fails
+
 - Verify `JWT_SECRET` matches between signup/login and API calls
 - Check token hasn't expired (30 days)
 - Ensure Authorization header format is correct: `Bearer <TOKEN>`
 
 ### Customer Not Found
+
 - Verify customer exists in BigCommerce store
 - Check that store hash is correct
 
 ### Order Creation Fails
+
 - Verify product IDs exist in BigCommerce
 - Check shipping and billing addresses are complete
 - Ensure items array is not empty

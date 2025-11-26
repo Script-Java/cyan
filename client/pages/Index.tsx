@@ -68,7 +68,9 @@ export default function Index() {
             <div className="text-center max-w-3xl mx-auto mb-12">
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-4 py-2 mb-6">
                 <Sparkles className="w-4 h-4 text-[#FFD713]" />
-                <span className="text-sm font-medium">Premium Custom Stickers</span>
+                <span className="text-sm font-medium">
+                  Premium Custom Stickers
+                </span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
@@ -79,8 +81,9 @@ export default function Index() {
               </h1>
 
               <p className="text-lg sm:text-xl text-white/80 mb-8 leading-relaxed">
-                Express yourself with high-quality, custom stickers. Perfect for laptops, 
-                water bottles, walls, and more. Fast shipping, amazing designs.
+                Express yourself with high-quality, custom stickers. Perfect for
+                laptops, water bottles, walls, and more. Fast shipping, amazing
+                designs.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -120,7 +123,9 @@ export default function Index() {
                   key={index}
                   className="group bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
                 >
-                  <div className={`w-16 h-16 rounded-lg bg-gradient-to-br ${type.color} flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform`}>
+                  <div
+                    className={`w-16 h-16 rounded-lg bg-gradient-to-br ${type.color} flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform`}
+                  >
                     {type.emoji}
                   </div>
                   <h3 className="text-lg font-bold text-[#030140] mb-2">
@@ -191,37 +196,101 @@ export default function Index() {
               <div>
                 <h4 className="font-bold text-white mb-4">Shop</h4>
                 <ul className="space-y-2 text-sm">
-                  <li><a href="#" className="hover:text-white transition-colors">Vinyl Stickers</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Holographic</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Chrome</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Glitter</a></li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Vinyl Stickers
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Holographic
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Chrome
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Glitter
+                    </a>
+                  </li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-bold text-white mb-4">Company</h4>
                 <ul className="space-y-2 text-sm">
-                  <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Blog
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Careers
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Contact
+                    </a>
+                  </li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-bold text-white mb-4">Legal</h4>
                 <ul className="space-y-2 text-sm">
-                  <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Terms</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Shipping</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Returns</a></li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Privacy
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Terms
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Shipping
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Returns
+                    </a>
+                  </li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-bold text-white mb-4">Follow</h4>
                 <ul className="space-y-2 text-sm">
-                  <li><a href="#" className="hover:text-white transition-colors">Instagram</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Twitter</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">TikTok</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">YouTube</a></li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Instagram
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      Twitter
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      TikTok
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors">
+                      YouTube
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>

@@ -4,7 +4,9 @@ interface ActiveOrdersSummaryProps {
   activeOrderCount: number;
 }
 
-export default function ActiveOrdersSummary({ activeOrderCount }: ActiveOrdersSummaryProps) {
+export default function ActiveOrdersSummary({
+  activeOrderCount,
+}: ActiveOrdersSummaryProps) {
   return (
     <div
       className="rounded-2xl border p-6 mb-6 overflow-hidden bg-white shadow-sm"
@@ -12,7 +14,10 @@ export default function ActiveOrdersSummary({ activeOrderCount }: ActiveOrdersSu
         borderColor: "rgba(5, 150, 105, 0.2)",
       }}
     >
-      <div className="border-b pb-4 mb-6" style={{ borderColor: "rgba(5, 150, 105, 0.1)" }}>
+      <div
+        className="border-b pb-4 mb-6"
+        style={{ borderColor: "rgba(5, 150, 105, 0.1)" }}
+      >
         <div className="flex items-center justify-between">
           <h2 className="flex items-center gap-3 text-lg sm:text-xl font-bold text-gray-900">
             <CheckCircle className="w-5 h-5 text-emerald-600" />
@@ -31,7 +36,9 @@ export default function ActiveOrdersSummary({ activeOrderCount }: ActiveOrdersSu
       </div>
 
       <div className="text-center py-8">
-        <h3 className="text-lg font-semibold text-gray-600">There are no active orders</h3>
+        <h3 className="text-lg font-semibold text-gray-600">
+          There are no active orders
+        </h3>
       </div>
     </div>
   );

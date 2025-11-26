@@ -14,12 +14,35 @@ interface OrdersSectionProps {
   orders: Order[];
 }
 
-const statusColorMap: Record<string, { bg: string; text: string; border: string }> = {
-  completed: { bg: "bg-green-100", text: "text-green-700", border: "border-green-300" },
-  pending: { bg: "bg-yellow-100", text: "text-yellow-700", border: "border-yellow-300" },
-  processing: { bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-300" },
-  shipped: { bg: "bg-cyan-100", text: "text-cyan-700", border: "border-cyan-300" },
-  cancelled: { bg: "bg-red-100", text: "text-red-700", border: "border-red-300" },
+const statusColorMap: Record<
+  string,
+  { bg: string; text: string; border: string }
+> = {
+  completed: {
+    bg: "bg-green-100",
+    text: "text-green-700",
+    border: "border-green-300",
+  },
+  pending: {
+    bg: "bg-yellow-100",
+    text: "text-yellow-700",
+    border: "border-yellow-300",
+  },
+  processing: {
+    bg: "bg-blue-100",
+    text: "text-blue-700",
+    border: "border-blue-300",
+  },
+  shipped: {
+    bg: "bg-cyan-100",
+    text: "text-cyan-700",
+    border: "border-cyan-300",
+  },
+  cancelled: {
+    bg: "bg-red-100",
+    text: "text-red-700",
+    border: "border-red-300",
+  },
 };
 
 function getStatusColor(status: string) {
@@ -65,7 +88,9 @@ export default function OrdersSection({ orders }: OrdersSectionProps) {
                           <ShoppingBag className="w-5 h-5 text-blue-600" />
                         </div>
                         <div>
-                          <p className="text-gray-900 font-semibold">Order #{order.id}</p>
+                          <p className="text-gray-900 font-semibold">
+                            Order #{order.id}
+                          </p>
                           <p className="text-gray-600 text-sm flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
                             {formattedDate}

@@ -49,7 +49,11 @@ export function createServer() {
   // ===== Customer Routes (Protected) =====
   app.get("/api/customers/me", verifyToken, handleGetCustomer);
   app.patch("/api/customers/me", verifyToken, handleUpdateCustomer);
-  app.get("/api/customers/me/addresses", verifyToken, handleGetCustomerAddresses);
+  app.get(
+    "/api/customers/me/addresses",
+    verifyToken,
+    handleGetCustomerAddresses,
+  );
 
   // ===== Order Routes (Protected) =====
   app.get("/api/orders", verifyToken, handleGetOrders);

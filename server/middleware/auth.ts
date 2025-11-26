@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production";
+const JWT_SECRET =
+  process.env.JWT_SECRET || "your-secret-key-change-in-production";
 
 declare global {
   namespace Express {
@@ -18,7 +19,7 @@ declare global {
 export const verifyToken = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   try {
     const authHeader = req.headers.authorization;
@@ -51,7 +52,7 @@ export const verifyToken = (
 export const optionalVerifyToken = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   try {
     const authHeader = req.headers.authorization;

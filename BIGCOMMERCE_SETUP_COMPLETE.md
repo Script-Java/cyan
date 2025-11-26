@@ -7,6 +7,7 @@ Your StickerHub ecommerce platform is now **fully integrated with BigCommerce** 
 ## 📊 What Was Configured
 
 ### Environment Variables Set
+
 ```
 BIGCOMMERCE_CLIENT_ID=1n0fa2hg486t3q6h3ltq7jxd40cjkwc
 BIGCOMMERCE_CLIENT_SECRET=c1fd0d52dcb84cea198732f53693852d73dae88be628dc09ca64d10ac8f05752
@@ -15,6 +16,7 @@ BIGCOMMERCE_STORE_HASH=3uaqwvjjkf
 ```
 
 ### Dependencies Installed
+
 - `jsonwebtoken` (v9.0.2) - JWT token generation and verification
 - `@types/jsonwebtoken` (v9.0.10) - TypeScript types
 
@@ -90,9 +92,11 @@ BIGCOMMERCE_STORE_HASH=3uaqwvjjkf
 ## 🔐 Authentication Methods
 
 ### Method 1: Email/Password
+
 Users can sign up and log in using traditional email and password credentials stored in BigCommerce.
 
 **Flow:**
+
 1. User fills out signup form
 2. Backend creates customer in BigCommerce
 3. JWT token generated and returned
@@ -100,9 +104,11 @@ Users can sign up and log in using traditional email and password credentials st
 5. User redirected to home page
 
 ### Method 2: BigCommerce OAuth
+
 Users can log in with their existing BigCommerce store credentials.
 
 **Flow:**
+
 1. User clicks "BigCommerce Account" button
 2. Redirected to BigCommerce login page
 3. User authorizes application
@@ -114,6 +120,7 @@ Users can log in with their existing BigCommerce store credentials.
 ## 📡 API Endpoints
 
 ### Authentication Endpoints
+
 - `POST /api/auth/signup` - Create new account
 - `POST /api/auth/login` - Login with email/password
 - `GET /api/auth/bigcommerce` - Initiate OAuth flow
@@ -121,16 +128,19 @@ Users can log in with their existing BigCommerce store credentials.
 - `POST /api/auth/logout` - Logout user
 
 ### Customer Endpoints (Protected)
+
 - `GET /api/customers/me` - Get profile
 - `PATCH /api/customers/me` - Update profile
 - `GET /api/customers/me/addresses` - Get addresses
 
 ### Order Endpoints (Protected)
+
 - `GET /api/orders` - Get customer orders
 - `GET /api/orders/:orderId` - Get order details
 - `POST /api/orders` - Create new order
 
 ### Admin Endpoints
+
 - `GET /api/admin/orders/:orderId` - Get any order (admin)
 
 ## 🔑 How to Use
@@ -138,22 +148,26 @@ Users can log in with their existing BigCommerce store credentials.
 ### For End Users
 
 **Signup:**
+
 1. Go to signup page
 2. Enter name, email, password
 3. Agree to terms
 4. Click "Sign Up" or use "BigCommerce Account"
 
 **Login:**
+
 1. Go to login page
 2. Enter email and password
 3. Click "Log In" or use "BigCommerce Account"
 
 **Token Storage:**
+
 - Token automatically stored in localStorage
 - Valid for 30 days
 - Automatically sent with API requests
 
 **Logout:**
+
 - Click "Log out" button in header
 - Token removed from localStorage
 
@@ -167,9 +181,9 @@ const token = localStorage.getItem("authToken");
 const response = await fetch("/api/customers/me", {
   method: "GET",
   headers: {
-    "Authorization": `Bearer ${token}`,
-    "Content-Type": "application/json"
-  }
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  },
 });
 
 const customer = await response.json();
@@ -188,11 +202,7 @@ export default function MyComponent() {
     setIsLoggedIn(!!token);
   }, []);
 
-  return (
-    <div>
-      {isLoggedIn ? <p>Welcome!</p> : <p>Please log in</p>}
-    </div>
-  );
+  return <div>{isLoggedIn ? <p>Welcome!</p> : <p>Please log in</p>}</div>;
 }
 ```
 
@@ -218,6 +228,7 @@ export default function MyComponent() {
 ## 🧪 Testing the Integration
 
 ### Test Signup
+
 ```bash
 curl -X POST http://localhost:8080/api/auth/signup \
   -H "Content-Type: application/json" \
@@ -229,6 +240,7 @@ curl -X POST http://localhost:8080/api/auth/signup \
 ```
 
 ### Test Login
+
 ```bash
 curl -X POST http://localhost:8080/api/auth/login \
   -H "Content-Type: application/json" \
@@ -239,6 +251,7 @@ curl -X POST http://localhost:8080/api/auth/login \
 ```
 
 ### Test Protected Endpoint
+
 ```bash
 curl -X GET http://localhost:8080/api/customers/me \
   -H "Authorization: Bearer <JWT_TOKEN>"
@@ -247,18 +260,22 @@ curl -X GET http://localhost:8080/api/customers/me \
 ## ⚙️ Configuration Notes
 
 ### Environment Variables
+
 All BigCommerce credentials are stored as environment variables and NOT in the codebase for security.
 
 ### Token Expiration
+
 JWT tokens expire after 30 days. Users need to log in again for new tokens.
 
 ### Password Requirements
+
 - Minimum 8 characters
 - Must contain uppercase letter
 - Must contain lowercase letter
 - Must contain number
 
 ### BigCommerce API Rate Limits
+
 Be aware of BigCommerce API rate limits (typically 11 requests per second). Implement rate limiting in production.
 
 ## 🚀 Next Steps
@@ -266,6 +283,7 @@ Be aware of BigCommerce API rate limits (typically 11 requests per second). Impl
 ### For Production Deployment
 
 1. **Update Environment Variables**
+
    ```bash
    JWT_SECRET=<generate-secure-random-key>
    APP_URL=https://your-domain.com
@@ -308,21 +326,25 @@ Be aware of BigCommerce API rate limits (typically 11 requests per second). Impl
 ### Common Issues
 
 **"Invalid BigCommerce credentials"**
+
 - Verify all environment variables are set correctly
 - Check store hash doesn't have extra spaces
 - Confirm access token is still valid
 
 **"CORS error"**
+
 - Check CORS configuration in server
 - Verify API URL matches your domain
 - Add your domain to CORS whitelist
 
 **"Token expired"**
+
 - User needs to log in again
 - Token is valid for 30 days
 - Check server time is synchronized
 
 **"Email already registered"**
+
 - User already has an account
 - Suggest login instead
 - Implement password reset flow
@@ -336,6 +358,7 @@ Be aware of BigCommerce API rate limits (typically 11 requests per second). Impl
 ## ✨ Summary
 
 Your StickerHub platform now has:
+
 - ✅ Fully functional authentication system
 - ✅ BigCommerce OAuth integration
 - ✅ Customer management API

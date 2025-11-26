@@ -47,10 +47,12 @@ export default function Header() {
           </Link>
 
           {/* Right side - Navigation and buttons (desktop) */}
-          <nav className={cn(
-            "hidden lg:flex items-center gap-6 ml-12",
-            "text-white text-sm font-medium"
-          )}>
+          <nav
+            className={cn(
+              "hidden lg:flex items-center gap-6 ml-12",
+              "text-white text-sm font-medium",
+            )}
+          >
             <Link
               to="/products"
               className="hover:text-[#FFD713] transition-colors"
@@ -63,10 +65,7 @@ export default function Header() {
             >
               🔥 Hot Deals
             </a>
-            <a
-              href="#"
-              className="hover:text-[#FFD713] transition-colors"
-            >
+            <a href="#" className="hover:text-[#FFD713] transition-colors">
               Premium
             </a>
           </nav>

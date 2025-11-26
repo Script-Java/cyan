@@ -135,7 +135,9 @@ class BigCommerceAPI {
         data = await response.json();
       } catch (parseError) {
         console.error("Failed to parse response JSON:", parseError);
-        throw new Error(`Failed to parse BigCommerce response: ${response.statusText}`);
+        throw new Error(
+          `Failed to parse BigCommerce response: ${response.statusText}`,
+        );
       }
 
       if (!response.ok) {
@@ -147,7 +149,7 @@ class BigCommerceAPI {
         throw new Error(
           data?.errors?.[0]?.message ||
             data?.error_description ||
-            "Failed to create customer in BigCommerce"
+            "Failed to create customer in BigCommerce",
         );
       }
 
@@ -164,7 +166,7 @@ class BigCommerceAPI {
    */
   async createCustomerAddress(
     customerId: number,
-    address: BigCommerceAddress
+    address: BigCommerceAddress,
   ): Promise<any> {
     const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}/addresses`;
 
@@ -197,7 +199,9 @@ class BigCommerceAPI {
         data = await response.json();
       } catch (parseError) {
         console.error("Failed to parse response JSON:", parseError);
-        throw new Error(`Failed to parse BigCommerce response: ${response.statusText}`);
+        throw new Error(
+          `Failed to parse BigCommerce response: ${response.statusText}`,
+        );
       }
 
       if (!response.ok) {
@@ -209,7 +213,7 @@ class BigCommerceAPI {
         throw new Error(
           data?.errors?.[0]?.message ||
             data?.error_description ||
-            "Failed to create customer address in BigCommerce"
+            "Failed to create customer address in BigCommerce",
         );
       }
 
@@ -360,7 +364,7 @@ class BigCommerceAPI {
         throw new Error(
           data?.errors?.[0]?.message ||
             data?.error_description ||
-            "Failed to create order in BigCommerce"
+            "Failed to create order in BigCommerce",
         );
       }
 
@@ -411,7 +415,7 @@ class BigCommerceAPI {
    */
   async updateCustomerPassword(
     customerId: number,
-    password: string
+    password: string,
   ): Promise<any> {
     const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}`;
 
@@ -434,7 +438,9 @@ class BigCommerceAPI {
         data = await response.json();
       } catch (parseError) {
         console.error("Failed to parse password update response:", parseError);
-        throw new Error("Failed to parse password update response from BigCommerce");
+        throw new Error(
+          "Failed to parse password update response from BigCommerce",
+        );
       }
 
       return data?.data;

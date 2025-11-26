@@ -6,7 +6,10 @@ interface GreetingBannerProps {
   avatarUrl?: string;
 }
 
-export default function GreetingBanner({ firstName, avatarUrl }: GreetingBannerProps) {
+export default function GreetingBanner({
+  firstName,
+  avatarUrl,
+}: GreetingBannerProps) {
   const [isHovering, setIsHovering] = useState(false);
 
   const defaultAvatar =
@@ -94,7 +97,9 @@ export default function GreetingBanner({ firstName, avatarUrl }: GreetingBannerP
             </span>
           </div>
           <div className="font-mono text-xs sm:text-sm text-green-300 drop-shadow-lg">
-            <p className="opacity-90">&gt; MISSION ACTIVE &gt; REVIEW YOUR ORDERS BELOW</p>
+            <p className="opacity-90">
+              &gt; MISSION ACTIVE &gt; REVIEW YOUR ORDERS BELOW
+            </p>
           </div>
         </div>
       </div>

@@ -13,35 +13,40 @@ const PRODUCT_CATEGORIES: Product[] = [
     id: "vinyl",
     name: "Vinyl →",
     href: "https://www.stickershuttle.com/products/vinyl-stickers",
-    imageUrl: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593599/Alien_Rocket_mkwlag.png",
+    imageUrl:
+      "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593599/Alien_Rocket_mkwlag.png",
     dropShadowColor: "rgba(168, 242, 106, 0.3)",
   },
   {
     id: "holographic",
     name: "Holographic →",
     href: "https://www.stickershuttle.com/products/holographic-stickers",
-    imageUrl: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593621/PurpleAlien_StickerShuttle_HolographicIcon_ukdotq.png",
+    imageUrl:
+      "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593621/PurpleAlien_StickerShuttle_HolographicIcon_ukdotq.png",
     dropShadowColor: "rgba(168, 85, 247, 0.3)",
   },
   {
     id: "glitter",
     name: "Glitter →",
     href: "https://www.stickershuttle.com/products/glitter-stickers",
-    imageUrl: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593602/BlueAlien_StickerShuttle_GlitterIcon_rocwpi.png",
+    imageUrl:
+      "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593602/BlueAlien_StickerShuttle_GlitterIcon_rocwpi.png",
     dropShadowColor: "rgba(59, 130, 246, 0.3)",
   },
   {
     id: "chrome",
     name: "Chrome →",
     href: "https://www.stickershuttle.com/products/chrome-stickers",
-    imageUrl: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593680/yELLOWAlien_StickerShuttle_ChromeIcon_nut4el.png",
+    imageUrl:
+      "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593680/yELLOWAlien_StickerShuttle_ChromeIcon_nut4el.png",
     dropShadowColor: "rgba(220, 220, 220, 0.3)",
   },
   {
     id: "sheets",
     name: "Sheets →",
     href: "https://www.stickershuttle.com/products/sticker-sheets",
-    imageUrl: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749847809/StickerShuttle_StickerSheetsIcon_2_g61dty.svg",
+    imageUrl:
+      "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749847809/StickerShuttle_StickerSheetsIcon_2_g61dty.svg",
     dropShadowColor: "rgba(196, 181, 253, 0.3)",
   },
 ];
@@ -55,7 +60,10 @@ export default function QuickOrderSection() {
       }}
     >
       {/* Header */}
-      <div className="border-b p-6" style={{ borderColor: "rgba(100, 116, 139, 0.1)" }}>
+      <div
+        className="border-b p-6"
+        style={{ borderColor: "rgba(100, 116, 139, 0.1)" }}
+      >
         <div className="flex items-center justify-between">
           <h2 className="flex items-center gap-3 text-lg sm:text-xl font-bold text-gray-900">
             <RefreshCw className="w-5 h-5 text-gray-700" />
@@ -77,10 +85,7 @@ export default function QuickOrderSection() {
       <div className="p-6">
         <div className="grid grid-cols-5 gap-4">
           {PRODUCT_CATEGORIES.map((product) => (
-            <div
-              key={product.id}
-              className="group"
-            >
+            <div key={product.id} className="group">
               <div
                 className="rounded-2xl border p-4 text-center transition-all duration-500 hover:shadow-md hover:bg-gray-50 flex flex-col items-center bg-white"
                 style={{

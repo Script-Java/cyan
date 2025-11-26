@@ -1,11 +1,23 @@
-import { Plus, Grid3X3, Bookmark, BarChart3, Cloud, Eye, MessageCircle, Settings, LogOut } from "lucide-react";
+import {
+  Plus,
+  Grid3X3,
+  Bookmark,
+  BarChart3,
+  Cloud,
+  Eye,
+  MessageCircle,
+  Settings,
+  LogOut,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface DashboardNavigationProps {
   onLogout: () => void;
 }
 
-export default function DashboardNavigation({ onLogout }: DashboardNavigationProps) {
+export default function DashboardNavigation({
+  onLogout,
+}: DashboardNavigationProps) {
   const navigationItems = [
     {
       id: "create",
@@ -111,7 +123,9 @@ export default function DashboardNavigation({ onLogout }: DashboardNavigationPro
                 <Icon className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-white">{item.title}</h4>
+                <h4 className="text-sm font-semibold text-white">
+                  {item.title}
+                </h4>
                 <p className="text-xs text-white/90">{item.description}</p>
               </div>
             </div>
@@ -153,7 +167,9 @@ export default function DashboardNavigation({ onLogout }: DashboardNavigationPro
                 <Icon className={`w-7 h-7 ${item.color}`} />
               </div>
               <div className="text-left">
-                <h4 className="text-sm font-semibold text-gray-900">{item.title}</h4>
+                <h4 className="text-sm font-semibold text-gray-900">
+                  {item.title}
+                </h4>
                 <p className="text-xs text-gray-600">{item.description}</p>
               </div>
             </button>
@@ -179,7 +195,9 @@ export default function DashboardNavigation({ onLogout }: DashboardNavigationPro
                   <Icon className={`w-7 h-7 ${item.color}`} />
                 </div>
                 <div className="text-left">
-                  <h4 className="text-sm font-semibold text-gray-900">{item.title}</h4>
+                  <h4 className="text-sm font-semibold text-gray-900">
+                    {item.title}
+                  </h4>
                   <p className="text-xs text-gray-600">{item.description}</p>
                 </div>
               </button>
