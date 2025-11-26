@@ -1,15 +1,24 @@
 import Header from "@/components/Header";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, User, AlertCircle, Eye, EyeOff, Check } from "lucide-react";
+import { Mail, Lock, User, AlertCircle, Eye, EyeOff, Check, MapPin, Phone } from "lucide-react";
 
 export default function Signup() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
+    company: "",
+    phone: "",
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    country: "",
+    state: "",
+    zip: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -32,9 +41,23 @@ export default function Signup() {
 
   const passwordsMatch = formData.password === formData.confirmPassword;
   const isPasswordValid = passwordRequirements.every((req) => req.met);
-  const canSubmit = isPasswordValid && passwordsMatch && agreeTerms;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const requiredFieldsFilled =
+    formData.firstName &&
+    formData.lastName &&
+    formData.email &&
+    formData.addressLine1 &&
+    formData.city &&
+    formData.country &&
+    formData.state &&
+    formData.zip;
+
+  const canSubmit =
+    isPasswordValid && passwordsMatch && agreeTerms && requiredFieldsFilled;
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -47,7 +70,7 @@ export default function Signup() {
     setError("");
 
     if (!canSubmit) {
-      setError("Please ensure all requirements are met");
+      setError("Please ensure all required fields are filled and requirements are met");
       return;
     }
 
@@ -60,9 +83,18 @@ export default function Signup() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: formData.name,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
           email: formData.email,
           password: formData.password,
+          company: formData.company || undefined,
+          phone: formData.phone || undefined,
+          addressLine1: formData.addressLine1,
+          addressLine2: formData.addressLine2 || undefined,
+          city: formData.city,
+          country: formData.country,
+          state: formData.state,
+          zip: formData.zip,
         }),
       });
 
@@ -72,10 +104,8 @@ export default function Signup() {
       }
 
       const data = await response.json();
-      // Store auth token
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("customerId", data.customer.id.toString());
-      // Redirect to home (or dashboard if you create one)
       navigate("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Signup failed");
@@ -85,15 +115,33 @@ export default function Signup() {
   };
 
   const handleBigCommerceSignup = () => {
-    // Redirect to BigCommerce OAuth endpoint for signup
     window.location.href = "/api/auth/bigcommerce/signup";
   };
+
+  const countries = [
+    "United States",
+    "Canada",
+    "United Kingdom",
+    "Australia",
+    "Germany",
+    "France",
+    "Japan",
+    "China",
+    "India",
+    "Mexico",
+    "Brazil",
+    "Spain",
+    "Italy",
+    "Netherlands",
+    "South Korea",
+    "Other",
+  ];
 
   return (
     <>
       <Header />
       <main className="pt-20 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="max-w-md mx-auto px-4 py-12 sm:py-20">
+        <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
           <div className="bg-white rounded-2xl shadow-xl p-8 sm:p-10">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-[#030140] mb-2">
@@ -112,27 +160,47 @@ export default function Signup() {
             )}
 
             <form onSubmit={handleSignup} className="space-y-6 mb-8">
-              <div>
-                <label className="block text-sm font-semibold text-[#030140] mb-2">
-                  Full Name
-                </label>
-                <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
-                    placeholder="John Doe"
-                  />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-semibold text-[#030140] mb-2">
+                    First Name <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                      type="text"
+                      name="firstName"
+                      required
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                      placeholder="John"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-[#030140] mb-2">
+                    Last Name <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                      type="text"
+                      name="lastName"
+                      required
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                      placeholder="Doe"
+                    />
+                  </div>
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-[#030140] mb-2">
-                  Email Address
+                  Email Address <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -150,7 +218,7 @@ export default function Signup() {
 
               <div>
                 <label className="block text-sm font-semibold text-[#030140] mb-2">
-                  Password
+                  Password <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -203,7 +271,7 @@ export default function Signup() {
 
               <div>
                 <label className="block text-sm font-semibold text-[#030140] mb-2">
-                  Confirm Password
+                  Confirm Password <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -240,6 +308,142 @@ export default function Signup() {
                 )}
               </div>
 
+              <div className="pt-4 border-t border-gray-200">
+                <h3 className="text-lg font-semibold text-[#030140] mb-4">
+                  Shipping Address
+                </h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="sm:col-span-2">
+                    <label className="block text-sm font-semibold text-[#030140] mb-2">
+                      Company Name
+                    </label>
+                    <input
+                      type="text"
+                      name="company"
+                      value={formData.company}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                      placeholder="Your company (optional)"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-[#030140] mb-2">
+                      Phone Number
+                    </label>
+                    <div className="relative">
+                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                        placeholder="(555) 123-4567"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="block text-sm font-semibold text-[#030140] mb-2">
+                      Street Address <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="text"
+                        name="addressLine1"
+                        required
+                        value={formData.addressLine1}
+                        onChange={handleChange}
+                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                        placeholder="123 Main Street"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="block text-sm font-semibold text-[#030140] mb-2">
+                      Apartment, Suite, etc. (optional)
+                    </label>
+                    <input
+                      type="text"
+                      name="addressLine2"
+                      value={formData.addressLine2}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                      placeholder="Apartment or suite number"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-[#030140] mb-2">
+                      City <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="city"
+                      required
+                      value={formData.city}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                      placeholder="New York"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-[#030140] mb-2">
+                      State/Province <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="state"
+                      required
+                      value={formData.state}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                      placeholder="NY"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-[#030140] mb-2">
+                      Zip/Postal Code <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="zip"
+                      required
+                      value={formData.zip}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                      placeholder="10001"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-[#030140] mb-2">
+                      Country <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      name="country"
+                      required
+                      value={formData.country}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                    >
+                      <option value="">Select a country</option>
+                      {countries.map((country) => (
+                        <option key={country} value={country}>
+                          {country}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
               <label className="flex items-start gap-3">
                 <input
                   type="checkbox"
@@ -270,7 +474,7 @@ export default function Signup() {
                 disabled={!canSubmit || isLoading}
                 className="w-full py-3 bg-[#FFD713] text-[#030140] rounded-lg font-bold hover:bg-[#FFD713]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#FFD713]/30"
               >
-                {isLoading ? "Creating Account..." : "Sign Up"}
+                {isLoading ? "Creating Account..." : "Create Account"}
               </button>
             </form>
 
@@ -279,7 +483,9 @@ export default function Signup() {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-600">Or sign up with</span>
+                <span className="px-2 bg-white text-gray-600">
+                  Or sign up with
+                </span>
               </div>
             </div>
 
