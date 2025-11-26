@@ -78,15 +78,24 @@ export const handleSignup: RequestHandler = async (req, res) => {
         .json({ error: "Name, email, and password required" });
     }
 
+    console.log("Signup attempt for:", email);
+
     // Check if customer already exists
     const existingCustomer = await bigCommerceAPI.getCustomerByEmail(email);
     if (existingCustomer) {
+      console.log("Email already registered:", email);
       return res.status(409).json({ error: "Email already registered" });
     }
 
     // Parse name into first and last name
     const [firstName, ...lastNameParts] = name.split(" ");
     const lastName = lastNameParts.join(" ") || "";
+
+    console.log("Creating customer in BigCommerce:", {
+      email,
+      firstName,
+      lastName,
+    });
 
     // Create customer in BigCommerce
     const newCustomer = await bigCommerceAPI.createCustomer({
@@ -97,8 +106,10 @@ export const handleSignup: RequestHandler = async (req, res) => {
     });
 
     if (!newCustomer || !newCustomer.id) {
-      throw new Error("Failed to create customer");
+      throw new Error("Failed to create customer - no ID returned");
     }
+
+    console.log("Customer created successfully:", newCustomer.id);
 
     // Generate JWT token
     const token = generateToken(newCustomer.id, newCustomer.email);
