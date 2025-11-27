@@ -26,10 +26,13 @@ export default function Header() {
     if (token) {
       const fetchStoreCredit = async () => {
         try {
-          console.log("Fetching store credit with token:", token.substring(0, 20) + "...");
+          console.log(
+            "Fetching store credit with token:",
+            token.substring(0, 20) + "...",
+          );
           const response = await fetch("/api/customers/me/store-credit", {
             headers: {
-              "Authorization": `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           });
 
@@ -189,7 +192,9 @@ export default function Header() {
                     alt="Credits"
                     className="w-5 h-5"
                   />
-                  <span className="text-yellow-300">$ {storeCredit.toFixed(2)}</span>
+                  <span className="text-yellow-300">
+                    $ {storeCredit.toFixed(2)}
+                  </span>
                 </div>
               )}
 

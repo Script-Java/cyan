@@ -1,9 +1,22 @@
 import Header from "@/components/Header";
-import { ArrowRight, ShoppingCart, Plus, Minus, Trash2, Loader2 } from "lucide-react";
+import {
+  ArrowRight,
+  ShoppingCart,
+  Plus,
+  Minus,
+  Trash2,
+  Loader2,
+} from "lucide-react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { toast } from "sonner";
 
 interface CartItem {
@@ -170,7 +183,8 @@ export default function Cart() {
                 Shopping Cart
               </h1>
               <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                Your cart is empty. Browse our sticker collections to get started!
+                Your cart is empty. Browse our sticker collections to get
+                started!
               </p>
               <Link
                 to="/products"
@@ -197,7 +211,8 @@ export default function Cart() {
               Shopping Cart
             </h1>
             <p className="text-gray-600">
-              {cart.line_items.length} item{cart.line_items.length !== 1 ? "s" : ""} in your cart
+              {cart.line_items.length} item
+              {cart.line_items.length !== 1 ? "s" : ""} in your cart
             </p>
           </div>
 
@@ -213,7 +228,10 @@ export default function Cart() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {cart.line_items.map((item, index) => (
-                    <div key={index} className="flex gap-4 pb-4 border-b last:border-b-0">
+                    <div
+                      key={index}
+                      className="flex gap-4 pb-4 border-b last:border-b-0"
+                    >
                       <div className="flex-1">
                         <h3 className="font-semibold text-lg">
                           {item.product_name || `Product #${item.product_id}`}
@@ -292,7 +310,8 @@ export default function Cart() {
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
                     <span>
-                      ${(cart.subtotal + 9.99 + cart.subtotal * 0.08).toFixed(2)}
+                      $
+                      {(cart.subtotal + 9.99 + cart.subtotal * 0.08).toFixed(2)}
                     </span>
                   </div>
 

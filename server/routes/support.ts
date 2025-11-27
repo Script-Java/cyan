@@ -5,7 +5,10 @@ import { sendTicketCreationEmail, sendTicketReplyEmail } from "../utils/email";
 const supabaseUrl = process.env.SUPABASE_URL || "";
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY || "";
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey || process.env.SUPABASE_ANON_KEY || "");
+const supabase = createClient(
+  supabaseUrl,
+  supabaseServiceKey || process.env.SUPABASE_ANON_KEY || "",
+);
 
 interface SupportSubmission {
   name: string;
@@ -298,7 +301,7 @@ export const handleAdminReplyToTicket: RequestHandler = async (req, res) => {
       ticketId,
       updatedTicket?.subject || "Your Support Ticket",
       message,
-      adminName
+      adminName,
     );
 
     res.json({

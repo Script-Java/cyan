@@ -8,12 +8,12 @@ export async function sendTicketCreationEmail(
   customerEmail: string,
   customerName: string,
   ticketId: string,
-  subject: string
+  subject: string,
 ): Promise<boolean> {
   try {
     if (!resend) {
       console.warn(
-        "Resend API key not configured. Email sending disabled. Set RESEND_API_KEY environment variable to enable."
+        "Resend API key not configured. Email sending disabled. Set RESEND_API_KEY environment variable to enable.",
       );
       return true; // Return true to not block the ticket creation
     }
@@ -81,12 +81,12 @@ export async function sendTicketReplyEmail(
   ticketId: string,
   subject: string,
   replyMessage: string,
-  adminName: string
+  adminName: string,
 ): Promise<boolean> {
   try {
     if (!resend) {
       console.warn(
-        "Resend API key not configured. Email sending disabled. Set RESEND_API_KEY environment variable to enable."
+        "Resend API key not configured. Email sending disabled. Set RESEND_API_KEY environment variable to enable.",
       );
       return true; // Return true to not block the reply
     }

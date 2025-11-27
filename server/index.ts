@@ -98,11 +98,7 @@ export function createServer() {
     verifyToken,
     handleDeleteCustomerAccount,
   );
-  app.get(
-    "/api/customers/me/store-credit",
-    verifyToken,
-    handleGetStoreCredit,
-  );
+  app.get("/api/customers/me/store-credit", verifyToken, handleGetStoreCredit);
 
   // ===== Order Routes (Protected) =====
   app.get("/api/orders", verifyToken, handleGetOrders);
@@ -131,8 +127,16 @@ export function createServer() {
   // ===== Support Routes =====
   app.post("/api/support/submit", handleSupportSubmit);
   app.get("/api/support/tickets", verifyToken, handleGetTickets);
-  app.get("/api/support/tickets/:ticketId", verifyToken, handleGetTicketDetails);
-  app.post("/api/support/tickets/:ticketId/reply", verifyToken, handleCustomerReplyToTicket);
+  app.get(
+    "/api/support/tickets/:ticketId",
+    verifyToken,
+    handleGetTicketDetails,
+  );
+  app.post(
+    "/api/support/tickets/:ticketId/reply",
+    verifyToken,
+    handleCustomerReplyToTicket,
+  );
   app.get("/api/admin/tickets", handleAdminGetAllTickets);
   app.post("/api/admin/tickets/:ticketId/reply", handleAdminReplyToTicket);
   app.patch("/api/admin/tickets/:ticketId/status", handleUpdateTicketStatus);

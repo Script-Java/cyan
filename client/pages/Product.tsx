@@ -299,7 +299,6 @@ export default function Product() {
               <BcConfigurator product={product} />
             </div>
           </div>
-
         </div>
       </main>
     </>

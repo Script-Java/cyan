@@ -32,7 +32,9 @@ export default function MyTickets() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [ticketReplies, setTicketReplies] = useState<any[]>([]);
-  const [filter, setFilter] = useState<"all" | "open" | "in-progress" | "resolved">("all");
+  const [filter, setFilter] = useState<
+    "all" | "open" | "in-progress" | "resolved"
+  >("all");
   const [replyMessage, setReplyMessage] = useState("");
   const [isSubmittingReply, setIsSubmittingReply] = useState(false);
 
@@ -51,9 +53,12 @@ export default function MyTickets() {
         return;
       }
 
-      const response = await fetch(`/api/support/tickets?customerId=${customerId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        `/api/support/tickets?customerId=${customerId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch tickets");
@@ -78,7 +83,7 @@ export default function MyTickets() {
         `/api/support/tickets/${ticketId}?customerId=${customerId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -133,7 +138,7 @@ export default function MyTickets() {
             message: replyMessage,
             customerId: parseInt(customerId),
           }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -227,10 +232,13 @@ export default function MyTickets() {
                     {selectedTicket.subject}
                   </h1>
                   <p className="text-sm text-gray-600">
-                    Ticket ID: <span className="font-mono">{selectedTicket.id}</span>
+                    Ticket ID:{" "}
+                    <span className="font-mono">{selectedTicket.id}</span>
                   </p>
                 </div>
-                <div className={`px-4 py-2 rounded-full border text-sm font-semibold ${getStatusColor(selectedTicket.status)}`}>
+                <div
+                  className={`px-4 py-2 rounded-full border text-sm font-semibold ${getStatusColor(selectedTicket.status)}`}
+                >
                   {selectedTicket.status.toUpperCase()}
                 </div>
               </div>
@@ -244,7 +252,8 @@ export default function MyTickets() {
                   <span
                     className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${getPriorityBg(selectedTicket.priority)} ${getPriorityColor(selectedTicket.priority)}`}
                   >
-                    {selectedTicket.priority.charAt(0).toUpperCase() + selectedTicket.priority.slice(1)}
+                    {selectedTicket.priority.charAt(0).toUpperCase() +
+                      selectedTicket.priority.slice(1)}
                   </span>
                 </div>
                 <div>
@@ -275,7 +284,9 @@ export default function MyTickets() {
 
               {/* Original Message */}
               <div className="mb-8">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">Your Message</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                  Your Message
+                </h3>
                 <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                   <p className="text-gray-700 whitespace-pre-wrap">
                     {selectedTicket.message}
@@ -313,7 +324,9 @@ export default function MyTickets() {
                               {reply.sender_name}
                             </p>
                             <p className="text-xs text-gray-600">
-                              {reply.sender_type === "admin" ? "Support Team" : "You"}
+                              {reply.sender_type === "admin"
+                                ? "Support Team"
+                                : "You"}
                             </p>
                           </div>
                           <p className="text-xs text-gray-600">
@@ -331,7 +344,9 @@ export default function MyTickets() {
 
               {/* Reply Form */}
               <div className="border-t border-gray-200 mt-8 pt-8">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Add Your Reply</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">
+                  Add Your Reply
+                </h3>
                 <div className="space-y-4">
                   <textarea
                     value={replyMessage}
@@ -374,8 +389,12 @@ export default function MyTickets() {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900">My Support Tickets</h1>
-              <p className="text-gray-600 mt-2">Track your support requests and responses</p>
+              <h1 className="text-4xl font-bold text-gray-900">
+                My Support Tickets
+              </h1>
+              <p className="text-gray-600 mt-2">
+                Track your support requests and responses
+              </p>
             </div>
             <button
               onClick={() => navigate("/support")}
@@ -398,7 +417,9 @@ export default function MyTickets() {
                     : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
                 }`}
               >
-                {status === "all" ? "All Tickets" : status.replace("-", " ").toUpperCase()}
+                {status === "all"
+                  ? "All Tickets"
+                  : status.replace("-", " ").toUpperCase()}
               </button>
             ))}
           </div>
@@ -427,7 +448,9 @@ export default function MyTickets() {
           ) : (
             <div className="space-y-4">
               {tickets
-                .filter((ticket) => filter === "all" || ticket.status === filter)
+                .filter(
+                  (ticket) => filter === "all" || ticket.status === filter,
+                )
                 .map((ticket) => (
                   <button
                     key={ticket.id}

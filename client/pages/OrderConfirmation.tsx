@@ -159,7 +159,9 @@ export default function OrderConfirmation() {
     );
   }
 
-  const statusInfo = STATUS_DISPLAY[order.status as keyof typeof STATUS_DISPLAY] || {
+  const statusInfo = STATUS_DISPLAY[
+    order.status as keyof typeof STATUS_DISPLAY
+  ] || {
     label: "Unknown",
     color: "bg-gray-100 text-gray-800",
   };
@@ -195,37 +197,41 @@ export default function OrderConfirmation() {
                   <CardTitle>Order Status</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className={`inline-block px-4 py-2 rounded-lg font-semibold ${statusInfo.color}`}>
+                  <div
+                    className={`inline-block px-4 py-2 rounded-lg font-semibold ${statusInfo.color}`}
+                  >
                     {statusInfo.label}
                   </div>
                   <p className="text-gray-600 mt-4">
-                    We've sent a confirmation email with your order details. You can track your shipment once it's dispatched.
+                    We've sent a confirmation email with your order details. You
+                    can track your shipment once it's dispatched.
                   </p>
                 </CardContent>
               </Card>
 
               {/* Shipping Address */}
-              {order.shipping_addresses && order.shipping_addresses.length > 0 && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Shipping Address</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-gray-700">
-                      <p className="font-semibold">
-                        {order.shipping_addresses[0].first_name}{" "}
-                        {order.shipping_addresses[0].last_name}
-                      </p>
-                      <p>{order.shipping_addresses[0].street_1}</p>
-                      <p>
-                        {order.shipping_addresses[0].city},{" "}
-                        {order.shipping_addresses[0].state_or_province}{" "}
-                        {order.shipping_addresses[0].postal_code}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+              {order.shipping_addresses &&
+                order.shipping_addresses.length > 0 && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Shipping Address</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-gray-700">
+                        <p className="font-semibold">
+                          {order.shipping_addresses[0].first_name}{" "}
+                          {order.shipping_addresses[0].last_name}
+                        </p>
+                        <p>{order.shipping_addresses[0].street_1}</p>
+                        <p>
+                          {order.shipping_addresses[0].city},{" "}
+                          {order.shipping_addresses[0].state_or_province}{" "}
+                          {order.shipping_addresses[0].postal_code}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
 
               {/* Billing Address */}
               {order.billing_address && (
@@ -263,10 +269,15 @@ export default function OrderConfirmation() {
                     {order.products && order.products.length > 0 ? (
                       <div className="space-y-3">
                         {order.products.map((product) => (
-                          <div key={product.id} className="flex justify-between text-sm">
+                          <div
+                            key={product.id}
+                            className="flex justify-between text-sm"
+                          >
                             <div>
                               <p className="font-medium">{product.name}</p>
-                              <p className="text-gray-600">Qty: {product.quantity}</p>
+                              <p className="text-gray-600">
+                                Qty: {product.quantity}
+                              </p>
                             </div>
                             <p className="font-medium">
                               ${(product.price * product.quantity).toFixed(2)}

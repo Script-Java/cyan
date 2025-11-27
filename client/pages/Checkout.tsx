@@ -225,7 +225,10 @@ export default function Checkout() {
     }
   };
 
-  const handleBillingChange = (field: keyof BillingInfo, value: string | boolean) => {
+  const handleBillingChange = (
+    field: keyof BillingInfo,
+    value: string | boolean,
+  ) => {
     if (field === "same_as_shipping") {
       setBillingInfo((prev) => ({
         ...prev,
@@ -480,7 +483,9 @@ export default function Checkout() {
                     </div>
 
                     <div>
-                      <Label htmlFor="street2">Apt, Suite, etc. (optional)</Label>
+                      <Label htmlFor="street2">
+                        Apt, Suite, etc. (optional)
+                      </Label>
                       <Input
                         id="street2"
                         value={shippingInfo.street2}
@@ -530,7 +535,10 @@ export default function Checkout() {
                           </SelectTrigger>
                           <SelectContent>
                             {COUNTRIES.map((country) => (
-                              <SelectItem key={country.code} value={country.code}>
+                              <SelectItem
+                                key={country.code}
+                                value={country.code}
+                              >
                                 {country.name}
                               </SelectItem>
                             ))}
@@ -673,7 +681,10 @@ export default function Checkout() {
                               id="billPostalCode"
                               value={billingInfo.postalCode}
                               onChange={(e) =>
-                                handleBillingChange("postalCode", e.target.value)
+                                handleBillingChange(
+                                  "postalCode",
+                                  e.target.value,
+                                )
                               }
                               required
                             />
@@ -776,7 +787,8 @@ export default function Checkout() {
                         <div key={idx} className="flex justify-between text-sm">
                           <div>
                             <p className="font-medium">
-                              {item.product_name || `Product #${item.product_id}`}
+                              {item.product_name ||
+                                `Product #${item.product_id}`}
                             </p>
                             <p className="text-gray-600">
                               Qty: {item.quantity}

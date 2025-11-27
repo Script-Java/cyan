@@ -54,7 +54,8 @@ export const handleCheckout: RequestHandler = async (req, res) => {
       checkoutData.products.length === 0
     ) {
       return res.status(400).json({
-        error: "Missing required fields: customer_id, billing_address, shipping_addresses, products",
+        error:
+          "Missing required fields: customer_id, billing_address, shipping_addresses, products",
       });
     }
 
@@ -75,7 +76,10 @@ export const handleCheckout: RequestHandler = async (req, res) => {
     }
 
     // Validate shipping address
-    if (!checkoutData.shipping_addresses || checkoutData.shipping_addresses.length === 0) {
+    if (
+      !checkoutData.shipping_addresses ||
+      checkoutData.shipping_addresses.length === 0
+    ) {
       return res.status(400).json({
         error: "At least one shipping address is required",
       });

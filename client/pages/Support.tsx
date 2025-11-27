@@ -48,7 +48,12 @@ export default function Support() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.subject ||
+      !formData.message
+    ) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -80,7 +85,7 @@ export default function Support() {
 
       const data = await response.json();
       toast.success(
-        `Support request submitted successfully! Ticket ID: ${data.ticketId?.slice(0, 8)}...`
+        `Support request submitted successfully! Ticket ID: ${data.ticketId?.slice(0, 8)}...`,
       );
 
       setFormData({
@@ -97,7 +102,9 @@ export default function Support() {
       }, 2000);
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to submit support request";
+        error instanceof Error
+          ? error.message
+          : "Failed to submit support request";
       toast.error(message);
     } finally {
       setIsSubmitting(false);
@@ -314,8 +321,9 @@ export default function Support() {
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex gap-3">
                     <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                     <p className="text-sm text-blue-800">
-                      A confirmation email will be sent to your email address with a
-                      reference number. Use this number when following up on your request.
+                      A confirmation email will be sent to your email address
+                      with a reference number. Use this number when following up
+                      on your request.
                     </p>
                   </div>
 
@@ -351,8 +359,8 @@ export default function Support() {
                       How long does it take to get a response?
                     </h4>
                     <p className="text-sm text-gray-600">
-                      We typically respond to all inquiries within 2-4 business hours.
-                      Urgent issues are prioritized for faster response.
+                      We typically respond to all inquiries within 2-4 business
+                      hours. Urgent issues are prioritized for faster response.
                     </p>
                   </div>
                   <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
@@ -360,8 +368,9 @@ export default function Support() {
                       Can I track my support request?
                     </h4>
                     <p className="text-sm text-gray-600">
-                      Yes! You'll receive a confirmation email with a reference number.
-                      Use this number to check the status of your request.
+                      Yes! You'll receive a confirmation email with a reference
+                      number. Use this number to check the status of your
+                      request.
                     </p>
                   </div>
                   <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
@@ -369,8 +378,9 @@ export default function Support() {
                       What if my issue is urgent?
                     </h4>
                     <p className="text-sm text-gray-600">
-                      Select "Urgent" as the priority level and we'll get to your request
-                      as soon as possible. For critical issues, you can also call us.
+                      Select "Urgent" as the priority level and we'll get to
+                      your request as soon as possible. For critical issues, you
+                      can also call us.
                     </p>
                   </div>
                 </div>

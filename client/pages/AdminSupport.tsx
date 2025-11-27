@@ -37,11 +37,15 @@ interface TicketReply {
 export default function AdminSupport() {
   const [tickets, setTickets] = useState<AdminTicket[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedTicket, setSelectedTicket] = useState<AdminTicket | null>(null);
+  const [selectedTicket, setSelectedTicket] = useState<AdminTicket | null>(
+    null,
+  );
   const [ticketReplies, setTicketReplies] = useState<TicketReply[]>([]);
   const [replyMessage, setReplyMessage] = useState("");
   const [isSubmittingReply, setIsSubmittingReply] = useState(false);
-  const [filter, setFilter] = useState<"all" | "open" | "in-progress" | "resolved">("open");
+  const [filter, setFilter] = useState<
+    "all" | "open" | "in-progress" | "resolved"
+  >("open");
   const [statsOpen, setStatsOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -62,7 +66,9 @@ export default function AdminSupport() {
       setTickets(data.tickets || []);
 
       // Count open tickets
-      const openCount = (data.tickets || []).filter((t: AdminTicket) => t.status === "open").length;
+      const openCount = (data.tickets || []).filter(
+        (t: AdminTicket) => t.status === "open",
+      ).length;
       if (openCount > 0) {
         setStatsOpen(true);
       }
@@ -80,7 +86,7 @@ export default function AdminSupport() {
     try {
       // Create a dummy customer ID for fetching - admin can use 0 to get all replies
       const response = await fetch(
-        `/api/support/tickets/${ticket.id}?customerId=0`
+        `/api/support/tickets/${ticket.id}?customerId=0`,
       );
 
       if (!response.ok) {
@@ -105,14 +111,17 @@ export default function AdminSupport() {
     setIsSubmittingReply(true);
 
     try {
-      const response = await fetch(`/api/admin/tickets/${selectedTicket.id}/reply`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: replyMessage,
-          adminName: "Support Team",
-        }),
-      });
+      const response = await fetch(
+        `/api/admin/tickets/${selectedTicket.id}/reply`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: replyMessage,
+            adminName: "Support Team",
+          }),
+        },
+      );
 
       if (!response.ok) {
         throw new Error("Failed to send reply");
@@ -145,11 +154,14 @@ export default function AdminSupport() {
     if (!selectedTicket) return;
 
     try {
-      const response = await fetch(`/api/admin/tickets/${selectedTicket.id}/status`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      const response = await fetch(
+        `/api/admin/tickets/${selectedTicket.id}/status`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: newStatus }),
+        },
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update status");
@@ -158,8 +170,8 @@ export default function AdminSupport() {
       setSelectedTicket({ ...selectedTicket, status: newStatus });
       setTickets(
         tickets.map((t) =>
-          t.id === selectedTicket.id ? { ...t, status: newStatus } : t
-        )
+          t.id === selectedTicket.id ? { ...t, status: newStatus } : t,
+        ),
       );
       toast.success("Ticket status updated");
     } catch (error) {
@@ -237,7 +249,11 @@ export default function AdminSupport() {
                     {selectedTicket.subject}
                   </h1>
                   <p className="text-sm text-gray-600">
-                    From: <span className="font-semibold">{selectedTicket.customer_name}</span> ({selectedTicket.customer_email})
+                    From:{" "}
+                    <span className="font-semibold">
+                      {selectedTicket.customer_name}
+                    </span>{" "}
+                    ({selectedTicket.customer_email})
                   </p>
                 </div>
                 <select
@@ -292,7 +308,9 @@ export default function AdminSupport() {
 
               {/* Original Message */}
               <div className="mb-8">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">Customer Message</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                  Customer Message
+                </h3>
                 <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                   <p className="text-gray-700 whitespace-pre-wrap">
                     {selectedTicket.message}
@@ -330,7 +348,9 @@ export default function AdminSupport() {
                               {reply.sender_name}
                             </p>
                             <p className="text-xs text-gray-600">
-                              {reply.sender_type === "admin" ? "Admin" : "Customer"}
+                              {reply.sender_type === "admin"
+                                ? "Admin"
+                                : "Customer"}
                             </p>
                           </div>
                           <p className="text-xs text-gray-600">
@@ -348,7 +368,9 @@ export default function AdminSupport() {
 
               {/* Reply Form */}
               <div className="border-t border-gray-200 pt-8">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Send Reply</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">
+                  Send Reply
+                </h3>
                 <div className="space-y-4">
                   <textarea
                     value={replyMessage}
@@ -392,8 +414,12 @@ export default function AdminSupport() {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900">Support Admin Panel</h1>
-            <p className="text-gray-600 mt-2">Manage customer support tickets and respond to inquiries</p>
+            <h1 className="text-4xl font-bold text-gray-900">
+              Support Admin Panel
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Manage customer support tickets and respond to inquiries
+            </p>
           </div>
 
           {/* Stats Cards */}
@@ -453,7 +479,9 @@ export default function AdminSupport() {
                     : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
                 }`}
               >
-                {status === "all" ? "All Tickets" : status.replace("-", " ").toUpperCase()}
+                {status === "all"
+                  ? "All Tickets"
+                  : status.replace("-", " ").toUpperCase()}
               </button>
             ))}
           </div>

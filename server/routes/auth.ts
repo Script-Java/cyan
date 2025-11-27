@@ -44,8 +44,14 @@ export const handleLogin: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Customer not found" });
     }
 
-    console.log("Full customer object from BigCommerce:", JSON.stringify(customer, null, 2));
-    console.log("Available customer fields:", Object.keys(customer || {}).join(", "));
+    console.log(
+      "Full customer object from BigCommerce:",
+      JSON.stringify(customer, null, 2),
+    );
+    console.log(
+      "Available customer fields:",
+      Object.keys(customer || {}).join(", "),
+    );
 
     // Sync customer data to Supabase
     try {
@@ -89,11 +95,9 @@ export const handleSignup: RequestHandler = async (req, res) => {
     const { firstName, lastName, email, password } = req.body as SignupRequest;
 
     if (!firstName || !lastName || !email || !password) {
-      return res
-        .status(400)
-        .json({
-          error: "First name, last name, email, and password are required",
-        });
+      return res.status(400).json({
+        error: "First name, last name, email, and password are required",
+      });
     }
 
     console.log("Signup attempt for:", email);
