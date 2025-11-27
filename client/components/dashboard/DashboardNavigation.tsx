@@ -44,6 +44,7 @@ export default function DashboardNavigation({
       color: "text-pink-600",
       borderColor: "rgba(236, 72, 153, 0.2)",
       bgColor: "rgba(236, 72, 153, 0.05)",
+      onClick: () => navigate("/designs"),
     },
   ];
 
