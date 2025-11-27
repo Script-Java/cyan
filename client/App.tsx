@@ -33,6 +33,7 @@ export default function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/order-history" element={<OrderHistory />} />
+            <Route path="/finances" element={<Finances />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
