@@ -1,4 +1,10 @@
 import { RequestHandler } from "express";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.SUPABASE_URL || "";
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY || "";
+
+const supabase = createClient(supabaseUrl, supabaseServiceKey || process.env.SUPABASE_ANON_KEY || "");
 
 interface SupportSubmission {
   name: string;
@@ -7,17 +13,18 @@ interface SupportSubmission {
   category: string;
   priority: string;
   message: string;
+  customerId?: number;
 }
 
 export interface SupportResponse {
   success: boolean;
   message: string;
-  referenceId?: string;
+  ticketId?: string;
 }
 
 export const handleSupportSubmit: RequestHandler = async (req, res) => {
   try {
-    const { name, email, subject, category, priority, message } =
+    const { name, email, subject, category, priority, message, customerId } =
       req.body as SupportSubmission;
 
     // Validate required fields
@@ -39,59 +46,291 @@ export const handleSupportSubmit: RequestHandler = async (req, res) => {
       return;
     }
 
-    // Generate reference ID
-    const referenceId = `SUP-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+    // Insert ticket into Supabase
+    const { data, error } = await supabase
+      .from("support_tickets")
+      .insert({
+        customer_id: customerId || 0,
+        customer_email: email,
+        customer_name: name,
+        subject,
+        category,
+        priority,
+        message,
+        status: "open",
+      })
+      .select("id")
+      .single();
 
-    // Log the submission for server-side records
-    const submissionData = {
-      referenceId,
+    if (error) {
+      console.error("Error inserting ticket:", error);
+      res.status(500).json({
+        success: false,
+        error: "Failed to create support ticket",
+      });
+      return;
+    }
+
+    console.log("Support Ticket Created:", {
+      ticketId: data.id,
       timestamp: new Date().toISOString(),
       name,
       email,
       subject,
       category,
       priority,
-      message,
-    };
+    });
 
-    console.log("Support Request Received:", submissionData);
-
-    // TODO: Integrate with email service to send confirmation to customer
-    // and notification to support team email. Options:
-    // - Resend (https://resend.com)
-    // - SendGrid (https://sendgrid.com)
-    // - Mailgun (https://mailgun.com)
-    // - AWS SES
-    // - Gmail SMTP
-    // Example implementation with environment variables:
-    // const nodemailer = require('nodemailer');
-    // const transporter = nodemailer.createTransport({
-    //   service: 'gmail',
-    //   auth: {
-    //     user: process.env.SUPPORT_EMAIL,
-    //     pass: process.env.SUPPORT_EMAIL_PASSWORD,
-    //   }
-    // });
-    // await transporter.sendMail({
-    //   from: process.env.SUPPORT_EMAIL,
-    //   to: email,
-    //   subject: `Support Request Confirmation - ${referenceId}`,
-    //   html: `<p>Thank you for contacting us!</p><p>Reference ID: ${referenceId}</p>`
-    // });
-
-    // Send confirmation response
-    const response: SupportResponse = {
+    res.status(200).json({
       success: true,
       message: "Support request submitted successfully",
-      referenceId,
-    };
-
-    res.status(200).json(response);
+      ticketId: data.id,
+    });
   } catch (error) {
     console.error("Error handling support submission:", error);
     res.status(500).json({
       success: false,
       error: "Failed to process support request",
+    });
+  }
+};
+
+export const handleGetTickets: RequestHandler = async (req, res) => {
+  try {
+    const customerId = req.query.customerId as string;
+
+    if (!customerId) {
+      res.status(400).json({
+        error: "Customer ID is required",
+      });
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("support_tickets")
+      .select("*")
+      .eq("customer_id", parseInt(customerId))
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching tickets:", error);
+      res.status(500).json({
+        error: "Failed to fetch tickets",
+      });
+      return;
+    }
+
+    res.json({ tickets: data || [] });
+  } catch (error) {
+    console.error("Error in handleGetTickets:", error);
+    res.status(500).json({
+      error: "Failed to fetch tickets",
+    });
+  }
+};
+
+export const handleGetTicketDetails: RequestHandler = async (req, res) => {
+  try {
+    const { ticketId } = req.params;
+    const customerId = req.query.customerId as string;
+
+    if (!ticketId || !customerId) {
+      res.status(400).json({
+        error: "Ticket ID and Customer ID are required",
+      });
+      return;
+    }
+
+    const { data: ticket, error: ticketError } = await supabase
+      .from("support_tickets")
+      .select("*")
+      .eq("id", ticketId)
+      .eq("customer_id", parseInt(customerId))
+      .single();
+
+    if (ticketError || !ticket) {
+      res.status(404).json({
+        error: "Ticket not found",
+      });
+      return;
+    }
+
+    const { data: replies, error: repliesError } = await supabase
+      .from("ticket_replies")
+      .select("*")
+      .eq("ticket_id", ticketId)
+      .order("created_at", { ascending: true });
+
+    if (repliesError) {
+      console.error("Error fetching replies:", repliesError);
+      res.status(500).json({
+        error: "Failed to fetch ticket replies",
+      });
+      return;
+    }
+
+    res.json({
+      ticket,
+      replies: replies || [],
+    });
+  } catch (error) {
+    console.error("Error in handleGetTicketDetails:", error);
+    res.status(500).json({
+      error: "Failed to fetch ticket details",
+    });
+  }
+};
+
+export const handleAdminGetAllTickets: RequestHandler = async (req, res) => {
+  try {
+    const { status, priority } = req.query;
+
+    let query = supabase.from("support_tickets").select("*");
+
+    if (status) {
+      query = query.eq("status", status);
+    }
+
+    if (priority) {
+      query = query.eq("priority", priority);
+    }
+
+    const { data, error } = await query.order("created_at", {
+      ascending: false,
+    });
+
+    if (error) {
+      console.error("Error fetching all tickets:", error);
+      res.status(500).json({
+        error: "Failed to fetch tickets",
+      });
+      return;
+    }
+
+    res.json({ tickets: data || [] });
+  } catch (error) {
+    console.error("Error in handleAdminGetAllTickets:", error);
+    res.status(500).json({
+      error: "Failed to fetch tickets",
+    });
+  }
+};
+
+export const handleAdminReplyToTicket: RequestHandler = async (req, res) => {
+  try {
+    const { ticketId } = req.params;
+    const { message, adminName } = req.body;
+
+    if (!ticketId || !message || !adminName) {
+      res.status(400).json({
+        error: "Missing required fields: ticketId, message, adminName",
+      });
+      return;
+    }
+
+    // Get ticket details for customer email
+    const { data: ticket, error: ticketError } = await supabase
+      .from("support_tickets")
+      .select("customer_email, customer_name")
+      .eq("id", ticketId)
+      .single();
+
+    if (ticketError || !ticket) {
+      res.status(404).json({
+        error: "Ticket not found",
+      });
+      return;
+    }
+
+    // Insert reply
+    const { data: reply, error: replyError } = await supabase
+      .from("ticket_replies")
+      .insert({
+        ticket_id: ticketId,
+        sender_type: "admin",
+        sender_name: adminName,
+        sender_email: "support@stickyslap.com",
+        message,
+      })
+      .select("id")
+      .single();
+
+    if (replyError) {
+      console.error("Error inserting reply:", replyError);
+      res.status(500).json({
+        error: "Failed to send reply",
+      });
+      return;
+    }
+
+    // Update ticket status to in-progress
+    await supabase
+      .from("support_tickets")
+      .update({ status: "in-progress", updated_at: new Date().toISOString() })
+      .eq("id", ticketId);
+
+    // TODO: Send email notification to customer using Resend
+    console.log("Admin Reply Created:", {
+      ticketId,
+      replyId: reply.id,
+      customerEmail: ticket.customer_email,
+      message,
+    });
+
+    res.json({
+      success: true,
+      replyId: reply.id,
+      message: "Reply sent successfully",
+    });
+  } catch (error) {
+    console.error("Error in handleAdminReplyToTicket:", error);
+    res.status(500).json({
+      error: "Failed to send reply",
+    });
+  }
+};
+
+export const handleUpdateTicketStatus: RequestHandler = async (req, res) => {
+  try {
+    const { ticketId } = req.params;
+    const { status } = req.body;
+
+    if (!ticketId || !status) {
+      res.status(400).json({
+        error: "Missing required fields",
+      });
+      return;
+    }
+
+    const validStatuses = ["open", "in-progress", "resolved", "closed"];
+    if (!validStatuses.includes(status)) {
+      res.status(400).json({
+        error: "Invalid status",
+      });
+      return;
+    }
+
+    const { error } = await supabase
+      .from("support_tickets")
+      .update({ status, updated_at: new Date().toISOString() })
+      .eq("id", ticketId);
+
+    if (error) {
+      console.error("Error updating ticket:", error);
+      res.status(500).json({
+        error: "Failed to update ticket",
+      });
+      return;
+    }
+
+    res.json({
+      success: true,
+      message: "Ticket status updated",
+    });
+  } catch (error) {
+    console.error("Error in handleUpdateTicketStatus:", error);
+    res.status(500).json({
+      error: "Failed to update ticket",
     });
   }
 };
