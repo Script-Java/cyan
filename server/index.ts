@@ -25,6 +25,14 @@ import {
   handleAdminGetOrder,
 } from "./routes/orders";
 import { handleGetDesigns, handleGetOrderDesigns } from "./routes/designs";
+import {
+  handleCreateCart,
+  handleGetCart,
+  handleAddToCart,
+  handleUpdateCartItem,
+  handleRemoveFromCart,
+  handleClearCart,
+} from "./routes/cart";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
