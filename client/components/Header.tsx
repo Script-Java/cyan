@@ -102,6 +102,7 @@ export default function Header() {
               <a
                 href="https://www.stickershuttle.com/account/dashboard?view=financial"
                 className="flex items-center gap-2 px-4 py-2 rounded-lg border border-yellow-500/40 bg-gradient-to-br from-yellow-500/30 to-yellow-600/10 hover:opacity-90 transition-opacity font-medium text-sm"
+                title="Store credit from your BigCommerce account"
               >
                 <img
                   src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1753923671/StickerShuttle_CoinIcon_aperue.png"
