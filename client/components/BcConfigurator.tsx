@@ -89,44 +89,22 @@ export default function BcConfigurator({ product: builderProduct }) {
     setSuccess(false);
 
     try {
-      const cart = await ensureCart();
+      const cartId = await ensureCart();
 
-      // If there's a file to upload and BigCommerce requires a multipart POST for file modifier,
-      // we'll send a multipart request directly to the cart add endpoint.
-      if (file && OPTION_IDS.Upload) {
-        // Create formdata payload expected by BigCommerce file modifier
-        const form = new FormData();
-        // attach basic cart creation payload (line_items JSON)
-        const lineItems = [buildLineItemPayload()];
-        form.append("line_items", JSON.stringify(lineItems));
+      const payload = { line_items: [buildLineItemPayload()] };
+      const res = await fetch(`/api/cart/${cartId}/items`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
 
-        // attach file under a key the store expects; many BigCommerce implementations expect
-        // the file to be present and the product option configured as "File Upload" (server stores it)
-        form.append("file", file, file.name);
-
-        // add notes (as a cart-level field if supported)
-        if (notes) form.append("custom_fields", JSON.stringify([{ name: "Notes", value: notes }]));
-
-        const res = await fetch("/api/storefront/carts", {
-          method: "POST",
-          body: form
-        });
-        const json = await res.json();
-        // update UI price
-        setPriceInfo(extractPrices(json));
-        setCartId(json.data?.id || json.id || cart);
-      } else {
-        // simple JSON add:
-        const payload = { line_items: [buildLineItemPayload()] };
-        const res = await fetch("/api/storefront/carts", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-        const json = await res.json();
-        setPriceInfo(extractPrices(json));
-        setCartId(json.data?.id || json.id || cart);
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to add to cart");
       }
+
+      const json = await res.json();
+      setPriceInfo(extractPrices(json));
 
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
