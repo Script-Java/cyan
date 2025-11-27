@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Bookmark,
   BarChart3,
@@ -15,14 +16,17 @@ interface DashboardNavigationProps {
 export default function DashboardNavigation({
   onLogout,
 }: DashboardNavigationProps) {
+  const navigate = useNavigate();
+
   const actionItems = [
     {
       icon: Bookmark,
       title: "Orders",
-      description: "0 active orders",
+      description: "View order history",
       color: "text-emerald-600",
       borderColor: "rgba(5, 150, 105, 0.2)",
       bgColor: "rgba(16, 185, 129, 0.05)",
+      onClick: () => navigate("/order-history"),
     },
     {
       icon: BarChart3,
