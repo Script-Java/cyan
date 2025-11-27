@@ -733,6 +733,44 @@ class BigCommerceAPI {
       return false;
     }
   }
+
+  /**
+   * Get customer store credit
+   */
+  async getCustomerStoreCredit(customerId: number): Promise<number> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}`;
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Get customer store credit failed:", {
+          status: response.status,
+          statusText: response.statusText,
+        });
+        return 0;
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse customer response:", parseError);
+        return 0;
+      }
+
+      return data?.data?.store_credit || 0;
+    } catch (error) {
+      console.error("Get customer store credit error:", error);
+      return 0;
+    }
+  }
 }
 
 // Export singleton instance
