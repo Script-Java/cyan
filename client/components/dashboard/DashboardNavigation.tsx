@@ -1,6 +1,4 @@
 import {
-  Plus,
-  Grid3X3,
   Bookmark,
   BarChart3,
   Cloud,
@@ -9,7 +7,6 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
 interface DashboardNavigationProps {
   onLogout: () => void;
