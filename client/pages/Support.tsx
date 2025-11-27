@@ -5,7 +5,6 @@ import {
   CheckCircle,
   MessageSquare,
   Mail,
-  Phone,
   Clock,
   ArrowLeft,
 } from "lucide-react";
@@ -153,20 +152,6 @@ export default function Support() {
                     </h3>
                     <p className="text-xs text-gray-600 mt-1">
                       Get responses within 24 hours
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-start gap-3">
-                  <Phone className="w-6 h-6 text-pink-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 text-sm">
-                      Phone Support
-                    </h3>
-                    <p className="text-xs text-gray-600 mt-1">
-                      Call us during business hours
                     </p>
                   </div>
                 </div>
