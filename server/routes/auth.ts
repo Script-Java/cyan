@@ -44,11 +44,7 @@ export const handleLogin: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Customer not found" });
     }
 
-    console.log("Customer found in BigCommerce:", {
-      id: customer.id,
-      email: customer.email,
-      store_credit: customer.store_credit,
-    });
+    console.log("Full customer object from BigCommerce:", JSON.stringify(customer, null, 2));
 
     // Sync customer data to Supabase
     try {
