@@ -50,6 +50,23 @@ export const handleLogin: RequestHandler = async (req, res) => {
       store_credit: customer.store_credit,
     });
 
+    // Sync customer data to Supabase
+    try {
+      await syncCustomerToSupabase({
+        id: customer.id,
+        email: customer.email,
+        first_name: customer.first_name,
+        last_name: customer.last_name,
+        phone: customer.phone,
+        company: customer.company,
+        store_credit: customer.store_credit || 0,
+      });
+      console.log("Customer synced to Supabase:", customer.id);
+    } catch (syncError) {
+      console.error("Failed to sync customer to Supabase:", syncError);
+      // Don't fail login if Supabase sync fails, just log it
+    }
+
     // Generate JWT token
     const token = generateToken(customer.id, customer.email);
 
