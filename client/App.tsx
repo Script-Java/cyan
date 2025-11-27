@@ -12,6 +12,7 @@ import Products from "./pages/Products";
 import Cart from "./pages/Cart";
 import Dashboard from "./pages/Dashboard";
 import OrderHistory from "./pages/OrderHistory";
+import Finances from "./pages/Finances";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 
