@@ -17,6 +17,7 @@ import {
   handleUpdateCustomerAddress,
   handleDeleteCustomerAddress,
   handleDeleteCustomerAccount,
+  handleGetStoreCredit,
 } from "./routes/customers";
 import {
   handleGetOrders,
