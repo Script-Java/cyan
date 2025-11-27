@@ -735,13 +735,14 @@ class BigCommerceAPI {
   }
 
   /**
-   * Get customer store credit
+   * Get customer store credit - tries multiple endpoints
    */
   async getCustomerStoreCredit(customerId: number): Promise<number> {
-    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}`;
-
     try {
-      const response = await fetch(url, {
+      // Try endpoint 1: Store Credit endpoint (if available in BigCommerce)
+      const creditUrl = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}/store-credit`;
+
+      let response = await fetch(creditUrl, {
         method: "GET",
         headers: {
           "X-Auth-Token": this.accessToken,
@@ -749,27 +750,41 @@ class BigCommerceAPI {
         },
       });
 
-      if (!response.ok) {
-        console.error("Get customer store credit failed:", {
-          status: response.status,
-          statusText: response.statusText,
-          customerId,
-        });
-        return 0;
+      if (response.ok) {
+        let data: any;
+        try {
+          data = await response.json();
+          console.log("Store credit from dedicated endpoint:", data);
+          return data?.data?.amount || data?.data?.balance || 0;
+        } catch (parseError) {
+          console.error("Failed to parse store credit response:", parseError);
+        }
       }
 
-      let data: any;
-      try {
-        data = await response.json();
-      } catch (parseError) {
-        console.error("Failed to parse customer response:", parseError);
-        return 0;
+      // Try endpoint 2: Balances endpoint
+      const balanceUrl = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}/balance`;
+
+      response = await fetch(balanceUrl, {
+        method: "GET",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        let data: any;
+        try {
+          data = await response.json();
+          console.log("Store credit from balance endpoint:", data);
+          return data?.data?.amount || data?.data?.balance || 0;
+        } catch (parseError) {
+          console.error("Failed to parse balance response:", parseError);
+        }
       }
 
-      console.log("Customer data from BigCommerce:", data?.data);
-      const credit = data?.data?.store_credit || 0;
-      console.log("Store credit value:", credit);
-      return credit;
+      console.log("Could not find store credit endpoint - returning 0");
+      return 0;
     } catch (error) {
       console.error("Get customer store credit error:", error);
       return 0;
