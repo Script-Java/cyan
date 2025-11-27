@@ -47,11 +47,6 @@ export default function Header() {
                   alt="Sticky Logo"
                   className="h-12 object-contain"
                 />
-                <img
-                  src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1755176111/MarketspaceLogo_y4s7os.svg"
-                  alt="Marketspace Logo"
-                  className="h-12 object-contain"
-                />
               </a>
             </div>
 
