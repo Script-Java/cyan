@@ -297,3 +297,29 @@ export const handleDeleteCustomerAccount: RequestHandler = async (req, res) => {
     res.status(500).json({ error: message });
   }
 };
+
+/**
+ * Get customer store credit
+ * Requires: customerId in JWT token
+ */
+export const handleGetStoreCredit: RequestHandler = async (req, res) => {
+  try {
+    const customerId = (req as any).customerId;
+
+    if (!customerId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const storeCredit = await bigCommerceAPI.getCustomerStoreCredit(customerId);
+
+    res.json({
+      success: true,
+      storeCredit: storeCredit || 0,
+    });
+  } catch (error) {
+    console.error("Get store credit error:", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to fetch store credit";
+    res.status(500).json({ error: message });
+  }
+};
