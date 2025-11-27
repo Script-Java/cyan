@@ -328,6 +328,37 @@ export default function MyTickets() {
                   </div>
                 )}
               </div>
+
+              {/* Reply Form */}
+              <div className="border-t border-gray-200 mt-8 pt-8">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Add Your Reply</h3>
+                <div className="space-y-4">
+                  <textarea
+                    value={replyMessage}
+                    onChange={(e) => setReplyMessage(e.target.value)}
+                    placeholder="Type your message here..."
+                    rows={4}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
+                  />
+                  <button
+                    onClick={handleSubmitReply}
+                    disabled={isSubmittingReply || !replyMessage.trim()}
+                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                  >
+                    {isSubmittingReply ? (
+                      <>
+                        <Loader className="w-5 h-5 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5" />
+                        Send Reply
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </main>
