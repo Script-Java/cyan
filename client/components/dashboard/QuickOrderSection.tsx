@@ -12,7 +12,7 @@ const PRODUCT_CATEGORIES: Product[] = [
   {
     id: "vinyl",
     name: "Vinyl →",
-    href: "https://www.stickershuttle.com/products/vinyl-stickers",
+    href: "/designs",
     imageUrl:
       "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593599/Alien_Rocket_mkwlag.png",
     dropShadowColor: "rgba(168, 242, 106, 0.3)",
@@ -20,7 +20,7 @@ const PRODUCT_CATEGORIES: Product[] = [
   {
     id: "holographic",
     name: "Holographic →",
-    href: "https://www.stickershuttle.com/products/holographic-stickers",
+    href: "/designs",
     imageUrl:
       "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593621/PurpleAlien_StickerShuttle_HolographicIcon_ukdotq.png",
     dropShadowColor: "rgba(168, 85, 247, 0.3)",
@@ -28,7 +28,7 @@ const PRODUCT_CATEGORIES: Product[] = [
   {
     id: "glitter",
     name: "Glitter →",
-    href: "https://www.stickershuttle.com/products/glitter-stickers",
+    href: "/designs",
     imageUrl:
       "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593602/BlueAlien_StickerShuttle_GlitterIcon_rocwpi.png",
     dropShadowColor: "rgba(59, 130, 246, 0.3)",
@@ -36,7 +36,7 @@ const PRODUCT_CATEGORIES: Product[] = [
   {
     id: "chrome",
     name: "Chrome →",
-    href: "https://www.stickershuttle.com/products/chrome-stickers",
+    href: "/designs",
     imageUrl:
       "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593680/yELLOWAlien_StickerShuttle_ChromeIcon_nut4el.png",
     dropShadowColor: "rgba(220, 220, 220, 0.3)",
@@ -44,7 +44,7 @@ const PRODUCT_CATEGORIES: Product[] = [
   {
     id: "sheets",
     name: "Sheets →",
-    href: "https://www.stickershuttle.com/products/sticker-sheets",
+    href: "/designs",
     imageUrl:
       "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749847809/StickerShuttle_StickerSheetsIcon_2_g61dty.svg",
     dropShadowColor: "rgba(196, 181, 253, 0.3)",
@@ -70,9 +70,7 @@ export default function QuickOrderSection() {
             Quick Order
           </h2>
           <a
-            href="https://www.stickershuttle.com/products"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/designs"
             className="flex items-center gap-2 text-sm font-medium transition-colors text-purple-600 hover:text-purple-700"
           >
             <span>View All Products</span>
@@ -110,8 +108,6 @@ export default function QuickOrderSection() {
                 {/* Title Link */}
                 <a
                   href={product.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="text-sm font-semibold text-gray-900 text-center transition-colors hover:text-purple-600 hover:underline"
                 >
                   {product.name}
