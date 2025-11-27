@@ -173,9 +173,8 @@ export default function Header() {
                 <Bookmark className="w-7 h-7 text-[#10B981]" />
               </a>
               {isAuthenticated && (
-                <a
-                  href="https://www.stickershuttle.com/account/dashboard?view=financial"
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-yellow-500/40 bg-gradient-to-br from-yellow-500/30 to-yellow-600/10 hover:opacity-90 transition-opacity font-medium text-sm"
+                <div
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-yellow-500/40 bg-gradient-to-br from-yellow-500/30 to-yellow-600/10 font-medium text-sm"
                   title="Store credit from your BigCommerce account"
                 >
                   <img
@@ -184,7 +183,7 @@ export default function Header() {
                     className="w-5 h-5"
                   />
                   <span className="text-yellow-300">$ {storeCredit.toFixed(2)}</span>
-                </a>
+                </div>
               )}
 
               {/* Profile Dropdown */}
