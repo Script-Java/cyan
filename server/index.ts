@@ -33,6 +33,7 @@ import {
   handleRemoveFromCart,
   handleClearCart,
 } from "./routes/cart";
+import { handleCheckout, handleGetCheckoutDetails } from "./routes/checkout";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
