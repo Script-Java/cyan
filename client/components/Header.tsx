@@ -85,13 +85,13 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
-              <a
-                href="https://www.stickershuttle.com/account/dashboard"
+              <Link
+                to="/dashboard"
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                 title="Dashboard"
               >
                 <LayoutGrid className="w-7 h-7 text-[#8B5CF6]" />
-              </a>
+              </Link>
               <a
                 href="https://www.stickershuttle.com/account/dashboard?view=all-orders"
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
