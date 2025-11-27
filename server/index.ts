@@ -34,7 +34,14 @@ import {
   handleClearCart,
 } from "./routes/cart";
 import { handleCheckout, handleGetCheckoutDetails } from "./routes/checkout";
-import { handleSupportSubmit } from "./routes/support";
+import {
+  handleSupportSubmit,
+  handleGetTickets,
+  handleGetTicketDetails,
+  handleAdminGetAllTickets,
+  handleAdminReplyToTicket,
+  handleUpdateTicketStatus,
+} from "./routes/support";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
@@ -114,8 +121,13 @@ export function createServer() {
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
 
-  // ===== Support Routes (Public) =====
+  // ===== Support Routes =====
   app.post("/api/support/submit", handleSupportSubmit);
+  app.get("/api/support/tickets", verifyToken, handleGetTickets);
+  app.get("/api/support/tickets/:ticketId", verifyToken, handleGetTicketDetails);
+  app.get("/api/admin/tickets", handleAdminGetAllTickets);
+  app.post("/api/admin/tickets/:ticketId/reply", handleAdminReplyToTicket);
+  app.patch("/api/admin/tickets/:ticketId/status", handleUpdateTicketStatus);
 
   return app;
 }
