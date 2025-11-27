@@ -40,9 +40,9 @@ export default function AccountSettings() {
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState<
-    "personal" | "social" | "delete"
-  >("personal");
+  const [activeTab, setActiveTab] = useState<"personal" | "social" | "delete">(
+    "personal",
+  );
 
   // Personal Info Form State
   const [personalFormData, setPersonalFormData] = useState({
@@ -153,7 +153,9 @@ export default function AccountSettings() {
         }
       } catch (err) {
         const message =
-          err instanceof Error ? err.message : "Failed to load account settings";
+          err instanceof Error
+            ? err.message
+            : "Failed to load account settings";
         setError(message);
       } finally {
         setIsLoading(false);
@@ -523,7 +525,9 @@ export default function AccountSettings() {
                   {personalFormError && (
                     <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3">
                       <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                      <p className="text-sm text-red-800">{personalFormError}</p>
+                      <p className="text-sm text-red-800">
+                        {personalFormError}
+                      </p>
                     </div>
                   )}
 
@@ -535,7 +539,10 @@ export default function AccountSettings() {
                     </div>
                   )}
 
-                  <form onSubmit={handlePersonalInfoSubmit} className="space-y-4">
+                  <form
+                    onSubmit={handlePersonalInfoSubmit}
+                    className="space-y-4"
+                  >
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -1038,8 +1045,8 @@ export default function AccountSettings() {
                 <form onSubmit={handleDeleteAccount} className="space-y-4">
                   <p className="text-gray-700 text-sm">
                     To permanently delete your account, please type{" "}
-                    <span className="font-semibold">"Delete my account"</span> in
-                    the field below:
+                    <span className="font-semibold">"Delete my account"</span>{" "}
+                    in the field below:
                   </p>
 
                   <input
@@ -1054,9 +1061,10 @@ export default function AccountSettings() {
                     type="submit"
                     disabled={
                       deleteFormLoading ||
-                      deleteConfirmation.toLowerCase() !==
+                      (deleteConfirmation.toLowerCase() !==
                         "delete my account" &&
-                        deleteConfirmation.toLowerCase() !== "delete my account."
+                        deleteConfirmation.toLowerCase() !==
+                          "delete my account.")
                     }
                     className="w-full py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >

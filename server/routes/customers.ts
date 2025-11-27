@@ -187,10 +187,7 @@ export const handleCreateCustomerAddress: RequestHandler = async (req, res) => {
  * Update customer address
  * Requires: customerId in JWT token
  */
-export const handleUpdateCustomerAddress: RequestHandler = async (
-  req,
-  res,
-) => {
+export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
   try {
     const customerId = (req as any).customerId;
     const { addressId } = req.params;

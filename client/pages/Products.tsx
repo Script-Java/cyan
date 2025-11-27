@@ -11,17 +11,17 @@ const PRODUCTS = [
     rating: 4.8,
     reviews: 234,
     description: "Durable vinyl stickers perfect for laptops and outdoor use.",
-    badge: "Popular"
+    badge: "Popular",
   },
   {
     id: "die-cut-stickers",
     name: "Die-Cut Stickers",
-    price: 0.30,
+    price: 0.3,
     image: "/placeholder.svg",
     rating: 4.9,
     reviews: 189,
     description: "Custom-cut stickers with any shape you design.",
-    badge: "Premium"
+    badge: "Premium",
   },
   {
     id: "holographic-stickers",
@@ -31,18 +31,18 @@ const PRODUCTS = [
     rating: 4.9,
     reviews: 156,
     description: "Eye-catching holographic stickers that shimmer in the light.",
-    badge: "Trending"
+    badge: "Trending",
   },
   {
     id: "clear-stickers",
     name: "Clear Stickers",
-    price: 0.20,
+    price: 0.2,
     image: "/placeholder.svg",
     rating: 4.7,
     reviews: 198,
     description: "Transparent stickers with vibrant full-color printing.",
-    badge: "Budget"
-  }
+    badge: "Budget",
+  },
 ];
 
 export default function Products() {
@@ -57,7 +57,8 @@ export default function Products() {
               Our Products
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Choose from our premium selection of stickers and customize them to your needs.
+              Choose from our premium selection of stickers and customize them
+              to your needs.
             </p>
           </div>
 
@@ -100,8 +101,8 @@ export default function Products() {
                           key={i}
                           className={`w-3.5 h-3.5 ${
                             i < Math.floor(product.rating)
-                              ? 'fill-yellow-400 text-yellow-400'
-                              : 'text-gray-300'
+                              ? "fill-yellow-400 text-yellow-400"
+                              : "text-gray-300"
                           }`}
                         />
                       ))}
@@ -141,7 +142,9 @@ export default function Products() {
 
           {/* CTA Section */}
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-12 text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">Can't find what you're looking for?</h2>
+            <h2 className="text-3xl font-bold mb-4">
+              Can't find what you're looking for?
+            </h2>
             <p className="text-xl mb-8 opacity-90">
               Contact our team for custom bulk orders and special requests.
             </p>

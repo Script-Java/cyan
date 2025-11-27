@@ -5,11 +5,11 @@ import { ShoppingCart, AlertCircle, Loader } from "lucide-react";
 const PRODUCT_ID = 123; // BigCommerce product ID
 // Example mapping: option name -> option id / input id (fill with IDs from your store)
 const OPTION_IDS = {
-  Shape: 111,      // product option id for "Shape"
-  Material: 112,   // product option id for "Material"
-  Size: 113,       // product option id for "Size"
-  Quantity: null,  // we'll use quantity field, not an option id
-  Upload: 114      // file-upload option id (if used)
+  Shape: 111, // product option id for "Shape"
+  Material: 112, // product option id for "Material"
+  Size: 113, // product option id for "Size"
+  Quantity: null, // we'll use quantity field, not an option id
+  Upload: 114, // file-upload option id (if used)
 };
 /* ===================================================== */
 
@@ -37,7 +37,7 @@ export default function BcConfigurator({ product: builderProduct }) {
       const res = await fetch("/api/cart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ line_items: [] })
+        body: JSON.stringify({ line_items: [] }),
       });
 
       if (!res.ok) {
@@ -55,7 +55,8 @@ export default function BcConfigurator({ product: builderProduct }) {
       setCartId(newCartId);
       return newCartId;
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to create cart";
+      const message =
+        err instanceof Error ? err.message : "Failed to create cart";
       throw new Error(message);
     }
   }
@@ -70,12 +71,24 @@ export default function BcConfigurator({ product: builderProduct }) {
       // BigCommerce expects `option_selections` or `product_options` depending on API version.
       // We'll use product_options array which is accepted by some storefront endpoints.
       // If your store expects variant_id, swap in variant_id with the correct id.
-      product_options: []
+      product_options: [],
     };
 
-    if (shape) item.product_options.push({ option_id: OPTION_IDS.Shape, option_value: shape });
-    if (material) item.product_options.push({ option_id: OPTION_IDS.Material, option_value: material });
-    if (size) item.product_options.push({ option_id: OPTION_IDS.Size, option_value: size });
+    if (shape)
+      item.product_options.push({
+        option_id: OPTION_IDS.Shape,
+        option_value: shape,
+      });
+    if (material)
+      item.product_options.push({
+        option_id: OPTION_IDS.Material,
+        option_value: material,
+      });
+    if (size)
+      item.product_options.push({
+        option_id: OPTION_IDS.Size,
+        option_value: size,
+      });
 
     // For file uploads: BigCommerce expects the file to be sent as multipart form-data
     // and attached as a `file` field or a custom modifier - see addFileToCart() below
@@ -95,7 +108,7 @@ export default function BcConfigurator({ product: builderProduct }) {
       const res = await fetch(`/api/cart/${cartId}/items`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -110,7 +123,8 @@ export default function BcConfigurator({ product: builderProduct }) {
       setTimeout(() => setSuccess(false), 3000);
       // success UX: you can redirect to /cart or show a modal
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Could not add to cart";
+      const message =
+        err instanceof Error ? err.message : "Could not add to cart";
       console.error("Add to cart error", err);
       setError(message);
     } finally {
@@ -121,8 +135,11 @@ export default function BcConfigurator({ product: builderProduct }) {
   function extractPrices(cartJson: any) {
     // BigCommerce response shapes vary; try common paths
     const data = cartJson.data || cartJson;
-    const subtotal = ((data?.cart?.base_amount || data?.base_amount || 0) / 100) || 0;
-    const total = ((data?.cart?.cart_amount || data?.cart?.base_amount || 0) / 100) || subtotal;
+    const subtotal =
+      (data?.cart?.base_amount || data?.base_amount || 0) / 100 || 0;
+    const total =
+      (data?.cart?.cart_amount || data?.cart?.base_amount || 0) / 100 ||
+      subtotal;
     return { subtotal, total };
   }
 
@@ -133,13 +150,20 @@ export default function BcConfigurator({ product: builderProduct }) {
       <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
         <h4 className="font-bold text-gray-900 mb-4">Select a Shape</h4>
         <div className="grid grid-cols-2 gap-2">
-          {["Custom Shape","Kiss-Cut","Circle","Oval","Square","Rectangle"].map(option => (
+          {[
+            "Custom Shape",
+            "Kiss-Cut",
+            "Circle",
+            "Oval",
+            "Square",
+            "Rectangle",
+          ].map((option) => (
             <button
               key={option}
               onClick={() => setShape(option)}
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                shape === option 
-                  ? "bg-blue-600 text-white border-2 border-blue-600" 
+                shape === option
+                  ? "bg-blue-600 text-white border-2 border-blue-600"
                   : "bg-white text-gray-700 border border-gray-300 hover:border-gray-400"
               }`}
             >
@@ -153,13 +177,13 @@ export default function BcConfigurator({ product: builderProduct }) {
       <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
         <h4 className="font-bold text-gray-900 mb-4">Material</h4>
         <div className="flex flex-col gap-2">
-          {["Matte","Gloss"].map(opt => (
-            <button 
-              key={opt} 
+          {["Matte", "Gloss"].map((opt) => (
+            <button
+              key={opt}
               onClick={() => setMaterial(opt)}
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                material === opt 
-                  ? "bg-blue-600 text-white border-2 border-blue-600" 
+                material === opt
+                  ? "bg-blue-600 text-white border-2 border-blue-600"
                   : "bg-white text-gray-700 border border-gray-300 hover:border-gray-400"
               }`}
             >
@@ -173,22 +197,24 @@ export default function BcConfigurator({ product: builderProduct }) {
       <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
         <h4 className="font-bold text-gray-900 mb-4">Select a Size</h4>
         <div className="grid grid-cols-2 gap-2">
-          {["Small (2\")","Medium (3\")","Large (4\")","X-Large (5\")"].map(opt => (
-            <button 
-              key={opt} 
-              onClick={() => setSize(opt)}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                size === opt 
-                  ? "bg-blue-600 text-white border-2 border-blue-600" 
-                  : "bg-white text-gray-700 border border-gray-300 hover:border-gray-400"
-              }`}
-            >
-              {opt}
-            </button>
-          ))}
-          <input 
-            placeholder="Custom size" 
-            onBlur={e => setSize(e.target.value)} 
+          {['Small (2")', 'Medium (3")', 'Large (4")', 'X-Large (5")'].map(
+            (opt) => (
+              <button
+                key={opt}
+                onClick={() => setSize(opt)}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                  size === opt
+                    ? "bg-blue-600 text-white border-2 border-blue-600"
+                    : "bg-white text-gray-700 border border-gray-300 hover:border-gray-400"
+                }`}
+              >
+                {opt}
+              </button>
+            ),
+          )}
+          <input
+            placeholder="Custom size"
+            onBlur={(e) => setSize(e.target.value)}
             className="col-span-2 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -198,19 +224,19 @@ export default function BcConfigurator({ product: builderProduct }) {
       <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
         <h4 className="font-bold text-gray-900 mb-4">Quantity</h4>
         <div className="space-y-2 max-h-64 overflow-y-auto">
-          {[50,100,200,300,500,1000,2500].map(q => (
-            <label 
+          {[50, 100, 200, 300, 500, 1000, 2500].map((q) => (
+            <label
               key={q}
               className={`flex justify-between items-center p-2 rounded-lg cursor-pointer text-sm transition-all ${
-                quantity === q 
-                  ? "bg-blue-100 border-2 border-blue-600" 
+                quantity === q
+                  ? "bg-blue-100 border-2 border-blue-600"
                   : "bg-white border border-gray-300 hover:border-gray-400"
               }`}
             >
-              <input 
-                type="radio" 
-                checked={quantity === q} 
-                onChange={() => setQuantity(q)} 
+              <input
+                type="radio"
+                checked={quantity === q}
+                onChange={() => setQuantity(q)}
                 className="cursor-pointer"
               />
               <span className="font-medium">{q} pcs</span>
@@ -224,8 +250,8 @@ export default function BcConfigurator({ product: builderProduct }) {
             Total: ${priceInfo.total || (quantity * 0.25).toFixed(2)}
           </div>
 
-          <button 
-            onClick={addToCart} 
+          <button
+            onClick={addToCart}
             disabled={loading}
             className="w-full py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
@@ -250,10 +276,10 @@ export default function BcConfigurator({ product: builderProduct }) {
           <label className="block text-sm font-bold text-gray-900 mb-2">
             Special Requests
           </label>
-          <textarea 
-            placeholder="Enter any special requests..." 
-            value={notes} 
-            onChange={e => setNotes(e.target.value)} 
+          <textarea
+            placeholder="Enter any special requests..."
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-40 resize-none"
           />
         </div>
@@ -264,15 +290,17 @@ export default function BcConfigurator({ product: builderProduct }) {
           </label>
           <label className="flex flex-col items-center justify-center w-full px-4 py-8 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-all">
             <div className="text-4xl mb-2">📁</div>
-            <input 
-              type="file" 
-              onChange={e => setFile(e.target.files?.[0] || null)} 
+            <input
+              type="file"
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
               className="hidden"
             />
             <div className="text-gray-700 font-medium">
               {file ? file.name : "Drag or click to upload"}
             </div>
-            <div className="text-xs text-gray-500 mt-1">PNG, JPG, PDF (max 50MB)</div>
+            <div className="text-xs text-gray-500 mt-1">
+              PNG, JPG, PDF (max 50MB)
+            </div>
           </label>
         </div>
       </div>

@@ -112,7 +112,9 @@ export default function Dashboard() {
         } catch (err) {
           if (!customerError) {
             const message =
-              err instanceof Error ? err.message : "Network error fetching orders";
+              err instanceof Error
+                ? err.message
+                : "Network error fetching orders";
             setError(message);
           }
         }
