@@ -21,6 +21,28 @@ export default function Header() {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     setIsAuthenticated(!!token);
+
+    // Fetch store credit if authenticated
+    if (token) {
+      const fetchStoreCredit = async () => {
+        try {
+          const response = await fetch("/api/customers/me/store-credit", {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setStoreCredit(data.storeCredit || 0);
+          }
+        } catch (error) {
+          console.error("Error fetching store credit:", error);
+        }
+      };
+
+      fetchStoreCredit();
+    }
   }, []);
 
   useEffect(() => {
