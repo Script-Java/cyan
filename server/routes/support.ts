@@ -42,9 +42,8 @@ export const handleSupportSubmit: RequestHandler = async (req, res) => {
     // Generate reference ID
     const referenceId = `SUP-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 
-    // TODO: Integrate with email service (SendGrid, Mailgun, Resend, etc.)
-    // For now, we'll just log the submission
-    console.log("Support Request Received:", {
+    // Log the submission for server-side records
+    const submissionData = {
       referenceId,
       timestamp: new Date().toISOString(),
       name,
@@ -53,7 +52,32 @@ export const handleSupportSubmit: RequestHandler = async (req, res) => {
       category,
       priority,
       message,
-    });
+    };
+
+    console.log("Support Request Received:", submissionData);
+
+    // TODO: Integrate with email service to send confirmation to customer
+    // and notification to support team email. Options:
+    // - Resend (https://resend.com)
+    // - SendGrid (https://sendgrid.com)
+    // - Mailgun (https://mailgun.com)
+    // - AWS SES
+    // - Gmail SMTP
+    // Example implementation with environment variables:
+    // const nodemailer = require('nodemailer');
+    // const transporter = nodemailer.createTransport({
+    //   service: 'gmail',
+    //   auth: {
+    //     user: process.env.SUPPORT_EMAIL,
+    //     pass: process.env.SUPPORT_EMAIL_PASSWORD,
+    //   }
+    // });
+    // await transporter.sendMail({
+    //   from: process.env.SUPPORT_EMAIL,
+    //   to: email,
+    //   subject: `Support Request Confirmation - ${referenceId}`,
+    //   html: `<p>Thank you for contacting us!</p><p>Reference ID: ${referenceId}</p>`
+    // });
 
     // Send confirmation response
     const response: SupportResponse = {
