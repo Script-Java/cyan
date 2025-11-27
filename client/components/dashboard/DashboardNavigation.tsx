@@ -117,11 +117,11 @@ export default function DashboardNavigation({
 
         {/* Bottom Row Items */}
         <div className="col-span-3 grid grid-cols-4 gap-3">
-          {bottomItems.map((item) => {
+          {bottomItems.map((item: any) => {
             const Icon = item.icon;
             const buttonContent = (
               <button
-                onClick={item.isLogout ? onLogout : undefined}
+                onClick={item.isLogout ? onLogout : item.onClick}
                 className="w-full p-4 rounded-2xl border transition-all duration-500 flex gap-3 items-center hover:shadow-md hover:bg-gray-50"
                 style={{
                   backgroundColor: item.bgColor,
