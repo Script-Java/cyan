@@ -18,29 +18,6 @@ interface DashboardNavigationProps {
 export default function DashboardNavigation({
   onLogout,
 }: DashboardNavigationProps) {
-  const navigationItems = [
-    {
-      id: "create",
-      href: "https://www.stickershuttle.com/products",
-      icon: Plus,
-      title: "Start New Mission",
-      description: "Create custom stickers",
-      colors: "from-blue-600 to-blue-400",
-      borderColor: "rgba(59, 130, 246, 0.3)",
-      isLink: true,
-    },
-    {
-      id: "dashboard",
-      href: "#",
-      icon: Grid3X3,
-      title: "Dashboard",
-      description: "Mission overview",
-      colors: "from-purple-600/40 to-purple-400/10",
-      borderColor: "rgba(139, 92, 246, 0.3)",
-      isLink: false,
-    },
-  ];
-
   const actionItems = [
     {
       icon: Bookmark,
