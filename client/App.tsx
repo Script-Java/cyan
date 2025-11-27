@@ -19,6 +19,8 @@ import Finances from "./pages/Finances";
 import Designs from "./pages/Designs";
 import AccountSettings from "./pages/AccountSettings";
 import Support from "./pages/Support";
+import MyTickets from "./pages/MyTickets";
+import AdminSupport from "./pages/AdminSupport";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 
@@ -46,6 +48,8 @@ export default function App() {
             <Route path="/designs" element={<Designs />} />
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/support" element={<Support />} />
+            <Route path="/my-tickets" element={<MyTickets />} />
+            <Route path="/admin/support" element={<AdminSupport />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
