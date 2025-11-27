@@ -202,10 +202,15 @@ export default function Header() {
               {/* Desktop Cart */}
               <a
                 href="https://stickershuttle.com/cart"
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors ml-2"
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors ml-2 relative"
                 title="Shopping cart"
               >
                 <ShoppingCart className="w-6 h-6 text-white" />
+                {cartCount > 0 && (
+                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
               </a>
             </nav>
 
