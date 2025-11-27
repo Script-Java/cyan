@@ -305,6 +305,87 @@ export const handleAdminReplyToTicket: RequestHandler = async (req, res) => {
   }
 };
 
+export const handleCustomerReplyToTicket: RequestHandler = async (req, res) => {
+  try {
+    const { ticketId } = req.params;
+    const { message, customerId } = req.body;
+
+    if (!ticketId || !message || !customerId) {
+      res.status(400).json({
+        error: "Missing required fields: ticketId, message, customerId",
+      });
+      return;
+    }
+
+    // Get ticket details to verify ownership
+    const { data: ticket, error: ticketError } = await supabase
+      .from("support_tickets")
+      .select("customer_id, customer_name, customer_email")
+      .eq("id", ticketId)
+      .single();
+
+    if (ticketError || !ticket) {
+      res.status(404).json({
+        error: "Ticket not found",
+      });
+      return;
+    }
+
+    // Verify customer owns this ticket
+    if (ticket.customer_id !== customerId) {
+      res.status(403).json({
+        error: "Unauthorized: You can only reply to your own tickets",
+      });
+      return;
+    }
+
+    // Insert reply
+    const { data: reply, error: replyError } = await supabase
+      .from("ticket_replies")
+      .insert({
+        ticket_id: ticketId,
+        sender_type: "customer",
+        sender_name: ticket.customer_name,
+        sender_email: ticket.customer_email,
+        message,
+      })
+      .select("id")
+      .single();
+
+    if (replyError) {
+      console.error("Error inserting customer reply:", replyError);
+      res.status(500).json({
+        error: "Failed to send reply",
+      });
+      return;
+    }
+
+    // Update ticket updated_at timestamp
+    await supabase
+      .from("support_tickets")
+      .update({ updated_at: new Date().toISOString() })
+      .eq("id", ticketId);
+
+    console.log("Customer Reply Created:", {
+      ticketId,
+      replyId: reply.id,
+      customerId,
+      message,
+    });
+
+    res.json({
+      success: true,
+      replyId: reply.id,
+      message: "Reply sent successfully",
+    });
+  } catch (error) {
+    console.error("Error in handleCustomerReplyToTicket:", error);
+    res.status(500).json({
+      error: "Failed to send reply",
+    });
+  }
+};
+
 export const handleUpdateTicketStatus: RequestHandler = async (req, res) => {
   try {
     const { ticketId } = req.params;
