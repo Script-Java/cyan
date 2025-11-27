@@ -77,9 +77,16 @@ export default function Dashboard() {
           setOrders(ordersData.orders || []);
         }
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to load dashboard",
-        );
+        let errorMessage = "Failed to load dashboard";
+        if (err instanceof Error) {
+          errorMessage = err.message;
+        } else if (typeof err === "object" && err !== null) {
+          const errorObj = err as any;
+          if (errorObj.error) {
+            errorMessage = errorObj.error;
+          }
+        }
+        setError(errorMessage);
       } finally {
         setIsLoading(false);
       }
