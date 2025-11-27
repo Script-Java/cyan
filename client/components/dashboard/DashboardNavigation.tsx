@@ -31,10 +31,11 @@ export default function DashboardNavigation({
     {
       icon: BarChart3,
       title: "Finances",
-      description: "Manage finances",
+      description: "View spending & savings",
       color: "text-blue-600",
       borderColor: "rgba(59, 130, 246, 0.2)",
       bgColor: "rgba(59, 130, 246, 0.05)",
+      onClick: () => navigate("/finances"),
     },
     {
       icon: Cloud,
