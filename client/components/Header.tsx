@@ -108,8 +108,8 @@ export default function Header() {
 
             {/* Desktop Logo Area */}
             <div className="hidden md:flex items-center mr-6">
-              <a
-                href="https://www.stickershuttle.com/"
+              <Link
+                to="/"
                 className="flex items-center gap-2 hover:opacity-80 transition-opacity"
               >
                 <img
@@ -117,13 +117,13 @@ export default function Header() {
                   alt="Sticky Logo"
                   className="h-12 object-contain"
                 />
-              </a>
+              </Link>
             </div>
 
             {/* Mobile/Tablet Centered Logo */}
             <div className="md:hidden absolute left-1/2 transform -translate-x-1/2">
-              <a
-                href="https://www.stickershuttle.com/"
+              <Link
+                to="/"
                 className="flex items-center"
               >
                 <img
@@ -131,7 +131,7 @@ export default function Header() {
                   alt="Sticky Logo"
                   className="h-10 object-contain"
                 />
-              </a>
+              </Link>
             </div>
 
             {/* Mobile Cart Button (hidden on larger screens) */}
