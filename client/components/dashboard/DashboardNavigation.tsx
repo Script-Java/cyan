@@ -64,6 +64,7 @@ export default function DashboardNavigation({
       color: "text-red-600",
       borderColor: "rgba(239, 68, 68, 0.2)",
       bgColor: "rgba(239, 68, 68, 0.05)",
+      onClick: () => navigate("/support"),
     },
     {
       icon: Settings,
