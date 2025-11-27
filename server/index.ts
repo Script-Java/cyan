@@ -20,6 +20,7 @@ import {
   handleCreateOrder,
   handleAdminGetOrder,
 } from "./routes/orders";
+import { handleGetDesigns, handleGetOrderDesigns } from "./routes/designs";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
