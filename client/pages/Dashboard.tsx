@@ -56,52 +56,66 @@ export default function Dashboard() {
         setIsLoading(true);
         setError("");
 
-        const [customerRes, ordersRes] = await Promise.all([
-          fetch("/api/customers/me", {
+        // Fetch customer data
+        let customerError: string | null = null;
+        try {
+          const customerRes = await fetch("/api/customers/me", {
             headers: { Authorization: `Bearer ${token}` },
-          }),
-          fetch("/api/orders", {
+          });
+
+          if (customerRes.ok) {
+            const customerData = await customerRes.json();
+            if (customerData.customer) {
+              setCustomer(customerData.customer);
+            }
+          } else {
+            try {
+              const errorData = await customerRes.json();
+              customerError =
+                errorData.error || "Failed to fetch customer data";
+            } catch {
+              customerError = `Failed to fetch customer data (${customerRes.status})`;
+            }
+            setError(customerError);
+          }
+        } catch (err) {
+          const message =
+            err instanceof Error
+              ? err.message
+              : "Network error fetching customer data";
+          setError(message);
+        }
+
+        // Fetch orders data (separate try-catch to not fail the whole dashboard)
+        try {
+          const ordersRes = await fetch("/api/orders", {
             headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
+          });
 
-        let customerError = null;
-        if (!customerRes.ok) {
-          try {
-            const errorData = await customerRes.json();
-            customerError = errorData.error || "Failed to fetch customer data";
-          } catch {
-            customerError = "Failed to fetch customer data";
+          if (ordersRes.ok) {
+            const ordersData = await ordersRes.json();
+            setOrders(ordersData.orders || []);
+          } else {
+            try {
+              const errorData = await ordersRes.json();
+              const ordersError = errorData.error || "Failed to fetch orders";
+              // Only set error if we don't already have one
+              if (!customerError) {
+                setError(ordersError);
+              }
+            } catch {
+              if (!customerError) {
+                setError(`Failed to fetch orders (${ordersRes.status})`);
+              }
+            }
           }
-          throw new Error(customerError);
-        }
-
-        const customerData = await customerRes.json();
-        setCustomer(customerData.customer);
-
-        if (!ordersRes.ok) {
-          try {
-            const errorData = await ordersRes.json();
-            const ordersError = errorData.error || "Failed to fetch orders";
-            setError(ordersError);
-          } catch {
-            setError("Failed to fetch orders");
-          }
-        } else {
-          const ordersData = await ordersRes.json();
-          setOrders(ordersData.orders || []);
-        }
-      } catch (err) {
-        let errorMessage = "Failed to load dashboard";
-        if (err instanceof Error) {
-          errorMessage = err.message;
-        } else if (typeof err === "object" && err !== null) {
-          const errorObj = err as any;
-          if (errorObj.error) {
-            errorMessage = errorObj.error;
+        } catch (err) {
+          if (!customerError) {
+            const message =
+              err instanceof Error ? err.message : "Network error fetching orders";
+            setError(message);
           }
         }
-        setError(errorMessage);
       } finally {
         setIsLoading(false);
       }
