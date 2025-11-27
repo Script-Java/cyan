@@ -136,8 +136,8 @@ export default function Header() {
 
             {/* Mobile Cart Button (hidden on larger screens) */}
             <div className="md:hidden flex items-center">
-              <a
-                href="https://stickershuttle.com/cart"
+              <Link
+                to="/cart"
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors relative"
               >
                 <ShoppingCart className="w-6 h-6 text-white" />
@@ -146,7 +146,7 @@ export default function Header() {
                     {cartCount}
                   </span>
                 )}
-              </a>
+              </Link>
             </div>
 
             {/* Desktop Sticker Type Selector */}
@@ -301,93 +301,13 @@ export default function Header() {
               </button>
             </div>
 
-            {/* Quick Access */}
-            <h3 className="text-sm font-semibold text-white mb-4">
-              Quick Access:
-            </h3>
-            <div className="grid grid-cols-2 gap-3 mb-6">
-              <a
-                href="https://www.stickershuttle.com/products/vinyl-stickers"
-                className="flex flex-col items-center p-4 rounded-lg hover:bg-white/5 transition-colors text-center"
-              >
-                <div className="w-12 h-12 flex items-center justify-center mb-2">
-                  <img
-                    src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593599/Alien_Rocket_mkwlag.png"
-                    alt="Vinyl"
-                    className="w-full h-full object-contain drop-shadow-lg drop-shadow-green-500/50"
-                  />
-                </div>
-                <p className="text-xs font-medium text-white">Vinyl</p>
-                <p className="text-xs text-white/70">Stickers</p>
-              </a>
-              <a
-                href="https://www.stickershuttle.com/products/holographic-stickers"
-                className="flex flex-col items-center p-4 rounded-lg hover:bg-white/5 transition-colors text-center"
-              >
-                <div className="w-12 h-12 flex items-center justify-center mb-2">
-                  <img
-                    src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593621/PurpleAlien_StickerShuttle_HolographicIcon_ukdotq.png"
-                    alt="Holographic"
-                    className="w-full h-full object-contain drop-shadow-lg drop-shadow-purple-500/50"
-                  />
-                </div>
-                <p className="text-xs font-medium text-white">Holographic</p>
-                <p className="text-xs text-white/70">Stickers</p>
-              </a>
-              <a
-                href="https://www.stickershuttle.com/products/chrome-stickers"
-                className="flex flex-col items-center p-4 rounded-lg hover:bg-white/5 transition-colors text-center"
-              >
-                <div className="w-12 h-12 flex items-center justify-center mb-2">
-                  <img
-                    src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593680/yELLOWAlien_StickerShuttle_ChromeIcon_nut4el.png"
-                    alt="Chrome"
-                    className="w-full h-full object-contain drop-shadow-lg drop-shadow-gray-400/50"
-                  />
-                </div>
-                <p className="text-xs font-medium text-white">Chrome</p>
-                <p className="text-xs text-white/70">Stickers</p>
-              </a>
-              <a
-                href="https://www.stickershuttle.com/products/glitter-stickers"
-                className="flex flex-col items-center p-4 rounded-lg hover:bg-white/5 transition-colors text-center"
-              >
-                <div className="w-12 h-12 flex items-center justify-center mb-2">
-                  <img
-                    src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593602/BlueAlien_StickerShuttle_GlitterIcon_rocwpi.png"
-                    alt="Glitter"
-                    className="w-full h-full object-contain drop-shadow-lg drop-shadow-blue-500/50"
-                  />
-                </div>
-                <p className="text-xs font-medium text-white">Glitter</p>
-                <p className="text-xs text-white/70">Stickers</p>
-              </a>
-            </div>
-
-            <div className="border-t border-white/20 my-4"></div>
-
-            {/* Bannership */}
-            <a
-              href="https://www.stickershuttle.com/bannership"
-              className="flex items-center gap-3 p-4 rounded-lg hover:bg-white/5 transition-colors mb-6"
-            >
-              <img
-                src="https://www.stickershuttle.com/bannership-logo.svg"
-                alt="Bannership"
-                className="h-8 object-contain"
-              />
-              <div className="border-l border-white/30 h-8"></div>
-              <span className="text-xs text-white font-medium">
-                Get your vinyl banners here!
-              </span>
-            </a>
 
             {/* Auth Buttons */}
             <nav className="space-y-2">
               {!isAuthenticated && (
                 <>
-                  <a
-                    href="https://www.stickershuttle.com/login"
+                  <Link
+                    to="/login"
                     className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-white font-medium text-sm border border-white/20"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -399,9 +319,9 @@ export default function Header() {
                       <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                     </svg>
                     Log in
-                  </a>
-                  <a
-                    href="https://www.stickershuttle.com/signup"
+                  </Link>
+                  <Link
+                    to="/signup"
                     className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-white font-medium text-sm border border-white/20"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -413,7 +333,7 @@ export default function Header() {
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                     </svg>
                     Signup
-                  </a>
+                  </Link>
                 </>
               )}
             </nav>
