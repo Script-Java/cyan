@@ -77,6 +77,9 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
+    // Fetch shipments
+    const shipments = await bigCommerceAPI.getOrderShipments(order.id);
+
     res.json({
       success: true,
       order: {
@@ -90,6 +93,16 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
         items: order.items || [],
         shippingAddress: order.shipping_addresses?.[0],
         billingAddress: order.billing_address,
+        shipments: shipments.map((shipment: any) => ({
+          id: shipment.id,
+          status: shipment.status,
+          dateCreated: shipment.date_created,
+          trackingNumber: shipment.tracking_number,
+          shippingProvider: shipment.shipping_provider,
+          shippingMethod: shipment.shipping_method,
+          comments: shipment.comments,
+          items: shipment.items || [],
+        })),
       },
     });
   } catch (error) {
