@@ -138,9 +138,9 @@ export const handleGetTicketDetails: RequestHandler = async (req, res) => {
     const { ticketId } = req.params;
     const customerId = req.query.customerId as string;
 
-    if (!ticketId || !customerId) {
+    if (!ticketId) {
       res.status(400).json({
-        error: "Ticket ID and Customer ID are required",
+        error: "Ticket ID is required",
       });
       return;
     }
@@ -149,7 +149,6 @@ export const handleGetTicketDetails: RequestHandler = async (req, res) => {
       .from("support_tickets")
       .select("*")
       .eq("id", ticketId)
-      .eq("customer_id", parseInt(customerId))
       .single();
 
     if (ticketError || !ticket) {
@@ -157,6 +156,16 @@ export const handleGetTicketDetails: RequestHandler = async (req, res) => {
         error: "Ticket not found",
       });
       return;
+    }
+
+    // Verify customer owns the ticket (or admin accessing with customerId=0)
+    if (customerId && customerId !== "0") {
+      if (ticket.customer_id !== parseInt(customerId)) {
+        res.status(403).json({
+          error: "Unauthorized: You can only view your own tickets",
+        });
+        return;
+      }
     }
 
     const { data: replies, error: repliesError } = await supabase
