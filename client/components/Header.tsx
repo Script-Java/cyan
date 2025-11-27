@@ -111,17 +111,6 @@ export default function Header() {
                 🔥 <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent font-bold">Shop Black Friday</span>
               </a>
               <a
-                href="https://www.stickershuttle.com/pro"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-white/30 bg-gradient-to-br from-cyan-600 to-blue-700 hover:opacity-90 transition-opacity font-medium text-sm"
-              >
-                <img
-                  src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1755785867/ProOnly_1_jgp5s4.png"
-                  alt="Pro"
-                  className="w-4 h-4"
-                />
-                Join Pro
-              </a>
-              <a
                 href="https://www.stickershuttle.com/account/dashboard?view=financial"
                 className="flex items-center gap-2 px-4 py-2 rounded-lg border border-yellow-500/40 bg-gradient-to-br from-yellow-500/30 to-yellow-600/10 hover:opacity-90 transition-opacity font-medium text-sm"
               >
