@@ -311,7 +311,7 @@ export const handleGetStoreCredit: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const storeCredit = await bigCommerceAPI.getCustomerStoreCredit(customerId);
+    const storeCredit = await getCustomerStoreCredit(customerId);
 
     res.json({
       success: true,
