@@ -79,10 +79,12 @@ export default function Dashboard() {
             setError(customerError);
           }
         } catch (err) {
+          console.error("Customer fetch error:", err);
           const message =
             err instanceof Error
               ? err.message
               : "Network error fetching customer data";
+          console.error("Full error details:", { err, message });
           setError(message);
         }
 
