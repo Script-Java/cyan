@@ -59,6 +59,26 @@ export function createServer() {
     verifyToken,
     handleGetCustomerAddresses,
   );
+  app.post(
+    "/api/customers/me/addresses",
+    verifyToken,
+    handleCreateCustomerAddress,
+  );
+  app.patch(
+    "/api/customers/me/addresses/:addressId",
+    verifyToken,
+    handleUpdateCustomerAddress,
+  );
+  app.delete(
+    "/api/customers/me/addresses/:addressId",
+    verifyToken,
+    handleDeleteCustomerAddress,
+  );
+  app.delete(
+    "/api/customers/me/account",
+    verifyToken,
+    handleDeleteCustomerAccount,
+  );
 
   // ===== Order Routes (Protected) =====
   app.get("/api/orders", verifyToken, handleGetOrders);
