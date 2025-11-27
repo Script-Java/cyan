@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Products from "./pages/Products";
+import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import Dashboard from "./pages/Dashboard";
 import OrderHistory from "./pages/OrderHistory";
