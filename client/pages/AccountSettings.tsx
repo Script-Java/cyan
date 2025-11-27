@@ -108,11 +108,24 @@ export default function AccountSettings() {
         });
 
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Failed to fetch customer data");
+          let errorData: any;
+          try {
+            errorData = await response.json();
+          } catch {
+            errorData = { error: response.statusText };
+          }
+          const errorMessage =
+            errorData.error ||
+            `Failed to fetch customer data (${response.status})`;
+          throw new Error(errorMessage);
         }
 
         const data = await response.json();
+
+        if (!data.customer) {
+          throw new Error("No customer data received from server");
+        }
+
         setCustomer(data.customer);
 
         // Initialize form data
