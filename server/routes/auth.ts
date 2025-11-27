@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { bigCommerceAPI } from "../utils/bigcommerce";
+import { syncCustomerToSupabase } from "../utils/supabase";
 import jwt from "jsonwebtoken";
 
 interface LoginRequest {
