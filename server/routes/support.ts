@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
+import { sendTicketCreationEmail, sendTicketReplyEmail } from "../utils/email";
 
 const supabaseUrl = process.env.SUPABASE_URL || "";
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY || "";
@@ -80,6 +81,9 @@ export const handleSupportSubmit: RequestHandler = async (req, res) => {
       category,
       priority,
     });
+
+    // Send confirmation email
+    await sendTicketCreationEmail(email, name, data.id, subject);
 
     res.status(200).json({
       success: true,
@@ -264,12 +268,13 @@ export const handleAdminReplyToTicket: RequestHandler = async (req, res) => {
     }
 
     // Update ticket status to in-progress
-    await supabase
+    const { data: updatedTicket } = await supabase
       .from("support_tickets")
       .update({ status: "in-progress", updated_at: new Date().toISOString() })
-      .eq("id", ticketId);
+      .eq("id", ticketId)
+      .select("subject")
+      .single();
 
-    // TODO: Send email notification to customer using Resend
     console.log("Admin Reply Created:", {
       ticketId,
       replyId: reply.id,
@@ -277,10 +282,20 @@ export const handleAdminReplyToTicket: RequestHandler = async (req, res) => {
       message,
     });
 
+    // Send email notification to customer
+    await sendTicketReplyEmail(
+      ticket.customer_email,
+      ticket.customer_name,
+      ticketId,
+      updatedTicket?.subject || "Your Support Ticket",
+      message,
+      adminName
+    );
+
     res.json({
       success: true,
       replyId: reply.id,
-      message: "Reply sent successfully",
+      message: "Reply sent successfully and customer notified",
     });
   } catch (error) {
     console.error("Error in handleAdminReplyToTicket:", error);
