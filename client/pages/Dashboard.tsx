@@ -65,14 +65,29 @@ export default function Dashboard() {
           }),
         ]);
 
+        let customerError = null;
         if (!customerRes.ok) {
-          throw new Error("Failed to fetch customer data");
+          try {
+            const errorData = await customerRes.json();
+            customerError = errorData.error || "Failed to fetch customer data";
+          } catch {
+            customerError = "Failed to fetch customer data";
+          }
+          throw new Error(customerError);
         }
 
         const customerData = await customerRes.json();
         setCustomer(customerData.customer);
 
-        if (ordersRes.ok) {
+        if (!ordersRes.ok) {
+          try {
+            const errorData = await ordersRes.json();
+            const ordersError = errorData.error || "Failed to fetch orders";
+            setError(ordersError);
+          } catch {
+            setError("Failed to fetch orders");
+          }
+        } else {
           const ordersData = await ordersRes.json();
           setOrders(ordersData.orders || []);
         }
