@@ -172,13 +172,13 @@ export default function Header() {
               >
                 <LayoutGrid className="w-7 h-7 text-[#8B5CF6]" />
               </Link>
-              <a
-                href="https://www.stickershuttle.com/account/dashboard?view=all-orders"
+              <Link
+                to="/order-history"
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                 title="Orders"
               >
                 <Bookmark className="w-7 h-7 text-[#10B981]" />
-              </a>
+              </Link>
               {isAuthenticated && (
                 <div
                   className="flex items-center gap-2 px-4 py-2 rounded-lg border border-yellow-500/40 bg-gradient-to-br from-yellow-500/30 to-yellow-600/10 font-medium text-sm"
