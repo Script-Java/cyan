@@ -67,11 +67,12 @@ export default function DashboardNavigation({
     },
     {
       icon: Settings,
-      title: "Settings",
+      title: "Account Settings",
       description: "Manage account",
       color: "text-gray-600",
       borderColor: "rgba(107, 114, 128, 0.2)",
       bgColor: "rgba(107, 114, 128, 0.05)",
+      onClick: () => navigate("/account-settings"),
     },
     {
       icon: LogOut,
