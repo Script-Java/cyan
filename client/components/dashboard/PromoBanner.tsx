@@ -1,5 +1,3 @@
-import { Gift, ArrowRight } from "lucide-react";
-
 export default function PromoBanner() {
   return (
     <a
