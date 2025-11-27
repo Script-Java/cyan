@@ -300,48 +300,6 @@ export default function Product() {
             </div>
           </div>
 
-          {/* Related Products */}
-          <div className="mt-20 pt-12 border-t border-gray-200">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              More Products
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {Object.entries(PRODUCTS).map(
-                ([key, prod]) =>
-                  key !== productId && (
-                    <Link
-                      key={key}
-                      to={`/product/${key}`}
-                      className="group rounded-lg overflow-hidden bg-white border border-gray-200 hover:shadow-lg transition-all"
-                    >
-                      <div className="bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
-                        <img
-                          src={prod.image}
-                          alt={prod.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                        />
-                      </div>
-                      <div className="p-4">
-                        <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600">
-                          {prod.name}
-                        </h3>
-                        <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold text-gray-900">
-                            ${prod.price.toFixed(2)}
-                          </span>
-                          <div className="flex items-center gap-1">
-                            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                            <span className="text-sm font-medium text-gray-700">
-                              {prod.rating}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  ),
-              )}
-            </div>
-          </div>
         </div>
       </main>
     </>
