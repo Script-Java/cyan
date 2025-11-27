@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { bigCommerceAPI } from "../utils/bigcommerce";
+import { getCustomerStoreCredit } from "../utils/supabase";
 
 /**
  * Get current customer profile
