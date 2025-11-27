@@ -218,8 +218,8 @@ export default function Header() {
               </div>
 
               {/* Desktop Cart */}
-              <a
-                href="https://stickershuttle.com/cart"
+              <Link
+                to="/cart"
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors ml-2 relative"
                 title="Shopping cart"
               >
@@ -229,7 +229,7 @@ export default function Header() {
                     {cartCount}
                   </span>
                 )}
-              </a>
+              </Link>
             </nav>
 
             {/* Mobile Menu Button */}
