@@ -34,17 +34,29 @@ export default function BcConfigurator({ product: builderProduct }) {
     if (cartId) return cartId;
     try {
       // create cart
-      const res = await fetch("/api/storefront/carts", {
+      const res = await fetch("/api/cart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ line_items: [] })
       });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to create cart");
+      }
+
       const data = await res.json();
-      const newCartId = data.data?.id || data.id || null;
+      const newCartId = data.data?.id || null;
+
+      if (!newCartId) {
+        throw new Error("No cart ID returned from server");
+      }
+
       setCartId(newCartId);
       return newCartId;
     } catch (err) {
-      throw new Error("Failed to create cart");
+      const message = err instanceof Error ? err.message : "Failed to create cart";
+      throw new Error(message);
     }
   }
 
