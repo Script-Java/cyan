@@ -481,6 +481,48 @@ class BigCommerceAPI {
   }
 
   /**
+   * Get order shipments with tracking information
+   */
+  async getOrderShipments(orderId: number): Promise<any[]> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/orders/${orderId}/shipments`;
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        // Shipments might not exist yet, return empty array instead of throwing
+        if (response.status === 404) {
+          return [];
+        }
+        console.error("Get shipments error:", {
+          status: response.status,
+          statusText: response.statusText,
+        });
+        return [];
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse shipments response:", parseError);
+        return [];
+      }
+
+      return data?.data || [];
+    } catch (error) {
+      console.error("Get order shipments error:", error);
+      return [];
+    }
+  }
+
+  /**
    * Validate customer credentials (simple check)
    */
   async validateCredentials(email: string, password: string): Promise<boolean> {
