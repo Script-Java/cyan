@@ -36,17 +36,18 @@ export const handleLogin: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Email and password required" });
     }
 
-    // Validate credentials against BigCommerce
-    const isValid = await bigCommerceAPI.validateCredentials(email, password);
-    if (!isValid) {
-      return res.status(401).json({ error: "Invalid email or password" });
-    }
-
     // Get customer from BigCommerce
     const customer = await bigCommerceAPI.getCustomerByEmail(email);
     if (!customer) {
+      console.log("Customer not found in BigCommerce:", email);
       return res.status(401).json({ error: "Customer not found" });
     }
+
+    console.log("Customer found in BigCommerce:", {
+      id: customer.id,
+      email: customer.email,
+      store_credit: customer.store_credit,
+    });
 
     // Generate JWT token
     const token = generateToken(customer.id, customer.email);
