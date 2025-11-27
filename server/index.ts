@@ -41,6 +41,7 @@ import {
   handleAdminGetAllTickets,
   handleAdminReplyToTicket,
   handleUpdateTicketStatus,
+  handleCustomerReplyToTicket,
 } from "./routes/support";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
@@ -125,6 +126,7 @@ export function createServer() {
   app.post("/api/support/submit", handleSupportSubmit);
   app.get("/api/support/tickets", verifyToken, handleGetTickets);
   app.get("/api/support/tickets/:ticketId", verifyToken, handleGetTicketDetails);
+  app.post("/api/support/tickets/:ticketId/reply", verifyToken, handleCustomerReplyToTicket);
   app.get("/api/admin/tickets", handleAdminGetAllTickets);
   app.post("/api/admin/tickets/:ticketId/reply", handleAdminReplyToTicket);
   app.patch("/api/admin/tickets/:ticketId/status", handleUpdateTicketStatus);
