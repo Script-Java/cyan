@@ -33,7 +33,9 @@ export const handleGetCustomer: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     console.error("Get customer error:", error);
-    res.status(500).json({ error: "Failed to fetch customer" });
+    const message =
+      error instanceof Error ? error.message : "Failed to fetch customer";
+    res.status(500).json({ error: message });
   }
 };
 
