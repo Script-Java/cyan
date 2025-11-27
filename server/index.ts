@@ -97,6 +97,14 @@ export function createServer() {
   app.get("/api/designs", verifyToken, handleGetDesigns);
   app.get("/api/orders/:orderId/designs", verifyToken, handleGetOrderDesigns);
 
+  // ===== Cart Routes (Public) =====
+  app.post("/api/cart", handleCreateCart);
+  app.get("/api/cart/:cartId", handleGetCart);
+  app.post("/api/cart/:cartId/items", handleAddToCart);
+  app.patch("/api/cart/:cartId/items/:itemIndex", handleUpdateCartItem);
+  app.delete("/api/cart/:cartId/items/:itemIndex", handleRemoveFromCart);
+  app.delete("/api/cart/:cartId", handleClearCart);
+
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
 
