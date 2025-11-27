@@ -7,6 +7,7 @@ import {
   MessageCircle,
   Settings,
   LogOut,
+  Inbox,
 } from "lucide-react";
 
 interface DashboardNavigationProps {
@@ -65,6 +66,15 @@ export default function DashboardNavigation({
       borderColor: "rgba(239, 68, 68, 0.2)",
       bgColor: "rgba(239, 68, 68, 0.05)",
       onClick: () => navigate("/support"),
+    },
+    {
+      icon: Inbox,
+      title: "My Tickets",
+      description: "View your support tickets",
+      color: "text-purple-600",
+      borderColor: "rgba(168, 85, 247, 0.2)",
+      bgColor: "rgba(168, 85, 247, 0.05)",
+      onClick: () => navigate("/my-tickets"),
     },
     {
       icon: Settings,
