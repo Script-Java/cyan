@@ -328,7 +328,22 @@ class BigCommerceAPI {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to fetch orders from BigCommerce");
+        let errorData: any;
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = { statusText: response.statusText };
+        }
+        console.error("BigCommerce API Error - Get Orders:", {
+          status: response.status,
+          statusText: response.statusText,
+          storeHash: this.storeHash,
+          hasToken: !!this.accessToken,
+          error: errorData,
+        });
+        throw new Error(
+          `BigCommerce API Error (${response.status}): ${errorData?.error_description || response.statusText}`,
+        );
       }
 
       let data: any;
