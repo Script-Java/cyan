@@ -76,14 +76,23 @@ export default function AdminSupport() {
 
   const handleSelectTicket = async (ticket: AdminTicket) => {
     setSelectedTicket(ticket);
-    // Fetch replies for this ticket
+    // Fetch ticket details with replies
     try {
-      // Since we don't have a dedicated endpoint for admin to get ticket details with replies,
-      // we'll just set the ticket and replies will be managed separately
-      // In a real app, you'd want a dedicated admin endpoint
-      setTicketReplies([]);
+      // Create a dummy customer ID for fetching - admin can use 0 to get all replies
+      const response = await fetch(
+        `/api/support/tickets/${ticket.id}?customerId=0`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch ticket details");
+      }
+
+      const data = await response.json();
+      setTicketReplies(data.replies || []);
     } catch (error) {
       console.error("Error loading ticket details:", error);
+      toast.error("Failed to load ticket details");
+      setTicketReplies([]);
     }
   };
 
