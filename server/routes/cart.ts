@@ -29,7 +29,7 @@ export const handleCreateCart: RequestHandler = async (req, res) => {
   try {
     const { line_items = [] } = req.body;
 
-    const cartId = uuidv4();
+    const cartId = randomUUID();
     const now = new Date().toISOString();
 
     const cart: Cart = {
