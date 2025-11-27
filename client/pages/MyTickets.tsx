@@ -8,6 +8,8 @@ import {
   ChevronRight,
   ArrowLeft,
   Plus,
+  Send,
+  Loader,
 } from "lucide-react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
@@ -31,6 +33,8 @@ export default function MyTickets() {
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [ticketReplies, setTicketReplies] = useState<any[]>([]);
   const [filter, setFilter] = useState<"all" | "open" | "in-progress" | "resolved">("all");
+  const [replyMessage, setReplyMessage] = useState("");
+  const [isSubmittingReply, setIsSubmittingReply] = useState(false);
 
   useEffect(() => {
     fetchTickets();
@@ -97,6 +101,66 @@ export default function MyTickets() {
   const handleBack = () => {
     setSelectedTicket(null);
     setTicketReplies([]);
+    setReplyMessage("");
+  };
+
+  const handleSubmitReply = async () => {
+    if (!selectedTicket || !replyMessage.trim()) {
+      toast.error("Please enter a reply message");
+      return;
+    }
+
+    setIsSubmittingReply(true);
+
+    try {
+      const token = localStorage.getItem("authToken");
+      const customerId = localStorage.getItem("customerId");
+
+      if (!token || !customerId) {
+        navigate("/login");
+        return;
+      }
+
+      const response = await fetch(
+        `/api/support/tickets/${selectedTicket.id}/reply`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            message: replyMessage,
+            customerId: parseInt(customerId),
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to send reply");
+      }
+
+      toast.success("Reply sent!");
+      setReplyMessage("");
+
+      // Add reply to local state
+      const newReply = {
+        id: Date.now().toString(),
+        sender_name: "You",
+        sender_type: "customer",
+        message: replyMessage,
+        created_at: new Date().toISOString(),
+      };
+      setTicketReplies([...ticketReplies, newReply]);
+    } catch (error) {
+      console.error("Error sending reply:", error);
+      const message =
+        error instanceof Error ? error.message : "Failed to send reply";
+      toast.error(message);
+    } finally {
+      setIsSubmittingReply(false);
+    }
   };
 
   const getStatusColor = (status: string) => {
