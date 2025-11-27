@@ -7,11 +7,38 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     setIsAuthenticated(!!token);
+  }, []);
+
+  useEffect(() => {
+    // Fetch cart count from cart data or BigCommerce
+    const fetchCartCount = () => {
+      try {
+        const cartData = localStorage.getItem("cart");
+        if (cartData) {
+          const cart = JSON.parse(cartData);
+          const count = cart.items ? cart.items.length : 0;
+          setCartCount(count);
+        }
+      } catch (error) {
+        console.error("Error fetching cart count:", error);
+      }
+    };
+
+    fetchCartCount();
+
+    // Listen for storage changes to update cart count in real-time
+    const handleStorageChange = () => {
+      fetchCartCount();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const handleLogout = () => {
