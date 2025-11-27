@@ -10,3 +10,24 @@
 export interface DemoResponse {
   message: string;
 }
+
+/**
+ * Support submission request
+ */
+export interface SupportSubmissionRequest {
+  name: string;
+  email: string;
+  subject: string;
+  category: string;
+  priority: string;
+  message: string;
+}
+
+/**
+ * Support submission response
+ */
+export interface SupportSubmissionResponse {
+  success: boolean;
+  message: string;
+  referenceId?: string;
+}
