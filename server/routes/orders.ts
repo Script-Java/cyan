@@ -15,17 +15,35 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
 
     const orders = await bigCommerceAPI.getCustomerOrders(customerId);
 
+    // Fetch shipments for each order
+    const ordersWithShipments = await Promise.all(
+      orders.map(async (order: any) => {
+        const shipments = await bigCommerceAPI.getOrderShipments(order.id);
+        return {
+          id: order.id,
+          customerId: order.customer_id,
+          status: order.status,
+          dateCreated: order.date_created,
+          total: order.total_incl_tax,
+          itemCount: order.items_count,
+          shipments: shipments.map((shipment: any) => ({
+            id: shipment.id,
+            status: shipment.status,
+            dateCreated: shipment.date_created,
+            trackingNumber: shipment.tracking_number,
+            shippingProvider: shipment.shipping_provider,
+            shippingMethod: shipment.shipping_method,
+            comments: shipment.comments,
+            itemsCount: shipment.items?.length || 0,
+          })),
+        };
+      }),
+    );
+
     res.json({
       success: true,
-      orders: orders.map((order: any) => ({
-        id: order.id,
-        customerId: order.customer_id,
-        status: order.status,
-        dateCreated: order.date_created,
-        total: order.total_incl_tax,
-        itemCount: order.items_count,
-      })),
-      count: orders.length,
+      orders: ordersWithShipments,
+      count: ordersWithShipments.length,
     });
   } catch (error) {
     console.error("Get orders error:", error);
