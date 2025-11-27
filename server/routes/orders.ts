@@ -29,7 +29,9 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     console.error("Get orders error:", error);
-    res.status(500).json({ error: "Failed to fetch orders" });
+    const message =
+      error instanceof Error ? error.message : "Failed to fetch orders";
+    res.status(500).json({ error: message });
   }
 };
 
