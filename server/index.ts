@@ -61,6 +61,10 @@ export function createServer() {
   app.post("/api/orders", verifyToken, handleCreateOrder);
   app.get("/api/orders/:orderId", verifyToken, handleGetOrder);
 
+  // ===== Design Routes (Protected) =====
+  app.get("/api/designs", verifyToken, handleGetDesigns);
+  app.get("/api/orders/:orderId/designs", verifyToken, handleGetOrderDesigns);
+
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
 
