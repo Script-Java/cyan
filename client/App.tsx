@@ -14,6 +14,7 @@ import Dashboard from "./pages/Dashboard";
 import OrderHistory from "./pages/OrderHistory";
 import Finances from "./pages/Finances";
 import Designs from "./pages/Designs";
+import AccountSettings from "./pages/AccountSettings";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 
