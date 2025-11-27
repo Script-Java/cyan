@@ -753,6 +753,7 @@ class BigCommerceAPI {
         console.error("Get customer store credit failed:", {
           status: response.status,
           statusText: response.statusText,
+          customerId,
         });
         return 0;
       }
@@ -765,7 +766,10 @@ class BigCommerceAPI {
         return 0;
       }
 
-      return data?.data?.store_credit || 0;
+      console.log("Customer data from BigCommerce:", data?.data);
+      const credit = data?.data?.store_credit || 0;
+      console.log("Store credit value:", credit);
+      return credit;
     } catch (error) {
       console.error("Get customer store credit error:", error);
       return 0;
