@@ -56,12 +56,21 @@ export default function Support() {
     setIsSubmitting(true);
 
     try {
+      const token = localStorage.getItem("authToken");
+      const customerId = localStorage.getItem("customerId");
+
+      const payload = {
+        ...formData,
+        customerId: customerId ? parseInt(customerId) : undefined,
+      };
+
       const response = await fetch("/api/support/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(token && { Authorization: `Bearer ${token}` }),
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
@@ -70,7 +79,9 @@ export default function Support() {
       }
 
       const data = await response.json();
-      toast.success("Support request submitted successfully! We'll get back to you soon.");
+      toast.success(
+        `Support request submitted successfully! Ticket ID: ${data.ticketId?.slice(0, 8)}...`
+      );
 
       setFormData({
         name: "",
@@ -82,7 +93,7 @@ export default function Support() {
       });
 
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/my-tickets");
       }, 2000);
     } catch (error) {
       const message =
