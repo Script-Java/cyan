@@ -45,6 +45,7 @@ export const handleLogin: RequestHandler = async (req, res) => {
     }
 
     console.log("Full customer object from BigCommerce:", JSON.stringify(customer, null, 2));
+    console.log("Available customer fields:", Object.keys(customer || {}).join(", "));
 
     // Sync customer data to Supabase
     try {
