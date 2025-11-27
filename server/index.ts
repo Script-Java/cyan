@@ -98,6 +98,11 @@ export function createServer() {
     verifyToken,
     handleDeleteCustomerAccount,
   );
+  app.get(
+    "/api/customers/me/store-credit",
+    verifyToken,
+    handleGetStoreCredit,
+  );
 
   // ===== Order Routes (Protected) =====
   app.get("/api/orders", verifyToken, handleGetOrders);
