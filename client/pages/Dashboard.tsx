@@ -117,7 +117,13 @@ export default function Dashboard() {
       <main className="min-h-screen bg-white">
         <DashboardLayout>
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3">
+            <div
+              className="bg-red-50 border border-red-200 rounded-lg flex gap-3"
+              style={{
+                margin: "53px 0 24px",
+                padding: "16px 16px 200px",
+              }}
+            >
               <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
               <p className="text-sm text-red-800">{error}</p>
             </div>
