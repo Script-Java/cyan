@@ -106,6 +106,10 @@ export function createServer() {
   app.delete("/api/cart/:cartId/items/:itemIndex", handleRemoveFromCart);
   app.delete("/api/cart/:cartId", handleClearCart);
 
+  // ===== Checkout Routes (Protected) =====
+  app.post("/api/checkout", verifyToken, handleCheckout);
+  app.get("/api/checkout/:cartId", handleGetCheckoutDetails);
+
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
 
