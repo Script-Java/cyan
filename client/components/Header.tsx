@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, ShoppingCart, ChevronDown, LayoutGrid, Bookmark } from "lucide-react";
+import {
+  Menu,
+  X,
+  ShoppingCart,
+  ChevronDown,
+  LayoutGrid,
+  Bookmark,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function Header() {
@@ -68,7 +75,10 @@ export default function Header() {
 
             {/* Desktop Logo Area */}
             <div className="hidden md:flex items-center mr-6">
-              <a href="https://www.stickershuttle.com/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <a
+                href="https://www.stickershuttle.com/"
+                className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              >
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F6def69979e504acebe0ba665997a2501?format=webp&width=800"
                   alt="Sticky Logo"
@@ -79,7 +89,10 @@ export default function Header() {
 
             {/* Mobile/Tablet Centered Logo */}
             <div className="md:hidden absolute left-1/2 transform -translate-x-1/2">
-              <a href="https://www.stickershuttle.com/" className="flex items-center">
+              <a
+                href="https://www.stickershuttle.com/"
+                className="flex items-center"
+              >
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F6def69979e504acebe0ba665997a2501?format=webp&width=800"
                   alt="Sticky Logo"
@@ -90,7 +103,10 @@ export default function Header() {
 
             {/* Mobile Cart Button (hidden on larger screens) */}
             <div className="md:hidden flex items-center">
-              <a href="https://stickershuttle.com/cart" className="p-2 hover:bg-white/10 rounded-lg transition-colors relative">
+              <a
+                href="https://stickershuttle.com/cart"
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors relative"
+              >
                 <ShoppingCart className="w-6 h-6 text-white" />
                 {cartCount > 0 && (
                   <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
@@ -109,7 +125,9 @@ export default function Header() {
                     alt="Sticker Shuttle"
                     className="w-3.5 h-3.5"
                   />
-                  <span className="text-sm font-medium">Select sticker type...</span>
+                  <span className="text-sm font-medium">
+                    Select sticker type...
+                  </span>
                 </div>
                 <ChevronDown className="w-5 h-5 text-white/70" />
               </button>
@@ -248,7 +266,9 @@ export default function Header() {
             </div>
 
             {/* Quick Access */}
-            <h3 className="text-sm font-semibold text-white mb-4">Quick Access:</h3>
+            <h3 className="text-sm font-semibold text-white mb-4">
+              Quick Access:
+            </h3>
             <div className="grid grid-cols-2 gap-3 mb-6">
               <a
                 href="https://www.stickershuttle.com/products/vinyl-stickers"
@@ -321,7 +341,9 @@ export default function Header() {
                 className="h-8 object-contain"
               />
               <div className="border-l border-white/30 h-8"></div>
-              <span className="text-xs text-white font-medium">Get your vinyl banners here!</span>
+              <span className="text-xs text-white font-medium">
+                Get your vinyl banners here!
+              </span>
             </a>
 
             {/* Auth Buttons */}

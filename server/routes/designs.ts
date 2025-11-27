@@ -146,9 +146,7 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
                 name: field.name || "Design File",
                 description: field.value?.substring(0, 100),
                 type: field.name || "design",
-                url: field.value?.startsWith("http")
-                  ? field.value
-                  : undefined,
+                url: field.value?.startsWith("http") ? field.value : undefined,
                 createdAt: order.date_created,
               });
             }

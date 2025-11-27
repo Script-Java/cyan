@@ -163,7 +163,9 @@ export default function Dashboard() {
           {/* Active Orders Summary */}
           <ActiveOrdersSummary
             activeOrderCount={
-              orders.filter((o) => o.status === "pending" || o.status === "processing").length
+              orders.filter(
+                (o) => o.status === "pending" || o.status === "processing",
+              ).length
             }
           />
 

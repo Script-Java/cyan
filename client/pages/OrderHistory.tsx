@@ -77,9 +77,7 @@ export default function OrderHistory() {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(
-            errorData.error || "Failed to fetch order history"
-          );
+          throw new Error(errorData.error || "Failed to fetch order history");
         }
 
         const data: OrdersResponse = await response.json();
@@ -215,7 +213,7 @@ export default function OrderHistory() {
                   <button
                     onClick={() =>
                       setExpandedOrderId(
-                        expandedOrderId === order.id ? null : order.id
+                        expandedOrderId === order.id ? null : order.id,
                       )
                     }
                     className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
@@ -333,8 +331,10 @@ export default function OrderHistory() {
                                     {getShipmentStatusIcon(shipment.status)}
                                     <div>
                                       <p className="text-sm font-semibold text-gray-900">
-                                        {shipment.shippingProvider || "Shipment"}{" "}
-                                        - {shipment.shippingMethod || "Standard"}
+                                        {shipment.shippingProvider ||
+                                          "Shipment"}{" "}
+                                        -{" "}
+                                        {shipment.shippingMethod || "Standard"}
                                       </p>
                                       <p className="text-xs text-gray-600">
                                         {formatDate(shipment.dateCreated)}
@@ -405,7 +405,7 @@ export default function OrderHistory() {
                   <p className="text-sm text-gray-600 mb-1">Total Spent</p>
                   <p className="text-2xl font-bold text-gray-900">
                     {formatCurrency(
-                      orders.reduce((sum, order) => sum + order.total, 0)
+                      orders.reduce((sum, order) => sum + order.total, 0),
                     )}
                   </p>
                 </div>

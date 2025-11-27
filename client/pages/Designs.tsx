@@ -107,7 +107,7 @@ export default function Designs() {
 
   const totalDesigns = designsByOrder.reduce(
     (sum, order) => sum + order.designs.length,
-    0
+    0,
   );
 
   if (isLoading) {
@@ -186,7 +186,9 @@ export default function Designs() {
                   </p>
                 </div>
                 <div className="bg-white rounded-lg border border-gray-200 p-4">
-                  <p className="text-sm text-gray-600 mb-1">Orders with Designs</p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Orders with Designs
+                  </p>
                   <p className="text-2xl font-bold text-gray-900">
                     {designsByOrder.length}
                   </p>
@@ -243,7 +245,7 @@ export default function Designs() {
                       setExpandedOrderId(
                         expandedOrderId === order.orderId
                           ? null
-                          : order.orderId
+                          : order.orderId,
                       )
                     }
                     className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"

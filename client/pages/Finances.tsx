@@ -78,7 +78,7 @@ export default function Finances() {
         // Calculate totals
         const total = allOrders.reduce(
           (sum: number, order: Order) => sum + order.total,
-          0
+          0,
         );
         setTotalSpent(total);
         setTotalSaved(total * 0.5); // 50% savings
@@ -246,9 +246,7 @@ export default function Finances() {
                   <p className="text-3xl font-bold text-gray-900">
                     {formatCurrency(totalSpent / orders.length)}
                   </p>
-                  <p className="text-xs text-gray-600 mt-2">
-                    Per order value
-                  </p>
+                  <p className="text-xs text-gray-600 mt-2">Per order value</p>
                 </div>
               </div>
 
@@ -274,7 +272,11 @@ export default function Finances() {
                           }}
                         />
                         <Legend />
-                        <Bar dataKey="Spent" fill="#3b82f6" radius={[8, 8, 0, 0]} />
+                        <Bar
+                          dataKey="Spent"
+                          fill="#3b82f6"
+                          radius={[8, 8, 0, 0]}
+                        />
                         <Bar
                           dataKey="Saved"
                           fill="#10b981"
@@ -380,13 +382,18 @@ export default function Finances() {
                       You're Saving Big!
                     </h3>
                     <p className="text-gray-700 mb-3">
-                      By choosing Sticker Shuttle, you save <span className="font-bold text-emerald-600">50%</span> compared to traditional sticker shops.
+                      By choosing Sticker Shuttle, you save{" "}
+                      <span className="font-bold text-emerald-600">50%</span>{" "}
+                      compared to traditional sticker shops.
                     </p>
                     <p className="text-gray-700">
                       That means for every ${" "}
-                      <span className="font-bold">1</span> you spend with us, you
-                      would pay <span className="font-bold">$2</span> elsewhere.
-                      Your total savings: <span className="font-bold text-emerald-600">{formatCurrency(totalSaved)}</span>
+                      <span className="font-bold">1</span> you spend with us,
+                      you would pay <span className="font-bold">$2</span>{" "}
+                      elsewhere. Your total savings:{" "}
+                      <span className="font-bold text-emerald-600">
+                        {formatCurrency(totalSaved)}
+                      </span>
                     </p>
                   </div>
                 </div>
