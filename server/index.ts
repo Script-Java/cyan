@@ -34,6 +34,7 @@ import {
   handleClearCart,
 } from "./routes/cart";
 import { handleCheckout, handleGetCheckoutDetails } from "./routes/checkout";
+import { handleSupportSubmit } from "./routes/support";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
@@ -112,6 +113,9 @@ export function createServer() {
 
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
+
+  // ===== Support Routes (Public) =====
+  app.post("/api/support/submit", handleSupportSubmit);
 
   return app;
 }
