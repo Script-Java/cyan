@@ -1,6 +1,8 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY || "");
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 
 export async function sendTicketCreationEmail(
   customerEmail: string,
@@ -9,6 +11,13 @@ export async function sendTicketCreationEmail(
   subject: string
 ): Promise<boolean> {
   try {
+    if (!resend) {
+      console.warn(
+        "Resend API key not configured. Email sending disabled. Set RESEND_API_KEY environment variable to enable."
+      );
+      return true; // Return true to not block the ticket creation
+    }
+
     await resend.emails.send({
       from: "support@stickyslap.com",
       to: customerEmail,
@@ -75,6 +84,13 @@ export async function sendTicketReplyEmail(
   adminName: string
 ): Promise<boolean> {
   try {
+    if (!resend) {
+      console.warn(
+        "Resend API key not configured. Email sending disabled. Set RESEND_API_KEY environment variable to enable."
+      );
+      return true; // Return true to not block the reply
+    }
+
     await resend.emails.send({
       from: "support@stickyslap.com",
       to: customerEmail,
