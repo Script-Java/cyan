@@ -54,8 +54,8 @@ export default function Header() {
             <div className="md:hidden absolute left-1/2 transform -translate-x-1/2">
               <a href="https://www.stickershuttle.com/" className="flex items-center">
                 <img
-                  src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749591683/White_Logo_ojmn3s.png"
-                  alt="Sticker Shuttle Logo"
+                  src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F6def69979e504acebe0ba665997a2501?format=webp&width=800"
+                  alt="Sticky Logo"
                   className="h-10 object-contain"
                 />
               </a>
