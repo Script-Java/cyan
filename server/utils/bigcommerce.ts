@@ -441,6 +441,201 @@ class BigCommerceAPI {
   }
 
   /**
+   * Update customer information
+   */
+  async updateCustomer(customerId: number, updates: any): Promise<any> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}`;
+
+    try {
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updates),
+      });
+
+      if (!response.ok) {
+        let errorData: any;
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = { statusText: response.statusText };
+        }
+        console.error("Update customer failed:", {
+          status: response.status,
+          error: errorData,
+        });
+        throw new Error(
+          errorData?.errors?.[0]?.message ||
+            errorData?.error_description ||
+            "Failed to update customer",
+        );
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse update response:", parseError);
+        throw new Error("Failed to parse customer update response");
+      }
+
+      return data?.data;
+    } catch (error) {
+      console.error("Update customer error:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update customer address
+   */
+  async updateCustomerAddress(
+    customerId: number,
+    addressId: number,
+    address: BigCommerceAddress,
+  ): Promise<any> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}/addresses/${addressId}`;
+
+    try {
+      const addressData: any = {
+        first_name: address.first_name,
+        last_name: address.last_name,
+        street_1: address.street_1,
+        city: address.city,
+        state_or_province: address.state_or_province,
+        postal_code: address.postal_code,
+        country_code: address.country_code,
+      };
+
+      if (address.street_2) {
+        addressData.street_2 = address.street_2;
+      }
+
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(addressData),
+      });
+
+      if (!response.ok) {
+        let errorData: any;
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = { statusText: response.statusText };
+        }
+        console.error("Update address failed:", {
+          status: response.status,
+          error: errorData,
+        });
+        throw new Error(
+          errorData?.errors?.[0]?.message ||
+            errorData?.error_description ||
+            "Failed to update address",
+        );
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse address update response:", parseError);
+        throw new Error("Failed to parse address update response");
+      }
+
+      return data?.data;
+    } catch (error) {
+      console.error("Update customer address error:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Delete customer address
+   */
+  async deleteCustomerAddress(
+    customerId: number,
+    addressId: number,
+  ): Promise<void> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}/addresses/${addressId}`;
+
+    try {
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        let errorData: any;
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = { statusText: response.statusText };
+        }
+        console.error("Delete address failed:", {
+          status: response.status,
+          error: errorData,
+        });
+        throw new Error(
+          errorData?.errors?.[0]?.message ||
+            errorData?.error_description ||
+            "Failed to delete address",
+        );
+      }
+    } catch (error) {
+      console.error("Delete customer address error:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Delete customer account
+   */
+  async deleteCustomer(customerId: number): Promise<void> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/customers/${customerId}`;
+
+    try {
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        let errorData: any;
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = { statusText: response.statusText };
+        }
+        console.error("Delete customer failed:", {
+          status: response.status,
+          error: errorData,
+        });
+        throw new Error(
+          errorData?.errors?.[0]?.message ||
+            errorData?.error_description ||
+            "Failed to delete customer account",
+        );
+      }
+    } catch (error) {
+      console.error("Delete customer error:", error);
+      throw error;
+    }
+  }
+
+  /**
    * Update customer password
    */
   async updateCustomerPassword(
