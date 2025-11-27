@@ -106,51 +106,8 @@ export default function DashboardNavigation({
 
   return (
     <div className="grid grid-cols-4 gap-6 mb-8">
-      {/* Primary Navigation */}
-      <div>
-        {navigationItems.map((item) => {
-          const Icon = item.icon;
-          const content = (
-            <div
-              className={`w-full p-4 rounded-2xl border transition-all duration-500 flex gap-3 items-center cursor-pointer group hover:shadow-md`}
-              style={{
-                backgroundImage: `linear-gradient(135deg, ${item.colors})`,
-                borderColor: item.borderColor,
-                borderWidth: "1px",
-              }}
-            >
-              <div className="p-2 bg-white/20 rounded-lg flex-shrink-0">
-                <Icon className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h4 className="text-sm font-semibold text-white">
-                  {item.title}
-                </h4>
-                <p className="text-xs text-white/90">{item.description}</p>
-              </div>
-            </div>
-          );
-
-          if (item.isLink) {
-            return (
-              <a
-                key={item.id}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block"
-              >
-                {content}
-              </a>
-            );
-          }
-
-          return <div key={item.id}>{content}</div>;
-        })}
-      </div>
-
       {/* Action Items Grid */}
-      <div className="col-span-3 grid grid-cols-3 gap-3">
+      <div className="col-span-4 grid grid-cols-3 gap-3">
         {actionItems.map((item) => {
           const Icon = item.icon;
           return (
