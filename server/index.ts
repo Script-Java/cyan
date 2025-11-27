@@ -13,6 +13,10 @@ import {
   handleGetCustomer,
   handleUpdateCustomer,
   handleGetCustomerAddresses,
+  handleCreateCustomerAddress,
+  handleUpdateCustomerAddress,
+  handleDeleteCustomerAddress,
+  handleDeleteCustomerAccount,
 } from "./routes/customers";
 import {
   handleGetOrders,
