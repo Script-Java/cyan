@@ -26,15 +26,22 @@ export default function Header() {
     if (token) {
       const fetchStoreCredit = async () => {
         try {
+          console.log("Fetching store credit with token:", token.substring(0, 20) + "...");
           const response = await fetch("/api/customers/me/store-credit", {
             headers: {
               "Authorization": `Bearer ${token}`,
             },
           });
 
+          console.log("Store credit response status:", response.status);
+
           if (response.ok) {
             const data = await response.json();
+            console.log("Store credit data:", data);
             setStoreCredit(data.storeCredit || 0);
+          } else {
+            const errorData = await response.json();
+            console.error("Store credit fetch error:", errorData);
           }
         } catch (error) {
           console.error("Error fetching store credit:", error);
