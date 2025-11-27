@@ -105,12 +105,6 @@ export default function Header() {
                 <Bookmark className="w-7 h-7 text-[#10B981]" />
               </a>
               <a
-                href="https://www.stickershuttle.com/black-friday"
-                className="px-3 py-2 hover:bg-white/10 rounded-lg transition-colors font-bold text-lg flex items-center gap-2"
-              >
-                🔥 <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent font-bold">Shop Black Friday</span>
-              </a>
-              <a
                 href="https://www.stickershuttle.com/account/dashboard?view=financial"
                 className="flex items-center gap-2 px-4 py-2 rounded-lg border border-yellow-500/40 bg-gradient-to-br from-yellow-500/30 to-yellow-600/10 hover:opacity-90 transition-opacity font-medium text-sm"
               >
