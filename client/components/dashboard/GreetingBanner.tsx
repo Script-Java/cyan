@@ -57,7 +57,14 @@ export default function GreetingBanner({
       )}
 
       {/* Content */}
-      <div className="absolute inset-0 flex items-start gap-4 p-4 sm:p-6 z-30">
+      <div
+        className="absolute left-0 right-0 bottom-0 flex items-start gap-4 z-30"
+        style={{
+          top: "14px",
+          marginBottom: "20px",
+          padding: "24px",
+        }}
+      >
         {/* Avatar */}
         <div className="relative group">
           <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 backdrop-blur-md bg-white/10 flex items-center justify-center flex-shrink-0 shadow-lg">
