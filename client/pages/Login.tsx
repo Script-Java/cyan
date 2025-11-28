@@ -137,24 +137,6 @@ export default function Login() {
               </button>
             </form>
 
-            <div className="relative mb-8">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-600">
-                  Or continue with
-                </span>
-              </div>
-            </div>
-
-            <button
-              onClick={handleBigCommerceLogin}
-              className="w-full py-3 border-2 border-[#030140] text-[#030140] rounded-lg font-bold hover:bg-gray-50 transition-all mb-4"
-            >
-              BigCommerce Account
-            </button>
-
             <div className="text-center">
               <p className="text-gray-600">
                 Don't have an account?{" "}
