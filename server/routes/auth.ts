@@ -164,73 +164,7 @@ export const handleSignup: RequestHandler = async (req, res) => {
   }
 };
 
-export const handleBigCommerceAuth: RequestHandler = (req, res) => {
-  try {
-    const clientId = process.env.BIGCOMMERCE_CLIENT_ID || "";
-    const appUrl = process.env.APP_URL || "http://localhost:8080";
-    const redirectUri = `${appUrl}/api/auth/bigcommerce/callback`;
-    const state = Buffer.from(Math.random().toString()).toString("base64");
-
-    if (!clientId) {
-      return res
-        .status(500)
-        .json({ error: "BigCommerce client ID not configured" });
-    }
-
-    const bigCommerceAuthUrl = new URL(
-      "https://login.bigcommerce.com/oauth2/authorize",
-    );
-    bigCommerceAuthUrl.searchParams.append("client_id", clientId);
-    bigCommerceAuthUrl.searchParams.append("redirect_uri", redirectUri);
-    bigCommerceAuthUrl.searchParams.append("response_type", "code");
-    bigCommerceAuthUrl.searchParams.append("state", state);
-    bigCommerceAuthUrl.searchParams.append(
-      "scope",
-      "store_v2_customers store_v2_orders",
-    );
-
-    res.redirect(bigCommerceAuthUrl.toString());
-  } catch (error) {
-    console.error("BigCommerce auth error:", error);
-    res.status(500).json({ error: "Authentication failed" });
-  }
-};
-
-export const handleBigCommerceCallback: RequestHandler = async (req, res) => {
-  try {
-    const { code } = req.query;
-
-    if (!code || typeof code !== "string") {
-      return res.redirect(`/auth/callback?error=no_code`);
-    }
-
-    // Exchange code for access token
-    const tokenData = await bigCommerceAPI.exchangeCodeForToken(code);
-
-    if (!tokenData.access_token) {
-      throw new Error("No access token received");
-    }
-
-    // Get customer ID from context or user info
-    const customerId = tokenData.user?.id;
-    const email = tokenData.user?.email;
-
-    if (!customerId || !email) {
-      throw new Error("Failed to get customer information");
-    }
-
-    // Generate JWT token for our application
-    const token = generateToken(customerId, email);
-
-    // Redirect to auth callback page with token in query string
-    res.redirect(
-      `/auth/callback?auth_token=${token}&customer_id=${customerId}`,
-    );
-  } catch (error) {
-    console.error("BigCommerce callback error:", error);
-    res.redirect(`/auth/callback?error=auth_failed`);
-  }
-};
+// BigCommerce OAuth handlers removed - using Supabase-only authentication
 
 export const handleLogout: RequestHandler = (req, res) => {
   try {
