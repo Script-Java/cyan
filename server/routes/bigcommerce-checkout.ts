@@ -81,43 +81,6 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (
       storeInfo = null;
     }
 
-    // Create draft order
-    const draftOrderPayload: any = {
-      line_items: checkoutData.products.map((product) => ({
-        product_id: product.product_id,
-        quantity: product.quantity,
-        price_inc_tax: product.price_inc_tax,
-      })),
-      billing_address: {
-        first_name: checkoutData.billing_address.first_name,
-        last_name: checkoutData.billing_address.last_name,
-        street_1: checkoutData.billing_address.street_1,
-        street_2: checkoutData.billing_address.street_2 || "",
-        city: checkoutData.billing_address.city,
-        state_or_province: checkoutData.billing_address.state_or_province,
-        postal_code: checkoutData.billing_address.postal_code,
-        country_code: checkoutData.billing_address.country_code,
-      },
-      shipping_addresses: checkoutData.shipping_addresses.map((addr) => ({
-        first_name: addr.first_name,
-        last_name: addr.last_name,
-        street_1: addr.street_1,
-        street_2: addr.street_2 || "",
-        city: addr.city,
-        state_or_province: addr.state_or_province,
-        postal_code: addr.postal_code,
-        country_code: addr.country_code,
-      })),
-    };
-
-    // Add customer_id if authenticated
-    if (userId) {
-      draftOrderPayload.customer_id = userId;
-    } else if (checkoutData.customer_email) {
-      // For guest checkout, add customer email so BigCommerce can track the order
-      draftOrderPayload.customer_email = checkoutData.customer_email;
-    }
-
     console.log("Constructing BigCommerce checkout URL...");
 
     // Get the storefront domain to construct checkout URL
