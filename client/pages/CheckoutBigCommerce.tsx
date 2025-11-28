@@ -325,15 +325,17 @@ export default function CheckoutBigCommerce() {
 
       try {
         responseText = await response.text();
+        console.log("Raw response text:", responseText);
         result = responseText ? JSON.parse(responseText) : {};
       } catch (parseError) {
         console.error("Failed to parse checkout response:", {
           error: parseError,
-          responseText: responseText.substring(0, 500),
+          responseText: responseText || "[empty response]",
           status: response.status,
+          statusText: response.statusText,
         });
         throw new Error(
-          `Server error (${response.status}): ${responseText.substring(0, 100)}`,
+          `Server error (${response.status}): ${responseText || "[empty response]"}`,
         );
       }
 
