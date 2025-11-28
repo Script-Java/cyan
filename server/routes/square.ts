@@ -478,7 +478,6 @@ export const handleTestSquareConfig: RequestHandler = async (req, res) => {
 
     // Try to initialize the client
     try {
-      const { getPaymentsApi } = await import("../utils/square");
       const paymentsApi = getPaymentsApi();
       res.json({
         success: true,
