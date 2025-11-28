@@ -10,12 +10,31 @@ import {
   DollarSign,
   Settings,
   ChevronRight,
+  Package,
+  Calendar,
+  Mail,
 } from "lucide-react";
+
+interface PendingOrder {
+  id: number;
+  customerId: number;
+  customerName: string;
+  customerEmail: string;
+  status: string;
+  total: number;
+  subtotal: number;
+  tax: number;
+  shipping: number;
+  dateCreated: string;
+  itemCount: number;
+}
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [liveVisitors, setLiveVisitors] = useState(0);
+  const [pendingOrders, setPendingOrders] = useState<PendingOrder[]>([]);
+  const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
