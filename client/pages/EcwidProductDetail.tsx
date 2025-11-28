@@ -45,10 +45,20 @@ export default function EcwidProductDetail() {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/ecwid-products/${productId}`);
+        setError(null);
+
+        const response = await fetch(`/api/ecwid-products/${productId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         if (!response.ok) {
-          throw new Error("Failed to fetch product");
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(
+            errorData.error || `HTTP ${response.status}: Failed to fetch product`
+          );
         }
 
         const data = await response.json();
