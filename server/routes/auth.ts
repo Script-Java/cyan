@@ -42,37 +42,25 @@ export const handleLogin: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Email and password required" });
     }
 
-    // Get customer from BigCommerce
-    const customer = await bigCommerceAPI.getCustomerByEmail(email);
-    if (!customer) {
-      console.log("Customer not found in BigCommerce:", email);
-      return res.status(401).json({ error: "Customer not found" });
+    // Get customer from Supabase
+    const { data: customer, error } = await supabase
+      .from("customers")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (error || !customer) {
+      console.log("Customer not found in Supabase:", email);
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    console.log(
-      "Full customer object from BigCommerce:",
-      JSON.stringify(customer, null, 2),
+    // Verify password
+    const passwordMatch = await bcrypt.compare(
+      password,
+      customer.password_hash || "",
     );
-    console.log(
-      "Available customer fields:",
-      Object.keys(customer || {}).join(", "),
-    );
-
-    // Sync customer data to Supabase
-    try {
-      await syncCustomerToSupabase({
-        id: customer.id,
-        email: customer.email,
-        first_name: customer.first_name,
-        last_name: customer.last_name,
-        phone: customer.phone,
-        company: customer.company,
-        store_credit: customer.store_credit || 0,
-      });
-      console.log("Customer synced to Supabase:", customer.id);
-    } catch (syncError) {
-      console.error("Failed to sync customer to Supabase:", syncError);
-      // Don't fail login if Supabase sync fails, just log it
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Invalid email or password" });
     }
 
     // Generate JWT token
