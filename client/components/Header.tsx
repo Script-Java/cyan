@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Menu,
@@ -10,6 +10,8 @@ import {
   BarChart3,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const ECWID_STORE_ID = "120154275";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
