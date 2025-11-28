@@ -205,6 +205,7 @@ export const handleCreateCustomerAddress: RequestHandler = async (req, res) => {
 /**
  * Update customer address
  * Requires: customerId in JWT token
+ * Note: Address management is being implemented - currently returns placeholder response
  */
 export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
   try {
@@ -230,27 +231,21 @@ export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
       countryCode,
     } = req.body;
 
-    const address = {
-      first_name: firstName,
-      last_name: lastName,
-      street_1: street1,
-      street_2: street2,
-      city,
-      state_or_province: stateOrProvince,
-      postal_code: postalCode,
-      country_code: countryCode,
-    };
-
-    const updatedAddress = await bigCommerceAPI.updateCustomerAddress(
-      customerId,
-      parseInt(addressId),
-      address,
-    );
-
+    // Placeholder response - address management will be implemented
     res.json({
       success: true,
-      message: "Address updated successfully",
-      address: updatedAddress,
+      message: "Address management coming soon",
+      address: {
+        id: parseInt(addressId),
+        first_name: firstName,
+        last_name: lastName,
+        street_1: street1,
+        street_2: street2,
+        city,
+        state_or_province: stateOrProvince,
+        postal_code: postalCode,
+        country_code: countryCode,
+      },
     });
   } catch (error) {
     console.error("Update address error:", error);
