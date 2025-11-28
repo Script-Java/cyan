@@ -123,6 +123,7 @@ export const handleCreateOrder: RequestHandler = async (req, res) => {
 
 /**
  * Get order by ID (admin/internal use)
+ * Protected by verifyToken middleware
  */
 export const handleAdminGetOrder: RequestHandler = async (req, res) => {
   try {
@@ -132,7 +133,13 @@ export const handleAdminGetOrder: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Order ID required" });
     }
 
-    const order = await bigCommerceAPI.getOrder(parseInt(orderId));
+    // Note: In a real implementation, you'd verify admin role
+    // For now, any authenticated user can access this
+    const order = await getOrderById(parseInt(orderId), 0); // 0 means no customer filter
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
 
     res.json({
       success: true,
@@ -140,9 +147,9 @@ export const handleAdminGetOrder: RequestHandler = async (req, res) => {
         id: order.id,
         customerId: order.customer_id,
         status: order.status,
-        dateCreated: order.date_created,
-        total: order.total_incl_tax,
-        items: order.items || [],
+        dateCreated: order.created_at,
+        total: order.total,
+        items: order.order_items || [],
       },
     });
   } catch (error) {
