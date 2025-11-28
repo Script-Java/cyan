@@ -365,21 +365,17 @@ export default function Checkout() {
           body: JSON.stringify(paymentPayload),
         });
 
-        const paymentResponseText = await paymentResponse.text();
-
         console.log("Payment response status:", paymentResponse.status);
-        console.log("Payment response text:", paymentResponseText.substring(0, 200));
 
         try {
-          paymentResult = paymentResponseText ? JSON.parse(paymentResponseText) : {};
+          paymentResult = await paymentResponse.json();
         } catch (parseError) {
           console.error("Failed to parse payment response:", {
             error: parseError,
-            responseText: paymentResponseText.substring(0, 500),
             status: paymentResponse.status,
           });
           throw new Error(
-            `Payment response parsing failed: Invalid JSON. Status: ${paymentResponse.status}. Check browser console for details.`,
+            `Payment response parsing failed. Status: ${paymentResponse.status}.`,
           );
         }
 
