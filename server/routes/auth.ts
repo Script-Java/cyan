@@ -93,31 +93,51 @@ export const handleSignup: RequestHandler = async (req, res) => {
       });
     }
 
+    // Validate password strength
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ error: "Password must be at least 6 characters long" });
+    }
+
     console.log("Signup attempt for:", email);
 
     // Check if customer already exists
-    const existingCustomer = await bigCommerceAPI.getCustomerByEmail(email);
+    const { data: existingCustomer } = await supabase
+      .from("customers")
+      .select("id")
+      .eq("email", email)
+      .single();
+
     if (existingCustomer) {
       console.log("Email already registered:", email);
       return res.status(409).json({ error: "Email already registered" });
     }
 
-    console.log("Creating customer in BigCommerce:", {
+    // Hash password
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    console.log("Creating customer in Supabase:", {
       email,
       firstName,
       lastName,
     });
 
-    // Create customer in BigCommerce
-    const newCustomer = await bigCommerceAPI.createCustomer({
-      email,
-      first_name: firstName,
-      last_name: lastName,
-      password,
-    });
+    // Create customer in Supabase
+    const { data: newCustomer, error } = await supabase
+      .from("customers")
+      .insert({
+        email,
+        first_name: firstName,
+        last_name: lastName,
+        password_hash: passwordHash,
+        store_credit: 0,
+      })
+      .select()
+      .single();
 
-    if (!newCustomer || !newCustomer.id) {
-      throw new Error("Failed to create customer - no ID returned");
+    if (error || !newCustomer) {
+      throw new Error("Failed to create customer account");
     }
 
     console.log("Customer created successfully:", newCustomer.id);
