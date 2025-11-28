@@ -7,7 +7,12 @@ function getSquareClient() {
   if (!squareClient) {
     try {
       const squarePkg = require("square");
-      const Client = squarePkg.Client;
+      // The square package exports the Client as the default export or as a named export
+      const Client = squarePkg.Client || squarePkg.default;
+
+      if (!Client) {
+        throw new Error("Square Client not found in package exports");
+      }
 
       squareClient = new Client({
         accessToken: process.env.SQUARE_ACCESS_TOKEN,
