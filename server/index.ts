@@ -121,6 +121,7 @@ export function createServer() {
   app.get("/api/orders", verifyToken, handleGetOrders);
   app.post("/api/orders", verifyToken, handleCreateOrder);
   app.get("/api/orders/:orderId", verifyToken, handleGetOrder);
+  app.get("/api/admin/orders/pending", verifyToken, handleGetPendingOrders);
 
   // ===== Design Routes (Protected) =====
   app.get("/api/designs", verifyToken, handleGetDesigns);
