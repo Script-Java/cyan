@@ -182,9 +182,7 @@ export const handleAdminSetup: RequestHandler = async (req, res) => {
     }
 
     if (!email || !password) {
-      return res
-        .status(400)
-        .json({ error: "Email and password are required" });
+      return res.status(400).json({ error: "Email and password are required" });
     }
 
     // Check if admin already exists

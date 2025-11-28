@@ -102,7 +102,6 @@ export default function Signup() {
     }
   };
 
-
   return (
     <>
       <Header />

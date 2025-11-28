@@ -122,7 +122,8 @@ export default function AdminDashboard() {
                       Dashboard
                     </h1>
                     <p className="text-gray-600 mt-2">
-                      Welcome back! Here's what's happening with your store today.
+                      Welcome back! Here's what's happening with your store
+                      today.
                     </p>
                   </div>
                 </div>
@@ -146,7 +147,9 @@ export default function AdminDashboard() {
                           Pending Orders
                         </h2>
                         <p className="text-gray-600 mt-2">
-                          {pendingOrdersCount} order{pendingOrdersCount !== 1 ? "s" : ""} awaiting shipment
+                          {pendingOrdersCount} order
+                          {pendingOrdersCount !== 1 ? "s" : ""} awaiting
+                          shipment
                         </p>
                       </div>
 
@@ -193,15 +196,15 @@ export default function AdminDashboard() {
                                 </td>
                                 <td className="px-4 py-4 text-gray-600 flex items-center gap-2">
                                   <Calendar className="w-4 h-4" />
-                                  {new Date(order.dateCreated).toLocaleDateString()}
+                                  {new Date(
+                                    order.dateCreated,
+                                  ).toLocaleDateString()}
                                 </td>
                                 <td className="px-4 py-4 font-semibold text-gray-900 text-right">
                                   ${order.total.toFixed(2)}
                                 </td>
                                 <td className="px-4 py-4">
-                                  <button
-                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs"
-                                  >
+                                  <button className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs">
                                     View
                                     <ChevronRight className="w-3 h-3" />
                                   </button>
@@ -231,7 +234,9 @@ export default function AdminDashboard() {
                         <p className="text-sm text-gray-600 mb-3">
                           {link.description}
                         </p>
-                        <div className={`flex items-center ${link.textColor} text-sm font-medium`}>
+                        <div
+                          className={`flex items-center ${link.textColor} text-sm font-medium`}
+                        >
                           Manage <ChevronRight className="w-4 h-4 ml-1" />
                         </div>
                       </button>
@@ -266,32 +271,48 @@ export default function AdminDashboard() {
                     {/* Traffic Stats */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <p className="text-gray-600 text-sm mb-2">Total Views</p>
-                        <p className="text-2xl font-bold text-gray-900">24,580</p>
+                        <p className="text-gray-600 text-sm mb-2">
+                          Total Views
+                        </p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          24,580
+                        </p>
                         <p className="text-green-600 text-sm mt-2 flex items-center gap-1">
                           <TrendingUp className="w-4 h-4" />
                           +12.5% from last week
                         </p>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <p className="text-gray-600 text-sm mb-2">Unique Visitors</p>
-                        <p className="text-2xl font-bold text-gray-900">3,240</p>
+                        <p className="text-gray-600 text-sm mb-2">
+                          Unique Visitors
+                        </p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          3,240
+                        </p>
                         <p className="text-green-600 text-sm mt-2 flex items-center gap-1">
                           <TrendingUp className="w-4 h-4" />
                           +8.2% from last week
                         </p>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <p className="text-gray-600 text-sm mb-2">Bounce Rate</p>
-                        <p className="text-2xl font-bold text-gray-900">32.5%</p>
+                        <p className="text-gray-600 text-sm mb-2">
+                          Bounce Rate
+                        </p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          32.5%
+                        </p>
                         <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
                           <TrendingUp className="w-4 h-4" />
                           +2.1% from last week
                         </p>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <p className="text-gray-600 text-sm mb-2">Avg. Session</p>
-                        <p className="text-2xl font-bold text-gray-900">4m 32s</p>
+                        <p className="text-gray-600 text-sm mb-2">
+                          Avg. Session
+                        </p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          4m 32s
+                        </p>
                         <p className="text-green-600 text-sm mt-2 flex items-center gap-1">
                           <TrendingUp className="w-4 h-4" />
                           +0.5m from last week
@@ -343,7 +364,8 @@ export default function AdminDashboard() {
                           Live Visitors Map
                         </p>
                         <p className="text-gray-500 text-sm mt-1">
-                          Geographic distribution of your visitors will appear here
+                          Geographic distribution of your visitors will appear
+                          here
                         </p>
                       </div>
                     </div>
@@ -352,21 +374,27 @@ export default function AdminDashboard() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
                       <div className="p-4 bg-gray-50 rounded-lg">
                         <p className="text-gray-600 text-sm mb-2">Peak Hours</p>
-                        <p className="text-2xl font-bold text-gray-900">2-4 PM</p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          2-4 PM
+                        </p>
                         <p className="text-gray-500 text-sm mt-2">
                           Your busiest time of day
                         </p>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
                         <p className="text-gray-600 text-sm mb-2">Top Page</p>
-                        <p className="text-2xl font-bold text-gray-900">/products</p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          /products
+                        </p>
                         <p className="text-gray-500 text-sm mt-2">
                           Most visited page
                         </p>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
                         <p className="text-gray-600 text-sm mb-2">Devices</p>
-                        <p className="text-2xl font-bold text-gray-900">68% Mobile</p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          68% Mobile
+                        </p>
                         <p className="text-gray-500 text-sm mt-2">
                           Primary device type
                         </p>

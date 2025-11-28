@@ -1,5 +1,9 @@
 import { RequestHandler } from "express";
-import { getCustomerOrders, getOrderById, getPendingOrders } from "../utils/supabase";
+import {
+  getCustomerOrders,
+  getOrderById,
+  getPendingOrders,
+} from "../utils/supabase";
 
 /**
  * Get customer's orders from Supabase

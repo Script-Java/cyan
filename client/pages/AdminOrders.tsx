@@ -79,7 +79,7 @@ export default function AdminOrders() {
         (order) =>
           order.id.toString().includes(searchTerm) ||
           order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          order.customerEmail.toLowerCase().includes(searchTerm.toLowerCase())
+          order.customerEmail.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
 
@@ -212,12 +212,14 @@ export default function AdminOrders() {
                                 </td>
                                 <td className="px-6 py-4 text-gray-600 flex items-center gap-2">
                                   <Calendar className="w-4 h-4 flex-shrink-0" />
-                                  {new Date(order.dateCreated).toLocaleDateString()}
+                                  {new Date(
+                                    order.dateCreated,
+                                  ).toLocaleDateString()}
                                 </td>
                                 <td className="px-6 py-4">
                                   <span
                                     className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                                      order.status
+                                      order.status,
                                     )}`}
                                   >
                                     {order.status.charAt(0).toUpperCase() +
@@ -269,7 +271,8 @@ export default function AdminOrders() {
                           Total Revenue
                         </p>
                         <p className="text-3xl font-bold text-gray-900">
-                          ${pendingOrders
+                          $
+                          {pendingOrders
                             .reduce((sum, order) => sum + order.total, 0)
                             .toFixed(2)}
                         </p>
@@ -283,7 +286,7 @@ export default function AdminOrders() {
                           {(
                             pendingOrders.reduce(
                               (sum, order) => sum + order.total,
-                              0
+                              0,
                             ) / pendingOrders.length
                           ).toFixed(2)}
                         </p>

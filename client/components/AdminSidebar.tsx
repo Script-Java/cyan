@@ -68,7 +68,7 @@ export default function AdminSidebar() {
 
   const toggleExpand = (label: string) => {
     setExpandedItems((prev) =>
-      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
+      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label],
     );
   };
 
@@ -198,7 +198,7 @@ export default function AdminSidebar() {
             active && !hasChildren
               ? "bg-blue-100 text-blue-900 font-semibold"
               : "text-gray-700 hover:bg-gray-100",
-            hasChildren && "justify-between"
+            hasChildren && "justify-between",
           )}
         >
           <div className="flex items-center gap-3 flex-1">
@@ -216,7 +216,7 @@ export default function AdminSidebar() {
             <ChevronDown
               className={cn(
                 "w-4 h-4 flex-shrink-0 transition-transform",
-                isExpanded && "rotate-180"
+                isExpanded && "rotate-180",
               )}
             />
           )}
@@ -232,7 +232,7 @@ export default function AdminSidebar() {
                   "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs transition-all",
                   isActive(child.path)
                     ? "bg-blue-50 text-blue-700 font-semibold"
-                    : "text-gray-600 hover:bg-gray-50"
+                    : "text-gray-600 hover:bg-gray-50",
                 )}
               >
                 <span className="flex-shrink-0">{child.icon}</span>
@@ -279,7 +279,7 @@ export default function AdminSidebar() {
             "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-sm font-medium",
             isActive("/admin/settings")
               ? "bg-blue-100 text-blue-900"
-              : "text-gray-700 hover:bg-gray-100"
+              : "text-gray-700 hover:bg-gray-100",
           )}
         >
           <Settings className="w-5 h-5" />
