@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { bigCommerceAPI } from "../utils/bigcommerce";
+import { ecwidAPI } from "../utils/ecwid";
 
 export const handleGetProduct: RequestHandler = async (req, res) => {
   const { productId } = req.params;
@@ -9,7 +9,7 @@ export const handleGetProduct: RequestHandler = async (req, res) => {
   }
 
   try {
-    const product = await bigCommerceAPI.getProductWithOptions(
+    const product = await ecwidAPI.getProductWithVariations(
       parseInt(productId, 10),
     );
 
@@ -34,11 +34,11 @@ export const handleGetProductOptions: RequestHandler = async (req, res) => {
   }
 
   try {
-    const options = await bigCommerceAPI.getProductOptions(
+    const variations = await ecwidAPI.getProductVariations(
       parseInt(productId, 10),
     );
 
-    res.json({ data: options });
+    res.json({ data: variations });
   } catch (error) {
     console.error("Get product options error:", error);
     res.status(500).json({
