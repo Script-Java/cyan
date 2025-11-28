@@ -462,21 +462,18 @@ export default function Checkout() {
       });
 
       let result: any;
-      const checkoutResponseText = await response.text();
 
       console.log("Order response status:", response.status);
-      console.log("Order response text:", checkoutResponseText.substring(0, 200));
 
       try {
-        result = checkoutResponseText ? JSON.parse(checkoutResponseText) : {};
+        result = await response.json();
       } catch (parseError) {
         console.error("Failed to parse checkout response:", {
           error: parseError,
-          responseText: checkoutResponseText.substring(0, 500),
           status: response.status,
         });
         throw new Error(
-          `Order response parsing failed: Invalid JSON. Status: ${response.status}. Check browser console for details.`,
+          `Order response parsing failed. Status: ${response.status}.`,
         );
       }
 
