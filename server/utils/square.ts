@@ -39,7 +39,12 @@ export function getOrdersApi() {
 }
 
 export function getCheckoutApi() {
-  return getSquareClient().checkoutApi;
+  // Square SDK doesn't have a dedicated checkoutApi, we use ordersApi instead
+  return getSquareClient().ordersApi;
+}
+
+export function getOrdersApi() {
+  return getSquareClient().ordersApi;
 }
 
 export async function processSquarePayment(paymentData: {
