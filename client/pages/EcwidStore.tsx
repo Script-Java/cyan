@@ -94,12 +94,20 @@ export default function EcwidStore() {
         }
 
         const data = await response.json();
-        setProducts(data.items || []);
+        const items = data.items || [];
+        if (items.length > 0) {
+          setProducts(items);
+        } else {
+          // Use fallback if no items returned
+          setProducts(FALLBACK_PRODUCTS);
+        }
       } catch (err) {
         console.error("Error fetching products:", err);
         const errorMsg =
           err instanceof Error ? err.message : "Failed to load products";
         setError(errorMsg);
+        // Use fallback products on error
+        setProducts(FALLBACK_PRODUCTS);
       } finally {
         setLoading(false);
       }
