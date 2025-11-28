@@ -76,7 +76,6 @@ export default function CheckoutNew() {
     country: "US",
   });
 
-  // Load cart items
   useEffect(() => {
     const loadCart = async () => {
       try {
@@ -93,7 +92,6 @@ export default function CheckoutNew() {
           const items = data.data?.line_items || [];
           setCartItems(items);
           
-          // Calculate order data
           const subtotal = items.reduce((sum: number, item: CartItem) => {
             return sum + ((item.price || 0.25) * item.quantity);
           }, 0);
@@ -112,11 +110,11 @@ export default function CheckoutNew() {
 
   const calculateOrderData = (subtotal: number, discount: number) => {
     const tax = subtotal * 0.08;
-    const shipping = 0; // FREE
+    const shipping = 0;
     const blindShipmentFee = blindShipmentEnabled ? 5 : 0;
     const additionalPayment = (subtotal + tax + shipping + blindShipmentFee - discount) * (additionalPaymentPercent / 100);
     const total = subtotal + tax + shipping + blindShipmentFee + additionalPayment - discount;
-    const storeCredit = total * 0.05; // 5% store credit
+    const storeCredit = total * 0.05;
 
     setOrderData({
       subtotal,
@@ -142,10 +140,8 @@ export default function CheckoutNew() {
   };
 
   const handleApplyDiscount = () => {
-    // Simulated discount calculation
-    // In production, validate code against backend
     if (discountCode) {
-      const discountAmount = orderData.subtotal * 0.1; // 10% discount example
+      const discountAmount = orderData.subtotal * 0.1;
       setAppliedDiscount(discountAmount);
       calculateOrderData(orderData.subtotal, discountAmount);
       toast.success("Discount code applied!");
@@ -196,7 +192,7 @@ export default function CheckoutNew() {
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     if (!validateForm()) {
       return;
     }
@@ -324,298 +320,289 @@ export default function CheckoutNew() {
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold mb-8">Your Cart</h1>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Cart Items */}
-            <div className="lg:col-span-2 space-y-6">
-              {cartItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
-                >
-                  <div className="flex gap-6">
-                    {/* Product Image */}
-                    <div className="w-48 h-48 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center flex-shrink-0">
-                      {item.image ? (
-                        <img
-                          src={item.image}
-                          alt={item.product_name}
-                          className="w-full h-full object-cover rounded-xl"
-                        />
-                      ) : (
-                        <div className="text-gray-500 text-center">
-                          <p className="text-sm">No image</p>
+          <form onSubmit={handleCheckout}>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Cart Items & Form */}
+              <div className="lg:col-span-2 space-y-6">
+                {cartItems.map((item, index) => (
+                  <div
+                    key={index}
+                    className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
+                  >
+                    <div className="flex gap-6">
+                      <div className="w-48 h-48 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center flex-shrink-0">
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.product_name}
+                            className="w-full h-full object-cover rounded-xl"
+                          />
+                        ) : (
+                          <div className="text-gray-500 text-center">
+                            <p className="text-sm">No image</p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start mb-4">
+                          <div>
+                            <h3 className="text-xl font-bold">
+                              {item.product_name || `Product #${item.product_id}`}
+                            </h3>
+                            <p className="text-white/60">
+                              ${((item.price || 0.25) * item.quantity).toFixed(2)}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveItem(index)}
+                            className="text-red-500 hover:text-red-400 transition"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        </div>
+
+                        <div className="space-y-3 bg-white/5 rounded-lg p-4 mb-4">
+                          <h4 className="text-purple-400 text-sm font-bold uppercase tracking-wider">
+                            Product Specifications
+                          </h4>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex items-center justify-between">
+                              <span className="text-white/60">Quantity</span>
+                              <span className="font-medium">{item.quantity}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-white/60">Size</span>
+                              <span className="font-medium">Custom</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-purple-400 text-sm font-bold uppercase tracking-wider">
+                            Additional Notes
+                          </label>
+                          <textarea
+                            placeholder="Any special instructions or requests..."
+                            rows={3}
+                            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/40 text-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                <CheckoutForm
+                  customerInfo={customerInfo}
+                  billingInfo={billingInfo}
+                  onCustomerChange={handleCustomerInfoChange}
+                  onBillingChange={handleBillingInfoChange}
+                />
+              </div>
+
+              {/* Order Summary Sidebar */}
+              <div className="lg:col-span-1">
+                <div className="sticky top-32 space-y-6">
+                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="text-xl font-bold">Order Summary</h3>
+                      <button type="button" className="text-white/60 hover:text-white transition">
+                        <Share2 className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <div className="space-y-3 text-sm mb-6 pb-6 border-b border-white/10">
+                      <div className="flex justify-between text-white/60">
+                        <span>Subtotal ({cartItems.length} items)</span>
+                        <span>${orderData.subtotal.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between text-white/60">
+                        <span>You're paying</span>
+                        <span>${(orderData.subtotal / (cartItems.reduce((sum, i) => sum + i.quantity, 0) || 1)).toFixed(2)} per item</span>
+                      </div>
+                      <div className="flex justify-between text-green-400">
+                        <span>Shipping</span>
+                        <span className="font-bold">FREE</span>
+                      </div>
+                      {appliedDiscount > 0 && (
+                        <div className="flex justify-between text-green-400">
+                          <span>Deal Savings</span>
+                          <span className="font-bold">-${appliedDiscount.toFixed(2)}</span>
+                        </div>
+                      )}
+                      {blindShipmentEnabled && (
+                        <div className="flex justify-between text-orange-400">
+                          <span>Blind Shipment Fee</span>
+                          <span>+${orderData.blindShipmentFee.toFixed(2)}</span>
+                        </div>
+                      )}
+                      {orderData.additionalPayment > 0 && (
+                        <div className="flex justify-between text-orange-400">
+                          <span>Additional Payment</span>
+                          <span>+${orderData.additionalPayment.toFixed(2)}</span>
                         </div>
                       )}
                     </div>
 
-                    {/* Product Info */}
-                    <div className="flex-1">
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <h3 className="text-xl font-bold">
-                            {item.product_name || `Product #${item.product_id}`}
-                          </h3>
-                          <p className="text-white/60">
-                            ${((item.price || 0.25) * item.quantity).toFixed(2)}
-                          </p>
-                        </div>
-                        <button
-                          onClick={() => handleRemoveItem(index)}
-                          className="text-red-500 hover:text-red-400 transition"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
+                    <div className="flex justify-between items-center mb-6 text-xl font-bold">
+                      <span>Total</span>
+                      <span>${orderData.total.toFixed(2)}</span>
+                    </div>
 
-                      {/* Product Specs */}
-                      <div className="space-y-3 bg-white/5 rounded-lg p-4 mb-4">
-                        <h4 className="text-purple-400 text-sm font-bold uppercase tracking-wider">
-                          Product Specifications
-                        </h4>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex items-center justify-between">
-                            <span className="text-white/60">Quantity</span>
-                            <span className="font-medium">{item.quantity}</span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-white/60">Size</span>
-                            <span className="font-medium">Custom</span>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="flex justify-between items-center text-sm text-green-400 border-t border-white/10 pt-4">
+                      <span>Store Credit Earned (5%)</span>
+                      <span>+${orderData.storeCredit.toFixed(2)}</span>
+                    </div>
+                  </div>
 
-                      {/* Notes */}
-                      <div className="space-y-2">
-                        <label className="text-purple-400 text-sm font-bold uppercase tracking-wider">
-                          Additional Notes
-                        </label>
-                        <textarea
-                          placeholder="Any special instructions or requests..."
-                          rows={3}
-                          className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/40 text-sm"
+                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                    <div className="flex gap-2">
+                      <div className="flex-1 relative">
+                        <Input
+                          placeholder="Discount code"
+                          value={discountCode}
+                          onChange={(e) => setDiscountCode(e.target.value)}
+                          className="bg-white/5 border-white/10 text-white placeholder-white/40"
                         />
                       </div>
+                      <Button
+                        type="button"
+                        onClick={handleApplyDiscount}
+                        disabled={!discountCode}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+                      >
+                        Apply
+                      </Button>
                     </div>
                   </div>
-                </div>
-              ))}
 
-              {/* Checkout Form */}
-              <CheckoutForm
-                customerInfo={customerInfo}
-                billingInfo={billingInfo}
-                onCustomerChange={handleCustomerInfoChange}
-                onBillingChange={handleBillingInfoChange}
-              />
-            </div>
-
-            {/* Order Summary Sidebar */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-32 space-y-6">
-                {/* Main Summary Card */}
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-bold">Order Summary</h3>
-                    <button className="text-white/60 hover:text-white transition">
-                      <Share2 className="w-5 h-5" />
-                    </button>
-                  </div>
-
-                  {/* Cost Breakdown */}
-                  <div className="space-y-3 text-sm mb-6 pb-6 border-b border-white/10">
-                    <div className="flex justify-between text-white/60">
-                      <span>Subtotal ({cartItems.length} items)</span>
-                      <span>${orderData.subtotal.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-white/60">
-                      <span>You're paying</span>
-                      <span>${(orderData.subtotal / (cartItems.reduce((sum, i) => sum + i.quantity, 0) || 1)).toFixed(2)} per item</span>
-                    </div>
-                    <div className="flex justify-between text-green-400">
-                      <span>Shipping</span>
-                      <span className="font-bold">FREE</span>
-                    </div>
-                    {appliedDiscount > 0 && (
-                      <div className="flex justify-between text-green-400">
-                        <span>Deal Savings</span>
-                        <span className="font-bold">-${appliedDiscount.toFixed(2)}</span>
-                      </div>
-                    )}
-                    {blindShipmentEnabled && (
-                      <div className="flex justify-between text-orange-400">
-                        <span>Blind Shipment Fee</span>
-                        <span>+${orderData.blindShipmentFee.toFixed(2)}</span>
-                      </div>
-                    )}
-                    {orderData.additionalPayment > 0 && (
-                      <div className="flex justify-between text-orange-400">
-                        <span>Additional Payment</span>
-                        <span>+${orderData.additionalPayment.toFixed(2)}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Total */}
-                  <div className="flex justify-between items-center mb-6 text-xl font-bold">
-                    <span>Total</span>
-                    <span>${orderData.total.toFixed(2)}</span>
-                  </div>
-
-                  {/* Store Credit */}
-                  <div className="flex justify-between items-center text-sm text-green-400 border-t border-white/10 pt-4">
-                    <span>Store Credit Earned (5%)</span>
-                    <span>+${orderData.storeCredit.toFixed(2)}</span>
-                  </div>
-                </div>
-
-                {/* Discount Code */}
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                  <div className="flex gap-2">
-                    <div className="flex-1 relative">
-                      <Input
-                        placeholder="Discount code"
-                        value={discountCode}
-                        onChange={(e) => setDiscountCode(e.target.value)}
-                        className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                      />
-                    </div>
-                    <Button
-                      onClick={handleApplyDiscount}
-                      disabled={!discountCode}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-6"
-                    >
-                      Apply
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Checkout Button */}
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 text-lg font-bold rounded-lg mb-3"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    <>💳 Go to Checkout</>
-                  )}
-                </Button>
-
-                {/* Estimated Delivery */}
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                  <h4 className="text-white font-bold mb-4 flex items-center gap-2">
-                    📦 Estimated Delivery
-                  </h4>
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-white/60">Processing</span>
-                      <span>2 days</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-white/60">Shipping</span>
-                      <span>4 days</span>
-                    </div>
-                    <div className="border-t border-white/10 pt-3 flex justify-between font-bold">
-                      <span>Delivery by</span>
-                      <span>Mon, Dec 8</span>
-                    </div>
-                  </div>
-                  <p className="text-xs text-white/40 mt-3">
-                    * UPS may not deliver on weekends. Delivery dates are automatically moved to the next business day.
-                  </p>
-                </div>
-
-                {/* Advanced Options */}
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl">
-                  <button
-                    onClick={() => setExpandedOptions(!expandedOptions)}
-                    className="w-full flex items-center justify-between p-6 hover:bg-white/5 transition"
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 text-lg font-bold rounded-lg mb-3"
                   >
-                    <span className="font-bold">Advanced Cart Options</span>
-                    <ChevronDown
-                      className={`w-5 h-5 transition ${
-                        expandedOptions ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>💳 Go to Checkout</>
+                    )}
+                  </Button>
 
-                  {expandedOptions && (
-                    <div className="border-t border-white/10 p-6 space-y-6">
-                      {/* Blind Shipment */}
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
-                          <input
-                            type="checkbox"
-                            checked={blindShipmentEnabled}
-                            onChange={(e) => {
-                              setBlindShipmentEnabled(e.target.checked);
-                              calculateOrderData(orderData.subtotal, appliedDiscount);
-                            }}
-                            className="w-5 h-5 rounded"
-                          />
-                          <div>
-                            <p className="font-bold">Blind Shipment</p>
-                            <p className="text-xs text-white/60">
-                              Hide Sticker Shuttle logos from packaging
-                            </p>
-                          </div>
-                        </div>
-                        <p className="text-xs text-orange-400 bg-orange-400/10 rounded p-2">
-                          ℹ️ Your order will have generic packaging and shipping labels.
-                        </p>
+                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                    <h4 className="text-white font-bold mb-4 flex items-center gap-2">
+                      📦 Estimated Delivery
+                    </h4>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-white/60">Processing</span>
+                        <span>2 days</span>
                       </div>
+                      <div className="flex justify-between">
+                        <span className="text-white/60">Shipping</span>
+                        <span>4 days</span>
+                      </div>
+                      <div className="border-t border-white/10 pt-3 flex justify-between font-bold">
+                        <span>Delivery by</span>
+                        <span>Mon, Dec 8</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-white/40 mt-3">
+                      * UPS may not deliver on weekends. Delivery dates are automatically moved to the next business day.
+                    </p>
+                  </div>
 
-                      {/* Additional Payment */}
-                      <div className="space-y-3">
-                        <div>
-                          <h4 className="font-bold mb-1">Additional Payment</h4>
-                          <p className="text-xs text-white/60">
-                            Add extra amount to your order
+                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl">
+                    <button
+                      type="button"
+                      onClick={() => setExpandedOptions(!expandedOptions)}
+                      className="w-full flex items-center justify-between p-6 hover:bg-white/5 transition"
+                    >
+                      <span className="font-bold">Advanced Cart Options</span>
+                      <ChevronDown
+                        className={`w-5 h-5 transition ${
+                          expandedOptions ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    {expandedOptions && (
+                      <div className="border-t border-white/10 p-6 space-y-6">
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3">
+                            <input
+                              type="checkbox"
+                              checked={blindShipmentEnabled}
+                              onChange={(e) => {
+                                setBlindShipmentEnabled(e.target.checked);
+                                calculateOrderData(orderData.subtotal, appliedDiscount);
+                              }}
+                              className="w-5 h-5 rounded"
+                            />
+                            <div>
+                              <p className="font-bold">Blind Shipment</p>
+                              <p className="text-xs text-white/60">
+                                Hide Sticker Shuttle logos from packaging
+                              </p>
+                            </div>
+                          </div>
+                          <p className="text-xs text-orange-400 bg-orange-400/10 rounded p-2">
+                            ℹ️ Your order will have generic packaging and shipping labels.
                           </p>
                         </div>
-                        <div className="grid grid-cols-3 gap-2">
-                          {[5, 10, 15].map((percent) => (
-                            <button
-                              key={percent}
-                              onClick={() => handleAdditionalPayment(percent)}
-                              className={`py-2 px-3 rounded text-sm font-bold transition ${
-                                additionalPaymentPercent === percent
-                                  ? "bg-green-600 text-white"
-                                  : "bg-white/5 hover:bg-white/10"
-                              }`}
-                            >
-                              {percent}% ($
-                              {(
-                                (orderData.subtotal + orderData.tax + orderData.shipping + (blindShipmentEnabled ? 5 : 0) - appliedDiscount) *
-                                (percent / 100)
-                              ).toFixed(2)}
-                              )
-                            </button>
-                          ))}
-                        </div>
-                        <div className="flex gap-2">
-                          <Input
-                            type="number"
-                            placeholder="Custom amount ($)"
-                            min="0"
-                            step="0.01"
-                            className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                          />
-                          <Button className="bg-green-600 hover:bg-green-700 text-white">
-                            Add
-                          </Button>
+
+                        <div className="space-y-3">
+                          <div>
+                            <h4 className="font-bold mb-1">Additional Payment</h4>
+                            <p className="text-xs text-white/60">
+                              Add extra amount to your order
+                            </p>
+                          </div>
+                          <div className="grid grid-cols-3 gap-2">
+                            {[5, 10, 15].map((percent) => (
+                              <button
+                                key={percent}
+                                type="button"
+                                onClick={() => handleAdditionalPayment(percent)}
+                                className={`py-2 px-3 rounded text-sm font-bold transition ${
+                                  additionalPaymentPercent === percent
+                                    ? "bg-green-600 text-white"
+                                    : "bg-white/5 hover:bg-white/10"
+                                }`}
+                              >
+                                {percent}% ($
+                                {(
+                                  (orderData.subtotal + orderData.tax + orderData.shipping + (blindShipmentEnabled ? 5 : 0) - appliedDiscount) *
+                                  (percent / 100)
+                                ).toFixed(2)}
+                                )
+                              </button>
+                            ))}
+                          </div>
+                          <div className="flex gap-2">
+                            <Input
+                              type="number"
+                              placeholder="Custom amount ($)"
+                              min="0"
+                              step="0.01"
+                              className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                            />
+                            <Button type="button" className="bg-green-600 hover:bg-green-700 text-white">
+                              Add
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </main>
     </>
