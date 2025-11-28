@@ -88,35 +88,22 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
 
   // Build line item payload with option selections (BigCommerce expects option selections or variant ids)
   function buildLineItemPayload() {
-    // If your product uses variants (variant ids), include variant_id
-    // Or include product_options: [{option_id, option_value}]
     const item: any = {
-      product_id: PRODUCT_ID,
+      product_id: productId,
       quantity: quantity,
-      // BigCommerce expects `option_selections` or `product_options` depending on API version.
-      // We'll use product_options array which is accepted by some storefront endpoints.
-      // If your store expects variant_id, swap in variant_id with the correct id.
       product_options: [],
     };
 
-    if (shape)
-      item.product_options.push({
-        option_id: OPTION_IDS.Shape,
-        option_value: shape,
-      });
-    if (material)
-      item.product_options.push({
-        option_id: OPTION_IDS.Material,
-        option_value: material,
-      });
-    if (size)
-      item.product_options.push({
-        option_id: OPTION_IDS.Size,
-        option_value: size,
-      });
+    // Add all selected options
+    Object.entries(selectedOptions).forEach(([optionId, optionValue]) => {
+      if (optionValue) {
+        item.product_options.push({
+          option_id: parseInt(optionId, 10),
+          option_value: optionValue,
+        });
+      }
+    });
 
-    // For file uploads: BigCommerce expects the file to be sent as multipart form-data
-    // and attached as a `file` field or a custom modifier - see addFileToCart() below
     return item;
   }
 
