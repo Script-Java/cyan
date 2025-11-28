@@ -104,7 +104,7 @@ export const handleSignup: RequestHandler = async (req, res) => {
 
     console.log("Signup attempt for:", email);
 
-    // Check if customer already exists
+    // Check if customer already exists in Supabase
     const { data: existingCustomer } = await supabase
       .from("customers")
       .select("id")
@@ -119,7 +119,7 @@ export const handleSignup: RequestHandler = async (req, res) => {
     // Hash password
     const passwordHash = await bcrypt.hash(password, 10);
 
-    console.log("Creating customer in Supabase:", {
+    console.log("Creating customer in Supabase and Ecwid:", {
       email,
       firstName,
       lastName,
@@ -146,7 +146,23 @@ export const handleSignup: RequestHandler = async (req, res) => {
       throw new Error("Failed to create customer account");
     }
 
-    console.log("Customer created successfully:", newCustomer.id);
+    console.log("Customer created in Supabase:", newCustomer.id);
+
+    // Create customer in Ecwid
+    let ecwidCustomerId: number | null = null;
+    try {
+      const ecwidCustomer = await ecwidAPI.createCustomer({
+        email,
+        firstName,
+        lastName,
+      });
+      ecwidCustomerId = ecwidCustomer.id;
+      console.log("Customer created in Ecwid:", ecwidCustomerId);
+    } catch (ecwidError) {
+      console.warn("Warning: Failed to create customer in Ecwid:", ecwidError);
+      // Don't fail the signup if Ecwid creation fails
+      // But log it for monitoring
+    }
 
     // Generate JWT token
     const token = generateToken(newCustomer.id, newCustomer.email);
@@ -160,6 +176,7 @@ export const handleSignup: RequestHandler = async (req, res) => {
         firstName: newCustomer.first_name,
         lastName: newCustomer.last_name,
         isAdmin: newCustomer.is_admin || false,
+        ecwidId: ecwidCustomerId,
       },
       message: "Account created successfully",
     });
