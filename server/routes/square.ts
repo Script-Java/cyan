@@ -125,16 +125,16 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
 
       if (guestError || !guestCustomer?.id) {
         console.error("Failed to create guest customer:", guestError);
-        // Continue with NULL customer_id for the order
-        customerId = null;
-      } else {
-        customerId = guestCustomer.id;
+        return res.status(400).json({
+          error: "Failed to create customer record for checkout",
+        });
       }
+      customerId = guestCustomer.id;
     }
 
     // Create order in Supabase with pending_payment status
     const supabaseOrder = await createSupabaseOrder({
-      customer_id: customerId || 0,
+      customer_id: customerId,
       status: "pending_payment",
       total: checkoutData.total,
       subtotal: checkoutData.subtotal,
