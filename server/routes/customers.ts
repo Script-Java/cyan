@@ -19,9 +19,13 @@ export const handleGetCustomer: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const customer = await bigCommerceAPI.getCustomer(customerId);
+    const { data: customer, error } = await supabase
+      .from("customers")
+      .select("*")
+      .eq("id", customerId)
+      .single();
 
-    if (!customer) {
+    if (error || !customer) {
       return res.status(404).json({ error: "Customer not found" });
     }
 
@@ -34,7 +38,6 @@ export const handleGetCustomer: RequestHandler = async (req, res) => {
         lastName: customer.last_name,
         phone: customer.phone,
         companyName: customer.company,
-        addresses: customer.addresses,
       },
     });
   } catch (error) {
