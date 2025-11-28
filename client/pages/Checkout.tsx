@@ -54,6 +54,14 @@ interface BillingInfo {
   country: string;
 }
 
+interface PaymentInfo {
+  cardholderName: string;
+  cardNumber: string;
+  expiryMonth: string;
+  expiryYear: string;
+  cvv: string;
+}
+
 const COUNTRIES = [
   { code: "US", name: "United States" },
   { code: "CA", name: "Canada" },
