@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ShoppingCart, AlertCircle, Loader } from "lucide-react";
+import { toast } from "sonner";
 
 /* ====== CONFIG: replace these with your real IDs ====== */
 const PRODUCT_ID = 123; // BigCommerce product ID
@@ -120,13 +122,18 @@ export default function BcConfigurator({ product: builderProduct }) {
       setPriceInfo(extractPrices(json));
 
       setSuccess(true);
-      setTimeout(() => setSuccess(false), 3000);
-      // success UX: you can redirect to /cart or show a modal
+      toast.success("Item added to cart! Redirecting to checkout...");
+
+      // Redirect to checkout after a short delay
+      setTimeout(() => {
+        window.location.href = `/checkout?cartId=${cartId}`;
+      }, 1500);
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Could not add to cart";
       console.error("Add to cart error", err);
       setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
