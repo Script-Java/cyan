@@ -87,10 +87,7 @@ export function createServer() {
   // ===== Authentication Routes =====
   app.post("/api/auth/login", handleLogin);
   app.post("/api/auth/signup", handleSignup);
-  app.get("/api/auth/bigcommerce", handleBigCommerceAuth);
-  app.get("/api/auth/bigcommerce/callback", handleBigCommerceCallback);
   app.post("/api/auth/logout", handleLogout);
-  app.get("/api/auth/bigcommerce/signup", handleBigCommerceAuth);
 
   // ===== Customer Routes (Protected) =====
   app.get("/api/customers/me", verifyToken, handleGetCustomer);
