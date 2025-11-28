@@ -38,7 +38,9 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    if (!token) {
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
+
+    if (!token || !isAdmin) {
       navigate("/login");
       return;
     }
