@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { ecwidAPI } from "../utils/ecwid";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
