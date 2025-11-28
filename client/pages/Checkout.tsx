@@ -158,17 +158,13 @@ export default function Checkout() {
     country: "US",
   });
 
-  // Load auth from localStorage
+  // Load auth from localStorage (optional for guest checkout)
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     const custId = localStorage.getItem("customer_id");
     setAuthToken(token);
     setCustomerId(custId ? parseInt(custId) : null);
-
-    if (!token || !custId) {
-      setError("Please log in to proceed with checkout");
-      setTimeout(() => navigate("/login?redirect=/checkout"), 2000);
-    }
+    // Allow guest checkout - no redirect required
   }, [navigate]);
 
   // Load cart data
