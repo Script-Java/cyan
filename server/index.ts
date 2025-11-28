@@ -56,6 +56,10 @@ import {
   handleGetPaymentMethods,
   handleProcessPayment,
 } from "./routes/payments";
+import {
+  handleEcwidOrderWebhook,
+  handleWebhookHealth,
+} from "./routes/webhooks";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
