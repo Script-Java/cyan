@@ -295,6 +295,25 @@ export default function Header() {
               </button>
             </div>
 
+            {/* Mobile Search Bar */}
+            <form onSubmit={handleSearchSubmit} className="px-4 py-3 border-b border-white/10">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search stickers..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#FFD713] focus:ring-1 focus:ring-[#FFD713]/50 transition-all text-sm"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded transition-colors"
+                >
+                  <Search className="w-4 h-4 text-white/60 hover:text-white" />
+                </button>
+              </div>
+            </form>
+
             {/* Mobile Navigation */}
             <nav className="space-y-2">
               <Link
