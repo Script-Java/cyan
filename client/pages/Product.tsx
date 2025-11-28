@@ -48,6 +48,13 @@ export default function Product() {
       setError(null);
 
       try {
+        // Check if it's a mock product first
+        if (productId && productId in MOCK_PRODUCTS) {
+          setProduct(MOCK_PRODUCTS[productId]);
+          setLoading(false);
+          return;
+        }
+
         const bcProductId = productId && PRODUCT_ID_MAP[productId];
 
         if (!bcProductId) {
