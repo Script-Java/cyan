@@ -97,22 +97,36 @@ export default function SquareWebPaymentForm({
       // Tokenize the card
       const result = await cardRef.current.card.tokenize();
 
+      console.log("Card tokenization result:", result);
+
       if (result.status === "OK") {
         if (!result.token) {
           throw new Error("No token returned from Square");
         }
+        console.log("Card tokenized successfully, token:", result.token.substring(0, 20) + "...");
         onPaymentSuccess(result.token);
       } else if (result.errors && result.errors.length > 0) {
         const errorMessages = result.errors
           .map((e: any) => e.message || e.detail)
           .join(", ");
+        console.error("Tokenization errors:", result.errors);
         onPaymentError(errorMessages);
       } else {
         onPaymentError("Failed to process card");
       }
     } catch (error) {
-      const errorMsg =
+      console.error("Tokenization error:", error);
+      let errorMsg =
         error instanceof Error ? error.message : "Payment processing failed";
+
+      // Check for specific error patterns
+      if (errorMsg.includes("403") || errorMsg.includes("Unauthorized")) {
+        errorMsg =
+          "Authentication error with Square. Please verify your Application ID configuration in the Square Dashboard.";
+      } else if (errorMsg.includes("Invalid") || errorMsg.includes("malformed")) {
+        errorMsg = "Invalid card information. Please check your card details and try again.";
+      }
+
       onPaymentError(errorMsg);
     }
   };
