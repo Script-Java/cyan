@@ -18,7 +18,6 @@ export default function Header() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
   const [storeCredit, setStoreCredit] = useState(0);
   const navigate = useNavigate();
   const ecwidScriptLoaded = useRef(false);
