@@ -82,6 +82,14 @@ export default function AdminDashboard() {
 
   const adminLinks = [
     {
+      title: "Import Products",
+      description: "Import products from CSV files",
+      icon: <Upload className="w-8 h-8" />,
+      path: "/admin/import-products",
+      color: "bg-purple-50 hover:bg-purple-100",
+      textColor: "text-purple-600",
+    },
+    {
       title: "Support Admin",
       description: "Manage customer support tickets",
       icon: <BarChart3 className="w-8 h-8" />,
