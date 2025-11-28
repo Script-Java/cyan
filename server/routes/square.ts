@@ -164,3 +164,57 @@ export const handleGetSquareLocations: RequestHandler = async (req, res) => {
     });
   }
 };
+
+/**
+ * Test Square configuration (diagnostic endpoint)
+ */
+export const handleTestSquareConfig: RequestHandler = async (req, res) => {
+  try {
+    const appId = process.env.SQUARE_APPLICATION_ID;
+    const accessToken = process.env.SQUARE_ACCESS_TOKEN;
+
+    const diagnostics = {
+      appIdConfigured: !!appId,
+      accessTokenConfigured: !!accessToken,
+      appIdLength: appId ? appId.length : 0,
+      accessTokenLength: accessToken ? accessToken.length : 0,
+      appIdPrefix: appId ? appId.substring(0, 8) : "N/A",
+      accessTokenPrefix: accessToken ? accessToken.substring(0, 8) : "N/A",
+    };
+
+    if (!appId || !accessToken) {
+      return res.status(400).json({
+        success: false,
+        message: "Square configuration incomplete",
+        diagnostics,
+        missingConfig: {
+          appId: !appId,
+          accessToken: !accessToken,
+        },
+      });
+    }
+
+    // Try to initialize the client
+    try {
+      const paymentsApi = getPaymentsApi();
+      res.json({
+        success: true,
+        message: "Square configuration is valid",
+        diagnostics,
+        clientInitialized: true,
+      });
+    } catch (clientError) {
+      res.status(400).json({
+        success: false,
+        message: "Square client initialization failed",
+        diagnostics,
+        error: clientError instanceof Error ? clientError.message : "Unknown error",
+      });
+    }
+  } catch (error) {
+    console.error("Test Square config error:", error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : "Failed to test Square configuration",
+    });
+  }
+};
