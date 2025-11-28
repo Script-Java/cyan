@@ -32,6 +32,15 @@ interface OrderItem {
   price_ex_tax: number;
 }
 
+interface DigitalFile {
+  id: string;
+  file_name: string;
+  file_url: string;
+  file_type?: string;
+  file_size?: number;
+  uploaded_at: string;
+}
+
 interface Order {
   id: number;
   customerId: number;
