@@ -194,6 +194,7 @@ export default function Checkout() {
         }
 
         const response = await fetch(`/api/cart/${cartId}`);
+        const responseText = await response.text();
 
         if (response.status === 404) {
           setError("Cart not found. Please add items to your cart and try again.");
@@ -202,16 +203,14 @@ export default function Checkout() {
         }
 
         if (!response.ok) {
-          const errorText = await response.text();
           console.error("Load cart error response:", {
             status: response.status,
             statusText: response.statusText,
-            body: errorText,
+            body: responseText,
           });
           throw new Error(`Failed to load cart (${response.status})`);
         }
 
-        const responseText = await response.text();
         let data: any;
         try {
           data = responseText ? JSON.parse(responseText) : {};
