@@ -1,8 +1,9 @@
 import Header from "@/components/Header";
 import BcConfigurator from "@/components/BcConfigurator";
-import { useParams, Link } from "react-router-dom";
-import { ChevronLeft, Star, AlertCircle } from "lucide-react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { ChevronLeft, Star, AlertCircle, Plus, Minus } from "lucide-react";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 interface ProductData {
   id: number;
@@ -38,9 +39,12 @@ const MOCK_PRODUCTS: Record<string, ProductData> = {
 
 export default function Product() {
   const { productId } = useParams<{ productId: string }>();
+  const navigate = useNavigate();
   const [product, setProduct] = useState<ProductData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState(1);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -51,7 +55,7 @@ export default function Product() {
         // Check if it's a mock product first
         if (productId && productId in MOCK_PRODUCTS) {
           setProduct(MOCK_PRODUCTS[productId]);
-          setLoading(false);
+          setIsLoading(false);
           return;
         }
 
@@ -59,7 +63,7 @@ export default function Product() {
 
         if (!bcProductId) {
           setError("Product not found");
-          setLoading(false);
+          setIsLoading(false);
           return;
         }
 
@@ -74,12 +78,54 @@ export default function Product() {
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load product");
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchProduct();
   }, [productId]);
+
+  const addTestProductToCart = async () => {
+    setIsAddingToCart(true);
+    try {
+      // Create or get cart
+      let cartId = localStorage.getItem("cart_id");
+
+      if (!cartId) {
+        const cartResponse = await fetch("/api/cart", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        });
+        const cartData = await cartResponse.json();
+        cartId = cartData.data?.id;
+        localStorage.setItem("cart_id", cartId);
+      }
+
+      // Add product to cart
+      const addResponse = await fetch(`/api/cart/${cartId}/items`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product_id: product!.id,
+          quantity: quantity,
+          price: product!.price,
+          product_name: product!.name,
+        }),
+      });
+
+      if (!addResponse.ok) {
+        throw new Error("Failed to add to cart");
+      }
+
+      toast.success(`Added ${quantity} ${product!.name} to cart`);
+      navigate(`/checkout-new?cartId=${cartId}`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to add to cart");
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -187,18 +233,74 @@ export default function Product() {
             </div>
           </div>
 
-          {/* Configurator Section */}
+          {/* Configurator Section or Test Product Section */}
           <div className="border-t border-gray-200 pt-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              Customize Your Order
-            </h2>
-            <p className="text-gray-600 mb-8">
-              Select your options, upload your design, and add to cart
-            </p>
+            {productId === "test-square-product" ? (
+              <div className="max-w-2xl">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                  Add to Cart
+                </h2>
+                <p className="text-gray-600 mb-8">
+                  Use this product to test the Square checkout integration.
+                </p>
 
-            <div className="bg-gray-50 rounded-lg p-8">
-              <BcConfigurator productId={product.id} product={product} />
-            </div>
+                <div className="bg-gray-50 rounded-lg p-8 space-y-6">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-4">
+                      Quantity
+                    </label>
+                    <div className="flex items-center gap-4">
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        disabled={quantity <= 1}
+                        className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Minus className="w-5 h-5" />
+                      </button>
+                      <input
+                        type="number"
+                        min="1"
+                        value={quantity}
+                        onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                        className="border border-gray-300 rounded-lg px-4 py-2 text-center w-20"
+                      />
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+                      >
+                        <Plus className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t">
+                    <p className="text-lg font-bold text-gray-900 mb-6">
+                      Total: ${(product.price! * quantity).toFixed(2)}
+                    </p>
+                    <button
+                      onClick={addTestProductToCart}
+                      disabled={isAddingToCart}
+                      className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-lg transition-all"
+                    >
+                      {isAddingToCart ? "Adding to cart..." : "Add to Cart & Checkout"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                  Customize Your Order
+                </h2>
+                <p className="text-gray-600 mb-8">
+                  Select your options, upload your design, and add to cart
+                </p>
+
+                <div className="bg-gray-50 rounded-lg p-8">
+                  <BcConfigurator productId={product.id} product={product} />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </main>
