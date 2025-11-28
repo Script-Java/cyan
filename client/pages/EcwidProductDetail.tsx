@@ -45,12 +45,7 @@ export default function EcwidProductDetail() {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const storeId = "120154275";
-        const token = "secret_fzX1R2ueKmX7eSvzehmdH8BAMzG85zpW";
-
-        const response = await fetch(
-          `https://api.ecwid.com/api/v3/${storeId}/products/${productId}?token=${token}`,
-        );
+        const response = await fetch(`/api/ecwid-products/${productId}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch product");
