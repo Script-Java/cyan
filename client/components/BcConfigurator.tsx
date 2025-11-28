@@ -118,8 +118,6 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
     setSuccess(false);
 
     try {
-      const navigate = useNavigate();
-
       // Create cart
       const cartId = await ensureCart();
 
