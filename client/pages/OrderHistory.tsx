@@ -294,6 +294,28 @@ export default function OrderHistory() {
                             <span className="text-gray-400">Pending</span>
                           )}
                         </td>
+                        <td className="px-6 py-4 text-sm">
+                          {order.digital_files && order.digital_files.length > 0 ? (
+                            <div className="space-y-2">
+                              {order.digital_files.map((file) => (
+                                <a
+                                  key={file.id}
+                                  href={file.file_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-2 text-blue-600 hover:text-blue-700 hover:underline"
+                                >
+                                  <Package className="w-4 h-4" />
+                                  <span className="text-xs font-medium">
+                                    {file.file_name}
+                                  </span>
+                                </a>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className="text-gray-400 text-xs">—</span>
+                          )}
+                        </td>
                         <td className="px-6 py-4 font-semibold text-gray-900">
                           {formatCurrency(order.total)}
                         </td>
