@@ -166,6 +166,14 @@ export default function Checkout() {
     country: "US",
   });
 
+  const [paymentInfo, setPaymentInfo] = useState<PaymentInfo>({
+    cardholderName: "",
+    cardNumber: "",
+    expiryMonth: "",
+    expiryYear: "",
+    cvv: "",
+  });
+
   // Load auth from localStorage (optional for guest checkout)
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
