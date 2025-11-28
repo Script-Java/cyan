@@ -166,6 +166,21 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
       return res.status(404).json({ error: "Order not found" });
     }
 
+    // Fetch digital files for this order
+    const { data: digitalFilesData } = await supabase
+      .from("digital_files")
+      .select("*")
+      .eq("order_id", order.id);
+
+    const digitalFiles = (digitalFilesData || []).map((file: any) => ({
+      id: file.id,
+      file_name: file.file_name,
+      file_url: file.file_url,
+      file_type: file.file_type,
+      file_size: file.file_size,
+      uploaded_at: file.uploaded_at,
+    }));
+
     res.json({
       success: true,
       source: "supabase",
@@ -181,6 +196,12 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
         items: order.order_items || [],
         shippingAddress: order.shipping_address,
         billingAddress: order.billing_address,
+        estimated_delivery_date: order.estimated_delivery_date,
+        tracking_number: order.tracking_number,
+        tracking_carrier: order.tracking_carrier,
+        tracking_url: order.tracking_url,
+        shipped_date: order.shipped_date,
+        digital_files: digitalFiles,
       },
     });
   } catch (error) {
