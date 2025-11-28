@@ -178,7 +178,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     });
 
     // Create checkout via Square API
-    const checkoutResponse = await getPaymentsApi().createCheckout(checkoutBody);
+    const checkoutResponse = await getCheckoutApi().createCheckout(checkoutBody);
 
     if (!checkoutResponse.result?.checkout?.checkoutPageUrl) {
       throw new Error("Failed to create Square Checkout - no URL returned");
