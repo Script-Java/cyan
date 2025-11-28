@@ -61,6 +61,10 @@ import {
   handleGetSquareConfig,
   handleGetSquareLocations,
 } from "./routes/square";
+import {
+  handleCreateBigCommerceCheckout,
+  handleGetBigCommerceCheckoutUrl,
+} from "./routes/bigcommerce-checkout";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
