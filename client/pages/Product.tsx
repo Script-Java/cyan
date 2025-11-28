@@ -107,10 +107,14 @@ export default function Product() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          product_id: product!.id,
-          quantity: quantity,
-          price: product!.price,
-          product_name: product!.name,
+          line_items: [
+            {
+              product_id: product!.id,
+              quantity: quantity,
+              price: product!.price,
+              product_name: product!.name,
+            },
+          ],
         }),
       });
 
