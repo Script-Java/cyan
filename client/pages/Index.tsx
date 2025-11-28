@@ -102,6 +102,13 @@ export default function Index() {
                   Start Creating
                   <ArrowRight className="w-5 h-5" />
                 </Link>
+                <Link
+                  to="/ecwid-store"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700 transition-all shadow-xl shadow-purple-600/30 hover:shadow-2xl hover:shadow-purple-600/50"
+                >
+                  Shop Now
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
                 <a
                   href="#sticker-types"
                   className="inline-flex items-center justify-center px-8 py-4 border border-white/30 text-white rounded-lg font-semibold hover:bg-white/10 transition-all"
