@@ -126,7 +126,7 @@ export default function Product() {
             <div className="lg:col-span-1">
               <div className="bg-gray-100 rounded-lg overflow-hidden aspect-square flex items-center justify-center mb-6">
                 <img
-                  src={product.image}
+                  src={product.image_url || "/placeholder.svg"}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
@@ -134,54 +134,27 @@ export default function Product() {
 
               {/* Product Info Card */}
               <div className="bg-gray-50 rounded-lg p-6 space-y-4">
-                <div>
-                  <h3 className="text-sm font-bold text-gray-700 mb-2">
-                    Category
-                  </h3>
-                  <p className="text-gray-900">{product.category}</p>
-                </div>
-
-                <div className="pt-4 border-t border-gray-200">
-                  <h3 className="text-sm font-bold text-gray-700 mb-2">
-                    Price per unit
-                  </h3>
-                  <p className="text-2xl font-bold text-gray-900">
-                    ${product.price.toFixed(2)}
-                  </p>
-                  <p className="text-xs text-gray-600 mt-1">
-                    Bulk pricing available
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-gray-200">
-                  <h3 className="text-sm font-bold text-gray-700 mb-2">
-                    Minimum Order
-                  </h3>
-                  <p className="text-gray-900">
-                    {product.specifications.minimum}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-gray-200">
-                  <h3 className="text-sm font-bold text-gray-700 mb-3">
-                    Rating
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <div className="flex gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`w-4 h-4 ${i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
-                        />
-                      ))}
+                {product.price !== undefined && (
+                  <>
+                    <div className="pt-4 border-t border-gray-200">
+                      <h3 className="text-sm font-bold text-gray-700 mb-2">
+                        Price per unit
+                      </h3>
+                      <p className="text-2xl font-bold text-gray-900">
+                        ${product.price.toFixed(2)}
+                      </p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        Bulk pricing available
+                      </p>
                     </div>
-                    <span className="font-bold text-gray-900">
-                      {product.rating}
-                    </span>
-                    <span className="text-sm text-gray-600">
-                      ({product.reviews} reviews)
-                    </span>
-                  </div>
+                  </>
+                )}
+
+                <div className="pt-4 border-t border-gray-200">
+                  <h3 className="text-sm font-bold text-gray-700 mb-2">
+                    Product ID
+                  </h3>
+                  <p className="text-gray-900">{product.id}</p>
                 </div>
               </div>
             </div>
@@ -192,67 +165,9 @@ export default function Product() {
                 <h1 className="text-4xl font-bold text-gray-900 mb-2">
                   {product.name}
                 </h1>
-                <p className="text-lg text-gray-600">{product.description}</p>
-              </div>
-
-              {/* Features */}
-              <div className="mb-10">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">
-                  Key Features
-                </h2>
-                <ul className="space-y-3">
-                  {product.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <span className="text-blue-600 font-bold text-xs">
-                          ✓
-                        </span>
-                      </div>
-                      <span className="text-gray-700">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Specifications */}
-              <div className="bg-gray-50 rounded-lg p-6 mb-8">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">
-                  Specifications
-                </h2>
-                <dl className="grid grid-cols-2 gap-6">
-                  <div>
-                    <dt className="text-sm font-bold text-gray-700 mb-1">
-                      Material
-                    </dt>
-                    <dd className="text-gray-900">
-                      {product.specifications.material}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm font-bold text-gray-700 mb-1">
-                      Finish
-                    </dt>
-                    <dd className="text-gray-900">
-                      {product.specifications.finish}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm font-bold text-gray-700 mb-1">
-                      Available Sizes
-                    </dt>
-                    <dd className="text-gray-900">
-                      {product.specifications.sizes.join(", ")}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm font-bold text-gray-700 mb-1">
-                      Minimum Order
-                    </dt>
-                    <dd className="text-gray-900">
-                      {product.specifications.minimum}
-                    </dd>
-                  </div>
-                </dl>
+                {product.description && (
+                  <p className="text-lg text-gray-600">{product.description}</p>
+                )}
               </div>
             </div>
           </div>
