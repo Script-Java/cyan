@@ -28,7 +28,8 @@ const MOCK_PRODUCTS: Record<string, ProductData> = {
   "test-square-product": {
     id: 999,
     name: "Test Square Product",
-    description: "Perfect for testing Square checkout integration. $1.00 product.",
+    description:
+      "Perfect for testing Square checkout integration. $1.00 product.",
     price: 1.0,
     image_url: "/placeholder.svg",
     type: "sticker",
@@ -265,7 +266,11 @@ export default function Product() {
                         type="number"
                         min="1"
                         value={quantity}
-                        onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                        onChange={(e) =>
+                          setQuantity(
+                            Math.max(1, parseInt(e.target.value) || 1),
+                          )
+                        }
                         className="border border-gray-300 rounded-lg px-4 py-2 text-center w-20"
                       />
                       <button
@@ -286,7 +291,9 @@ export default function Product() {
                       disabled={isAddingToCart}
                       className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-lg transition-all"
                     >
-                      {isAddingToCart ? "Adding to cart..." : "Add to Cart & Checkout"}
+                      {isAddingToCart
+                        ? "Adding to cart..."
+                        : "Add to Cart & Checkout"}
                     </button>
                   </div>
                 </div>

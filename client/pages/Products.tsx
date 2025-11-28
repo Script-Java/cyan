@@ -10,7 +10,8 @@ const PRODUCTS = [
     image: "/placeholder.svg",
     rating: 5.0,
     reviews: 1,
-    description: "Perfect for testing Square checkout integration. $1.00 product.",
+    description:
+      "Perfect for testing Square checkout integration. $1.00 product.",
     badge: "Test",
   },
   {
