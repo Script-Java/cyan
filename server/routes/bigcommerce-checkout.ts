@@ -118,9 +118,19 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (
     }
 
     console.log("Creating draft order for customer:", userId || "guest");
-    const draftOrder = await bigCommerceAPI.createDraftOrder(draftOrderPayload);
+    console.log("Draft order payload:", JSON.stringify(draftOrderPayload, null, 2));
+
+    let draftOrder: any;
+    try {
+      draftOrder = await bigCommerceAPI.createDraftOrder(draftOrderPayload);
+      console.log("Draft order created successfully:", draftOrder);
+    } catch (draftOrderError) {
+      console.error("Failed to create draft order:", draftOrderError);
+      throw draftOrderError;
+    }
 
     if (!draftOrder || !draftOrder.id) {
+      console.error("Invalid draft order response:", draftOrder);
       throw new Error("Failed to create draft order - no ID returned");
     }
 
