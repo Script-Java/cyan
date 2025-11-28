@@ -130,7 +130,18 @@ export default function Header() {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden lg:flex items-center gap-6">
+              <Link
+                to="/ecwid-store"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/10 transition-colors text-sm font-medium"
+                title="Shop all products"
+              >
+                <ShoppingCart className="w-5 h-5 text-[#FFD713]" />
+                <span>Shop All</span>
+              </Link>
+
+              <div className="h-6 w-px bg-white/20"></div>
+
               <Link
                 to="/dashboard"
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
