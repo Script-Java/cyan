@@ -1,8 +1,11 @@
 import { RequestHandler } from "express";
 import { bigCommerceAPI } from "../utils/bigcommerce";
+import { getCustomerOrders, getOrderById } from "../utils/supabase";
 
 /**
  * Get customer's orders
+ * Primary: Supabase
+ * Fallback: BigCommerce
  * Requires: customerId in JWT token
  */
 export const handleGetOrders: RequestHandler = async (req, res) => {
@@ -13,38 +16,81 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const orders = await bigCommerceAPI.getCustomerOrders(customerId);
+    let orders: any[] = [];
 
-    // Fetch shipments for each order
-    const ordersWithShipments = await Promise.all(
-      orders.map(async (order: any) => {
-        const shipments = await bigCommerceAPI.getOrderShipments(order.id);
-        return {
-          id: order.id,
-          customerId: order.customer_id,
-          status: order.status,
-          dateCreated: order.date_created,
-          total: order.total_incl_tax,
-          itemCount: order.items_count,
-          shipments: shipments.map((shipment: any) => ({
-            id: shipment.id,
-            status: shipment.status,
-            dateCreated: shipment.date_created,
-            trackingNumber: shipment.tracking_number,
-            shippingProvider: shipment.shipping_provider,
-            shippingMethod: shipment.shipping_method,
-            comments: shipment.comments,
-            itemsCount: shipment.items?.length || 0,
-          })),
-        };
-      }),
-    );
+    // Try Supabase first (PRIMARY)
+    try {
+      console.log("Fetching orders from Supabase for customer:", customerId);
+      orders = await getCustomerOrders(customerId);
 
-    res.json({
-      success: true,
-      orders: ordersWithShipments,
-      count: ordersWithShipments.length,
-    });
+      // Format Supabase orders to match expected format
+      const formattedOrders = orders.map((order) => ({
+        id: order.id,
+        customerId: order.customer_id,
+        status: order.status || "paid",
+        total: order.total,
+        dateCreated: order.created_at,
+        itemCount: order.order_items?.length || 0,
+        source: "supabase",
+      }));
+
+      console.log("Fetched", formattedOrders.length, "orders from Supabase");
+
+      return res.json({
+        success: true,
+        orders: formattedOrders,
+        count: formattedOrders.length,
+      });
+    } catch (supabaseError) {
+      console.error("Supabase fetch failed, trying BigCommerce...", supabaseError);
+    }
+
+    // Fallback to BigCommerce if Supabase fails
+    try {
+      const bcOrders = await bigCommerceAPI.getCustomerOrders(customerId);
+
+      const ordersWithShipments = await Promise.all(
+        bcOrders.map(async (order: any) => {
+          let shipments = [];
+          try {
+            shipments = await bigCommerceAPI.getOrderShipments(order.id);
+          } catch (e) {
+            console.error("Failed to fetch shipments for order:", order.id);
+          }
+
+          return {
+            id: order.id,
+            customerId: order.customer_id,
+            status: order.status,
+            total: order.total_incl_tax || order.total,
+            dateCreated: order.date_created,
+            itemCount: order.items_count || 0,
+            shipments: shipments.map((shipment: any) => ({
+              id: shipment.id,
+              status: shipment.status,
+              dateCreated: shipment.date_created,
+              trackingNumber: shipment.tracking_number,
+              shippingProvider: shipment.shipping_provider,
+              shippingMethod: shipment.shipping_method,
+              comments: shipment.comments,
+              itemsCount: shipment.items?.length || 0,
+            })),
+            source: "bigcommerce",
+          };
+        }),
+      );
+
+      console.log("Fetched", ordersWithShipments.length, "orders from BigCommerce");
+
+      res.json({
+        success: true,
+        orders: ordersWithShipments,
+        count: ordersWithShipments.length,
+      });
+    } catch (bcError) {
+      console.error("BigCommerce fetch also failed:", bcError);
+      throw bcError;
+    }
   } catch (error) {
     console.error("Get orders error:", error);
     const message =
@@ -55,6 +101,8 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
 
 /**
  * Get single order details
+ * Primary: Supabase
+ * Fallback: BigCommerce
  * Requires: customerId in JWT token, orderId in params
  */
 export const handleGetOrder: RequestHandler = async (req, res) => {
@@ -70,6 +118,34 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Order ID required" });
     }
 
+    // Try Supabase first
+    try {
+      const order = await getOrderById(parseInt(orderId), customerId);
+
+      if (order) {
+        return res.json({
+          success: true,
+          order: {
+            id: order.id,
+            customerId: order.customer_id,
+            status: order.status,
+            dateCreated: order.created_at,
+            total: order.total,
+            subtotal: order.subtotal,
+            tax: order.tax,
+            shipping: order.shipping,
+            items: order.order_items || [],
+            shippingAddress: order.shipping_address,
+            billingAddress: order.billing_address,
+            source: "supabase",
+          },
+        });
+      }
+    } catch (supabaseError) {
+      console.error("Supabase fetch failed, trying BigCommerce...", supabaseError);
+    }
+
+    // Fallback to BigCommerce
     const order = await bigCommerceAPI.getOrder(parseInt(orderId));
 
     // Verify order belongs to customer
@@ -78,7 +154,12 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
     }
 
     // Fetch shipments
-    const shipments = await bigCommerceAPI.getOrderShipments(order.id);
+    let shipments = [];
+    try {
+      shipments = await bigCommerceAPI.getOrderShipments(order.id);
+    } catch (e) {
+      console.error("Failed to fetch shipments:", e);
+    }
 
     res.json({
       success: true,
@@ -103,6 +184,7 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
           comments: shipment.comments,
           items: shipment.items || [],
         })),
+        source: "bigcommerce",
       },
     });
   } catch (error) {
