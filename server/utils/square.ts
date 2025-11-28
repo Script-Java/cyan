@@ -58,7 +58,7 @@ export async function processSquarePayment(paymentData: {
       }),
     };
 
-    const response = await paymentsApi.createPayment(paymentBody);
+    const response = await getPaymentsApi().createPayment(paymentBody);
 
     if (response.result) {
       console.log("Square payment processed successfully:", response.result.id);
