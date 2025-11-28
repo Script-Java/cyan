@@ -321,12 +321,20 @@ export default function CheckoutBigCommerce() {
       });
 
       let result: any;
+      let responseText = "";
 
       try {
-        result = await response.json();
+        responseText = await response.text();
+        result = responseText ? JSON.parse(responseText) : {};
       } catch (parseError) {
-        console.error("Failed to parse checkout response:", parseError);
-        throw new Error("Invalid response from server");
+        console.error("Failed to parse checkout response:", {
+          error: parseError,
+          responseText: responseText.substring(0, 500),
+          status: response.status,
+        });
+        throw new Error(
+          `Server error (${response.status}): ${responseText.substring(0, 100)}`,
+        );
       }
 
       if (!response.ok) {
