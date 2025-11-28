@@ -206,14 +206,16 @@ export default function Header() {
                         >
                           Dashboard
                         </Link>
-                        <Link
-                          to="/admin"
-                          className="flex items-center gap-2 w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
-                          onClick={() => setIsProfileMenuOpen(false)}
-                        >
-                          <BarChart3 className="w-4 h-4" />
-                          Admin
-                        </Link>
+                        {isAdmin && (
+                          <Link
+                            to="/admin"
+                            className="flex items-center gap-2 w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
+                            onClick={() => setIsProfileMenuOpen(false)}
+                          >
+                            <BarChart3 className="w-4 h-4" />
+                            Admin
+                          </Link>
+                        )}
                         <button
                           onClick={() => {
                             handleLogout();
