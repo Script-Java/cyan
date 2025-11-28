@@ -199,7 +199,7 @@ export const handleCheckout: RequestHandler = async (req, res) => {
       data: {
         id: supabaseOrder.id,
         bigcommerce_id: bigcommerceOrderId,
-        customer_id: checkoutData.customer_id,
+        customer_id: customerId,
         total,
         status: "pending",
         date_created: new Date().toISOString(),
