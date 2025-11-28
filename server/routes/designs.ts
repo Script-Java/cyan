@@ -28,8 +28,8 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    // Get all customer orders
-    const orders = await bigCommerceAPI.getCustomerOrders(customerId);
+    // Get all customer orders from Ecwid
+    const orders = await ecwidAPI.getCustomerOrders(customerId);
 
     // Extract designs from orders
     const designsByOrder: OrderDesign[] = [];
@@ -38,43 +38,43 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
       const designs: OrderDesign["designs"] = [];
 
       // Get detailed order information
-      const orderDetails = await bigCommerceAPI.getOrder(order.id);
+      const orderDetails = await ecwidAPI.getOrder(order.id);
 
-      if (orderDetails.items && Array.isArray(orderDetails.items)) {
-        // Check each item for design-related custom fields
+      if (orderDetails && orderDetails.items && Array.isArray(orderDetails.items)) {
+        // Check each item for design-related information
         for (const item of orderDetails.items) {
-          // Check custom_fields for design information
-          if (item.custom_fields && Array.isArray(item.custom_fields)) {
-            for (const field of item.custom_fields) {
-              // Look for design-related fields
+          // Check for design attributes or fields
+          if (item.attributes && Array.isArray(item.attributes)) {
+            for (const attr of item.attributes) {
+              // Look for design-related attributes
               if (
-                field.name &&
-                (field.name.toLowerCase().includes("design") ||
-                  field.name.toLowerCase().includes("file") ||
-                  field.name.toLowerCase().includes("artwork"))
+                attr.name &&
+                (attr.name.toLowerCase().includes("design") ||
+                  attr.name.toLowerCase().includes("file") ||
+                  attr.name.toLowerCase().includes("artwork"))
               ) {
                 designs.push({
-                  id: `${order.id}-${item.id}-${field.id || field.name}`,
-                  name: field.name || "Design File",
+                  id: `${order.id}-${item.id}-${attr.id || attr.name}`,
+                  name: attr.name || "Design File",
                   description: `From order #${order.id}`,
-                  type: field.name || "design",
-                  url: field.value?.startsWith("http")
-                    ? field.value
+                  type: attr.name || "design",
+                  url: attr.value?.startsWith("http")
+                    ? attr.value
                     : undefined,
-                  createdAt: order.date_created,
+                  createdAt: order.createDate,
                 });
               }
             }
           }
 
           // Also check product name for design info
-          if (item.product_name) {
+          if (item.productName) {
             designs.push({
               id: `${order.id}-${item.id}`,
-              name: item.product_name,
+              name: item.productName,
               description: `Design from order #${order.id}`,
               type: "product",
-              createdAt: order.date_created,
+              createdAt: order.createDate,
               size: item.quantity ? `Qty: ${item.quantity}` : undefined,
             });
           }
@@ -84,8 +84,8 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
       if (designs.length > 0) {
         designsByOrder.push({
           orderId: order.id,
-          orderDate: order.date_created,
-          orderStatus: order.status,
+          orderDate: order.createDate,
+          orderStatus: order.fulfillmentStatus || order.paymentStatus || "processing",
           designs,
         });
       }
