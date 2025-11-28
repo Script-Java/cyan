@@ -276,8 +276,38 @@ export default function Header() {
               </button>
             </div>
 
-            {/* Auth Buttons */}
+            {/* Mobile Navigation */}
             <nav className="space-y-2">
+              <Link
+                to="/ecwid-store"
+                className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-white font-medium text-sm border border-[#FFD713]/30"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <ShoppingCart className="w-5 h-5 text-[#FFD713]" />
+                Shop All Products
+              </Link>
+
+              {isAuthenticated && (
+                <>
+                  <Link
+                    to="/dashboard"
+                    className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-white font-medium text-sm border border-white/20"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <LayoutGrid className="w-5 h-5 text-[#8B5CF6]" />
+                    Dashboard
+                  </Link>
+                  <Link
+                    to="/order-history"
+                    className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-white font-medium text-sm border border-white/20"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Bookmark className="w-5 h-5 text-[#10B981]" />
+                    Orders
+                  </Link>
+                </>
+              )}
+
               {!isAuthenticated && (
                 <>
                   <Link
