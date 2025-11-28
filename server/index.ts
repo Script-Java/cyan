@@ -135,11 +135,11 @@ export function createServer() {
   app.post("/api/checkout", handleCheckout);
   app.get("/api/checkout/:cartId", handleGetCheckoutDetails);
 
-  // ===== BigCommerce Checkout Routes (Protected - authenticated only) =====
-  app.post("/api/bigcommerce/checkout", verifyToken, handleCreateBigCommerceCheckout);
+  // ===== BigCommerce Checkout Routes (Optional auth - guest checkout supported) =====
+  app.post("/api/bigcommerce/checkout", optionalVerifyToken, handleCreateBigCommerceCheckout);
   app.get(
     "/api/bigcommerce/checkout/:draftOrderId",
-    verifyToken,
+    optionalVerifyToken,
     handleGetBigCommerceCheckoutUrl,
   );
 
