@@ -43,6 +43,11 @@ interface Order {
   subtotal?: number;
   tax?: number;
   items?: OrderItem[];
+  estimated_delivery_date?: string;
+  tracking_number?: string;
+  tracking_carrier?: string;
+  tracking_url?: string;
+  shipped_date?: string;
 }
 
 interface OrdersResponse {
