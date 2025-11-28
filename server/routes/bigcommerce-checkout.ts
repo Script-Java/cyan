@@ -8,6 +8,7 @@ interface CreateCheckoutRequest {
     quantity: number;
     price_inc_tax?: number;
   }>;
+  product_options?: Record<string, string>;
   billing_address: {
     first_name: string;
     last_name: string;
