@@ -55,17 +55,17 @@ export async function processSquarePayment(paymentData: {
   } catch (error) {
     console.error("Square payment error:", error);
 
-    if (error instanceof ApiError) {
-      const errorResponse = error.result;
-      throw new Error(
-        errorResponse?.errors?.[0]?.detail ||
-          errorResponse?.errors?.[0]?.message ||
-          "Payment processing failed",
-      );
-    }
-
     if (error instanceof Error) {
       throw error;
+    }
+
+    if (error && typeof error === "object" && "errors" in error) {
+      const errorObj = error as any;
+      throw new Error(
+        errorObj?.errors?.[0]?.detail ||
+          errorObj?.errors?.[0]?.message ||
+          "Payment processing failed",
+      );
     }
 
     throw new Error("Payment processing failed");
