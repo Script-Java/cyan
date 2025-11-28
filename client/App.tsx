@@ -23,6 +23,7 @@ import Support from "./pages/Support";
 import MyTickets from "./pages/MyTickets";
 import AdminSupport from "./pages/AdminSupport";
 import StoreCreditAdmin from "./pages/StoreCreditAdmin";
+import AdminDashboard from "./pages/AdminDashboard";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 
