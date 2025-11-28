@@ -381,14 +381,14 @@ export default function Checkout() {
           quantity: item.quantity,
           price_inc_tax: item.price || 0.25,
         })),
-        order_total: subtotal + subtotal * taxRate + shippingCost,
+        order_total: orderTotal,
         subtotal_inc_tax: subtotal,
         subtotal_ex_tax: subtotal,
-        total_inc_tax: subtotal + subtotal * taxRate + shippingCost,
+        total_inc_tax: orderTotal,
         total_ex_tax: subtotal + shippingCost,
         total_tax: subtotal * taxRate,
         total_shipping: shippingCost,
-        status_id: 0,
+        status_id: 11, // Paid status
       };
 
       const headers: Record<string, string> = {
