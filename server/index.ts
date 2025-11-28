@@ -62,6 +62,7 @@ import {
   handleGetSquareLocations,
   handleTestSquareConfig,
   handleCreateCheckoutSession,
+  handleConfirmCheckout,
 } from "./routes/square";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
