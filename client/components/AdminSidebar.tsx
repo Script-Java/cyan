@@ -36,6 +36,35 @@ export default function AdminSidebar() {
     "sales-channels",
     "apps",
   ]);
+  const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
+
+  useEffect(() => {
+    const fetchPendingOrdersCount = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        if (!token) return;
+
+        const response = await fetch("/api/admin/orders/pending", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setPendingOrdersCount(data.count || 0);
+        }
+      } catch (error) {
+        console.error("Error fetching pending orders count:", error);
+      }
+    };
+
+    fetchPendingOrdersCount();
+
+    // Refresh every 30 seconds
+    const interval = setInterval(fetchPendingOrdersCount, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const toggleExpand = (label: string) => {
     setExpandedItems((prev) =>
