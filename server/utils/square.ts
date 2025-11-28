@@ -6,12 +6,13 @@ let squareClient: any = null;
 function getSquareClient() {
   if (!squareClient) {
     try {
+      // Import the Client class from square SDK
+      // square v43+ exports Client as the default export
       const squarePkg = require("square");
-      // The square package exports the Client as the default export or as a named export
-      const Client = squarePkg.Client || squarePkg.default;
+      const { Client } = squarePkg;
 
       if (!Client) {
-        throw new Error("Square Client not found in package exports");
+        throw new Error("Square Client not found in package exports. Available exports: " + Object.keys(squarePkg).join(", "));
       }
 
       squareClient = new Client({
@@ -20,7 +21,7 @@ function getSquareClient() {
       });
     } catch (error) {
       console.error("Failed to initialize Square client:", error);
-      throw new Error("Square SDK initialization failed");
+      throw new Error(`Square SDK initialization failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
   return squareClient;
