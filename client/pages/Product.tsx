@@ -127,7 +127,7 @@ export default function Product() {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <>
         <Header />
