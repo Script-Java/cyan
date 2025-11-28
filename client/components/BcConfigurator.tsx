@@ -160,82 +160,50 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
     return { subtotal, total };
   }
 
-  // Example UI: simple card grids — replace classes with your design / icons
+  // Loading state
+  if (optionsLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="text-center">
+          <Loader className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-2" />
+          <p className="text-gray-600">Loading product options...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Render dynamic product options
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-      {/* Shape panel */}
-      <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
-        <h4 className="font-bold text-gray-900 mb-4">Select a Shape</h4>
-        <div className="grid grid-cols-2 gap-2">
-          {[
-            "Custom Shape",
-            "Kiss-Cut",
-            "Circle",
-            "Oval",
-            "Square",
-            "Rectangle",
-          ].map((option) => (
-            <button
-              key={option}
-              onClick={() => setShape(option)}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                shape === option
-                  ? "bg-blue-600 text-white border-2 border-blue-600"
-                  : "bg-white text-gray-700 border border-gray-300 hover:border-gray-400"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Material panel */}
-      <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
-        <h4 className="font-bold text-gray-900 mb-4">Material</h4>
-        <div className="flex flex-col gap-2">
-          {["Matte", "Gloss"].map((opt) => (
-            <button
-              key={opt}
-              onClick={() => setMaterial(opt)}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                material === opt
-                  ? "bg-blue-600 text-white border-2 border-blue-600"
-                  : "bg-white text-gray-700 border border-gray-300 hover:border-gray-400"
-              }`}
-            >
-              {opt}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Size panel */}
-      <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
-        <h4 className="font-bold text-gray-900 mb-4">Select a Size</h4>
-        <div className="grid grid-cols-2 gap-2">
-          {['Small (2")', 'Medium (3")', 'Large (4")', 'X-Large (5")'].map(
-            (opt) => (
+      {/* Dynamic Option Panels */}
+      {productOptions.map((option) => (
+        <div
+          key={option.id}
+          className="p-4 rounded-lg bg-gray-50 border border-gray-200"
+        >
+          <h4 className="font-bold text-gray-900 mb-4">{option.name}</h4>
+          <div className="flex flex-col gap-2">
+            {option.option_values.map((value) => (
               <button
-                key={opt}
-                onClick={() => setSize(opt)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                  size === opt
+                key={value.id}
+                onClick={() =>
+                  setSelectedOptions({
+                    ...selectedOptions,
+                    [option.id]: value.label,
+                  })
+                }
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all text-left ${
+                  selectedOptions[option.id] === value.label
                     ? "bg-blue-600 text-white border-2 border-blue-600"
                     : "bg-white text-gray-700 border border-gray-300 hover:border-gray-400"
                 }`}
               >
-                {opt}
+                {value.label}
               </button>
-            ),
-          )}
-          <input
-            placeholder="Custom size"
-            onBlur={(e) => setSize(e.target.value)}
-            className="col-span-2 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+            ))}
+          </div>
         </div>
-      </div>
+      ))}
 
       {/* Price / quantity panel */}
       <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
@@ -257,14 +225,20 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
                 className="cursor-pointer"
               />
               <span className="font-medium">{q} pcs</span>
-              <span className="text-gray-600">${(q * 0.25).toFixed(2)}</span>
+              <span className="text-gray-600">
+                ${(builderProduct?.price ? q * builderProduct.price : q * 0.25).toFixed(2)}
+              </span>
             </label>
           ))}
         </div>
 
         <div className="mt-4 pt-4 border-t border-gray-300">
           <div className="font-bold text-lg text-gray-900 mb-4">
-            Total: ${priceInfo.total || (quantity * 0.25).toFixed(2)}
+            Total: $
+            {priceInfo.total ||
+              (builderProduct?.price
+                ? (quantity * builderProduct.price).toFixed(2)
+                : (quantity * 0.25).toFixed(2))}
           </div>
 
           <button
