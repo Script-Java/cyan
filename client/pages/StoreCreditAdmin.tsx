@@ -73,10 +73,12 @@ export default function StoreCreditAdmin() {
   const [modifyNotes, setModifyNotes] = useState("");
   const [showModifyDialog, setShowModifyDialog] = useState(false);
 
-  // Check authentication
+  // Check authentication and admin status
   useEffect(() => {
-    const token = localStorage.getItem("auth_token");
-    if (!token) {
+    const token = localStorage.getItem("authToken");
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
+
+    if (!token || !isAdmin) {
       navigate("/login");
       return;
     }
