@@ -42,6 +42,31 @@ interface TokenExchangeResponse {
   context: string;
 }
 
+interface BigCommerceProduct {
+  id: number;
+  name: string;
+  description?: string;
+  price?: number;
+  sku?: string;
+  image_url?: string;
+  weight?: number;
+  type?: string;
+  status?: string;
+}
+
+interface BigCommerceProductOption {
+  id: number;
+  product_id: number;
+  name: string;
+  type: string;
+  display_name?: string;
+  option_values: Array<{
+    id: number;
+    label: string;
+    value?: string;
+  }>;
+}
+
 class BigCommerceAPI {
   private storeHash: string;
   private accessToken: string;
