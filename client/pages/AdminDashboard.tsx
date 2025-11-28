@@ -161,7 +161,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* Main Content */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="px-6 lg:px-8 py-8">
             {isLoading ? (
               <div className="flex justify-center items-center h-96">
                 <div className="text-gray-600">Loading dashboard...</div>
