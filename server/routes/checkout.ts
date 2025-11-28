@@ -1,5 +1,4 @@
 import { RequestHandler } from "express";
-import { bigCommerceAPI } from "../utils/bigcommerce";
 import { createSupabaseOrder, createOrderItems } from "../utils/supabase";
 
 interface CheckoutRequest {
