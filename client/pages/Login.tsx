@@ -45,11 +45,6 @@ export default function Login() {
     }
   };
 
-  const handleBigCommerceLogin = () => {
-    // Redirect to BigCommerce OAuth endpoint
-    // This would be configured in your backend
-    window.location.href = "/api/auth/bigcommerce";
-  };
 
   return (
     <>
