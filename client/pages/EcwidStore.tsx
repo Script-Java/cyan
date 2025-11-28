@@ -23,33 +23,38 @@ export default function EcwidStore() {
         display: none !important;
       }
 
-      /* Product options layout in columns */
-      .ec-product-details__options,
-      .ec-product-details__options-list,
-      .product-options {
+      /* Product options layout in 4 columns */
+      .details-options,
+      .ec-product-options,
+      .product-options-container,
+      .ec-product-details__options-section {
         display: grid !important;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+        grid-template-columns: repeat(4, 1fr) !important;
         gap: 20px !important;
+        width: 100% !important;
       }
 
-      .ec-option-section,
-      .ec-product-details__option,
-      .product-option {
+      .details-options__item,
+      .ec-option,
+      .ec-product-option,
+      .product-option-item,
+      .ec-product-details__option-group {
         display: flex !important;
         flex-direction: column !important;
         gap: 10px !important;
+        flex: 1 !important;
       }
 
-      .details-options {
-        display: grid !important;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
-        gap: 20px !important;
+      /* Ensure options display as vertical columns */
+      .select-field,
+      .ec-select,
+      .option-select {
+        width: 100% !important;
       }
 
-      .details-options__item {
+      .ec-product-details__options > div {
         display: flex !important;
         flex-direction: column !important;
-        gap: 10px !important;
       }
     `;
     document.head.appendChild(style);
