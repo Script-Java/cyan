@@ -67,8 +67,7 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (req, res) 
     }
 
     // Create draft order
-    const draftOrderPayload = {
-      customer_id: customerId,
+    const draftOrderPayload: any = {
       line_items: checkoutData.products.map((product) => ({
         product_id: product.product_id,
         quantity: product.quantity,
@@ -96,7 +95,15 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (req, res) 
       })),
     };
 
-    console.log("Creating draft order for customer:", customerId);
+    // Add customer_id if authenticated
+    if (userId) {
+      draftOrderPayload.customer_id = userId;
+    } else if (checkoutData.customer_email) {
+      // For guest checkout, add customer email so BigCommerce can track the order
+      draftOrderPayload.customer_email = checkoutData.customer_email;
+    }
+
+    console.log("Creating draft order for customer:", userId || "guest");
     const draftOrder = await bigCommerceAPI.createDraftOrder(draftOrderPayload);
 
     if (!draftOrder || !draftOrder.id) {
