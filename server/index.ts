@@ -56,6 +56,11 @@ import {
   handleGetPaymentMethods,
   handleProcessPayment,
 } from "./routes/payments";
+import {
+  handleSquarePayment,
+  handleGetSquareConfig,
+  handleGetSquareLocations,
+} from "./routes/square";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
