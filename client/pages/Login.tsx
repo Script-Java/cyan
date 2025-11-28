@@ -33,9 +33,10 @@ export default function Login() {
         );
       }
 
-      // Store auth token and customer ID
+      // Store auth token, customer ID, and admin status
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("customerId", data.customer.id.toString());
+      localStorage.setItem("isAdmin", String(data.customer.isAdmin || false));
       // Redirect to home
       navigate("/");
     } catch (err) {
