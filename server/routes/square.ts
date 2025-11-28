@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { processSquarePayment, getSquareLocations, getPaymentsApi } from "../utils/square";
+import { processSquarePayment, getSquareLocations, getCheckoutApi, getOrdersApi } from "../utils/square";
 import { createSupabaseOrder, createOrderItems } from "../utils/supabase";
 
 interface SquarePaymentRequest {
