@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { bigCommerceAPI } from "../utils/bigcommerce";
+import { ecwidAPI } from "../utils/ecwid";
 
 interface PaymentRequest {
   amount: number;
