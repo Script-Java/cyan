@@ -298,6 +298,7 @@ export const handleDeleteCustomerAccount: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    // Delete from Supabase
     const { error } = await supabase
       .from("customers")
       .delete()
@@ -305,6 +306,14 @@ export const handleDeleteCustomerAccount: RequestHandler = async (req, res) => {
 
     if (error) {
       return res.status(500).json({ error: "Failed to delete account" });
+    }
+
+    // Try to delete from Ecwid (non-blocking)
+    try {
+      await ecwidAPI.deleteCustomer(customerId);
+    } catch (ecwidError) {
+      console.warn("Warning: Failed to delete customer from Ecwid:", ecwidError);
+      // Don't fail the deletion if Ecwid deletion fails
     }
 
     res.json({
