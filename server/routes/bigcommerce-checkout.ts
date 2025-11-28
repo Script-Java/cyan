@@ -44,6 +44,15 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (
     const customerId = (req as any).customerId;
     const checkoutData = req.body as CreateCheckoutRequest;
 
+    console.log("BigCommerce checkout request:", {
+      customerId,
+      hasProducts: !!checkoutData.products,
+      productCount: checkoutData.products?.length,
+      hasEmail: !!checkoutData.customer_email,
+      hasBilling: !!checkoutData.billing_address,
+      hasShipping: !!checkoutData.shipping_addresses,
+    });
+
     // Use customer_id from token (if authenticated) or from request body (if guest)
     const userId = customerId || checkoutData.customer_id || null;
 
