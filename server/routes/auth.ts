@@ -107,13 +107,45 @@ export const handleSignup: RequestHandler = async (req, res) => {
     // Check if customer already exists in Supabase
     const { data: existingCustomer } = await supabase
       .from("customers")
-      .select("id")
+      .select("id, ecwid_customer_id, password_hash")
       .eq("email", email)
       .single();
 
     if (existingCustomer) {
-      console.log("Email already registered:", email);
-      return res.status(409).json({ error: "Email already registered" });
+      // If they already have a password, reject signup
+      if (existingCustomer.password_hash) {
+        console.log("Email already registered with password:", email);
+        return res.status(409).json({ error: "Email already registered" });
+      }
+      // If they came from Ecwid but haven't set password yet, update their account
+      if (existingCustomer.ecwid_customer_id) {
+        const passwordHash = await bcrypt.hash(password, 10);
+        const { data: updatedCustomer, error: updateError } = await supabase
+          .from("customers")
+          .update({ password_hash: passwordHash })
+          .eq("id", existingCustomer.id)
+          .select()
+          .single();
+
+        if (updateError || !updatedCustomer) {
+          console.error("Error updating Ecwid customer account:", updateError);
+          return res.status(500).json({ error: "Failed to create account" });
+        }
+
+        const token = generateToken(updatedCustomer.id, updatedCustomer.email);
+        return res.json({
+          success: true,
+          token,
+          customer: {
+            id: updatedCustomer.id,
+            email: updatedCustomer.email,
+            firstName: updatedCustomer.first_name,
+            lastName: updatedCustomer.last_name,
+            isAdmin: updatedCustomer.is_admin || false,
+          },
+          message: "Account activated with password",
+        });
+      }
     }
 
     // Hash password
