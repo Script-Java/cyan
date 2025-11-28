@@ -41,9 +41,8 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (req, res) 
     const customerId = (req as any).customerId;
     const checkoutData = req.body as CreateCheckoutRequest;
 
-    if (!customerId) {
-      return res.status(401).json({ error: "Authentication required for checkout" });
-    }
+    // Use customer_id from token (if authenticated) or from request body (if guest)
+    const userId = customerId || checkoutData.customer_id || null;
 
     if (!checkoutData.products || checkoutData.products.length === 0) {
       return res.status(400).json({ error: "No products in checkout" });
