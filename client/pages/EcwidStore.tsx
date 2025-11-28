@@ -26,7 +26,7 @@ const FALLBACK_PRODUCTS: Product[] = [
   {
     id: 785848122,
     sku: "3-INCH-PROMO",
-    name: "3\" INCH - 200 CUSTOM STICKER PROMOTION",
+    name: '3" INCH - 200 CUSTOM STICKER PROMOTION',
     price: 0.26,
     description:
       "Premium vinyl stickers perfect for laptops, phones, and outdoor use.",
@@ -43,7 +43,8 @@ const FALLBACK_PRODUCTS: Product[] = [
     sku: "SQAURE-STICKER",
     name: "SQUARE STICKER",
     price: 0.22,
-    description: "Classic square vinyl stickers with vibrant full-color printing.",
+    description:
+      "Classic square vinyl stickers with vibrant full-color printing.",
     images: [
       {
         id: 1,
@@ -89,7 +90,8 @@ export default function EcwidStore() {
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(
-            errorData.error || `HTTP ${response.status}: Failed to fetch products`
+            errorData.error ||
+              `HTTP ${response.status}: Failed to fetch products`,
           );
         }
 

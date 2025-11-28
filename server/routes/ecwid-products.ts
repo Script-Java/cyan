@@ -7,9 +7,10 @@ const MOCK_PRODUCTS = [
   {
     id: 785848122,
     sku: "3-INCH-PROMO",
-    name: "3\" INCH - 200 CUSTOM STICKER PROMOTION",
+    name: '3" INCH - 200 CUSTOM STICKER PROMOTION',
     price: 0.26,
-    description: "Premium vinyl stickers perfect for laptops, phones, and outdoor use. Durable and weather-resistant.",
+    description:
+      "Premium vinyl stickers perfect for laptops, phones, and outdoor use. Durable and weather-resistant.",
     images: [
       {
         id: 1,
@@ -43,9 +44,9 @@ const MOCK_PRODUCTS = [
         type: "select",
         required: true,
         choices: [
-          { text: "2x2\"", priceModifier: 0 },
-          { text: "3x3\"", priceModifier: 0 },
-          { text: "4x4\"", priceModifier: 0.1 },
+          { text: '2x2"', priceModifier: 0 },
+          { text: '3x3"', priceModifier: 0 },
+          { text: '4x4"', priceModifier: 0.1 },
         ],
       },
       {
@@ -65,7 +66,8 @@ const MOCK_PRODUCTS = [
     sku: "SQAURE-STICKER",
     name: "SQUARE STICKER",
     price: 0.22,
-    description: "Classic square vinyl stickers with vibrant full-color printing. Perfect for branding and personal use.",
+    description:
+      "Classic square vinyl stickers with vibrant full-color printing. Perfect for branding and personal use.",
     images: [
       {
         id: 1,
@@ -88,8 +90,8 @@ const MOCK_PRODUCTS = [
         type: "select",
         required: true,
         choices: [
-          { text: "2x2\"", priceModifier: 0 },
-          { text: "3x3\"", priceModifier: 0.05 },
+          { text: '2x2"', priceModifier: 0 },
+          { text: '3x3"', priceModifier: 0.05 },
         ],
       },
       {
@@ -117,7 +119,8 @@ const MOCK_PRODUCTS = [
     sku: "CIRCLE-STICKER",
     name: "CIRCLE STICKER",
     price: 0.22,
-    description: "Round stickers with precision cutting for clean edges. Available in various finishes.",
+    description:
+      "Round stickers with precision cutting for clean edges. Available in various finishes.",
     images: [
       {
         id: 1,

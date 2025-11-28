@@ -57,7 +57,8 @@ export default function EcwidProductDetail() {
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(
-            errorData.error || `HTTP ${response.status}: Failed to fetch product`
+            errorData.error ||
+              `HTTP ${response.status}: Failed to fetch product`,
           );
         }
 
@@ -146,7 +147,8 @@ export default function EcwidProductDetail() {
     );
   }
 
-  const currentImage = product.images[currentImageIndex] || product.defaultImage;
+  const currentImage =
+    product.images[currentImageIndex] || product.defaultImage;
 
   return (
     <div className="min-h-screen bg-white">
@@ -225,7 +227,9 @@ export default function EcwidProductDetail() {
                   ${product.price.toFixed(2)}
                 </p>
                 {product.sku && (
-                  <p className="text-sm text-gray-600 mt-2">SKU: {product.sku}</p>
+                  <p className="text-sm text-gray-600 mt-2">
+                    SKU: {product.sku}
+                  </p>
                 )}
               </div>
 
@@ -267,14 +271,19 @@ export default function EcwidProductDetail() {
                             {option.choices.map((choice) => (
                               <option key={choice.text} value={choice.text}>
                                 {choice.text}
-                                {choice.priceModifier ? ` (+$${choice.priceModifier.toFixed(2)})` : ""}
+                                {choice.priceModifier
+                                  ? ` (+$${choice.priceModifier.toFixed(2)})`
+                                  : ""}
                               </option>
                             ))}
                           </select>
                         ) : option.type === "radio" && option.choices ? (
                           <div className="space-y-2">
                             {option.choices.map((choice) => (
-                              <label key={choice.text} className="flex items-center gap-2">
+                              <label
+                                key={choice.text}
+                                className="flex items-center gap-2"
+                              >
                                 <input
                                   type="radio"
                                   name={option.name}
@@ -329,7 +338,9 @@ export default function EcwidProductDetail() {
                   <input
                     type="number"
                     value={quantity}
-                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                    onChange={(e) =>
+                      setQuantity(Math.max(1, parseInt(e.target.value) || 1))
+                    }
                     className="w-16 text-center py-2 outline-none"
                     min="1"
                   />
