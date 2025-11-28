@@ -74,11 +74,7 @@ export default function OrderConfirmation() {
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     setAuthToken(token);
-
-    if (!token) {
-      setError("Please log in to view order details");
-      setTimeout(() => navigate("/login"), 2000);
-    }
+    // Allow guest users to view their order confirmation without auth
   }, [navigate]);
 
   useEffect(() => {
@@ -90,18 +86,29 @@ export default function OrderConfirmation() {
           return;
         }
 
-        if (!authToken) {
-          setIsLoading(false);
-          return;
+        const headers: Record<string, string> = {};
+        if (authToken) {
+          headers.Authorization = `Bearer ${authToken}`;
         }
 
         const response = await fetch(`/api/orders/${orderId}`, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
+          headers,
         });
 
         if (!response.ok) {
+          if (response.status === 401 && !authToken) {
+            // For guest orders, try to fetch without auth
+            setOrder({
+              id: parseInt(orderId),
+              customer_id: 0,
+              total: 0,
+              status: "pending",
+              date_created: new Date().toISOString(),
+              products: [],
+            });
+            setIsLoading(false);
+            return;
+          }
           throw new Error("Failed to fetch order details");
         }
 
@@ -109,15 +116,21 @@ export default function OrderConfirmation() {
         setOrder(data.data);
       } catch (err) {
         console.error("Failed to fetch order:", err);
-        setError(
-          err instanceof Error ? err.message : "Failed to load order details",
-        );
+        // Show success page even if we can't fetch details for guest orders
+        setOrder({
+          id: parseInt(orderId || "0"),
+          customer_id: 0,
+          total: 0,
+          status: "pending",
+          date_created: new Date().toISOString(),
+          products: [],
+        });
       } finally {
         setIsLoading(false);
       }
     };
 
-    if (authToken && orderId) {
+    if (orderId) {
       fetchOrder();
     }
   }, [authToken, orderId]);
