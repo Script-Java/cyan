@@ -136,9 +136,17 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
         body: JSON.stringify(lineItem),
       });
 
+      let responseData: any;
+      try {
+        responseData = await addResponse.json();
+      } catch {
+        responseData = {};
+      }
+
       if (!addResponse.ok) {
-        const errorData = await addResponse.json();
-        throw new Error(errorData.error || "Failed to add item to cart");
+        throw new Error(
+          responseData?.error || "Failed to add item to cart"
+        );
       }
 
       // Store cart ID for checkout
