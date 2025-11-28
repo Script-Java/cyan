@@ -25,14 +25,14 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
         throw new Error(
-          errorData.error || "Login failed. Please check your credentials.",
+          data.error || "Login failed. Please check your credentials.",
         );
       }
 
-      const data = await response.json();
       // Store auth token and customer ID
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("customerId", data.customer.id.toString());
