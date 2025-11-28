@@ -327,18 +327,15 @@ export default function Checkout() {
       return;
     }
 
-    // Allow guest checkout - authentication is optional
-
     setIsSubmitting(true);
 
     try {
-      // Process payment first
       const orderTotal = subtotal + subtotal * taxRate + shippingCost;
 
       const paymentPayload = {
         amount: orderTotal,
         currency: "USD",
-        payment_method_id: "square", // Square payment method ID
+        payment_method_id: "square",
         payment_instrument: {
           type: "card",
           number: paymentInfo.cardNumber.replace(/\s/g, ""),
@@ -351,6 +348,12 @@ export default function Checkout() {
         reference_id: `order_${Date.now()}`,
       };
 
+      console.log("Processing payment with payload:", {
+        amount: paymentPayload.amount,
+        currency: paymentPayload.currency,
+        payment_method_id: paymentPayload.payment_method_id,
+      });
+
       const paymentResponse = await fetch("/api/payments/process", {
         method: "POST",
         headers: {
@@ -362,23 +365,35 @@ export default function Checkout() {
       let paymentResult: any;
       const responseText = await paymentResponse.text();
 
+      console.log("Payment response status:", paymentResponse.status);
+      console.log("Payment response text:", responseText.substring(0, 200));
+
       try {
         paymentResult = responseText ? JSON.parse(responseText) : {};
       } catch (parseError) {
-        console.error("Failed to parse payment response:", responseText);
+        console.error("Failed to parse payment response:", {
+          error: parseError,
+          responseText: responseText.substring(0, 500),
+          status: paymentResponse.status,
+        });
         throw new Error(
-          `Payment response parsing failed: Invalid JSON response. Status: ${paymentResponse.status}`,
+          `Payment response parsing failed: Invalid JSON. Status: ${paymentResponse.status}. Check browser console for details.`,
         );
       }
 
       if (!paymentResponse.ok) {
-        throw new Error(
+        const errorMessage =
           paymentResult?.error ||
-            paymentResult?.message ||
-            `Payment processing failed (${paymentResponse.status})`,
-        );
+          paymentResult?.message ||
+          `Payment processing failed (${paymentResponse.status})`;
+        console.error("Payment processing failed:", {
+          status: paymentResponse.status,
+          error: paymentResult,
+        });
+        throw new Error(errorMessage);
       }
 
+      console.log("Payment processed successfully");
       toast.success("Payment processed successfully!");
 
       // Now create the order
