@@ -383,10 +383,6 @@ export default function Checkout() {
     );
   }
 
-  if (!authToken || !customerId) {
-    return null;
-  }
-
   return (
     <>
       <Header />
