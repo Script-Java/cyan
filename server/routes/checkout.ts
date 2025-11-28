@@ -49,7 +49,17 @@ interface CheckoutRequest {
  */
 export const handleCheckout: RequestHandler = async (req, res) => {
   try {
-    const checkoutData = req.body as CheckoutRequest;
+    let checkoutData: CheckoutRequest;
+
+    try {
+      checkoutData = req.body as CheckoutRequest;
+    } catch (parseError) {
+      console.error("Failed to parse request body:", parseError);
+      return res.status(400).json({
+        error: "Invalid request body format",
+      });
+    }
+
     const requestCustomerId = (req as any).customerId;
 
     // Validate required fields (customer_id is optional for guest checkout)
