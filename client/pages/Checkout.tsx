@@ -364,82 +364,75 @@ export default function Checkout() {
     try {
       const orderTotal = subtotal + subtotal * taxRate + shippingCost;
 
-      console.log("Creating order with total:", orderTotal);
+      console.log("Processing payment with Square, total:", orderTotal);
 
-      // Create the order
-      const orderData: any = {
-        ...(customerId && { customer_id: customerId }),
-        billing_address: {
-          first_name: billingInfo.firstName,
-          last_name: billingInfo.lastName,
-          street_1: billingInfo.street,
-          street_2: billingInfo.street2,
-          city: billingInfo.city,
-          state_or_province: billingInfo.state,
-          postal_code: billingInfo.postalCode,
-          country_code: billingInfo.country,
+      // Process payment via Square
+      const paymentPayload = {
+        sourceId: squarePaymentToken,
+        amount: orderTotal,
+        currency: "USD",
+        items: cartItems,
+        shippingAddress: {
+          firstName: shippingInfo.firstName,
+          lastName: shippingInfo.lastName,
+          street: shippingInfo.street,
+          street2: shippingInfo.street2,
+          city: shippingInfo.city,
+          state: shippingInfo.state,
+          postalCode: shippingInfo.postalCode,
+          country: shippingInfo.country,
         },
-        shipping_addresses: [
-          {
-            first_name: shippingInfo.firstName,
-            last_name: shippingInfo.lastName,
-            street_1: shippingInfo.street,
-            street_2: shippingInfo.street2,
-            city: shippingInfo.city,
-            state_or_province: shippingInfo.state,
-            postal_code: shippingInfo.postalCode,
-            country_code: shippingInfo.country,
-          },
-        ],
-        products: cartItems.map((item) => ({
-          product_id: item.product_id,
-          quantity: item.quantity,
-          price_inc_tax: item.price || 0.25,
-        })),
-        order_total: orderTotal,
-        subtotal_inc_tax: subtotal,
-        subtotal_ex_tax: subtotal,
-        total_inc_tax: orderTotal,
-        total_ex_tax: subtotal + shippingCost,
-        total_tax: subtotal * taxRate,
-        total_shipping: shippingCost,
-        status_id: 0, // Pending status
+        billingAddress: billingInfo.same_as_shipping
+          ? {
+              firstName: shippingInfo.firstName,
+              lastName: shippingInfo.lastName,
+              street: shippingInfo.street,
+              street2: shippingInfo.street2,
+              city: shippingInfo.city,
+              state: shippingInfo.state,
+              postalCode: shippingInfo.postalCode,
+              country: shippingInfo.country,
+            }
+          : {
+              firstName: billingInfo.firstName,
+              lastName: billingInfo.lastName,
+              street: billingInfo.street,
+              street2: billingInfo.street2,
+              city: billingInfo.city,
+              state: billingInfo.state,
+              postalCode: billingInfo.postalCode,
+              country: billingInfo.country,
+            },
+        subtotal,
+        tax: subtotal * taxRate,
+        shipping: shippingCost,
+        total: orderTotal,
+        customerId: customerId || undefined,
+        customerEmail: shippingInfo.email,
+        customerName: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
       };
 
-      const headers: Record<string, string> = {
-        "Content-Type": "application/json",
-      };
-
-      if (authToken) {
-        headers.Authorization = `Bearer ${authToken}`;
-      }
-
-      console.log("Creating order with data:", {
-        customer_id: orderData.customer_id,
-        total: orderData.order_total,
-        product_count: orderData.products?.length,
-        status: orderData.status_id,
-      });
-
-      const response = await fetch("/api/checkout", {
+      const response = await fetch("/api/square/pay", {
         method: "POST",
-        headers,
-        body: JSON.stringify(orderData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(paymentPayload),
       });
 
       let result: any;
 
-      console.log("Order response status:", response.status);
+      console.log("Payment response status:", response.status);
 
       try {
         result = await response.json();
       } catch (parseError) {
-        console.error("Failed to parse checkout response:", {
+        console.error("Failed to parse payment response:", {
           error: parseError,
           status: response.status,
         });
         throw new Error(
-          `Order response parsing failed. Status: ${response.status}.`,
+          `Payment response parsing failed. Status: ${response.status}.`,
         );
       }
 
@@ -447,19 +440,19 @@ export default function Checkout() {
         const errorMessage =
           result?.error ||
           result?.message ||
-          `Failed to create order (${response.status})`;
-        console.error("Order creation failed:", {
+          `Payment failed (${response.status})`;
+        console.error("Payment failed:", {
           status: response.status,
           error: result,
         });
         throw new Error(errorMessage);
       }
 
-      console.log("Order created successfully:", result.data.id);
-      toast.success("Order created! Redirecting to confirmation...");
+      console.log("Payment and order created successfully:", result.order.id);
+      toast.success("Payment successful! Redirecting to confirmation...");
       localStorage.removeItem("cart_id");
       setTimeout(() => {
-        navigate(`/order-confirmation?orderId=${result.data.id}`);
+        navigate(`/order-confirmation?orderId=${result.order.id}`);
       }, 1000);
     } catch (err) {
       const errorMessage =
