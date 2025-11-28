@@ -79,6 +79,26 @@ export default function EcwidStore() {
         if (storeContainer) {
           storeContainer.style.display = "block";
         }
+
+        // Reorganize product options into 4 columns
+        const reorganizeOptions = () => {
+          const optionGroups = document.querySelectorAll('[class*="option-group"], .ec-product-details__option, [class*="details-option"]');
+
+          if (optionGroups.length > 0) {
+            const parent = optionGroups[0]?.parentElement;
+            if (parent) {
+              parent.style.display = "grid";
+              parent.style.gridTemplateColumns = "repeat(4, 1fr)";
+              parent.style.gap = "30px";
+              parent.style.width = "100%";
+            }
+          }
+        };
+
+        // Try to reorganize options multiple times as Ecwid loads async content
+        reorganizeOptions();
+        setTimeout(reorganizeOptions, 1000);
+        setTimeout(reorganizeOptions, 2000);
       }, 500);
     };
 
