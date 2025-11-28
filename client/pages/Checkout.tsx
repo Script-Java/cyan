@@ -354,6 +354,11 @@ export default function Checkout() {
       return;
     }
 
+    if (!squarePaymentToken) {
+      setError("Please enter your payment information");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
