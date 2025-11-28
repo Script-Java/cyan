@@ -329,6 +329,8 @@ export default function CheckoutBigCommerce() {
       // Redirect to BigCommerce checkout
       if (result.data?.checkout_url) {
         toast.success("Redirecting to BigCommerce checkout...");
+        // Clear session data before redirecting
+        sessionStorage.removeItem("pending_checkout");
         setTimeout(() => {
           window.location.href = result.data.checkout_url;
         }, 500);
