@@ -135,6 +135,14 @@ export function createServer() {
   app.post("/api/checkout", handleCheckout);
   app.get("/api/checkout/:cartId", handleGetCheckoutDetails);
 
+  // ===== BigCommerce Checkout Routes (Protected - authenticated only) =====
+  app.post("/api/bigcommerce/checkout", verifyToken, handleCreateBigCommerceCheckout);
+  app.get(
+    "/api/bigcommerce/checkout/:draftOrderId",
+    verifyToken,
+    handleGetBigCommerceCheckoutUrl,
+  );
+
   // ===== Products Routes (Public) =====
   app.get("/api/products/:productId", handleGetProduct);
   app.get("/api/products/:productId/options", handleGetProductOptions);
