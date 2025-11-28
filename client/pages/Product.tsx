@@ -135,27 +135,18 @@ export default function Product() {
               {/* Product Info Card */}
               <div className="bg-gray-50 rounded-lg p-6 space-y-4">
                 {product.price !== undefined && (
-                  <>
-                    <div className="pt-4 border-t border-gray-200">
-                      <h3 className="text-sm font-bold text-gray-700 mb-2">
-                        Price per unit
-                      </h3>
-                      <p className="text-2xl font-bold text-gray-900">
-                        ${product.price.toFixed(2)}
-                      </p>
-                      <p className="text-xs text-gray-600 mt-1">
-                        Bulk pricing available
-                      </p>
-                    </div>
-                  </>
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-700 mb-2">
+                      Price per unit
+                    </h3>
+                    <p className="text-2xl font-bold text-gray-900">
+                      ${typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1">
+                      Bulk pricing available
+                    </p>
+                  </div>
                 )}
-
-                <div className="pt-4 border-t border-gray-200">
-                  <h3 className="text-sm font-bold text-gray-700 mb-2">
-                    Product ID
-                  </h3>
-                  <p className="text-gray-900">{product.id}</p>
-                </div>
               </div>
             </div>
 
