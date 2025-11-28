@@ -1,25 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, AlertCircle, Loader } from "lucide-react";
 import { toast } from "sonner";
 
-/* ====== CONFIG: replace these with your real IDs ====== */
-const PRODUCT_ID = 123; // BigCommerce product ID
-// Example mapping: option name -> option id / input id (fill with IDs from your store)
-const OPTION_IDS = {
-  Shape: 111, // product option id for "Shape"
-  Material: 112, // product option id for "Material"
-  Size: 113, // product option id for "Size"
-  Quantity: null, // we'll use quantity field, not an option id
-  Upload: 114, // file-upload option id (if used)
-};
-/* ===================================================== */
+interface ProductOption {
+  id: number;
+  name: string;
+  type: string;
+  option_values: Array<{
+    id: number;
+    label: string;
+    value?: string;
+  }>;
+}
 
-export default function BcConfigurator({ product: builderProduct }) {
-  // selections
-  const [shape, setShape] = useState<string | null>(null);
-  const [material, setMaterial] = useState<string | null>(null);
-  const [size, setSize] = useState<string | null>(null);
+export default function BcConfigurator({ productId, product: builderProduct }) {
+  // Product options state
+  const [productOptions, setProductOptions] = useState<ProductOption[]>([]);
+  const [optionsLoading, setOptionsLoading] = useState(true);
+
+  // selections - using a map for dynamic options
+  const [selectedOptions, setSelectedOptions] = useState<Record<number, string>>({});
   const [quantity, setQuantity] = useState(50);
   const [notes, setNotes] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -30,6 +31,28 @@ export default function BcConfigurator({ product: builderProduct }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  // Fetch product options on mount
+  useEffect(() => {
+    const fetchOptions = async () => {
+      setOptionsLoading(true);
+      try {
+        const response = await fetch(`/api/products/${productId}/options`);
+        if (response.ok) {
+          const data = await response.json();
+          setProductOptions(data.data || []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch product options:", err);
+      } finally {
+        setOptionsLoading(false);
+      }
+    };
+
+    if (productId) {
+      fetchOptions();
+    }
+  }, [productId]);
 
   // Helper: create a storefront cart (or reuse)
   async function ensureCart() {
