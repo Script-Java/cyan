@@ -344,7 +344,7 @@ export default function Checkout() {
 
       // Process payment via Square
       const paymentPayload = {
-        sourceId: squarePaymentToken,
+        sourceId: paymentToken,
         amount: orderTotal,
         currency: "USD",
         items: cartItems,
