@@ -21,6 +21,53 @@ interface Product {
   }>;
 }
 
+// Fallback mock products
+const FALLBACK_PRODUCTS: Product[] = [
+  {
+    id: 785848122,
+    sku: "3-INCH-PROMO",
+    name: "3\" INCH - 200 CUSTOM STICKER PROMOTION",
+    price: 0.26,
+    description:
+      "Premium vinyl stickers perfect for laptops, phones, and outdoor use.",
+    images: [
+      {
+        id: 1,
+        url: "https://via.placeholder.com/300?text=Sticker+1",
+        alt: "3 Inch Sticker",
+      },
+    ],
+  },
+  {
+    id: 790950034,
+    sku: "SQAURE-STICKER",
+    name: "SQUARE STICKER",
+    price: 0.22,
+    description: "Classic square vinyl stickers with vibrant full-color printing.",
+    images: [
+      {
+        id: 1,
+        url: "https://via.placeholder.com/300?text=Square+Sticker",
+        alt: "Square Sticker",
+      },
+    ],
+  },
+  {
+    id: 789123456,
+    sku: "CIRCLE-STICKER",
+    name: "CIRCLE STICKER",
+    price: 0.22,
+    description: "Round stickers with precision cutting for clean edges.",
+    images: [
+      {
+        id: 1,
+        url: "https://via.placeholder.com/300?text=Circle+Sticker",
+        alt: "Circle Sticker",
+      },
+    ],
+  },
+];
+
 export default function EcwidStore() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
