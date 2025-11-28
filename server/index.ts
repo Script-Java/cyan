@@ -220,6 +220,11 @@ export function createServer() {
   app.post("/api/admin/tickets/:ticketId/reply", handleAdminReplyToTicket);
   app.patch("/api/admin/tickets/:ticketId/status", handleUpdateTicketStatus);
 
+  // ===== Digital Files Routes =====
+  app.post("/api/orders/:orderId/files", verifyToken, handleUploadDigitalFile);
+  app.get("/api/orders/:orderId/files", verifyToken, handleGetOrderFiles);
+  app.delete("/api/files/:fileId", verifyToken, handleDeleteDigitalFile);
+
   // ===== Webhook Routes =====
   app.post("/api/webhooks/ecwid", handleEcwidOrderWebhook);
   app.get("/api/webhooks/health", handleWebhookHealth);
