@@ -236,6 +236,9 @@ export default function OrderHistory() {
                         Tracking
                       </th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                        Digital Files
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
                         Total
                       </th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
