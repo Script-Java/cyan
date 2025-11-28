@@ -140,18 +140,48 @@ export default function Header() {
             </div>
 
             {/* Desktop Search Bar */}
-            <form onSubmit={handleSearchSubmit} className="hidden lg:flex items-center mx-4">
-              <div className="relative">
+            <form onSubmit={handleSearchSubmit} style={{ display: "flex", alignItems: "center", fontWeight: "400", margin: "0 16px" }}>
+              <div style={{ fontWeight: "400", position: "relative" }}>
                 <input
                   type="text"
                   placeholder="Search stickers..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-64 px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-[#FFD713] focus:ring-1 focus:ring-[#FFD713]/50 transition-all"
+                  style={{
+                    display: "inline-block",
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    borderColor: "rgba(255, 255, 255, 0.2)",
+                    borderRadius: "8px",
+                    borderWidth: "1.11111px",
+                    fontWeight: "400",
+                    transitionDuration: "0.15s",
+                    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+                    width: "250px",
+                    alignSelf: "stretch",
+                    minHeight: "1px",
+                    maxWidth: "200px",
+                    padding: "8px 16px",
+                    color: "white",
+                  }}
                 />
                 <button
                   type="submit"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded transition-colors"
+                  style={{
+                    borderRadius: "4px",
+                    display: "block",
+                    fontWeight: "400",
+                    position: "absolute",
+                    right: "8px",
+                    top: "50%",
+                    transitionDuration: "0.15s",
+                    transitionProperty: "color, background-color, border-color, text-decoration-color, fill, stroke",
+                    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+                    transform: "translateY(-50%)",
+                    backgroundColor: "rgba(0, 0, 0, 0)",
+                    borderColor: "rgba(0, 0, 0, 0)",
+                    padding: "4px",
+                    cursor: "pointer",
+                  }}
                 >
                   <Search className="w-5 h-5 text-white/60 hover:text-white" />
                 </button>
