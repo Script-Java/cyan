@@ -42,9 +42,7 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
 };
 
 /**
- * Get single order details
- * Primary: Supabase
- * Fallback: BigCommerce
+ * Get single order details from Supabase
  * Requires: customerId in JWT token, orderId in params
  */
 export const handleGetOrder: RequestHandler = async (req, res) => {
@@ -60,50 +58,10 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Order ID required" });
     }
 
-    // Try Supabase first
-    try {
-      const order = await getOrderById(parseInt(orderId), customerId);
+    const order = await getOrderById(parseInt(orderId), customerId);
 
-      if (order) {
-        return res.json({
-          success: true,
-          order: {
-            id: order.id,
-            customerId: order.customer_id,
-            status: order.status,
-            dateCreated: order.created_at,
-            total: order.total,
-            subtotal: order.subtotal,
-            tax: order.tax,
-            shipping: order.shipping,
-            items: order.order_items || [],
-            shippingAddress: order.shipping_address,
-            billingAddress: order.billing_address,
-            source: "supabase",
-          },
-        });
-      }
-    } catch (supabaseError) {
-      console.error(
-        "Supabase fetch failed, trying BigCommerce...",
-        supabaseError,
-      );
-    }
-
-    // Fallback to BigCommerce
-    const order = await bigCommerceAPI.getOrder(parseInt(orderId));
-
-    // Verify order belongs to customer
-    if (order.customer_id !== customerId) {
-      return res.status(403).json({ error: "Unauthorized" });
-    }
-
-    // Fetch shipments
-    let shipments = [];
-    try {
-      shipments = await bigCommerceAPI.getOrderShipments(order.id);
-    } catch (e) {
-      console.error("Failed to fetch shipments:", e);
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
     }
 
     res.json({
@@ -112,24 +70,14 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
         id: order.id,
         customerId: order.customer_id,
         status: order.status,
-        dateCreated: order.date_created,
-        total: order.total_incl_tax,
-        subtotal: order.subtotal_ex_tax,
-        tax: order.total_tax,
-        items: order.items || [],
-        shippingAddress: order.shipping_addresses?.[0],
+        dateCreated: order.created_at,
+        total: order.total,
+        subtotal: order.subtotal,
+        tax: order.tax,
+        shipping: order.shipping,
+        items: order.order_items || [],
+        shippingAddress: order.shipping_address,
         billingAddress: order.billing_address,
-        shipments: shipments.map((shipment: any) => ({
-          id: shipment.id,
-          status: shipment.status,
-          dateCreated: shipment.date_created,
-          trackingNumber: shipment.tracking_number,
-          shippingProvider: shipment.shipping_provider,
-          shippingMethod: shipment.shipping_method,
-          comments: shipment.comments,
-          items: shipment.items || [],
-        })),
-        source: "bigcommerce",
       },
     });
   } catch (error) {
