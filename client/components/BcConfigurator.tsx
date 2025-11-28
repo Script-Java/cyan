@@ -15,6 +15,8 @@ interface ProductOption {
 }
 
 export default function BcConfigurator({ productId, product: builderProduct }) {
+  const navigate = useNavigate();
+
   // Product options state
   const [productOptions, setProductOptions] = useState<ProductOption[]>([]);
   const [optionsLoading, setOptionsLoading] = useState(true);
