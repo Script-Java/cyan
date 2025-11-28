@@ -293,8 +293,7 @@ export default function Checkout() {
     setIsSubmitting(true);
 
     try {
-      const orderData = {
-        customer_id: customerId,
+      const orderData: any = {
         billing_address: {
           first_name: billingInfo.firstName,
           last_name: billingInfo.lastName,
