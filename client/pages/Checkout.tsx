@@ -194,16 +194,39 @@ export default function Checkout() {
         }
 
         const response = await fetch(`/api/cart/${cartId}`);
-        if (!response.ok) {
-          throw new Error("Failed to load cart");
+
+        if (response.status === 404) {
+          setError("Cart not found. Please add items to your cart and try again.");
+          setIsLoading(false);
+          return;
         }
 
-        const data = await response.json();
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Load cart error response:", {
+            status: response.status,
+            statusText: response.statusText,
+            body: errorText,
+          });
+          throw new Error(`Failed to load cart (${response.status})`);
+        }
+
+        const responseText = await response.text();
+        let data: any;
+        try {
+          data = responseText ? JSON.parse(responseText) : {};
+        } catch (parseError) {
+          console.error("Failed to parse cart response:", responseText);
+          throw new Error("Invalid cart response format");
+        }
+
         setCartItems(data.data?.line_items || []);
         setSubtotal(data.data?.subtotal || 0);
       } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to load cart items";
         console.error("Failed to load cart:", err);
-        setError("Failed to load cart items");
+        setError(errorMessage);
       } finally {
         setIsLoading(false);
       }
