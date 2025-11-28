@@ -294,6 +294,7 @@ export default function Checkout() {
 
     try {
       const orderData: any = {
+        ...(customerId && { customer_id: customerId }),
         billing_address: {
           first_name: billingInfo.firstName,
           last_name: billingInfo.lastName,
