@@ -178,11 +178,7 @@ export default function Checkout() {
     cvv: "",
   });
 
-  const [squareApplicationId, setSquareApplicationId] = useState<string>("");
-  const [squarePaymentToken, setSquarePaymentToken] = useState<string | null>(
-    null
-  );
-  const [squareError, setSquareError] = useState<string | null>(null);
+  const [paymentToken, setPaymentToken] = useState<string | null>(null);
 
   // Load auth from localStorage (optional for guest checkout)
   useEffect(() => {
@@ -192,25 +188,6 @@ export default function Checkout() {
     setCustomerId(custId ? parseInt(custId) : null);
     // Allow guest checkout - no redirect required
   }, [navigate]);
-
-  // Load Square configuration
-  useEffect(() => {
-    const loadSquareConfig = async () => {
-      try {
-        const response = await fetch("/api/square/config");
-        if (response.ok) {
-          const data = await response.json();
-          if (data.applicationId) {
-            setSquareApplicationId(data.applicationId);
-          }
-        }
-      } catch (err) {
-        console.error("Failed to load Square config:", err);
-      }
-    };
-
-    loadSquareConfig();
-  }, []);
 
   // Load cart data
   useEffect(() => {
