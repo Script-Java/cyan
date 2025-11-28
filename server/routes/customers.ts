@@ -118,15 +118,21 @@ export const handleGetCustomerAddresses: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const customer = await bigCommerceAPI.getCustomer(customerId);
+    const { data: customer, error } = await supabase
+      .from("customers")
+      .select("id")
+      .eq("id", customerId)
+      .single();
 
-    if (!customer) {
+    if (error || !customer) {
       return res.status(404).json({ error: "Customer not found" });
     }
 
+    // Address management will be implemented in future updates
+    // For now, return empty addresses array
     res.json({
       success: true,
-      addresses: customer.addresses || [],
+      addresses: [],
     });
   } catch (error) {
     console.error("Get addresses error:", error);
