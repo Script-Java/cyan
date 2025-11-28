@@ -58,6 +58,7 @@ export default function App() {
             <Route path="/support" element={<Support />} />
             <Route path="/my-tickets" element={<MyTickets />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/orders" element={<AdminOrders />} />
             <Route path="/admin/support" element={<AdminSupport />} />
             <Route path="/store-credit-admin" element={<StoreCreditAdmin />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
