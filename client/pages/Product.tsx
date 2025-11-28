@@ -182,7 +182,7 @@ export default function Product() {
             </p>
 
             <div className="bg-gray-50 rounded-lg p-8">
-              <BcConfigurator product={product} />
+              <BcConfigurator productId={product.id} product={product} />
             </div>
           </div>
         </div>
