@@ -162,9 +162,9 @@ export async function createOrderItems(
       product_id: item.product_id,
       product_name: item.product_name || "Custom Sticker",
       quantity: item.quantity,
-      price: item.price,
-      options: item.options,
-      design_file_url: item.design_file_url,
+      price: item.price || 0.25,
+      options: item.options || null,
+      design_file_url: item.design_file_url || null,
     }));
 
     const { error } = await supabase.from("order_items").insert(itemsData);
