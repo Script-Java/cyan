@@ -259,7 +259,7 @@ export default function CheckoutBigCommerce() {
     e.preventDefault();
     setError(null);
 
-    if (!validateForm() || !authToken || !checkoutData) {
+    if (!validateForm() || !checkoutData) {
       return;
     }
 
