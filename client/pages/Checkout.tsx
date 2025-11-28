@@ -347,11 +347,12 @@ export default function Checkout() {
         body: JSON.stringify(orderData),
       });
 
-      const result = await response.json();
-
       if (!response.ok) {
-        throw new Error(result.error || "Failed to create order");
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Failed to create order (${response.status})`);
       }
+
+      const result = await response.json();
 
       toast.success("Order created successfully!");
       localStorage.removeItem("cart_id");
