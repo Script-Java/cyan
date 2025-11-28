@@ -147,12 +147,27 @@ async function handleOrderUpdated(data: any): Promise<void> {
   try {
     console.log("Processing Ecwid order update:", data.orderId);
 
+    const updateData: any = {
+      status: data.fulfillmentStatus || data.paymentStatus || "processing",
+      updated_at: new Date().toISOString(),
+    };
+
+    // Update estimated delivery date if provided
+    if (data.estimatedDeliveryDate) {
+      updateData.estimated_delivery_date = data.estimatedDeliveryDate;
+    }
+
+    // Update tracking information if provided
+    if (data.trackingNumber) {
+      updateData.tracking_number = data.trackingNumber;
+      updateData.tracking_carrier = data.trackingCarrier || null;
+      updateData.tracking_url = data.trackingUrl || null;
+      updateData.shipped_date = new Date().toISOString();
+    }
+
     const { error } = await supabase
       .from("orders")
-      .update({
-        status: data.fulfillmentStatus || data.paymentStatus || "processing",
-        updated_at: new Date().toISOString(),
-      })
+      .update(updateData)
       .eq("ecwid_order_id", data.orderId);
 
     if (!error) {
