@@ -58,6 +58,8 @@ export async function processSquarePayment(paymentData: {
       }),
     };
 
+    console.log("Processing Square payment with amount:", amountInCents, "cents");
+
     const response = await getPaymentsApi().createPayment(paymentBody);
 
     if (response.result) {
@@ -75,17 +77,31 @@ export async function processSquarePayment(paymentData: {
   } catch (error) {
     console.error("Square payment error:", error);
 
-    if (error instanceof Error) {
-      throw error;
+    // More detailed error handling
+    if (error && typeof error === "object") {
+      const errorObj = error as any;
+
+      // Check for authentication errors
+      if (errorObj?.errors?.[0]?.code === "UNAUTHORIZED" ||
+          errorObj?.errors?.[0]?.detail?.includes("Invalid API key")) {
+        console.error("Square authentication failed - check access token");
+        throw new Error(
+          "Square authentication failed. Please verify your access token is valid and has the required permissions."
+        );
+      }
+
+      // Check for other Square-specific errors
+      if (errorObj?.errors?.[0]?.detail) {
+        throw new Error(errorObj.errors[0].detail);
+      }
+
+      if (errorObj?.errors?.[0]?.message) {
+        throw new Error(errorObj.errors[0].message);
+      }
     }
 
-    if (error && typeof error === "object" && "errors" in error) {
-      const errorObj = error as any;
-      throw new Error(
-        errorObj?.errors?.[0]?.detail ||
-          errorObj?.errors?.[0]?.message ||
-          "Payment processing failed",
-      );
+    if (error instanceof Error) {
+      throw error;
     }
 
     throw new Error("Payment processing failed");
