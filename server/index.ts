@@ -78,6 +78,11 @@ import {
   handleListEcwidProducts,
   handleSearchEcwidProducts,
 } from "./routes/ecwid-products";
+import {
+  handleImportProducts,
+  handleGetProducts,
+  handleDeleteAllProducts,
+} from "./routes/import-products";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
