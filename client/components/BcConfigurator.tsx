@@ -226,7 +226,7 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
               />
               <span className="font-medium">{q} pcs</span>
               <span className="text-gray-600">
-                ${(builderProduct?.price ? q * builderProduct.price : q * 0.25).toFixed(2)}
+                ${(builderProduct?.price && typeof builderProduct.price === 'number' ? (q * builderProduct.price).toFixed(2) : (q * 0.25).toFixed(2))}
               </span>
             </label>
           ))}
