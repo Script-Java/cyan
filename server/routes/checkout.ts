@@ -65,8 +65,8 @@ export const handleCheckout: RequestHandler = async (req, res) => {
       });
     }
 
-    // Use customer_id from request (auth) or from body (guest/provided), default to 0 for guests
-    const customerId = requestCustomerId || checkoutData.customer_id || 0;
+    // Use customer_id from request (auth) or from body (guest/provided), default to null for guests
+    const customerId = requestCustomerId || checkoutData.customer_id || null;
 
     // Validate billing address
     const billingAddr = checkoutData.billing_address;
