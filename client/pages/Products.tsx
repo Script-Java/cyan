@@ -1,12 +1,28 @@
 import Header from "@/components/Header";
-import { Star, ShoppingCart } from "lucide-react";
+import { Star, ShoppingCart, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+
+interface Variation {
+  id: string;
+  price: number;
+  image_url?: string;
+  attributes?: { [key: string]: string };
+}
+
+interface Option {
+  name: string;
+  type: string;
+  required: boolean;
+  choices?: Array<{ text: string; markup?: string }>;
+}
 
 interface Product {
   id: string | number;
   name: string;
   price: number;
+  min_price?: number;
+  max_price?: number;
   image?: string;
   image_url?: string;
   rating?: number;
@@ -15,12 +31,17 @@ interface Product {
   description?: string;
   badge?: string;
   sku?: string;
+  variations?: Variation[];
+  options?: Option[];
 }
 
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [expandedProduct, setExpandedProduct] = useState<string | number | null>(
+    null,
+  );
 
   useEffect(() => {
     fetchProducts();
@@ -38,17 +59,27 @@ export default function Products() {
 
       const data = await response.json();
       const formattedProducts: Product[] = (data.items || []).map(
-        (product: any) => ({
-          id: product.id,
-          name: product.name,
-          price: parseFloat(product.price),
-          image: product.image_url || "/placeholder.svg",
-          rating: product.rating || 0,
-          reviews: product.reviews_count || 0,
-          description:
-            product.description || "Premium sticker product from our collection",
-          sku: product.sku,
-        }),
+        (product: any) => {
+          const minPrice = product.min_price || product.price;
+          const maxPrice = product.max_price || product.price;
+
+          return {
+            id: product.id,
+            name: product.name,
+            price: minPrice,
+            min_price: minPrice,
+            max_price: maxPrice,
+            image: product.image_url || "/placeholder.svg",
+            rating: product.rating || 0,
+            reviews: product.reviews_count || 0,
+            description:
+              product.description ||
+              "Premium sticker product from our collection",
+            sku: product.sku,
+            variations: product.variations || [],
+            options: product.options || [],
+          };
+        },
       );
 
       if (formattedProducts.length === 0) {
@@ -122,6 +153,13 @@ export default function Products() {
     },
   ];
 
+  const getPriceDisplay = (product: Product) => {
+    if (product.min_price && product.max_price && product.min_price !== product.max_price) {
+      return `$${product.min_price.toFixed(2)} - $${product.max_price.toFixed(2)}`;
+    }
+    return `$${(product.price || 0).toFixed(2)}`;
+  };
+
   return (
     <>
       <Header />
@@ -185,11 +223,11 @@ export default function Products() {
 
                   {/* Product Info */}
                   <div className="p-4 flex flex-col flex-grow">
-                    <h3 className="font-bold text-gray-900 text-lg mb-2 group-hover:text-blue-600 transition-colors">
+                    <h3 className="font-bold text-gray-900 text-lg mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
                       {product.name}
                     </h3>
 
-                    <p className="text-sm text-gray-600 mb-4 flex-grow">
+                    <p className="text-sm text-gray-600 mb-4 flex-grow line-clamp-2">
                       {product.description}
                     </p>
 
@@ -212,30 +250,82 @@ export default function Products() {
                       </span>
                     </div>
 
-                    {/* Price and CTA */}
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="text-sm text-gray-600">from</span>
-                        <p className="text-2xl font-bold text-gray-900">
-                          ${product.price.toFixed(2)}
-                        </p>
-                      </div>
-                      <Link
-                        to={`/product/${product.id}`}
-                        className="flex items-center justify-center w-12 h-12 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 group-hover:shadow-lg"
-                      >
-                        <ShoppingCart className="w-5 h-5" />
-                      </Link>
+                    {/* Price */}
+                    <div className="mb-4">
+                      <span className="text-sm text-gray-600">from</span>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {getPriceDisplay(product)}
+                      </p>
                     </div>
+
+                    {/* Variations Info */}
+                    {product.variations && product.variations.length > 1 && (
+                      <button
+                        onClick={() =>
+                          setExpandedProduct(
+                            expandedProduct === product.id ? null : product.id,
+                          )
+                        }
+                        className="mb-4 flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                      >
+                        View {product.variations.length} Options
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform ${
+                            expandedProduct === product.id ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                    )}
                   </div>
 
                   {/* CTA Button */}
                   <Link
                     to={`/product/${product.id}`}
-                    className="mx-4 mb-4 py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 text-center"
+                    className="mx-4 mb-4 py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 text-center flex items-center justify-center gap-2"
                   >
-                    Customize
+                    <ShoppingCart className="w-4 h-4" />
+                    Add to Cart
                   </Link>
+
+                  {/* Expanded Variations */}
+                  {expandedProduct === product.id &&
+                    product.variations &&
+                    product.variations.length > 0 && (
+                      <div className="border-t border-gray-200 p-4 bg-gray-50 space-y-2">
+                        <h4 className="font-semibold text-sm text-gray-900 mb-3">
+                          Available Options:
+                        </h4>
+                        {product.variations.slice(0, 8).map((variation) => (
+                          <div
+                            key={variation.id}
+                            className="flex items-center justify-between text-sm bg-white rounded p-2 border border-gray-200"
+                          >
+                            <div>
+                              {variation.attributes &&
+                              Object.keys(variation.attributes).length > 0 ? (
+                                <div className="text-gray-700">
+                                  {Object.entries(variation.attributes)
+                                    .map(([key, val]) => `${val}`)
+                                    .join(" • ")}
+                                </div>
+                              ) : (
+                                <span className="text-gray-700">
+                                  {variation.id}
+                                </span>
+                              )}
+                            </div>
+                            <span className="font-semibold text-gray-900">
+                              ${variation.price.toFixed(2)}
+                            </span>
+                          </div>
+                        ))}
+                        {product.variations.length > 8 && (
+                          <p className="text-xs text-gray-600 text-center pt-2">
+                            + {product.variations.length - 8} more options
+                          </p>
+                        )}
+                      </div>
+                    )}
                 </div>
               ))}
             </div>
