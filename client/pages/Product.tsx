@@ -60,18 +60,37 @@ export default function Product() {
     fetchProduct();
   }, [productId]);
 
-  if (!product) {
+  if (loading) {
     return (
       <>
         <Header />
         <main className="pt-20 min-h-screen bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="text-center">
+              <div className="inline-block">
+                <div className="w-12 h-12 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+              </div>
+              <p className="text-gray-600 mt-4">Loading product...</p>
+            </div>
+          </div>
+        </main>
+      </>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <>
+        <Header />
+        <main className="pt-20 min-h-screen bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="text-center">
+              <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-4" />
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
                 Product Not Found
               </h1>
               <p className="text-gray-600 mb-8">
-                We couldn't find the product you're looking for.
+                {error || "We couldn't find the product you're looking for."}
               </p>
               <Link
                 to="/products"
