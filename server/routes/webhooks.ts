@@ -195,21 +195,33 @@ async function handleCustomerCreated(data: any): Promise<void> {
  */
 async function handleCustomerUpdated(data: any): Promise<void> {
   try {
-    console.log("Processing customer update:", data.id);
+    console.log("Processing customer update from Ecwid:", data.id);
 
-    await supabase
+    // Find customer by Ecwid ID
+    const { data: existingCustomer } = await supabase
       .from("customers")
-      .update({
-        email: data.email,
-        first_name: data.firstName,
-        last_name: data.lastName,
-        phone: data.phone,
-        company: data.companyName,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", data.id);
+      .select("id")
+      .eq("ecwid_customer_id", data.id)
+      .single();
 
-    console.log("Customer updated in Supabase:", data.id);
+    if (existingCustomer) {
+      await supabase
+        .from("customers")
+        .update({
+          email: data.email,
+          first_name: data.firstName || "",
+          last_name: data.lastName || "",
+          phone: data.phone || "",
+          company: data.companyName || "",
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", existingCustomer.id);
+
+      console.log("Ecwid customer updated in Supabase:", existingCustomer.id);
+    } else {
+      // Customer doesn't exist, create them
+      await handleCustomerCreated(data);
+    }
   } catch (error) {
     console.error("Error processing customer update:", error);
   }
