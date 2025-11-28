@@ -61,7 +61,9 @@ export default function StoreCreditAdmin() {
   const [error, setError] = useState<string | null>(null);
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    null,
+  );
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isModifying, setIsModifying] = useState(false);
 
@@ -211,9 +213,10 @@ export default function StoreCreditAdmin() {
     }
   };
 
-  const filteredCustomers = customers.filter((c) =>
-    c.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    c.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredCustomers = customers.filter(
+    (c) =>
+      c.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      c.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   if (isLoading) {
@@ -280,8 +283,12 @@ export default function StoreCreditAdmin() {
                             : "bg-gray-100 hover:bg-gray-200 text-gray-900"
                         }`}
                       >
-                        <div className="font-medium text-sm">{customer.name}</div>
-                        <div className="text-xs opacity-75">{customer.email}</div>
+                        <div className="font-medium text-sm">
+                          {customer.name}
+                        </div>
+                        <div className="text-xs opacity-75">
+                          {customer.email}
+                        </div>
                         <div className="text-sm font-semibold mt-1">
                           ${customer.balance.toFixed(2)}
                         </div>
@@ -300,12 +307,16 @@ export default function StoreCreditAdmin() {
                   <Card>
                     <CardHeader>
                       <CardTitle>{selectedCustomer.name}</CardTitle>
-                      <CardDescription>{selectedCustomer.email}</CardDescription>
+                      <CardDescription>
+                        {selectedCustomer.email}
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-2 gap-4 mb-6">
                         <div>
-                          <p className="text-sm text-gray-600">Current Balance</p>
+                          <p className="text-sm text-gray-600">
+                            Current Balance
+                          </p>
                           <p className="text-2xl font-bold text-green-600">
                             ${selectedCustomer.balance.toFixed(2)}
                           </p>
@@ -313,12 +324,17 @@ export default function StoreCreditAdmin() {
                         <div>
                           <p className="text-sm text-gray-600">Member Since</p>
                           <p className="text-lg font-semibold">
-                            {new Date(selectedCustomer.created_at).toLocaleDateString()}
+                            {new Date(
+                              selectedCustomer.created_at,
+                            ).toLocaleDateString()}
                           </p>
                         </div>
                       </div>
 
-                      <Dialog open={showModifyDialog} onOpenChange={setShowModifyDialog}>
+                      <Dialog
+                        open={showModifyDialog}
+                        onOpenChange={setShowModifyDialog}
+                      >
                         <DialogTrigger asChild>
                           <Button className="w-full bg-blue-600 hover:bg-blue-700">
                             Modify Credit
@@ -340,22 +356,33 @@ export default function StoreCreditAdmin() {
                                 type="number"
                                 placeholder="0.00"
                                 value={modifyAmount}
-                                onChange={(e) => setModifyAmount(e.target.value)}
+                                onChange={(e) =>
+                                  setModifyAmount(e.target.value)
+                                }
                                 step="0.01"
                               />
                             </div>
 
                             <div>
                               <Label htmlFor="reason">Reason</Label>
-                              <Select value={modifyReason} onValueChange={setModifyReason}>
+                              <Select
+                                value={modifyReason}
+                                onValueChange={setModifyReason}
+                              >
                                 <SelectTrigger>
                                   <SelectValue placeholder="Select reason" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="add">Add Credit</SelectItem>
-                                  <SelectItem value="subtract">Remove Credit</SelectItem>
+                                  <SelectItem value="add">
+                                    Add Credit
+                                  </SelectItem>
+                                  <SelectItem value="subtract">
+                                    Remove Credit
+                                  </SelectItem>
                                   <SelectItem value="refund">Refund</SelectItem>
-                                  <SelectItem value="reward">Reward/Promotion</SelectItem>
+                                  <SelectItem value="reward">
+                                    Reward/Promotion
+                                  </SelectItem>
                                 </SelectContent>
                               </Select>
                             </div>
@@ -422,7 +449,9 @@ export default function StoreCreditAdmin() {
                                   </span>
                                 </div>
                                 <p className="text-xs text-gray-600">
-                                  {new Date(transaction.created_at).toLocaleString()}
+                                  {new Date(
+                                    transaction.created_at,
+                                  ).toLocaleString()}
                                 </p>
                                 {transaction.notes && (
                                   <p className="text-xs text-gray-500 mt-1">
@@ -437,8 +466,8 @@ export default function StoreCreditAdmin() {
                                     : "text-red-600"
                                 }`}
                               >
-                                {transaction.amount > 0 ? "+" : ""}
-                                ${Math.abs(transaction.amount).toFixed(2)}
+                                {transaction.amount > 0 ? "+" : ""}$
+                                {Math.abs(transaction.amount).toFixed(2)}
                               </div>
                             </div>
                           ))}

@@ -116,8 +116,7 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (
       error instanceof Error
         ? error.message
         : "Failed to create BigCommerce checkout";
-    const details =
-      error instanceof Error ? error.stack : String(error);
+    const details = error instanceof Error ? error.stack : String(error);
     res.status(500).json({
       error: errorMessage,
       details: process.env.NODE_ENV === "development" ? details : undefined,

@@ -106,7 +106,9 @@ export const handleCreateOrder: RequestHandler = async (req, res) => {
     }
 
     if (!shippingAddress || !billingAddress) {
-      return res.status(400).json({ error: "Shipping and billing addresses required" });
+      return res
+        .status(400)
+        .json({ error: "Shipping and billing addresses required" });
     }
 
     // This endpoint is primarily for API use; checkout is the main flow

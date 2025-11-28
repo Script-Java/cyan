@@ -100,7 +100,9 @@ export const handleModifyStoreCredit: RequestHandler = async (req, res) => {
     }
 
     if (isNaN(amount) || amount === 0) {
-      return res.status(400).json({ error: "Amount must be a non-zero number" });
+      return res
+        .status(400)
+        .json({ error: "Amount must be a non-zero number" });
     }
 
     // Get current balance
@@ -189,7 +191,11 @@ export const handleGetCreditHistory: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Customer ID required" });
     }
 
-    const { data: transactions, error, count } = await supabase
+    const {
+      data: transactions,
+      error,
+      count,
+    } = await supabase
       .from("store_credit_transactions")
       .select("*", { count: "exact" })
       .eq("customer_id", customerId)

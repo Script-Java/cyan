@@ -341,7 +341,9 @@ export default function CheckoutBigCommerce() {
 
       if (!response.ok) {
         const errorMessage =
-          result?.error || result?.message || "Failed to create BigCommerce checkout";
+          result?.error ||
+          result?.message ||
+          "Failed to create BigCommerce checkout";
         throw new Error(errorMessage);
       }
 

@@ -2,11 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
-import {
-  handleLogin,
-  handleSignup,
-  handleLogout,
-} from "./routes/auth";
+import { handleLogin, handleSignup, handleLogout } from "./routes/auth";
 import {
   handleGetCustomer,
   handleUpdateCustomer,
@@ -152,8 +148,16 @@ export function createServer() {
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
 
   // ===== Store Credit Routes (Protected - admin only) =====
-  app.get("/api/store-credit/customers", verifyToken, handleGetAllCustomersCredit);
-  app.get("/api/store-credit/:customerId", verifyToken, handleGetCustomerCredit);
+  app.get(
+    "/api/store-credit/customers",
+    verifyToken,
+    handleGetAllCustomersCredit,
+  );
+  app.get(
+    "/api/store-credit/:customerId",
+    verifyToken,
+    handleGetCustomerCredit,
+  );
   app.get(
     "/api/store-credit/:customerId/history",
     verifyToken,
