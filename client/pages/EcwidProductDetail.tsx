@@ -99,13 +99,25 @@ export default function EcwidProductDetail() {
     }
   };
 
-  const handleAddToCart = async () => {
-    // TODO: Implement add to cart functionality
-    console.log("Adding to cart:", {
-      productId: product?.id,
-      quantity,
-      selectedOptions,
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    // Build query string with selected options
+    const params = new URLSearchParams();
+    params.append("productId", product.id.toString());
+    params.append("quantity", quantity.toString());
+
+    // Add selected options to URL
+    Object.entries(selectedOptions).forEach(([key, value]) => {
+      if (value) {
+        params.append(`option-${key}`, value);
+      }
     });
+
+    // Redirect to Ecwid checkout
+    // Using Ecwid's checkout URL format
+    const ecwidCheckoutUrl = `https://app.ecwid.com/#!/~/cart?${params.toString()}`;
+    window.location.href = ecwidCheckoutUrl;
   };
 
   if (loading) {
