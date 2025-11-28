@@ -12,6 +12,7 @@ import Products from "./pages/Products";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import EcwidStore from "./pages/EcwidStore";
+import EcwidProductDetail from "./pages/EcwidProductDetail";
 import Checkout from "./pages/Checkout";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import OrderConfirmation from "./pages/OrderConfirmation";
