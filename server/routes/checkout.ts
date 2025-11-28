@@ -52,9 +52,8 @@ export const handleCheckout: RequestHandler = async (req, res) => {
     const checkoutData = req.body as CheckoutRequest;
     const customerId = (req as any).customerId;
 
-    // Validate required fields
+    // Validate required fields (customer_id is optional for guest checkout)
     if (
-      !checkoutData.customer_id ||
       !checkoutData.billing_address ||
       !checkoutData.shipping_addresses ||
       !checkoutData.products ||
@@ -62,9 +61,12 @@ export const handleCheckout: RequestHandler = async (req, res) => {
     ) {
       return res.status(400).json({
         error:
-          "Missing required fields: customer_id, billing_address, shipping_addresses, products",
+          "Missing required fields: billing_address, shipping_addresses, products",
       });
     }
+
+    // Use provided customer_id or 0 for guest checkout
+    const customerId = checkoutData.customer_id || 0;
 
     // Validate billing address
     const billingAddr = checkoutData.billing_address;
