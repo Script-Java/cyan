@@ -276,44 +276,51 @@ export default function CheckoutBigCommerce() {
 
     try {
       // Call the BigCommerce checkout API
+      const checkoutPayload: any = {
+        customer_id: null, // Will be extracted from token
+        products: [
+          {
+            product_id: checkoutData.product_id,
+            quantity: checkoutData.quantity,
+            price_inc_tax: 0, // Let BigCommerce calculate
+          },
+        ],
+        billing_address: {
+          first_name: billingInfo.firstName,
+          last_name: billingInfo.lastName,
+          street_1: billingInfo.street,
+          street_2: billingInfo.street2,
+          city: billingInfo.city,
+          state_or_province: billingInfo.state,
+          postal_code: billingInfo.postalCode,
+          country_code: billingInfo.country,
+        },
+        shipping_addresses: [
+          {
+            first_name: shippingInfo.firstName,
+            last_name: shippingInfo.lastName,
+            street_1: shippingInfo.street,
+            street_2: shippingInfo.street2,
+            city: shippingInfo.city,
+            state_or_province: shippingInfo.state,
+            postal_code: shippingInfo.postalCode,
+            country_code: shippingInfo.country,
+          },
+        ],
+      };
+
+      // Add product options if available
+      if (checkoutData.selectedOptions && Object.keys(checkoutData.selectedOptions).length > 0) {
+        checkoutPayload.product_options = checkoutData.selectedOptions;
+      }
+
       const response = await fetch("/api/bigcommerce/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({
-          customer_id: null, // Will be extracted from token
-          products: [
-            {
-              product_id: checkoutData.product_id,
-              quantity: checkoutData.quantity,
-              price_inc_tax: 0, // Let BigCommerce calculate
-            },
-          ],
-          billing_address: {
-            first_name: billingInfo.firstName,
-            last_name: billingInfo.lastName,
-            street_1: billingInfo.street,
-            street_2: billingInfo.street2,
-            city: billingInfo.city,
-            state_or_province: billingInfo.state,
-            postal_code: billingInfo.postalCode,
-            country_code: billingInfo.country,
-          },
-          shipping_addresses: [
-            {
-              first_name: shippingInfo.firstName,
-              last_name: shippingInfo.lastName,
-              street_1: shippingInfo.street,
-              street_2: shippingInfo.street2,
-              city: shippingInfo.city,
-              state_or_province: shippingInfo.state,
-              postal_code: shippingInfo.postalCode,
-              country_code: shippingInfo.country,
-            },
-          ],
-        }),
+        body: JSON.stringify(checkoutPayload),
       });
 
       const result = await response.json();
