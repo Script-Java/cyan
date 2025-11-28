@@ -440,10 +440,16 @@ export default function Checkout() {
         "Content-Type": "application/json",
       };
 
-      // Add auth header only if token is available (authenticated user)
       if (authToken) {
         headers.Authorization = `Bearer ${authToken}`;
       }
+
+      console.log("Creating order with data:", {
+        customer_id: orderData.customer_id,
+        total: orderData.order_total,
+        product_count: orderData.products?.length,
+        status: orderData.status_id,
+      });
 
       const response = await fetch("/api/checkout", {
         method: "POST",
@@ -454,23 +460,35 @@ export default function Checkout() {
       let result: any;
       const responseText = await response.text();
 
+      console.log("Order response status:", response.status);
+      console.log("Order response text:", responseText.substring(0, 200));
+
       try {
         result = responseText ? JSON.parse(responseText) : {};
       } catch (parseError) {
-        console.error("Failed to parse checkout response:", responseText);
+        console.error("Failed to parse checkout response:", {
+          error: parseError,
+          responseText: responseText.substring(0, 500),
+          status: response.status,
+        });
         throw new Error(
-          `Checkout response parsing failed: Invalid JSON response. Status: ${response.status}`,
+          `Order response parsing failed: Invalid JSON. Status: ${response.status}. Check browser console for details.`,
         );
       }
 
       if (!response.ok) {
-        throw new Error(
+        const errorMessage =
           result?.error ||
-            result?.message ||
-            `Failed to create order (${response.status})`,
-        );
+          result?.message ||
+          `Failed to create order (${response.status})`;
+        console.error("Order creation failed:", {
+          status: response.status,
+          error: result,
+        });
+        throw new Error(errorMessage);
       }
 
+      console.log("Order created successfully:", result.data.id);
       toast.success("Order created successfully!");
       localStorage.removeItem("cart_id");
       setTimeout(() => {
