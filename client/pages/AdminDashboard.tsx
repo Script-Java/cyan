@@ -51,8 +51,27 @@ export default function AdminDashboard() {
 
   const fetchDashboardData = async () => {
     try {
+      const token = localStorage.getItem("authToken");
+
       // Simulate fetching live visitor data
       setLiveVisitors(Math.floor(Math.random() * 500) + 50);
+
+      // Fetch pending orders
+      if (token) {
+        const response = await fetch("/api/admin/orders/pending", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setPendingOrders(data.orders || []);
+          setPendingOrdersCount(data.count || 0);
+        } else {
+          console.error("Failed to fetch pending orders:", response.status);
+        }
+      }
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     } finally {
