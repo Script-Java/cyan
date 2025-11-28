@@ -58,7 +58,11 @@ export async function processSquarePayment(paymentData: {
       }),
     };
 
-    console.log("Processing Square payment with amount:", amountInCents, "cents");
+    console.log(
+      "Processing Square payment with amount:",
+      amountInCents,
+      "cents",
+    );
 
     const response = await getPaymentsApi().createPayment(paymentBody);
 
@@ -82,11 +86,13 @@ export async function processSquarePayment(paymentData: {
       const errorObj = error as any;
 
       // Check for authentication errors
-      if (errorObj?.errors?.[0]?.code === "UNAUTHORIZED" ||
-          errorObj?.errors?.[0]?.detail?.includes("Invalid API key")) {
+      if (
+        errorObj?.errors?.[0]?.code === "UNAUTHORIZED" ||
+        errorObj?.errors?.[0]?.detail?.includes("Invalid API key")
+      ) {
         console.error("Square authentication failed - check access token");
         throw new Error(
-          "Square authentication failed. Please verify your access token is valid and has the required permissions."
+          "Square authentication failed. Please verify your access token is valid and has the required permissions.",
         );
       }
 

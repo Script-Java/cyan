@@ -93,9 +93,7 @@ export default function SimplePaymentForm({
               id="cardNumber"
               placeholder="4242 4242 4242 4242"
               value={cardNumber}
-              onChange={(e) =>
-                setCardNumber(e.target.value.replace(/\s/g, ""))
-              }
+              onChange={(e) => setCardNumber(e.target.value.replace(/\s/g, ""))}
               disabled={isProcessing}
               required
             />

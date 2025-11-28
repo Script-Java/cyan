@@ -208,13 +208,17 @@ export const handleTestSquareConfig: RequestHandler = async (req, res) => {
         success: false,
         message: "Square client initialization failed",
         diagnostics,
-        error: clientError instanceof Error ? clientError.message : "Unknown error",
+        error:
+          clientError instanceof Error ? clientError.message : "Unknown error",
       });
     }
   } catch (error) {
     console.error("Test Square config error:", error);
     res.status(500).json({
-      error: error instanceof Error ? error.message : "Failed to test Square configuration",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to test Square configuration",
     });
   }
 };

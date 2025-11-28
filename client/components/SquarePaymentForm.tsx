@@ -37,7 +37,7 @@ export default function SquarePaymentForm({
 
         if (!window.Square) {
           throw new Error(
-            "Square SDK failed to load - window.Square not available"
+            "Square SDK failed to load - window.Square not available",
           );
         }
 
@@ -55,7 +55,9 @@ export default function SquarePaymentForm({
       } catch (error) {
         console.error("Failed to initialize Square:", error);
         onPaymentError(
-          error instanceof Error ? error.message : "Failed to initialize payment"
+          error instanceof Error
+            ? error.message
+            : "Failed to initialize payment",
         );
         setIsLoading(false);
       }

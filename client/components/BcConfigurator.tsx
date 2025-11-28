@@ -144,8 +144,7 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
       }
 
       if (!addResponse.ok) {
-        const errorMsg =
-          responseData?.error || "Failed to add item to cart";
+        const errorMsg = responseData?.error || "Failed to add item to cart";
         console.error("Add to cart response error:", {
           status: addResponse.status,
           error: errorMsg,

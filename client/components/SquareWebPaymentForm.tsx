@@ -57,7 +57,9 @@ export default function SquareWebPaymentForm({
       } catch (error) {
         console.error("Failed to initialize Square:", error);
         let errorMsg =
-          error instanceof Error ? error.message : "Failed to load payment form";
+          error instanceof Error
+            ? error.message
+            : "Failed to load payment form";
 
         // Check if it's a CORS or authentication error
         if (
@@ -103,7 +105,10 @@ export default function SquareWebPaymentForm({
         if (!result.token) {
           throw new Error("No token returned from Square");
         }
-        console.log("Card tokenized successfully, token:", result.token.substring(0, 20) + "...");
+        console.log(
+          "Card tokenized successfully, token:",
+          result.token.substring(0, 20) + "...",
+        );
         onPaymentSuccess(result.token);
       } else if (result.errors && result.errors.length > 0) {
         const errorMessages = result.errors
@@ -123,8 +128,12 @@ export default function SquareWebPaymentForm({
       if (errorMsg.includes("403") || errorMsg.includes("Unauthorized")) {
         errorMsg =
           "Authentication error with Square. Please verify your Application ID configuration in the Square Dashboard.";
-      } else if (errorMsg.includes("Invalid") || errorMsg.includes("malformed")) {
-        errorMsg = "Invalid card information. Please check your card details and try again.";
+      } else if (
+        errorMsg.includes("Invalid") ||
+        errorMsg.includes("malformed")
+      ) {
+        errorMsg =
+          "Invalid card information. Please check your card details and try again.";
       }
 
       onPaymentError(errorMsg);
@@ -140,7 +149,9 @@ export default function SquareWebPaymentForm({
         <CardContent>
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
-            <span className="ml-2 text-gray-600">Loading secure payment form...</span>
+            <span className="ml-2 text-gray-600">
+              Loading secure payment form...
+            </span>
           </div>
         </CardContent>
       </Card>
@@ -192,7 +203,8 @@ export default function SquareWebPaymentForm({
         </button>
 
         <p className="text-xs text-gray-500 text-center">
-          Payments are securely processed through Square. Your card details are never stored on our servers.
+          Payments are securely processed through Square. Your card details are
+          never stored on our servers.
         </p>
       </CardContent>
     </Card>
