@@ -57,6 +57,7 @@ interface Order {
   tracking_carrier?: string;
   tracking_url?: string;
   shipped_date?: string;
+  digital_files?: DigitalFile[];
 }
 
 interface OrdersResponse {
