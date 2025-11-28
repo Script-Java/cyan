@@ -154,6 +154,7 @@ export const handleSignup: RequestHandler = async (req, res) => {
         email: newCustomer.email,
         firstName: newCustomer.first_name,
         lastName: newCustomer.last_name,
+        isAdmin: newCustomer.is_admin || false,
       },
       message: "Account created successfully",
     });
