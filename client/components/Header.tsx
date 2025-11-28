@@ -22,7 +22,9 @@ export default function Header() {
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
+    const adminStatus = localStorage.getItem("isAdmin") === "true";
     setIsAuthenticated(!!token);
+    setIsAdmin(adminStatus);
 
     // Fetch store credit if authenticated
     if (token) {
