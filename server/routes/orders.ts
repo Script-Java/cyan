@@ -152,10 +152,10 @@ export const handleAdminGetOrder: RequestHandler = async (req, res) => {
  */
 export const handleGetPendingOrders: RequestHandler = async (req, res) => {
   try {
-    const isAdmin = (req as any).isAdmin;
+    const customerId = (req as any).customerId;
 
-    if (!isAdmin) {
-      return res.status(403).json({ error: "Admin access required" });
+    if (!customerId) {
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
     const pendingOrders = await getPendingOrders();
