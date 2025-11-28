@@ -172,8 +172,8 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
     res.json({
       success: true,
       orderId: order.id,
-      orderDate: order.createDate,
-      orderStatus: order.fulfillmentStatus || order.paymentStatus || "processing",
+      orderDate: (order as any).createDate || new Date().toISOString(),
+      orderStatus: (order as any).fulfillmentStatus || (order as any).paymentStatus || "processing",
       designs,
     });
   } catch (error) {
