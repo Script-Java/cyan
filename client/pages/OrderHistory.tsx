@@ -333,7 +333,7 @@ export default function OrderHistory() {
                               order.status.slice(1)}
                           </span>
                         </div>
-                        <div className="flex items-center gap-6 text-sm text-gray-600">
+                        <div className="flex items-center gap-6 text-sm text-gray-600 flex-wrap">
                           <div className="flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
                             {formatDate(order.dateCreated)}
@@ -347,6 +347,18 @@ export default function OrderHistory() {
                             <DollarSign className="w-4 h-4" />
                             {formatCurrency(order.total)}
                           </div>
+                          {order.estimated_delivery_date && (
+                            <div className="flex items-center gap-1 text-blue-600 font-medium">
+                              <Calendar className="w-4 h-4" />
+                              Delivery: {formatDate(order.estimated_delivery_date)}
+                            </div>
+                          )}
+                          {order.tracking_number && (
+                            <div className="flex items-center gap-1 text-green-600 font-medium">
+                              <Truck className="w-4 h-4" />
+                              Tracking: {order.tracking_number}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
