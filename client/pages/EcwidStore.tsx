@@ -1,116 +1,51 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
+import { ShoppingCart, Star } from "lucide-react";
 
-const ECWID_STORE_ID = "120154275";
+interface Product {
+  id: number;
+  sku: string;
+  name: string;
+  price: number;
+  description: string;
+  defaultImage?: {
+    id: number;
+    url: string;
+    alt?: string;
+  };
+  images: Array<{
+    id: number;
+    url: string;
+    alt?: string;
+  }>;
+}
 
 export default function EcwidStore() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    // Add CSS to ensure Ecwid store is visible and hide branding
-    const style = document.createElement("style");
-    style.textContent = `
-      #my-store-${ECWID_STORE_ID} {
-        display: block !important;
-        min-height: auto !important;
-      }
-      .ec-powered-by,
-      .ecwid-powered-by,
-      .ec-powered-by-link,
-      .ecwid-powered-by-link {
-        display: none !important;
-      }
-      .ec-store > .powered-by,
-      .ecwid > .powered-by {
-        display: none !important;
-      }
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/ecwid-products?limit=20");
 
-      /* Product options layout in 4 columns - target Ecwid structure */
-      [class*="details-options"] {
-        display: grid !important;
-        grid-template-columns: repeat(4, 1fr) !important;
-        gap: 30px !important;
-        width: 100% !important;
-      }
-
-      [class*="details-options"] > div,
-      [class*="details-options"] > [class*="item"],
-      [class*="details-options"] [class*="group"] {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 10px !important;
-      }
-
-      /* Target the actual option wrapper containers */
-      .ec-product-details__option,
-      .product-details__option,
-      [class*="option"][class*="group"] {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 8px !important;
-      }
-
-      /* Ensure selects and inputs take full width */
-      select[class*=""],
-      [class*="select"],
-      [class*="field"] {
-        width: 100% !important;
-      }
-    `;
-    document.head.appendChild(style);
-
-    // Load and initialize Ecwid script
-    const script1 = document.createElement("script");
-    script1.src = `https://app.ecwid.com/script.js?${ECWID_STORE_ID}&data_platform=code&data_date=2025-11-28`;
-    script1.setAttribute("data-cfasync", "false");
-    script1.async = true;
-    document.body.appendChild(script1);
-
-    script1.onload = () => {
-      // Initialize product browser with 2-column layout
-      const script2 = document.createElement("script");
-      script2.type = "text/javascript";
-      script2.textContent = `xProductBrowser("categoriesPerRow=2","views=grid(20,2) list(60) table(60)","categoryView=grid","searchView=list","id=my-store-${ECWID_STORE_ID}");`;
-      document.body.appendChild(script2);
-
-      // Ensure the store container is visible after Ecwid loads
-      setTimeout(() => {
-        const storeContainer = document.getElementById(
-          `my-store-${ECWID_STORE_ID}`,
-        );
-        if (storeContainer) {
-          storeContainer.style.display = "block";
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
         }
 
-        // Reorganize product options into 4 columns
-        const reorganizeOptions = () => {
-          const optionGroups = document.querySelectorAll('[class*="option-group"], .ec-product-details__option, [class*="details-option"]');
-
-          if (optionGroups.length > 0) {
-            const parent = optionGroups[0]?.parentElement;
-            if (parent) {
-              parent.style.display = "grid";
-              parent.style.gridTemplateColumns = "repeat(4, 1fr)";
-              parent.style.gap = "30px";
-              parent.style.width = "100%";
-            }
-          }
-        };
-
-        // Try to reorganize options multiple times as Ecwid loads async content
-        reorganizeOptions();
-        setTimeout(reorganizeOptions, 1000);
-        setTimeout(reorganizeOptions, 2000);
-      }, 500);
-    };
-
-    return () => {
-      // Cleanup scripts if needed
-      if (script1.parentNode) {
-        script1.parentNode.removeChild(script1);
-      }
-      if (style.parentNode) {
-        style.parentNode.removeChild(style);
+        const data = await response.json();
+        setProducts(data.products || []);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load products");
+      } finally {
+        setLoading(false);
       }
     };
+
+    fetchProducts();
   }, []);
 
   return (
@@ -118,7 +53,95 @@ export default function EcwidStore() {
       <Header />
       <main className="pt-24">
         <div className="max-w-7xl mx-auto px-4 py-12">
-          <div id={`my-store-${ECWID_STORE_ID}`}></div>
+          <div className="mb-12">
+            <h1 className="text-4xl font-bold mb-4 text-gray-900">
+              Featured Products
+            </h1>
+            <p className="text-lg text-gray-600">
+              Browse our complete collection of stickers and products
+            </p>
+          </div>
+
+          {loading && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="bg-gray-200 aspect-square rounded-lg mb-4"></div>
+                  <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+              {error}
+            </div>
+          )}
+
+          {!loading && !error && products.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-600 text-lg">No products found</p>
+            </div>
+          )}
+
+          {!loading && !error && products.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {products.map((product) => (
+                <Link
+                  key={product.id}
+                  to={`/ecwid-product/${product.id}`}
+                  className="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+                >
+                  {/* Product Image */}
+                  <div className="relative bg-gray-100 aspect-square overflow-hidden">
+                    {product.defaultImage ? (
+                      <img
+                        src={product.defaultImage.url}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        No image
+                      </div>
+                    )}
+                    <div className="absolute top-3 right-3 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      FREE SHIPPING
+                    </div>
+                  </div>
+
+                  {/* Product Info */}
+                  <div className="p-4">
+                    <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition">
+                      {product.name}
+                    </h3>
+
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                      {product.description}
+                    </p>
+
+                    <div className="flex items-center justify-between">
+                      <p className="text-2xl font-bold text-gray-900">
+                        ${product.price.toFixed(2)}
+                      </p>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          console.log("Add to cart:", product.id);
+                        }}
+                        className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition"
+                        title="Add to cart"
+                      >
+                        <ShoppingCart className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </main>
     </div>
