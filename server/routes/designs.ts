@@ -84,8 +84,8 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
       if (designs.length > 0) {
         designsByOrder.push({
           orderId: order.id,
-          orderDate: order.createDate,
-          orderStatus: order.fulfillmentStatus || order.paymentStatus || "processing",
+          orderDate: (order as any).createDate || new Date().toISOString(),
+          orderStatus: (order as any).fulfillmentStatus || (order as any).paymentStatus || "processing",
           designs,
         });
       }
