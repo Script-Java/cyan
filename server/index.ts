@@ -68,6 +68,11 @@ import {
   handleCreateCheckoutSession,
   handleConfirmCheckout,
 } from "./routes/square";
+import {
+  handleUploadDigitalFile,
+  handleGetOrderFiles,
+  handleDeleteDigitalFile,
+} from "./routes/digital-files";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
