@@ -71,31 +71,6 @@ export default function Header() {
     }
   }, []);
 
-  useEffect(() => {
-    // Fetch cart count from cart data or BigCommerce
-    const fetchCartCount = () => {
-      try {
-        const cartData = localStorage.getItem("cart");
-        if (cartData) {
-          const cart = JSON.parse(cartData);
-          const count = cart.items ? cart.items.length : 0;
-          setCartCount(count);
-        }
-      } catch (error) {
-        console.error("Error fetching cart count:", error);
-      }
-    };
-
-    fetchCartCount();
-
-    // Listen for storage changes to update cart count in real-time
-    const handleStorageChange = () => {
-      fetchCartCount();
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
