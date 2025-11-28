@@ -122,10 +122,7 @@ export default function Header() {
 
             {/* Mobile/Tablet Centered Logo */}
             <div className="md:hidden absolute left-1/2 transform -translate-x-1/2">
-              <Link
-                to="/"
-                className="flex items-center"
-              >
+              <Link to="/" className="flex items-center">
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F6def69979e504acebe0ba665997a2501?format=webp&width=800"
                   alt="Sticky Logo"
@@ -300,7 +297,6 @@ export default function Header() {
                 <X className="w-5 h-5 text-white" />
               </button>
             </div>
-
 
             {/* Auth Buttons */}
             <nav className="space-y-2">

@@ -174,10 +174,7 @@ export default function CheckoutBigCommerce() {
     setIsLoading(false);
   }, [navigate]);
 
-  const handleShippingChange = (
-    field: keyof ShippingInfo,
-    value: string,
-  ) => {
+  const handleShippingChange = (field: keyof ShippingInfo, value: string) => {
     const updated = { ...shippingInfo, [field]: value };
     setShippingInfo(updated);
 
@@ -302,7 +299,10 @@ export default function CheckoutBigCommerce() {
       };
 
       // Add product options if available
-      if (checkoutData.selectedOptions && Object.keys(checkoutData.selectedOptions).length > 0) {
+      if (
+        checkoutData.selectedOptions &&
+        Object.keys(checkoutData.selectedOptions).length > 0
+      ) {
         checkoutPayload.product_options = checkoutData.selectedOptions;
       }
 
@@ -323,7 +323,9 @@ export default function CheckoutBigCommerce() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || "Failed to create BigCommerce checkout");
+        throw new Error(
+          result.error || "Failed to create BigCommerce checkout",
+        );
       }
 
       // Redirect to BigCommerce checkout
@@ -391,7 +393,8 @@ export default function CheckoutBigCommerce() {
               Shipping Information
             </h1>
             <p className="text-gray-600">
-              Please enter your shipping details to proceed to BigCommerce checkout
+              Please enter your shipping details to proceed to BigCommerce
+              checkout
             </p>
           </div>
 
@@ -484,7 +487,9 @@ export default function CheckoutBigCommerce() {
                     </div>
 
                     <div>
-                      <Label htmlFor="street2">Apt, Suite, etc. (Optional)</Label>
+                      <Label htmlFor="street2">
+                        Apt, Suite, etc. (Optional)
+                      </Label>
                       <Input
                         id="street2"
                         placeholder="Apt 4B"
@@ -566,7 +571,10 @@ export default function CheckoutBigCommerce() {
                           </SelectTrigger>
                           <SelectContent>
                             {COUNTRIES.map((country) => (
-                              <SelectItem key={country.code} value={country.code}>
+                              <SelectItem
+                                key={country.code}
+                                value={country.code}
+                              >
                                 {country.name}
                               </SelectItem>
                             ))}
@@ -588,7 +596,10 @@ export default function CheckoutBigCommerce() {
                         type="checkbox"
                         checked={billingInfo.same_as_shipping}
                         onChange={(e) =>
-                          handleBillingChange("same_as_shipping", e.target.checked)
+                          handleBillingChange(
+                            "same_as_shipping",
+                            e.target.checked,
+                          )
                         }
                         className="w-4 h-4"
                       />
@@ -627,7 +638,9 @@ export default function CheckoutBigCommerce() {
                         </div>
 
                         <div>
-                          <Label htmlFor="billingStreet">Street Address *</Label>
+                          <Label htmlFor="billingStreet">
+                            Street Address *
+                          </Label>
                           <Input
                             id="billingStreet"
                             placeholder="123 Main St"
@@ -687,7 +700,10 @@ export default function CheckoutBigCommerce() {
                               placeholder="10001"
                               value={billingInfo.postalCode}
                               onChange={(e) =>
-                                handleBillingChange("postalCode", e.target.value)
+                                handleBillingChange(
+                                  "postalCode",
+                                  e.target.value,
+                                )
                               }
                             />
                           </div>
@@ -704,7 +720,10 @@ export default function CheckoutBigCommerce() {
                               </SelectTrigger>
                               <SelectContent>
                                 {COUNTRIES.map((country) => (
-                                  <SelectItem key={country.code} value={country.code}>
+                                  <SelectItem
+                                    key={country.code}
+                                    value={country.code}
+                                  >
                                     {country.name}
                                   </SelectItem>
                                 ))}
@@ -738,8 +757,8 @@ export default function CheckoutBigCommerce() {
 
                         <div className="text-sm text-gray-600">
                           <p className="mb-3">
-                            You will complete payment and review order details on the
-                            BigCommerce checkout page.
+                            You will complete payment and review order details
+                            on the BigCommerce checkout page.
                           </p>
                         </div>
 

@@ -140,7 +140,10 @@ export default function Product() {
                       Price per unit
                     </h3>
                     <p className="text-2xl font-bold text-gray-900">
-                      ${typeof product.price === 'number' ? product.price.toFixed(2) : '0.00'}
+                      $
+                      {typeof product.price === "number"
+                        ? product.price.toFixed(2)
+                        : "0.00"}
                     </p>
                     <p className="text-xs text-gray-600 mt-1">
                       Bulk pricing available

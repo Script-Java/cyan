@@ -857,7 +857,9 @@ class BigCommerceAPI {
   /**
    * Get product options
    */
-  async getProductOptions(productId: number): Promise<BigCommerceProductOption[]> {
+  async getProductOptions(
+    productId: number,
+  ): Promise<BigCommerceProductOption[]> {
     const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/catalog/products/${productId}/options`;
 
     try {

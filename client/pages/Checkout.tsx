@@ -197,7 +197,9 @@ export default function Checkout() {
         const responseText = await response.text();
 
         if (response.status === 404) {
-          setError("Cart not found. Please add items to your cart and try again.");
+          setError(
+            "Cart not found. Please add items to your cart and try again.",
+          );
           setIsLoading(false);
           return;
         }

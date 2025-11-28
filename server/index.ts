@@ -49,7 +49,10 @@ import {
   handleCustomerReplyToTicket,
 } from "./routes/support";
 import { handleGetProduct, handleGetProductOptions } from "./routes/products";
-import { handleGetPaymentMethods, handleProcessPayment } from "./routes/payments";
+import {
+  handleGetPaymentMethods,
+  handleProcessPayment,
+} from "./routes/payments";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
@@ -136,7 +139,11 @@ export function createServer() {
   app.get("/api/checkout/:cartId", handleGetCheckoutDetails);
 
   // ===== BigCommerce Checkout Routes (Optional auth - guest checkout supported) =====
-  app.post("/api/bigcommerce/checkout", optionalVerifyToken, handleCreateBigCommerceCheckout);
+  app.post(
+    "/api/bigcommerce/checkout",
+    optionalVerifyToken,
+    handleCreateBigCommerceCheckout,
+  );
   app.get(
     "/api/bigcommerce/checkout/:draftOrderId",
     optionalVerifyToken,

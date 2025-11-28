@@ -1,9 +1,6 @@
 import { RequestHandler } from "express";
 import { bigCommerceAPI } from "../utils/bigcommerce";
-import {
-  createSupabaseOrder,
-  createOrderItems,
-} from "../utils/supabase";
+import { createSupabaseOrder, createOrderItems } from "../utils/supabase";
 
 interface CheckoutRequest {
   customer_id: number;
@@ -111,7 +108,8 @@ export const handleCheckout: RequestHandler = async (req, res) => {
 
     // Calculate totals
     const subtotal = checkoutData.subtotal_inc_tax || 0;
-    const total = checkoutData.order_total || checkoutData.total_inc_tax || subtotal;
+    const total =
+      checkoutData.order_total || checkoutData.total_inc_tax || subtotal;
     const tax = checkoutData.total_tax || 0;
     const shipping = checkoutData.total_shipping || 0;
 

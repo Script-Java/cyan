@@ -36,7 +36,10 @@ interface CreateCheckoutRequest {
  * Create a BigCommerce draft order and return checkout URL
  * Requires: customer_id (authenticated user)
  */
-export const handleCreateBigCommerceCheckout: RequestHandler = async (req, res) => {
+export const handleCreateBigCommerceCheckout: RequestHandler = async (
+  req,
+  res,
+) => {
   try {
     const customerId = (req as any).customerId;
     const checkoutData = req.body as CreateCheckoutRequest;
@@ -49,7 +52,9 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (req, res) 
     }
 
     if (!checkoutData.billing_address || !checkoutData.shipping_addresses) {
-      return res.status(400).json({ error: "Billing and shipping addresses required" });
+      return res
+        .status(400)
+        .json({ error: "Billing and shipping addresses required" });
     }
 
     // Get store info first to get the storefront URL
@@ -137,7 +142,9 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (req, res) 
   } catch (error) {
     console.error("BigCommerce checkout error:", error);
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to create BigCommerce checkout";
+      error instanceof Error
+        ? error.message
+        : "Failed to create BigCommerce checkout";
     res.status(500).json({ error: errorMessage });
   }
 };
@@ -145,7 +152,10 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (req, res) 
 /**
  * Get BigCommerce checkout URL (for existing draft orders)
  */
-export const handleGetBigCommerceCheckoutUrl: RequestHandler = async (req, res) => {
+export const handleGetBigCommerceCheckoutUrl: RequestHandler = async (
+  req,
+  res,
+) => {
   try {
     const { draftOrderId } = req.params;
 

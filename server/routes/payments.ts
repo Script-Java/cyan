@@ -32,7 +32,10 @@ export const handleGetPaymentMethods: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Get payment methods error:", error);
     res.status(500).json({
-      error: error instanceof Error ? error.message : "Failed to get payment methods",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to get payment methods",
     });
   }
 };
@@ -45,10 +48,13 @@ export const handleProcessPayment: RequestHandler = async (req, res) => {
     const paymentData = req.body as PaymentRequest;
 
     // Validate required fields
-    if (!paymentData.amount || !paymentData.currency || !paymentData.payment_method_id) {
+    if (
+      !paymentData.amount ||
+      !paymentData.currency ||
+      !paymentData.payment_method_id
+    ) {
       return res.status(400).json({
-        error:
-          "Missing required fields: amount, currency, payment_method_id",
+        error: "Missing required fields: amount, currency, payment_method_id",
       });
     }
 
@@ -63,7 +69,9 @@ export const handleProcessPayment: RequestHandler = async (req, res) => {
         payment_instrument: paymentData.payment_instrument,
       }),
       ...(paymentData.description && { description: paymentData.description }),
-      ...(paymentData.reference_id && { reference_id: paymentData.reference_id }),
+      ...(paymentData.reference_id && {
+        reference_id: paymentData.reference_id,
+      }),
       ...(paymentData.order_id && { order_id: paymentData.order_id }),
     };
 
@@ -75,7 +83,8 @@ export const handleProcessPayment: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     console.error("Process payment error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Failed to process payment";
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to process payment";
     res.status(400).json({
       error: errorMessage,
     });

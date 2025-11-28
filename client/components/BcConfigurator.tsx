@@ -20,7 +20,9 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
   const [optionsLoading, setOptionsLoading] = useState(true);
 
   // selections - using a map for dynamic options
-  const [selectedOptions, setSelectedOptions] = useState<Record<number, string>>({});
+  const [selectedOptions, setSelectedOptions] = useState<
+    Record<number, string>
+  >({});
   const [quantity, setQuantity] = useState(50);
   const [notes, setNotes] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -220,7 +222,11 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
               />
               <span className="font-medium">{q} pcs</span>
               <span className="text-gray-600">
-                ${(builderProduct?.price && typeof builderProduct.price === 'number' ? (q * builderProduct.price).toFixed(2) : (q * 0.25).toFixed(2))}
+                $
+                {builderProduct?.price &&
+                typeof builderProduct.price === "number"
+                  ? (q * builderProduct.price).toFixed(2)
+                  : (q * 0.25).toFixed(2)}
               </span>
             </label>
           ))}
@@ -230,7 +236,7 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
           <div className="font-bold text-lg text-gray-900 mb-4">
             Total: $
             {priceInfo.total ||
-              (builderProduct?.price && typeof builderProduct.price === 'number'
+              (builderProduct?.price && typeof builderProduct.price === "number"
                 ? (quantity * builderProduct.price).toFixed(2)
                 : (quantity * 0.25).toFixed(2))}
           </div>

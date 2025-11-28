@@ -181,7 +181,10 @@ export async function createOrderItems(
   }
 }
 
-export async function getOrderById(orderId: number, customerId: number): Promise<any> {
+export async function getOrderById(
+  orderId: number,
+  customerId: number,
+): Promise<any> {
   try {
     const { data, error } = await supabase
       .from("orders")

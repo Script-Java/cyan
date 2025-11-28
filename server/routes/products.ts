@@ -43,7 +43,9 @@ export const handleGetProductOptions: RequestHandler = async (req, res) => {
     console.error("Get product options error:", error);
     res.status(500).json({
       error:
-        error instanceof Error ? error.message : "Failed to get product options",
+        error instanceof Error
+          ? error.message
+          : "Failed to get product options",
     });
   }
 };

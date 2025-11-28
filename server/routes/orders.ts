@@ -42,7 +42,10 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
         count: formattedOrders.length,
       });
     } catch (supabaseError) {
-      console.error("Supabase fetch failed, trying BigCommerce...", supabaseError);
+      console.error(
+        "Supabase fetch failed, trying BigCommerce...",
+        supabaseError,
+      );
     }
 
     // Fallback to BigCommerce if Supabase fails
@@ -80,7 +83,11 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
         }),
       );
 
-      console.log("Fetched", ordersWithShipments.length, "orders from BigCommerce");
+      console.log(
+        "Fetched",
+        ordersWithShipments.length,
+        "orders from BigCommerce",
+      );
 
       res.json({
         success: true,
@@ -142,7 +149,10 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
         });
       }
     } catch (supabaseError) {
-      console.error("Supabase fetch failed, trying BigCommerce...", supabaseError);
+      console.error(
+        "Supabase fetch failed, trying BigCommerce...",
+        supabaseError,
+      );
     }
 
     // Fallback to BigCommerce

@@ -43,7 +43,10 @@ interface OrderDetails {
   }>;
 }
 
-const STATUS_DISPLAY: Record<string | number, { label: string; color: string }> = {
+const STATUS_DISPLAY: Record<
+  string | number,
+  { label: string; color: string }
+> = {
   0: { label: "Pending", color: "bg-yellow-100 text-yellow-800" },
   1: { label: "Completed", color: "bg-green-100 text-green-800" },
   2: { label: "Shipped", color: "bg-blue-100 text-blue-800" },
@@ -166,9 +169,10 @@ export default function OrderConfirmation() {
   }
 
   const statusInfo = STATUS_DISPLAY[order.status] || {
-    label: typeof order.status === "string"
-      ? order.status.charAt(0).toUpperCase() + order.status.slice(1)
-      : "Unknown",
+    label:
+      typeof order.status === "string"
+        ? order.status.charAt(0).toUpperCase() + order.status.slice(1)
+        : "Unknown",
     color: "bg-gray-100 text-gray-800",
   };
 
