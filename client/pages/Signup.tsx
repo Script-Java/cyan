@@ -101,9 +101,6 @@ export default function Signup() {
     }
   };
 
-  const handleBigCommerceSignup = () => {
-    window.location.href = "/api/auth/bigcommerce/signup";
-  };
 
   return (
     <>
