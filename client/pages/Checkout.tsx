@@ -353,43 +353,52 @@ export default function Checkout() {
         payment_method_id: paymentPayload.payment_method_id,
       });
 
-      const paymentResponse = await fetch("/api/payments/process", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(paymentPayload),
-      });
-
-      let paymentResult: any;
-      const responseText = await paymentResponse.text();
-
-      console.log("Payment response status:", paymentResponse.status);
-      console.log("Payment response text:", responseText.substring(0, 200));
+      let paymentResponse: Response | null = null;
+      let paymentResult: any = {};
 
       try {
-        paymentResult = responseText ? JSON.parse(responseText) : {};
-      } catch (parseError) {
-        console.error("Failed to parse payment response:", {
-          error: parseError,
-          responseText: responseText.substring(0, 500),
-          status: paymentResponse.status,
+        paymentResponse = await fetch("/api/payments/process", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(paymentPayload),
         });
-        throw new Error(
-          `Payment response parsing failed: Invalid JSON. Status: ${paymentResponse.status}. Check browser console for details.`,
-        );
-      }
 
-      if (!paymentResponse.ok) {
-        const errorMessage =
-          paymentResult?.error ||
-          paymentResult?.message ||
-          `Payment processing failed (${paymentResponse.status})`;
-        console.error("Payment processing failed:", {
-          status: paymentResponse.status,
-          error: paymentResult,
-        });
-        throw new Error(errorMessage);
+        const paymentResponseText = await paymentResponse.text();
+
+        console.log("Payment response status:", paymentResponse.status);
+        console.log("Payment response text:", paymentResponseText.substring(0, 200));
+
+        try {
+          paymentResult = paymentResponseText ? JSON.parse(paymentResponseText) : {};
+        } catch (parseError) {
+          console.error("Failed to parse payment response:", {
+            error: parseError,
+            responseText: paymentResponseText.substring(0, 500),
+            status: paymentResponse.status,
+          });
+          throw new Error(
+            `Payment response parsing failed: Invalid JSON. Status: ${paymentResponse.status}. Check browser console for details.`,
+          );
+        }
+
+        if (!paymentResponse.ok) {
+          const errorMessage =
+            paymentResult?.error ||
+            paymentResult?.message ||
+            `Payment processing failed (${paymentResponse.status})`;
+          console.error("Payment processing failed:", {
+            status: paymentResponse.status,
+            error: paymentResult,
+          });
+          throw new Error(errorMessage);
+        }
+      } catch (paymentError) {
+        if (paymentError instanceof Error) {
+          throw paymentError;
+        }
+        throw new Error("Failed to process payment");
       }
 
       console.log("Payment processed successfully");
