@@ -4,6 +4,7 @@ import {
   getOrderById,
   getPendingOrders,
 } from "../utils/supabase";
+import { ecwidAPI } from "../utils/ecwid";
 
 /**
  * Get customer's orders from Supabase
