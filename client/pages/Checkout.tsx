@@ -831,34 +831,10 @@ export default function Checkout() {
                   </CardContent>
                 </Card>
 
-                {squareApplicationId && (
-                  <>
-                    <SquareWebPaymentForm
-                      applicationId={squareApplicationId}
-                      amount={total}
-                      onPaymentSuccess={(token) => {
-                        setPaymentToken(token);
-                        setPaymentError(null);
-                      }}
-                      onPaymentError={(error) => {
-                        setPaymentError(error);
-                        setError(error);
-                      }}
-                      isProcessing={isSubmitting}
-                    />
-                    {paymentError && (
-                      <Alert variant="destructive" className="mt-4">
-                        <AlertCircle className="h-4 w-4" />
-                        <AlertDescription>{paymentError}</AlertDescription>
-                      </Alert>
-                    )}
-                  </>
-                )}
-
                 <Button
                   type="submit"
                   className="w-full bg-[#FFD713] text-[#030140] hover:bg-[#FFD713]/90 py-6 text-lg font-bold disabled:opacity-50"
-                  disabled={isSubmitting || !paymentToken}
+                  disabled={isSubmitting}
                 >
                   {isSubmitting ? (
                     <>
