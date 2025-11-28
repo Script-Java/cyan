@@ -1,13 +1,33 @@
-import squarePkg from "square";
-const { Client } = squarePkg;
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 
-const squareClient = new Client({
-  accessToken: process.env.SQUARE_ACCESS_TOKEN,
-  environment: "production",
-});
+let squareClient: any = null;
 
-export const paymentsApi = squareClient.paymentsApi;
-export const locationsApi = squareClient.locationsApi;
+function getSquareClient() {
+  if (!squareClient) {
+    try {
+      const squarePkg = require("square");
+      const Client = squarePkg.Client;
+
+      squareClient = new Client({
+        accessToken: process.env.SQUARE_ACCESS_TOKEN,
+        environment: "production",
+      });
+    } catch (error) {
+      console.error("Failed to initialize Square client:", error);
+      throw new Error("Square SDK initialization failed");
+    }
+  }
+  return squareClient;
+}
+
+export function getPaymentsApi() {
+  return getSquareClient().paymentsApi;
+}
+
+export function getLocationsApi() {
+  return getSquareClient().locationsApi;
+}
 
 export async function processSquarePayment(paymentData: {
   sourceId: string;
