@@ -87,8 +87,9 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
 };
 
 /**
- * Create a new order
+ * Create a new order in Supabase
  * Requires: customerId in JWT token
+ * Note: Most orders are created via the /api/checkout endpoint
  */
 export const handleCreateOrder: RequestHandler = async (req, res) => {
   try {
@@ -98,36 +99,19 @@ export const handleCreateOrder: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const { items, shippingAddress, billingAddress } = req.body;
+    const { items, shippingAddress, billingAddress, total } = req.body;
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: "Order items required" });
     }
 
-    // Build order payload
-    const orderPayload = {
-      customer_id: customerId,
-      line_items: items.map((item: any) => ({
-        product_id: item.productId,
-        quantity: item.quantity,
-        custom_fields: item.customFields || [],
-      })),
-      shipping_addresses: shippingAddress ? [shippingAddress] : undefined,
-      billing_address: billingAddress,
-    };
+    if (!shippingAddress || !billingAddress) {
+      return res.status(400).json({ error: "Shipping and billing addresses required" });
+    }
 
-    const newOrder = await bigCommerceAPI.createOrder(orderPayload);
-
-    res.status(201).json({
-      success: true,
-      message: "Order created successfully",
-      order: {
-        id: newOrder.id,
-        customerId: newOrder.customer_id,
-        status: newOrder.status,
-        total: newOrder.total_incl_tax,
-        dateCreated: newOrder.date_created,
-      },
+    // This endpoint is primarily for API use; checkout is the main flow
+    res.status(501).json({
+      error: "Use /api/checkout endpoint to create orders",
     });
   } catch (error) {
     console.error("Create order error:", error);
