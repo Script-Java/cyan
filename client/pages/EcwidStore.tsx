@@ -10,13 +10,12 @@ export default function EcwidStore() {
     style.textContent = `
       .ec-powered-by,
       .ecwid-powered-by,
-      [class*="powered"],
       .ec-footer,
-      .ecwid-footer {
-        display: none !important;
-      }
+      .ecwid-footer,
       .ec-store-footer,
-      .ecwid-store-footer {
+      .ecwid-store-footer,
+      [class*="poweredby"],
+      .ec-powered-text {
         display: none !important;
       }
     `;
