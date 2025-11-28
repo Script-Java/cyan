@@ -80,7 +80,7 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
 };
 
 /**
- * Get single order details from Supabase
+ * Get single order details from Ecwid or Supabase
  * Requires: customerId in JWT token, orderId in params
  */
 export const handleGetOrder: RequestHandler = async (req, res) => {
@@ -96,7 +96,37 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Order ID required" });
     }
 
-    const order = await getOrderById(parseInt(orderId), customerId);
+    const orderIdNum = parseInt(orderId);
+    let order = null;
+
+    // Try Ecwid first
+    try {
+      order = await ecwidAPI.getOrder(orderIdNum);
+      if (order && order.customerId === customerId) {
+        return res.json({
+          success: true,
+          source: "ecwid",
+          order: {
+            id: order.id,
+            customerId: order.customerId,
+            status: order.fulfillmentStatus || order.paymentStatus || "processing",
+            dateCreated: order.createDate,
+            total: order.total,
+            subtotal: order.subtotal || 0,
+            tax: order.tax || 0,
+            shipping: order.shippingCost || 0,
+            items: order.items || [],
+            shippingAddress: order.shippingPerson,
+            billingAddress: order.billingPerson,
+          },
+        });
+      }
+    } catch (ecwidError) {
+      console.warn("Failed to fetch order from Ecwid:", ecwidError);
+    }
+
+    // Fallback to Supabase
+    order = await getOrderById(orderIdNum, customerId);
 
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
@@ -104,6 +134,7 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
 
     res.json({
       success: true,
+      source: "supabase",
       order: {
         id: order.id,
         customerId: order.customer_id,
