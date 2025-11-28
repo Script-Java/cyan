@@ -328,6 +328,67 @@ export const handleGetSquareLocations: RequestHandler = async (req, res) => {
 };
 
 /**
+ * Confirm checkout after Square redirect
+ */
+export const handleConfirmCheckout: RequestHandler = async (req, res) => {
+  try {
+    const { orderId } = req.body;
+
+    if (!orderId) {
+      return res.status(400).json({
+        error: "Missing orderId",
+      });
+    }
+
+    console.log("Confirming checkout for order:", orderId);
+
+    // Get the order from Supabase
+    const { data, error: supabaseError } = await (
+      await import("../utils/supabase")
+    ).getSupabaseClient()
+      .from("orders")
+      .select("*")
+      .eq("id", orderId)
+      .single();
+
+    if (supabaseError || !data) {
+      return res.status(404).json({
+        error: "Order not found",
+      });
+    }
+
+    // Update order status to completed
+    const { error: updateError } = await (
+      await import("../utils/supabase")
+    ).getSupabaseClient()
+      .from("orders")
+      .update({ status: "completed" })
+      .eq("id", orderId);
+
+    if (updateError) {
+      console.error("Failed to update order status:", updateError);
+      return res.status(400).json({
+        error: "Failed to confirm order",
+      });
+    }
+
+    res.json({
+      success: true,
+      order: {
+        id: orderId,
+        status: "completed",
+        total: data.total,
+      },
+    });
+  } catch (error) {
+    console.error("Confirm checkout error:", error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : "Confirmation failed",
+    });
+  }
+};
+
+/**
  * Test Square configuration (diagnostic endpoint)
  */
 export const handleTestSquareConfig: RequestHandler = async (req, res) => {
