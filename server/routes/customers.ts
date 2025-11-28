@@ -1,6 +1,11 @@
 import { RequestHandler } from "express";
-import { bigCommerceAPI } from "../utils/bigcommerce";
+import { createClient } from "@supabase/supabase-js";
 import { getCustomerStoreCredit } from "../utils/supabase";
+
+const supabase = createClient(
+  process.env.SUPABASE_URL || "",
+  process.env.SUPABASE_SERVICE_KEY || "",
+);
 
 /**
  * Get current customer profile
