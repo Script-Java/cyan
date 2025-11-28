@@ -15,7 +15,7 @@ import {
   ChevronDown,
   Store,
   Mail,
-  Form,
+  Clipboard,
   Plus,
   LogOut,
 } from "lucide-react";
