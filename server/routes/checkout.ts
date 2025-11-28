@@ -50,7 +50,7 @@ interface CheckoutRequest {
 export const handleCheckout: RequestHandler = async (req, res) => {
   try {
     const checkoutData = req.body as CheckoutRequest;
-    const customerId = (req as any).customerId;
+    const requestCustomerId = (req as any).customerId;
 
     // Validate required fields (customer_id is optional for guest checkout)
     if (
@@ -65,8 +65,8 @@ export const handleCheckout: RequestHandler = async (req, res) => {
       });
     }
 
-    // Use provided customer_id or 0 for guest checkout
-    const customerId = checkoutData.customer_id || 0;
+    // Use customer_id from request (auth) or from body (guest/provided), default to 0 for guests
+    const customerId = requestCustomerId || checkoutData.customer_id || 0;
 
     // Validate billing address
     const billingAddr = checkoutData.billing_address;
