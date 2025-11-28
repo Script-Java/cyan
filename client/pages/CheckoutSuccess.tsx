@@ -39,7 +39,7 @@ export default function CheckoutSuccess() {
 
         if (!response.ok) {
           throw new Error(
-            result.error || `Payment confirmation failed (${response.status})`
+            result.error || `Payment confirmation failed (${response.status})`,
           );
         }
 

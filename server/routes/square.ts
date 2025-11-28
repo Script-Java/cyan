@@ -1,5 +1,10 @@
 import { RequestHandler } from "express";
-import { processSquarePayment, getSquareLocations, getCheckoutApi, getOrdersApi } from "../utils/square";
+import {
+  processSquarePayment,
+  getSquareLocations,
+  getCheckoutApi,
+  getOrdersApi,
+} from "../utils/square";
 import { createSupabaseOrder, createOrderItems } from "../utils/supabase";
 
 interface SquarePaymentRequest {
@@ -89,7 +94,11 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     const checkoutData = req.body as SquareCheckoutRequest;
 
     // Validate required fields
-    if (!checkoutData.amount || !checkoutData.items || !checkoutData.customerEmail) {
+    if (
+      !checkoutData.amount ||
+      !checkoutData.items ||
+      !checkoutData.customerEmail
+    ) {
       return res.status(400).json({
         error: "Missing required fields: amount, items, customerEmail",
       });
@@ -166,7 +175,9 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       idempotencyKey: `${Date.now()}-${supabaseOrder.id}`,
       order: {
         lineItems,
-        customerId: checkoutData.customerId ? String(checkoutData.customerId) : undefined,
+        customerId: checkoutData.customerId
+          ? String(checkoutData.customerId)
+          : undefined,
         referenceId: supabaseOrder.id,
       },
       redirectUrl: `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`,
@@ -185,7 +196,8 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     });
 
     // Create checkout via Square API
-    const checkoutResponse = await getCheckoutApi().createCheckout(checkoutBody);
+    const checkoutResponse =
+      await getCheckoutApi().createCheckout(checkoutBody);
 
     if (!checkoutResponse.result?.checkout?.checkoutPageUrl) {
       throw new Error("Failed to create Square Checkout - no URL returned");
@@ -205,7 +217,9 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Create Checkout session error:", error);
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to create checkout session";
+      error instanceof Error
+        ? error.message
+        : "Failed to create checkout session";
     res.status(400).json({
       error: errorMessage,
     });
