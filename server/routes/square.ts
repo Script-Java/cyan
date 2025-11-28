@@ -104,9 +104,37 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       });
     }
 
+    // Create a guest customer if not logged in
+    let customerId = checkoutData.customerId;
+
+    if (!customerId) {
+      // Create a guest customer in Supabase
+      const { supabase } = await import("../utils/supabase");
+      const { data: guestCustomer, error: guestError } = await supabase
+        .from("customers")
+        .insert({
+          email: checkoutData.customerEmail,
+          first_name: checkoutData.customerName?.split(" ")[0] || "Guest",
+          last_name: checkoutData.customerName?.split(" ")[1] || "Customer",
+          phone: undefined,
+          company: undefined,
+          store_credit: 0,
+        })
+        .select("id")
+        .single();
+
+      if (guestError || !guestCustomer?.id) {
+        console.error("Failed to create guest customer:", guestError);
+        // Continue with NULL customer_id for the order
+        customerId = null;
+      } else {
+        customerId = guestCustomer.id;
+      }
+    }
+
     // Create order in Supabase with pending_payment status
     const supabaseOrder = await createSupabaseOrder({
-      customer_id: checkoutData.customerId || 0,
+      customer_id: customerId || 0,
       status: "pending_payment",
       total: checkoutData.total,
       subtotal: checkoutData.subtotal,
