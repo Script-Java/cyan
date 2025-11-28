@@ -27,6 +27,10 @@ interface EcwidOrder {
   createDate: string;
   total: number;
   status?: string;
+  fulfillmentStatus?: string;
+  paymentStatus?: string;
+  items?: any[];
+  attributes?: any[];
 }
 
 interface EcwidProduct {
