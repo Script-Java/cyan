@@ -154,10 +154,14 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     }
 
     // Build checkout request
-    const baseUrl = process.env.BASE_URL ||
-                     process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` :
-                     process.env.FLY_APP_NAME ? `https://${process.env.FLY_APP_NAME}.fly.dev` :
-                     "http://localhost:8080";
+    let baseUrl = "http://localhost:8080";
+    if (process.env.BASE_URL) {
+      baseUrl = process.env.BASE_URL;
+    } else if (process.env.VERCEL_URL) {
+      baseUrl = `https://${process.env.VERCEL_URL}`;
+    } else if (process.env.FLY_APP_NAME) {
+      baseUrl = `https://${process.env.FLY_APP_NAME}.fly.dev`;
+    }
     const checkoutBody = {
       idempotencyKey: `${Date.now()}-${supabaseOrder.id}`,
       order: {
