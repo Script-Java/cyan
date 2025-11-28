@@ -130,7 +130,7 @@ export default function AdminSidebar() {
         },
         {
           label: "Forms",
-          icon: <Form className="w-4 h-4" />,
+          icon: <Clipboard className="w-4 h-4" />,
           path: "/admin/apps/forms",
         },
       ],
