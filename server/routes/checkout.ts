@@ -201,7 +201,7 @@ export const handleCheckout: RequestHandler = async (req, res) => {
         bigcommerce_id: bigcommerceOrderId,
         customer_id: checkoutData.customer_id,
         total,
-        status: "paid",
+        status: "pending",
         date_created: new Date().toISOString(),
       },
     });
