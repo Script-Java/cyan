@@ -458,17 +458,17 @@ export default function Checkout() {
       });
 
       let result: any;
-      const responseText = await response.text();
+      const checkoutResponseText = await response.text();
 
       console.log("Order response status:", response.status);
-      console.log("Order response text:", responseText.substring(0, 200));
+      console.log("Order response text:", checkoutResponseText.substring(0, 200));
 
       try {
-        result = responseText ? JSON.parse(responseText) : {};
+        result = checkoutResponseText ? JSON.parse(checkoutResponseText) : {};
       } catch (parseError) {
         console.error("Failed to parse checkout response:", {
           error: parseError,
-          responseText: responseText.substring(0, 500),
+          responseText: checkoutResponseText.substring(0, 500),
           status: response.status,
         });
         throw new Error(
