@@ -18,6 +18,7 @@ import {
   handleGetOrder,
   handleCreateOrder,
   handleAdminGetOrder,
+  handleGetPendingOrders,
 } from "./routes/orders";
 import { handleGetDesigns, handleGetOrderDesigns } from "./routes/designs";
 import {
