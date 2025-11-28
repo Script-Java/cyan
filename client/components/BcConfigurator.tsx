@@ -236,7 +236,7 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
           <div className="font-bold text-lg text-gray-900 mb-4">
             Total: $
             {priceInfo.total ||
-              (builderProduct?.price
+              (builderProduct?.price && typeof builderProduct.price === 'number'
                 ? (quantity * builderProduct.price).toFixed(2)
                 : (quantity * 0.25).toFixed(2))}
           </div>
