@@ -1,5 +1,9 @@
 import { RequestHandler } from "express";
 import { bigCommerceAPI } from "../utils/bigcommerce";
+import {
+  createSupabaseOrder,
+  createOrderItems,
+} from "../utils/supabase";
 
 interface CheckoutRequest {
   customer_id: number;
@@ -40,10 +44,13 @@ interface CheckoutRequest {
 
 /**
  * Create an order from checkout
+ * Primary: Supabase (always succeeds)
+ * Secondary: BigCommerce (optional, errors are logged but don't fail the order)
  */
 export const handleCheckout: RequestHandler = async (req, res) => {
   try {
     const checkoutData = req.body as CheckoutRequest;
+    const customerId = (req as any).customerId;
 
     // Validate required fields
     if (
@@ -100,87 +107,100 @@ export const handleCheckout: RequestHandler = async (req, res) => {
       });
     }
 
-    // Build the order payload for BigCommerce
-    const orderPayload: any = {
-      customer_id: checkoutData.customer_id,
-      billing_address: {
-        first_name: billingAddr.first_name,
-        last_name: billingAddr.last_name,
-        street_1: billingAddr.street_1,
-        street_2: billingAddr.street_2 || "",
-        city: billingAddr.city,
-        state_or_province: billingAddr.state_or_province,
-        postal_code: billingAddr.postal_code,
-        country_code: billingAddr.country_code,
-      },
-      shipping_addresses: [
-        {
-          first_name: shippingAddr.first_name,
-          last_name: shippingAddr.last_name,
-          street_1: shippingAddr.street_1,
-          street_2: shippingAddr.street_2 || "",
-          city: shippingAddr.city,
-          state_or_province: shippingAddr.state_or_province,
-          postal_code: shippingAddr.postal_code,
-          country_code: shippingAddr.country_code,
-          address_type: "shipment",
-        },
-      ],
-      products: checkoutData.products.map((product) => ({
-        product_id: product.product_id,
-        quantity: product.quantity,
-        price_inc_tax: product.price_inc_tax || 0,
-      })),
-      status_id: checkoutData.status_id || 0,
-    };
+    // Calculate totals
+    const subtotal = checkoutData.subtotal_inc_tax || 0;
+    const total = checkoutData.order_total || checkoutData.total_inc_tax || subtotal;
+    const tax = checkoutData.total_tax || 0;
+    const shipping = checkoutData.total_shipping || 0;
 
-    // Add totals if provided
-    if (checkoutData.order_total !== undefined) {
-      orderPayload.order_total = checkoutData.order_total;
-    }
-    if (checkoutData.subtotal_inc_tax !== undefined) {
-      orderPayload.subtotal_inc_tax = checkoutData.subtotal_inc_tax;
-    }
-    if (checkoutData.subtotal_ex_tax !== undefined) {
-      orderPayload.subtotal_ex_tax = checkoutData.subtotal_ex_tax;
-    }
-    if (checkoutData.total_inc_tax !== undefined) {
-      orderPayload.total_inc_tax = checkoutData.total_inc_tax;
-    }
-    if (checkoutData.total_ex_tax !== undefined) {
-      orderPayload.total_ex_tax = checkoutData.total_ex_tax;
-    }
-    if (checkoutData.total_tax !== undefined) {
-      orderPayload.total_tax = checkoutData.total_tax;
-    }
-    if (checkoutData.total_shipping !== undefined) {
-      orderPayload.total_shipping = checkoutData.total_shipping;
-    }
-
-    console.log("Creating order in BigCommerce with data:", {
+    // Create order in Supabase (PRIMARY - must succeed)
+    console.log("Creating order in Supabase:", {
       customerId: checkoutData.customer_id,
+      total,
       productCount: checkoutData.products.length,
-      hasAddresses: true,
     });
 
-    // Create order in BigCommerce
-    const order = await bigCommerceAPI.createOrder(orderPayload);
+    const supabaseOrder = await createSupabaseOrder({
+      customer_id: checkoutData.customer_id,
+      status: "paid",
+      total,
+      subtotal,
+      tax,
+      shipping,
+      billing_address: billingAddr,
+      shipping_address: shippingAddr,
+      items: checkoutData.products,
+    });
 
-    if (!order || !order.id) {
-      throw new Error("Order created but no ID returned from BigCommerce");
+    // Create order items in Supabase
+    if (supabaseOrder.success) {
+      await createOrderItems(supabaseOrder.id, checkoutData.products);
     }
 
-    console.log("Order created successfully:", order.id);
+    // Try to create in BigCommerce (SECONDARY - errors are logged but don't fail)
+    let bigcommerceOrderId: number | undefined;
+    try {
+      const orderPayload: any = {
+        customer_id: checkoutData.customer_id,
+        billing_address: {
+          first_name: billingAddr.first_name,
+          last_name: billingAddr.last_name,
+          street_1: billingAddr.street_1,
+          street_2: billingAddr.street_2 || "",
+          city: billingAddr.city,
+          state_or_province: billingAddr.state_or_province,
+          postal_code: billingAddr.postal_code,
+          country_code: billingAddr.country_code,
+        },
+        shipping_addresses: [
+          {
+            first_name: shippingAddr.first_name,
+            last_name: shippingAddr.last_name,
+            street_1: shippingAddr.street_1,
+            street_2: shippingAddr.street_2 || "",
+            city: shippingAddr.city,
+            state_or_province: shippingAddr.state_or_province,
+            postal_code: shippingAddr.postal_code,
+            country_code: shippingAddr.country_code,
+            address_type: "shipment",
+          },
+        ],
+        products: checkoutData.products.map((product) => ({
+          product_id: product.product_id,
+          quantity: product.quantity,
+          price_inc_tax: product.price_inc_tax || 0,
+        })),
+        status_id: checkoutData.status_id || 0,
+        total_inc_tax: total,
+        subtotal_inc_tax: subtotal,
+        total_tax: tax,
+        total_shipping: shipping,
+      };
+
+      console.log("Attempting to create order in BigCommerce...");
+      const bcOrder = await bigCommerceAPI.createOrder(orderPayload);
+      bigcommerceOrderId = bcOrder?.id;
+      console.log("BigCommerce order created:", bigcommerceOrderId);
+    } catch (bcError) {
+      // Log BigCommerce error but don't fail the order
+      console.error("BigCommerce order creation failed (non-fatal):", bcError);
+    }
+
+    console.log("Order created successfully:", {
+      supabaseId: supabaseOrder.id,
+      bigcommerceId: bigcommerceOrderId,
+    });
 
     res.status(201).json({
       success: true,
       message: "Order created successfully",
       data: {
-        id: order.id,
-        customer_id: order.customer_id,
-        total: order.total_inc_tax || order.order_total,
-        status: order.status,
-        date_created: order.date_created,
+        id: supabaseOrder.id,
+        bigcommerce_id: bigcommerceOrderId,
+        customer_id: checkoutData.customer_id,
+        total,
+        status: "paid",
+        date_created: new Date().toISOString(),
       },
     });
   } catch (error) {
