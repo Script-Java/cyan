@@ -165,6 +165,7 @@ export function createServer() {
   app.get("/api/square/locations", handleGetSquareLocations);
   app.get("/api/square/test", handleTestSquareConfig);
   app.post("/api/square/checkout", handleCreateCheckoutSession);
+  app.post("/api/square/confirm-checkout", handleConfirmCheckout);
   app.post("/api/square/pay", handleSquarePayment);
 
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
