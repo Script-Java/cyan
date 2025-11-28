@@ -55,6 +55,14 @@ export function createServer() {
   app.use(express.json({ limit: "10mb" }));
   app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
+  // Error handling for JSON parsing
+  app.use((err: any, _req: any, res: any, next: any) => {
+    if (err instanceof SyntaxError && "body" in err) {
+      return res.status(400).json({ error: "Invalid JSON in request body" });
+    }
+    next(err);
+  });
+
   // Example API routes
   app.get("/api/ping", (_req, res) => {
     const ping = process.env.PING_MESSAGE ?? "ping";
