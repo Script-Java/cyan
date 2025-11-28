@@ -154,15 +154,6 @@ export default function CheckoutBigCommerce() {
     const token = localStorage.getItem("auth_token");
     setAuthToken(token);
 
-    if (!token) {
-      setError("Please log in to continue");
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
-      setIsLoading(false);
-      return;
-    }
-
     // Get checkout data from session
     const pending = sessionStorage.getItem("pending_checkout");
     if (!pending) {
