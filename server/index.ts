@@ -165,6 +165,11 @@ export function createServer() {
   app.get("/api/products/:productId", handleGetProduct);
   app.get("/api/products/:productId/options", handleGetProductOptions);
 
+  // ===== Ecwid Products Routes (Public) =====
+  app.get("/api/ecwid-products", handleListEcwidProducts);
+  app.get("/api/ecwid-products/search", handleSearchEcwidProducts);
+  app.get("/api/ecwid-products/:productId", handleGetEcwidProduct);
+
   // ===== Payments Routes (Public) =====
   app.get("/api/payments/methods", handleGetPaymentMethods);
   app.post("/api/payments/process", handleProcessPayment);
