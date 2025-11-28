@@ -199,6 +199,10 @@ export function createServer() {
   app.post("/api/admin/tickets/:ticketId/reply", handleAdminReplyToTicket);
   app.patch("/api/admin/tickets/:ticketId/status", handleUpdateTicketStatus);
 
+  // ===== Webhook Routes =====
+  app.post("/api/webhooks/ecwid", handleEcwidOrderWebhook);
+  app.get("/api/webhooks/health", handleWebhookHealth);
+
   // Global error handler - must be last
   app.use((err: any, _req: any, res: any, _next: any) => {
     console.error("Global error handler:", err);
