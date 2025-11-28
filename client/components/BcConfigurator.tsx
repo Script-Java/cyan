@@ -69,12 +69,17 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
         body: JSON.stringify({ line_items: [] }),
       });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Failed to create cart");
+      let data: any;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("Invalid response from server");
       }
 
-      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to create cart");
+      }
+
       const newCartId = data.data?.id || null;
 
       if (!newCartId) {
