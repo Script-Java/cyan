@@ -21,11 +21,18 @@ export default function SquareWebPaymentForm({
 }: SquareWebPaymentFormProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<any>(null);
+  const initializationRef = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     const initializeSquarePayments = async () => {
+      // Prevent duplicate initialization
+      if (initializationRef.current) {
+        return;
+      }
+      initializationRef.current = true;
+
       try {
         // Wait for Square SDK to load
         let attempts = 0;
@@ -87,6 +94,13 @@ export default function SquareWebPaymentForm({
     if (applicationId) {
       initializeSquarePayments();
     }
+
+    return () => {
+      // Cleanup: reset flag if component unmounts
+      if (!applicationId) {
+        initializationRef.current = false;
+      }
+    };
   }, [applicationId, onPaymentError]);
 
   const handleRequestCardPayment = async () => {
