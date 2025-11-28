@@ -143,8 +143,10 @@ export default function EcwidStore() {
           )}
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
-              {error}
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-yellow-700 mb-8">
+              <p className="text-sm">
+                <strong>Note:</strong> {error}. Showing sample products below.
+              </p>
             </div>
           )}
 
