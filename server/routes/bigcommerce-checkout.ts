@@ -2,7 +2,8 @@ import { RequestHandler } from "express";
 import { bigCommerceAPI } from "../utils/bigcommerce";
 
 interface CreateCheckoutRequest {
-  customer_id: number;
+  customer_id?: number | null;
+  customer_email?: string;
   products: Array<{
     product_id: number;
     quantity: number;
