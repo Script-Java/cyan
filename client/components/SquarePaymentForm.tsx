@@ -30,29 +30,27 @@ export default function SquarePaymentForm({
       try {
         // Wait for Square SDK to be available
         let attempts = 0;
-        while (!window.Square && attempts < 10) {
+        while (!window.Square && attempts < 20) {
           await new Promise((resolve) => setTimeout(resolve, 100));
           attempts++;
         }
 
         if (!window.Square) {
-          throw new Error("Square SDK failed to load - window.Square not available");
-        }
-
-        // Check if web module is available
-        if (!window.Square.web) {
           throw new Error(
-            "Square Web Payments module not available - Square SDK may not have loaded correctly"
+            "Square SDK failed to load - window.Square not available"
           );
         }
 
-        // Initialize web payments
-        web.current = await window.Square.web.payments(applicationId);
+        console.log("Square SDK loaded, initializing payments...");
 
-        if (!web.current) {
-          throw new Error("Failed to initialize Square Web Payments");
+        // Initialize Web Payments API
+        const payments = window.Square.payments(applicationId);
+
+        if (!payments) {
+          throw new Error("Failed to initialize Square payments");
         }
 
+        web.current = payments;
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to initialize Square:", error);
@@ -75,20 +73,26 @@ export default function SquarePaymentForm({
     }
 
     try {
-      const tokenResult = await web.current.requestCardPayment({
-        amount: Math.round(amount * 100),
-        currencyCode: "USD",
-        intent: "CHARGE",
-      });
+      // Create a card payment method
+      const card = await web.current.card();
 
-      if (tokenResult.status === "SUCCESS") {
-        setPaymentSourceId(tokenResult.token);
-        onPaymentSuccess(tokenResult.token);
-      } else if (tokenResult.errors && tokenResult.errors.length > 0) {
-        const errorMessage = tokenResult.errors
-          .map((e: any) => e.message)
+      if (!card) {
+        throw new Error("Failed to create card payment method");
+      }
+
+      // Tokenize the card
+      const result = await card.tokenize();
+
+      if (result.status === "OK" && result.token) {
+        setPaymentSourceId(result.token);
+        onPaymentSuccess(result.token);
+      } else if (result.errors && result.errors.length > 0) {
+        const errorMessage = result.errors
+          .map((e: any) => e.message || e.detail)
           .join(", ");
         onPaymentError(errorMessage);
+      } else {
+        onPaymentError("Failed to tokenize card");
       }
     } catch (error) {
       const errorMessage =
@@ -121,7 +125,8 @@ export default function SquarePaymentForm({
       <CardContent className="space-y-4">
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <p className="text-sm text-blue-900">
-            Click the button below to enter your card details securely through Square.
+            Click the button below to enter your card details securely through
+            Square.
           </p>
         </div>
 
