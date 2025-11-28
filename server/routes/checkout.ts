@@ -141,58 +141,8 @@ export const handleCheckout: RequestHandler = async (req, res) => {
       await createOrderItems(supabaseOrder.id, itemsWithPrices);
     }
 
-    // Try to create in BigCommerce (SECONDARY - errors are logged but don't fail)
-    let bigcommerceOrderId: number | undefined;
-    try {
-      const orderPayload: any = {
-        customer_id: customerId,
-        billing_address: {
-          first_name: billingAddr.first_name,
-          last_name: billingAddr.last_name,
-          street_1: billingAddr.street_1,
-          street_2: billingAddr.street_2 || "",
-          city: billingAddr.city,
-          state_or_province: billingAddr.state_or_province,
-          postal_code: billingAddr.postal_code,
-          country_code: billingAddr.country_code,
-        },
-        shipping_addresses: [
-          {
-            first_name: shippingAddr.first_name,
-            last_name: shippingAddr.last_name,
-            street_1: shippingAddr.street_1,
-            street_2: shippingAddr.street_2 || "",
-            city: shippingAddr.city,
-            state_or_province: shippingAddr.state_or_province,
-            postal_code: shippingAddr.postal_code,
-            country_code: shippingAddr.country_code,
-            address_type: "shipment",
-          },
-        ],
-        products: checkoutData.products.map((product) => ({
-          product_id: product.product_id,
-          quantity: product.quantity,
-          price_inc_tax: product.price_inc_tax || 0,
-        })),
-        status_id: checkoutData.status_id || 0,
-        total_inc_tax: total,
-        subtotal_inc_tax: subtotal,
-        total_tax: tax,
-        total_shipping: shipping,
-      };
-
-      console.log("Attempting to create order in BigCommerce...");
-      const bcOrder = await bigCommerceAPI.createOrder(orderPayload);
-      bigcommerceOrderId = bcOrder?.id;
-      console.log("BigCommerce order created:", bigcommerceOrderId);
-    } catch (bcError) {
-      // Log BigCommerce error but don't fail the order
-      console.error("BigCommerce order creation failed (non-fatal):", bcError);
-    }
-
     console.log("Order created successfully:", {
       supabaseId: supabaseOrder.id,
-      bigcommerceId: bigcommerceOrderId,
     });
 
     res.status(201).json({
@@ -200,7 +150,6 @@ export const handleCheckout: RequestHandler = async (req, res) => {
       message: "Order created successfully",
       data: {
         id: supabaseOrder.id,
-        bigcommerce_id: bigcommerceOrderId,
         customer_id: customerId,
         total,
         status: "pending",
