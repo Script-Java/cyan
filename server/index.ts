@@ -172,6 +172,21 @@ export function createServer() {
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
 
+  // ===== Store Credit Routes (Protected - admin only) =====
+  app.get("/api/store-credit/customers", verifyToken, handleGetAllCustomersCredit);
+  app.get("/api/store-credit/:customerId", verifyToken, handleGetCustomerCredit);
+  app.get(
+    "/api/store-credit/:customerId/history",
+    verifyToken,
+    handleGetCreditHistory,
+  );
+  app.post("/api/store-credit/modify", verifyToken, handleModifyStoreCredit);
+  app.post(
+    "/api/store-credit/apply-to-order",
+    verifyToken,
+    handleApplyStoreCreditToOrder,
+  );
+
   // ===== Support Routes =====
   app.post("/api/support/submit", handleSupportSubmit);
   app.get("/api/support/tickets", verifyToken, handleGetTickets);
