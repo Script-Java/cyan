@@ -135,6 +135,10 @@ export function createServer() {
   app.get("/api/products/:productId", handleGetProduct);
   app.get("/api/products/:productId/options", handleGetProductOptions);
 
+  // ===== Payments Routes (Public) =====
+  app.get("/api/payments/methods", handleGetPaymentMethods);
+  app.post("/api/payments/process", handleProcessPayment);
+
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
 
