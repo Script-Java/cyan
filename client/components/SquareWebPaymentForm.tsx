@@ -56,8 +56,19 @@ export default function SquareWebPaymentForm({
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to initialize Square:", error);
-        const errorMsg =
+        let errorMsg =
           error instanceof Error ? error.message : "Failed to load payment form";
+
+        // Check if it's a CORS or authentication error
+        if (
+          errorMsg.includes("403") ||
+          errorMsg.includes("Invalid JSON") ||
+          errorMsg.includes("pci-connect")
+        ) {
+          errorMsg =
+            "Square SDK authentication failed. Please check your Application ID configuration.";
+        }
+
         onPaymentError(errorMsg);
         setIsLoading(false);
       }
