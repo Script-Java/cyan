@@ -309,6 +309,49 @@ export default function Checkout() {
     setIsSubmitting(true);
 
     try {
+      // Process payment first
+      const orderTotal = subtotal + subtotal * taxRate + shippingCost;
+
+      const paymentPayload = {
+        amount: orderTotal,
+        currency: "USD",
+        payment_method_id: "square", // Square payment method ID
+        payment_instrument: {
+          type: "card",
+          number: paymentInfo.cardNumber.replace(/\s/g, ""),
+          expiry_month: parseInt(paymentInfo.expiryMonth),
+          expiry_year: parseInt(paymentInfo.expiryYear),
+          cvv: paymentInfo.cvv,
+          cardholder_name: paymentInfo.cardholderName,
+        },
+        description: `Order for ${shippingInfo.email}`,
+        reference_id: `order_${Date.now()}`,
+      };
+
+      const paymentResponse = await fetch("/api/payments/process", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(paymentPayload),
+      });
+
+      let paymentResult: any;
+      try {
+        paymentResult = await paymentResponse.json();
+      } catch (parseError) {
+        throw new Error(
+          `Failed to parse payment response: ${parseError instanceof Error ? parseError.message : "Unknown error"}`,
+        );
+      }
+
+      if (!paymentResponse.ok) {
+        throw new Error(paymentResult.error || "Payment processing failed");
+      }
+
+      toast.success("Payment processed successfully!");
+
+      // Now create the order
       const orderData: any = {
         ...(customerId && { customer_id: customerId }),
         billing_address: {
