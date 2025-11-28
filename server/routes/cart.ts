@@ -1,9 +1,12 @@
 import { RequestHandler } from "express";
 import { randomUUID } from "crypto";
+import { supabase } from "../utils/supabase";
 
 interface CartItem {
   product_id: number;
   quantity: number;
+  price?: number;
+  product_name?: string;
   product_options?: Array<{
     option_id: number;
     option_value: string;
@@ -19,9 +22,6 @@ interface Cart {
   total: number;
 }
 
-// In-memory cart storage (replace with database in production)
-const carts = new Map<string, Cart>();
-
 /**
  * Create a new cart
  */
@@ -32,16 +32,29 @@ export const handleCreateCart: RequestHandler = async (req, res) => {
     const cartId = randomUUID();
     const now = new Date().toISOString();
 
-    const cart: Cart = {
+    const subtotal = calculateSubtotal(line_items);
+    const cart = {
       id: cartId,
       line_items: line_items || [],
+      subtotal,
+      total: subtotal,
       created_at: now,
       updated_at: now,
-      subtotal: calculateSubtotal(line_items),
-      total: calculateSubtotal(line_items),
     };
 
-    carts.set(cartId, cart);
+    const { error } = await supabase.from("carts").insert({
+      id: cartId,
+      line_items,
+      subtotal,
+      total: subtotal,
+      created_at: now,
+      updated_at: now,
+    });
+
+    if (error) {
+      console.error("Create cart error:", error);
+      throw error;
+    }
 
     res.status(201).json({
       success: true,
@@ -66,15 +79,34 @@ export const handleGetCart: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Cart ID is required" });
     }
 
-    const cart = carts.get(cartId);
+    const { data, error } = await supabase
+      .from("carts")
+      .select("*")
+      .eq("id", cartId)
+      .single();
 
-    if (!cart) {
+    if (error) {
+      console.error("Get cart error:", error);
+      if (error.code === "PGRST116") {
+        return res.status(404).json({ error: "Cart not found" });
+      }
+      throw error;
+    }
+
+    if (!data) {
       return res.status(404).json({ error: "Cart not found" });
     }
 
     res.json({
       success: true,
-      data: cart,
+      data: {
+        id: data.id,
+        line_items: data.line_items || [],
+        subtotal: data.subtotal || 0,
+        total: data.total || 0,
+        created_at: data.created_at,
+        updated_at: data.updated_at,
+      },
     });
   } catch (error) {
     console.error("Get cart error:", error);
@@ -100,23 +132,53 @@ export const handleAddToCart: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "line_items is required" });
     }
 
-    let cart = carts.get(cartId);
+    const { data: cart, error: fetchError } = await supabase
+      .from("carts")
+      .select("*")
+      .eq("id", cartId)
+      .single();
+
+    if (fetchError) {
+      console.error("Fetch cart error:", fetchError);
+      if (fetchError.code === "PGRST116") {
+        return res.status(404).json({ error: "Cart not found" });
+      }
+      throw fetchError;
+    }
 
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
     }
 
-    // Add items to cart
-    cart.line_items.push(...line_items);
-    cart.updated_at = new Date().toISOString();
-    cart.subtotal = calculateSubtotal(cart.line_items);
-    cart.total = cart.subtotal;
+    const updatedItems = [...(cart.line_items || []), ...line_items];
+    const subtotal = calculateSubtotal(updatedItems);
+    const now = new Date().toISOString();
 
-    carts.set(cartId, cart);
+    const { error: updateError } = await supabase
+      .from("carts")
+      .update({
+        line_items: updatedItems,
+        subtotal,
+        total: subtotal,
+        updated_at: now,
+      })
+      .eq("id", cartId);
+
+    if (updateError) {
+      console.error("Update cart error:", updateError);
+      throw updateError;
+    }
 
     res.json({
       success: true,
-      data: cart,
+      data: {
+        id: cartId,
+        line_items: updatedItems,
+        subtotal,
+        total: subtotal,
+        created_at: cart.created_at,
+        updated_at: now,
+      },
     });
   } catch (error) {
     console.error("Add to cart error:", error);
@@ -138,33 +200,65 @@ export const handleUpdateCartItem: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Cart ID is required" });
     }
 
-    const cart = carts.get(cartId);
+    const { data: cart, error: fetchError } = await supabase
+      .from("carts")
+      .select("*")
+      .eq("id", cartId)
+      .single();
+
+    if (fetchError) {
+      console.error("Fetch cart error:", fetchError);
+      if (fetchError.code === "PGRST116") {
+        return res.status(404).json({ error: "Cart not found" });
+      }
+      throw fetchError;
+    }
 
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
     }
 
     const idx = parseInt(itemIndex);
+    const items = cart.line_items || [];
 
-    if (isNaN(idx) || idx < 0 || idx >= cart.line_items.length) {
+    if (isNaN(idx) || idx < 0 || idx >= items.length) {
       return res.status(400).json({ error: "Invalid item index" });
     }
 
     if (quantity <= 0) {
-      cart.line_items.splice(idx, 1);
+      items.splice(idx, 1);
     } else {
-      cart.line_items[idx].quantity = quantity;
+      items[idx].quantity = quantity;
     }
 
-    cart.updated_at = new Date().toISOString();
-    cart.subtotal = calculateSubtotal(cart.line_items);
-    cart.total = cart.subtotal;
+    const subtotal = calculateSubtotal(items);
+    const now = new Date().toISOString();
 
-    carts.set(cartId, cart);
+    const { error: updateError } = await supabase
+      .from("carts")
+      .update({
+        line_items: items,
+        subtotal,
+        total: subtotal,
+        updated_at: now,
+      })
+      .eq("id", cartId);
+
+    if (updateError) {
+      console.error("Update cart error:", updateError);
+      throw updateError;
+    }
 
     res.json({
       success: true,
-      data: cart,
+      data: {
+        id: cartId,
+        line_items: items,
+        subtotal,
+        total: subtotal,
+        created_at: cart.created_at,
+        updated_at: now,
+      },
     });
   } catch (error) {
     console.error("Update cart item error:", error);
@@ -185,28 +279,60 @@ export const handleRemoveFromCart: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Cart ID is required" });
     }
 
-    const cart = carts.get(cartId);
+    const { data: cart, error: fetchError } = await supabase
+      .from("carts")
+      .select("*")
+      .eq("id", cartId)
+      .single();
+
+    if (fetchError) {
+      console.error("Fetch cart error:", fetchError);
+      if (fetchError.code === "PGRST116") {
+        return res.status(404).json({ error: "Cart not found" });
+      }
+      throw fetchError;
+    }
 
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
     }
 
     const idx = parseInt(itemIndex);
+    const items = cart.line_items || [];
 
-    if (isNaN(idx) || idx < 0 || idx >= cart.line_items.length) {
+    if (isNaN(idx) || idx < 0 || idx >= items.length) {
       return res.status(400).json({ error: "Invalid item index" });
     }
 
-    cart.line_items.splice(idx, 1);
-    cart.updated_at = new Date().toISOString();
-    cart.subtotal = calculateSubtotal(cart.line_items);
-    cart.total = cart.subtotal;
+    items.splice(idx, 1);
+    const subtotal = calculateSubtotal(items);
+    const now = new Date().toISOString();
 
-    carts.set(cartId, cart);
+    const { error: updateError } = await supabase
+      .from("carts")
+      .update({
+        line_items: items,
+        subtotal,
+        total: subtotal,
+        updated_at: now,
+      })
+      .eq("id", cartId);
+
+    if (updateError) {
+      console.error("Update cart error:", updateError);
+      throw updateError;
+    }
 
     res.json({
       success: true,
-      data: cart,
+      data: {
+        id: cartId,
+        line_items: items,
+        subtotal,
+        total: subtotal,
+        created_at: cart.created_at,
+        updated_at: now,
+      },
     });
   } catch (error) {
     console.error("Remove from cart error:", error);
@@ -227,22 +353,51 @@ export const handleClearCart: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Cart ID is required" });
     }
 
-    const cart = carts.get(cartId);
+    const { data: cart, error: fetchError } = await supabase
+      .from("carts")
+      .select("*")
+      .eq("id", cartId)
+      .single();
+
+    if (fetchError) {
+      console.error("Fetch cart error:", fetchError);
+      if (fetchError.code === "PGRST116") {
+        return res.status(404).json({ error: "Cart not found" });
+      }
+      throw fetchError;
+    }
 
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
     }
 
-    cart.line_items = [];
-    cart.updated_at = new Date().toISOString();
-    cart.subtotal = 0;
-    cart.total = 0;
+    const now = new Date().toISOString();
 
-    carts.set(cartId, cart);
+    const { error: updateError } = await supabase
+      .from("carts")
+      .update({
+        line_items: [],
+        subtotal: 0,
+        total: 0,
+        updated_at: now,
+      })
+      .eq("id", cartId);
+
+    if (updateError) {
+      console.error("Update cart error:", updateError);
+      throw updateError;
+    }
 
     res.json({
       success: true,
-      data: cart,
+      data: {
+        id: cartId,
+        line_items: [],
+        subtotal: 0,
+        total: 0,
+        created_at: cart.created_at,
+        updated_at: now,
+      },
     });
   } catch (error) {
     console.error("Clear cart error:", error);
@@ -256,9 +411,8 @@ export const handleClearCart: RequestHandler = async (req, res) => {
  * Helper function to calculate subtotal
  */
 function calculateSubtotal(lineItems: CartItem[]): number {
-  // Mock calculation - in production, fetch actual prices from BigCommerce
   return lineItems.reduce((total, item) => {
-    const itemPrice = 0.25; // Base price per unit
+    const itemPrice = item.price || 0.25;
     return total + itemPrice * item.quantity;
   }, 0);
 }
