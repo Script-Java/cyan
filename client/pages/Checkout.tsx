@@ -288,10 +288,7 @@ export default function Checkout() {
       return;
     }
 
-    if (!authToken || !customerId) {
-      setError("Authentication required");
-      return;
-    }
+    // Allow guest checkout - authentication is optional
 
     setIsSubmitting(true);
 
