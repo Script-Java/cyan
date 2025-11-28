@@ -20,8 +20,17 @@ export default function Header() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [storeCredit, setStoreCredit] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const ecwidScriptLoaded = useRef(false);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Navigate to Ecwid store and trigger search
+      navigate(`/ecwid-store?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   useEffect(() => {
     // Load Ecwid script for cart widget
