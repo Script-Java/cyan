@@ -43,6 +43,44 @@ interface SquarePaymentRequest {
   customerName?: string;
 }
 
+interface SquareCheckoutRequest {
+  amount: number;
+  currency: string;
+  items: Array<{
+    product_id: number;
+    product_name?: string;
+    quantity: number;
+    price?: number;
+  }>;
+  shippingAddress: {
+    firstName: string;
+    lastName: string;
+    street: string;
+    street2?: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  billingAddress: {
+    firstName: string;
+    lastName: string;
+    street: string;
+    street2?: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  subtotal: number;
+  tax: number;
+  shipping: number;
+  total: number;
+  customerId?: number;
+  customerEmail?: string;
+  customerName?: string;
+}
+
 /**
  * Process payment via Square and create order in Supabase
  */
