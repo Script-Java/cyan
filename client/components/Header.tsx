@@ -71,7 +71,6 @@ export default function Header() {
     }
   }, []);
 
-
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("customerId");

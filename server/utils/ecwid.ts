@@ -102,7 +102,9 @@ class EcwidAPI {
         data = await response.json();
       } catch (parseError) {
         console.error("Failed to parse Ecwid response:", parseError);
-        throw new Error(`Failed to parse Ecwid response: ${response.statusText}`);
+        throw new Error(
+          `Failed to parse Ecwid response: ${response.statusText}`,
+        );
       }
 
       if (!response.ok) {
@@ -275,7 +277,9 @@ class EcwidAPI {
           status: response.status,
           statusText: response.statusText,
         });
-        throw new Error(`Failed to fetch orders from Ecwid: ${response.statusText}`);
+        throw new Error(
+          `Failed to fetch orders from Ecwid: ${response.statusText}`,
+        );
       }
 
       let data: any;
@@ -315,7 +319,9 @@ class EcwidAPI {
           status: response.status,
           statusText: response.statusText,
         });
-        throw new Error(`Failed to fetch order from Ecwid: ${response.statusText}`);
+        throw new Error(
+          `Failed to fetch order from Ecwid: ${response.statusText}`,
+        );
       }
 
       let data: any;

@@ -60,8 +60,12 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
     }));
 
     // Combine and sort by date
-    const allOrders = [...formattedEcwidOrders, ...formattedSupabaseOrders].sort(
-      (a, b) => new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime()
+    const allOrders = [
+      ...formattedEcwidOrders,
+      ...formattedSupabaseOrders,
+    ].sort(
+      (a, b) =>
+        new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime(),
     );
 
     console.log("Fetched", allOrders.length, "orders (Ecwid + Supabase)");
@@ -109,7 +113,8 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
           order: {
             id: order.id,
             customerId: order.customerId,
-            status: order.fulfillmentStatus || order.paymentStatus || "processing",
+            status:
+              order.fulfillmentStatus || order.paymentStatus || "processing",
             dateCreated: order.createDate,
             total: order.total,
             subtotal: order.subtotal || 0,

@@ -11,17 +11,11 @@ const supabase = createClient(
  * Verify Ecwid webhook signature
  * Ecwid sends an X-Ecwid-Webhook-Signature header
  */
-function verifyEcwidSignature(
-  body: string,
-  signature: string,
-): boolean {
+function verifyEcwidSignature(body: string, signature: string): boolean {
   const secret = process.env.ECWID_API_TOKEN || "";
-  
+
   // Create HMAC SHA256 hash
-  const hash = crypto
-    .createHmac("sha256", secret)
-    .update(body)
-    .digest("hex");
+  const hash = crypto.createHmac("sha256", secret).update(body).digest("hex");
 
   // Compare signatures
   return hash === signature;

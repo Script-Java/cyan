@@ -312,7 +312,10 @@ export const handleDeleteCustomerAccount: RequestHandler = async (req, res) => {
     try {
       await ecwidAPI.deleteCustomer(customerId);
     } catch (ecwidError) {
-      console.warn("Warning: Failed to delete customer from Ecwid:", ecwidError);
+      console.warn(
+        "Warning: Failed to delete customer from Ecwid:",
+        ecwidError,
+      );
       // Don't fail the deletion if Ecwid deletion fails
     }
 

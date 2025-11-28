@@ -40,7 +40,11 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
       // Get detailed order information
       const orderDetails = await ecwidAPI.getOrder(order.id);
 
-      if (orderDetails && orderDetails.items && Array.isArray(orderDetails.items)) {
+      if (
+        orderDetails &&
+        orderDetails.items &&
+        Array.isArray(orderDetails.items)
+      ) {
         // Check each item for design-related information
         for (const item of orderDetails.items) {
           // Check for design attributes or fields
@@ -58,9 +62,7 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
                   name: attr.name || "Design File",
                   description: `From order #${order.id}`,
                   type: attr.name || "design",
-                  url: attr.value?.startsWith("http")
-                    ? attr.value
-                    : undefined,
+                  url: attr.value?.startsWith("http") ? attr.value : undefined,
                   createdAt: order.createDate,
                 });
               }
@@ -85,7 +87,10 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
         designsByOrder.push({
           orderId: order.id,
           orderDate: (order as any).createDate || new Date().toISOString(),
-          orderStatus: (order as any).fulfillmentStatus || (order as any).paymentStatus || "processing",
+          orderStatus:
+            (order as any).fulfillmentStatus ||
+            (order as any).paymentStatus ||
+            "processing",
           designs,
         });
       }
@@ -173,7 +178,10 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
       success: true,
       orderId: order.id,
       orderDate: (order as any).createDate || new Date().toISOString(),
-      orderStatus: (order as any).fulfillmentStatus || (order as any).paymentStatus || "processing",
+      orderStatus:
+        (order as any).fulfillmentStatus ||
+        (order as any).paymentStatus ||
+        "processing",
       designs,
     });
   } catch (error) {
