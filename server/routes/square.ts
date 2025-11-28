@@ -82,6 +82,130 @@ interface SquareCheckoutRequest {
 }
 
 /**
+ * Create a Square Checkout session (redirect to hosted checkout)
+ */
+export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
+  try {
+    const checkoutData = req.body as SquareCheckoutRequest;
+
+    // Validate required fields
+    if (!checkoutData.amount || !checkoutData.items || !checkoutData.customerEmail) {
+      return res.status(400).json({
+        error: "Missing required fields: amount, items, customerEmail",
+      });
+    }
+
+    // Create order in Supabase with pending_payment status
+    const supabaseOrder = await createSupabaseOrder({
+      customer_id: checkoutData.customerId || 0,
+      status: "pending_payment",
+      total: checkoutData.total,
+      subtotal: checkoutData.subtotal,
+      tax: checkoutData.tax,
+      shipping: checkoutData.shipping,
+      billing_address: checkoutData.billingAddress,
+      shipping_address: checkoutData.shippingAddress,
+      items: checkoutData.items.map((item) => ({
+        product_id: item.product_id,
+        product_name: item.product_name || `Product #${item.product_id}`,
+        quantity: item.quantity,
+        price: item.price || 0.25,
+      })),
+    });
+
+    if (!supabaseOrder.success) {
+      throw new Error("Failed to create order in Supabase");
+    }
+
+    // Create order items in Supabase
+    await createOrderItems(supabaseOrder.id, checkoutData.items as any);
+
+    // Build line items for Square Checkout
+    const lineItems = checkoutData.items.map((item) => ({
+      name: item.product_name || `Product #${item.product_id}`,
+      quantity: String(item.quantity),
+      basePriceMoney: {
+        amount: Math.round((item.price || 0.25) * 100),
+        currency: checkoutData.currency || "USD",
+      },
+    }));
+
+    // Add tax and shipping as line items
+    if (checkoutData.tax > 0) {
+      lineItems.push({
+        name: "Tax",
+        quantity: "1",
+        basePriceMoney: {
+          amount: Math.round(checkoutData.tax * 100),
+          currency: checkoutData.currency || "USD",
+        },
+      });
+    }
+
+    if (checkoutData.shipping > 0) {
+      lineItems.push({
+        name: "Shipping",
+        quantity: "1",
+        basePriceMoney: {
+          amount: Math.round(checkoutData.shipping * 100),
+          currency: checkoutData.currency || "USD",
+        },
+      });
+    }
+
+    // Build checkout request
+    const baseUrl = process.env.BASE_URL || "http://localhost:8080";
+    const checkoutBody = {
+      idempotencyKey: `${Date.now()}-${supabaseOrder.id}`,
+      order: {
+        lineItems,
+        customerId: checkoutData.customerId ? String(checkoutData.customerId) : undefined,
+        referenceId: supabaseOrder.id,
+      },
+      redirectUrl: `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`,
+      merchantSupportEmail: checkoutData.customerEmail,
+      askForShippingAddress: false,
+      prePopulatedData: {
+        buyerEmail: checkoutData.customerEmail,
+        buyerPhoneNumber: undefined,
+      },
+    };
+
+    console.log("Creating Square Checkout with:", {
+      orderId: supabaseOrder.id,
+      total: checkoutData.total,
+      currency: checkoutData.currency,
+    });
+
+    // Create checkout via Square API
+    const checkoutResponse = await getPaymentsApi().createCheckout(checkoutBody);
+
+    if (!checkoutResponse.result?.checkout?.checkoutPageUrl) {
+      throw new Error("Failed to create Square Checkout - no URL returned");
+    }
+
+    const checkoutUrl = checkoutResponse.result.checkout.checkoutPageUrl;
+
+    res.status(201).json({
+      success: true,
+      order: {
+        id: supabaseOrder.id,
+        status: "pending_payment",
+        total: checkoutData.total,
+      },
+      checkoutUrl,
+    });
+  } catch (error) {
+    console.error("Create Checkout session error:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to create checkout session";
+    res.status(400).json({
+      error: errorMessage,
+    });
+  }
+};
+
+/**
  * Process payment via Square and create order in Supabase
  */
 export const handleSquarePayment: RequestHandler = async (req, res) => {
