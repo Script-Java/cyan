@@ -143,7 +143,7 @@ export const handleCheckout: RequestHandler = async (req, res) => {
     let bigcommerceOrderId: number | undefined;
     try {
       const orderPayload: any = {
-        customer_id: checkoutData.customer_id,
+        customer_id: customerId,
         billing_address: {
           first_name: billingAddr.first_name,
           last_name: billingAddr.last_name,
