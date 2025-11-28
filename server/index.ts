@@ -182,5 +182,16 @@ export function createServer() {
   app.post("/api/admin/tickets/:ticketId/reply", handleAdminReplyToTicket);
   app.patch("/api/admin/tickets/:ticketId/status", handleUpdateTicketStatus);
 
+  // Global error handler - must be last
+  app.use((err: any, _req: any, res: any, _next: any) => {
+    console.error("Global error handler:", err);
+    const statusCode = err.statusCode || err.status || 500;
+    const message = err.message || "Internal server error";
+    res.status(statusCode).json({
+      error: message,
+      details: process.env.NODE_ENV === "development" ? err.stack : undefined,
+    });
+  });
+
   return app;
 }
