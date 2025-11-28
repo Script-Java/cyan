@@ -370,7 +370,7 @@ export default function Checkout() {
         total_ex_tax: subtotal + shippingCost,
         total_tax: subtotal * taxRate,
         total_shipping: shippingCost,
-        status_id: 11, // Paid status
+        status_id: 0, // Pending status
       };
 
       const headers: Record<string, string> = {
