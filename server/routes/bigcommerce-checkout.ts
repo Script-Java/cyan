@@ -147,12 +147,7 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (req, res) 
  */
 export const handleGetBigCommerceCheckoutUrl: RequestHandler = async (req, res) => {
   try {
-    const customerId = (req as any).customerId;
     const { draftOrderId } = req.params;
-
-    if (!customerId) {
-      return res.status(401).json({ error: "Authentication required" });
-    }
 
     if (!draftOrderId) {
       return res.status(400).json({ error: "Draft order ID required" });
