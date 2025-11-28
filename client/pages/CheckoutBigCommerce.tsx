@@ -268,7 +268,8 @@ export default function CheckoutBigCommerce() {
     try {
       // Call the BigCommerce checkout API
       const checkoutPayload: any = {
-        customer_id: null, // Will be extracted from token
+        customer_id: null, // Guest checkout
+        customer_email: shippingInfo.email,
         products: [
           {
             product_id: checkoutData.product_id,
@@ -305,12 +306,17 @@ export default function CheckoutBigCommerce() {
         checkoutPayload.product_options = checkoutData.selectedOptions;
       }
 
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+
+      if (authToken) {
+        headers.Authorization = `Bearer ${authToken}`;
+      }
+
       const response = await fetch("/api/bigcommerce/checkout", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
+        headers,
         body: JSON.stringify(checkoutPayload),
       });
 
