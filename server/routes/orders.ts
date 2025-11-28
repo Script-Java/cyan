@@ -145,3 +145,46 @@ export const handleAdminGetOrder: RequestHandler = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch order" });
   }
 };
+
+/**
+ * Get all pending orders (admin use)
+ * Protected by verifyToken middleware
+ */
+export const handleGetPendingOrders: RequestHandler = async (req, res) => {
+  try {
+    const isAdmin = (req as any).isAdmin;
+
+    if (!isAdmin) {
+      return res.status(403).json({ error: "Admin access required" });
+    }
+
+    const pendingOrders = await getPendingOrders();
+
+    const formattedOrders = pendingOrders.map((order) => ({
+      id: order.id,
+      customerId: order.customer_id,
+      customerName: order.customers
+        ? `${order.customers.first_name || ""} ${order.customers.last_name || ""}`.trim()
+        : "Unknown",
+      customerEmail: order.customers?.email || "N/A",
+      status: order.status,
+      total: order.total,
+      subtotal: order.subtotal,
+      tax: order.tax,
+      shipping: order.shipping,
+      dateCreated: order.created_at,
+      itemCount: 0,
+    }));
+
+    res.json({
+      success: true,
+      orders: formattedOrders,
+      count: formattedOrders.length,
+    });
+  } catch (error) {
+    console.error("Get pending orders error:", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to fetch pending orders";
+    res.status(500).json({ error: message });
+  }
+};
