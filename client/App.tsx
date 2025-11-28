@@ -48,6 +48,7 @@ export default function App() {
             <Route path="/product/:productId" element={<Product />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/ecwid-store" element={<EcwidStore />} />
+            <Route path="/ecwid-product/:productId" element={<EcwidProductDetail />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/checkout-success" element={<CheckoutSuccess />} />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
