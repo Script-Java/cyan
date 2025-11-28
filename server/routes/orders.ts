@@ -48,7 +48,30 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       itemCount: order.items?.length || 0,
     }));
 
-    // Format Supabase orders
+    // Fetch digital files for all orders
+    const { data: digitalFilesData } = await supabase
+      .from("digital_files")
+      .select("*")
+      .in("order_id", supabaseOrders.map((o: any) => o.id));
+
+    const filesMap = new Map();
+    if (digitalFilesData) {
+      digitalFilesData.forEach((file: any) => {
+        if (!filesMap.has(file.order_id)) {
+          filesMap.set(file.order_id, []);
+        }
+        filesMap.get(file.order_id).push({
+          id: file.id,
+          file_name: file.file_name,
+          file_url: file.file_url,
+          file_type: file.file_type,
+          file_size: file.file_size,
+          uploaded_at: file.uploaded_at,
+        });
+      });
+    }
+
+    // Format Supabase orders with digital files
     const formattedSupabaseOrders = supabaseOrders.map((order: any) => ({
       id: order.id,
       customerId: order.customer_id,
@@ -57,6 +80,12 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       dateCreated: order.created_at,
       source: "supabase",
       itemCount: order.order_items?.length || 0,
+      estimated_delivery_date: order.estimated_delivery_date,
+      tracking_number: order.tracking_number,
+      tracking_carrier: order.tracking_carrier,
+      tracking_url: order.tracking_url,
+      shipped_date: order.shipped_date,
+      digital_files: filesMap.get(order.id) || [],
     }));
 
     // Combine and sort by date
