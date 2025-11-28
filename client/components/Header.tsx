@@ -139,7 +139,6 @@ export default function Header() {
               <div className="ec-cart-widget"></div>
             </div>
 
-
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
               <Link

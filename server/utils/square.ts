@@ -19,7 +19,9 @@ function getSquareClient() {
       });
     } catch (error) {
       console.error("Failed to initialize Square client:", error);
-      throw new Error(`Square SDK initialization failed: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Square SDK initialization failed: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
   return squareClient;

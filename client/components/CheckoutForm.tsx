@@ -308,7 +308,9 @@ export default function CheckoutForm({
             </div>
 
             <div className="mb-4">
-              <Label className="text-white/80">Apt, Suite, etc. (optional)</Label>
+              <Label className="text-white/80">
+                Apt, Suite, etc. (optional)
+              </Label>
               <Input
                 value={billingInfo.street2}
                 onChange={(e) => onBillingChange("street2", e.target.value)}
@@ -345,9 +347,7 @@ export default function CheckoutForm({
                 <Label className="text-white/80">Country *</Label>
                 <Select
                   value={billingInfo.country}
-                  onValueChange={(value) =>
-                    onBillingChange("country", value)
-                  }
+                  onValueChange={(value) => onBillingChange("country", value)}
                 >
                   <SelectTrigger className="bg-white/5 border-white/10 text-white mt-2">
                     <SelectValue />
@@ -370,9 +370,7 @@ export default function CheckoutForm({
                 {billingInfo.country === "US" ? (
                   <Select
                     value={billingInfo.state}
-                    onValueChange={(value) =>
-                      onBillingChange("state", value)
-                    }
+                    onValueChange={(value) => onBillingChange("state", value)}
                   >
                     <SelectTrigger className="bg-white/5 border-white/10 text-white mt-2">
                       <SelectValue />
@@ -392,9 +390,7 @@ export default function CheckoutForm({
                 ) : (
                   <Input
                     value={billingInfo.state}
-                    onChange={(e) =>
-                      onBillingChange("state", e.target.value)
-                    }
+                    onChange={(e) => onBillingChange("state", e.target.value)}
                     placeholder="State/Province"
                     className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
                     required

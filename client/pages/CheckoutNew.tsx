@@ -80,7 +80,7 @@ export default function CheckoutNew() {
     const loadCart = async () => {
       try {
         const id = cartId || localStorage.getItem("cart_id");
-        
+
         if (!id) {
           setIsLoading(false);
           return;
@@ -91,11 +91,11 @@ export default function CheckoutNew() {
           const data = await response.json();
           const items = data.data?.line_items || [];
           setCartItems(items);
-          
+
           const subtotal = items.reduce((sum: number, item: CartItem) => {
-            return sum + ((item.price || 0.25) * item.quantity);
+            return sum + (item.price || 0.25) * item.quantity;
           }, 0);
-          
+
           calculateOrderData(subtotal, 0);
         }
       } catch (err) {
@@ -112,8 +112,16 @@ export default function CheckoutNew() {
     const tax = subtotal * 0.08;
     const shipping = 0;
     const blindShipmentFee = blindShipmentEnabled ? 5 : 0;
-    const additionalPayment = (subtotal + tax + shipping + blindShipmentFee - discount) * (additionalPaymentPercent / 100);
-    const total = subtotal + tax + shipping + blindShipmentFee + additionalPayment - discount;
+    const additionalPayment =
+      (subtotal + tax + shipping + blindShipmentFee - discount) *
+      (additionalPaymentPercent / 100);
+    const total =
+      subtotal +
+      tax +
+      shipping +
+      blindShipmentFee +
+      additionalPayment -
+      discount;
     const storeCredit = total * 0.05;
 
     setOrderData({
@@ -131,11 +139,11 @@ export default function CheckoutNew() {
   const handleRemoveItem = (index: number) => {
     const updatedItems = cartItems.filter((_, i) => i !== index);
     setCartItems(updatedItems);
-    
+
     const newSubtotal = updatedItems.reduce((sum, item) => {
-      return sum + ((item.price || 0.25) * item.quantity);
+      return sum + (item.price || 0.25) * item.quantity;
     }, 0);
-    
+
     calculateOrderData(newSubtotal, appliedDiscount);
   };
 
@@ -192,7 +200,7 @@ export default function CheckoutNew() {
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -261,7 +269,8 @@ export default function CheckoutNew() {
         window.location.href = result.checkoutUrl;
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Checkout failed";
+      const errorMessage =
+        err instanceof Error ? err.message : "Checkout failed";
       toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -348,10 +357,14 @@ export default function CheckoutNew() {
                         <div className="flex justify-between items-start mb-4">
                           <div>
                             <h3 className="text-xl font-bold">
-                              {item.product_name || `Product #${item.product_id}`}
+                              {item.product_name ||
+                                `Product #${item.product_id}`}
                             </h3>
                             <p className="text-white/60">
-                              ${((item.price || 0.25) * item.quantity).toFixed(2)}
+                              $
+                              {((item.price || 0.25) * item.quantity).toFixed(
+                                2,
+                              )}
                             </p>
                           </div>
                           <button
@@ -370,7 +383,9 @@ export default function CheckoutNew() {
                           <div className="space-y-2 text-sm">
                             <div className="flex items-center justify-between">
                               <span className="text-white/60">Quantity</span>
-                              <span className="font-medium">{item.quantity}</span>
+                              <span className="font-medium">
+                                {item.quantity}
+                              </span>
                             </div>
                             <div className="flex items-center justify-between">
                               <span className="text-white/60">Size</span>
@@ -408,7 +423,10 @@ export default function CheckoutNew() {
                   <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
                     <div className="flex justify-between items-center mb-6">
                       <h3 className="text-xl font-bold">Order Summary</h3>
-                      <button type="button" className="text-white/60 hover:text-white transition">
+                      <button
+                        type="button"
+                        className="text-white/60 hover:text-white transition"
+                      >
                         <Share2 className="w-5 h-5" />
                       </button>
                     </div>
@@ -420,7 +438,17 @@ export default function CheckoutNew() {
                       </div>
                       <div className="flex justify-between text-white/60">
                         <span>You're paying</span>
-                        <span>${(orderData.subtotal / (cartItems.reduce((sum, i) => sum + i.quantity, 0) || 1)).toFixed(2)} per item</span>
+                        <span>
+                          $
+                          {(
+                            orderData.subtotal /
+                            (cartItems.reduce(
+                              (sum, i) => sum + i.quantity,
+                              0,
+                            ) || 1)
+                          ).toFixed(2)}{" "}
+                          per item
+                        </span>
                       </div>
                       <div className="flex justify-between text-green-400">
                         <span>Shipping</span>
@@ -429,7 +457,9 @@ export default function CheckoutNew() {
                       {appliedDiscount > 0 && (
                         <div className="flex justify-between text-green-400">
                           <span>Deal Savings</span>
-                          <span className="font-bold">-${appliedDiscount.toFixed(2)}</span>
+                          <span className="font-bold">
+                            -${appliedDiscount.toFixed(2)}
+                          </span>
                         </div>
                       )}
                       {blindShipmentEnabled && (
@@ -441,7 +471,9 @@ export default function CheckoutNew() {
                       {orderData.additionalPayment > 0 && (
                         <div className="flex justify-between text-orange-400">
                           <span>Additional Payment</span>
-                          <span>+${orderData.additionalPayment.toFixed(2)}</span>
+                          <span>
+                            +${orderData.additionalPayment.toFixed(2)}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -512,7 +544,8 @@ export default function CheckoutNew() {
                       </div>
                     </div>
                     <p className="text-xs text-white/40 mt-3">
-                      * UPS may not deliver on weekends. Delivery dates are automatically moved to the next business day.
+                      * UPS may not deliver on weekends. Delivery dates are
+                      automatically moved to the next business day.
                     </p>
                   </div>
 
@@ -539,7 +572,10 @@ export default function CheckoutNew() {
                               checked={blindShipmentEnabled}
                               onChange={(e) => {
                                 setBlindShipmentEnabled(e.target.checked);
-                                calculateOrderData(orderData.subtotal, appliedDiscount);
+                                calculateOrderData(
+                                  orderData.subtotal,
+                                  appliedDiscount,
+                                );
                               }}
                               className="w-5 h-5 rounded"
                             />
@@ -551,13 +587,16 @@ export default function CheckoutNew() {
                             </div>
                           </div>
                           <p className="text-xs text-orange-400 bg-orange-400/10 rounded p-2">
-                            ℹ️ Your order will have generic packaging and shipping labels.
+                            ℹ️ Your order will have generic packaging and
+                            shipping labels.
                           </p>
                         </div>
 
                         <div className="space-y-3">
                           <div>
-                            <h4 className="font-bold mb-1">Additional Payment</h4>
+                            <h4 className="font-bold mb-1">
+                              Additional Payment
+                            </h4>
                             <p className="text-xs text-white/60">
                               Add extra amount to your order
                             </p>
@@ -576,7 +615,11 @@ export default function CheckoutNew() {
                               >
                                 {percent}% ($
                                 {(
-                                  (orderData.subtotal + orderData.tax + orderData.shipping + (blindShipmentEnabled ? 5 : 0) - appliedDiscount) *
+                                  (orderData.subtotal +
+                                    orderData.tax +
+                                    orderData.shipping +
+                                    (blindShipmentEnabled ? 5 : 0) -
+                                    appliedDiscount) *
                                   (percent / 100)
                                 ).toFixed(2)}
                                 )
@@ -591,7 +634,10 @@ export default function CheckoutNew() {
                               step="0.01"
                               className="bg-white/5 border-white/10 text-white placeholder-white/40"
                             />
-                            <Button type="button" className="bg-green-600 hover:bg-green-700 text-white">
+                            <Button
+                              type="button"
+                              className="bg-green-600 hover:bg-green-700 text-white"
+                            >
                               Add
                             </Button>
                           </div>
