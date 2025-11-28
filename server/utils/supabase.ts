@@ -229,3 +229,23 @@ export async function getCustomerOrders(customerId: number): Promise<any[]> {
     throw error;
   }
 }
+
+export async function getPendingOrders(): Promise<any[]> {
+  try {
+    const { data, error } = await supabase
+      .from("orders")
+      .select("*, customers(*)")
+      .eq("status", "pending")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching pending orders:", error);
+      throw error;
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error("Error getting pending orders:", error);
+    throw error;
+  }
+}
