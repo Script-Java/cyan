@@ -175,6 +175,12 @@ export default function Checkout() {
     cvv: "",
   });
 
+  const [squareApplicationId, setSquareApplicationId] = useState<string>("");
+  const [squarePaymentToken, setSquarePaymentToken] = useState<string | null>(
+    null
+  );
+  const [squareError, setSquareError] = useState<string | null>(null);
+
   // Load auth from localStorage (optional for guest checkout)
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
