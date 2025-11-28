@@ -22,6 +22,20 @@ const PRODUCT_ID_MAP: Record<string, number> = {
   "vinyl-stickers": 112,
 };
 
+// Mock product data for testing (non-BigCommerce products)
+const MOCK_PRODUCTS: Record<string, ProductData> = {
+  "test-square-product": {
+    id: 999,
+    name: "Test Square Product",
+    description: "Perfect for testing Square checkout integration. $1.00 product.",
+    price: 1.0,
+    image_url: "/placeholder.svg",
+    type: "sticker",
+    status: "ACTIVE",
+    options: [],
+  },
+};
+
 export default function Product() {
   const { productId } = useParams<{ productId: string }>();
   const [product, setProduct] = useState<ProductData | null>(null);
