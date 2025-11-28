@@ -7,7 +7,7 @@ import {
 import { ecwidAPI } from "../utils/ecwid";
 
 /**
- * Get customer's orders from Supabase
+ * Get customer's orders from Ecwid
  * Requires: customerId in JWT token
  */
 export const handleGetOrders: RequestHandler = async (req, res) => {
@@ -18,25 +18,58 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    console.log("Fetching orders from Supabase for customer:", customerId);
-    const orders = await getCustomerOrders(customerId);
+    console.log("Fetching orders from Ecwid for customer:", customerId);
 
-    // Format Supabase orders to match expected format
-    const formattedOrders = orders.map((order) => ({
+    // Fetch orders from Ecwid
+    let ecwidOrders = [];
+    try {
+      ecwidOrders = await ecwidAPI.getCustomerOrders(customerId);
+    } catch (ecwidError) {
+      console.warn("Failed to fetch orders from Ecwid:", ecwidError);
+      // Continue without Ecwid orders if API fails
+    }
+
+    // Also fetch from Supabase for local orders
+    let supabaseOrders = [];
+    try {
+      supabaseOrders = await getCustomerOrders(customerId);
+    } catch (supabaseError) {
+      console.warn("Failed to fetch orders from Supabase:", supabaseError);
+    }
+
+    // Format Ecwid orders
+    const formattedEcwidOrders = ecwidOrders.map((order: any) => ({
+      id: order.id,
+      customerId: order.customerId,
+      status: order.status || "processing",
+      total: order.total,
+      dateCreated: order.createDate,
+      source: "ecwid",
+      itemCount: order.items?.length || 0,
+    }));
+
+    // Format Supabase orders
+    const formattedSupabaseOrders = supabaseOrders.map((order: any) => ({
       id: order.id,
       customerId: order.customer_id,
       status: order.status || "paid",
       total: order.total,
       dateCreated: order.created_at,
+      source: "supabase",
       itemCount: order.order_items?.length || 0,
     }));
 
-    console.log("Fetched", formattedOrders.length, "orders from Supabase");
+    // Combine and sort by date
+    const allOrders = [...formattedEcwidOrders, ...formattedSupabaseOrders].sort(
+      (a, b) => new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime()
+    );
+
+    console.log("Fetched", allOrders.length, "orders (Ecwid + Supabase)");
 
     res.json({
       success: true,
-      orders: formattedOrders,
-      count: formattedOrders.length,
+      orders: allOrders,
+      count: allOrders.length,
     });
   } catch (error) {
     console.error("Get orders error:", error);
