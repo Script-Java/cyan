@@ -24,6 +24,16 @@ export default function Header() {
   const ecwidScriptLoaded = useRef(false);
 
   useEffect(() => {
+    // Load Ecwid script for cart widget
+    if (!ecwidScriptLoaded.current) {
+      const script = document.createElement("script");
+      script.src = `https://app.ecwid.com/script.js?${ECWID_STORE_ID}&data_platform=code&data_date=2025-11-28`;
+      script.setAttribute("data-cfasync", "false");
+      script.async = true;
+      document.body.appendChild(script);
+      ecwidScriptLoaded.current = true;
+    }
+
     const token = localStorage.getItem("authToken");
     const adminStatus = localStorage.getItem("isAdmin") === "true";
     setIsAuthenticated(!!token);
