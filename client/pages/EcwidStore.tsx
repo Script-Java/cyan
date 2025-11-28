@@ -33,10 +33,10 @@ export default function EcwidStore() {
     document.body.appendChild(script1);
 
     script1.onload = () => {
-      // Initialize product browser
+      // Initialize product browser with 2-column layout
       const script2 = document.createElement("script");
       script2.type = "text/javascript";
-      script2.textContent = `xProductBrowser("categoriesPerRow=3","views=grid(20,3) list(60) table(60)","categoryView=grid","searchView=list","id=my-store-${ECWID_STORE_ID}");`;
+      script2.textContent = `xProductBrowser("categoriesPerRow=2","views=grid(20,2) list(60) table(60)","categoryView=grid","searchView=list","id=my-store-${ECWID_STORE_ID}");`;
       document.body.appendChild(script2);
 
       // Ensure the store container is visible after Ecwid loads
