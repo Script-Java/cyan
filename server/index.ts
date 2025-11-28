@@ -140,18 +140,6 @@ export function createServer() {
   app.post("/api/checkout", handleCheckout);
   app.get("/api/checkout/:cartId", handleGetCheckoutDetails);
 
-  // ===== BigCommerce Checkout Routes (Optional auth - guest checkout supported) =====
-  app.post(
-    "/api/bigcommerce/checkout",
-    optionalVerifyToken,
-    handleCreateBigCommerceCheckout,
-  );
-  app.get(
-    "/api/bigcommerce/checkout/:draftOrderId",
-    optionalVerifyToken,
-    handleGetBigCommerceCheckoutUrl,
-  );
-
   // ===== Products Routes (Public) =====
   app.get("/api/products/:productId", handleGetProduct);
   app.get("/api/products/:productId/options", handleGetProductOptions);
