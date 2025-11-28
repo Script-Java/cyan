@@ -12,7 +12,6 @@ import Products from "./pages/Products";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-import CheckoutBigCommerce from "./pages/CheckoutBigCommerce";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import Dashboard from "./pages/Dashboard";
 import OrderHistory from "./pages/OrderHistory";
