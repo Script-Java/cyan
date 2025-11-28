@@ -114,17 +114,6 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
     setSuccess(false);
 
     try {
-      // Check if user is logged in
-      const token = localStorage.getItem("auth_token");
-      if (!token) {
-        setError("Please log in to proceed with checkout");
-        toast.error("Please log in to proceed with checkout");
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 1500);
-        return;
-      }
-
       setSuccess(true);
       toast.success("Redirecting to BigCommerce checkout...");
 
