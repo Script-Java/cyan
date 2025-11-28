@@ -33,7 +33,7 @@ interface CreateCheckoutRequest {
 }
 
 /**
- * Create a BigCommerce draft order and return checkout URL
+ * Create an Ecwid order and return checkout URL
  * Requires: customer_id (authenticated user)
  */
 export const handleCreateBigCommerceCheckout: RequestHandler = async (
@@ -44,7 +44,7 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (
     const customerId = (req as any).customerId;
     const checkoutData = req.body as CreateCheckoutRequest;
 
-    console.log("BigCommerce checkout request:", {
+    console.log("Ecwid checkout request:", {
       customerId,
       hasProducts: !!checkoutData.products,
       productCount: checkoutData.products?.length,
@@ -66,40 +66,26 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (
         .json({ error: "Billing and shipping addresses required" });
     }
 
-    // Get store info first to get the storefront URL
+    // Get store info to construct checkout URL
     let storeInfo: any;
     try {
-      storeInfo = await bigCommerceAPI.getStoreInfo();
+      storeInfo = await ecwidAPI.getStoreInfo();
       console.log("Store info retrieved:", {
-        name: storeInfo.name,
-        domain: storeInfo.domain,
-        storeHash: process.env.BIGCOMMERCE_STORE_HASH,
+        storeName: storeInfo.name,
+        storeId: process.env.ECWID_STORE_ID,
       });
     } catch (storeError) {
       console.error("Failed to get store info:", storeError);
-      // Continue with draft order creation even if store info fails
       storeInfo = null;
     }
 
-    console.log("Constructing BigCommerce checkout URL...");
+    console.log("Constructing Ecwid checkout URL...");
 
-    // Get the storefront domain to construct checkout URL
-    let checkoutUrl: string;
+    // Ecwid uses a standard checkout URL format
+    const storeId = process.env.ECWID_STORE_ID;
+    const checkoutUrl = `https://www.ecwid.com/cart?storeid=${storeId}`;
 
-    if (storeInfo && storeInfo.domain) {
-      // Use the actual store domain for checkout
-      checkoutUrl = `https://${storeInfo.domain}/checkout`;
-      console.log("Using store domain for checkout:", storeInfo.domain);
-    } else {
-      // Fallback to myshopify domain pattern
-      const storeHash = process.env.BIGCOMMERCE_STORE_HASH;
-      checkoutUrl = `https://store-${storeHash}.mybigcommerce.com/checkout`;
-      console.log("Using fallback checkout URL with store hash:", storeHash);
-    }
-
-    // Store checkout session data for reference
-    const checkoutSessionId = `checkout_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    console.log("BigCommerce checkout URL ready:", checkoutUrl);
+    console.log("Ecwid checkout URL ready:", checkoutUrl);
 
     res.status(201).json({
       success: true,
@@ -111,11 +97,11 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (
       },
     });
   } catch (error) {
-    console.error("BigCommerce checkout error:", error);
+    console.error("Ecwid checkout error:", error);
     const errorMessage =
       error instanceof Error
         ? error.message
-        : "Failed to create BigCommerce checkout";
+        : "Failed to create Ecwid checkout";
     const details = error instanceof Error ? error.stack : String(error);
     res.status(500).json({
       error: errorMessage,
