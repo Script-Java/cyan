@@ -157,6 +157,11 @@ export function createServer() {
   app.get("/api/payments/methods", handleGetPaymentMethods);
   app.post("/api/payments/process", handleProcessPayment);
 
+  // ===== Square Payment Routes (Public) =====
+  app.get("/api/square/config", handleGetSquareConfig);
+  app.get("/api/square/locations", handleGetSquareLocations);
+  app.post("/api/square/pay", handleSquarePayment);
+
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
 
