@@ -122,6 +122,10 @@ export function createServer() {
   app.post("/api/checkout", verifyToken, handleCheckout);
   app.get("/api/checkout/:cartId", handleGetCheckoutDetails);
 
+  // ===== Products Routes (Public) =====
+  app.get("/api/products/:productId", handleGetProduct);
+  app.get("/api/products/:productId/options", handleGetProductOptions);
+
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
 
