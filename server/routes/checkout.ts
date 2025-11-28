@@ -124,7 +124,7 @@ export const handleCheckout: RequestHandler = async (req, res) => {
 
     const supabaseOrder = await createSupabaseOrder({
       customer_id: customerId,
-      status: "paid",
+      status: "pending",
       total,
       subtotal,
       tax,
