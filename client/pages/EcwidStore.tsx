@@ -74,7 +74,7 @@ export default function EcwidStore() {
         style.parentNode.removeChild(style);
       }
     };
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
