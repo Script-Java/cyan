@@ -142,9 +142,9 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (
       success: true,
       message: "Checkout initiated",
       data: {
-        draft_order_id: draftOrder.id,
         checkout_url: checkoutUrl,
-        customer_id: customerId,
+        customer_id: userId,
+        customer_email: checkoutData.customer_email,
       },
     });
   } catch (error) {
