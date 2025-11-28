@@ -73,6 +73,11 @@ import {
   handleGetOrderFiles,
   handleDeleteDigitalFile,
 } from "./routes/digital-files";
+import {
+  handleGetEcwidProduct,
+  handleListEcwidProducts,
+  handleSearchEcwidProducts,
+} from "./routes/ecwid-products";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
@@ -164,6 +169,12 @@ export function createServer() {
   // ===== Products Routes (Public) =====
   app.get("/api/products/:productId", handleGetProduct);
   app.get("/api/products/:productId/options", handleGetProductOptions);
+
+  // ===== Ecwid Products Routes (Public) =====
+  // Note: Order matters! More specific routes first
+  app.get("/api/ecwid-products/search", handleSearchEcwidProducts);
+  app.get("/api/ecwid-products/:productId", handleGetEcwidProduct);
+  app.get("/api/ecwid-products", handleListEcwidProducts);
 
   // ===== Payments Routes (Public) =====
   app.get("/api/payments/methods", handleGetPaymentMethods);

@@ -12,6 +12,7 @@ import Products from "./pages/Products";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import EcwidStore from "./pages/EcwidStore";
+import EcwidProductDetail from "./pages/EcwidProductDetail";
 import Checkout from "./pages/Checkout";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import OrderConfirmation from "./pages/OrderConfirmation";
@@ -47,6 +48,10 @@ export default function App() {
             <Route path="/product/:productId" element={<Product />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/ecwid-store" element={<EcwidStore />} />
+            <Route
+              path="/ecwid-product/:productId"
+              element={<EcwidProductDetail />}
+            />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/checkout-success" element={<CheckoutSuccess />} />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
