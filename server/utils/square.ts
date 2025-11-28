@@ -6,16 +6,14 @@ let squareClient: any = null;
 function getSquareClient() {
   if (!squareClient) {
     try {
-      // Import the Client class from square SDK
-      // square v43+ exports Client as the default export
       const squarePkg = require("square");
-      const { Client } = squarePkg;
+      const SquareClient = squarePkg.SquareClient;
 
-      if (!Client) {
-        throw new Error("Square Client not found in package exports. Available exports: " + Object.keys(squarePkg).join(", "));
+      if (!SquareClient) {
+        throw new Error("SquareClient not found in package exports");
       }
 
-      squareClient = new Client({
+      squareClient = new SquareClient({
         accessToken: process.env.SQUARE_ACCESS_TOKEN,
         environment: "production",
       });
