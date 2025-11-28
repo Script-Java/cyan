@@ -109,27 +109,38 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     let customerId = checkoutData.customerId;
 
     if (!customerId) {
-      // Create a guest customer in Supabase
-      const { data: guestCustomer, error: guestError } = await supabase
+      // First, try to get existing customer by email
+      const { data: existingCustomer } = await supabase
         .from("customers")
-        .insert({
-          email: checkoutData.customerEmail,
-          first_name: checkoutData.customerName?.split(" ")[0] || "Guest",
-          last_name: checkoutData.customerName?.split(" ")[1] || "Customer",
-          phone: undefined,
-          company: undefined,
-          store_credit: 0,
-        })
         .select("id")
+        .eq("email", checkoutData.customerEmail)
         .single();
 
-      if (guestError || !guestCustomer?.id) {
-        console.error("Failed to create guest customer:", guestError);
-        return res.status(400).json({
-          error: "Failed to create customer record for checkout",
-        });
+      if (existingCustomer?.id) {
+        customerId = existingCustomer.id;
+      } else {
+        // Create a new guest customer in Supabase
+        const { data: guestCustomer, error: guestError } = await supabase
+          .from("customers")
+          .insert({
+            email: checkoutData.customerEmail,
+            first_name: checkoutData.customerName?.split(" ")[0] || "Guest",
+            last_name: checkoutData.customerName?.split(" ")[1] || "Customer",
+            phone: undefined,
+            company: undefined,
+            store_credit: 0,
+          })
+          .select("id")
+          .single();
+
+        if (guestError || !guestCustomer?.id) {
+          console.error("Failed to create guest customer:", guestError);
+          return res.status(400).json({
+            error: "Failed to create customer record for checkout",
+          });
+        }
+        customerId = guestCustomer.id;
       }
-      customerId = guestCustomer.id;
     }
 
     // Create order in Supabase with pending_payment status
