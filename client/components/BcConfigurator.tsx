@@ -109,31 +109,43 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
     return item;
   }
 
-  // Add item(s) to cart and redirect to BigCommerce checkout
+  // Add item(s) to cart and redirect to Square checkout
   async function addToCart() {
     setLoading(true);
     setError("");
     setSuccess(false);
 
     try {
+      const navigate = useNavigate();
+
+      // Create cart
+      const cartId = await ensureCart();
+
+      // Build line item
+      const lineItem = buildLineItemPayload();
+
+      // Add item to cart
+      const addResponse = await fetch(`/api/cart/${cartId}/items`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(lineItem),
+      });
+
+      if (!addResponse.ok) {
+        const errorData = await addResponse.json();
+        throw new Error(errorData.error || "Failed to add item to cart");
+      }
+
+      // Store cart ID for checkout
+      localStorage.setItem("cart_id", cartId);
+
       setSuccess(true);
-      toast.success("Redirecting to BigCommerce checkout...");
+      toast.success("Item added to cart! Redirecting to checkout...");
 
-      // Store the product and options for checkout
-      const checkoutData = {
-        product_id: productId,
-        quantity: quantity,
-        selectedOptions: selectedOptions,
-        notes: notes,
-        file: file ? file.name : null,
-      };
-
-      sessionStorage.setItem("pending_checkout", JSON.stringify(checkoutData));
-
-      // Redirect to checkout page which will handle BigCommerce checkout
+      // Redirect to checkout page
       setTimeout(() => {
-        window.location.href = `/checkout-bigcommerce`;
-      }, 1500);
+        navigate("/checkout");
+      }, 1000);
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Could not proceed to checkout";
