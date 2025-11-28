@@ -1,7 +1,12 @@
 import { RequestHandler } from "express";
-import { bigCommerceAPI } from "../utils/bigcommerce";
-import { syncCustomerToSupabase } from "../utils/supabase";
+import { createClient } from "@supabase/supabase-js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+
+const supabase = createClient(
+  process.env.SUPABASE_URL || "",
+  process.env.SUPABASE_SERVICE_KEY || "",
+);
 
 interface LoginRequest {
   email: string;
