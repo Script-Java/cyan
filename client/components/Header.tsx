@@ -110,7 +110,7 @@ export default function Header() {
             </div>
 
             {/* Desktop Logo Area */}
-            <div className="hidden md:flex items-center mr-6">
+            <div className="hidden md:flex items-center mr-2">
               <Link
                 to="/"
                 className="flex items-center gap-2 hover:opacity-80 transition-opacity"
