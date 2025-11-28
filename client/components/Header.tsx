@@ -140,7 +140,7 @@ export default function Header() {
             </div>
 
             {/* Desktop Search Bar */}
-            <form onSubmit={handleSearchSubmit} style={{ display: "flex", alignItems: "center", fontWeight: "400", margin: "0 16px" }}>
+            <form onSubmit={handleSearchSubmit} style={{ display: "flex", alignItems: "center", fontWeight: "400", margin: "0 16px 0 4px" }}>
               <div style={{ fontWeight: "400", position: "relative" }}>
                 <input
                   type="text"
