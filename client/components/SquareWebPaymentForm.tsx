@@ -66,7 +66,15 @@ export default function SquareWebPaymentForm({
           errorMsg.includes("pci-connect")
         ) {
           errorMsg =
-            "Square SDK authentication failed. Please check your Application ID configuration.";
+            "Square SDK authentication failed. Please verify your Application ID is correct and matches your Square account configuration.";
+        }
+
+        // Log more detailed error info for debugging
+        if (error instanceof Error) {
+          console.error("Square SDK Error Details:", {
+            message: error.message,
+            stack: error.stack,
+          });
         }
 
         onPaymentError(errorMsg);
