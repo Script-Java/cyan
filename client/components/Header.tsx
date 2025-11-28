@@ -140,7 +140,15 @@ export default function Header() {
             </div>
 
             {/* Desktop Search Bar */}
-            <form onSubmit={handleSearchSubmit} style={{ display: "flex", alignItems: "center", fontWeight: "400", margin: "0 16px 0 4px" }}>
+            <form
+              onSubmit={handleSearchSubmit}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                fontWeight: "400",
+                margin: "0 16px 0 4px",
+              }}
+            >
               <div style={{ fontWeight: "400", position: "relative" }}>
                 <input
                   type="text"
@@ -174,7 +182,8 @@ export default function Header() {
                     right: "8px",
                     top: "50%",
                     transitionDuration: "0.15s",
-                    transitionProperty: "color, background-color, border-color, text-decoration-color, fill, stroke",
+                    transitionProperty:
+                      "color, background-color, border-color, text-decoration-color, fill, stroke",
                     transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
                     transform: "translateY(-50%)",
                     backgroundColor: "rgba(0, 0, 0, 0)",
@@ -190,7 +199,6 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
-
               <Link
                 to="/dashboard"
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -326,7 +334,13 @@ export default function Header() {
             </div>
 
             {/* Mobile Search Bar */}
-            <form onSubmit={handleSearchSubmit} style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255, 255, 255, 0.1)" }}>
+            <form
+              onSubmit={handleSearchSubmit}
+              style={{
+                padding: "12px 16px",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+              }}
+            >
               <div style={{ fontWeight: "400", position: "relative" }}>
                 <input
                   type="text"
@@ -358,7 +372,8 @@ export default function Header() {
                     right: "8px",
                     top: "50%",
                     transitionDuration: "0.15s",
-                    transitionProperty: "color, background-color, border-color, text-decoration-color, fill, stroke",
+                    transitionProperty:
+                      "color, background-color, border-color, text-decoration-color, fill, stroke",
                     transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
                     transform: "translateY(-50%)",
                     backgroundColor: "rgba(0, 0, 0, 0)",

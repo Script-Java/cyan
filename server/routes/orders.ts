@@ -58,7 +58,10 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
     const { data: digitalFilesData } = await supabase
       .from("digital_files")
       .select("*")
-      .in("order_id", supabaseOrders.map((o: any) => o.id));
+      .in(
+        "order_id",
+        supabaseOrders.map((o: any) => o.id),
+      );
 
     const filesMap = new Map();
     if (digitalFilesData) {

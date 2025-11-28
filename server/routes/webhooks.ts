@@ -75,7 +75,12 @@ export const handleEcwidOrderWebhook: RequestHandler = async (req, res) => {
  */
 async function handleOrderCompleted(data: any): Promise<void> {
   try {
-    console.log("Processing Ecwid order completion:", data.orderId, "Customer:", data.customerId);
+    console.log(
+      "Processing Ecwid order completion:",
+      data.orderId,
+      "Customer:",
+      data.customerId,
+    );
 
     // Check if order exists in Supabase by Ecwid order ID
     const { data: existingOrder } = await supabase
@@ -90,7 +95,7 @@ async function handleOrderCompleted(data: any): Promise<void> {
         .from("orders")
         .update({
           status: "completed",
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq("id", existingOrder.id);
 
@@ -185,7 +190,11 @@ async function handleOrderUpdated(data: any): Promise<void> {
  */
 async function handleCustomerCreated(data: any): Promise<void> {
   try {
-    console.log("Processing customer creation from Ecwid:", data.id, data.email);
+    console.log(
+      "Processing customer creation from Ecwid:",
+      data.id,
+      data.email,
+    );
 
     // Check if customer exists by Ecwid ID
     const { data: existingCustomer } = await supabase
@@ -218,7 +227,10 @@ async function handleCustomerCreated(data: any): Promise<void> {
         console.log("Ecwid customer synced to Supabase:", newCustomer.id);
       }
     } else {
-      console.log("Ecwid customer already exists in Supabase:", existingCustomer.id);
+      console.log(
+        "Ecwid customer already exists in Supabase:",
+        existingCustomer.id,
+      );
     }
   } catch (error) {
     console.error("Error processing customer creation:", error);
