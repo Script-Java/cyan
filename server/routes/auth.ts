@@ -166,6 +166,102 @@ export const handleSignup: RequestHandler = async (req, res) => {
   }
 };
 
+// Admin setup - creates or updates admin user
+export const handleAdminSetup: RequestHandler = async (req, res) => {
+  try {
+    const { email, password, firstName, lastName } = req.body;
+    const ADMIN_SETUP_KEY = process.env.ADMIN_SETUP_KEY || "admin-setup-key";
+    const setupKey = req.headers["x-admin-setup-key"];
+
+    if (setupKey !== ADMIN_SETUP_KEY) {
+      return res.status(403).json({ error: "Invalid setup key" });
+    }
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ error: "Email and password are required" });
+    }
+
+    // Check if admin already exists
+    const { data: existingAdmin } = await supabase
+      .from("customers")
+      .select("id")
+      .eq("email", email)
+      .single();
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    if (existingAdmin) {
+      // Update existing user to admin
+      const { data: updated, error } = await supabase
+        .from("customers")
+        .update({
+          password_hash: passwordHash,
+          is_admin: true,
+        })
+        .eq("email", email)
+        .select()
+        .single();
+
+      if (error || !updated) {
+        throw new Error("Failed to update admin user");
+      }
+
+      const token = generateToken(updated.id, updated.email);
+      return res.json({
+        success: true,
+        message: "Admin user updated successfully",
+        token,
+        customer: {
+          id: updated.id,
+          email: updated.email,
+          firstName: updated.first_name,
+          lastName: updated.last_name,
+          isAdmin: true,
+        },
+      });
+    }
+
+    // Create new admin user
+    const { data: newAdmin, error } = await supabase
+      .from("customers")
+      .insert({
+        email,
+        first_name: firstName || "Admin",
+        last_name: lastName || "User",
+        password_hash: passwordHash,
+        is_admin: true,
+        store_credit: 0,
+      })
+      .select()
+      .single();
+
+    if (error || !newAdmin) {
+      throw new Error("Failed to create admin user");
+    }
+
+    const token = generateToken(newAdmin.id, newAdmin.email);
+    res.status(201).json({
+      success: true,
+      message: "Admin user created successfully",
+      token,
+      customer: {
+        id: newAdmin.id,
+        email: newAdmin.email,
+        firstName: newAdmin.first_name,
+        lastName: newAdmin.last_name,
+        isAdmin: true,
+      },
+    });
+  } catch (error) {
+    console.error("Admin setup error:", error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : "Admin setup failed",
+    });
+  }
+};
+
 // BigCommerce OAuth handlers removed - using Supabase-only authentication
 
 export const handleLogout: RequestHandler = (req, res) => {
