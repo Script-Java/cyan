@@ -347,12 +347,18 @@ export default function Checkout() {
         body: JSON.stringify(orderData),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `Failed to create order (${response.status})`);
+      let result: any;
+      try {
+        result = await response.json();
+      } catch (parseError) {
+        throw new Error(
+          `Failed to parse response (${response.status}): ${parseError instanceof Error ? parseError.message : "Unknown error"}`,
+        );
       }
 
-      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || result.message || `Failed to create order (${response.status})`);
+      }
 
       toast.success("Order created successfully!");
       localStorage.removeItem("cart_id");
