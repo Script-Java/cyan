@@ -347,21 +347,15 @@ export default function Checkout() {
       return;
     }
 
-    if (!paymentToken) {
-      setError("Please enter your payment information");
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
       const orderTotal = subtotal + subtotal * taxRate + shippingCost;
 
-      console.log("Processing payment with Square, total:", orderTotal);
+      console.log("Creating Square Checkout session, total:", orderTotal);
 
-      // Process payment via Square
-      const paymentPayload = {
-        sourceId: paymentToken,
+      // Create a checkout session with Square
+      const checkoutPayload = {
         amount: orderTotal,
         currency: "USD",
         items: cartItems,
@@ -405,27 +399,27 @@ export default function Checkout() {
         customerName: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
       };
 
-      const response = await fetch("/api/square/pay", {
+      const response = await fetch("/api/square/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(paymentPayload),
+        body: JSON.stringify(checkoutPayload),
       });
 
       let result: any;
 
-      console.log("Payment response status:", response.status);
+      console.log("Checkout response status:", response.status);
 
       try {
         result = await response.json();
       } catch (parseError) {
-        console.error("Failed to parse payment response:", {
+        console.error("Failed to parse checkout response:", {
           error: parseError,
           status: response.status,
         });
         throw new Error(
-          `Payment response parsing failed. Status: ${response.status}.`,
+          `Checkout response parsing failed. Status: ${response.status}.`,
         );
       }
 
@@ -433,26 +427,27 @@ export default function Checkout() {
         const errorMessage =
           result?.error ||
           result?.message ||
-          `Payment failed (${response.status})`;
-        console.error("Payment failed:", {
+          `Checkout failed (${response.status})`;
+        console.error("Checkout failed:", {
           status: response.status,
           error: result,
         });
         throw new Error(errorMessage);
       }
 
-      console.log("Payment and order created successfully:", result.order.id);
-      toast.success("Payment successful! Redirecting to confirmation...");
-      localStorage.removeItem("cart_id");
-      setTimeout(() => {
-        navigate(`/order-confirmation?orderId=${result.order.id}`);
-      }, 1000);
+      // Redirect to Square's hosted checkout
+      if (result.checkoutUrl) {
+        console.log("Redirecting to Square Checkout:", result.checkoutUrl);
+        window.location.href = result.checkoutUrl;
+      } else {
+        throw new Error("No checkout URL returned from server");
+      }
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : "Failed to create order";
+        err instanceof Error ? err.message : "Failed to create checkout";
       setError(errorMessage);
       toast.error(errorMessage);
-      console.error("Order creation error:", err);
+      console.error("Checkout creation error:", err);
     } finally {
       setIsSubmitting(false);
     }
