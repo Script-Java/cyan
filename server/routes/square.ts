@@ -235,24 +235,97 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       currency: checkoutData.currency,
     });
 
-    // For Square Hosted Checkout, we would normally create an order first
-    // and then get a checkout URL. For now, we'll use a temporary approach:
-    // In production, integrate with Square's Payment Links API or Web Payments SDK
+    // Build checkout request for Square Payment Link
+    let baseUrl = "http://localhost:8080";
+    if (process.env.BASE_URL) {
+      baseUrl = process.env.BASE_URL;
+    } else if (process.env.VERCEL_URL) {
+      baseUrl = `https://${process.env.VERCEL_URL}`;
+    } else if (process.env.FLY_APP_NAME) {
+      baseUrl = `https://${process.env.FLY_APP_NAME}.fly.dev`;
+    }
 
-    // Generate a checkout URL - in production this would come from Square
-    // For testing purposes, redirect to the success page
-    // TODO: Implement proper Square Payment Link or Checkout API integration
-    const checkoutUrl = `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`;
-
-    res.status(201).json({
-      success: true,
-      order: {
-        id: supabaseOrder.id,
-        status: "pending_payment",
-        total: checkoutData.total,
+    // Build line items for Square
+    const squareLineItems = checkoutData.items.map((item) => ({
+      name: item.product_name || `Product #${item.product_id}`,
+      quantity: String(item.quantity),
+      basePriceMoney: {
+        amount: Math.round((item.price || 0.25) * 100),
+        currency: checkoutData.currency || "USD",
       },
-      checkoutUrl,
-    });
+    }));
+
+    // Add tax and shipping as line items if present
+    if (checkoutData.tax > 0) {
+      squareLineItems.push({
+        name: "Tax",
+        quantity: "1",
+        basePriceMoney: {
+          amount: Math.round(checkoutData.tax * 100),
+          currency: checkoutData.currency || "USD",
+        },
+      });
+    }
+
+    if (checkoutData.shipping > 0) {
+      squareLineItems.push({
+        name: "Shipping",
+        quantity: "1",
+        basePriceMoney: {
+          amount: Math.round(checkoutData.shipping * 100),
+          currency: checkoutData.currency || "USD",
+        },
+      });
+    }
+
+    // Create order for Square
+    const ordersApi = getOrdersApi();
+
+    const squareOrder = {
+      idempotencyKey: `${Date.now()}-${supabaseOrder.id}`,
+      order: {
+        locationId: "L1GPP9CVSK8D7", // Default location - in production, this should be configurable
+        referenceId: supabaseOrder.id,
+        lineItems: squareLineItems,
+        customerId: String(customerId),
+      },
+      redirectUrl: `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`,
+    };
+
+    console.log("Creating Square order:", squareOrder);
+
+    try {
+      const squareOrderResponse = await ordersApi.createOrder(squareOrder);
+
+      if (!squareOrderResponse.result?.order?.id) {
+        throw new Error("Failed to create Square order");
+      }
+
+      console.log("Square order created:", squareOrderResponse.result.order.id);
+
+      // For now, we'll return a success response
+      // In production, you would use Square's Payment Links API to generate a hosted checkout link
+      // For testing, we're simulating the payment success
+      const checkoutUrl = `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`;
+
+      res.status(201).json({
+        success: true,
+        order: {
+          id: supabaseOrder.id,
+          squareOrderId: squareOrderResponse.result.order.id,
+          status: "pending_payment",
+          total: checkoutData.total,
+        },
+        checkoutUrl,
+      });
+    } catch (squareError) {
+      console.error("Square order creation error:", squareError);
+      throw new Error(
+        squareError instanceof Error
+          ? squareError.message
+          : "Failed to create Square order",
+      );
+    }
   } catch (error) {
     console.error("Create Checkout session error:", error);
     const errorMessage =
