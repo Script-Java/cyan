@@ -41,7 +41,17 @@ export default function EcwidStore() {
       // Initialize product browser
       const script2 = document.createElement("script");
       script2.type = "text/javascript";
-      script2.textContent = `xProductBrowser("categoriesPerRow=3","views=grid(20,3) list(60) table(60)","categoryView=grid","searchView=list","id=my-store-${ECWID_STORE_ID}");`;
+
+      // Build command with optional search
+      let command = `xProductBrowser("categoriesPerRow=3","views=grid(20,3) list(60) table(60)","categoryView=grid","searchView=list"`;
+
+      // Add search query if provided
+      if (searchQuery) {
+        command += `,"defaultSearch=${encodeURIComponent(searchQuery)}"`;
+      }
+
+      command += `,"id=my-store-${ECWID_STORE_ID}");`;
+      script2.textContent = command;
       document.body.appendChild(script2);
 
       // Ensure the store container is visible after Ecwid loads
