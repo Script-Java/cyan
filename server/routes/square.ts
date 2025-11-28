@@ -120,6 +120,7 @@ export const handleSquarePayment: RequestHandler = async (req, res) => {
 export const handleGetSquareConfig: RequestHandler = async (req, res) => {
   try {
     const appId = process.env.SQUARE_APPLICATION_ID;
+    const accessToken = process.env.SQUARE_ACCESS_TOKEN;
 
     if (!appId) {
       return res.status(500).json({
@@ -127,9 +128,15 @@ export const handleGetSquareConfig: RequestHandler = async (req, res) => {
       });
     }
 
+    // Verify that we have the access token configured
+    if (!accessToken) {
+      console.warn("Square Access Token not configured");
+    }
+
     res.json({
       success: true,
       applicationId: appId,
+      configured: !!accessToken,
     });
   } catch (error) {
     console.error("Get Square config error:", error);
