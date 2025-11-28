@@ -414,16 +414,23 @@ export default function Checkout() {
       });
 
       let result: any;
+      const responseText = await response.text();
+
       try {
-        result = await response.json();
+        result = responseText ? JSON.parse(responseText) : {};
       } catch (parseError) {
+        console.error("Failed to parse checkout response:", responseText);
         throw new Error(
-          `Failed to parse response (${response.status}): ${parseError instanceof Error ? parseError.message : "Unknown error"}`,
+          `Checkout response parsing failed: Invalid JSON response. Status: ${response.status}`,
         );
       }
 
       if (!response.ok) {
-        throw new Error(result.error || result.message || `Failed to create order (${response.status})`);
+        throw new Error(
+          result?.error ||
+            result?.message ||
+            `Failed to create order (${response.status})`,
+        );
       }
 
       toast.success("Order created successfully!");
