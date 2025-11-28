@@ -111,7 +111,7 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (
 };
 
 /**
- * Get BigCommerce checkout URL (for existing draft orders)
+ * Get Ecwid checkout URL (for existing orders)
  */
 export const handleGetBigCommerceCheckoutUrl: RequestHandler = async (
   req,
@@ -121,24 +121,12 @@ export const handleGetBigCommerceCheckoutUrl: RequestHandler = async (
     const { draftOrderId } = req.params;
 
     if (!draftOrderId) {
-      return res.status(400).json({ error: "Draft order ID required" });
+      return res.status(400).json({ error: "Order ID required" });
     }
 
-    // Get store info to construct checkout URL
-    let storeInfo: any;
-    try {
-      storeInfo = await bigCommerceAPI.getStoreInfo();
-    } catch (error) {
-      console.error("Failed to get store info:", error);
-      storeInfo = null;
-    }
-
-    let checkoutUrl: string;
-    if (storeInfo && storeInfo.domain) {
-      checkoutUrl = `https://${storeInfo.domain}/cart.php?action=view&draft_order_id=${draftOrderId}`;
-    } else {
-      checkoutUrl = `https://store-${process.env.BIGCOMMERCE_STORE_HASH}.mybigcommerce.com/checkout?draft_order=${draftOrderId}`;
-    }
+    // Ecwid checkout URL
+    const storeId = process.env.ECWID_STORE_ID;
+    const checkoutUrl = `https://www.ecwid.com/cart?storeid=${storeId}&orderid=${draftOrderId}`;
 
     res.json({
       success: true,
