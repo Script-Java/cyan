@@ -331,76 +331,9 @@ export default function Checkout() {
     try {
       const orderTotal = subtotal + subtotal * taxRate + shippingCost;
 
-      const paymentPayload = {
-        amount: orderTotal,
-        currency: "USD",
-        payment_method_id: "square",
-        payment_instrument: {
-          type: "card",
-          number: paymentInfo.cardNumber.replace(/\s/g, ""),
-          expiry_month: parseInt(paymentInfo.expiryMonth),
-          expiry_year: parseInt(paymentInfo.expiryYear),
-          cvv: paymentInfo.cvv,
-          cardholder_name: paymentInfo.cardholderName,
-        },
-        description: `Order for ${shippingInfo.email}`,
-        reference_id: `order_${Date.now()}`,
-      };
+      console.log("Creating order with total:", orderTotal);
 
-      console.log("Processing payment with payload:", {
-        amount: paymentPayload.amount,
-        currency: paymentPayload.currency,
-        payment_method_id: paymentPayload.payment_method_id,
-      });
-
-      let paymentResponse: Response | null = null;
-      let paymentResult: any = {};
-
-      try {
-        paymentResponse = await fetch("/api/payments/process", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(paymentPayload),
-        });
-
-        console.log("Payment response status:", paymentResponse.status);
-
-        try {
-          paymentResult = await paymentResponse.json();
-        } catch (parseError) {
-          console.error("Failed to parse payment response:", {
-            error: parseError,
-            status: paymentResponse.status,
-          });
-          throw new Error(
-            `Payment response parsing failed. Status: ${paymentResponse.status}.`,
-          );
-        }
-
-        if (!paymentResponse.ok) {
-          const errorMessage =
-            paymentResult?.error ||
-            paymentResult?.message ||
-            `Payment processing failed (${paymentResponse.status})`;
-          console.error("Payment processing failed:", {
-            status: paymentResponse.status,
-            error: paymentResult,
-          });
-          throw new Error(errorMessage);
-        }
-      } catch (paymentError) {
-        if (paymentError instanceof Error) {
-          throw paymentError;
-        }
-        throw new Error("Failed to process payment");
-      }
-
-      console.log("Payment processed successfully");
-      toast.success("Payment processed successfully!");
-
-      // Now create the order
+      // Create the order
       const orderData: any = {
         ...(customerId && { customer_id: customerId }),
         billing_address: {
