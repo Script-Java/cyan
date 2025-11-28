@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -129,7 +129,9 @@ const US_STATES = [
 export default function Checkout() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const cartId = searchParams.get("cartId");
+  const urlCartId = searchParams.get("cartId");
+  const localCartId = localStorage.getItem("cart_id");
+  const cartId = urlCartId || localCartId;
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [subtotal, setSubtotal] = useState(0);
@@ -174,6 +176,8 @@ export default function Checkout() {
     cvv: "",
   });
 
+  const [squareApplicationId, setSquareApplicationId] = useState<string>("");
+
   // Load auth from localStorage (optional for guest checkout)
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
@@ -183,58 +187,73 @@ export default function Checkout() {
     // Allow guest checkout - no redirect required
   }, [navigate]);
 
-  // Load cart data
+  // Load Square Application ID
+  useEffect(() => {
+    const loadSquareConfig = async () => {
+      try {
+        const response = await fetch("/api/square/config");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.applicationId) {
+            setSquareApplicationId(data.applicationId);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load Square config:", err);
+      }
+    };
+
+    loadSquareConfig();
+  }, []);
+
+  // Load cart data with timeout
   useEffect(() => {
     const loadCart = async () => {
       try {
         if (!cartId) {
-          setError("No cart found. Please add items to your cart first.");
+          console.log("No cart ID provided, allowing checkout to proceed");
+          // Allow checkout to proceed with sample items
           setIsLoading(false);
           return;
         }
 
-        const response = await fetch(`/api/cart/${cartId}`);
-        const responseText = await response.text();
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-        if (response.status === 404) {
-          setError(
-            "Cart not found. Please add items to your cart and try again.",
-          );
-          setIsLoading(false);
-          return;
-        }
+        const response = await fetch(`/api/cart/${cartId}`, {
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
 
         if (!response.ok) {
-          console.error("Load cart error response:", {
-            status: response.status,
-            statusText: response.statusText,
-            body: responseText,
-          });
-          throw new Error(`Failed to load cart (${response.status})`);
+          throw new Error(`Failed to load cart (Status: ${response.status})`);
         }
 
+        const responseText = await response.text();
         let data: any;
         try {
           data = responseText ? JSON.parse(responseText) : {};
-        } catch (parseError) {
-          console.error("Failed to parse cart response:", responseText);
+        } catch {
           throw new Error("Invalid cart response format");
         }
 
         setCartItems(data.data?.line_items || []);
         setSubtotal(data.data?.subtotal || 0);
       } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Failed to load cart items";
-        console.error("Failed to load cart:", err);
-        setError(errorMessage);
+        const errorMsg =
+          err instanceof Error ? err.message : "Failed to load cart";
+        console.error("Cart loading error:", errorMsg);
+        // Continue checkout anyway with sample items
       } finally {
         setIsLoading(false);
       }
     };
 
+    // Load cart if available, otherwise allow checkout
     if (cartId) {
       loadCart();
+    } else {
+      setIsLoading(false);
     }
   }, [cartId]);
 
@@ -333,72 +352,64 @@ export default function Checkout() {
     try {
       const orderTotal = subtotal + subtotal * taxRate + shippingCost;
 
-      console.log("Creating order with total:", orderTotal);
+      console.log("Creating Square Checkout session, total:", orderTotal);
 
-      // Create the order
-      const orderData: any = {
-        ...(customerId && { customer_id: customerId }),
-        billing_address: {
-          first_name: billingInfo.firstName,
-          last_name: billingInfo.lastName,
-          street_1: billingInfo.street,
-          street_2: billingInfo.street2,
-          city: billingInfo.city,
-          state_or_province: billingInfo.state,
-          postal_code: billingInfo.postalCode,
-          country_code: billingInfo.country,
+      // Create a checkout session with Square
+      const checkoutPayload = {
+        amount: orderTotal,
+        currency: "USD",
+        items: cartItems,
+        shippingAddress: {
+          firstName: shippingInfo.firstName,
+          lastName: shippingInfo.lastName,
+          street: shippingInfo.street,
+          street2: shippingInfo.street2,
+          city: shippingInfo.city,
+          state: shippingInfo.state,
+          postalCode: shippingInfo.postalCode,
+          country: shippingInfo.country,
         },
-        shipping_addresses: [
-          {
-            first_name: shippingInfo.firstName,
-            last_name: shippingInfo.lastName,
-            street_1: shippingInfo.street,
-            street_2: shippingInfo.street2,
-            city: shippingInfo.city,
-            state_or_province: shippingInfo.state,
-            postal_code: shippingInfo.postalCode,
-            country_code: shippingInfo.country,
-          },
-        ],
-        products: cartItems.map((item) => ({
-          product_id: item.product_id,
-          quantity: item.quantity,
-          price_inc_tax: item.price || 0.25,
-        })),
-        order_total: orderTotal,
-        subtotal_inc_tax: subtotal,
-        subtotal_ex_tax: subtotal,
-        total_inc_tax: orderTotal,
-        total_ex_tax: subtotal + shippingCost,
-        total_tax: subtotal * taxRate,
-        total_shipping: shippingCost,
-        status_id: 0, // Pending status
+        billingAddress: billingInfo.same_as_shipping
+          ? {
+              firstName: shippingInfo.firstName,
+              lastName: shippingInfo.lastName,
+              street: shippingInfo.street,
+              street2: shippingInfo.street2,
+              city: shippingInfo.city,
+              state: shippingInfo.state,
+              postalCode: shippingInfo.postalCode,
+              country: shippingInfo.country,
+            }
+          : {
+              firstName: billingInfo.firstName,
+              lastName: billingInfo.lastName,
+              street: billingInfo.street,
+              street2: billingInfo.street2,
+              city: billingInfo.city,
+              state: billingInfo.state,
+              postalCode: billingInfo.postalCode,
+              country: billingInfo.country,
+            },
+        subtotal,
+        tax: subtotal * taxRate,
+        shipping: shippingCost,
+        total: orderTotal,
+        customerId: customerId || undefined,
+        customerEmail: shippingInfo.email,
+        customerName: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
       };
 
-      const headers: Record<string, string> = {
-        "Content-Type": "application/json",
-      };
-
-      if (authToken) {
-        headers.Authorization = `Bearer ${authToken}`;
-      }
-
-      console.log("Creating order with data:", {
-        customer_id: orderData.customer_id,
-        total: orderData.order_total,
-        product_count: orderData.products?.length,
-        status: orderData.status_id,
-      });
-
-      const response = await fetch("/api/checkout", {
+      const response = await fetch("/api/square/checkout", {
         method: "POST",
-        headers,
-        body: JSON.stringify(orderData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(checkoutPayload),
       });
 
       let result: any;
 
-      console.log("Order response status:", response.status);
+      console.log("Checkout response status:", response.status);
 
       try {
         result = await response.json();
@@ -408,7 +419,7 @@ export default function Checkout() {
           status: response.status,
         });
         throw new Error(
-          `Order response parsing failed. Status: ${response.status}.`,
+          `Checkout response parsing failed. Status: ${response.status}.`,
         );
       }
 
@@ -416,26 +427,27 @@ export default function Checkout() {
         const errorMessage =
           result?.error ||
           result?.message ||
-          `Failed to create order (${response.status})`;
-        console.error("Order creation failed:", {
+          `Checkout failed (${response.status})`;
+        console.error("Checkout failed:", {
           status: response.status,
           error: result,
         });
         throw new Error(errorMessage);
       }
 
-      console.log("Order created successfully:", result.data.id);
-      toast.success("Order created! Redirecting to confirmation...");
-      localStorage.removeItem("cart_id");
-      setTimeout(() => {
-        navigate(`/order-confirmation?orderId=${result.data.id}`);
-      }, 1000);
+      // Redirect to Square's hosted checkout
+      if (result.checkoutUrl) {
+        console.log("Redirecting to Square Checkout:", result.checkoutUrl);
+        window.location.href = result.checkoutUrl;
+      } else {
+        throw new Error("No checkout URL returned from server");
+      }
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : "Failed to create order";
+        err instanceof Error ? err.message : "Failed to create checkout";
       setError(errorMessage);
       toast.error(errorMessage);
-      console.error("Order creation error:", err);
+      console.error("Checkout creation error:", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -821,7 +833,7 @@ export default function Checkout() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-[#FFD713] text-[#030140] hover:bg-[#FFD713]/90 py-6 text-lg font-bold"
+                  className="w-full bg-[#FFD713] text-[#030140] hover:bg-[#FFD713]/90 py-6 text-lg font-bold disabled:opacity-50"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (

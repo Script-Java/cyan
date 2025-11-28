@@ -60,6 +60,14 @@ import {
   handleEcwidOrderWebhook,
   handleWebhookHealth,
 } from "./routes/webhooks";
+import {
+  handleSquarePayment,
+  handleGetSquareConfig,
+  handleGetSquareLocations,
+  handleTestSquareConfig,
+  handleCreateCheckoutSession,
+  handleConfirmCheckout,
+} from "./routes/square";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
@@ -155,6 +163,14 @@ export function createServer() {
   // ===== Payments Routes (Public) =====
   app.get("/api/payments/methods", handleGetPaymentMethods);
   app.post("/api/payments/process", handleProcessPayment);
+
+  // ===== Square Payment Routes (Public) =====
+  app.get("/api/square/config", handleGetSquareConfig);
+  app.get("/api/square/locations", handleGetSquareLocations);
+  app.get("/api/square/test", handleTestSquareConfig);
+  app.post("/api/square/checkout", handleCreateCheckoutSession);
+  app.post("/api/square/confirm-checkout", handleConfirmCheckout);
+  app.post("/api/square/pay", handleSquarePayment);
 
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);

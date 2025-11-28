@@ -13,7 +13,7 @@ import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import EcwidStore from "./pages/EcwidStore";
 import Checkout from "./pages/Checkout";
-import CheckoutBigCommerce from "./pages/CheckoutBigCommerce";
+import CheckoutSuccess from "./pages/CheckoutSuccess";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import Dashboard from "./pages/Dashboard";
 import OrderHistory from "./pages/OrderHistory";
@@ -48,10 +48,7 @@ export default function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/ecwid-store" element={<EcwidStore />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route
-              path="/checkout-bigcommerce"
-              element={<CheckoutBigCommerce />}
-            />
+            <Route path="/checkout-success" element={<CheckoutSuccess />} />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/order-history" element={<OrderHistory />} />

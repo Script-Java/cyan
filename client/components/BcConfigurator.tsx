@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, AlertCircle, Loader } from "lucide-react";
 import { toast } from "sonner";
@@ -15,6 +15,8 @@ interface ProductOption {
 }
 
 export default function BcConfigurator({ productId, product: builderProduct }) {
+  const navigate = useNavigate();
+
   // Product options state
   const [productOptions, setProductOptions] = useState<ProductOption[]>([]);
   const [optionsLoading, setOptionsLoading] = useState(true);
@@ -67,12 +69,17 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
         body: JSON.stringify({ line_items: [] }),
       });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Failed to create cart");
+      let data: any;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("Invalid response from server");
       }
 
-      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to create cart");
+      }
+
       const newCartId = data.data?.id || null;
 
       if (!newCartId) {
@@ -109,31 +116,53 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
     return item;
   }
 
-  // Add item(s) to cart and redirect to BigCommerce checkout
+  // Add item(s) to cart and redirect to Square checkout
   async function addToCart() {
     setLoading(true);
     setError("");
     setSuccess(false);
 
     try {
+      // Create cart
+      const cartId = await ensureCart();
+
+      // Build line item
+      const lineItem = buildLineItemPayload();
+
+      // Add item to cart - backend expects { line_items: [...] }
+      const addResponse = await fetch(`/api/cart/${cartId}/items`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ line_items: [lineItem] }),
+      });
+
+      let responseData: any;
+      try {
+        responseData = await addResponse.json();
+      } catch {
+        responseData = {};
+      }
+
+      if (!addResponse.ok) {
+        const errorMsg = responseData?.error || "Failed to add item to cart";
+        console.error("Add to cart response error:", {
+          status: addResponse.status,
+          error: errorMsg,
+          responseData,
+        });
+        throw new Error(errorMsg);
+      }
+
+      // Store cart ID for checkout
+      localStorage.setItem("cart_id", cartId);
+
       setSuccess(true);
-      toast.success("Redirecting to BigCommerce checkout...");
+      toast.success("Item added to cart! Redirecting to checkout...");
 
-      // Store the product and options for checkout
-      const checkoutData = {
-        product_id: productId,
-        quantity: quantity,
-        selectedOptions: selectedOptions,
-        notes: notes,
-        file: file ? file.name : null,
-      };
-
-      sessionStorage.setItem("pending_checkout", JSON.stringify(checkoutData));
-
-      // Redirect to checkout page which will handle BigCommerce checkout
+      // Redirect to checkout page
       setTimeout(() => {
-        window.location.href = `/checkout-bigcommerce`;
-      }, 1500);
+        navigate("/checkout");
+      }, 1000);
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Could not proceed to checkout";
