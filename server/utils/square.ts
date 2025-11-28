@@ -43,10 +43,6 @@ export function getCheckoutApi() {
   return getSquareClient().ordersApi;
 }
 
-export function getOrdersApi() {
-  return getSquareClient().ordersApi;
-}
-
 export async function processSquarePayment(paymentData: {
   sourceId: string;
   amount: number;
