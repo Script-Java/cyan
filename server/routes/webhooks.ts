@@ -141,7 +141,7 @@ async function handleOrderCompleted(data: any): Promise<void> {
  */
 async function handleOrderUpdated(data: any): Promise<void> {
   try {
-    console.log("Processing order update:", data.orderId);
+    console.log("Processing Ecwid order update:", data.orderId);
 
     const { error } = await supabase
       .from("orders")
@@ -149,10 +149,12 @@ async function handleOrderUpdated(data: any): Promise<void> {
         status: data.fulfillmentStatus || data.paymentStatus || "processing",
         updated_at: new Date().toISOString(),
       })
-      .eq("bigcommerce_order_id", data.orderId);
+      .eq("ecwid_order_id", data.orderId);
 
     if (!error) {
-      console.log("Order updated in Supabase:", data.orderId);
+      console.log("Ecwid order updated in Supabase:", data.orderId);
+    } else {
+      console.error("Error updating order in Supabase:", error);
     }
   } catch (error) {
     console.error("Error processing order update:", error);
