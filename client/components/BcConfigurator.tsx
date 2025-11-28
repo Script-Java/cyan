@@ -107,40 +107,45 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
     return item;
   }
 
-  // Add item(s) to cart and optionally include file upload
+  // Add item(s) to cart and redirect to BigCommerce checkout
   async function addToCart() {
     setLoading(true);
     setError("");
     setSuccess(false);
 
     try {
-      const cartId = await ensureCart();
-
-      const payload = { line_items: [buildLineItemPayload()] };
-      const res = await fetch(`/api/cart/${cartId}/items`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Failed to add to cart");
+      // Check if user is logged in
+      const token = localStorage.getItem("auth_token");
+      if (!token) {
+        setError("Please log in to proceed with checkout");
+        toast.error("Please log in to proceed with checkout");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+        return;
       }
 
-      const json = await res.json();
-      setPriceInfo(extractPrices(json));
-
       setSuccess(true);
-      toast.success("Item added to cart! Redirecting to checkout...");
+      toast.success("Redirecting to BigCommerce checkout...");
 
-      // Redirect to checkout after a short delay
+      // Store the product and options for checkout
+      const checkoutData = {
+        product_id: productId,
+        quantity: quantity,
+        selectedOptions: selectedOptions,
+        notes: notes,
+        file: file ? file.name : null,
+      };
+
+      sessionStorage.setItem("pending_checkout", JSON.stringify(checkoutData));
+
+      // Redirect to checkout page which will handle BigCommerce checkout
       setTimeout(() => {
-        window.location.href = `/checkout?cartId=${cartId}`;
+        window.location.href = `/checkout-bigcommerce`;
       }, 1500);
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : "Could not add to cart";
+        err instanceof Error ? err.message : "Could not proceed to checkout";
       console.error("Add to cart error", err);
       setError(message);
       toast.error(message);
