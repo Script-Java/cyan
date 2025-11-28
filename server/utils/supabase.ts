@@ -104,3 +104,125 @@ export async function getCustomerStoreCredit(
     return 0;
   }
 }
+
+interface OrderData {
+  customer_id: number;
+  status: string;
+  total: number;
+  subtotal?: number;
+  tax?: number;
+  shipping?: number;
+  billing_address?: any;
+  shipping_address?: any;
+  items?: any[];
+  bigcommerce_order_id?: number;
+}
+
+export async function createSupabaseOrder(
+  orderData: OrderData,
+): Promise<{ id: number; success: boolean }> {
+  try {
+    const { data, error } = await supabase
+      .from("orders")
+      .insert({
+        customer_id: orderData.customer_id,
+        status: orderData.status || "paid",
+        total: orderData.total,
+        subtotal: orderData.subtotal || 0,
+        tax: orderData.tax || 0,
+        shipping: orderData.shipping || 0,
+        billing_address: orderData.billing_address,
+        shipping_address: orderData.shipping_address,
+        items: orderData.items || [],
+        bigcommerce_order_id: orderData.bigcommerce_order_id,
+      })
+      .select("id")
+      .single();
+
+    if (error) {
+      console.error("Error creating order in Supabase:", error);
+      throw error;
+    }
+
+    console.log("Order created in Supabase:", data?.id);
+    return { id: data?.id, success: true };
+  } catch (error) {
+    console.error("Error creating Supabase order:", error);
+    throw error;
+  }
+}
+
+export async function createOrderItems(
+  orderId: number,
+  items: any[],
+): Promise<void> {
+  try {
+    const itemsData = items.map((item) => ({
+      order_id: orderId,
+      product_id: item.product_id,
+      product_name: item.product_name || "Custom Sticker",
+      quantity: item.quantity,
+      price: item.price,
+      options: item.options,
+      design_file_url: item.design_file_url,
+    }));
+
+    const { error } = await supabase.from("order_items").insert(itemsData);
+
+    if (error) {
+      console.error("Error creating order items:", error);
+      throw error;
+    }
+
+    console.log("Order items created:", orderId);
+  } catch (error) {
+    console.error("Error creating order items:", error);
+    throw error;
+  }
+}
+
+export async function getOrderById(orderId: number, customerId: number): Promise<any> {
+  try {
+    const { data, error } = await supabase
+      .from("orders")
+      .select(
+        `
+        *,
+        order_items (*)
+      `,
+      )
+      .eq("id", orderId)
+      .eq("customer_id", customerId)
+      .single();
+
+    if (error) {
+      console.error("Error fetching order:", error);
+      throw error;
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error getting order:", error);
+    throw error;
+  }
+}
+
+export async function getCustomerOrders(customerId: number): Promise<any[]> {
+  try {
+    const { data, error } = await supabase
+      .from("orders")
+      .select("*")
+      .eq("customer_id", customerId)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching customer orders:", error);
+      throw error;
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error("Error getting customer orders:", error);
+    throw error;
+  }
+}
