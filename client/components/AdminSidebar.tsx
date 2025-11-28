@@ -82,7 +82,7 @@ export default function AdminSidebar() {
       label: "Orders",
       icon: <ShoppingCart className="w-5 h-5" />,
       path: "/admin/orders",
-      badge: 14,
+      badge: pendingOrdersCount,
     },
     {
       label: "Products",
