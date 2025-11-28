@@ -130,7 +130,9 @@ const US_STATES = [
 export default function Checkout() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const cartId = searchParams.get("cartId");
+  const urlCartId = searchParams.get("cartId");
+  const localCartId = localStorage.getItem("cart_id");
+  const cartId = urlCartId || localCartId;
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [subtotal, setSubtotal] = useState(0);
