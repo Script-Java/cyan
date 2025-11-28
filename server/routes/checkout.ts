@@ -41,7 +41,7 @@ interface CheckoutRequest {
 /**
  * Create an order from checkout
  * Primary: Supabase (always succeeds)
- * Secondary: BigCommerce (optional, errors are logged but don't fail the order)
+ * Secondary: Ecwid (optional, errors are logged but don't fail the order)
  */
 export const handleCheckout: RequestHandler = async (req, res) => {
   try {
