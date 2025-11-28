@@ -1,4 +1,5 @@
-import { Client, ApiError } from "square";
+import squarePkg from "square";
+const { Client } = squarePkg;
 
 const squareClient = new Client({
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
