@@ -23,7 +23,24 @@ interface PaymentRequest {
  */
 export const handleGetPaymentMethods: RequestHandler = async (req, res) => {
   try {
-    const methods = await bigCommerceAPI.getPaymentMethods();
+    // Return standard payment methods for Ecwid
+    const methods = [
+      {
+        id: "stripe",
+        name: "Credit Card (Stripe)",
+        type: "card",
+      },
+      {
+        id: "paypal",
+        name: "PayPal",
+        type: "paypal",
+      },
+      {
+        id: "bank_transfer",
+        name: "Bank Transfer",
+        type: "bank",
+      },
+    ];
 
     res.json({
       success: true,
