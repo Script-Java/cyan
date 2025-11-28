@@ -58,12 +58,12 @@ export default function EcwidStore() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-[#030140] to-black text-white">
+    <div className="min-h-screen bg-white text-gray-900">
       <Header />
       <main className="pt-24">
         <div className="max-w-7xl mx-auto px-4 py-12">
-          <h1 className="text-4xl font-bold mb-2">Ecwid Store</h1>
-          <p className="text-white/60 mb-8">Browse our complete collection of stickers and products</p>
+          <h1 className="text-4xl font-bold mb-2 text-gray-900">Ecwid Store</h1>
+          <p className="text-gray-600 mb-8">Browse our complete collection of stickers and products</p>
           
           <div id={`my-store-${ECWID_STORE_ID}`}></div>
         </div>
