@@ -59,7 +59,7 @@ export default function Index() {
       <main className="pt-20">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-b from-[#030140] via-[#1a0d5e] to-[#0f0a3a] text-white overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-32">
-          <div className="absolute inset-0 opacity-20">
+          <div className="absolute opacity-20" style={{ left: "24534px", top: "6294px", right: "0px", bottom: "0px" }}>
             <div className="absolute top-10 right-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
             <div className="absolute bottom-0 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
           </div>
