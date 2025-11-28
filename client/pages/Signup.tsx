@@ -93,6 +93,7 @@ export default function Signup() {
 
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("customerId", data.customer.id.toString());
+      localStorage.setItem("isAdmin", String(data.customer.isAdmin || false));
       navigate("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Signup failed");
