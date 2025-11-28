@@ -68,6 +68,11 @@ import {
   handleCreateCheckoutSession,
   handleConfirmCheckout,
 } from "./routes/square";
+import {
+  handleGetEcwidProduct,
+  handleListEcwidProducts,
+  handleSearchEcwidProducts,
+} from "./routes/ecwid-products";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
