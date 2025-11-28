@@ -29,6 +29,14 @@ export function getLocationsApi() {
   return getSquareClient().locationsApi;
 }
 
+export function getOrdersApi() {
+  return getSquareClient().ordersApi;
+}
+
+export function getCheckoutApi() {
+  return getSquareClient().checkoutApi;
+}
+
 export async function processSquarePayment(paymentData: {
   sourceId: string;
   amount: number;
