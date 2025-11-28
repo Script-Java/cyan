@@ -137,6 +137,83 @@ export default function AdminDashboard() {
                 </div>
               ) : (
                 <div className="space-y-8">
+                  {/* Pending Orders Section */}
+                  {pendingOrdersCount > 0 && (
+                    <div className="bg-white rounded-lg border border-gray-200 p-8">
+                      <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                          <Package className="w-7 h-7 text-orange-600" />
+                          Pending Orders
+                        </h2>
+                        <p className="text-gray-600 mt-2">
+                          {pendingOrdersCount} order{pendingOrdersCount !== 1 ? "s" : ""} awaiting shipment
+                        </p>
+                      </div>
+
+                      {/* Orders Table */}
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left text-sm">
+                          <thead>
+                            <tr className="border-b border-gray-200 bg-gray-50">
+                              <th className="px-4 py-3 font-semibold text-gray-900">
+                                Order ID
+                              </th>
+                              <th className="px-4 py-3 font-semibold text-gray-900">
+                                Customer
+                              </th>
+                              <th className="px-4 py-3 font-semibold text-gray-900">
+                                Email
+                              </th>
+                              <th className="px-4 py-3 font-semibold text-gray-900">
+                                Date
+                              </th>
+                              <th className="px-4 py-3 font-semibold text-gray-900 text-right">
+                                Total
+                              </th>
+                              <th className="px-4 py-3 font-semibold text-gray-900">
+                                Action
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {pendingOrders.map((order) => (
+                              <tr
+                                key={order.id}
+                                className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                              >
+                                <td className="px-4 py-4 font-semibold text-gray-900">
+                                  #{order.id}
+                                </td>
+                                <td className="px-4 py-4 text-gray-700">
+                                  {order.customerName || "Guest"}
+                                </td>
+                                <td className="px-4 py-4 text-gray-600 flex items-center gap-2">
+                                  <Mail className="w-4 h-4" />
+                                  {order.customerEmail}
+                                </td>
+                                <td className="px-4 py-4 text-gray-600 flex items-center gap-2">
+                                  <Calendar className="w-4 h-4" />
+                                  {new Date(order.dateCreated).toLocaleDateString()}
+                                </td>
+                                <td className="px-4 py-4 font-semibold text-gray-900 text-right">
+                                  ${order.total.toFixed(2)}
+                                </td>
+                                <td className="px-4 py-4">
+                                  <button
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs"
+                                  >
+                                    View
+                                    <ChevronRight className="w-3 h-3" />
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Quick Access Links */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {adminLinks.map((link, index) => (
