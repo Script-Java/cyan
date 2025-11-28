@@ -19,9 +19,11 @@ export default function GreetingBanner({
 
   return (
     <div
-      className="relative rounded-2xl overflow-hidden mb-8 aspect-video max-w-full bg-cover bg-center shadow-xl"
+      className="relative rounded-2xl overflow-hidden mb-6 max-w-full bg-cover bg-center shadow-xl"
       style={{
         backgroundImage: `url('${bannerImage}')`,
+        aspectRatio: '5.2 / 1',
+        minHeight: '207px',
       }}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -48,10 +50,10 @@ export default function GreetingBanner({
       )}
 
       {/* Content */}
-      <div className="absolute inset-0 flex items-start gap-6 p-6 sm:p-8 z-30">
+      <div className="absolute inset-0 flex items-start gap-4 p-4 sm:p-6 z-30">
         {/* Avatar */}
         <div className="relative group">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-white/20 backdrop-blur-md bg-white/10 flex items-center justify-center flex-shrink-0 shadow-lg">
+          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 backdrop-blur-md bg-white/10 flex items-center justify-center flex-shrink-0 shadow-lg">
             <img
               src={avatarUrl || defaultAvatar}
               alt="Profile"
@@ -82,21 +84,21 @@ export default function GreetingBanner({
         </div>
 
         {/* Text Content */}
-        <div className="flex-1 pt-2">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2 tracking-tight">
+        <div className="flex-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 tracking-tight">
             Greetings, {firstName}
           </h1>
-          <div className="flex items-center gap-2 mb-4">
-            <p className="text-blue-100 text-sm sm:text-base font-medium">
+          <div className="flex items-center gap-2 mb-2">
+            <p className="text-blue-100 text-xs sm:text-sm font-medium">
               StickerHub Dashboard
             </p>
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-cyan-400/50 backdrop-blur-md">
+            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-cyan-400/50 backdrop-blur-md">
               <span className="bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
                 v4
               </span>
             </span>
           </div>
-          <div className="font-mono text-xs sm:text-sm text-green-300 drop-shadow-lg">
+          <div className="font-mono text-xs text-green-300 drop-shadow-lg">
             <p className="opacity-90">
               &gt; MISSION ACTIVE &gt; REVIEW YOUR ORDERS BELOW
             </p>
