@@ -297,7 +297,14 @@ export const handleDeleteCustomerAccount: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    await bigCommerceAPI.deleteCustomer(customerId);
+    const { error } = await supabase
+      .from("customers")
+      .delete()
+      .eq("id", customerId);
+
+    if (error) {
+      return res.status(500).json({ error: "Failed to delete account" });
+    }
 
     res.json({
       success: true,
