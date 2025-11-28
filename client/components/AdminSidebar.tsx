@@ -225,7 +225,7 @@ export default function AdminSidebar() {
   return (
     <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-gray-50 border-r border-gray-200 flex flex-col overflow-hidden">
       {/* Main Navigation */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+      <div className="flex-1 overflow-y-auto">
         <nav className="p-4 space-y-1">
           {mainNavItems.map((item) => (
             <NavLink key={item.label} item={item} />
