@@ -1,9 +1,14 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Header from "@/components/Header";
 
 const ECWID_STORE_ID = "120154275";
 
 export default function EcwidStore() {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get("search") || "";
+
   useEffect(() => {
     // Add CSS to ensure Ecwid store is visible and hide branding
     const style = document.createElement("style");
