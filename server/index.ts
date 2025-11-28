@@ -40,6 +40,13 @@ import {
   handleGetBigCommerceCheckoutUrl,
 } from "./routes/bigcommerce-checkout";
 import {
+  handleGetCustomerCredit,
+  handleGetAllCustomersCredit,
+  handleModifyStoreCredit,
+  handleGetCreditHistory,
+  handleApplyStoreCreditToOrder,
+} from "./routes/store-credit";
+import {
   handleSupportSubmit,
   handleGetTickets,
   handleGetTicketDetails,
