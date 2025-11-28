@@ -1,10 +1,16 @@
 import { RequestHandler } from "express";
+import { createClient } from "@supabase/supabase-js";
 import {
   getCustomerOrders,
   getOrderById,
   getPendingOrders,
 } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
+
+const supabase = createClient(
+  process.env.SUPABASE_URL || "",
+  process.env.SUPABASE_SERVICE_KEY || "",
+);
 
 /**
  * Get customer's orders from Ecwid
