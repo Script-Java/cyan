@@ -994,6 +994,87 @@ class BigCommerceAPI {
       throw error;
     }
   }
+
+  /**
+   * Get store information (including storefront URL)
+   */
+  async getStoreInfo(): Promise<any> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/store`;
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Get store info failed:", {
+          status: response.status,
+          statusText: response.statusText,
+        });
+        throw new Error("Failed to fetch store information");
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse store info response:", parseError);
+        throw new Error("Failed to parse store info response");
+      }
+
+      return data?.data || data;
+    } catch (error) {
+      console.error("Get store info error:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Create a draft order (for checkout)
+   */
+  async createDraftOrder(orderData: any): Promise<any> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/draft_orders`;
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse draft order response:", parseError);
+        throw new Error("Failed to parse draft order response");
+      }
+
+      if (!response.ok) {
+        console.error("Draft order creation failed:", {
+          status: response.status,
+          error: data,
+        });
+        throw new Error(
+          data?.errors?.[0]?.message ||
+            data?.error_description ||
+            "Failed to create draft order",
+        );
+      }
+
+      return data?.data || data;
+    } catch (error) {
+      console.error("Draft order creation error:", error);
+      throw error;
+    }
+  }
 }
 
 // Export singleton instance
