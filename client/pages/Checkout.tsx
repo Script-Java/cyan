@@ -423,11 +423,11 @@ export default function Checkout() {
       }
 
       console.log("Order created successfully:", result.data.id);
-      toast.success("Order created successfully!");
+      toast.success("Order created! Redirecting to confirmation...");
       localStorage.removeItem("cart_id");
       setTimeout(() => {
         navigate(`/order-confirmation?orderId=${result.data.id}`);
-      }, 1500);
+      }, 1000);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to create order";
