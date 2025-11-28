@@ -151,19 +151,9 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Mobile Cart Button (hidden on larger screens) */}
+            {/* Mobile Cart Widget (hidden on larger screens) */}
             <div className="md:hidden flex items-center">
-              <Link
-                to="/cart"
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors relative"
-              >
-                <ShoppingCart className="w-6 h-6 text-white" />
-                {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
+              <div className="ec-cart-widget"></div>
             </div>
 
             {/* Desktop Navigation */}
