@@ -30,14 +30,19 @@ export default function EcwidStore() {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/ecwid-products?limit=20");
+        const storeId = "120154275";
+        const token = "secret_fzX1R2ueKmX7eSvzehmdH8BAMzG85zpW";
+
+        const response = await fetch(
+          `https://api.ecwid.com/api/v3/${storeId}/products?limit=20&token=${token}`,
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
 
         const data = await response.json();
-        setProducts(data.products || []);
+        setProducts(data.items || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load products");
       } finally {
