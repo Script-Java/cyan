@@ -357,7 +357,7 @@ export default function CheckoutBigCommerce() {
     );
   }
 
-  if (error && !checkoutData) {
+  if (error && isLoading === false && !checkoutData) {
     return (
       <>
         <Header />
