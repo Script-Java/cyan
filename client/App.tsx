@@ -46,6 +46,7 @@ export default function App() {
             <Route path="/products" element={<Products />} />
             <Route path="/product/:productId" element={<Product />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/ecwid-store" element={<EcwidStore />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route
               path="/checkout-bigcommerce"
