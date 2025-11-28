@@ -22,6 +22,35 @@ export default function EcwidStore() {
       .ecwid > .powered-by {
         display: none !important;
       }
+
+      /* Product options layout in columns */
+      .ec-product-details__options,
+      .ec-product-details__options-list,
+      .product-options {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+        gap: 20px !important;
+      }
+
+      .ec-option-section,
+      .ec-product-details__option,
+      .product-option {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
+
+      .details-options {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+        gap: 20px !important;
+      }
+
+      .details-options__item {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
     `;
     document.head.appendChild(style);
 
