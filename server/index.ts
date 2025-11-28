@@ -5,8 +5,6 @@ import { handleDemo } from "./routes/demo";
 import {
   handleLogin,
   handleSignup,
-  handleBigCommerceAuth,
-  handleBigCommerceCallback,
   handleLogout,
 } from "./routes/auth";
 import {
