@@ -5,17 +5,21 @@ const ECWID_STORE_ID = "120154275";
 
 export default function EcwidStore() {
   useEffect(() => {
-    // Add CSS to hide Ecwid branding
+    // Add CSS to ensure Ecwid store is visible and hide branding
     const style = document.createElement("style");
     style.textContent = `
+      #my-store-${ECWID_STORE_ID} {
+        display: block !important;
+        min-height: auto !important;
+      }
       .ec-powered-by,
       .ecwid-powered-by,
-      .ec-footer,
-      .ecwid-footer,
-      .ec-store-footer,
-      .ecwid-store-footer,
-      [class*="poweredby"],
-      .ec-powered-text {
+      .ec-powered-by-link,
+      .ecwid-powered-by-link {
+        display: none !important;
+      }
+      .ec-store > .powered-by,
+      .ecwid > .powered-by {
         display: none !important;
       }
     `;
@@ -35,14 +39,13 @@ export default function EcwidStore() {
       script2.textContent = `xProductBrowser("categoriesPerRow=3","views=grid(20,3) list(60) table(60)","categoryView=grid","searchView=list","id=my-store-${ECWID_STORE_ID}");`;
       document.body.appendChild(script2);
 
-      // Hide powered by text after a short delay to ensure Ecwid is fully loaded
+      // Ensure the store container is visible after Ecwid loads
       setTimeout(() => {
-        document.querySelectorAll("*").forEach((el) => {
-          if (el.textContent && el.textContent.includes("Powered by")) {
-            el.style.display = "none";
-          }
-        });
-      }, 1000);
+        const storeContainer = document.getElementById(`my-store-${ECWID_STORE_ID}`);
+        if (storeContainer) {
+          storeContainer.style.display = "block";
+        }
+      }, 500);
     };
 
     return () => {
