@@ -139,63 +139,6 @@ export default function Header() {
               <div className="ec-cart-widget"></div>
             </div>
 
-            {/* Desktop Search Bar */}
-            <form
-              onSubmit={handleSearchSubmit}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                fontWeight: "400",
-                margin: "0 16px 0 4px",
-              }}
-            >
-              <div style={{ fontWeight: "400", position: "relative" }}>
-                <input
-                  type="text"
-                  placeholder="Search stickers..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  style={{
-                    display: "inline-block",
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                    borderColor: "rgba(255, 255, 255, 0.2)",
-                    borderRadius: "8px",
-                    borderWidth: "1.11111px",
-                    fontWeight: "400",
-                    transitionDuration: "0.15s",
-                    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
-                    width: "250px",
-                    alignSelf: "stretch",
-                    minHeight: "1px",
-                    maxWidth: "200px",
-                    padding: "8px 16px",
-                    color: "white",
-                  }}
-                />
-                <button
-                  type="submit"
-                  style={{
-                    borderRadius: "4px",
-                    display: "block",
-                    fontWeight: "400",
-                    position: "absolute",
-                    right: "8px",
-                    top: "50%",
-                    transitionDuration: "0.15s",
-                    transitionProperty:
-                      "color, background-color, border-color, text-decoration-color, fill, stroke",
-                    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
-                    transform: "translateY(-50%)",
-                    backgroundColor: "rgba(0, 0, 0, 0)",
-                    borderColor: "rgba(0, 0, 0, 0)",
-                    padding: "4px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <Search className="w-5 h-5 text-white/60 hover:text-white" />
-                </button>
-              </div>
-            </form>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
