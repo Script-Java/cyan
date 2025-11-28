@@ -137,8 +137,10 @@ export default function AdminDashboard() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-50">
-        <div className="pt-20">
+      <div className="flex">
+        <AdminSidebar />
+        <main className="flex-1 ml-64 min-h-screen bg-gray-50">
+          <div className="pt-6">
           {/* Header Section */}
           <div className="bg-white border-b border-gray-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -378,6 +380,7 @@ export default function AdminDashboard() {
           </div>
         </div>
       </main>
+      </div>
     </>
   );
 }
