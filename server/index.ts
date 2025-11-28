@@ -66,7 +66,11 @@ export function createServer() {
   // Error handling for JSON parsing
   app.use((err: any, _req: any, res: any, next: any) => {
     if (err instanceof SyntaxError && "body" in err) {
+      console.error("JSON parsing error:", err.message);
       return res.status(400).json({ error: "Invalid JSON in request body" });
+    }
+    if (err) {
+      console.error("Unhandled middleware error:", err);
     }
     next(err);
   });
