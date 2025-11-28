@@ -10,51 +10,38 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl || "", supabaseKey || "");
 
-interface ProductRow {
-  id?: string;
-  ecwid_id?: string;
-  sku?: string;
-  name?: string;
-  description?: string;
-  price?: string;
-  image_url?: string;
-  rating?: string;
-  reviews_count?: string;
+interface EcwidProduct {
+  product_internal_id: string;
+  product_sku: string;
+  product_name: string;
+  product_price: string;
+  product_description: string;
+  product_media_main_image_url: string;
+  product_media_main_image_alt: string;
+  [key: string]: string;
 }
 
-function parseCSV(csvText: string): ProductRow[] {
-  const lines = csvText.trim().split("\n");
-  if (lines.length < 2) {
-    return [];
-  }
+interface EcwidOption {
+  product_internal_id: string;
+  product_option_name: string;
+  product_option_type: string;
+  product_option_is_required: string;
+  product_option_value: string;
+  product_option_markup: string;
+}
 
-  const headers = lines[0]
-    .split(",")
-    .map((h) => h.trim().toLowerCase().replace(/["\s]/g, ""));
+interface EcwidVariation {
+  product_internal_id: string;
+  product_price: string;
+  product_media_main_image_url: string;
+  product_variation_sku?: string;
+  [key: string]: string | undefined;
+}
 
-  const products: ProductRow[] = [];
-
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (!line) continue;
-
-    const values = parseCSVLine(line);
-    if (values.length === 0) continue;
-
-    const product: ProductRow = {};
-
-    headers.forEach((header, index) => {
-      if (values[index] !== undefined) {
-        product[header as keyof ProductRow] = values[index].trim();
-      }
-    });
-
-    if (product.name && (product.price || product.sku)) {
-      products.push(product);
-    }
-  }
-
-  return products;
+interface ParsedProduct {
+  product: EcwidProduct;
+  options: Map<string, EcwidOption[]>;
+  variations: EcwidVariation[];
 }
 
 function parseCSVLine(line: string): string[] {
@@ -85,35 +72,176 @@ function parseCSVLine(line: string): string[] {
   return result;
 }
 
+function parseEcwidCSV(csvText: string): ParsedProduct[] {
+  const lines = csvText.trim().split("\n");
+  if (lines.length < 2) {
+    return [];
+  }
+
+  const headers = lines[0]
+    .split(",")
+    .map((h) => h.trim().toLowerCase().replace(/["\s]/g, ""));
+
+  const productMap = new Map<string, ParsedProduct>();
+
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    const values = parseCSVLine(line);
+    if (values.length === 0) continue;
+
+    const row: { [key: string]: string } = {};
+    headers.forEach((header, index) => {
+      if (values[index] !== undefined) {
+        row[header] = values[index].trim();
+      }
+    });
+
+    const type = row.type || "";
+    const productId = row.product_internal_id || "";
+
+    if (!productId) continue;
+
+    // Initialize product entry if not exists
+    if (!productMap.has(productId)) {
+      productMap.set(productId, {
+        product: row as EcwidProduct,
+        options: new Map(),
+        variations: [],
+      });
+    }
+
+    const parsed = productMap.get(productId)!;
+
+    if (type === "product") {
+      parsed.product = row as EcwidProduct;
+    } else if (type === "product_option") {
+      const optionName = row.product_option_name || "";
+      if (optionName) {
+        if (!parsed.options.has(optionName)) {
+          parsed.options.set(optionName, []);
+        }
+        parsed.options.get(optionName)!.push(row as EcwidOption);
+      }
+    } else if (type === "product_variation") {
+      parsed.variations.push(row as EcwidVariation);
+    }
+  }
+
+  return Array.from(productMap.values());
+}
+
+function buildProductFromEcwid(parsed: ParsedProduct): any {
+  const product = parsed.product;
+  const variations = parsed.variations;
+
+  // Calculate price range from variations
+  let basePrice = parseFloat(product.product_price) || 0;
+  let minPrice = basePrice;
+  let maxPrice = basePrice;
+
+  if (variations.length > 0) {
+    const prices = variations
+      .map((v) => parseFloat(v.product_price) || 0)
+      .filter((p) => p > 0);
+    if (prices.length > 0) {
+      minPrice = Math.min(...prices);
+      maxPrice = Math.max(...prices);
+      basePrice = minPrice;
+    }
+  }
+
+  // Build options array
+  const options: any[] = [];
+  parsed.options.forEach((optionItems, optionName) => {
+    const choices = optionItems
+      .filter((item) => item.product_option_value)
+      .map((item) => ({
+        text: item.product_option_value,
+        markup: item.product_option_markup || "0",
+      }));
+
+    if (choices.length > 0) {
+      options.push({
+        name: optionName,
+        type: optionItems[0]?.product_option_type || "DROPDOWNLIST",
+        required: optionItems[0]?.product_option_is_required === "true",
+        choices,
+      });
+    }
+  });
+
+  // Build variations array
+  const variationsFormatted = variations.map((v) => {
+    // Extract variation attribute values from the row
+    const variationAttributes: { [key: string]: string } = {};
+    Object.keys(v).forEach((key) => {
+      if (key.startsWith("product_variation_option_")) {
+        const attrName = key
+          .replace("product_variation_option_", "")
+          .replace(/[{}]/g, "");
+        const value = v[key];
+        if (value) {
+          variationAttributes[attrName] = value;
+        }
+      }
+    });
+
+    return {
+      id: v.product_variation_sku || `var-${Object.keys(variationAttributes).join("-")}`,
+      price: parseFloat(v.product_price) || 0,
+      image_url: v.product_media_main_image_url || "",
+      attributes: variationAttributes,
+    };
+  });
+
+  // Get main image - prefer variation image if available
+  let imageUrl = product.product_media_main_image_url || "";
+  if (!imageUrl && variationsFormatted.length > 0) {
+    imageUrl = variationsFormatted[0].image_url;
+  }
+
+  return {
+    ecwid_id: parseInt(product.product_internal_id, 10),
+    sku: product.product_sku || null,
+    name: product.product_name || "",
+    description: product.product_description || null,
+    price: basePrice,
+    base_price: basePrice,
+    min_price: minPrice,
+    max_price: maxPrice,
+    image_url: imageUrl,
+    options: options,
+    variations: variationsFormatted,
+    rating: 0,
+    reviews_count: 0,
+    is_active: true,
+  };
+}
+
 export const handleImportProducts: RequestHandler = async (req, res) => {
   try {
     if (!req.body || !req.body.csv_data) {
       return res.status(400).json({
-        error: "CSV data is required. Send as multipart form data with 'csv_data' field",
+        error:
+          "CSV data is required. Send as POST with 'csv_data' in the request body",
       });
     }
 
     const csvData = req.body.csv_data;
-    const products = parseCSV(csvData);
+    const parsedProducts = parseEcwidCSV(csvData);
 
-    if (products.length === 0) {
+    if (parsedProducts.length === 0) {
       return res.status(400).json({
-        error:
-          "No valid products found in CSV. Ensure CSV has headers and at least name and price columns.",
+        error: "No valid products found in CSV",
       });
     }
 
-    const productsToInsert = products.map((p) => ({
-      ecwid_id: p.ecwid_id ? parseInt(p.ecwid_id, 10) : null,
-      sku: p.sku || null,
-      name: p.name || "",
-      description: p.description || null,
-      price: p.price ? parseFloat(p.price) : 0,
-      image_url: p.image_url || null,
-      rating: p.rating ? parseFloat(p.rating) : 0,
-      reviews_count: p.reviews_count ? parseInt(p.reviews_count, 10) : 0,
-      is_active: true,
-    }));
+    // Convert to database format
+    const productsToInsert = parsedProducts.map((parsed) =>
+      buildProductFromEcwid(parsed),
+    );
 
     const { data, error } = await supabase
       .from("products")
@@ -153,7 +281,11 @@ export const handleGetProducts: RequestHandler = async (req, res) => {
       .select("*", { count: "exact" })
       .eq("is_active", true)
       .order("created_at", { ascending: false })
-      .range(parseInt(offset as string) || 0, (parseInt(offset as string) || 0) + (parseInt(limit as string) || 20) - 1);
+      .range(
+        parseInt(offset as string) || 0,
+        (parseInt(offset as string) || 0) + (parseInt(limit as string) || 20) -
+          1,
+      );
 
     if (error) {
       console.error("Fetch products error:", error);
