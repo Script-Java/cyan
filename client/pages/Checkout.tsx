@@ -330,7 +330,7 @@ export default function Checkout() {
       return;
     }
 
-    if (!squarePaymentToken) {
+    if (!paymentToken) {
       setError("Please enter your payment information");
       return;
     }
