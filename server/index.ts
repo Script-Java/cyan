@@ -118,8 +118,8 @@ export function createServer() {
   app.delete("/api/cart/:cartId/items/:itemIndex", handleRemoveFromCart);
   app.delete("/api/cart/:cartId", handleClearCart);
 
-  // ===== Checkout Routes (Protected) =====
-  app.post("/api/checkout", verifyToken, handleCheckout);
+  // ===== Checkout Routes (Public - guest checkout supported) =====
+  app.post("/api/checkout", handleCheckout);
   app.get("/api/checkout/:cartId", handleGetCheckoutDetails);
 
   // ===== Products Routes (Public) =====
