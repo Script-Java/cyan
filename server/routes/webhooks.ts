@@ -117,6 +117,10 @@ async function handleOrderCompleted(data: any): Promise<void> {
         ecwid_customer_id: data.customerId,
         items: data.items || [],
         created_at: data.createDate || new Date().toISOString(),
+        estimated_delivery_date: data.estimatedDeliveryDate || null,
+        tracking_number: data.trackingNumber || null,
+        tracking_carrier: data.trackingCarrier || null,
+        tracking_url: data.trackingUrl || null,
       };
 
       const { data: newOrder, error } = await supabase
