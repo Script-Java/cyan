@@ -29,7 +29,14 @@ export default function GreetingBanner({
       onMouseLeave={() => setIsHovering(false)}
     >
       {/* Overlay with dark background */}
-      <div className="absolute inset-0 bg-black/30" />
+      <div
+        className="absolute bg-black/30 left-0 right-0 bottom-0"
+        style={{
+          top: "2px",
+          marginBottom: "auto",
+          width: "1280px",
+        }}
+      />
 
       {/* Hover actions */}
       {isHovering && (
