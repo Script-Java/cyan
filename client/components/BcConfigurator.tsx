@@ -129,11 +129,11 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
       // Build line item
       const lineItem = buildLineItemPayload();
 
-      // Add item to cart
+      // Add item to cart - backend expects { line_items: [...] }
       const addResponse = await fetch(`/api/cart/${cartId}/items`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(lineItem),
+        body: JSON.stringify({ line_items: [lineItem] }),
       });
 
       let responseData: any;
@@ -144,9 +144,14 @@ export default function BcConfigurator({ productId, product: builderProduct }) {
       }
 
       if (!addResponse.ok) {
-        throw new Error(
-          responseData?.error || "Failed to add item to cart"
-        );
+        const errorMsg =
+          responseData?.error || "Failed to add item to cart";
+        console.error("Add to cart response error:", {
+          status: addResponse.status,
+          error: errorMsg,
+          responseData,
+        });
+        throw new Error(errorMsg);
       }
 
       // Store cart ID for checkout
