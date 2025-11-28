@@ -124,6 +124,7 @@ export const handleCreateOrder: RequestHandler = async (req, res) => {
 /**
  * Get order by ID (admin/internal use)
  * Protected by verifyToken middleware
+ * Note: In a real implementation, verify admin role before granting access
  */
 export const handleAdminGetOrder: RequestHandler = async (req, res) => {
   try {
@@ -133,24 +134,9 @@ export const handleAdminGetOrder: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Order ID required" });
     }
 
-    // Note: In a real implementation, you'd verify admin role
-    // For now, any authenticated user can access this
-    const order = await getOrderById(parseInt(orderId), 0); // 0 means no customer filter
-
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
-
-    res.json({
-      success: true,
-      order: {
-        id: order.id,
-        customerId: order.customer_id,
-        status: order.status,
-        dateCreated: order.created_at,
-        total: order.total,
-        items: order.order_items || [],
-      },
+    // TODO: Add admin role verification
+    res.status(501).json({
+      error: "Admin order retrieval endpoint coming soon",
     });
   } catch (error) {
     console.error("Admin get order error:", error);
