@@ -72,7 +72,8 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (
       storeInfo = await bigCommerceAPI.getStoreInfo();
       console.log("Store info retrieved:", {
         name: storeInfo.name,
-        url: storeInfo.domain,
+        domain: storeInfo.domain,
+        storeHash: process.env.BIGCOMMERCE_STORE_HASH,
       });
     } catch (storeError) {
       console.error("Failed to get store info:", storeError);
