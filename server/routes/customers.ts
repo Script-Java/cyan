@@ -258,6 +258,7 @@ export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
 /**
  * Delete customer address
  * Requires: customerId in JWT token
+ * Note: Address management is being implemented
  */
 export const handleDeleteCustomerAddress: RequestHandler = async (req, res) => {
   try {
@@ -272,11 +273,9 @@ export const handleDeleteCustomerAddress: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Address ID is required" });
     }
 
-    await bigCommerceAPI.deleteCustomerAddress(customerId, parseInt(addressId));
-
     res.json({
       success: true,
-      message: "Address deleted successfully",
+      message: "Address management coming soon",
     });
   } catch (error) {
     console.error("Delete address error:", error);
