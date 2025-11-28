@@ -44,6 +44,7 @@ import {
   handleUpdateTicketStatus,
   handleCustomerReplyToTicket,
 } from "./routes/support";
+import { handleGetProduct, handleGetProductOptions } from "./routes/products";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
