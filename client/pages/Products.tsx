@@ -4,6 +4,16 @@ import { Link } from "react-router-dom";
 
 const PRODUCTS = [
   {
+    id: "test-square-product",
+    name: "Test Square Product",
+    price: 1.0,
+    image: "/placeholder.svg",
+    rating: 5.0,
+    reviews: 1,
+    description: "Perfect for testing Square checkout integration. $1.00 product.",
+    badge: "Test",
+  },
+  {
     id: "vinyl-stickers",
     name: "Vinyl Stickers",
     price: 0.25,
