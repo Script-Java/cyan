@@ -94,7 +94,7 @@ export async function processSquarePayment(paymentData: {
 
 export async function getSquareLocations(): Promise<any[]> {
   try {
-    const response = await locationsApi.listLocations();
+    const response = await getLocationsApi().listLocations();
     return response.result?.locations || [];
   } catch (error) {
     console.error("Error fetching Square locations:", error);
