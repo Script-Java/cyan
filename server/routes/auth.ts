@@ -124,6 +124,9 @@ export const handleSignup: RequestHandler = async (req, res) => {
       lastName,
     });
 
+    // Check if this is the admin email (special case for initial setup)
+    const isAdminEmail = email === "sticky@stickyslap.com";
+
     // Create customer in Supabase
     const { data: newCustomer, error } = await supabase
       .from("customers")
@@ -133,6 +136,7 @@ export const handleSignup: RequestHandler = async (req, res) => {
         last_name: lastName,
         password_hash: passwordHash,
         store_credit: 0,
+        is_admin: isAdminEmail,
       })
       .select()
       .single();
