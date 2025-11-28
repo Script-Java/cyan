@@ -913,6 +913,87 @@ class BigCommerceAPI {
       return null;
     }
   }
+
+  /**
+   * Get available payment methods
+   */
+  async getPaymentMethods(): Promise<any[]> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/payments/methods`;
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Get payment methods failed:", {
+          status: response.status,
+          statusText: response.statusText,
+        });
+        return [];
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse payment methods response:", parseError);
+        return [];
+      }
+
+      return data?.data || [];
+    } catch (error) {
+      console.error("Get payment methods error:", error);
+      return [];
+    }
+  }
+
+  /**
+   * Process a payment via BigCommerce Payments API
+   */
+  async processPayment(paymentData: any): Promise<any> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/payments`;
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(paymentData),
+      });
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse payment response:", parseError);
+        throw new Error("Failed to parse payment response from BigCommerce");
+      }
+
+      if (!response.ok) {
+        console.error("Payment processing failed:", {
+          status: response.status,
+          error: data,
+        });
+        throw new Error(
+          data?.errors?.[0]?.message ||
+            data?.error_description ||
+            "Payment processing failed",
+        );
+      }
+
+      return data?.data;
+    } catch (error) {
+      console.error("Payment processing error:", error);
+      throw error;
+    }
+  }
 }
 
 // Export singleton instance
