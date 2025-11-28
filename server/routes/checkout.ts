@@ -136,7 +136,12 @@ export const handleCheckout: RequestHandler = async (req, res) => {
 
     // Create order items in Supabase
     if (supabaseOrder.success) {
-      await createOrderItems(supabaseOrder.id, checkoutData.products);
+      const itemsWithPrices = checkoutData.products.map((item) => ({
+        product_id: item.product_id,
+        quantity: item.quantity,
+        price: item.price_inc_tax || 0.25,
+      }));
+      await createOrderItems(supabaseOrder.id, itemsWithPrices);
     }
 
     // Try to create in BigCommerce (SECONDARY - errors are logged but don't fail)
