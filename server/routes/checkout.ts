@@ -117,13 +117,13 @@ export const handleCheckout: RequestHandler = async (req, res) => {
 
     // Create order in Supabase (PRIMARY - must succeed)
     console.log("Creating order in Supabase:", {
-      customerId: checkoutData.customer_id,
+      customerId,
       total,
       productCount: checkoutData.products.length,
     });
 
     const supabaseOrder = await createSupabaseOrder({
-      customer_id: checkoutData.customer_id,
+      customer_id: customerId,
       status: "paid",
       total,
       subtotal,
