@@ -21,6 +21,7 @@ export default function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [storeCredit, setStoreCredit] = useState(0);
   const navigate = useNavigate();
+  const ecwidScriptLoaded = useRef(false);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
