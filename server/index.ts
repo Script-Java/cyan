@@ -60,6 +60,7 @@ import {
   handleSquarePayment,
   handleGetSquareConfig,
   handleGetSquareLocations,
+  handleTestSquareConfig,
 } from "./routes/square";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
