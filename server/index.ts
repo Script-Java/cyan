@@ -34,10 +34,6 @@ import {
 } from "./routes/cart";
 import { handleCheckout, handleGetCheckoutDetails } from "./routes/checkout";
 import {
-  handleCreateBigCommerceCheckout,
-  handleGetBigCommerceCheckoutUrl,
-} from "./routes/bigcommerce-checkout";
-import {
   handleGetCustomerCredit,
   handleGetAllCustomersCredit,
   handleModifyStoreCredit,
