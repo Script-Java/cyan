@@ -49,6 +49,12 @@ export default function AdminSupport() {
   const [statsOpen, setStatsOpen] = useState<boolean>(false);
 
   useEffect(() => {
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
+    if (!isAdmin) {
+      // Redirect to home if not admin
+      window.location.href = "/";
+      return;
+    }
     fetchAllTickets();
   }, [filter]);
 
