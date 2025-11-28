@@ -306,12 +306,12 @@ export default function CheckoutBigCommerce() {
         checkoutPayload.product_options = checkoutData.selectedOptions;
       }
 
-      const headers: HeadersInit = {
+      const headers: Record<string, string> = {
         "Content-Type": "application/json",
       };
 
       if (authToken) {
-        headers.Authorization = `Bearer ${authToken}`;
+        headers["Authorization"] = `Bearer ${authToken}`;
       }
 
       const response = await fetch("/api/bigcommerce/checkout", {
