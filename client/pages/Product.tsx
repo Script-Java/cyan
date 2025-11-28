@@ -1,112 +1,64 @@
 import Header from "@/components/Header";
 import BcConfigurator from "@/components/BcConfigurator";
 import { useParams, Link } from "react-router-dom";
-import { ChevronLeft, Star } from "lucide-react";
+import { ChevronLeft, Star, AlertCircle } from "lucide-react";
+import { useState, useEffect } from "react";
 
-// Mock product data - replace with API call to BigCommerce
-const PRODUCTS = {
-  "vinyl-stickers": {
-    id: 1,
-    name: "Vinyl Stickers",
-    category: "Stickers",
-    price: 0.25,
-    image: "/placeholder.svg",
-    rating: 4.8,
-    reviews: 234,
-    description:
-      "Durable vinyl stickers perfect for laptops, water bottles, and outdoor use. Weather-resistant and UV-protected.",
-    features: [
-      "Waterproof & weather-resistant",
-      "UV-protected colors",
-      "Kiss-cut precision",
-      "Custom shapes available",
-      "Perfect for branding",
-    ],
-    specifications: {
-      material: "Premium vinyl (3.5mil)",
-      finish: "Matte or Gloss",
-      sizes: ["1-5 inches"],
-      minimum: "50 units",
-    },
-  },
-  "die-cut-stickers": {
-    id: 2,
-    name: "Die-Cut Stickers",
-    category: "Stickers",
-    price: 0.3,
-    image: "/placeholder.svg",
-    rating: 4.9,
-    reviews: 189,
-    description:
-      "Custom-cut stickers with any shape you design. White borders removed for a seamless look.",
-    features: [
-      "Any custom shape",
-      "Perfect edges",
-      "High-quality printing",
-      "Bulk discounts available",
-      "Fast turnaround",
-    ],
-    specifications: {
-      material: "Premium vinyl (4mil)",
-      finish: "Matte",
-      sizes: ["1-10 inches"],
-      minimum: "50 units",
-    },
-  },
-  "holographic-stickers": {
-    id: 3,
-    name: "Holographic Stickers",
-    category: "Stickers",
-    price: 0.45,
-    image: "/placeholder.svg",
-    rating: 4.9,
-    reviews: 156,
-    description:
-      "Eye-catching holographic stickers that shimmer and change in the light. Premium quality for special projects.",
-    features: [
-      "Stunning holographic effect",
-      "Premium finish",
-      "Weather-resistant",
-      "Great for premium products",
-      "Collectible quality",
-    ],
-    specifications: {
-      material: "Holographic vinyl (3.5mil)",
-      finish: "Holographic",
-      sizes: ["1-6 inches"],
-      minimum: "100 units",
-    },
-  },
-  "clear-stickers": {
-    id: 4,
-    name: "Clear Stickers",
-    category: "Stickers",
-    price: 0.2,
-    image: "/placeholder.svg",
-    rating: 4.7,
-    reviews: 198,
-    description:
-      "Transparent stickers with vibrant full-color printing. Perfect for windows and glass surfaces.",
-    features: [
-      "Transparent background",
-      "Vibrant colors",
-      "Window-safe",
-      "Professional appearance",
-      "Budget-friendly",
-    ],
-    specifications: {
-      material: "Clear vinyl (3mil)",
-      finish: "Glossy",
-      sizes: ["1-8 inches"],
-      minimum: "50 units",
-    },
-  },
+interface ProductData {
+  id: number;
+  name: string;
+  description?: string;
+  price?: number;
+  image_url?: string;
+  weight?: number;
+  type?: string;
+  status?: string;
+  options?: any[];
+}
+
+// BigCommerce product ID mapping
+const PRODUCT_ID_MAP: Record<string, number> = {
+  "custom-stickers": 112,
+  "vinyl-stickers": 112,
 };
 
 export default function Product() {
   const { productId } = useParams<{ productId: string }>();
+  const [product, setProduct] = useState<ProductData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const product = productId && PRODUCTS[productId as keyof typeof PRODUCTS];
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const bcProductId = productId && PRODUCT_ID_MAP[productId];
+
+        if (!bcProductId) {
+          setError("Product not found");
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch(`/api/products/${bcProductId}`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch product");
+        }
+
+        const data = await response.json();
+        setProduct(data.data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load product");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
 
   if (!product) {
     return (
