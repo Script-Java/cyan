@@ -839,17 +839,29 @@ export default function Checkout() {
                   </CardContent>
                 </Card>
 
-                <SimplePaymentForm
-                  amount={total}
-                  onPaymentSuccess={(token) => {
-                    setPaymentToken(token);
-                    setError(null);
-                  }}
-                  onPaymentError={(error) => {
-                    setError(error);
-                  }}
-                  isProcessing={isSubmitting}
-                />
+                {squareApplicationId ? (
+                  <SquareWebPaymentForm
+                    applicationId={squareApplicationId}
+                    amount={total}
+                    onPaymentSuccess={(token) => {
+                      setPaymentToken(token);
+                      setPaymentError(null);
+                    }}
+                    onPaymentError={(error) => {
+                      setPaymentError(error);
+                      setError(error);
+                    }}
+                    isProcessing={isSubmitting}
+                  />
+                ) : (
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="text-amber-600 text-sm">
+                        Loading payment form...
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
 
                 <Button
                   type="submit"
