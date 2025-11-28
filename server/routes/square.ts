@@ -92,6 +92,7 @@ interface SquareCheckoutRequest {
 export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
   try {
     const checkoutData = req.body as SquareCheckoutRequest;
+    const { supabase } = await import("../utils/supabase");
 
     // Validate required fields
     if (
@@ -109,7 +110,6 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
 
     if (!customerId) {
       // Create a guest customer in Supabase
-      const { supabase } = await import("../utils/supabase");
       const { data: guestCustomer, error: guestError } = await supabase
         .from("customers")
         .insert({
