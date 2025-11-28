@@ -320,12 +320,19 @@ export default function CheckoutBigCommerce() {
         body: JSON.stringify(checkoutPayload),
       });
 
-      const result = await response.json();
+      let result: any;
+
+      try {
+        result = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse checkout response:", parseError);
+        throw new Error("Invalid response from server");
+      }
 
       if (!response.ok) {
-        throw new Error(
-          result.error || "Failed to create BigCommerce checkout",
-        );
+        const errorMessage =
+          result?.error || result?.message || "Failed to create BigCommerce checkout";
+        throw new Error(errorMessage);
       }
 
       // Redirect to BigCommerce checkout
