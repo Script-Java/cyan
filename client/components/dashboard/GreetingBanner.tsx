@@ -38,6 +38,29 @@ export default function GreetingBanner({
         }}
       />
 
+      {/* Sticker Type Selector */}
+      <div
+        className="absolute flex-1 left-0 right-0 flex items-center justify-center z-30"
+        style={{
+          margin: "0 16px",
+          position: "relative",
+        }}
+      >
+        <button className="flex items-center justify-between w-full max-w-xs px-4 py-2 rounded-lg border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 transition-colors gap-2">
+          <div className="flex items-center gap-2">
+            <img
+              src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1763707664/Favicon_StickerShuttle_ml7yh2.png"
+              alt="Sticker Shuttle"
+              className="w-3.5 h-3.5"
+            />
+            <span className="text-sm font-medium text-white">
+              Select sticker type...
+            </span>
+          </div>
+          <ChevronDown className="w-5 h-5 text-white/70" />
+        </button>
+      </div>
+
       {/* Hover actions */}
       {isHovering && (
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-4 z-20 transition-opacity duration-200">
