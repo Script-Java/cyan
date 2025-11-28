@@ -337,16 +337,23 @@ export default function Checkout() {
       });
 
       let paymentResult: any;
+      const responseText = await paymentResponse.text();
+
       try {
-        paymentResult = await paymentResponse.json();
+        paymentResult = responseText ? JSON.parse(responseText) : {};
       } catch (parseError) {
+        console.error("Failed to parse payment response:", responseText);
         throw new Error(
-          `Failed to parse payment response: ${parseError instanceof Error ? parseError.message : "Unknown error"}`,
+          `Payment response parsing failed: Invalid JSON response. Status: ${paymentResponse.status}`,
         );
       }
 
       if (!paymentResponse.ok) {
-        throw new Error(paymentResult.error || "Payment processing failed");
+        throw new Error(
+          paymentResult?.error ||
+            paymentResult?.message ||
+            `Payment processing failed (${paymentResponse.status})`,
+        );
       }
 
       toast.success("Payment processed successfully!");
