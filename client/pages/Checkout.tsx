@@ -176,9 +176,7 @@ export default function Checkout() {
     cvv: "",
   });
 
-  const [paymentToken, setPaymentToken] = useState<string | null>(null);
   const [squareApplicationId, setSquareApplicationId] = useState<string>("");
-  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   // Load auth from localStorage (optional for guest checkout)
   useEffect(() => {
