@@ -815,6 +815,104 @@ class BigCommerceAPI {
       return 0;
     }
   }
+
+  /**
+   * Get product by ID
+   */
+  async getProduct(productId: number): Promise<BigCommerceProduct | null> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/catalog/products/${productId}`;
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Get product failed:", {
+          status: response.status,
+          statusText: response.statusText,
+        });
+        return null;
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse product response:", parseError);
+        return null;
+      }
+
+      return data?.data || null;
+    } catch (error) {
+      console.error("Get product error:", error);
+      return null;
+    }
+  }
+
+  /**
+   * Get product options
+   */
+  async getProductOptions(productId: number): Promise<BigCommerceProductOption[]> {
+    const url = `${BIGCOMMERCE_API_URL}/${this.storeHash}/v3/catalog/products/${productId}/options`;
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "X-Auth-Token": this.accessToken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Get product options failed:", {
+          status: response.status,
+          statusText: response.statusText,
+        });
+        return [];
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse product options response:", parseError);
+        return [];
+      }
+
+      return data?.data || [];
+    } catch (error) {
+      console.error("Get product options error:", error);
+      return [];
+    }
+  }
+
+  /**
+   * Get product by ID with options
+   */
+  async getProductWithOptions(productId: number): Promise<any> {
+    try {
+      const product = await this.getProduct(productId);
+      if (!product) {
+        return null;
+      }
+
+      const options = await this.getProductOptions(productId);
+
+      return {
+        ...product,
+        options,
+      };
+    } catch (error) {
+      console.error("Get product with options error:", error);
+      return null;
+    }
+  }
 }
 
 // Export singleton instance
