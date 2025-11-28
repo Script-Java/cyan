@@ -169,73 +169,13 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     // Create order items in Supabase
     await createOrderItems(supabaseOrder.id, checkoutData.items as any);
 
-    // Build line items for Square Checkout
-    const lineItems = checkoutData.items.map((item) => ({
-      name: item.product_name || `Product #${item.product_id}`,
-      quantity: String(item.quantity),
-      basePriceMoney: {
-        amount: Math.round((item.price || 0.25) * 100),
-        currency: checkoutData.currency || "USD",
-      },
-    }));
-
-    // Add tax and shipping as line items
-    if (checkoutData.tax > 0) {
-      lineItems.push({
-        name: "Tax",
-        quantity: "1",
-        basePriceMoney: {
-          amount: Math.round(checkoutData.tax * 100),
-          currency: checkoutData.currency || "USD",
-        },
-      });
-    }
-
-    if (checkoutData.shipping > 0) {
-      lineItems.push({
-        name: "Shipping",
-        quantity: "1",
-        basePriceMoney: {
-          amount: Math.round(checkoutData.shipping * 100),
-          currency: checkoutData.currency || "USD",
-        },
-      });
-    }
-
-    // Build checkout request
-    let baseUrl = "http://localhost:8080";
-    if (process.env.BASE_URL) {
-      baseUrl = process.env.BASE_URL;
-    } else if (process.env.VERCEL_URL) {
-      baseUrl = `https://${process.env.VERCEL_URL}`;
-    } else if (process.env.FLY_APP_NAME) {
-      baseUrl = `https://${process.env.FLY_APP_NAME}.fly.dev`;
-    }
-    const checkoutBody = {
-      idempotencyKey: `${Date.now()}-${supabaseOrder.id}`,
-      order: {
-        lineItems,
-        customerId: checkoutData.customerId
-          ? String(checkoutData.customerId)
-          : undefined,
-        referenceId: supabaseOrder.id,
-      },
-      redirectUrl: `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`,
-      merchantSupportEmail: checkoutData.customerEmail,
-      askForShippingAddress: false,
-      prePopulatedData: {
-        buyerEmail: checkoutData.customerEmail,
-        buyerPhoneNumber: undefined,
-      },
-    };
-
     console.log("Creating Square Checkout with:", {
       orderId: supabaseOrder.id,
       total: checkoutData.total,
       currency: checkoutData.currency,
     });
 
-    // Build checkout request for Square Payment Link
+    // Build checkout request for Square
     let baseUrl = "http://localhost:8080";
     if (process.env.BASE_URL) {
       baseUrl = process.env.BASE_URL;
