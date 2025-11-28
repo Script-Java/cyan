@@ -819,33 +819,22 @@ export default function Checkout() {
                   </CardContent>
                 </Card>
 
-                {squareApplicationId && (
-                  <SquarePaymentForm
-                    applicationId={squareApplicationId}
-                    amount={total}
-                    onPaymentSuccess={(token) => {
-                      setSquarePaymentToken(token);
-                      setSquareError(null);
-                    }}
-                    onPaymentError={(error) => {
-                      setSquareError(error);
-                      setError(error);
-                    }}
-                    isProcessing={isSubmitting}
-                  />
-                )}
-
-                {squareError && (
-                  <Alert variant="destructive">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertDescription>{squareError}</AlertDescription>
-                  </Alert>
-                )}
+                <SimplePaymentForm
+                  amount={total}
+                  onPaymentSuccess={(token) => {
+                    setPaymentToken(token);
+                    setError(null);
+                  }}
+                  onPaymentError={(error) => {
+                    setError(error);
+                  }}
+                  isProcessing={isSubmitting}
+                />
 
                 <Button
                   type="submit"
                   className="w-full bg-[#FFD713] text-[#030140] hover:bg-[#FFD713]/90 py-6 text-lg font-bold disabled:opacity-50"
-                  disabled={isSubmitting || !squarePaymentToken}
+                  disabled={isSubmitting || !paymentToken}
                 >
                   {isSubmitting ? (
                     <>
