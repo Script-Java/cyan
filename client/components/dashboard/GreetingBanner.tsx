@@ -1,4 +1,4 @@
-import { Edit3, RotateCcw } from "lucide-react";
+import { Edit3, RotateCcw, ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 interface GreetingBannerProps {
