@@ -75,27 +75,37 @@ export const handleEcwidOrderWebhook: RequestHandler = async (req, res) => {
  */
 async function handleOrderCompleted(data: any): Promise<void> {
   try {
-    console.log("Processing order completion:", data.orderId);
+    console.log("Processing Ecwid order completion:", data.orderId, "Customer:", data.customerId);
 
-    // Check if order exists in Supabase
+    // Check if order exists in Supabase by Ecwid order ID
     const { data: existingOrder } = await supabase
       .from("orders")
       .select("id")
-      .eq("bigcommerce_order_id", data.orderId)
+      .eq("ecwid_order_id", data.orderId)
       .single();
 
     if (existingOrder) {
       // Update status
       await supabase
         .from("orders")
-        .update({ status: "completed", updated_at: new Date().toISOString() })
+        .update({
+          status: "completed",
+          updated_at: new Date().toISOString()
+        })
         .eq("id", existingOrder.id);
 
-      console.log("Order updated in Supabase:", existingOrder.id);
+      console.log("Ecwid order updated in Supabase:", existingOrder.id);
     } else {
+      // Find customer by Ecwid customer ID
+      const { data: customer } = await supabase
+        .from("customers")
+        .select("id")
+        .eq("ecwid_customer_id", data.customerId)
+        .single();
+
       // Create new order record
       const orderData = {
-        customer_id: data.customerId,
+        customer_id: customer?.id || null,
         status: "completed",
         total: data.total || 0,
         subtotal: data.subtotal || 0,
@@ -103,8 +113,10 @@ async function handleOrderCompleted(data: any): Promise<void> {
         shipping: data.shipping || 0,
         billing_address: data.billingPerson,
         shipping_address: data.shippingPerson,
-        bigcommerce_order_id: data.orderId,
+        ecwid_order_id: data.orderId,
+        ecwid_customer_id: data.customerId,
         items: data.items || [],
+        created_at: data.createDate || new Date().toISOString(),
       };
 
       const { data: newOrder, error } = await supabase
@@ -114,7 +126,9 @@ async function handleOrderCompleted(data: any): Promise<void> {
         .single();
 
       if (!error && newOrder) {
-        console.log("Order created in Supabase:", newOrder.id);
+        console.log("Ecwid order created in Supabase:", newOrder.id);
+      } else if (error) {
+        console.error("Error creating order in Supabase:", error);
       }
     }
   } catch (error) {
