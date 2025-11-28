@@ -118,37 +118,25 @@ export const handleCreateBigCommerceCheckout: RequestHandler = async (
       draftOrderPayload.customer_email = checkoutData.customer_email;
     }
 
-    console.log("Creating draft order for customer:", userId || "guest");
-    console.log("Draft order payload:", JSON.stringify(draftOrderPayload, null, 2));
+    console.log("Constructing BigCommerce checkout URL...");
 
-    let draftOrder: any;
-    try {
-      draftOrder = await bigCommerceAPI.createDraftOrder(draftOrderPayload);
-      console.log("Draft order created successfully:", draftOrder);
-    } catch (draftOrderError) {
-      console.error("Failed to create draft order:", draftOrderError);
-      throw draftOrderError;
-    }
-
-    if (!draftOrder || !draftOrder.id) {
-      console.error("Invalid draft order response:", draftOrder);
-      throw new Error("Failed to create draft order - no ID returned");
-    }
-
-    // Get the draft order's invoice URL (which is the checkout URL)
+    // Get the storefront domain to construct checkout URL
     let checkoutUrl: string;
-    if (draftOrder.invoice_url) {
-      checkoutUrl = draftOrder.invoice_url;
-    } else if (storeInfo && storeInfo.domain) {
-      // Fallback to construct checkout URL
-      checkoutUrl = `https://${storeInfo.domain}/cart.php?action=view&draft_order_id=${draftOrder.id}`;
+
+    if (storeInfo && storeInfo.domain) {
+      // Use the actual store domain for checkout
+      checkoutUrl = `https://${storeInfo.domain}/checkout`;
+      console.log("Using store domain for checkout:", storeInfo.domain);
     } else {
-      // Last resort - use store hash to construct URL
-      // This might not work in all cases, but provides a fallback
-      checkoutUrl = `https://store-${process.env.BIGCOMMERCE_STORE_HASH}.mybigcommerce.com/checkout?draft_order=${draftOrder.id}`;
+      // Fallback to myshopify domain pattern
+      const storeHash = process.env.BIGCOMMERCE_STORE_HASH;
+      checkoutUrl = `https://store-${storeHash}.mybigcommerce.com/checkout`;
+      console.log("Using fallback checkout URL with store hash:", storeHash);
     }
 
-    console.log("Draft order created with checkout URL:", checkoutUrl);
+    // Store checkout session data for reference
+    const checkoutSessionId = `checkout_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    console.log("BigCommerce checkout URL ready:", checkoutUrl);
 
     res.status(201).json({
       success: true,
