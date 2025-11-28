@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
+import CheckoutForm from "@/components/CheckoutForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, Trash2, Share2, ChevronDown } from "lucide-react";
@@ -156,8 +157,50 @@ export default function CheckoutNew() {
     calculateOrderData(orderData.subtotal, appliedDiscount);
   };
 
+  const validateForm = (): boolean => {
+    if (
+      !customerInfo.firstName ||
+      !customerInfo.lastName ||
+      !customerInfo.email ||
+      !customerInfo.phone ||
+      !customerInfo.street ||
+      !customerInfo.city ||
+      !customerInfo.state ||
+      !customerInfo.postalCode
+    ) {
+      toast.error("Please fill in all required shipping fields");
+      return false;
+    }
+
+    if (!billingInfo.sameAsShipping) {
+      if (
+        !billingInfo.firstName ||
+        !billingInfo.lastName ||
+        !billingInfo.street ||
+        !billingInfo.city ||
+        !billingInfo.state ||
+        !billingInfo.postalCode
+      ) {
+        toast.error("Please fill in all required billing fields");
+        return false;
+      }
+    }
+
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -226,6 +269,40 @@ export default function CheckoutNew() {
       toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleCustomerInfoChange = (field: string, value: string) => {
+    setCustomerInfo((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleBillingInfoChange = (field: string, value: string | boolean) => {
+    if (field === "sameAsShipping") {
+      setBillingInfo((prev) => ({
+        ...prev,
+        sameAsShipping: value as boolean,
+      }));
+      if (value) {
+        setBillingInfo((prev) => ({
+          ...prev,
+          firstName: customerInfo.firstName,
+          lastName: customerInfo.lastName,
+          street: customerInfo.street,
+          street2: customerInfo.street2,
+          city: customerInfo.city,
+          state: customerInfo.state,
+          postalCode: customerInfo.postalCode,
+          country: customerInfo.country,
+        }));
+      }
+    } else {
+      setBillingInfo((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
     }
   };
 
@@ -322,6 +399,14 @@ export default function CheckoutNew() {
                   </div>
                 </div>
               ))}
+
+              {/* Checkout Form */}
+              <CheckoutForm
+                customerInfo={customerInfo}
+                billingInfo={billingInfo}
+                onCustomerChange={handleCustomerInfoChange}
+                onBillingChange={handleBillingInfoChange}
+              />
             </div>
 
             {/* Order Summary Sidebar */}
@@ -405,22 +490,20 @@ export default function CheckoutNew() {
                 </div>
 
                 {/* Checkout Button */}
-                <form onSubmit={handleCheckout}>
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 text-lg font-bold rounded-lg mb-3"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                        Processing...
-                      </>
-                    ) : (
-                      <>💳 Go to Checkout</>
-                    )}
-                  </Button>
-                </form>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 text-lg font-bold rounded-lg mb-3"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>💳 Go to Checkout</>
+                  )}
+                </Button>
 
                 {/* Estimated Delivery */}
                 <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
