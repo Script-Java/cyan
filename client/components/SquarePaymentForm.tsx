@@ -28,11 +28,31 @@ export default function SquarePaymentForm({
   useEffect(() => {
     const initializeSquare = async () => {
       try {
-        if (!window.Square) {
-          throw new Error("Square.js failed to load");
+        // Wait for Square SDK to be available
+        let attempts = 0;
+        while (!window.Square && attempts < 10) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          attempts++;
         }
 
+        if (!window.Square) {
+          throw new Error("Square SDK failed to load - window.Square not available");
+        }
+
+        // Check if web module is available
+        if (!window.Square.web) {
+          throw new Error(
+            "Square Web Payments module not available - Square SDK may not have loaded correctly"
+          );
+        }
+
+        // Initialize web payments
         web.current = await window.Square.web.payments(applicationId);
+
+        if (!web.current) {
+          throw new Error("Failed to initialize Square Web Payments");
+        }
+
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to initialize Square:", error);
