@@ -41,7 +41,9 @@ export default function EcwidStore() {
 
       // Ensure the store container is visible after Ecwid loads
       setTimeout(() => {
-        const storeContainer = document.getElementById(`my-store-${ECWID_STORE_ID}`);
+        const storeContainer = document.getElementById(
+          `my-store-${ECWID_STORE_ID}`,
+        );
         if (storeContainer) {
           storeContainer.style.display = "block";
         }
