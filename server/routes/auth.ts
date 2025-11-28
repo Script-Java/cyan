@@ -74,6 +74,7 @@ export const handleLogin: RequestHandler = async (req, res) => {
         email: customer.email,
         firstName: customer.first_name,
         lastName: customer.last_name,
+        isAdmin: customer.is_admin || false,
       },
       message: "Login successful",
     });
