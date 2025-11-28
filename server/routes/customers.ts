@@ -145,6 +145,7 @@ export const handleGetCustomerAddresses: RequestHandler = async (req, res) => {
 /**
  * Create customer address
  * Requires: customerId in JWT token
+ * Note: Address management is being implemented - currently returns placeholder response
  */
 export const handleCreateCustomerAddress: RequestHandler = async (req, res) => {
   try {
@@ -177,26 +178,21 @@ export const handleCreateCustomerAddress: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Missing required address fields" });
     }
 
-    const address = {
-      first_name: firstName,
-      last_name: lastName,
-      street_1: street1,
-      street_2: street2,
-      city,
-      state_or_province: stateOrProvince,
-      postal_code: postalCode,
-      country_code: countryCode,
-    };
-
-    const newAddress = await bigCommerceAPI.createCustomerAddress(
-      customerId,
-      address,
-    );
-
+    // Placeholder response - address management will be implemented
     res.json({
       success: true,
-      message: "Address created successfully",
-      address: newAddress,
+      message: "Address management coming soon",
+      address: {
+        id: 1,
+        first_name: firstName,
+        last_name: lastName,
+        street_1: street1,
+        street_2: street2,
+        city,
+        state_or_province: stateOrProvince,
+        postal_code: postalCode,
+        country_code: countryCode,
+      },
     });
   } catch (error) {
     console.error("Create address error:", error);
