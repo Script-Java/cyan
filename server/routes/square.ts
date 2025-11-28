@@ -4,6 +4,7 @@ import {
   getSquareLocations,
   getCheckoutApi,
   getOrdersApi,
+  getPaymentsApi,
 } from "../utils/square";
 import { createSupabaseOrder, createOrderItems } from "../utils/supabase";
 
