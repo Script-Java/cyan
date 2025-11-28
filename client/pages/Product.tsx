@@ -41,14 +41,14 @@ export default function Product() {
   const { productId } = useParams<{ productId: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<ProductData | null>(null);
-  const [loading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
-      setLoading(true);
+      setIsLoading(true);
       setError(null);
 
       try {
