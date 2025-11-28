@@ -23,38 +23,36 @@ export default function EcwidStore() {
         display: none !important;
       }
 
-      /* Product options layout in 4 columns */
-      .details-options,
-      .ec-product-options,
-      .product-options-container,
-      .ec-product-details__options-section {
+      /* Product options layout in 4 columns - target Ecwid structure */
+      [class*="details-options"] {
         display: grid !important;
         grid-template-columns: repeat(4, 1fr) !important;
-        gap: 20px !important;
+        gap: 30px !important;
         width: 100% !important;
       }
 
-      .details-options__item,
-      .ec-option,
-      .ec-product-option,
-      .product-option-item,
-      .ec-product-details__option-group {
+      [class*="details-options"] > div,
+      [class*="details-options"] > [class*="item"],
+      [class*="details-options"] [class*="group"] {
         display: flex !important;
         flex-direction: column !important;
         gap: 10px !important;
-        flex: 1 !important;
       }
 
-      /* Ensure options display as vertical columns */
-      .select-field,
-      .ec-select,
-      .option-select {
-        width: 100% !important;
-      }
-
-      .ec-product-details__options > div {
+      /* Target the actual option wrapper containers */
+      .ec-product-details__option,
+      .product-details__option,
+      [class*="option"][class*="group"] {
         display: flex !important;
         flex-direction: column !important;
+        gap: 8px !important;
+      }
+
+      /* Ensure selects and inputs take full width */
+      select[class*=""],
+      [class*="select"],
+      [class*="field"] {
+        width: 100% !important;
       }
     `;
     document.head.appendChild(style);
