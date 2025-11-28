@@ -63,21 +63,29 @@ export const handleUpdateCustomer: RequestHandler = async (req, res) => {
     const { firstName, lastName, phone, email } = req.body;
 
     // Build update payload
-    const updateData: any = {};
+    const updateData: any = {
+      updated_at: new Date().toISOString(),
+    };
     if (firstName) updateData.first_name = firstName;
     if (lastName) updateData.last_name = lastName;
     if (phone) updateData.phone = phone;
     if (email) updateData.email = email;
 
-    if (Object.keys(updateData).length === 0) {
+    if (Object.keys(updateData).length === 1) {
       return res.status(400).json({ error: "No fields to update" });
     }
 
-    // Update customer in BigCommerce
-    const updatedCustomer = await bigCommerceAPI.updateCustomer(
-      customerId,
-      updateData,
-    );
+    // Update customer in Supabase
+    const { data: updatedCustomer, error } = await supabase
+      .from("customers")
+      .update(updateData)
+      .eq("id", customerId)
+      .select()
+      .single();
+
+    if (error || !updatedCustomer) {
+      return res.status(500).json({ error: "Failed to update customer" });
+    }
 
     res.json({
       success: true,
