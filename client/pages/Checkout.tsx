@@ -190,6 +190,25 @@ export default function Checkout() {
     // Allow guest checkout - no redirect required
   }, [navigate]);
 
+  // Load Square configuration
+  useEffect(() => {
+    const loadSquareConfig = async () => {
+      try {
+        const response = await fetch("/api/square/config");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.applicationId) {
+            setSquareApplicationId(data.applicationId);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load Square config:", err);
+      }
+    };
+
+    loadSquareConfig();
+  }, []);
+
   // Load cart data
   useEffect(() => {
     const loadCart = async () => {
