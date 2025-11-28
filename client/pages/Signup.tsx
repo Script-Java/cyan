@@ -85,12 +85,12 @@ export default function Signup() {
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Signup failed. Please try again.");
+        throw new Error(data.error || "Signup failed. Please try again.");
       }
 
-      const data = await response.json();
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("customerId", data.customer.id.toString());
       navigate("/");
