@@ -342,10 +342,11 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
 
     console.log("Confirming checkout for order:", orderId);
 
+    // Import Supabase
+    const { supabase } = await import("../utils/supabase");
+
     // Get the order from Supabase
-    const { data, error: supabaseError } = await (
-      await import("../utils/supabase")
-    ).getSupabaseClient()
+    const { data, error: supabaseError } = await supabase
       .from("orders")
       .select("*")
       .eq("id", orderId)
@@ -358,9 +359,7 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
     }
 
     // Update order status to completed
-    const { error: updateError } = await (
-      await import("../utils/supabase")
-    ).getSupabaseClient()
+    const { error: updateError } = await supabase
       .from("orders")
       .update({ status: "completed" })
       .eq("id", orderId);
