@@ -107,20 +107,7 @@ export default function OrderHistory() {
     };
 
     fetchOrders();
-    fetchStoreCredit();
-
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        fetchStoreCredit();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [navigate, fetchStoreCredit]);
+  }, [navigate]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
