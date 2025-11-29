@@ -91,7 +91,7 @@ export default function AdminProofs() {
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [customerId, setCustomerId] = useState("");
-  const [customerName, setCustomerName] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
   const [description, setDescription] = useState("");
   const [sendingProof, setSendingProof] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
