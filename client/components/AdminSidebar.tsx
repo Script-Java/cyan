@@ -86,6 +86,11 @@ export default function AdminSidebar() {
       badge: pendingOrdersCount,
     },
     {
+      label: "Proofs",
+      icon: <Eye className="w-5 h-5" />,
+      path: "/admin/proofs",
+    },
+    {
       label: "Products",
       icon: <Package className="w-5 h-5" />,
       path: "/admin/products",
