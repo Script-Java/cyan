@@ -156,7 +156,7 @@ export default function AdminProofs() {
   const handleSelectOrder = (order: PendingOrder) => {
     setOrderId(order.id.toString());
     setCustomerId(order.customerId.toString());
-    setCustomerName(order.customerName);
+    setCustomerEmail("");
     setDescription("");
     setShowOrderModal(false);
     setShowSendForm(true);
