@@ -132,7 +132,11 @@ export default function CheckoutNew() {
     };
   }, [cartId, fetchStoreCredit]);
 
-  const calculateOrderData = (subtotal: number, discount: number) => {
+  const calculateOrderData = (
+    subtotal: number,
+    discount: number,
+    creditAmount: number = appliedStoreCredit,
+  ) => {
     const tax = subtotal * 0.08;
     const shipping = 0;
     const blindShipmentFee = blindShipmentEnabled ? 5 : 0;
@@ -146,7 +150,7 @@ export default function CheckoutNew() {
       blindShipmentFee +
       additionalPayment -
       discount;
-    const total = Math.max(0, subtotalBeforeCredit - appliedStoreCredit);
+    const total = Math.max(0, subtotalBeforeCredit - creditAmount);
     const storeCredit = total * 0.05;
 
     setOrderData({
@@ -158,7 +162,7 @@ export default function CheckoutNew() {
       additionalPayment,
       total,
       storeCredit,
-      appliedStoreCredit,
+      appliedStoreCredit: creditAmount,
     });
   };
 
