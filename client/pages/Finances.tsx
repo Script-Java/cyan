@@ -382,7 +382,7 @@ export default function Finances() {
                       You're Saving Big!
                     </h3>
                     <p className="text-gray-700 mb-3">
-                      By choosing Sticker Shuttle, you save{" "}
+                      By choosing Sticky Slap, you save{" "}
                       <span className="font-bold text-emerald-600">50%</span>{" "}
                       compared to traditional sticker shops.
                     </p>
