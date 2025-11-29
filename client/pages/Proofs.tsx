@@ -390,6 +390,12 @@ export default function Proofs() {
                             {proof.description ||
                               "Design proof ready for your review"}
                           </p>
+                          {proof.file_name && (
+                            <p className="text-xs text-blue-600 mt-1 flex items-center gap-1">
+                              <FileIcon className="w-3 h-3" />
+                              File attached: {proof.file_name}
+                            </p>
+                          )}
                           <p className="text-xs text-gray-500 mt-1">
                             Sent on {formatDate(proof.created_at)}
                           </p>
