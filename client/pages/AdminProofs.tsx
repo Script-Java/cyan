@@ -10,6 +10,8 @@ import {
   ChevronDown,
   Send,
   Plus,
+  X,
+  Package,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
