@@ -287,6 +287,7 @@ export default function CheckoutNew() {
         tax: orderData.tax,
         shipping: orderData.shipping,
         total: orderData.total,
+        appliedStoreCredit: appliedStoreCredit,
         customerEmail: customerInfo.email,
         customerName: `${customerInfo.firstName} ${customerInfo.lastName}`,
       };
