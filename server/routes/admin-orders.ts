@@ -1,0 +1,128 @@
+import { RequestHandler } from "express";
+import { createClient } from "@supabase/supabase-js";
+import { ecwidAPI } from "../utils/ecwid";
+
+const supabase = createClient(
+  process.env.SUPABASE_URL || "",
+  process.env.SUPABASE_SERVICE_KEY || "",
+);
+
+interface OrderWithCustomer {
+  id: number;
+  customerId: number;
+  customerName: string;
+  customerEmail: string;
+  status: string;
+  total: number;
+  dateCreated: string;
+  source: "ecwid" | "supabase";
+}
+
+/**
+ * Get all pending/unshipped orders from all sources (admin only)
+ * Returns orders that haven't shipped yet
+ */
+export const handleGetAdminPendingOrders: RequestHandler = async (
+  req,
+  res,
+) => {
+  try {
+    const allOrders: OrderWithCustomer[] = [];
+
+    // Fetch from Ecwid
+    try {
+      const ecwidOrders = await ecwidAPI.getAllOrders?.();
+      if (ecwidOrders && Array.isArray(ecwidOrders)) {
+        const pendingEcwidOrders = ecwidOrders
+          .filter((order: any) => {
+            const status =
+              order.fulfillmentStatus || order.paymentStatus || "processing";
+            return (
+              status !== "shipped" &&
+              status !== "delivered" &&
+              status !== "cancelled"
+            );
+          })
+          .map((order: any) => ({
+            id: order.id,
+            customerId: order.customerId,
+            customerName:
+              order.customerName ||
+              `${order.billingPerson?.firstName || ""} ${order.billingPerson?.lastName || ""}`.trim() ||
+              "Guest",
+            customerEmail:
+              order.email || order.billingPerson?.email || "N/A",
+            status: order.fulfillmentStatus || order.paymentStatus || "pending",
+            total: order.total || 0,
+            dateCreated: order.createDate || new Date().toISOString(),
+            source: "ecwid" as const,
+          }));
+        allOrders.push(...pendingEcwidOrders);
+      }
+    } catch (ecwidError) {
+      console.warn("Failed to fetch Ecwid orders:", ecwidError);
+    }
+
+    // Fetch from Supabase
+    try {
+      const { data: supabaseOrders, error } = await supabase
+        .from("orders")
+        .select(
+          `
+          id,
+          customer_id,
+          status,
+          total,
+          created_at,
+          customers:customer_id (id, email, first_name, last_name)
+        `,
+        )
+        .in("status", ["pending", "paid", "processing", "ready_to_ship"]);
+
+      if (error) {
+        console.warn("Failed to fetch Supabase orders:", error);
+      } else if (supabaseOrders && Array.isArray(supabaseOrders)) {
+        const pendingSupabaseOrders = supabaseOrders.map((order: any) => ({
+          id: order.id,
+          customerId: order.customer_id,
+          customerName:
+            order.customers && Array.isArray(order.customers)
+              ? `${order.customers[0]?.first_name || ""} ${order.customers[0]?.last_name || ""}`.trim()
+              : order.customers
+                ? `${order.customers.first_name || ""} ${order.customers.last_name || ""}`.trim()
+                : "Guest",
+          customerEmail:
+            order.customers && Array.isArray(order.customers)
+              ? order.customers[0]?.email || "N/A"
+              : order.customers?.email || "N/A",
+          status: order.status,
+          total: order.total || 0,
+          dateCreated: order.created_at || new Date().toISOString(),
+          source: "supabase" as const,
+        }));
+        allOrders.push(...pendingSupabaseOrders);
+      }
+    } catch (supabaseError) {
+      console.warn("Failed to fetch Supabase orders:", supabaseError);
+    }
+
+    // Remove duplicates (same order ID) and sort by date
+    const uniqueOrders = Array.from(
+      new Map(allOrders.map((order) => [order.id, order])).values(),
+    ).sort(
+      (a, b) =>
+        new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime(),
+    );
+
+    res.json({
+      success: true,
+      orders: uniqueOrders,
+      count: uniqueOrders.length,
+    });
+  } catch (error) {
+    console.error("Get admin pending orders error:", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to fetch orders";
+    res.status(500).json({ error: message });
+  }
+};
