@@ -24,6 +24,7 @@ interface OrderData {
   additionalPayment: number;
   total: number;
   storeCredit: number;
+  appliedStoreCredit: number;
 }
 
 export default function CheckoutNew() {
