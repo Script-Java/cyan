@@ -61,7 +61,7 @@ export default function QuickOrderSection() {
     >
       {/* Header */}
       <div
-        className="border-b p-6"
+        className="border-b p-4 sm:p-6"
         style={{ borderColor: "rgba(100, 116, 139, 0.1)" }}
       >
         <div className="flex items-center justify-between">
