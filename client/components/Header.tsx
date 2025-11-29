@@ -236,7 +236,7 @@ export default function Header() {
 
       {/* Mobile Sidebar Menu */}
       {isMenuOpen && (
-        <div className="fixed top-0 left-0 h-full w-80 bg-[#030140]/95 border-r border-white/20 backdrop-blur-md z-40 overflow-y-auto">
+        <div className="fixed top-0 left-0 h-full w-80 bg-black/95 border-r border-white/10 backdrop-blur-md z-40 overflow-y-auto">
           <div className="p-6">
             <div className="flex items-center justify-between mb-8">
               <img
