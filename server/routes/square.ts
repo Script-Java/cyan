@@ -6,7 +6,11 @@ import {
   getOrdersApi,
   getPaymentsApi,
 } from "../utils/square";
-import { createSupabaseOrder, createOrderItems } from "../utils/supabase";
+import {
+  createSupabaseOrder,
+  createOrderItems,
+  updateCustomerStoreCredit,
+} from "../utils/supabase";
 
 interface SquarePaymentRequest {
   sourceId: string;
