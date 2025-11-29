@@ -242,7 +242,7 @@ export default function Header() {
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F54e0024038fb466cb5627885e1e1afd9?format=webp&width=800"
                 alt="Sticky Logo"
-                className="h-8 object-contain"
+                className="h-16 object-contain"
               />
               <button
                 onClick={() => setIsMenuOpen(false)}
