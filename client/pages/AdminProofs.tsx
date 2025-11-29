@@ -94,6 +94,8 @@ export default function AdminProofs() {
   const [customerName, setCustomerName] = useState("");
   const [description, setDescription] = useState("");
   const [sendingProof, setSendingProof] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
