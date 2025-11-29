@@ -1,7 +1,6 @@
 import type { RequestHandler } from "express";
 import { getSquareClient } from "../utils/square";
-import { supabase } from "../utils/supabase";
-import { updateCustomerStoreCredit } from "../utils/store-credit";
+import { supabase, updateCustomerStoreCredit } from "../utils/supabase";
 
 export const processSquarePayment: RequestHandler = async (req, res) => {
   try {
