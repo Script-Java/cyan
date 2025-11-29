@@ -119,8 +119,15 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Mobile Cart Widget (hidden on larger screens) */}
-            <div className="md:hidden flex items-center">
+            {/* Mobile Cart Icon (hidden on larger screens) */}
+            <div className="md:hidden flex items-center gap-2">
+              <Link
+                to="/checkout-new"
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                title="Go to Checkout"
+              >
+                <ShoppingCart className="w-6 h-6 text-[#FFD713]" />
+              </Link>
               <div className="ec-cart-widget"></div>
             </div>
 
