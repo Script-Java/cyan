@@ -155,13 +155,20 @@ export async function createSquarePaymentLink(data: {
   try {
     const amountInCents = Math.round(data.amount * 100);
 
+    // Get the first location ID from the account (required by Square Payment Links API)
+    const locationId = process.env.SQUARE_LOCATION_ID;
+    if (!locationId) {
+      throw new Error("SQUARE_LOCATION_ID environment variable is not configured. Please set it to your Square location ID.");
+    }
+
     const paymentLinkBody = {
       idempotencyKey: `${data.orderId}-${Date.now()}`,
       quickPay: {
+        locationId: locationId,
         name: `Order #${data.orderId}`,
         description: data.description,
         priceMoney: {
-          amount: amountInCents,
+          amount: BigInt(amountInCents),
           currency: data.currency || "USD",
         },
       },
@@ -177,6 +184,7 @@ export async function createSquarePaymentLink(data: {
       orderId: data.orderId,
       amount: amountInCents,
       currency: data.currency,
+      locationId: locationId,
     });
 
     const client = getSquareClient();
