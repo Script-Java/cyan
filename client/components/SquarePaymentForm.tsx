@@ -20,12 +20,31 @@ export default function SquarePaymentForm({
   customerName,
   onPaymentSuccess,
   isLoading = false,
+  applicationId,
 }: SquarePaymentFormProps) {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [sqPaymentRequest, setSqPaymentRequest] = useState<any>(null);
+  const [appId, setAppId] = useState<string>("");
 
   useEffect(() => {
+    // Fetch application ID from server if not provided
+    const getAppId = async () => {
+      if (applicationId) {
+        setAppId(applicationId);
+      } else {
+        try {
+          const response = await fetch("/api/square/config");
+          const data = await response.json();
+          setAppId(data.applicationId || "sq0idb-QCpVeag3Cf_bZhf5K8-gVQ");
+        } catch {
+          setAppId("sq0idb-QCpVeag3Cf_bZhf5K8-gVQ");
+        }
+      }
+    };
+
+    getAppId();
+
     // Load Square Web Payments SDK from CDN
     const script = document.createElement("script");
     script.src = "https://sandbox.web.squarecdn.com/v1/square.js";
@@ -39,15 +58,12 @@ export default function SquarePaymentForm({
         script.parentNode.removeChild(script);
       }
     };
-  }, []);
+  }, [applicationId]);
 
   const initializeSquarePayments = async () => {
-    if ((window as any).Square) {
+    if ((window as any).Square && appId) {
       try {
-        const web = await (window as any).Square.payments(
-          process.env.VITE_SQUARE_APPLICATION_ID || "sq0idb-QCpVeag3Cf_bZhf5K8-gVQ",
-          "us"
-        );
+        const web = await (window as any).Square.payments(appId, "us");
 
         // Create payment request for Web Payments SDK
         const paymentRequest = web.paymentRequest({
