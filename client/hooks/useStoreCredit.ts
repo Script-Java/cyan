@@ -32,7 +32,7 @@ export const useStoreCredit = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [setStoreCredit, setIsLoading]);
+  }, []);
 
   return {
     storeCredit,
