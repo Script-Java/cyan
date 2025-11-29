@@ -620,6 +620,12 @@ export default function Proofs() {
                           <p className="text-sm text-gray-600">
                             {proof.description || "Design proof"}
                           </p>
+                          {proof.file_name && (
+                            <p className="text-xs text-blue-600 mt-1 flex items-center gap-1">
+                              <FileIcon className="w-3 h-3" />
+                              File attached: {proof.file_name}
+                            </p>
+                          )}
                           <p className="text-xs text-gray-500 mt-1">
                             Last updated on {formatDate(proof.updated_at)}
                           </p>
