@@ -12,6 +12,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useStoreCredit } from "@/hooks/useStoreCredit";
 
 interface CartItem {
   product_id: number;
