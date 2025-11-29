@@ -493,3 +493,66 @@ export const handleTestSquareConfig: RequestHandler = async (req, res) => {
     });
   }
 };
+
+/**
+ * Handle Square webhook for payment completion
+ */
+export const handleSquareWebhook: RequestHandler = async (req, res) => {
+  try {
+    const event = req.body;
+    const { supabase } = await import("../utils/supabase");
+
+    console.log("Received Square webhook:", {
+      type: event.type,
+      eventId: event.id,
+    });
+
+    // Handle payment link completed events
+    if (event.type === "payment_link.completed") {
+      const paymentLinkId = event.data?.object?.id;
+      const paymentId = event.data?.object?.payment_id;
+
+      if (paymentId) {
+        console.log("Processing completed payment:", paymentId);
+
+        // Get the order associated with this payment
+        const { data: order } = await supabase
+          .from("orders")
+          .select("id, customer_id, total")
+          .eq("status", "pending_payment")
+          .limit(1)
+          .single();
+
+        if (order) {
+          // Update order status to paid
+          await supabase
+            .from("orders")
+            .update({ status: "paid" })
+            .eq("id", order.id);
+
+          // Award store credit (5% of order total)
+          const earnedCredit = order.total * 0.05;
+          await updateCustomerStoreCredit(
+            order.customer_id,
+            earnedCredit,
+            `Earned 5% from order ${order.id}`,
+          );
+
+          console.log("Order status updated to paid:", {
+            orderId: order.id,
+            earnedCredit,
+          });
+        }
+      }
+    }
+
+    // Acknowledge webhook receipt to Square
+    res.json({ received: true });
+  } catch (error) {
+    console.error("Square webhook error:", error);
+    res.status(200).json({
+      received: true,
+      warning: "Webhook processed with errors",
+    });
+  }
+};
