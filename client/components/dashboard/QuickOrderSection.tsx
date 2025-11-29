@@ -71,7 +71,7 @@ export default function QuickOrderSection() {
           </h2>
           <a
             href="/designs"
-            className="flex items-center gap-2 text-sm font-medium transition-colors text-purple-600 hover:text-purple-700"
+            className="hidden md:flex items-center gap-2 text-sm font-medium transition-colors text-purple-600 hover:text-purple-700"
           >
             <span>View All Products</span>
             <ArrowRight className="w-4 h-4" />
