@@ -57,6 +57,7 @@ export default function DashboardNavigation({
       color: "text-orange-600",
       borderColor: "rgba(249, 115, 22, 0.2)",
       bgColor: "rgba(249, 115, 22, 0.05)",
+      onClick: () => navigate("/proofs"),
     },
     {
       icon: MessageCircle,
