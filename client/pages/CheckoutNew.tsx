@@ -348,6 +348,15 @@ export default function CheckoutNew() {
     }
   };
 
+  const handlePaymentSuccess = (token: string) => {
+    // Redirect to order confirmation page
+    if (createdOrderId) {
+      setTimeout(() => {
+        navigate(`/order-confirmation?orderId=${createdOrderId}`);
+      }, 1000);
+    }
+  };
+
   const handleCustomerInfoChange = (field: string, value: string) => {
     setCustomerInfo((prev) => ({
       ...prev,
