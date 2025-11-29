@@ -116,31 +116,9 @@ export default function CheckoutNew() {
       }
     };
 
-    const fetchStoreCredit = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          return;
-        }
-
-        const response = await fetch("/api/customers/me/store-credit", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setAvailableStoreCredit(data.storeCredit || 0);
-        }
-      } catch (err) {
-        console.error("Failed to load store credit:", err);
-      }
-    };
-
     loadCart();
     fetchStoreCredit();
-  }, [cartId]);
+  }, [cartId, fetchStoreCredit]);
 
   const calculateOrderData = (subtotal: number, discount: number) => {
     const tax = subtotal * 0.08;
