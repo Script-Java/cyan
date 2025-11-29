@@ -23,14 +23,22 @@ export default function SquarePaymentForm({
 
   useEffect(() => {
     if (initializeRef.current) return;
-    initializeRef.current = true;
 
     const initializePayments = async () => {
       try {
+        // Wait for Square SDK to be loaded
+        let attempts = 0;
+        while (!(window as any).Square && attempts < 20) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          attempts++;
+        }
+
         if (!(window as any).Square) {
-          console.error("Square SDK not loaded");
+          console.error("Square SDK not loaded after timeout");
           return;
         }
+
+        initializeRef.current = true;
 
         const payments = (window as any).Square.payments(
           'sandbox-sq0idb-RT3u-HhCpNdbMiGg5aXuVg',
