@@ -584,8 +584,8 @@ export default function OrderHistory() {
 
           {/* Total Summary */}
           {orders.length > 0 && (
-            <div className="mt-8 bg-white rounded-lg border border-gray-200 p-6">
-              <div className="grid grid-cols-3 gap-6">
+            <div className="mt-8 bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div>
                   <p className="text-sm text-gray-600 mb-1">Total Orders</p>
                   <p className="text-2xl font-bold text-gray-900">
