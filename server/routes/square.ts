@@ -102,8 +102,11 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
 
     // Validate required fields
     if (
-      !checkoutData.amount ||
+      checkoutData.amount === undefined ||
+      checkoutData.amount === null ||
       !checkoutData.items ||
+      !Array.isArray(checkoutData.items) ||
+      checkoutData.items.length === 0 ||
       !checkoutData.customerEmail
     ) {
       return res.status(400).json({
