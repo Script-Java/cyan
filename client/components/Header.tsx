@@ -219,10 +219,10 @@ export default function Header() {
               </div>
             </nav>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - Right Side */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
+              className="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
             >
               {isMenuOpen ? (
                 <X className="w-6 h-6 text-white" />
