@@ -195,12 +195,12 @@ export default function CheckoutNew() {
 
   const handleAdditionalPayment = (percent: number) => {
     setAdditionalPaymentPercent(percent);
-    calculateOrderData(orderData.subtotal, appliedDiscount);
+    calculateOrderData(orderData.subtotal, appliedDiscount, appliedStoreCredit);
   };
 
   const handleRemoveStoreCredit = () => {
     setAppliedStoreCredit(0);
-    calculateOrderData(orderData.subtotal, appliedDiscount);
+    calculateOrderData(orderData.subtotal, appliedDiscount, 0);
   };
 
   const validateForm = (): boolean => {
