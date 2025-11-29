@@ -80,8 +80,8 @@ export default function QuickOrderSection() {
       </div>
 
       {/* Product Grid */}
-      <div className="p-6">
-        <div className="grid grid-cols-5 gap-4">
+      <div className="p-4 sm:p-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {PRODUCT_CATEGORIES.map((product) => (
             <div key={product.id} className="group">
               <div
