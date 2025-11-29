@@ -302,13 +302,90 @@ export default function AdminProofs() {
               <p className="text-gray-600 mt-2">Manage design proofs for customers</p>
             </div>
             <Button
-              onClick={() => setShowSendForm(!showSendForm)}
+              onClick={() => {
+                setShowSendForm(!showSendForm);
+                setShowOrderModal(false);
+              }}
               className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
             >
               <Plus className="w-4 h-4" />
               Send New Proof
             </Button>
           </div>
+
+          {/* Pending Orders Section */}
+          {pendingOrders.length > 0 && !showSendForm && (
+            <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Package className="w-5 h-5 text-blue-600" />
+                Pending Orders Ready for Proofs
+              </h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Click on any order below to quickly send a proof to that customer
+              </p>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-200 bg-gray-50">
+                      <th className="px-4 py-3 font-semibold text-gray-900">
+                        Order #
+                      </th>
+                      <th className="px-4 py-3 font-semibold text-gray-900">
+                        Customer
+                      </th>
+                      <th className="px-4 py-3 font-semibold text-gray-900">
+                        Email
+                      </th>
+                      <th className="px-4 py-3 font-semibold text-gray-900">
+                        Status
+                      </th>
+                      <th className="px-4 py-3 font-semibold text-gray-900 text-right">
+                        Total
+                      </th>
+                      <th className="px-4 py-3 font-semibold text-gray-900">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pendingOrders.map((order) => (
+                      <tr
+                        key={order.id}
+                        className="border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
+                      >
+                        <td className="px-4 py-4 font-semibold text-gray-900">
+                          #{order.id}
+                        </td>
+                        <td className="px-4 py-4 text-gray-700">
+                          {order.customerName}
+                        </td>
+                        <td className="px-4 py-4 text-gray-600">
+                          {order.customerEmail}
+                        </td>
+                        <td className="px-4 py-4">
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700">
+                            {order.status.charAt(0).toUpperCase() +
+                              order.status.slice(1)}
+                          </span>
+                        </td>
+                        <td className="px-4 py-4 font-semibold text-gray-900 text-right">
+                          ${order.total.toFixed(2)}
+                        </td>
+                        <td className="px-4 py-4">
+                          <button
+                            onClick={() => handleSelectOrder(order)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs"
+                          >
+                            Send Proof
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
 
           {/* Send Proof Form */}
           {showSendForm && (
