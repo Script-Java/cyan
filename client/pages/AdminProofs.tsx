@@ -202,35 +202,82 @@ export default function AdminProofs() {
 
       setSendingProof(true);
 
-      const response = await fetch("/api/admin/proofs/send", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          orderId: parseInt(orderId),
-          customerId: parseInt(customerId),
-          description,
-        }),
-      });
+      const requestBody: any = {
+        orderId: parseInt(orderId),
+        customerId: parseInt(customerId),
+        description,
+      };
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to send proof");
+      // If a file is uploaded, convert it to base64 and include it
+      if (uploadedFile) {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const base64String = (e.target?.result as string).split(",")[1];
+
+          try {
+            const response = await fetch("/api/admin/proofs/send", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                ...requestBody,
+                fileData: base64String,
+                fileName: uploadedFile.name,
+              }),
+            });
+
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.error || "Failed to send proof");
+            }
+
+            toast.success("Proof sent to customer successfully!");
+            setOrderId("");
+            setCustomerId("");
+            setCustomerName("");
+            setDescription("");
+            setUploadedFile(null);
+            setFilePreview(null);
+            setShowSendForm(false);
+            fetchProofs();
+          } catch (err) {
+            const message =
+              err instanceof Error ? err.message : "Failed to send proof";
+            toast.error(message);
+          } finally {
+            setSendingProof(false);
+          }
+        };
+        reader.readAsDataURL(uploadedFile);
+      } else {
+        // No file, send without file
+        const response = await fetch("/api/admin/proofs/send", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to send proof");
+        }
+
+        toast.success("Proof sent to customer successfully!");
+        setOrderId("");
+        setCustomerId("");
+        setCustomerName("");
+        setDescription("");
+        setShowSendForm(false);
+        fetchProofs();
+        setSendingProof(false);
       }
-
-      toast.success("Proof sent to customer successfully!");
-      setOrderId("");
-      setCustomerId("");
-      setCustomerName("");
-      setDescription("");
-      setShowSendForm(false);
-      fetchProofs();
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to send proof";
       toast.error(message);
-    } finally {
       setSendingProof(false);
     }
   };
