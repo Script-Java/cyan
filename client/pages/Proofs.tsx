@@ -411,6 +411,48 @@ export default function Proofs() {
                     {/* Proof Details - Expanded */}
                     {expandedProofId === proof.id && (
                       <div className="border-t border-gray-200 px-6 py-6 bg-gray-50">
+                        {/* File Preview Section */}
+                        {proof.file_url && (
+                          <div className="mb-6 bg-white rounded border border-gray-200 p-4">
+                            <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                              <Download className="w-4 h-4" />
+                              Attached File
+                            </h4>
+                            {proof.file_url.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                              <div>
+                                <img
+                                  src={proof.file_url}
+                                  alt="Proof preview"
+                                  className="w-full max-h-96 object-contain rounded border border-gray-200 mb-3"
+                                />
+                                <a
+                                  href={proof.file_url}
+                                  download={proof.file_name || "proof"}
+                                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition-colors"
+                                >
+                                  <Download className="w-4 h-4" />
+                                  Download {proof.file_name || "File"}
+                                </a>
+                              </div>
+                            ) : (
+                              <a
+                                href={proof.file_url}
+                                download={proof.file_name || "proof"}
+                                className="flex items-center gap-3 p-4 bg-blue-50 border border-blue-200 rounded hover:bg-blue-100 transition-colors"
+                              >
+                                <FileIcon className="w-8 h-8 text-blue-600 flex-shrink-0" />
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium text-blue-900 truncate">
+                                    {proof.file_name || "Proof file"}
+                                  </p>
+                                  <p className="text-xs text-blue-700">Click to download</p>
+                                </div>
+                                <Download className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                              </a>
+                            )}
+                          </div>
+                        )}
+
                         {/* Comments Section */}
                         {proof.comments && proof.comments.length > 0 && (
                           <div className="mb-6">
