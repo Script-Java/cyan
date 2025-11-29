@@ -97,9 +97,9 @@ export default function DashboardNavigation({
   ];
 
   return (
-    <div className="grid grid-cols-4 gap-6 mb-8">
+    <div className="mb-8">
       {/* Action Items Grid */}
-      <div className="col-span-4 grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {actionItems.map((item: any) => {
           const Icon = item.icon;
           return (
