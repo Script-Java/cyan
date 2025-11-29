@@ -82,12 +82,19 @@ export default function SquarePaymentForm({
                   }),
                 });
 
-                const paymentResult = await response.json();
-
                 if (!response.ok) {
-                  throw new Error(paymentResult.error || "Payment failed");
+                  const errorText = await response.text();
+                  let errorMessage = "Payment processing failed";
+                  try {
+                    const errorData = JSON.parse(errorText);
+                    errorMessage = errorData.error || errorMessage;
+                  } catch {
+                    errorMessage = errorText || errorMessage;
+                  }
+                  throw new Error(errorMessage);
                 }
 
+                const paymentResult = await response.json();
                 onPaymentSuccess(result.token);
               } else {
                 let errorMessage = `Tokenization failed with status: ${result.status}`;
