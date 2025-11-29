@@ -410,7 +410,7 @@ export default function OrderHistory() {
 
                   {/* Order Details - Expanded */}
                   {expandedOrderId === order.id && (
-                    <div className="border-t border-gray-200 px-6 py-6 bg-gray-50">
+                    <div className="border-t border-gray-200 px-4 sm:px-6 py-4 sm:py-6 bg-gray-50">
                       {/* Digital Files */}
                       {order.digital_files &&
                         order.digital_files.length > 0 && (
