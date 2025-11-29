@@ -162,6 +162,37 @@ export default function AdminProofs() {
     setShowSendForm(true);
   };
 
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Check file size (limit to 50MB)
+    const maxSize = 50 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast.error("File size must be less than 50MB");
+      return;
+    }
+
+    setUploadedFile(file);
+
+    // Generate preview for images
+    if (file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setFilePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // For non-image files, show file icon
+      setFilePreview(null);
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setUploadedFile(null);
+    setFilePreview(null);
+  };
+
   const handleSendProof = async () => {
     try {
       if (!orderId || !customerId || !customerName || !description) {
