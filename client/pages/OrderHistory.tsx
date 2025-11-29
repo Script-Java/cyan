@@ -72,7 +72,6 @@ export default function OrderHistory() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
-  const { fetchStoreCredit } = useStoreCredit();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
