@@ -11,6 +11,7 @@ import {
   Search,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useStoreCredit } from "@/hooks/useStoreCredit";
 
 const ECWID_STORE_ID = "120154275";
 
