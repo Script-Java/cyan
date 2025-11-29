@@ -458,21 +458,21 @@ export default function OrderHistory() {
                           <h4 className="text-sm font-semibold text-gray-900 mb-4">
                             Order Items
                           </h4>
-                          <div className="space-y-3">
+                          <div className="space-y-2 sm:space-y-3">
                             {order.items.map((item) => (
                               <div
                                 key={item.id}
-                                className="flex justify-between items-center bg-white p-3 rounded border border-gray-200"
+                                className="flex justify-between items-start sm:items-center bg-white p-3 rounded border border-gray-200 gap-2"
                               >
-                                <div>
-                                  <p className="text-sm font-medium text-gray-900">
+                                <div className="flex-1">
+                                  <p className="text-xs sm:text-sm font-medium text-gray-900">
                                     {item.product_name}
                                   </p>
                                   <p className="text-xs text-gray-600">
-                                    Quantity: {item.quantity}
+                                    Qty: {item.quantity}
                                   </p>
                                 </div>
-                                <p className="text-sm font-semibold text-gray-900">
+                                <p className="text-xs sm:text-sm font-semibold text-gray-900 flex-shrink-0">
                                   {formatCurrency(item.price_inc_tax)}
                                 </p>
                               </div>
