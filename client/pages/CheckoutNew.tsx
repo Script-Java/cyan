@@ -517,16 +517,15 @@ export default function CheckoutNew() {
                           </span>
                         </div>
                       )}
+                      {appliedStoreCredit > 0 && (
+                        <div className="flex justify-between text-green-400">
+                          <span>Store Credit Applied</span>
+                          <span className="font-bold">
+                            -${appliedStoreCredit.toFixed(2)}
+                          </span>
+                        </div>
+                      )}
                     </div>
-
-                    {appliedStoreCredit > 0 && (
-                      <div className="flex justify-between text-green-400 mb-3">
-                        <span>Store Credit Applied</span>
-                        <span className="font-bold">
-                          -${appliedStoreCredit.toFixed(2)}
-                        </span>
-                      </div>
-                    )}
 
                     <div className="flex justify-between items-center mb-6 text-xl font-bold">
                       <span>Total</span>
