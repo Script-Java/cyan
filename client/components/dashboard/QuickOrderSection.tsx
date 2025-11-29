@@ -85,14 +85,14 @@ export default function QuickOrderSection() {
           {PRODUCT_CATEGORIES.map((product) => (
             <div key={product.id} className="group">
               <div
-                className="rounded-2xl border p-4 text-center transition-all duration-500 hover:shadow-md hover:bg-gray-50 flex flex-col items-center bg-white"
+                className="rounded-xl sm:rounded-2xl border p-2 sm:p-4 text-center transition-all duration-500 hover:shadow-md hover:bg-gray-50 flex flex-col items-center bg-white"
                 style={{
                   borderColor: "rgba(100, 116, 139, 0.2)",
                 }}
               >
                 {/* Image Container */}
                 <div
-                  className="w-24 h-24 flex items-center justify-center mb-3 rounded-lg transition-transform duration-500 group-hover:scale-110"
+                  className="w-16 sm:w-24 h-16 sm:h-24 flex items-center justify-center mb-2 sm:mb-3 rounded-lg transition-transform duration-500 group-hover:scale-110"
                   style={{
                     filter: `drop-shadow(${product.dropShadowColor} 0px 0px 8px)`,
                   }}
