@@ -143,6 +143,14 @@ export default function AdminProofs() {
     }
   };
 
+  const handleSelectOrder = (order: PendingOrder) => {
+    setOrderId(order.id.toString());
+    setCustomerId(order.customerId.toString());
+    setDescription("");
+    setShowOrderModal(false);
+    setShowSendForm(true);
+  };
+
   const handleSendProof = async () => {
     try {
       if (!orderId || !customerId || !description) {
