@@ -228,6 +228,15 @@ export default function Header() {
                 )}
               </div>
 
+              {/* Desktop Cart Icon */}
+              <Link
+                to="/checkout-new"
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                title="Go to Checkout"
+              >
+                <ShoppingCart className="w-7 h-7 text-[#FFD713]" />
+              </Link>
+
               {/* Desktop Cart Widget */}
               <div className="ml-2">
                 <div className="ec-cart-widget"></div>
