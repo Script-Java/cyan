@@ -331,8 +331,13 @@ export default function CheckoutNew() {
         throw new Error(result.error || "Checkout failed");
       }
 
-      if (result.checkoutUrl) {
-        window.location.href = result.checkoutUrl;
+      // Store the order ID and show the payment form
+      if (result.order?.id) {
+        setCreatedOrderId(result.order.id);
+        setShowPaymentForm(true);
+        toast.success("Order created! Please complete payment below.");
+      } else {
+        throw new Error("No order ID returned from checkout");
       }
     } catch (err) {
       const errorMessage =
