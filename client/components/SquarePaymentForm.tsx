@@ -28,8 +28,8 @@ export default function SquarePaymentForm({
       try {
         // Wait for Square SDK to be loaded
         let attempts = 0;
-        while (!(window as any).Square && attempts < 20) {
-          await new Promise(resolve => setTimeout(resolve, 100));
+        while (!(window as any).Square && attempts < 50) {
+          await new Promise(resolve => setTimeout(resolve, 50));
           attempts++;
         }
 
@@ -38,6 +38,7 @@ export default function SquarePaymentForm({
           return;
         }
 
+        console.log("Square SDK loaded successfully");
         initializeRef.current = true;
 
         const payments = (window as any).Square.payments(
@@ -45,8 +46,13 @@ export default function SquarePaymentForm({
           'TC4Z3ZEBKRXRH'
         );
 
+        console.log("Square payments object created");
+
         const card = await payments.card();
+        console.log("Card object created");
+
         await card.attach('#card-container');
+        console.log("Card attached to container");
 
         const cardButton = document.getElementById('card-button');
         if (cardButton) {
