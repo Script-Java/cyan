@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import { useStoreCredit } from "@/hooks/useStoreCredit";
 import {
   Card,
   CardContent,
