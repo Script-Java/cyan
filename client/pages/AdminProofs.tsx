@@ -390,21 +390,40 @@ export default function AdminProofs() {
           {/* Send Proof Form */}
           {showSendForm && (
             <div className="bg-white rounded-lg border border-blue-200 p-6 mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Send Proof to Customer
-              </h3>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Send Proof to Customer
+                </h3>
+                <button
+                  onClick={() => setShowSendForm(false)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Order ID *
+                    Order ID * {orderId && `(#${orderId})`}
                   </label>
-                  <input
-                    type="number"
-                    value={orderId}
-                    onChange={(e) => setOrderId(e.target.value)}
-                    placeholder="Enter order ID"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      value={orderId}
+                      onChange={(e) => setOrderId(e.target.value)}
+                      placeholder="Enter order ID"
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    {pendingOrders.length > 0 && (
+                      <Button
+                        onClick={() => setShowOrderModal(true)}
+                        variant="outline"
+                        className="whitespace-nowrap"
+                      >
+                        Browse Orders
+                      </Button>
+                    )}
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -445,6 +464,101 @@ export default function AdminProofs() {
                   >
                     Cancel
                   </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Order Selection Modal */}
+          {showOrderModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
+                <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center">
+                  <h2 className="text-xl font-semibold text-gray-900">
+                    Select Order to Send Proof
+                  </h2>
+                  <button
+                    onClick={() => setShowOrderModal(false)}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+
+                <div className="p-6">
+                  {ordersLoading ? (
+                    <div className="flex justify-center items-center h-32">
+                      <div className="text-gray-600">Loading orders...</div>
+                    </div>
+                  ) : pendingOrders.length === 0 ? (
+                    <div className="text-center py-8">
+                      <p className="text-gray-600">
+                        No pending orders available
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-sm">
+                        <thead>
+                          <tr className="border-b border-gray-200 bg-gray-50">
+                            <th className="px-4 py-3 font-semibold text-gray-900">
+                              Order #
+                            </th>
+                            <th className="px-4 py-3 font-semibold text-gray-900">
+                              Customer
+                            </th>
+                            <th className="px-4 py-3 font-semibold text-gray-900">
+                              Email
+                            </th>
+                            <th className="px-4 py-3 font-semibold text-gray-900">
+                              Status
+                            </th>
+                            <th className="px-4 py-3 font-semibold text-gray-900 text-right">
+                              Total
+                            </th>
+                            <th className="px-4 py-3 font-semibold text-gray-900">
+                              Action
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {pendingOrders.map((order) => (
+                            <tr
+                              key={order.id}
+                              className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                            >
+                              <td className="px-4 py-4 font-semibold text-gray-900">
+                                #{order.id}
+                              </td>
+                              <td className="px-4 py-4 text-gray-700">
+                                {order.customerName}
+                              </td>
+                              <td className="px-4 py-4 text-gray-600">
+                                {order.customerEmail}
+                              </td>
+                              <td className="px-4 py-4">
+                                <span className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700">
+                                  {order.status.charAt(0).toUpperCase() +
+                                    order.status.slice(1)}
+                                </span>
+                              </td>
+                              <td className="px-4 py-4 font-semibold text-gray-900 text-right">
+                                ${order.total.toFixed(2)}
+                              </td>
+                              <td className="px-4 py-4">
+                                <button
+                                  onClick={() => handleSelectOrder(order)}
+                                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs"
+                                >
+                                  Select
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
