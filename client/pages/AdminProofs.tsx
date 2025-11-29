@@ -546,6 +546,67 @@ export default function AdminProofs() {
                     rows={3}
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Upload File (Optional)
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="file"
+                      onChange={handleFileSelect}
+                      accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <div className="px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg text-center hover:border-blue-400 transition-colors">
+                      <Upload className="w-5 h-5 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm text-gray-600">
+                        {uploadedFile
+                          ? `Selected: ${uploadedFile.name}`
+                          : "Click to upload or drag and drop"}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Images, PDF, or Office files (max 50MB)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {uploadedFile && (
+                  <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                    <div className="flex items-start justify-between mb-3">
+                      <h4 className="font-medium text-gray-900">File Preview</h4>
+                      <button
+                        onClick={handleRemoveFile}
+                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+                    {filePreview ? (
+                      <div>
+                        <img
+                          src={filePreview}
+                          alt="Preview"
+                          className="w-full max-h-48 object-cover rounded border border-gray-200"
+                        />
+                        <p className="text-sm text-gray-600 mt-2">
+                          {uploadedFile.name}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-3 p-4 bg-white rounded border border-gray-200">
+                        <FileIcon className="w-8 h-8 text-blue-600 flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">
+                            {uploadedFile.name}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="flex gap-3">
                   <Button
                     onClick={handleSendProof}
@@ -555,7 +616,11 @@ export default function AdminProofs() {
                     {sendingProof ? "Sending..." : "Send Proof"}
                   </Button>
                   <Button
-                    onClick={() => setShowSendForm(false)}
+                    onClick={() => {
+                      setShowSendForm(false);
+                      setUploadedFile(null);
+                      setFilePreview(null);
+                    }}
                     variant="outline"
                     className="flex-1"
                   >
