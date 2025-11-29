@@ -85,6 +85,17 @@ import {
   handleGetProducts,
   handleDeleteAllProducts,
 } from "./routes/import-products";
+import {
+  handleGetProofs,
+  handleGetProofDetail,
+  handleApproveProof,
+  handleDenyProof,
+  handleAddProofComment,
+  handleGetProofNotifications,
+  handleSendProofToCustomer,
+  handleGetAdminProofs,
+  handleAddAdminProofComment,
+} from "./routes/proofs";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
