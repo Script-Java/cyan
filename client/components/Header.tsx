@@ -264,7 +264,7 @@ export default function Header() {
             <div className="flex items-center justify-between mb-8">
               <img
                 src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749591683/White_Logo_ojmn3s.png"
-                alt="Sticker Shuttle Logo"
+                alt="Sticky Slap Logo"
                 className="h-8 object-contain"
               />
               <button
