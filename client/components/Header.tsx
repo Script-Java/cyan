@@ -52,6 +52,18 @@ export default function Header() {
     if (token) {
       fetchStoreCredit();
     }
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden && token) {
+        fetchStoreCredit();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, [fetchStoreCredit]);
 
   const handleLogout = () => {
