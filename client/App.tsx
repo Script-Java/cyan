@@ -27,6 +27,7 @@ import Support from "./pages/Support";
 import MyTickets from "./pages/MyTickets";
 import AdminSupport from "./pages/AdminSupport";
 import AdminOrders from "./pages/AdminOrders";
+import AdminProofs from "./pages/AdminProofs";
 import AdminSettings from "./pages/AdminSettings";
 import StoreCreditAdmin from "./pages/StoreCreditAdmin";
 import AdminDashboard from "./pages/AdminDashboard";
