@@ -182,7 +182,7 @@ export default function OrderHistory() {
               <ArrowRight className="w-4 h-4 rotate-180" />
               Back to Dashboard
             </button>
-            <h1 className="text-3xl font-bold text-gray-900">Order History</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Order History</h1>
             <p className="text-gray-600 mt-2">
               View all your orders and track shipments
             </p>
