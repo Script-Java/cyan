@@ -20,10 +20,10 @@ export default function Header() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [storeCredit, setStoreCredit] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const ecwidScriptLoaded = useRef(false);
+  const { storeCredit, fetchStoreCredit } = useStoreCredit();
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
