@@ -218,7 +218,7 @@ export default function OrderHistory() {
 
           {/* Orders Table View */}
           {orders.length > 0 && (
-            <div className="mb-8 bg-white rounded-lg border border-gray-200 overflow-hidden">
+            <div className="hidden lg:block mb-8 bg-white rounded-lg border border-gray-200 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
