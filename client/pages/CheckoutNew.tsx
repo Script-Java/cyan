@@ -559,6 +559,97 @@ export default function CheckoutNew() {
                     </div>
                   </div>
 
+                  {availableStoreCredit > 0 && (
+                    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <h4 className="text-white font-bold">Store Credit</h4>
+                          <span className="text-green-400 font-bold">
+                            ${availableStoreCredit.toFixed(2)} available
+                          </span>
+                        </div>
+
+                        {appliedStoreCredit > 0 ? (
+                          <div className="space-y-3">
+                            <div className="bg-green-400/10 border border-green-400/30 rounded-lg p-3">
+                              <p className="text-sm text-green-300">
+                                ✓ ${appliedStoreCredit.toFixed(2)} applied to
+                                your order
+                              </p>
+                            </div>
+                            <Button
+                              type="button"
+                              onClick={handleRemoveStoreCredit}
+                              className="w-full bg-white/10 hover:bg-white/20 text-white text-sm"
+                            >
+                              Remove Store Credit
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="space-y-2">
+                            <input
+                              type="number"
+                              placeholder="Enter amount to apply"
+                              min="0"
+                              max={availableStoreCredit}
+                              step="0.01"
+                              id="storeCredit"
+                              className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-white placeholder-white/40 text-sm"
+                            />
+                            <Button
+                              type="button"
+                              onClick={() => {
+                                const input = document.getElementById(
+                                  "storeCredit",
+                                ) as HTMLInputElement;
+                                const amount = parseFloat(input.value || "0");
+                                if (amount > 0) {
+                                  handleApplyStoreCredit(amount);
+                                  toast.success(
+                                    `Applied $${amount.toFixed(2)} store credit`,
+                                  );
+                                } else {
+                                  toast.error("Enter a valid amount");
+                                }
+                              }}
+                              className="w-full bg-green-600 hover:bg-green-700 text-white text-sm"
+                            >
+                              Apply Store Credit
+                            </Button>
+
+                            <div className="flex gap-1 flex-wrap">
+                              {[
+                                Math.min(availableStoreCredit, 10),
+                                Math.min(availableStoreCredit, 25),
+                                Math.min(availableStoreCredit, 50),
+                                availableStoreCredit,
+                              ]
+                                .filter(
+                                  (value, index, self) =>
+                                    value > 0 && self.indexOf(value) === index,
+                                )
+                                .map((amount) => (
+                                  <button
+                                    key={amount}
+                                    type="button"
+                                    onClick={() => {
+                                      handleApplyStoreCredit(amount);
+                                      toast.success(
+                                        `Applied $${amount.toFixed(2)} store credit`,
+                                      );
+                                    }}
+                                    className="flex-1 bg-white/5 hover:bg-white/10 text-white text-xs py-1.5 rounded transition"
+                                  >
+                                    ${amount.toFixed(2)}
+                                  </button>
+                                ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   <Button
                     type="submit"
                     disabled={isSubmitting}
