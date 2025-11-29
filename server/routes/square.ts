@@ -267,6 +267,26 @@ export const handleSquarePayment: RequestHandler = async (req, res) => {
     // Create order items in Supabase
     await createOrderItems(supabaseOrder.id, paymentData.items);
 
+    // Handle store credit: deduct applied credit and award earned credit
+    if (paymentData.customerId) {
+      const appliedCredit = paymentData.appliedStoreCredit || 0;
+      const earnedCredit = paymentData.total * 0.05;
+
+      if (appliedCredit > 0) {
+        await updateCustomerStoreCredit(
+          paymentData.customerId,
+          -appliedCredit,
+          `Applied to order ${supabaseOrder.id}`,
+        );
+      }
+
+      await updateCustomerStoreCredit(
+        paymentData.customerId,
+        earnedCredit,
+        `Earned 5% from order ${supabaseOrder.id}`,
+      );
+    }
+
     res.status(201).json({
       success: true,
       payment: squarePayment,
