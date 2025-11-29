@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import { useStoreCredit } from "@/hooks/useStoreCredit";
 
 interface Shipment {
   id: number;
