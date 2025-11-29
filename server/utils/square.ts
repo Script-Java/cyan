@@ -3,7 +3,7 @@ const require = createRequire(import.meta.url);
 
 let squareClient: any = null;
 
-function getSquareClient() {
+export function getSquareClient() {
   if (!squareClient) {
     try {
       const squarePkg = require("square");
