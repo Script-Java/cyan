@@ -180,7 +180,7 @@ export default function CheckoutNew() {
   const handleApplyStoreCredit = (amount: number) => {
     const validAmount = Math.max(0, Math.min(amount, availableStoreCredit));
     setAppliedStoreCredit(validAmount);
-    calculateOrderData(orderData.subtotal, appliedDiscount);
+    calculateOrderData(orderData.subtotal, appliedDiscount, validAmount);
     fetchStoreCredit();
   };
 
