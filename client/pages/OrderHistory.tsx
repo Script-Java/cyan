@@ -353,15 +353,15 @@ export default function OrderHistory() {
                         expandedOrderId === order.id ? null : order.id,
                       )
                     }
-                    className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    className="w-full px-4 sm:px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
                   >
-                    <div className="flex items-center gap-4 flex-1 text-left">
-                      <div className="bg-gray-100 p-3 rounded-lg flex-shrink-0">
-                        <Package className="w-6 h-6 text-gray-600" />
+                    <div className="flex items-center gap-3 sm:gap-4 flex-1 text-left">
+                      <div className="bg-gray-100 p-2 sm:p-3 rounded-lg flex-shrink-0">
+                        <Package className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
                       </div>
                       <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-semibold text-gray-900">
+                        <div className="flex items-center gap-2 sm:gap-3 mb-2 flex-wrap">
+                          <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                             Order #{order.id}
                           </h3>
                           <span
