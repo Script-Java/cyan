@@ -75,14 +75,14 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-md text-white border-b border-white/10">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-black text-white border-b border-white/10">
       <div className="mx-auto px-4 pt-0.5 pb-0">
         <div className="max-w-7xl mx-auto">
           <div
             className="flex items-center justify-between"
             style={{ margin: "-4px 0 -5px" }}
           >
-            {/* Mobile Profile Button */}
+            {/* Mobile Profile Button - Left Side */}
             <div className="flex md:hidden items-center">
               <button className="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center gap-2">
                 <img
@@ -90,7 +90,6 @@ export default function Header() {
                   alt="Profile"
                   className="w-10 h-10 rounded-full border border-white/20"
                 />
-                <ChevronDown className="w-4 h-4" />
               </button>
             </div>
 
@@ -106,29 +105,6 @@ export default function Header() {
                   className="h-12 object-contain"
                 />
               </Link>
-            </div>
-
-            {/* Mobile/Tablet Centered Logo */}
-            <div className="md:hidden absolute left-1/2 transform -translate-x-1/2">
-              <Link to="/" className="flex items-center">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F6def69979e504acebe0ba665997a2501?format=webp&width=800"
-                  alt="Sticky Logo"
-                  className="h-10 object-contain"
-                />
-              </Link>
-            </div>
-
-            {/* Mobile Cart Icon (hidden on larger screens) */}
-            <div className="md:hidden flex items-center gap-2">
-              <Link
-                to="/checkout-new"
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                title="Go to Checkout"
-              >
-                <ShoppingCart className="w-6 h-6 text-[#FFD713]" />
-              </Link>
-              <div className="ec-cart-widget"></div>
             </div>
 
             {/* Desktop Navigation */}
