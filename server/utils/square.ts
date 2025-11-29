@@ -8,15 +8,23 @@ function getSquareClient() {
     try {
       const squarePkg = require("square");
       const SquareClient = squarePkg.SquareClient;
+      const SquareEnvironment = squarePkg.SquareEnvironment;
 
       if (!SquareClient) {
         throw new Error("SquareClient not found in package exports");
       }
 
+      const accessToken = process.env.SQUARE_ACCESS_TOKEN;
+      if (!accessToken) {
+        throw new Error("SQUARE_ACCESS_TOKEN environment variable is not set");
+      }
+
       squareClient = new SquareClient({
-        accessToken: process.env.SQUARE_ACCESS_TOKEN,
-        environment: "production",
+        accessToken: accessToken,
+        environment: SquareEnvironment.Production,
       });
+
+      console.log("Square client initialized successfully");
     } catch (error) {
       console.error("Failed to initialize Square client:", error);
       throw new Error(
