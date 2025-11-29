@@ -29,36 +29,14 @@ export const handleGetAdminPendingOrders: RequestHandler = async (
   try {
     const allOrders: OrderWithCustomer[] = [];
 
-    // Fetch from Ecwid
+    // Fetch from Ecwid - For now, skip Ecwid as we need to implement the API method
+    // to fetch all orders without customer ID filter
     try {
-      const ecwidOrders = await ecwidAPI.getAllOrders?.();
-      if (ecwidOrders && Array.isArray(ecwidOrders)) {
-        const pendingEcwidOrders = ecwidOrders
-          .filter((order: any) => {
-            const status =
-              order.fulfillmentStatus || order.paymentStatus || "processing";
-            return (
-              status !== "shipped" &&
-              status !== "delivered" &&
-              status !== "cancelled"
-            );
-          })
-          .map((order: any) => ({
-            id: order.id,
-            customerId: order.customerId,
-            customerName:
-              order.customerName ||
-              `${order.billingPerson?.firstName || ""} ${order.billingPerson?.lastName || ""}`.trim() ||
-              "Guest",
-            customerEmail:
-              order.email || order.billingPerson?.email || "N/A",
-            status: order.fulfillmentStatus || order.paymentStatus || "pending",
-            total: order.total || 0,
-            dateCreated: order.createDate || new Date().toISOString(),
-            source: "ecwid" as const,
-          }));
-        allOrders.push(...pendingEcwidOrders);
-      }
+      // Note: Ecwid API /orders endpoint without customerId parameter would require
+      // implementation of getAllOrders method in the EcwidAPI class
+      console.warn(
+        "Ecwid getAllOrders not yet implemented for admin view",
+      );
     } catch (ecwidError) {
       console.warn("Failed to fetch Ecwid orders:", ecwidError);
     }
