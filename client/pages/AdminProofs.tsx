@@ -520,14 +520,14 @@ export default function AdminProofs() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Customer Name *
+                    Customer Email (Optional)
                   </label>
                   <input
-                    type="text"
-                    value={customerName}
-                    readOnly
-                    placeholder="Select an order to auto-fill customer name"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                    type="email"
+                    value={customerEmail}
+                    onChange={(e) => setCustomerEmail(e.target.value)}
+                    placeholder="Enter customer email (optional)"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <input
                     type="hidden"
