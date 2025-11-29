@@ -50,7 +50,7 @@ export default function GreetingBanner({
           <div className="flex items-center gap-2">
             <img
               src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1763707664/Favicon_StickerShuttle_ml7yh2.png"
-              alt="Sticker Shuttle"
+              alt="Sticky Slap"
               className="w-3.5 h-3.5"
             />
             <span className="text-sm font-medium text-white">
