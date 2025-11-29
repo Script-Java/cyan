@@ -511,17 +511,17 @@ export default function OrderHistory() {
                           <h4 className="text-sm font-semibold text-gray-900 mb-4">
                             Shipments & Tracking
                           </h4>
-                          <div className="space-y-4">
+                          <div className="space-y-3 sm:space-y-4">
                             {order.shipments.map((shipment) => (
                               <div
                                 key={shipment.id}
-                                className="bg-white p-4 rounded border border-gray-200"
+                                className="bg-white p-3 sm:p-4 rounded border border-gray-200"
                               >
-                                <div className="flex items-start justify-between mb-3">
+                                <div className="flex items-start justify-between mb-3 gap-2">
                                   <div className="flex items-center gap-2">
                                     {getShipmentStatusIcon(shipment.status)}
                                     <div>
-                                      <p className="text-sm font-semibold text-gray-900">
+                                      <p className="text-xs sm:text-sm font-semibold text-gray-900">
                                         {shipment.shippingProvider ||
                                           "Shipment"}{" "}
                                         -{" "}
