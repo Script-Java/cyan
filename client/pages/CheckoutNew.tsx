@@ -4,7 +4,13 @@ import Header from "@/components/Header";
 import CheckoutForm from "@/components/CheckoutForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Trash2, Share2, ChevronDown, AlertCircle } from "lucide-react";
+import {
+  Loader2,
+  Trash2,
+  Share2,
+  ChevronDown,
+  AlertCircle,
+} from "lucide-react";
 import { toast } from "sonner";
 
 interface CartItem {
@@ -648,7 +654,8 @@ export default function CheckoutNew() {
                         )
                       ) : (
                         <div className="text-white/60 text-sm py-3">
-                          No store credit available. Make a purchase to earn credit!
+                          No store credit available. Make a purchase to earn
+                          credit!
                         </div>
                       )}
                     </div>
