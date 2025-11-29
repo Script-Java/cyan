@@ -14,6 +14,7 @@ import GreetingBanner from "@/components/dashboard/GreetingBanner";
 import ProfileCard from "@/components/dashboard/ProfileCard";
 import OrdersSection from "@/components/dashboard/OrdersSection";
 import DashboardNavigation from "@/components/dashboard/DashboardNavigation";
+import ProofNotificationBadge from "@/components/dashboard/ProofNotificationBadge";
 import PromoBanner from "@/components/dashboard/PromoBanner";
 import ActiveOrdersSummary from "@/components/dashboard/ActiveOrdersSummary";
 import QuickOrderSection from "@/components/dashboard/QuickOrderSection";
