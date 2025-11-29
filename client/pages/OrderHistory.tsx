@@ -544,24 +544,24 @@ export default function OrderHistory() {
                                 </div>
 
                                 {shipment.trackingNumber && (
-                                  <div className="mb-3 p-3 bg-blue-50 rounded border border-blue-100">
+                                  <div className="mb-3 p-2 sm:p-3 bg-blue-50 rounded border border-blue-100">
                                     <p className="text-xs text-gray-600 mb-1">
-                                      Tracking Number:
+                                      Tracking:
                                     </p>
-                                    <p className="font-mono font-semibold text-blue-900">
+                                    <p className="font-mono text-xs sm:text-sm font-semibold text-blue-900 break-all">
                                       {shipment.trackingNumber}
                                     </p>
                                   </div>
                                 )}
 
                                 {shipment.comments && (
-                                  <div className="p-3 bg-gray-100 rounded text-sm text-gray-700">
+                                  <div className="p-2 sm:p-3 bg-gray-100 rounded text-xs sm:text-sm text-gray-700">
                                     {shipment.comments}
                                   </div>
                                 )}
 
                                 <p className="text-xs text-gray-600 mt-2">
-                                  Items in shipment: {shipment.itemsCount}
+                                  Items: {shipment.itemsCount}
                                 </p>
                               </div>
                             ))}
