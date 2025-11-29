@@ -174,7 +174,7 @@ export default function CheckoutNew() {
       return sum + (item.price || 0.25) * item.quantity;
     }, 0);
 
-    calculateOrderData(newSubtotal, appliedDiscount);
+    calculateOrderData(newSubtotal, appliedDiscount, appliedStoreCredit);
   };
 
   const handleApplyStoreCredit = (amount: number) => {
