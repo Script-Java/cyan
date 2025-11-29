@@ -63,6 +63,7 @@ export default function App() {
             <Route path="/order-history" element={<OrderHistory />} />
             <Route path="/finances" element={<Finances />} />
             <Route path="/designs" element={<Designs />} />
+            <Route path="/proofs" element={<Proofs />} />
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/support" element={<Support />} />
             <Route path="/my-tickets" element={<MyTickets />} />
