@@ -425,12 +425,12 @@ export default function OrderHistory() {
                                   href={file.file_url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex items-center justify-between bg-white p-4 rounded border border-blue-200 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+                                  className="flex items-center justify-between bg-white p-3 sm:p-4 rounded border border-blue-200 hover:border-blue-400 hover:bg-blue-50 transition-colors gap-2"
                                 >
-                                  <div className="flex items-center gap-3">
-                                    <Package className="w-5 h-5 text-blue-600" />
-                                    <div>
-                                      <p className="font-medium text-blue-900">
+                                  <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                                    <Package className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 flex-shrink-0" />
+                                    <div className="min-w-0">
+                                      <p className="text-xs sm:text-sm font-medium text-blue-900 truncate">
                                         {file.file_name}
                                       </p>
                                       {file.file_size && (
@@ -445,7 +445,7 @@ export default function OrderHistory() {
                                       )}
                                     </div>
                                   </div>
-                                  <ArrowRight className="w-5 h-5 text-blue-600" />
+                                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 flex-shrink-0" />
                                 </a>
                               ))}
                             </div>
