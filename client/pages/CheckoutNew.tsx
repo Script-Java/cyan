@@ -188,7 +188,7 @@ export default function CheckoutNew() {
     if (discountCode) {
       const discountAmount = orderData.subtotal * 0.1;
       setAppliedDiscount(discountAmount);
-      calculateOrderData(orderData.subtotal, discountAmount);
+      calculateOrderData(orderData.subtotal, discountAmount, appliedStoreCredit);
       toast.success("Discount code applied!");
     }
   };
