@@ -41,6 +41,8 @@ interface Proof {
   order_id: number;
   customer_id: number;
   description?: string;
+  file_url?: string;
+  file_name?: string;
   status: "pending" | "approved" | "denied" | "revisions_requested";
   revision_notes?: string;
   created_at: string;
