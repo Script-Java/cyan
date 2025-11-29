@@ -508,7 +508,7 @@ export default function OrderHistory() {
                       {/* Shipments and Tracking */}
                       {order.shipments && order.shipments.length > 0 ? (
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-4">
+                          <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-3 sm:mb-4">
                             Shipments & Tracking
                           </h4>
                           <div className="space-y-3 sm:space-y-4">
