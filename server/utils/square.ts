@@ -166,7 +166,9 @@ export async function createSquarePaymentLink(data: {
     // Get the first location ID from the account (required by Square Payment Links API)
     const locationId = process.env.SQUARE_LOCATION_ID;
     if (!locationId) {
-      throw new Error("SQUARE_LOCATION_ID environment variable is not configured. Please set it to your Square location ID.");
+      throw new Error(
+        "SQUARE_LOCATION_ID environment variable is not configured. Please set it to your Square location ID.",
+      );
     }
 
     const paymentLinkBody = {
@@ -196,9 +198,7 @@ export async function createSquarePaymentLink(data: {
     });
 
     const client = getSquareClient();
-    const response = await client.checkout.paymentLinks.create(
-      paymentLinkBody,
-    );
+    const response = await client.checkout.paymentLinks.create(paymentLinkBody);
 
     if (response.result?.url) {
       console.log("Payment Link created successfully:", response.result.id);
@@ -232,7 +232,10 @@ export async function createSquarePaymentLink(data: {
 
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Unknown error creating payment link",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Unknown error creating payment link",
     };
   }
 }

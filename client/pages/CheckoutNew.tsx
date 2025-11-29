@@ -48,7 +48,8 @@ export default function CheckoutNew() {
   const [discountCode, setDiscountCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState(0);
   const [appliedStoreCredit, setAppliedStoreCredit] = useState(0);
-  const { storeCredit: availableStoreCredit, fetchStoreCredit } = useStoreCredit();
+  const { storeCredit: availableStoreCredit, fetchStoreCredit } =
+    useStoreCredit();
 
   const [orderData, setOrderData] = useState<OrderData>({
     subtotal: 0,
@@ -188,7 +189,11 @@ export default function CheckoutNew() {
     if (discountCode) {
       const discountAmount = orderData.subtotal * 0.1;
       setAppliedDiscount(discountAmount);
-      calculateOrderData(orderData.subtotal, discountAmount, appliedStoreCredit);
+      calculateOrderData(
+        orderData.subtotal,
+        discountAmount,
+        appliedStoreCredit,
+      );
       toast.success("Discount code applied!");
     }
   };

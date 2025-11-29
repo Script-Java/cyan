@@ -25,7 +25,8 @@ export const useStoreCredit = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const credit = typeof data.storeCredit === "number" ? data.storeCredit : 0;
+        const credit =
+          typeof data.storeCredit === "number" ? data.storeCredit : 0;
         setStoreCredit(credit);
         setError(null);
       } else {
@@ -35,7 +36,8 @@ export const useStoreCredit = () => {
       }
     } catch (error) {
       setStoreCredit(0);
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
       setError(errorMessage);
       console.error("Error fetching store credit:", errorMessage);
     } finally {

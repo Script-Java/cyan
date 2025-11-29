@@ -202,7 +202,10 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     });
 
     if (!paymentLinkResult.success || !paymentLinkResult.paymentLinkUrl) {
-      console.error("Failed to create Square payment link:", paymentLinkResult.error);
+      console.error(
+        "Failed to create Square payment link:",
+        paymentLinkResult.error,
+      );
       return res.status(400).json({
         error: paymentLinkResult.error || "Failed to create payment link",
       });
