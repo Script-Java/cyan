@@ -299,6 +299,13 @@ export default function CheckoutNew() {
         customerName: `${customerInfo.firstName} ${customerInfo.lastName}`,
       };
 
+      console.log("Checkout payload being sent:", {
+        amount: checkoutPayload.amount,
+        items: checkoutPayload.items?.length,
+        customerEmail: checkoutPayload.customerEmail,
+        total: checkoutPayload.total,
+      });
+
       const response = await fetch("/api/square/checkout", {
         method: "POST",
         headers: {
@@ -308,6 +315,8 @@ export default function CheckoutNew() {
       });
 
       const result = await response.json();
+
+      console.log("Checkout response:", response.status, result);
 
       if (!response.ok) {
         throw new Error(result.error || "Checkout failed");
