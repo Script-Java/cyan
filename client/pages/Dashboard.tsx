@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { useStoreCredit } from "@/hooks/useStoreCredit";
 import GreetingBanner from "@/components/dashboard/GreetingBanner";
 import ProfileCard from "@/components/dashboard/ProfileCard";
 import OrdersSection from "@/components/dashboard/OrdersSection";
