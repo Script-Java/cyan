@@ -34,17 +34,25 @@ export default function AdminProductImport() {
 
     setIsLoading(true);
     try {
+      const payload = JSON.stringify({ csv_data: csvText });
+
       const response = await fetch("/api/import-products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          csv_data: csvText,
-        }),
+        body: payload,
       });
 
-      const result = await response.json();
+      let result: any;
+      const contentType = response.headers.get("content-type");
+
+      if (contentType?.includes("application/json")) {
+        result = await response.json();
+      } else {
+        const text = await response.text();
+        result = { error: text || "Invalid response from server" };
+      }
 
       if (!response.ok) {
         toast({
@@ -52,20 +60,22 @@ export default function AdminProductImport() {
           description: result.error || "Failed to import products",
           variant: "destructive",
         });
+        console.error("Import response:", response.status, result);
       } else {
         setImportResult(result);
         toast({
           title: "Success",
-          description: `Imported ${result.imported_count} products`,
+          description: `Imported ${result.imported_count || 0} products`,
         });
         setCsvText("");
       }
     } catch (error) {
       console.error("Import error:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to import products";
       toast({
         title: "Error",
-        description:
-          error instanceof Error ? error.message : "Failed to import products",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
