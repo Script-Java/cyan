@@ -279,6 +279,7 @@ export function createServer() {
     "/api/admin/proofs/:proofId/comments",
     handleAddAdminProofComment,
   );
+  app.get("/api/admin/pending-orders", handleGetAdminPendingOrders);
 
   // ===== Webhook Routes =====
   app.post("/api/webhooks/ecwid", handleEcwidOrderWebhook);
