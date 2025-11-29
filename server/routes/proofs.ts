@@ -360,12 +360,53 @@ export const handleGetProofNotifications: RequestHandler = async (req, res) => {
  */
 export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
   try {
-    const { orderId, customerId, description } = req.body;
+    const { orderId, customerId, description, fileData, fileName } = req.body;
 
     if (!orderId || !customerId) {
       return res
         .status(400)
         .json({ error: "Order ID and Customer ID are required" });
+    }
+
+    let fileUrl: string | undefined;
+    let storedFileName: string | undefined;
+
+    // Handle file upload if provided
+    if (fileData && fileName) {
+      try {
+        // Convert base64 to buffer
+        const buffer = Buffer.from(fileData, "base64");
+
+        // Generate unique filename
+        const timestamp = Date.now();
+        const uniqueFileName = `proof-${orderId}-${customerId}-${timestamp}-${fileName}`;
+        const bucketPath = `proofs/${uniqueFileName}`;
+
+        // Upload to Supabase Storage
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from("proofs")
+          .upload(bucketPath, buffer, {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: "application/octet-stream",
+          });
+
+        if (uploadError) {
+          console.error("Error uploading file:", uploadError);
+          return res.status(500).json({ error: "Failed to upload file" });
+        }
+
+        // Get public URL
+        const { data: publicUrlData } = supabase.storage
+          .from("proofs")
+          .getPublicUrl(bucketPath);
+
+        fileUrl = publicUrlData.publicUrl;
+        storedFileName = fileName;
+      } catch (fileError) {
+        console.error("Error processing file:", fileError);
+        return res.status(500).json({ error: "Failed to process file" });
+      }
     }
 
     // Create proof
@@ -375,6 +416,8 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
         order_id: orderId,
         customer_id: customerId,
         description,
+        file_url: fileUrl,
+        file_name: storedFileName,
         status: "pending",
       })
       .select()
