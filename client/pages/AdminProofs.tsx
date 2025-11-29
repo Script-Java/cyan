@@ -235,7 +235,7 @@ export default function AdminProofs() {
             toast.success("Proof sent to customer successfully!");
             setOrderId("");
             setCustomerId("");
-            setCustomerName("");
+            setCustomerEmail("");
             setDescription("");
             setUploadedFile(null);
             setFilePreview(null);
@@ -268,7 +268,7 @@ export default function AdminProofs() {
         toast.success("Proof sent to customer successfully!");
         setOrderId("");
         setCustomerId("");
-        setCustomerName("");
+        setCustomerEmail("");
         setDescription("");
         setShowSendForm(false);
         fetchProofs();
