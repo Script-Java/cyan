@@ -189,7 +189,9 @@ function buildProductFromEcwid(parsed: ParsedProduct): any {
     });
 
     return {
-      id: v.product_variation_sku || `var-${Object.keys(variationAttributes).join("-")}`,
+      id:
+        v.product_variation_sku ||
+        `var-${Object.keys(variationAttributes).join("-")}`,
       price: parseFloat(v.product_price) || 0,
       image_url: v.product_media_main_image_url || "",
       attributes: variationAttributes,
@@ -266,9 +268,7 @@ export const handleImportProducts: RequestHandler = async (req, res) => {
     console.error("Import products error:", error);
     res.status(500).json({
       error:
-        error instanceof Error
-          ? error.message
-          : "Failed to import products",
+        error instanceof Error ? error.message : "Failed to import products",
     });
   }
 };
@@ -284,7 +284,8 @@ export const handleGetProducts: RequestHandler = async (req, res) => {
       .order("created_at", { ascending: false })
       .range(
         parseInt(offset as string) || 0,
-        (parseInt(offset as string) || 0) + (parseInt(limit as string) || 20) -
+        (parseInt(offset as string) || 0) +
+          (parseInt(limit as string) || 20) -
           1,
       );
 

@@ -219,52 +219,59 @@ export default function AdminProductImport() {
                       <p className="text-green-800 mb-4">
                         {importResult.message}
                       </p>
-                      {importResult.products && importResult.products.length > 0 && (
-                        <div className="bg-white rounded border border-green-200 overflow-hidden">
-                          <div className="px-4 py-2 bg-green-100 border-b border-green-200">
-                            <p className="text-sm font-medium text-green-900">
-                              Imported Products
-                            </p>
-                          </div>
-                          <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
-                              <thead className="bg-gray-50 border-b border-green-200">
-                                <tr>
-                                  <th className="text-left px-4 py-2 font-medium text-gray-700">
-                                    Name
-                                  </th>
-                                  <th className="text-left px-4 py-2 font-medium text-gray-700">
-                                    SKU
-                                  </th>
-                                  <th className="text-right px-4 py-2 font-medium text-gray-700">
-                                    Price
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {importResult.products.slice(0, 5).map((product: any) => (
-                                  <tr key={product.id} className="border-b border-gray-200">
-                                    <td className="px-4 py-2 text-gray-900">
-                                      {product.name}
-                                    </td>
-                                    <td className="px-4 py-2 text-gray-600">
-                                      {product.sku || "—"}
-                                    </td>
-                                    <td className="text-right px-4 py-2 text-gray-900 font-medium">
-                                      ${parseFloat(product.price).toFixed(2)}
-                                    </td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                          {importResult.products.length > 5 && (
-                            <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 text-sm text-gray-600">
-                              ... and {importResult.products.length - 5} more
+                      {importResult.products &&
+                        importResult.products.length > 0 && (
+                          <div className="bg-white rounded border border-green-200 overflow-hidden">
+                            <div className="px-4 py-2 bg-green-100 border-b border-green-200">
+                              <p className="text-sm font-medium text-green-900">
+                                Imported Products
+                              </p>
                             </div>
-                          )}
-                        </div>
-                      )}
+                            <div className="overflow-x-auto">
+                              <table className="w-full text-sm">
+                                <thead className="bg-gray-50 border-b border-green-200">
+                                  <tr>
+                                    <th className="text-left px-4 py-2 font-medium text-gray-700">
+                                      Name
+                                    </th>
+                                    <th className="text-left px-4 py-2 font-medium text-gray-700">
+                                      SKU
+                                    </th>
+                                    <th className="text-right px-4 py-2 font-medium text-gray-700">
+                                      Price
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {importResult.products
+                                    .slice(0, 5)
+                                    .map((product: any) => (
+                                      <tr
+                                        key={product.id}
+                                        className="border-b border-gray-200"
+                                      >
+                                        <td className="px-4 py-2 text-gray-900">
+                                          {product.name}
+                                        </td>
+                                        <td className="px-4 py-2 text-gray-600">
+                                          {product.sku || "—"}
+                                        </td>
+                                        <td className="text-right px-4 py-2 text-gray-900 font-medium">
+                                          $
+                                          {parseFloat(product.price).toFixed(2)}
+                                        </td>
+                                      </tr>
+                                    ))}
+                                </tbody>
+                              </table>
+                            </div>
+                            {importResult.products.length > 5 && (
+                              <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 text-sm text-gray-600">
+                                ... and {importResult.products.length - 5} more
+                              </div>
+                            )}
+                          </div>
+                        )}
                     </div>
                   </div>
                 </div>

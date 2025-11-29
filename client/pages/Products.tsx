@@ -39,9 +39,9 @@ export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [expandedProduct, setExpandedProduct] = useState<string | number | null>(
-    null,
-  );
+  const [expandedProduct, setExpandedProduct] = useState<
+    string | number | null
+  >(null);
 
   useEffect(() => {
     fetchProducts();
@@ -89,9 +89,7 @@ export default function Products() {
       }
     } catch (err) {
       console.error("Error fetching products:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to load products",
-      );
+      setError(err instanceof Error ? err.message : "Failed to load products");
       setProducts(getDefaultProducts());
     } finally {
       setIsLoading(false);
@@ -117,7 +115,8 @@ export default function Products() {
       image: "/placeholder.svg",
       rating: 4.8,
       reviews: 234,
-      description: "Durable vinyl stickers perfect for laptops and outdoor use.",
+      description:
+        "Durable vinyl stickers perfect for laptops and outdoor use.",
       badge: "Popular",
     },
     {
@@ -154,7 +153,11 @@ export default function Products() {
   ];
 
   const getPriceDisplay = (product: Product) => {
-    if (product.min_price && product.max_price && product.min_price !== product.max_price) {
+    if (
+      product.min_price &&
+      product.max_price &&
+      product.min_price !== product.max_price
+    ) {
       return `$${product.min_price.toFixed(2)} - $${product.max_price.toFixed(2)}`;
     }
     return `$${(product.price || 0).toFixed(2)}`;

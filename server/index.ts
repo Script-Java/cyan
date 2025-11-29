@@ -184,7 +184,11 @@ export function createServer() {
   // ===== Imported Products Routes =====
   app.get("/api/imported-products", handleGetProducts);
   app.post("/api/import-products", handleImportProducts);
-  app.delete("/api/imported-products/all", verifyToken, handleDeleteAllProducts);
+  app.delete(
+    "/api/imported-products/all",
+    verifyToken,
+    handleDeleteAllProducts,
+  );
 
   // ===== Payments Routes (Public) =====
   app.get("/api/payments/methods", handleGetPaymentMethods);
