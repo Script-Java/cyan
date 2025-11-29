@@ -27,63 +27,76 @@ export default function SquarePaymentForm({
   const [sqPaymentRequest, setSqPaymentRequest] = useState<any>(null);
   const [appId, setAppId] = useState<string>("");
 
+  // First effect: Fetch and set the appId
   useEffect(() => {
-    // Fetch application ID from server if not provided
-    const getAppId = async () => {
+    const fetchAppId = async () => {
       if (applicationId) {
         setAppId(applicationId);
       } else {
         try {
           const response = await fetch("/api/square/config");
           const data = await response.json();
-          setAppId(data.applicationId || "sq0idb-QCpVeag3Cf_bZhf5K8-gVQ");
-        } catch {
-          setAppId("sq0idb-QCpVeag3Cf_bZhf5K8-gVQ");
+          setAppId(data.applicationId || "sandbox-sq0idb-QCpVeag3Cf_bZhf5K8-gVQ");
+        } catch (error) {
+          console.error("Failed to fetch Square config:", error);
+          setAppId("sandbox-sq0idb-QCpVeag3Cf_bZhf5K8-gVQ");
         }
       }
     };
 
-    getAppId();
+    fetchAppId();
+  }, [applicationId]);
+
+  // Second effect: Load the script only after appId is set
+  useEffect(() => {
+    if (!appId) return;
 
     // Load Square Web Payments SDK from CDN
     const script = document.createElement("script");
     script.src = "https://sandbox.web.squarecdn.com/v1/square.js";
     script.async = true;
-    script.onload = initializeSquarePayments;
-    document.body.appendChild(script);
 
-    return () => {
-      // Cleanup
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, [applicationId]);
-
-  const initializeSquarePayments = async () => {
-    if ((window as any).Square && appId) {
+    const handleScriptLoad = async () => {
       try {
-        const web = await (window as any).Square.payments(appId, "us");
+        if ((window as any).Square) {
+          const web = await (window as any).Square.payments(appId, "us");
 
-        // Create payment request for Web Payments SDK
-        const paymentRequest = web.paymentRequest({
-          countryCode: "US",
-          currencyCode: "USD",
-          total: {
-            amount: String(Math.round(amount * 100)), // Convert to cents
-            label: `Order #${orderId}`,
-          },
-          requestShippingAddress: false,
-        });
+          // Create payment request for Web Payments SDK
+          const paymentRequest = web.paymentRequest({
+            countryCode: "US",
+            currencyCode: "USD",
+            total: {
+              amount: String(Math.round(amount * 100)), // Convert to cents
+              label: `Order #${orderId}`,
+            },
+            requestShippingAddress: false,
+          });
 
-        setSqPaymentRequest({ web, paymentRequest });
-        setIsSDKLoaded(true);
+          setSqPaymentRequest({ web, paymentRequest });
+          setIsSDKLoaded(true);
+        } else {
+          throw new Error("Square SDK not loaded");
+        }
       } catch (error) {
         console.error("Failed to initialize Square Web Payments:", error);
         toast.error("Payment system failed to load. Please try again.");
       }
-    }
-  };
+    };
+
+    script.onload = handleScriptLoad;
+    script.onerror = () => {
+      console.error("Failed to load Square SDK script");
+      toast.error("Failed to load payment form. Please refresh the page.");
+    };
+
+    document.body.appendChild(script);
+
+    return () => {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, [appId, amount, orderId]);
 
   const handlePaymentSubmit = async () => {
     if (!sqPaymentRequest) return;
