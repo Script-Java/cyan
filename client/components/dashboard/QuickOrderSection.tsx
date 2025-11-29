@@ -108,7 +108,7 @@ export default function QuickOrderSection() {
                 {/* Title Link */}
                 <a
                   href={product.href}
-                  className="text-sm font-semibold text-gray-900 text-center transition-colors hover:text-purple-600 hover:underline"
+                  className="text-xs sm:text-sm font-semibold text-gray-900 text-center transition-colors hover:text-purple-600 hover:underline"
                 >
                   {product.name}
                 </a>
