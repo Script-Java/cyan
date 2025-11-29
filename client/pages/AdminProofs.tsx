@@ -96,6 +96,7 @@ export default function AdminProofs() {
     }
 
     fetchProofs();
+    fetchPendingOrders();
   }, [navigate]);
 
   const fetchProofs = async () => {
@@ -119,6 +120,26 @@ export default function AdminProofs() {
       setError(message);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchPendingOrders = async () => {
+    try {
+      setOrdersLoading(true);
+
+      const response = await fetch("/api/admin/pending-orders");
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to fetch pending orders");
+      }
+
+      const data: PendingOrdersResponse = await response.json();
+      setPendingOrders(data.orders || []);
+    } catch (err) {
+      console.error("Error fetching pending orders:", err);
+    } finally {
+      setOrdersLoading(false);
     }
   };
 
