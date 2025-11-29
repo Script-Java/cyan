@@ -70,6 +70,7 @@ export default function App() {
             <Route path="/my-tickets" element={<MyTickets />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/orders" element={<AdminOrders />} />
+            <Route path="/admin/proofs" element={<AdminProofs />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="/admin/support" element={<AdminSupport />} />
             <Route
