@@ -67,6 +67,7 @@ import {
   handleTestSquareConfig,
   handleCreateCheckoutSession,
   handleConfirmCheckout,
+  handleSquareWebhook,
 } from "./routes/square";
 import {
   handleUploadDigitalFile,
