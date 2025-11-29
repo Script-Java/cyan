@@ -1,164 +1,165 @@
-import { useEffect, useRef, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
-
-declare const window: any;
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { AlertCircle, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface SquarePaymentFormProps {
-  applicationId: string;
-  locationId?: string;
   amount: number;
+  orderId: number;
+  customerEmail: string;
+  customerName: string;
   onPaymentSuccess: (token: string) => void;
-  onPaymentError: (error: string) => void;
-  isProcessing?: boolean;
+  isLoading?: boolean;
 }
 
 export default function SquarePaymentForm({
-  applicationId,
-  locationId,
   amount,
+  orderId,
+  customerEmail,
+  customerName,
   onPaymentSuccess,
-  onPaymentError,
-  isProcessing = false,
+  isLoading = false,
 }: SquarePaymentFormProps) {
-  const web = useRef<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [paymentSourceId, setPaymentSourceId] = useState<string | null>(null);
+  const [isSDKLoaded, setIsSDKLoaded] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [sqPaymentRequest, setSqPaymentRequest] = useState<any>(null);
 
   useEffect(() => {
-    const initializeSquare = async () => {
-      try {
-        // Wait for Square SDK to be available
-        let attempts = 0;
-        while (!window.Square && attempts < 20) {
-          await new Promise((resolve) => setTimeout(resolve, 100));
-          attempts++;
-        }
+    // Load Square Web Payments SDK from CDN
+    const script = document.createElement("script");
+    script.src = "https://sandbox.web.squarecdn.com/v1/square.js";
+    script.async = true;
+    script.onload = initializeSquarePayments;
+    document.body.appendChild(script);
 
-        if (!window.Square) {
-          throw new Error(
-            "Square SDK failed to load - window.Square not available",
-          );
-        }
-
-        console.log("Square SDK loaded, initializing payments...");
-
-        // Initialize Web Payments API
-        const payments = window.Square.payments(applicationId);
-
-        if (!payments) {
-          throw new Error("Failed to initialize Square payments");
-        }
-
-        web.current = payments;
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Failed to initialize Square:", error);
-        onPaymentError(
-          error instanceof Error
-            ? error.message
-            : "Failed to initialize payment",
-        );
-        setIsLoading(false);
+    return () => {
+      // Cleanup
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
       }
     };
+  }, []);
 
-    if (applicationId) {
-      initializeSquare();
-    }
-  }, [applicationId, onPaymentError]);
+  const initializeSquarePayments = async () => {
+    if ((window as any).Square) {
+      try {
+        const web = await (window as any).Square.payments(
+          process.env.VITE_SQUARE_APPLICATION_ID || "sq0idb-QCpVeag3Cf_bZhf5K8-gVQ",
+          "us"
+        );
 
-  const handleRequestCardPayment = async () => {
-    if (!web.current) {
-      onPaymentError("Payment system not initialized");
-      return;
-    }
+        // Create payment request for Web Payments SDK
+        const paymentRequest = web.paymentRequest({
+          countryCode: "US",
+          currencyCode: "USD",
+          total: {
+            amount: String(Math.round(amount * 100)), // Convert to cents
+            label: `Order #${orderId}`,
+          },
+          requestShippingAddress: false,
+        });
 
-    try {
-      // Create a card payment method
-      const card = await web.current.card();
-
-      if (!card) {
-        throw new Error("Failed to create card payment method");
+        setSqPaymentRequest({ web, paymentRequest });
+        setIsSDKLoaded(true);
+      } catch (error) {
+        console.error("Failed to initialize Square Web Payments:", error);
+        toast.error("Payment system failed to load. Please try again.");
       }
+    }
+  };
 
-      // Tokenize the card
-      const result = await card.tokenize();
+  const handlePaymentSubmit = async () => {
+    if (!sqPaymentRequest) return;
 
-      if (result.status === "OK" && result.token) {
-        setPaymentSourceId(result.token);
-        onPaymentSuccess(result.token);
-      } else if (result.errors && result.errors.length > 0) {
-        const errorMessage = result.errors
-          .map((e: any) => e.message || e.detail)
-          .join(", ");
-        onPaymentError(errorMessage);
-      } else {
-        onPaymentError("Failed to tokenize card");
+    setIsProcessing(true);
+    try {
+      const { web, paymentRequest } = sqPaymentRequest;
+
+      // Show payment form
+      const result = await paymentRequest.show();
+
+      if (result.status === "SUCCESS") {
+        const token = result.token;
+
+        // Send token to backend for payment processing
+        const response = await fetch("/api/square/process-payment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: token.token,
+            orderId: orderId,
+            amount: amount,
+            customerEmail: customerEmail,
+            customerName: customerName,
+          }),
+        });
+
+        const paymentResult = await response.json();
+
+        if (!response.ok) {
+          throw new Error(paymentResult.error || "Payment failed");
+        }
+
+        toast.success("Payment successful!");
+        onPaymentSuccess(token.token);
       }
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Payment failed";
-      onPaymentError(errorMessage);
+      console.error("Payment error:", error);
+      toast.error(errorMessage);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
-  if (isLoading) {
+  if (!isSDKLoaded) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Payment Information</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center py-8">
-            <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
-            <span className="ml-2 text-gray-600">Loading payment form...</span>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex items-center justify-center py-8">
+        <Loader2 className="w-6 h-6 animate-spin text-[#FFD713]" />
+        <span className="ml-2 text-white">Loading payment form...</span>
+      </div>
     );
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Payment Information</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <p className="text-sm text-blue-900">
-            Click the button below to enter your card details securely through
-            Square.
+    <div className="space-y-4">
+      <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+        <div className="mb-6">
+          <h3 className="text-lg font-bold text-white mb-2">Payment Details</h3>
+          <p className="text-white/60 text-sm">
+            Amount: ${(amount / 100).toFixed(2)}
           </p>
         </div>
 
-        <button
-          onClick={handleRequestCardPayment}
-          disabled={isProcessing || !web.current}
-          className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+        <Button
+          onClick={handlePaymentSubmit}
+          disabled={isProcessing || isLoading}
+          className="w-full bg-[#FFD713] hover:bg-[#FFD713]/90 text-black font-bold py-3 rounded-lg transition-all"
         >
           {isProcessing ? (
             <>
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               Processing Payment...
             </>
           ) : (
-            "Enter Card Details"
+            "Pay with Square"
           )}
-        </button>
+        </Button>
 
-        {paymentSourceId && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-            <p className="text-sm text-green-900">
-              ✓ Payment method ready to process
-            </p>
-          </div>
-        )}
-
-        <p className="text-xs text-gray-500 text-center">
-          Your payment information is secure and encrypted by Square.
+        <p className="text-xs text-white/40 text-center mt-4">
+          Secure payment powered by Square
         </p>
-      </CardContent>
-    </Card>
+      </div>
+
+      <div className="flex items-start gap-3 bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+        <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+        <p className="text-sm text-blue-200">
+          Test card: <span className="font-mono">4111 1111 1111 1111</span> with any future date
+        </p>
+      </div>
+    </div>
   );
 }
