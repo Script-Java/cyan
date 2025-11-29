@@ -48,6 +48,7 @@ interface SquarePaymentRequest {
   tax: number;
   shipping: number;
   total: number;
+  appliedStoreCredit?: number;
   customerId?: number;
   customerEmail?: string;
   customerName?: string;
