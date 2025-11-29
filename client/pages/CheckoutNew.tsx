@@ -118,6 +118,18 @@ export default function CheckoutNew() {
 
     loadCart();
     fetchStoreCredit();
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        fetchStoreCredit();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, [cartId, fetchStoreCredit]);
 
   const calculateOrderData = (subtotal: number, discount: number) => {
