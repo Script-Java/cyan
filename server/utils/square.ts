@@ -138,3 +138,86 @@ export async function getSquareLocations(): Promise<any[]> {
     return [];
   }
 }
+
+export async function createSquarePaymentLink(data: {
+  orderId: number;
+  amount: number;
+  currency: string;
+  description: string;
+  customerEmail: string;
+  customerName: string;
+  redirectUrl: string;
+}): Promise<{
+  success: boolean;
+  paymentLinkUrl?: string;
+  error?: string;
+}> {
+  try {
+    const amountInCents = Math.round(data.amount * 100);
+
+    const paymentLinkBody = {
+      idempotencyKey: `${data.orderId}-${Date.now()}`,
+      quickPay: {
+        name: `Order #${data.orderId}`,
+        description: data.description,
+        priceMoney: {
+          amount: amountInCents,
+          currency: data.currency || "USD",
+        },
+      },
+      checkoutOptions: {
+        redirectUrl: data.redirectUrl,
+      },
+      prePopulatedData: {
+        buyerEmail: data.customerEmail,
+        buyerPhoneNumber: undefined,
+      },
+    };
+
+    console.log("Creating Square Payment Link:", {
+      orderId: data.orderId,
+      amount: amountInCents,
+      currency: data.currency,
+    });
+
+    const client = getSquareClient();
+    const response = await client.checkoutApi.createPaymentLink(
+      paymentLinkBody,
+    );
+
+    if (response.result?.paymentLink?.url) {
+      console.log("Payment Link created successfully:", response.result.paymentLink.id);
+      return {
+        success: true,
+        paymentLinkUrl: response.result.paymentLink.url,
+      };
+    }
+
+    throw new Error("Failed to create payment link - no URL returned");
+  } catch (error) {
+    console.error("Square Payment Link error:", error);
+
+    if (error && typeof error === "object") {
+      const errorObj = error as any;
+
+      if (errorObj?.errors?.[0]?.detail) {
+        return {
+          success: false,
+          error: errorObj.errors[0].detail,
+        };
+      }
+
+      if (errorObj?.message) {
+        return {
+          success: false,
+          error: errorObj.message,
+        };
+      }
+    }
+
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error creating payment link",
+    };
+  }
+}
