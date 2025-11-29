@@ -24,13 +24,15 @@ export const useStoreCredit = () => {
         setStoreCredit(data.storeCredit || 0);
       } else {
         console.error("Failed to fetch store credit");
+        setStoreCredit(0);
       }
     } catch (error) {
       console.error("Error fetching store credit:", error);
+      setStoreCredit(0);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [setStoreCredit, setIsLoading]);
 
   return {
     storeCredit,
