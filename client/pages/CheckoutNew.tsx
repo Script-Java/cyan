@@ -89,6 +89,9 @@ export default function CheckoutNew() {
     country: "US",
   });
 
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [createdOrderId, setCreatedOrderId] = useState<number | null>(null);
+
   useEffect(() => {
     const loadCart = async () => {
       try {
