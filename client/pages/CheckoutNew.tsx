@@ -582,7 +582,7 @@ export default function CheckoutNew() {
                             <div>
                               <p className="font-bold">Blind Shipment</p>
                               <p className="text-xs text-white/60">
-                                Hide Sticker Shuttle logos from packaging
+                                Hide Sticky Slap logos from packaging
                               </p>
                             </div>
                           </div>
