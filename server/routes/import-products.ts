@@ -222,14 +222,15 @@ function buildProductFromEcwid(parsed: ParsedProduct): any {
 
 export const handleImportProducts: RequestHandler = async (req, res) => {
   try {
-    if (!req.body || !req.body.csv_data) {
+    const csvData = req.body?.csv_data;
+
+    if (!csvData || typeof csvData !== "string") {
       return res.status(400).json({
         error:
-          "CSV data is required. Send as POST with 'csv_data' in the request body",
+          "CSV data is required. Send as POST with 'csv_data' (string) in the request body",
+        received: typeof csvData,
       });
     }
-
-    const csvData = req.body.csv_data;
     const parsedProducts = parseEcwidCSV(csvData);
 
     if (parsedProducts.length === 0) {
