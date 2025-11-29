@@ -69,6 +69,7 @@ import {
   handleConfirmCheckout,
   handleSquareWebhook,
 } from "./routes/square";
+import { processSquarePayment } from "./routes/square-payment";
 import {
   handleUploadDigitalFile,
   handleGetOrderFiles,
