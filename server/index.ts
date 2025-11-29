@@ -202,6 +202,7 @@ export function createServer() {
   app.post("/api/square/checkout", handleCreateCheckoutSession);
   app.post("/api/square/confirm-checkout", handleConfirmCheckout);
   app.post("/api/square/pay", handleSquarePayment);
+  app.post("/api/webhooks/square", handleSquareWebhook);
 
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
