@@ -50,10 +50,29 @@ interface AdminProofsResponse {
   unreadNotifications: number;
 }
 
+interface PendingOrder {
+  id: number;
+  customerId: number;
+  customerName: string;
+  customerEmail: string;
+  status: string;
+  total: number;
+  dateCreated: string;
+  source: "ecwid" | "supabase";
+}
+
+interface PendingOrdersResponse {
+  success: boolean;
+  orders: PendingOrder[];
+  count: number;
+}
+
 export default function AdminProofs() {
   const navigate = useNavigate();
   const [proofs, setProofs] = useState<Proof[]>([]);
+  const [pendingOrders, setPendingOrders] = useState<PendingOrder[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [ordersLoading, setOrdersLoading] = useState(false);
   const [error, setError] = useState("");
   const [expandedProofId, setExpandedProofId] = useState<string | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -62,6 +81,7 @@ export default function AdminProofs() {
     Record<string, boolean>
   >({});
   const [showSendForm, setShowSendForm] = useState(false);
+  const [showOrderModal, setShowOrderModal] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [customerId, setCustomerId] = useState("");
   const [description, setDescription] = useState("");
