@@ -503,7 +503,19 @@ export default function AdminProofs() {
                     <input
                       type="number"
                       value={orderId}
-                      onChange={(e) => setOrderId(e.target.value)}
+                      onChange={(e) => {
+                        const id = e.target.value;
+                        setOrderId(id);
+                        // Auto-populate customerId when order is found
+                        if (id) {
+                          const foundOrder = pendingOrders.find(
+                            (o) => o.id.toString() === id,
+                          );
+                          if (foundOrder) {
+                            setCustomerId(foundOrder.customerId.toString());
+                          }
+                        }
+                      }}
                       placeholder="Enter order ID"
                       className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
