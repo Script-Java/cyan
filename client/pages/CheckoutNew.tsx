@@ -725,6 +725,7 @@ export default function CheckoutNew() {
                                 calculateOrderData(
                                   orderData.subtotal,
                                   appliedDiscount,
+                                  appliedStoreCredit,
                                 );
                               }}
                               className="w-5 h-5 rounded"
