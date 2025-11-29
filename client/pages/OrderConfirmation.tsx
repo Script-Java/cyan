@@ -70,30 +70,12 @@ export default function OrderConfirmation() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [authToken, setAuthToken] = useState<string | null>(null);
-  const { fetchStoreCredit } = useStoreCredit();
 
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     setAuthToken(token);
     // Allow guest users to view their order confirmation without auth
-
-    // Fetch store credit if authenticated
-    if (token) {
-      fetchStoreCredit();
-    }
-
-    const handleVisibilityChange = () => {
-      if (!document.hidden && token) {
-        fetchStoreCredit();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [navigate, fetchStoreCredit]);
+  }, []);
 
   useEffect(() => {
     const fetchOrder = async () => {
