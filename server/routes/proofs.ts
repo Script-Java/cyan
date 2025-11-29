@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
-import { toast } from "sonner";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
