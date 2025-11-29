@@ -40,6 +40,8 @@ export default function CheckoutNew() {
   const [additionalPaymentPercent, setAdditionalPaymentPercent] = useState(0);
   const [discountCode, setDiscountCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState(0);
+  const [availableStoreCredit, setAvailableStoreCredit] = useState(0);
+  const [appliedStoreCredit, setAppliedStoreCredit] = useState(0);
 
   const [orderData, setOrderData] = useState<OrderData>({
     subtotal: 0,
