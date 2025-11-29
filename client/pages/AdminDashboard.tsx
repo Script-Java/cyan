@@ -148,6 +148,9 @@ export default function AdminDashboard() {
                 </div>
               ) : (
                 <div className="space-y-8">
+                  {/* Proof Notifications */}
+                  <ProofNotificationAlert />
+
                   {/* Pending Orders Section */}
                   {pendingOrdersCount > 0 && (
                     <div className="bg-white rounded-lg border border-gray-200 p-8">
