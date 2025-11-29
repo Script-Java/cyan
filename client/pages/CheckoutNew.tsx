@@ -142,13 +142,14 @@ export default function CheckoutNew() {
     const additionalPayment =
       (subtotal + tax + shipping + blindShipmentFee - discount) *
       (additionalPaymentPercent / 100);
-    const total =
+    const subtotalBeforeCredit =
       subtotal +
       tax +
       shipping +
       blindShipmentFee +
       additionalPayment -
       discount;
+    const total = Math.max(0, subtotalBeforeCredit - appliedStoreCredit);
     const storeCredit = total * 0.05;
 
     setOrderData({
@@ -160,6 +161,7 @@ export default function CheckoutNew() {
       additionalPayment,
       total,
       storeCredit,
+      appliedStoreCredit,
     });
   };
 
