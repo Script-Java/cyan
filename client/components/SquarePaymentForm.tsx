@@ -19,16 +19,13 @@ export default function SquarePaymentForm({
   isLoading = false,
   applicationId,
 }: SquarePaymentFormProps) {
-  const cardContainerRef = useRef<HTMLDivElement>(null);
-  const statusContainerRef = useRef<HTMLDivElement>(null);
-  const cardButtonRef = useRef<HTMLButtonElement>(null);
   const initializeRef = useRef(false);
 
   useEffect(() => {
     if (initializeRef.current) return;
     initializeRef.current = true;
 
-    const initPayments = async () => {
+    const initializePayments = async () => {
       try {
         if (!(window as any).Square) {
           console.error("Square SDK not loaded");
@@ -36,23 +33,22 @@ export default function SquarePaymentForm({
         }
 
         const payments = (window as any).Square.payments(
-          "sandbox-sq0idb-RT3u-HhCpNdbMiGg5aXuVg",
-          "TC4Z3ZEBKRXRH",
+          'sandbox-sq0idb-RT3u-HhCpNdbMiGg5aXuVg',
+          'TC4Z3ZEBKRXRH'
         );
 
         const card = await payments.card();
-        await card.attach("#card-container");
+        await card.attach('#card-container');
 
-        const cardButton = cardButtonRef.current;
+        const cardButton = document.getElementById('card-button');
         if (cardButton) {
-          cardButton.addEventListener("click", async () => {
-            const statusContainer = statusContainerRef.current;
+          cardButton.addEventListener('click', async () => {
+            const statusContainer = document.getElementById('payment-status-container');
 
             try {
               const result = await card.tokenize();
-              if (result.status === "OK") {
+              if (result.status === 'OK') {
                 console.log(`Payment token is ${result.token}`);
-
                 if (statusContainer) {
                   statusContainer.innerHTML = "Payment Successful";
                 }
@@ -83,7 +79,7 @@ export default function SquarePaymentForm({
                 let errorMessage = `Tokenization failed with status: ${result.status}`;
                 if (result.errors) {
                   errorMessage += ` and errors: ${JSON.stringify(
-                    result.errors,
+                    result.errors
                   )}`;
                 }
 
@@ -102,7 +98,7 @@ export default function SquarePaymentForm({
       }
     };
 
-    initPayments();
+    initializePayments();
   }, [amount, orderId, customerEmail, customerName, onPaymentSuccess]);
 
   return (
@@ -117,19 +113,16 @@ export default function SquarePaymentForm({
 
         <div
           id="payment-status-container"
-          ref={statusContainerRef}
-          className="mb-4 text-sm font-medium"
+          className="mb-4 text-sm font-medium text-white"
         />
 
         <div
           id="card-container"
-          ref={cardContainerRef}
-          className="mb-6 p-4 bg-black/30 rounded-lg border border-white/10"
+          className="mb-6 p-4 bg-black/30 rounded-lg border border-white/10 min-h-14"
         />
 
         <button
           id="card-button"
-          ref={cardButtonRef}
           type="button"
           disabled={isLoading}
           className="w-full bg-[#FFD713] hover:bg-[#FFD713]/90 text-black font-bold py-3 rounded-lg transition-all disabled:opacity-50"
