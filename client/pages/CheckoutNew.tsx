@@ -176,6 +176,12 @@ export default function CheckoutNew() {
     calculateOrderData(newSubtotal, appliedDiscount);
   };
 
+  const handleApplyStoreCredit = (amount: number) => {
+    const validAmount = Math.max(0, Math.min(amount, availableStoreCredit));
+    setAppliedStoreCredit(validAmount);
+    calculateOrderData(orderData.subtotal, appliedDiscount);
+  };
+
   const handleApplyDiscount = () => {
     if (discountCode) {
       const discountAmount = orderData.subtotal * 0.1;
