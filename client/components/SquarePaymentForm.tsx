@@ -41,10 +41,10 @@ export default function SquarePaymentForm({
         console.log("Square SDK loaded successfully");
         initializeRef.current = true;
 
-        const payments = (window as any).Square.payments(
-          'sandbox-sq0idb-RT3u-HhCpNdbMiGg5aXuVg',
-          'TC4Z3ZEBKRXRH'
-        );
+        const appId = 'sq0idp-aI75bRHWpnYqioPYqvKvsw';
+        const locationId = 'M22XGM76XXKXW';
+
+        const payments = (window as any).Square.payments(appId, locationId);
 
         console.log("Square payments object created");
 
