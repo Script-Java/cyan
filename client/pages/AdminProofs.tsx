@@ -195,7 +195,7 @@ export default function AdminProofs() {
 
   const handleSendProof = async () => {
     try {
-      if (!orderId || !customerId || !customerName || !description) {
+      if (!orderId || !customerId || !description) {
         toast.error("Please fill in all required fields");
         return;
       }
