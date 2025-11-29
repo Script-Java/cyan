@@ -66,7 +66,7 @@ export const processSquarePayment: RequestHandler = async (req, res) => {
       await updateCustomerStoreCredit(
         updatedOrder.customer_id,
         earnedCredit,
-        `Earned 5% from order ${orderId}`
+        `Earned 5% from order ${orderId}`,
       );
 
       console.log("Store credit awarded:", {

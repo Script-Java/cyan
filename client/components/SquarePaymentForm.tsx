@@ -38,7 +38,9 @@ export default function SquarePaymentForm({
         try {
           const response = await fetch("/api/square/config");
           const data = await response.json();
-          setAppId(data.applicationId || "sandbox-sq0idb-QCpVeag3Cf_bZhf5K8-gVQ");
+          setAppId(
+            data.applicationId || "sandbox-sq0idb-QCpVeag3Cf_bZhf5K8-gVQ",
+          );
         } catch (error) {
           console.error("Failed to fetch Square config:", error);
           setAppId("sandbox-sq0idb-QCpVeag3Cf_bZhf5K8-gVQ");
@@ -61,7 +63,10 @@ export default function SquarePaymentForm({
     const handleScriptLoad = async () => {
       try {
         if ((window as any).Square) {
-          const webInstance = await (window as any).Square.payments(appId, "us");
+          const webInstance = await (window as any).Square.payments(
+            appId,
+            "us",
+          );
           setWeb(webInstance);
 
           // Create card payment method
@@ -199,7 +204,8 @@ export default function SquarePaymentForm({
       <div className="flex items-start gap-3 bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
         <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
         <p className="text-sm text-blue-200">
-          Test card: <span className="font-mono">4111 1111 1111 1111</span> with any future date and any CVV
+          Test card: <span className="font-mono">4111 1111 1111 1111</span> with
+          any future date and any CVV
         </p>
       </div>
     </div>
