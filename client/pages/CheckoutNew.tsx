@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import CheckoutForm from "@/components/CheckoutForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Trash2, Share2, ChevronDown } from "lucide-react";
+import { Loader2, Trash2, Share2, ChevronDown, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 interface CartItem {
