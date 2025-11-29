@@ -454,8 +454,8 @@ export default function OrderHistory() {
 
                       {/* Order Items */}
                       {order.items && order.items.length > 0 && (
-                        <div className="mb-6">
-                          <h4 className="text-sm font-semibold text-gray-900 mb-4">
+                        <div className="mb-4 sm:mb-6">
+                          <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-3 sm:mb-4">
                             Order Items
                           </h4>
                           <div className="space-y-2 sm:space-y-3">
