@@ -114,9 +114,7 @@ export default function Proofs() {
       }
 
       const data: ProofDetailResponse = await response.json();
-      setProofs((prev) =>
-        prev.map((p) => (p.id === proofId ? data.proof : p)),
-      );
+      setProofs((prev) => prev.map((p) => (p.id === proofId ? data.proof : p)));
     } catch (err) {
       console.error("Error fetching proof detail:", err);
     }
@@ -175,7 +173,8 @@ export default function Proofs() {
       setCommentText((prev) => ({ ...prev, [`deny-${proofId}`]: "" }));
       fetchProofs();
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to deny proof";
+      const message =
+        err instanceof Error ? err.message : "Failed to deny proof";
       toast.error(message);
     } finally {
       setSubmittingAction((prev) => ({ ...prev, [proofId]: false }));
@@ -210,7 +209,8 @@ export default function Proofs() {
       toast.success("Comment added");
       fetchProofDetail(proofId);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to add comment";
+      const message =
+        err instanceof Error ? err.message : "Failed to add comment";
       toast.error(message);
     } finally {
       setSubmittingComment((prev) => ({ ...prev, [proofId]: false }));
@@ -312,8 +312,8 @@ export default function Proofs() {
                 <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-4 py-2">
                   <Bell className="w-5 h-5 text-blue-600" />
                   <span className="text-sm font-medium text-blue-900">
-                    {unreadCount} new{" "}
-                    {unreadCount === 1 ? "proof" : "proofs"} ready
+                    {unreadCount} new {unreadCount === 1 ? "proof" : "proofs"}{" "}
+                    ready
                   </span>
                 </div>
               )}
@@ -416,9 +416,7 @@ export default function Proofs() {
                                   <div className="flex items-start justify-between mb-2">
                                     <div className="flex-1">
                                       <p className="text-sm font-medium text-gray-900">
-                                        {comment.admin_email
-                                          ? "Admin"
-                                          : "You"}
+                                        {comment.admin_email ? "Admin" : "You"}
                                       </p>
                                       <p className="text-xs text-gray-500">
                                         {formatDate(comment.created_at)}
@@ -474,11 +472,13 @@ export default function Proofs() {
                             </button>
                             <button
                               onClick={() => {
-                                const denyInput = commentText[`deny-${proof.id}`];
+                                const denyInput =
+                                  commentText[`deny-${proof.id}`];
                                 if (!denyInput?.trim()) {
                                   setCommentText((prev) => ({
                                     ...prev,
-                                    [`deny-${proof.id}`]: "Please update this design",
+                                    [`deny-${proof.id}`]:
+                                      "Please update this design",
                                   }));
                                 }
                               }}
@@ -565,8 +565,7 @@ export default function Proofs() {
                             </span>
                           </div>
                           <p className="text-sm text-gray-600">
-                            {proof.description ||
-                              "Design proof"}
+                            {proof.description || "Design proof"}
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
                             Last updated on {formatDate(proof.updated_at)}
@@ -623,9 +622,7 @@ export default function Proofs() {
                                   <div className="flex items-start justify-between mb-2">
                                     <div className="flex-1">
                                       <p className="text-sm font-medium text-gray-900">
-                                        {comment.admin_email
-                                          ? "Admin"
-                                          : "You"}
+                                        {comment.admin_email ? "Admin" : "You"}
                                       </p>
                                       <p className="text-xs text-gray-500">
                                         {formatDate(comment.created_at)}

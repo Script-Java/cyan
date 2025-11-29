@@ -268,17 +268,18 @@ export function createServer() {
 
   // ===== Proofs Routes (Protected) =====
   app.get("/api/proofs", verifyToken, handleGetProofs);
-  app.get("/api/proofs/notifications", verifyToken, handleGetProofNotifications);
+  app.get(
+    "/api/proofs/notifications",
+    verifyToken,
+    handleGetProofNotifications,
+  );
   app.get("/api/proofs/:proofId", verifyToken, handleGetProofDetail);
   app.post("/api/proofs/:proofId/approve", verifyToken, handleApproveProof);
   app.post("/api/proofs/:proofId/deny", verifyToken, handleDenyProof);
   app.post("/api/proofs/:proofId/comments", verifyToken, handleAddProofComment);
   app.post("/api/admin/proofs/send", handleSendProofToCustomer);
   app.get("/api/admin/proofs", handleGetAdminProofs);
-  app.post(
-    "/api/admin/proofs/:proofId/comments",
-    handleAddAdminProofComment,
-  );
+  app.post("/api/admin/proofs/:proofId/comments", handleAddAdminProofComment);
   app.get("/api/admin/pending-orders", handleGetAdminPendingOrders);
 
   // ===== Webhook Routes =====

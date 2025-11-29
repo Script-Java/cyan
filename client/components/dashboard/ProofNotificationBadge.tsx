@@ -33,7 +33,7 @@ export default function ProofNotificationBadge() {
 
       const data: ProofsResponse = await response.json();
       const pending = (data.proofs || []).filter(
-        (p) => p.status === "pending"
+        (p) => p.status === "pending",
       ).length;
       setPendingCount(pending);
     } catch (error) {

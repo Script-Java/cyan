@@ -323,10 +323,7 @@ export const handleAddProofComment: RequestHandler = async (req, res) => {
 /**
  * Get unread proof notifications for customer
  */
-export const handleGetProofNotifications: RequestHandler = async (
-  req,
-  res,
-) => {
+export const handleGetProofNotifications: RequestHandler = async (req, res) => {
   try {
     const customerId = (req as any).customerId;
 
@@ -343,9 +340,7 @@ export const handleGetProofNotifications: RequestHandler = async (
 
     if (error) {
       console.error("Error fetching notifications:", error);
-      return res
-        .status(500)
-        .json({ error: "Failed to fetch notifications" });
+      return res.status(500).json({ error: "Failed to fetch notifications" });
     }
 
     res.json({
@@ -455,10 +450,7 @@ export const handleGetAdminProofs: RequestHandler = async (req, res) => {
 /**
  * Admin: Add comment to proof
  */
-export const handleAddAdminProofComment: RequestHandler = async (
-  req,
-  res,
-) => {
+export const handleAddAdminProofComment: RequestHandler = async (req, res) => {
   try {
     const { proofId } = req.params;
     const { message, adminId, adminEmail } = req.body;

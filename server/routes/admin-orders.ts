@@ -22,10 +22,7 @@ interface OrderWithCustomer {
  * Get all pending/unshipped orders from all sources (admin only)
  * Returns orders that haven't shipped yet
  */
-export const handleGetAdminPendingOrders: RequestHandler = async (
-  req,
-  res,
-) => {
+export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
   try {
     const allOrders: OrderWithCustomer[] = [];
 
@@ -34,9 +31,7 @@ export const handleGetAdminPendingOrders: RequestHandler = async (
     try {
       // Note: Ecwid API /orders endpoint without customerId parameter would require
       // implementation of getAllOrders method in the EcwidAPI class
-      console.warn(
-        "Ecwid getAllOrders not yet implemented for admin view",
-      );
+      console.warn("Ecwid getAllOrders not yet implemented for admin view");
     } catch (ecwidError) {
       console.warn("Failed to fetch Ecwid orders:", ecwidError);
     }

@@ -186,7 +186,8 @@ export default function AdminProofs() {
       setShowSendForm(false);
       fetchProofs();
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to send proof";
+      const message =
+        err instanceof Error ? err.message : "Failed to send proof";
       toast.error(message);
     } finally {
       setSendingProof(false);
@@ -223,7 +224,8 @@ export default function AdminProofs() {
       toast.success("Comment added");
       fetchProofs();
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to add comment";
+      const message =
+        err instanceof Error ? err.message : "Failed to add comment";
       toast.error(message);
     } finally {
       setSubmittingComment((prev) => ({ ...prev, [proofId]: false }));
@@ -299,7 +301,9 @@ export default function AdminProofs() {
           <div className="flex justify-between items-start mb-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Proofs</h1>
-              <p className="text-gray-600 mt-2">Manage design proofs for customers</p>
+              <p className="text-gray-600 mt-2">
+                Manage design proofs for customers
+              </p>
             </div>
             <Button
               onClick={() => {
@@ -321,7 +325,8 @@ export default function AdminProofs() {
                 Pending Orders Ready for Proofs
               </h3>
               <p className="text-sm text-gray-600 mb-4">
-                Click on any order below to quickly send a proof to that customer
+                Click on any order below to quickly send a proof to that
+                customer
               </p>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
@@ -633,7 +638,8 @@ export default function AdminProofs() {
                         </div>
                         <p className="text-sm text-gray-600">
                           Customer: {proof.customers?.first_name}{" "}
-                          {proof.customers?.last_name} ({proof.customers?.email})
+                          {proof.customers?.last_name} ({proof.customers?.email}
+                          )
                         </p>
                         <p className="text-sm text-gray-600 mt-1">
                           {proof.description}

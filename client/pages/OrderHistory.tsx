@@ -182,7 +182,9 @@ export default function OrderHistory() {
               <ArrowRight className="w-4 h-4 rotate-180" />
               Back to Dashboard
             </button>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Order History</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              Order History
+            </h1>
             <p className="text-gray-600 mt-2">
               View all your orders and track shipments
             </p>
@@ -388,14 +390,19 @@ export default function OrderHistory() {
                           {order.estimated_delivery_date && (
                             <div className="flex items-center gap-1 text-blue-600 font-medium">
                               <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
-                              <span className="hidden sm:inline">Delivery:</span>{" "}
+                              <span className="hidden sm:inline">
+                                Delivery:
+                              </span>{" "}
                               {formatDate(order.estimated_delivery_date)}
                             </div>
                           )}
                           {order.tracking_number && (
                             <div className="flex items-center gap-1 text-green-600 font-medium">
                               <Truck className="w-3 h-3 sm:w-4 sm:h-4" />
-                              <span className="hidden sm:inline">Tracking:</span> {order.tracking_number}
+                              <span className="hidden sm:inline">
+                                Tracking:
+                              </span>{" "}
+                              {order.tracking_number}
                             </div>
                           )}
                         </div>
@@ -587,13 +594,17 @@ export default function OrderHistory() {
             <div className="mt-8 bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div>
-                  <p className="text-xs sm:text-sm text-gray-600 mb-1">Total Orders</p>
+                  <p className="text-xs sm:text-sm text-gray-600 mb-1">
+                    Total Orders
+                  </p>
                   <p className="text-xl sm:text-2xl font-bold text-gray-900">
                     {orders.length}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs sm:text-sm text-gray-600 mb-1">Total Spent</p>
+                  <p className="text-xs sm:text-sm text-gray-600 mb-1">
+                    Total Spent
+                  </p>
                   <p className="text-xl sm:text-2xl font-bold text-gray-900">
                     {formatCurrency(
                       orders.reduce((sum, order) => sum + order.total, 0),
@@ -601,7 +612,9 @@ export default function OrderHistory() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs sm:text-sm text-gray-600 mb-1">Total Items</p>
+                  <p className="text-xs sm:text-sm text-gray-600 mb-1">
+                    Total Items
+                  </p>
                   <p className="text-xl sm:text-2xl font-bold text-gray-900">
                     {orders.reduce((sum, order) => sum + order.itemCount, 0)}
                   </p>
