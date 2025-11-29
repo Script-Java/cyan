@@ -559,17 +559,17 @@ export default function CheckoutNew() {
                     </div>
                   </div>
 
-                  {availableStoreCredit > 0 && (
-                    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <h4 className="text-white font-bold">Store Credit</h4>
-                          <span className="text-green-400 font-bold">
-                            ${availableStoreCredit.toFixed(2)} available
-                          </span>
-                        </div>
+                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <h4 className="text-white font-bold">Store Credit</h4>
+                        <span className="text-green-400 font-bold">
+                          ${availableStoreCredit.toFixed(2)} available
+                        </span>
+                      </div>
 
-                        {appliedStoreCredit > 0 ? (
+                      {availableStoreCredit > 0 ? (
+                        appliedStoreCredit > 0 ? (
                           <div className="space-y-3">
                             <div className="bg-green-400/10 border border-green-400/30 rounded-lg p-3">
                               <p className="text-sm text-green-300">
@@ -645,10 +645,14 @@ export default function CheckoutNew() {
                                 ))}
                             </div>
                           </div>
-                        )}
-                      </div>
+                        )
+                      ) : (
+                        <div className="text-white/60 text-sm py-3">
+                          No store credit available. Make a purchase to earn credit!
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </div>
 
                   <Button
                     type="submit"
