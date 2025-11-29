@@ -52,6 +52,7 @@ export default function CheckoutNew() {
     additionalPayment: 0,
     total: 0,
     storeCredit: 0,
+    appliedStoreCredit: 0,
   });
 
   const [customerInfo, setCustomerInfo] = useState({
