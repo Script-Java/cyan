@@ -254,6 +254,8 @@ export default function CheckoutNew() {
     setIsSubmitting(true);
 
     try {
+      const customerId = localStorage.getItem("customerId");
+
       const checkoutPayload = {
         amount: orderData.total,
         currency: "USD",
@@ -294,6 +296,7 @@ export default function CheckoutNew() {
         shipping: orderData.shipping,
         total: orderData.total,
         appliedStoreCredit: appliedStoreCredit,
+        customerId: customerId ? parseInt(customerId) : undefined,
         customerEmail: customerInfo.email,
         customerName: `${customerInfo.firstName} ${customerInfo.lastName}`,
       };
