@@ -414,8 +414,8 @@ export default function OrderHistory() {
                       {/* Digital Files */}
                       {order.digital_files &&
                         order.digital_files.length > 0 && (
-                          <div className="mb-6">
-                            <h4 className="text-sm font-semibold text-gray-900 mb-4">
+                          <div className="mb-4 sm:mb-6">
+                            <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-3 sm:mb-4">
                               📁 Digital Files
                             </h4>
                             <div className="space-y-2">
