@@ -568,8 +568,8 @@ export default function OrderHistory() {
                           </div>
                         </div>
                       ) : (
-                        <div className="bg-blue-50 border border-blue-200 rounded p-4">
-                          <p className="text-sm text-blue-900">
+                        <div className="bg-blue-50 border border-blue-200 rounded p-3 sm:p-4">
+                          <p className="text-xs sm:text-sm text-blue-900">
                             📦 Your order has not been shipped yet. We'll send
                             you a tracking number as soon as it's on its way!
                           </p>
