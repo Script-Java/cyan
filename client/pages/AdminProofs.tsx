@@ -86,6 +86,7 @@ export default function AdminProofs() {
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [customerId, setCustomerId] = useState("");
+  const [customerName, setCustomerName] = useState("");
   const [description, setDescription] = useState("");
   const [sendingProof, setSendingProof] = useState(false);
 
@@ -148,6 +149,7 @@ export default function AdminProofs() {
   const handleSelectOrder = (order: PendingOrder) => {
     setOrderId(order.id.toString());
     setCustomerId(order.customerId.toString());
+    setCustomerName(order.customerName);
     setDescription("");
     setShowOrderModal(false);
     setShowSendForm(true);
@@ -155,7 +157,7 @@ export default function AdminProofs() {
 
   const handleSendProof = async () => {
     try {
-      if (!orderId || !customerId || !description) {
+      if (!orderId || !customerId || !customerName || !description) {
         toast.error("Please fill in all required fields");
         return;
       }
@@ -182,6 +184,7 @@ export default function AdminProofs() {
       toast.success("Proof sent to customer successfully!");
       setOrderId("");
       setCustomerId("");
+      setCustomerName("");
       setDescription("");
       setShowSendForm(false);
       fetchProofs();
@@ -432,14 +435,18 @@ export default function AdminProofs() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Customer ID *
+                    Customer Name *
                   </label>
                   <input
-                    type="number"
+                    type="text"
+                    value={customerName}
+                    readOnly
+                    placeholder="Select an order to auto-fill customer name"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                  />
+                  <input
+                    type="hidden"
                     value={customerId}
-                    onChange={(e) => setCustomerId(e.target.value)}
-                    placeholder="Enter customer ID"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
