@@ -10,6 +10,7 @@ interface SquarePaymentFormProps {
   customerName: string;
   onPaymentSuccess: (token: string) => void;
   isLoading?: boolean;
+  applicationId?: string;
 }
 
 export default function SquarePaymentForm({
