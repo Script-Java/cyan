@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import { getSquareClient } from "../utils/square";
+import { getPaymentsApi } from "../utils/square";
 import { supabase, updateCustomerStoreCredit } from "../utils/supabase";
 
 export const processSquarePayment: RequestHandler = async (req, res) => {
@@ -21,11 +21,11 @@ export const processSquarePayment: RequestHandler = async (req, res) => {
     const amountInCents = Math.round(amount * 100);
 
     // Create payment with Square
-    const client = getSquareClient();
-    const paymentResult = await client.payments.createPayment({
+    const paymentsApi = getPaymentsApi();
+    const paymentResult = await paymentsApi.createPayment({
       sourceId: token,
       amountMoney: {
-        amount: BigInt(amountInCents),
+        amount: amountInCents,
         currency: "USD",
       },
       customerId: `customer-${orderId}`,
