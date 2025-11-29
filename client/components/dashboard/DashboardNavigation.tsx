@@ -127,7 +127,7 @@ export default function DashboardNavigation({
         })}
 
         {/* Bottom Row Items */}
-        <div className="col-span-3 grid grid-cols-4 gap-3">
+        <div className="col-span-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           {bottomItems.map((item: any) => {
             const Icon = item.icon;
             const buttonContent = (
