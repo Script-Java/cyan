@@ -178,13 +178,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     // Create order items in Supabase
     await createOrderItems(supabaseOrder.id, checkoutData.items as any);
 
-    console.log("Creating Square Checkout with:", {
-      orderId: supabaseOrder.id,
-      total: checkoutData.total,
-      currency: checkoutData.currency,
-    });
-
-    // Build checkout request for Square
+    // Build the redirect URL for after payment
     let baseUrl = "http://localhost:8080";
     if (process.env.BASE_URL) {
       baseUrl = process.env.BASE_URL;
@@ -194,11 +188,30 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       baseUrl = `https://${process.env.FLY_APP_NAME}.fly.dev`;
     }
 
-    // For now, return a checkout URL that will allow payment testing
-    // In production, integrate with Square's Payment Links API or Web Payments SDK
-    const checkoutUrl = `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`;
+    const redirectUrl = `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`;
 
-    console.log("Square checkout URL:", checkoutUrl);
+    // Create Square Payment Link
+    const paymentLinkResult = await createSquarePaymentLink({
+      orderId: supabaseOrder.id,
+      amount: checkoutData.total,
+      currency: checkoutData.currency || "USD",
+      description: `Order #${supabaseOrder.id} - ${checkoutData.items.length} item(s)`,
+      customerEmail: checkoutData.customerEmail,
+      customerName: checkoutData.customerName || "Customer",
+      redirectUrl,
+    });
+
+    if (!paymentLinkResult.success || !paymentLinkResult.paymentLinkUrl) {
+      console.error("Failed to create Square payment link:", paymentLinkResult.error);
+      return res.status(400).json({
+        error: paymentLinkResult.error || "Failed to create payment link",
+      });
+    }
+
+    console.log("Square Payment Link created successfully:", {
+      orderId: supabaseOrder.id,
+      total: checkoutData.total,
+    });
 
     res.status(201).json({
       success: true,
@@ -207,7 +220,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
         status: "pending_payment",
         total: checkoutData.total,
       },
-      checkoutUrl,
+      checkoutUrl: paymentLinkResult.paymentLinkUrl,
     });
   } catch (error) {
     console.error("Create Checkout session error:", error);
