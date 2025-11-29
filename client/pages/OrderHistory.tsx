@@ -371,31 +371,31 @@ export default function OrderHistory() {
                               order.status.slice(1)}
                           </span>
                         </div>
-                        <div className="flex items-center gap-6 text-sm text-gray-600 flex-wrap">
+                        <div className="flex items-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-600 flex-wrap">
                           <div className="flex items-center gap-1">
-                            <Calendar className="w-4 h-4" />
+                            <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
                             {formatDate(order.dateCreated)}
                           </div>
                           <div className="flex items-center gap-1">
-                            <Package className="w-4 h-4" />
+                            <Package className="w-3 h-3 sm:w-4 sm:h-4" />
                             {order.itemCount} item
                             {order.itemCount !== 1 ? "s" : ""}
                           </div>
                           <div className="flex items-center gap-1">
-                            <DollarSign className="w-4 h-4" />
+                            <DollarSign className="w-3 h-3 sm:w-4 sm:h-4" />
                             {formatCurrency(order.total)}
                           </div>
                           {order.estimated_delivery_date && (
                             <div className="flex items-center gap-1 text-blue-600 font-medium">
-                              <Calendar className="w-4 h-4" />
-                              Delivery:{" "}
+                              <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+                              <span className="hidden sm:inline">Delivery:</span>{" "}
                               {formatDate(order.estimated_delivery_date)}
                             </div>
                           )}
                           {order.tracking_number && (
                             <div className="flex items-center gap-1 text-green-600 font-medium">
-                              <Truck className="w-4 h-4" />
-                              Tracking: {order.tracking_number}
+                              <Truck className="w-3 h-3 sm:w-4 sm:h-4" />
+                              <span className="hidden sm:inline">Tracking:</span> {order.tracking_number}
                             </div>
                           )}
                         </div>
