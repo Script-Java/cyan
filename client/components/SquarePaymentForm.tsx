@@ -1,8 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface SquarePaymentFormProps {
@@ -27,21 +25,15 @@ export default function SquarePaymentForm({
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [appId, setAppId] = useState<string>("");
-  const [web, setWeb] = useState<any>(null);
+  const [locationId, setLocationId] = useState<string>("");
+  const paymentsRef = useRef<any>(null);
+  const cardRef = useRef<any>(null);
   const cardContainerRef = useRef<HTMLDivElement>(null);
-  const cardPaymentMethodRef = useRef<any>(null);
+  const paymentStatusRef = useRef<HTMLDivElement>(null);
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    cardNumber: "",
-    expiry: "",
-    cvv: "",
-  });
-
-  // First effect: Fetch and set the appId
+  // Fetch app ID and location ID from backend
   useEffect(() => {
-    const fetchAppId = async () => {
+    const fetchConfig = async () => {
       if (applicationId) {
         setAppId(applicationId);
       } else {
@@ -49,6 +41,7 @@ export default function SquarePaymentForm({
           const response = await fetch("/api/square/config");
           const data = await response.json();
           setAppId(data.applicationId || "sq0idp-aI75bRHWpnYqioPYqvKvsw");
+          setLocationId(data.locationId || "");
         } catch (error) {
           console.error("Failed to fetch Square config:", error);
           setAppId("sq0idp-aI75bRHWpnYqioPYqvKvsw");
@@ -56,31 +49,24 @@ export default function SquarePaymentForm({
       }
     };
 
-    fetchAppId();
+    fetchConfig();
   }, [applicationId]);
 
-  // Second effect: Load the script only after appId is set
+  // Initialize Square payments and card
   useEffect(() => {
-    if (!appId) return;
+    if (!appId || !locationId) return;
 
-    // Load Square Web Payments SDK from CDN
-    const script = document.createElement("script");
-    script.src = "https://sandbox.web.squarecdn.com/v1/square.js";
-    script.async = true;
-
-    const handleScriptLoad = async () => {
+    const initializeSquare = async () => {
       try {
         if ((window as any).Square) {
-          const webInstance = await (window as any).Square.payments(appId, "us");
-          setWeb(webInstance);
+          const payments = (window as any).Square.payments(appId, locationId);
+          paymentsRef.current = payments;
 
-          // Create card payment method
-          const cardPaymentMethod = await webInstance.cardPaymentMethod();
-          cardPaymentMethodRef.current = cardPaymentMethod;
+          const card = await payments.card();
+          cardRef.current = card;
 
-          // Attach card payment method to the DOM
           if (cardContainerRef.current) {
-            await cardPaymentMethod.attach(cardContainerRef.current);
+            await card.attach("#card-container");
           }
 
           setIsSDKLoaded(true);
@@ -88,60 +74,31 @@ export default function SquarePaymentForm({
           throw new Error("Square SDK not loaded");
         }
       } catch (error) {
-        console.error("Failed to initialize Square Web Payments:", error);
+        console.error("Failed to initialize Square payments:", error);
         toast.error("Payment system failed to load. Please try again.");
       }
     };
 
-    script.onload = handleScriptLoad;
-    script.onerror = () => {
-      console.error("Failed to load Square SDK script");
-      toast.error("Failed to load payment form. Please refresh the page.");
-    };
-
-    document.body.appendChild(script);
-
-    return () => {
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, [appId]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+    initializeSquare();
+  }, [appId, locationId]);
 
   const handlePaymentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!web || !cardPaymentMethodRef.current) return;
-
-    // Validate form data
-    if (!formData.firstName || !formData.lastName || !formData.cardNumber || !formData.expiry || !formData.cvv) {
-      toast.error("Please fill in all payment fields");
+    if (!cardRef.current || !paymentsRef.current) {
+      toast.error("Payment system not ready. Please refresh the page.");
       return;
     }
 
     setIsProcessing(true);
-    try {
-      // Request a payment token from the card payment method
-      const result = await web.requestCardPaymentMethod({
-        amount: Math.round(amount * 100),
-        currency: "USD",
-        contact: {
-          givenName: formData.firstName,
-          familyName: formData.lastName,
-          email: customerEmail,
-        },
-      });
+    const statusContainer = paymentStatusRef.current;
 
-      if (result.status === "SUCCESS") {
-        const token = result.details.payment.token.token;
+    try {
+      const result = await cardRef.current.tokenize();
+
+      if (result.status === "OK") {
+        const token = result.token;
+        console.log(`Payment token is ${token}`);
 
         // Send token to backend for payment processing
         const response = await fetch("/api/square/process-payment", {
@@ -164,15 +121,25 @@ export default function SquarePaymentForm({
           throw new Error(paymentResult.error || "Payment failed");
         }
 
+        if (statusContainer) {
+          statusContainer.innerHTML = "Payment Successful";
+        }
         toast.success("Payment successful!");
         onPaymentSuccess(token);
       } else {
-        throw new Error("Payment request was not successful");
+        let errorMessage = `Tokenization failed with status: ${result.status}`;
+        if (result.errors) {
+          errorMessage += ` and errors: ${JSON.stringify(result.errors)}`;
+        }
+        throw new Error(errorMessage);
       }
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Payment failed";
       console.error("Payment error:", error);
+      if (statusContainer) {
+        statusContainer.innerHTML = "Payment Failed";
+      }
       toast.error(errorMessage);
     } finally {
       setIsProcessing(false);
@@ -199,107 +166,21 @@ export default function SquarePaymentForm({
             </p>
           </div>
 
-          <div className="space-y-4">
-            {/* Name Fields */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="firstName" className="text-white mb-2">
-                  First Name *
-                </Label>
-                <Input
-                  id="firstName"
-                  name="firstName"
-                  type="text"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  placeholder="John"
-                  className="bg-black/40 border border-white/20 text-white placeholder:text-white/40"
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="lastName" className="text-white mb-2">
-                  Last Name *
-                </Label>
-                <Input
-                  id="lastName"
-                  name="lastName"
-                  type="text"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  placeholder="Doe"
-                  className="bg-black/40 border border-white/20 text-white placeholder:text-white/40"
-                  required
-                />
-              </div>
-            </div>
+          <div id="payment-status-container" 
+            ref={paymentStatusRef}
+            className="mb-4 text-sm font-medium" />
 
-            {/* Card Payment Method Container */}
-            <div>
-              <Label className="text-white mb-2">Card Details *</Label>
-              <div className="mb-6 p-4 bg-black/30 rounded-lg border border-white/10">
-                <div ref={cardContainerRef} id="square-card-container" />
-              </div>
-            </div>
-
-            {/* Additional Manual Card Fields (fallback/display) */}
-            <div>
-              <Label htmlFor="cardNumber" className="text-white mb-2">
-                Card Number *
-              </Label>
-              <Input
-                id="cardNumber"
-                name="cardNumber"
-                type="text"
-                value={formData.cardNumber}
-                onChange={handleInputChange}
-                placeholder="4111 1111 1111 1111"
-                maxLength="19"
-                className="bg-black/40 border border-white/20 text-white placeholder:text-white/40 font-mono"
-                required
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="expiry" className="text-white mb-2">
-                  Expiry Date (MM/YY) *
-                </Label>
-                <Input
-                  id="expiry"
-                  name="expiry"
-                  type="text"
-                  value={formData.expiry}
-                  onChange={handleInputChange}
-                  placeholder="12/25"
-                  maxLength="5"
-                  className="bg-black/40 border border-white/20 text-white placeholder:text-white/40 font-mono"
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="cvv" className="text-white mb-2">
-                  CVV *
-                </Label>
-                <Input
-                  id="cvv"
-                  name="cvv"
-                  type="text"
-                  value={formData.cvv}
-                  onChange={handleInputChange}
-                  placeholder="123"
-                  maxLength="4"
-                  className="bg-black/40 border border-white/20 text-white placeholder:text-white/40 font-mono"
-                  required
-                />
-              </div>
-            </div>
-          </div>
+          <div
+            id="card-container"
+            ref={cardContainerRef}
+            className="mb-6 p-4 bg-black/30 rounded-lg border border-white/10"
+          />
 
           <Button
+            id="card-button"
             type="submit"
             disabled={isProcessing || isLoading}
-            className="w-full bg-[#FFD713] hover:bg-[#FFD713]/90 text-black font-bold py-3 rounded-lg transition-all mt-6"
+            className="w-full bg-[#FFD713] hover:bg-[#FFD713]/90 text-black font-bold py-3 rounded-lg transition-all"
           >
             {isProcessing ? (
               <>
@@ -316,13 +197,6 @@ export default function SquarePaymentForm({
           </p>
         </div>
       </form>
-
-      <div className="flex items-start gap-3 bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
-        <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-        <p className="text-sm text-blue-200">
-          Test card: <span className="font-mono">4111 1111 1111 1111</span> with any future date (MM/YY) and any CVV
-        </p>
-      </div>
     </div>
   );
 }
