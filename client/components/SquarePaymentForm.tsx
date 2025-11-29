@@ -36,23 +36,23 @@ export default function SquarePaymentForm({
         }
 
         const payments = (window as any).Square.payments(
-          'sandbox-sq0idb-RT3u-HhCpNdbMiGg5aXuVg',
-          'TC4Z3ZEBKRXRH'
+          "sandbox-sq0idb-RT3u-HhCpNdbMiGg5aXuVg",
+          "TC4Z3ZEBKRXRH",
         );
-        
+
         const card = await payments.card();
-        await card.attach('#card-container');
+        await card.attach("#card-container");
 
         const cardButton = cardButtonRef.current;
         if (cardButton) {
-          cardButton.addEventListener('click', async () => {
+          cardButton.addEventListener("click", async () => {
             const statusContainer = statusContainerRef.current;
 
             try {
               const result = await card.tokenize();
-              if (result.status === 'OK') {
+              if (result.status === "OK") {
                 console.log(`Payment token is ${result.token}`);
-                
+
                 if (statusContainer) {
                   statusContainer.innerHTML = "Payment Successful";
                 }
@@ -83,7 +83,7 @@ export default function SquarePaymentForm({
                 let errorMessage = `Tokenization failed with status: ${result.status}`;
                 if (result.errors) {
                   errorMessage += ` and errors: ${JSON.stringify(
-                    result.errors
+                    result.errors,
                   )}`;
                 }
 
