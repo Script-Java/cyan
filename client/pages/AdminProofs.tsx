@@ -12,6 +12,9 @@ import {
   Plus,
   X,
   Package,
+  Upload,
+  Download,
+  FileIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
