@@ -170,7 +170,6 @@ export async function createSquarePaymentLink(data: {
       },
       prePopulatedData: {
         buyerEmail: data.customerEmail,
-        buyerPhoneNumber: undefined,
       },
     };
 
@@ -181,15 +180,15 @@ export async function createSquarePaymentLink(data: {
     });
 
     const client = getSquareClient();
-    const response = await client.checkoutApi.createPaymentLink(
+    const response = await client.checkout.paymentLinks.create(
       paymentLinkBody,
     );
 
-    if (response.result?.paymentLink?.url) {
-      console.log("Payment Link created successfully:", response.result.paymentLink.id);
+    if (response.result?.url) {
+      console.log("Payment Link created successfully:", response.result.id);
       return {
         success: true,
-        paymentLinkUrl: response.result.paymentLink.url,
+        paymentLinkUrl: response.result.url,
       };
     }
 
