@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -24,8 +24,10 @@ export default function SquarePaymentForm({
 }: SquarePaymentFormProps) {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [sqPaymentRequest, setSqPaymentRequest] = useState<any>(null);
   const [appId, setAppId] = useState<string>("");
+  const [web, setWeb] = useState<any>(null);
+  const cardContainerRef = useRef<HTMLDivElement>(null);
+  const cardPaymentMethodRef = useRef<any>(null);
 
   // First effect: Fetch and set the appId
   useEffect(() => {
@@ -59,20 +61,18 @@ export default function SquarePaymentForm({
     const handleScriptLoad = async () => {
       try {
         if ((window as any).Square) {
-          const web = await (window as any).Square.payments(appId, "us");
+          const webInstance = await (window as any).Square.payments(appId, "us");
+          setWeb(webInstance);
 
-          // Create payment request for Web Payments SDK
-          const paymentRequest = web.paymentRequest({
-            countryCode: "US",
-            currencyCode: "USD",
-            total: {
-              amount: String(Math.round(amount * 100)), // Convert to cents
-              label: `Order #${orderId}`,
-            },
-            requestShippingAddress: false,
-          });
+          // Create card payment method
+          const cardPaymentMethod = await webInstance.cardPaymentMethod();
+          cardPaymentMethodRef.current = cardPaymentMethod;
 
-          setSqPaymentRequest({ web, paymentRequest });
+          // Attach card payment method to the DOM
+          if (cardContainerRef.current) {
+            await cardPaymentMethod.attach(cardContainerRef.current);
+          }
+
           setIsSDKLoaded(true);
         } else {
           throw new Error("Square SDK not loaded");
@@ -96,20 +96,26 @@ export default function SquarePaymentForm({
         script.parentNode.removeChild(script);
       }
     };
-  }, [appId, amount, orderId]);
+  }, [appId]);
 
   const handlePaymentSubmit = async () => {
-    if (!sqPaymentRequest) return;
+    if (!web || !cardPaymentMethodRef.current) return;
 
     setIsProcessing(true);
     try {
-      const { web, paymentRequest } = sqPaymentRequest;
-
-      // Show payment form
-      const result = await paymentRequest.show();
+      // Request a payment token from the card payment method
+      const result = await web.requestCardPaymentMethod({
+        amount: Math.round(amount * 100),
+        currency: "USD",
+        contact: {
+          givenName: customerName.split(" ")[0],
+          familyName: customerName.split(" ")[1] || "",
+          email: customerEmail,
+        },
+      });
 
       if (result.status === "SUCCESS") {
-        const token = result.token;
+        const token = result.details.payment.token.token;
 
         // Send token to backend for payment processing
         const response = await fetch("/api/square/process-payment", {
@@ -118,7 +124,7 @@ export default function SquarePaymentForm({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            token: token.token,
+            token: token,
             orderId: orderId,
             amount: amount,
             customerEmail: customerEmail,
@@ -133,7 +139,9 @@ export default function SquarePaymentForm({
         }
 
         toast.success("Payment successful!");
-        onPaymentSuccess(token.token);
+        onPaymentSuccess(token);
+      } else {
+        throw new Error("Payment request was not successful");
       }
     } catch (error) {
       const errorMessage =
@@ -164,6 +172,10 @@ export default function SquarePaymentForm({
           </p>
         </div>
 
+        <div className="mb-6 p-4 bg-black/30 rounded-lg">
+          <div ref={cardContainerRef} id="square-card-container" />
+        </div>
+
         <Button
           onClick={handlePaymentSubmit}
           disabled={isProcessing || isLoading}
@@ -175,7 +187,7 @@ export default function SquarePaymentForm({
               Processing Payment...
             </>
           ) : (
-            "Pay with Square"
+            `Pay $${(amount / 100).toFixed(2)}`
           )}
         </Button>
 
@@ -187,7 +199,7 @@ export default function SquarePaymentForm({
       <div className="flex items-start gap-3 bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
         <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
         <p className="text-sm text-blue-200">
-          Test card: <span className="font-mono">4111 1111 1111 1111</span> with any future date
+          Test card: <span className="font-mono">4111 1111 1111 1111</span> with any future date and any CVV
         </p>
       </div>
     </div>
