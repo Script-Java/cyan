@@ -212,7 +212,8 @@ export default function CheckoutNew() {
       !customerInfo.street ||
       !customerInfo.city ||
       !customerInfo.state ||
-      !customerInfo.postalCode
+      !customerInfo.postalCode ||
+      !customerInfo.country
     ) {
       toast.error("Please fill in all required shipping fields");
       return false;
@@ -225,7 +226,8 @@ export default function CheckoutNew() {
         !billingInfo.street ||
         !billingInfo.city ||
         !billingInfo.state ||
-        !billingInfo.postalCode
+        !billingInfo.postalCode ||
+        !billingInfo.country
       ) {
         toast.error("Please fill in all required billing fields");
         return false;
