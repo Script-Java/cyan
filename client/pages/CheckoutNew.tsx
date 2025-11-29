@@ -196,6 +196,11 @@ export default function CheckoutNew() {
     calculateOrderData(orderData.subtotal, appliedDiscount);
   };
 
+  const handleRemoveStoreCredit = () => {
+    setAppliedStoreCredit(0);
+    calculateOrderData(orderData.subtotal, appliedDiscount);
+  };
+
   const validateForm = (): boolean => {
     if (
       !customerInfo.firstName ||
