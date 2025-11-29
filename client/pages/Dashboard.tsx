@@ -42,7 +42,6 @@ export default function Dashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const { fetchStoreCredit } = useStoreCredit();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
