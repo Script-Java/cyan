@@ -173,6 +173,9 @@ export default function Dashboard() {
           {/* Greeting Banner */}
           {customer && <GreetingBanner firstName={customer.firstName} />}
 
+          {/* Proof Notifications */}
+          <ProofNotificationBadge />
+
           {/* Dashboard Navigation Grid */}
           <DashboardNavigation onLogout={handleLogout} />
 
