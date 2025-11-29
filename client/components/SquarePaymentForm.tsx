@@ -29,7 +29,7 @@ export default function SquarePaymentForm({
         // Wait for Square SDK to be loaded
         let attempts = 0;
         while (!(window as any).Square && attempts < 50) {
-          await new Promise(resolve => setTimeout(resolve, 50));
+          await new Promise((resolve) => setTimeout(resolve, 50));
           attempts++;
         }
 
@@ -41,8 +41,8 @@ export default function SquarePaymentForm({
         console.log("Square SDK loaded successfully");
         initializeRef.current = true;
 
-        const appId = 'sq0idp-aI75bRHWpnYqioPYqvKvsw';
-        const locationId = 'M22XGM76XXKXW';
+        const appId = "sq0idp-aI75bRHWpnYqioPYqvKvsw";
+        const locationId = "M22XGM76XXKXW";
 
         const payments = (window as any).Square.payments(appId, locationId);
 
@@ -51,17 +51,19 @@ export default function SquarePaymentForm({
         const card = await payments.card();
         console.log("Card object created");
 
-        await card.attach('#card-container');
+        await card.attach("#card-container");
         console.log("Card attached to container");
 
-        const cardButton = document.getElementById('card-button');
+        const cardButton = document.getElementById("card-button");
         if (cardButton) {
-          cardButton.addEventListener('click', async () => {
-            const statusContainer = document.getElementById('payment-status-container');
+          cardButton.addEventListener("click", async () => {
+            const statusContainer = document.getElementById(
+              "payment-status-container",
+            );
 
             try {
               const result = await card.tokenize();
-              if (result.status === 'OK') {
+              if (result.status === "OK") {
                 console.log(`Payment token is ${result.token}`);
                 if (statusContainer) {
                   statusContainer.innerHTML = "Payment Successful";
@@ -100,7 +102,7 @@ export default function SquarePaymentForm({
                 let errorMessage = `Tokenization failed with status: ${result.status}`;
                 if (result.errors) {
                   errorMessage += ` and errors: ${JSON.stringify(
-                    result.errors
+                    result.errors,
                   )}`;
                 }
 
