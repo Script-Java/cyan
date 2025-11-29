@@ -482,8 +482,8 @@ export default function OrderHistory() {
                       )}
 
                       {/* Order Totals */}
-                      <div className="mb-6 bg-white p-4 rounded border border-gray-200">
-                        <div className="space-y-2 text-sm">
+                      <div className="mb-6 bg-white p-3 sm:p-4 rounded border border-gray-200">
+                        <div className="space-y-2 text-xs sm:text-sm">
                           <div className="flex justify-between">
                             <span className="text-gray-600">Subtotal:</span>
                             <span className="font-medium">
@@ -498,7 +498,7 @@ export default function OrderHistory() {
                           </div>
                           <div className="border-t border-gray-200 pt-2 flex justify-between font-semibold">
                             <span>Total:</span>
-                            <span className="text-lg">
+                            <span className="text-base sm:text-lg">
                               {formatCurrency(order.total)}
                             </span>
                           </div>
