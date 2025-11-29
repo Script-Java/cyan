@@ -620,6 +620,7 @@ export default function AdminProofs() {
                       setShowSendForm(false);
                       setUploadedFile(null);
                       setFilePreview(null);
+                      setCustomerEmail("");
                     }}
                     variant="outline"
                     className="flex-1"
