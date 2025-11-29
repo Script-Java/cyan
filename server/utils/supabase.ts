@@ -105,6 +105,47 @@ export async function getCustomerStoreCredit(
   }
 }
 
+export async function updateCustomerStoreCredit(
+  customerId: number,
+  amount: number,
+  reason: string,
+): Promise<boolean> {
+  try {
+    const currentBalance = await getCustomerStoreCredit(customerId);
+    const newBalance = Math.max(0, currentBalance + amount);
+
+    const { error: updateError } = await supabase
+      .from("customers")
+      .update({ store_credit: newBalance })
+      .eq("id", customerId);
+
+    if (updateError) {
+      console.error("Error updating store credit:", updateError);
+      return false;
+    }
+
+    const { error: transactionError } = await supabase
+      .from("store_credit_transactions")
+      .insert({
+        customer_id: customerId,
+        amount,
+        reason,
+        new_balance: newBalance,
+        created_at: new Date().toISOString(),
+      });
+
+    if (transactionError) {
+      console.error("Error recording transaction:", transactionError);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error updating customer store credit:", error);
+    return false;
+  }
+}
+
 interface OrderData {
   customer_id: number;
   status: string;
