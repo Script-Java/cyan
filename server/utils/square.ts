@@ -19,12 +19,17 @@ function getSquareClient() {
         throw new Error("SQUARE_ACCESS_TOKEN environment variable is not set");
       }
 
+      // Use Sandbox for development, Production for live
+      const environment = accessToken.startsWith("EAAA")
+        ? SquareEnvironment.Production
+        : SquareEnvironment.Sandbox;
+
       squareClient = new SquareClient({
         accessToken: accessToken,
-        environment: SquareEnvironment.Production,
+        environment: environment,
       });
 
-      console.log("Square client initialized successfully");
+      console.log(`Square client initialized successfully (${environment === SquareEnvironment.Sandbox ? "Sandbox" : "Production"})`);
     } catch (error) {
       console.error("Failed to initialize Square client:", error);
       throw new Error(
