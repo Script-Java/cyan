@@ -325,10 +325,10 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Live Visitors Section */}
-                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-5">
-                    <div className="mb-4">
-                      <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                        <Eye className="w-5 h-5 text-green-400" />
+                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
+                    <div className="mb-3 sm:mb-4">
+                      <h2 className="text-sm sm:text-lg font-bold text-white flex items-center gap-2">
+                        <Eye className="w-4 sm:w-5 h-4 sm:h-5 text-green-400" />
                         Live Visitors
                       </h2>
                       <p className="text-white/60 mt-1 text-xs">
@@ -337,14 +337,14 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Live Visitors Counter */}
-                    <div className="bg-white/5 rounded-lg border border-white/10 p-4 mb-4">
+                    <div className="bg-white/5 rounded-lg border border-white/10 p-3 sm:p-4 mb-4">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-white/60 font-medium mb-1 text-xs">
                             Currently Online
                           </p>
                           <div className="flex items-baseline gap-2">
-                            <span className="text-3xl font-bold text-[#FFD713]">
+                            <span className="text-2xl sm:text-3xl font-bold text-[#FFD713]">
                               {liveVisitors}
                             </span>
                             <span className="text-white/60 text-xs">
@@ -352,31 +352,27 @@ export default function AdminDashboard() {
                             </span>
                           </div>
                         </div>
-                        <div className="relative w-16 h-16">
+                        <div className="relative w-12 sm:w-16 h-12 sm:h-16">
                           <div className="absolute inset-0 bg-green-400 rounded-full animate-ping opacity-75"></div>
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <Users className="w-8 h-8 text-green-400" />
+                            <Users className="w-6 sm:w-8 h-6 sm:h-8 text-green-400" />
                           </div>
                         </div>
                       </div>
                     </div>
 
                     {/* Live Visitors Placeholder */}
-                    <div className="flex items-center justify-center h-32 bg-white/5 rounded-lg border-2 border-dashed border-white/10 mb-4">
+                    <div className="flex items-center justify-center h-20 sm:h-32 bg-white/5 rounded-lg border-2 border-dashed border-white/10 mb-4">
                       <div className="text-center">
-                        <Eye className="w-8 h-8 text-white/40 mx-auto mb-2" />
+                        <Eye className="w-6 sm:w-8 h-6 sm:h-8 text-white/40 mx-auto mb-2" />
                         <p className="text-white/60 font-medium text-xs">
-                          Live Visitors Map
-                        </p>
-                        <p className="text-white/40 text-xs mt-1">
-                          Geographic distribution of your visitors will appear
-                          here
+                          Live Map
                         </p>
                       </div>
                     </div>
 
                     {/* Live Visitors Stats */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
                       <div className="p-3 bg-white/5 rounded-lg">
                         <p className="text-white/60 text-xs mb-1">Peak Hours</p>
                         <p className="text-lg font-bold text-white">2-4 PM</p>
