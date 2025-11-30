@@ -44,6 +44,9 @@ interface Design {
   createdAt?: string;
   approved?: boolean;
   proofUrl?: string;
+  orderId?: number;
+  orderDate?: string;
+  orderStatus?: string;
 }
 
 interface OrderDesigns {
