@@ -275,7 +275,7 @@ export async function getPendingOrders(): Promise<any[]> {
   try {
     const { data, error } = await supabase
       .from("orders")
-      .select("*, customers(*)")
+      .select("*, customers(*), order_items(*)")
       .eq("status", "pending")
       .order("created_at", { ascending: false });
 
