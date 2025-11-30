@@ -32,7 +32,6 @@ export default function AdminSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [expandedItems, setExpandedItems] = useState<string[]>([
-    "sales-channels",
     "apps",
   ]);
   const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
