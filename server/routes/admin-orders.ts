@@ -19,24 +19,15 @@ interface OrderWithCustomer {
 }
 
 /**
- * Get all pending/unshipped orders from all sources (admin only)
+ * Get all pending/unshipped orders from Supabase only (admin only)
  * Returns orders that haven't shipped yet
+ * Note: Only fetches from Supabase, not from Ecwid
  */
 export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
   try {
     const allOrders: OrderWithCustomer[] = [];
 
-    // Fetch from Ecwid - For now, skip Ecwid as we need to implement the API method
-    // to fetch all orders without customer ID filter
-    try {
-      // Note: Ecwid API /orders endpoint without customerId parameter would require
-      // implementation of getAllOrders method in the EcwidAPI class
-      console.warn("Ecwid getAllOrders not yet implemented for admin view");
-    } catch (ecwidError) {
-      console.warn("Failed to fetch Ecwid orders:", ecwidError);
-    }
-
-    // Fetch from Supabase
+    // Fetch only from Supabase
     try {
       const { data: supabaseOrders, error } = await supabase
         .from("orders")
@@ -53,8 +44,13 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
         .in("status", ["pending", "paid", "processing", "ready_to_ship"]);
 
       if (error) {
-        console.warn("Failed to fetch Supabase orders:", error);
-      } else if (supabaseOrders && Array.isArray(supabaseOrders)) {
+        console.error("Failed to fetch Supabase orders:", error);
+        return res
+          .status(500)
+          .json({ error: "Failed to fetch orders from database" });
+      }
+
+      if (supabaseOrders && Array.isArray(supabaseOrders)) {
         const pendingSupabaseOrders = supabaseOrders.map((order: any) => ({
           id: order.id,
           customerId: order.customer_id,
@@ -76,21 +72,22 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
         allOrders.push(...pendingSupabaseOrders);
       }
     } catch (supabaseError) {
-      console.warn("Failed to fetch Supabase orders:", supabaseError);
+      console.error("Failed to fetch Supabase orders:", supabaseError);
+      return res
+        .status(500)
+        .json({ error: "Failed to fetch orders from database" });
     }
 
-    // Remove duplicates (same order ID) and sort by date
-    const uniqueOrders = Array.from(
-      new Map(allOrders.map((order) => [order.id, order])).values(),
-    ).sort(
+    // Sort by date (newest first)
+    const sortedOrders = allOrders.sort(
       (a, b) =>
         new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime(),
     );
 
     res.json({
       success: true,
-      orders: uniqueOrders,
-      count: uniqueOrders.length,
+      orders: sortedOrders,
+      count: sortedOrders.length,
     });
   } catch (error) {
     console.error("Get admin pending orders error:", error);
