@@ -15,7 +15,11 @@ import { useStoreCredit } from "@/hooks/useStoreCredit";
 
 const ECWID_STORE_ID = "120154275";
 
-export default function Header() {
+interface HeaderProps {
+  onMobileMenuClick?: () => void;
+}
+
+export default function Header({ onMobileMenuClick }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
