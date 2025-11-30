@@ -559,6 +559,11 @@ export default function Designs() {
 
                     {/* Status Badge */}
                     <div className="absolute top-3 right-3 flex gap-2">
+                      {design.type === "proof" && (
+                        <span className="px-2 py-1 bg-blue-500 text-white text-xs font-semibold rounded-lg">
+                          Proof
+                        </span>
+                      )}
                       {design.approved && (
                         <span className="px-2 py-1 bg-emerald-500 text-white text-xs font-semibold rounded-lg flex items-center gap-1">
                           <CheckCircle2 className="w-3 h-3" />
