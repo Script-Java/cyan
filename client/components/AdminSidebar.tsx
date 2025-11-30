@@ -42,7 +42,7 @@ export default function AdminSidebar() {
         const token = localStorage.getItem("authToken");
         if (!token) return;
 
-        const response = await fetch("/api/admin/orders/pending", {
+        const response = await fetch("/api/admin/pending-orders", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
