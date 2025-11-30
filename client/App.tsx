@@ -32,6 +32,7 @@ import AdminSettings from "./pages/AdminSettings";
 import StoreCreditAdmin from "./pages/StoreCreditAdmin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProductImport from "./pages/AdminProductImport";
+import AdminProducts from "./pages/AdminProducts";
 import Customers from "./pages/Customers";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
