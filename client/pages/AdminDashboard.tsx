@@ -121,17 +121,17 @@ export default function AdminDashboard() {
       <Header />
       <div className="flex">
         <AdminSidebar />
-        <main className="flex-1 ml-64 min-h-screen bg-gray-50">
-          <div className="pt-6">
+        <main className="flex-1 ml-64 min-h-screen bg-black text-white">
+          <div className="pt-4">
             {/* Header Section */}
-            <div className="bg-white border-b border-gray-200">
-              <div className="px-6 lg:px-8 py-8">
+            <div className="border-b border-white/10 bg-black">
+              <div className="px-6 lg:px-8 py-4">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h1 className="text-3xl font-bold text-gray-900">
+                    <h1 className="text-2xl font-bold text-white">
                       Dashboard
                     </h1>
-                    <p className="text-gray-600 mt-2">
+                    <p className="text-white/60 mt-1 text-sm">
                       Welcome back! Here's what's happening with your store
                       today.
                     </p>
@@ -141,7 +141,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Main Content */}
-            <div className="px-6 lg:px-8 py-8">
+            <div className="px-6 lg:px-8 py-6">
               {isLoading ? (
                 <div className="flex justify-center items-center h-96">
                   <div className="text-gray-600">Loading dashboard...</div>
