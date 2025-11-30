@@ -788,19 +788,19 @@ export default function AdminProofs() {
             </div>
           )}
 
-          {/* Order Selection Modal */}
-          {showOrderModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
-                <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center">
-                  <h2 className="text-xl font-semibold text-gray-900">
-                    Select Order to Send Proof
-                  </h2>
-                  <button
-                    onClick={() => setShowOrderModal(false)}
-                    className="text-gray-400 hover:text-gray-600 transition-colors"
-                  >
-                    <X className="w-6 h-6" />
+            {/* Order Selection Modal */}
+            {showOrderModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
+                <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
+                  <div className="sticky top-0 bg-white border-b border-gray-200 p-4 sm:p-6 flex justify-between items-center gap-3">
+                    <h2 className="text-base sm:text-xl font-semibold text-gray-900">
+                      Select Order to Send Proof
+                    </h2>
+                    <button
+                      onClick={() => setShowOrderModal(false)}
+                      className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
+                    >
+                      <X className="w-5 sm:w-6 h-5 sm:h-6" />
                   </button>
                 </div>
 
