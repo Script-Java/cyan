@@ -409,28 +409,32 @@ export default function AdminProofs() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Proofs</h1>
-              <p className="text-gray-600 mt-2">
-                Manage design proofs for customers
-              </p>
-            </div>
-            <Button
-              onClick={() => {
-                setShowSendForm(!showSendForm);
-                setShowOrderModal(false);
-              }}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
-            >
-              <Plus className="w-4 h-4" />
-              Send New Proof
-            </Button>
-          </div>
+    <>
+      <Header />
+      <div className="flex">
+        <AdminSidebar />
+        <main className="flex-1 md:ml-64 min-h-screen bg-gray-50 py-6 md:py-8 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
+          <div className="max-w-6xl mx-auto">
+            {/* Header */}
+            <div className="mb-6 sm:mb-8">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Proofs</h1>
+                  <p className="text-gray-600 mt-1 sm:mt-2 text-sm">
+                    Manage design proofs for customers
+                  </p>
+                </div>
+                <Button
+                  onClick={() => {
+                    setShowSendForm(!showSendForm);
+                    setShowOrderModal(false);
+                  }}
+                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-sm whitespace-nowrap"
+                >
+                  <Plus className="w-4 h-4" />
+                  Send New Proof
+                </Button>
+              </div>
 
           {/* Pending Orders Section */}
           {pendingOrders.length > 0 && !showSendForm && (
@@ -1201,7 +1205,10 @@ export default function AdminProofs() {
             </div>
           </div>
         )}
+          </div>
+        </main>
+        <MobileAdminPanel />
       </div>
-    </main>
+    </>
   );
 }
