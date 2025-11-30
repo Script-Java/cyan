@@ -704,6 +704,9 @@ export default function Customers() {
             )}
           </div>
         </main>
+
+        {/* Mobile Admin Panel */}
+        <MobileAdminPanel />
       </div>
     </>
   );
