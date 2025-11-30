@@ -77,7 +77,9 @@ export default function AdminProducts() {
               <div className="flex justify-center items-center h-96 bg-white rounded-xl border border-gray-200">
                 <div className="text-center">
                   <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 font-medium mb-2">No products yet</p>
+                  <p className="text-gray-600 font-medium mb-2">
+                    No products yet
+                  </p>
                   <p className="text-gray-500 text-sm mb-4">
                     Click the "Add Product" button to get started
                   </p>

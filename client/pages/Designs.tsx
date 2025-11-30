@@ -185,7 +185,8 @@ export default function Designs() {
         if (filterStatus === "approved") {
           matchesStatus = design.approved === true;
         } else if (filterStatus === "pending") {
-          matchesStatus = design.approved === false && design.type !== "proof_denied";
+          matchesStatus =
+            design.approved === false && design.type !== "proof_denied";
         } else if (filterStatus === "denied") {
           matchesStatus = design.type === "proof_denied";
         }
@@ -437,7 +438,11 @@ export default function Designs() {
                       value={filterStatus}
                       onChange={(e) =>
                         setFilterStatus(
-                          e.target.value as "all" | "approved" | "pending" | "denied",
+                          e.target.value as
+                            | "all"
+                            | "approved"
+                            | "pending"
+                            | "denied",
                         )
                       }
                       className="px-3 py-2 text-sm font-medium border-0 focus:outline-none bg-transparent cursor-pointer"
@@ -830,7 +835,8 @@ export default function Designs() {
                     </p>
                     <div className="flex items-center gap-2">
                       <p className="text-sm text-gray-900 capitalize">
-                        {selectedDesign.type === "proof" || selectedDesign.type === "proof_denied"
+                        {selectedDesign.type === "proof" ||
+                        selectedDesign.type === "proof_denied"
                           ? "Design Proof"
                           : "Uploaded Design"}
                       </p>

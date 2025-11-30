@@ -54,12 +54,17 @@ type SortColumn = "name" | "email" | "orders" | "spent" | "date";
 export default function Customers() {
   const navigate = useNavigate();
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [expandedCustomerId, setExpandedCustomerId] = useState<number | null>(null);
-  const [expandedDetails, setExpandedDetails] = useState<CustomerDetails | null>(null);
+  const [expandedCustomerId, setExpandedCustomerId] = useState<number | null>(
+    null,
+  );
+  const [expandedDetails, setExpandedDetails] =
+    useState<CustomerDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterOption, setFilterOption] = useState<"all" | "with-orders" | "no-orders">("all");
+  const [filterOption, setFilterOption] = useState<
+    "all" | "with-orders" | "no-orders"
+  >("all");
   const [sortColumn, setSortColumn] = useState<SortColumn>("date");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
@@ -93,7 +98,9 @@ export default function Customers() {
       setCustomers(data.customers || []);
     } catch (err) {
       console.error("Error fetching customers:", err);
-      setError(err instanceof Error ? err.message : "Failed to fetch customers");
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch customers",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -134,7 +141,9 @@ export default function Customers() {
         customer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
         customer.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         customer.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (customer.company?.toLowerCase() || "").includes(searchQuery.toLowerCase());
+        (customer.company?.toLowerCase() || "").includes(
+          searchQuery.toLowerCase(),
+        );
 
       const matchesFilter =
         filterOption === "all" ||
@@ -154,8 +163,8 @@ export default function Customers() {
         sorted.sort(
           (a, b) =>
             `${a.firstName} ${a.lastName}`.localeCompare(
-              `${b.firstName} ${b.lastName}`
-            ) * multiplier
+              `${b.firstName} ${b.lastName}`,
+            ) * multiplier,
         );
         break;
       case "email":
@@ -170,8 +179,9 @@ export default function Customers() {
       case "date":
         sorted.sort(
           (a, b) =>
-            (new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) *
-            multiplier
+            (new Date(b.createdAt).getTime() -
+              new Date(a.createdAt).getTime()) *
+            multiplier,
         );
         break;
     }
@@ -345,8 +355,15 @@ export default function Customers() {
                 </div>
 
                 <p className="text-sm text-gray-600 mt-3">
-                  Showing <span className="font-semibold text-gray-900">{sortedCustomers.length}</span> of{" "}
-                  <span className="font-semibold text-gray-900">{customers.length}</span> customers
+                  Showing{" "}
+                  <span className="font-semibold text-gray-900">
+                    {sortedCustomers.length}
+                  </span>{" "}
+                  of{" "}
+                  <span className="font-semibold text-gray-900">
+                    {customers.length}
+                  </span>{" "}
+                  customers
                 </p>
               </div>
 
@@ -355,7 +372,9 @@ export default function Customers() {
                 <div className="flex justify-center items-center h-96">
                   <div className="text-center">
                     <Users className="w-12 h-12 text-gray-400 mx-auto mb-3 animate-pulse" />
-                    <p className="text-gray-600 font-medium">Loading customers...</p>
+                    <p className="text-gray-600 font-medium">
+                      Loading customers...
+                    </p>
                   </div>
                 </div>
               ) : error ? (
@@ -371,7 +390,9 @@ export default function Customers() {
                 <div className="flex justify-center items-center h-96">
                   <div className="text-center">
                     <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                    <p className="text-gray-600 font-medium">No customers found</p>
+                    <p className="text-gray-600 font-medium">
+                      No customers found
+                    </p>
                     <p className="text-gray-500 text-sm mt-1">
                       {searchQuery
                         ? "Try adjusting your search"
@@ -449,7 +470,9 @@ export default function Customers() {
                               <td className="px-6 py-4">
                                 <div className="flex items-center gap-2 text-gray-700">
                                   <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                                  <span className="text-sm">{customer.email}</span>
+                                  <span className="text-sm">
+                                    {customer.email}
+                                  </span>
                                 </div>
                               </td>
 
@@ -457,10 +480,14 @@ export default function Customers() {
                                 {customer.phone ? (
                                   <div className="flex items-center gap-2 text-gray-700">
                                     <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                                    <span className="text-sm">{customer.phone}</span>
+                                    <span className="text-sm">
+                                      {customer.phone}
+                                    </span>
                                   </div>
                                 ) : (
-                                  <span className="text-sm text-gray-500">—</span>
+                                  <span className="text-sm text-gray-500">
+                                    —
+                                  </span>
                                 )}
                               </td>
 
@@ -482,207 +509,222 @@ export default function Customers() {
                                 <div className="flex items-center gap-2 text-gray-700">
                                   <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
                                   <span className="text-sm">
-                                    {new Date(customer.createdAt).toLocaleDateString()}
+                                    {new Date(
+                                      customer.createdAt,
+                                    ).toLocaleDateString()}
                                   </span>
                                 </div>
                               </td>
                             </tr>
 
                             {/* Expanded Details Row */}
-                            {expandedCustomerId === customer.id && expandedDetails && (
-                              <tr key={`expanded-${customer.id}`} className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b-2 border-blue-200">
-                                <td colSpan={8} className="p-0">
-                                  <div className="px-6 py-8 space-y-6">
-                                    {/* Personal Information */}
-                                    <div>
-                                      <h3 className="font-bold text-gray-900 mb-4 text-lg">
-                                        Personal Information
-                                      </h3>
-                                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                        <div className="bg-white rounded-lg p-4 border border-gray-200">
-                                          <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
-                                            Email
-                                          </p>
-                                          <p className="text-gray-900 flex items-start gap-2">
-                                            <Mail className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                                            <span className="break-all">
-                                              {expandedDetails.email}
-                                            </span>
-                                          </p>
-                                        </div>
-
-                                        {expandedDetails.phone && (
+                            {expandedCustomerId === customer.id &&
+                              expandedDetails && (
+                                <tr
+                                  key={`expanded-${customer.id}`}
+                                  className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b-2 border-blue-200"
+                                >
+                                  <td colSpan={8} className="p-0">
+                                    <div className="px-6 py-8 space-y-6">
+                                      {/* Personal Information */}
+                                      <div>
+                                        <h3 className="font-bold text-gray-900 mb-4 text-lg">
+                                          Personal Information
+                                        </h3>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                           <div className="bg-white rounded-lg p-4 border border-gray-200">
                                             <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
-                                              Phone
+                                              Email
                                             </p>
                                             <p className="text-gray-900 flex items-start gap-2">
-                                              <Phone className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                                              {expandedDetails.phone}
+                                              <Mail className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                              <span className="break-all">
+                                                {expandedDetails.email}
+                                              </span>
                                             </p>
                                           </div>
-                                        )}
 
-                                        {expandedDetails.company && (
+                                          {expandedDetails.phone && (
+                                            <div className="bg-white rounded-lg p-4 border border-gray-200">
+                                              <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
+                                                Phone
+                                              </p>
+                                              <p className="text-gray-900 flex items-start gap-2">
+                                                <Phone className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                                {expandedDetails.phone}
+                                              </p>
+                                            </div>
+                                          )}
+
+                                          {expandedDetails.company && (
+                                            <div className="bg-white rounded-lg p-4 border border-gray-200">
+                                              <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
+                                                Company
+                                              </p>
+                                              <p className="text-gray-900 flex items-start gap-2">
+                                                <Building2 className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                                {expandedDetails.company}
+                                              </p>
+                                            </div>
+                                          )}
+
                                           <div className="bg-white rounded-lg p-4 border border-gray-200">
                                             <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
-                                              Company
+                                              Signup Date
                                             </p>
                                             <p className="text-gray-900 flex items-start gap-2">
-                                              <Building2 className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                                              {expandedDetails.company}
+                                              <Calendar className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                              {new Date(
+                                                expandedDetails.createdAt,
+                                              ).toLocaleDateString()}
                                             </p>
                                           </div>
-                                        )}
-
-                                        <div className="bg-white rounded-lg p-4 border border-gray-200">
-                                          <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
-                                            Signup Date
-                                          </p>
-                                          <p className="text-gray-900 flex items-start gap-2">
-                                            <Calendar className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                                            {new Date(
-                                              expandedDetails.createdAt
-                                            ).toLocaleDateString()}
-                                          </p>
                                         </div>
                                       </div>
-                                    </div>
 
-                                    {/* Customer Statistics */}
-                                    <div>
-                                      <h3 className="font-bold text-gray-900 mb-4 text-lg">
-                                        Customer Statistics
-                                      </h3>
-                                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
-                                          <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
-                                            Total Orders
-                                          </p>
-                                          <p className="text-3xl font-bold text-blue-600">
-                                            {expandedDetails.orderCount}
-                                          </p>
-                                        </div>
-
-                                        <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg p-4 border border-emerald-200">
-                                          <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
-                                            Total Spent
-                                          </p>
-                                          <p className="text-3xl font-bold text-emerald-600">
-                                            ${expandedDetails.totalSpent.toFixed(2)}
-                                          </p>
-                                        </div>
-
-                                        {expandedDetails.storeCredit > 0 && (
-                                          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 border border-orange-200">
+                                      {/* Customer Statistics */}
+                                      <div>
+                                        <h3 className="font-bold text-gray-900 mb-4 text-lg">
+                                          Customer Statistics
+                                        </h3>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
                                             <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
-                                              Store Credit
+                                              Total Orders
                                             </p>
-                                            <p className="text-3xl font-bold text-orange-600">
-                                              ${expandedDetails.storeCredit.toFixed(
-                                                2
+                                            <p className="text-3xl font-bold text-blue-600">
+                                              {expandedDetails.orderCount}
+                                            </p>
+                                          </div>
+
+                                          <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg p-4 border border-emerald-200">
+                                            <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
+                                              Total Spent
+                                            </p>
+                                            <p className="text-3xl font-bold text-emerald-600">
+                                              $
+                                              {expandedDetails.totalSpent.toFixed(
+                                                2,
                                               )}
                                             </p>
                                           </div>
-                                        )}
 
-                                        {expandedDetails.orderCount > 0 && (
-                                          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 border border-purple-200">
-                                            <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
-                                              Avg Order Value
-                                            </p>
-                                            <p className="text-3xl font-bold text-purple-600">
-                                              ${(
-                                                expandedDetails.totalSpent /
-                                                expandedDetails.orderCount
-                                              ).toFixed(2)}
-                                            </p>
-                                          </div>
-                                        )}
+                                          {expandedDetails.storeCredit > 0 && (
+                                            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 border border-orange-200">
+                                              <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
+                                                Store Credit
+                                              </p>
+                                              <p className="text-3xl font-bold text-orange-600">
+                                                $
+                                                {expandedDetails.storeCredit.toFixed(
+                                                  2,
+                                                )}
+                                              </p>
+                                            </div>
+                                          )}
+
+                                          {expandedDetails.orderCount > 0 && (
+                                            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 border border-purple-200">
+                                              <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
+                                                Avg Order Value
+                                              </p>
+                                              <p className="text-3xl font-bold text-purple-600">
+                                                $
+                                                {(
+                                                  expandedDetails.totalSpent /
+                                                  expandedDetails.orderCount
+                                                ).toFixed(2)}
+                                              </p>
+                                            </div>
+                                          )}
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    {/* Order History */}
-                                    {expandedDetails.orders &&
-                                      expandedDetails.orders.length > 0 && (
-                                        <div>
-                                          <h3 className="font-bold text-gray-900 mb-4 text-lg">
-                                            Order History ({expandedDetails.orders.length})
-                                          </h3>
-                                          <div className="space-y-3 max-h-96 overflow-y-auto">
-                                            {expandedDetails.orders.map(
-                                              (order) => (
-                                                <div
-                                                  key={order.id}
-                                                  className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow"
-                                                >
-                                                  <div className="flex items-center justify-between">
-                                                    <div className="flex-1">
-                                                      <p className="font-semibold text-gray-900">
-                                                        Order #{order.id}
-                                                      </p>
-                                                      <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-600">
-                                                        <span className="flex items-center gap-1">
-                                                          <Calendar className="w-4 h-4" />
-                                                          {new Date(
-                                                            order.createdAt
-                                                          ).toLocaleDateString()}
-                                                        </span>
-                                                        <span className="flex items-center gap-1">
-                                                          <ShoppingBag className="w-4 h-4" />
-                                                          {order.itemCount} item
-                                                          {order.itemCount !==
+                                      {/* Order History */}
+                                      {expandedDetails.orders &&
+                                        expandedDetails.orders.length > 0 && (
+                                          <div>
+                                            <h3 className="font-bold text-gray-900 mb-4 text-lg">
+                                              Order History (
+                                              {expandedDetails.orders.length})
+                                            </h3>
+                                            <div className="space-y-3 max-h-96 overflow-y-auto">
+                                              {expandedDetails.orders.map(
+                                                (order) => (
+                                                  <div
+                                                    key={order.id}
+                                                    className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow"
+                                                  >
+                                                    <div className="flex items-center justify-between">
+                                                      <div className="flex-1">
+                                                        <p className="font-semibold text-gray-900">
+                                                          Order #{order.id}
+                                                        </p>
+                                                        <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-600">
+                                                          <span className="flex items-center gap-1">
+                                                            <Calendar className="w-4 h-4" />
+                                                            {new Date(
+                                                              order.createdAt,
+                                                            ).toLocaleDateString()}
+                                                          </span>
+                                                          <span className="flex items-center gap-1">
+                                                            <ShoppingBag className="w-4 h-4" />
+                                                            {order.itemCount}{" "}
+                                                            item
+                                                            {order.itemCount !==
                                                             1
-                                                            ? "s"
-                                                            : ""}
+                                                              ? "s"
+                                                              : ""}
+                                                          </span>
+                                                        </div>
+                                                      </div>
+                                                      <div className="text-right ml-4">
+                                                        <p className="font-bold text-gray-900">
+                                                          $
+                                                          {order.total.toFixed(
+                                                            2,
+                                                          )}
+                                                        </p>
+                                                        <span
+                                                          className={`text-xs font-medium inline-block mt-2 px-3 py-1 rounded-full ${
+                                                            order.status ===
+                                                            "pending"
+                                                              ? "bg-yellow-100 text-yellow-800"
+                                                              : order.status ===
+                                                                  "completed"
+                                                                ? "bg-green-100 text-green-800"
+                                                                : "bg-gray-100 text-gray-800"
+                                                          }`}
+                                                        >
+                                                          {order.status}
                                                         </span>
                                                       </div>
                                                     </div>
-                                                    <div className="text-right ml-4">
-                                                      <p className="font-bold text-gray-900">
-                                                        ${order.total.toFixed(
-                                                          2
-                                                        )}
-                                                      </p>
-                                                      <span
-                                                        className={`text-xs font-medium inline-block mt-2 px-3 py-1 rounded-full ${
-                                                          order.status ===
-                                                          "pending"
-                                                            ? "bg-yellow-100 text-yellow-800"
-                                                            : order.status ===
-                                                                "completed"
-                                                              ? "bg-green-100 text-green-800"
-                                                              : "bg-gray-100 text-gray-800"
-                                                        }`}
-                                                      >
-                                                        {order.status}
-                                                      </span>
-                                                    </div>
                                                   </div>
-                                                </div>
-                                              )
-                                            )}
+                                                ),
+                                              )}
+                                            </div>
                                           </div>
+                                        )}
+
+                                      {(!expandedDetails.orders ||
+                                        expandedDetails.orders.length ===
+                                          0) && (
+                                        <div className="bg-white rounded-lg p-8 text-center border border-gray-200">
+                                          <ShoppingBag className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                                          <p className="text-gray-600 font-medium">
+                                            No orders yet
+                                          </p>
+                                          <p className="text-gray-500 text-sm mt-1">
+                                            This customer hasn't placed any
+                                            orders
+                                          </p>
                                         </div>
                                       )}
-
-                                    {(!expandedDetails.orders ||
-                                      expandedDetails.orders.length === 0) && (
-                                      <div className="bg-white rounded-lg p-8 text-center border border-gray-200">
-                                        <ShoppingBag className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                                        <p className="text-gray-600 font-medium">
-                                          No orders yet
-                                        </p>
-                                        <p className="text-gray-500 text-sm mt-1">
-                                          This customer hasn't placed any
-                                          orders
-                                        </p>
-                                      </div>
-                                    )}
-                                  </div>
-                                </td>
-                              </tr>
-                            )}
+                                    </div>
+                                  </td>
+                                </tr>
+                              )}
                           </>
                         ))}
                       </tbody>
