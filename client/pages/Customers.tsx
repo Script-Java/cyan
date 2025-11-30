@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import AdminSidebar from "@/components/AdminSidebar";
+import MobileAdminPanel from "@/components/MobileAdminPanel";
 import { Button } from "@/components/ui/button";
 
 interface Customer {
