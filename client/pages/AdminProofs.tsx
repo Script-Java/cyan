@@ -449,67 +449,67 @@ export default function AdminProofs() {
                 </p>
                 <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
                   <table className="w-full text-left text-xs sm:text-sm">
-                  <thead>
-                    <tr className="border-b border-gray-200 bg-gray-50">
-                      <th className="px-4 py-3 font-semibold text-gray-900">
-                        Order #
-                      </th>
-                      <th className="px-4 py-3 font-semibold text-gray-900">
-                        Customer
-                      </th>
-                      <th className="px-4 py-3 font-semibold text-gray-900">
-                        Email
-                      </th>
-                      <th className="px-4 py-3 font-semibold text-gray-900">
-                        Status
-                      </th>
-                      <th className="px-4 py-3 font-semibold text-gray-900 text-right">
-                        Total
-                      </th>
-                      <th className="px-4 py-3 font-semibold text-gray-900">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {pendingOrders.map((order) => (
-                      <tr
-                        key={order.id}
-                        className="border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
-                      >
-                        <td className="px-4 py-4 font-semibold text-gray-900">
-                          #{order.id}
-                        </td>
-                        <td className="px-4 py-4 text-gray-700">
-                          {order.customerName}
-                        </td>
-                        <td className="px-4 py-4 text-gray-600">
-                          {order.customerEmail}
-                        </td>
-                        <td className="px-4 py-4">
-                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700">
-                            {order.status.charAt(0).toUpperCase() +
-                              order.status.slice(1)}
-                          </span>
-                        </td>
-                        <td className="px-4 py-4 font-semibold text-gray-900 text-right">
-                          ${order.total.toFixed(2)}
-                        </td>
-                        <td className="px-4 py-4">
-                          <button
-                            onClick={() => handleSelectOrder(order)}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs"
-                          >
-                            Send Proof
-                          </button>
-                        </td>
+                    <thead>
+                      <tr className="border-b border-gray-200 bg-gray-50">
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-gray-900 whitespace-nowrap">
+                          Order #
+                        </th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-gray-900 whitespace-nowrap hidden sm:table-cell">
+                          Customer
+                        </th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-gray-900 whitespace-nowrap hidden md:table-cell">
+                          Email
+                        </th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-gray-900 whitespace-nowrap">
+                          Status
+                        </th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-gray-900 text-right whitespace-nowrap">
+                          Total
+                        </th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-gray-900 whitespace-nowrap">
+                          Action
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {pendingOrders.map((order) => (
+                        <tr
+                          key={order.id}
+                          className="border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
+                        >
+                          <td className="px-2 sm:px-4 py-2 sm:py-4 font-semibold text-gray-900 whitespace-nowrap">
+                            #{order.id}
+                          </td>
+                          <td className="px-2 sm:px-4 py-2 sm:py-4 text-gray-700 whitespace-nowrap hidden sm:table-cell truncate max-w-xs">
+                            {order.customerName}
+                          </td>
+                          <td className="px-2 sm:px-4 py-2 sm:py-4 text-gray-600 hidden md:table-cell">
+                            <div className="flex items-center gap-1 truncate max-w-xs">{order.customerEmail}</div>
+                          </td>
+                          <td className="px-2 sm:px-4 py-2 sm:py-4">
+                            <span className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 whitespace-nowrap">
+                              {order.status.charAt(0).toUpperCase() +
+                                order.status.slice(1)}
+                            </span>
+                          </td>
+                          <td className="px-2 sm:px-4 py-2 sm:py-4 font-semibold text-gray-900 text-right whitespace-nowrap text-xs sm:text-sm">
+                            ${order.total.toFixed(2)}
+                          </td>
+                          <td className="px-2 sm:px-4 py-2 sm:py-4">
+                            <button
+                              onClick={() => handleSelectOrder(order)}
+                              className="inline-flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs whitespace-nowrap"
+                            >
+                              Send Proof
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           {/* Send Proof Form */}
           {showSendForm && (
