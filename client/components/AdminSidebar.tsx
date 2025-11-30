@@ -13,7 +13,6 @@ import {
   BarChart3,
   Settings,
   ChevronDown,
-  Store,
   Mail,
   Clipboard,
   Plus,
