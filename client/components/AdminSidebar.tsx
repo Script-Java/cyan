@@ -251,8 +251,8 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
 
       <aside className={cn(
         "fixed left-0 top-12 h-[calc(100vh-3rem)] w-64 bg-black border-r border-white/10 flex flex-col overflow-hidden transition-all duration-300 z-40",
-        "md:static md:w-64 md:h-auto",
-        isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        "md:static md:top-0 md:h-auto md:translate-x-0",
+        isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         {/* Mobile Close Button */}
         {!isOpen && (
