@@ -170,6 +170,7 @@ export default function AdminProofs() {
     setCustomerId(order.customerId ? order.customerId.toString() : "");
     setCustomerEmail(order.customerEmail || "");
     setDescription("");
+    setSelectedOrder(order);
     setShowOrderModal(false);
     setShowSendForm(true);
   };
