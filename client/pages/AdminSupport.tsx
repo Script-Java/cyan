@@ -245,9 +245,9 @@ export default function AdminSupport() {
             {/* Back button */}
             <button
               onClick={handleCloseTicket}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 sm:mb-6 transition-colors text-sm"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 sm:w-5 h-4 sm:h-5" />
               Back to Tickets
             </button>
 
