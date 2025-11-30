@@ -70,9 +70,11 @@ export default function Designs() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDesign, setSelectedDesign] = useState<Design | null>(null);
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "name">("newest");
-  const [filterStatus, setFilterStatus] = useState<"all" | "approved" | "pending">("all");
+  const [filterStatus, setFilterStatus] = useState<
+    "all" | "approved" | "pending"
+  >("all");
   const [favorites, setFavorites] = useState<Set<string>>(
-    new Set(JSON.parse(localStorage.getItem("favoriteDesigns") || "[]"))
+    new Set(JSON.parse(localStorage.getItem("favoriteDesigns") || "[]")),
   );
 
   useEffect(() => {
@@ -115,7 +117,7 @@ export default function Designs() {
   useEffect(() => {
     localStorage.setItem(
       "favoriteDesigns",
-      JSON.stringify(Array.from(favorites))
+      JSON.stringify(Array.from(favorites)),
     );
   }, [favorites]);
 
@@ -165,7 +167,7 @@ export default function Designs() {
         orderId: order.orderId,
         orderDate: order.orderDate,
         orderStatus: order.orderStatus,
-      }))
+      })),
     );
   }, [designsByOrder]);
 
@@ -189,14 +191,14 @@ export default function Designs() {
         result.sort(
           (a, b) =>
             new Date(b.createdAt || "").getTime() -
-            new Date(a.createdAt || "").getTime()
+            new Date(a.createdAt || "").getTime(),
         );
         break;
       case "oldest":
         result.sort(
           (a, b) =>
             new Date(a.createdAt || "").getTime() -
-            new Date(b.createdAt || "").getTime()
+            new Date(b.createdAt || "").getTime(),
         );
         break;
       case "name":
@@ -275,7 +277,7 @@ export default function Designs() {
   }
 
   const StatusIcon = getStatusColor(
-    designsByOrder[0]?.orderStatus || "pending"
+    designsByOrder[0]?.orderStatus || "pending",
   ).icon;
 
   return (
@@ -426,7 +428,7 @@ export default function Designs() {
                       value={filterStatus}
                       onChange={(e) =>
                         setFilterStatus(
-                          e.target.value as "all" | "approved" | "pending"
+                          e.target.value as "all" | "approved" | "pending",
                         )
                       }
                       className="px-3 py-2 text-sm font-medium border-0 focus:outline-none bg-transparent cursor-pointer"
@@ -443,7 +445,9 @@ export default function Designs() {
                     <select
                       value={sortBy}
                       onChange={(e) =>
-                        setSortBy(e.target.value as "newest" | "oldest" | "name")
+                        setSortBy(
+                          e.target.value as "newest" | "oldest" | "name",
+                        )
                       }
                       className="px-3 py-2 text-sm font-medium border-0 focus:outline-none bg-transparent cursor-pointer"
                     >
@@ -503,7 +507,8 @@ export default function Designs() {
                 No designs found
               </h2>
               <p className="text-gray-600">
-                Try adjusting your search or filters to find what you're looking for.
+                Try adjusting your search or filters to find what you're looking
+                for.
               </p>
             </div>
           )}
@@ -660,7 +665,8 @@ export default function Designs() {
                         </p>
                       )}
                       <p className="text-xs text-gray-500">
-                        Order #{design.orderId} • {formatDate(design.createdAt || "")}
+                        Order #{design.orderId} •{" "}
+                        {formatDate(design.createdAt || "")}
                       </p>
                     </div>
                   </div>
@@ -704,14 +710,20 @@ export default function Designs() {
       </main>
 
       {/* Design Detail Modal */}
-      <Dialog open={!!selectedDesign} onOpenChange={() => setSelectedDesign(null)}>
+      <Dialog
+        open={!!selectedDesign}
+        onOpenChange={() => setSelectedDesign(null)}
+      >
         <DialogContent className="max-w-2xl">
           {selectedDesign && (
             <>
               <DialogHeader>
-                <DialogTitle className="text-2xl">{selectedDesign.name}</DialogTitle>
+                <DialogTitle className="text-2xl">
+                  {selectedDesign.name}
+                </DialogTitle>
                 <DialogDescription className="text-base mt-2">
-                  Order #{selectedDesign.orderId} • {formatDate(selectedDesign.createdAt || "")}
+                  Order #{selectedDesign.orderId} •{" "}
+                  {formatDate(selectedDesign.createdAt || "")}
                 </DialogDescription>
               </DialogHeader>
 
@@ -757,7 +769,9 @@ export default function Designs() {
                     <p className="text-xs font-semibold text-gray-600 uppercase mb-1">
                       Type
                     </p>
-                    <p className="text-sm text-gray-900">{selectedDesign.type}</p>
+                    <p className="text-sm text-gray-900">
+                      {selectedDesign.type}
+                    </p>
                   </div>
 
                   <div>
@@ -793,7 +807,9 @@ export default function Designs() {
                         favorites.has(selectedDesign.id) ? "fill-current" : ""
                       }`}
                     />
-                    {favorites.has(selectedDesign.id) ? "Favorited" : "Add to Favorites"}
+                    {favorites.has(selectedDesign.id)
+                      ? "Favorited"
+                      : "Add to Favorites"}
                   </button>
 
                   {selectedDesign.url && (

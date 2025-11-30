@@ -377,7 +377,10 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
     if (orderError || !order) {
       return res
         .status(404)
-        .json({ error: "Order not found. Only Supabase orders are supported for proofs." });
+        .json({
+          error:
+            "Order not found. Only Supabase orders are supported for proofs.",
+        });
     }
 
     // Use customer ID from order lookup

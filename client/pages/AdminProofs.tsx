@@ -642,72 +642,111 @@ export default function AdminProofs() {
                 )}
 
                 {/* Order Details Section */}
-                {selectedOrder && selectedOrder.orderItems && selectedOrder.orderItems.length > 0 && (
-                  <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
-                    <h4 className="font-medium text-gray-900 mb-4">Order Details</h4>
-                    <div className="space-y-4">
-                      {selectedOrder.orderItems.map((item, index) => (
-                        <div key={index} className="bg-white rounded border border-gray-200 p-4">
-                          <div className="grid grid-cols-2 gap-4 mb-4">
-                            <div>
-                              <p className="text-xs text-gray-600 uppercase tracking-wide">Product</p>
-                              <p className="text-sm font-medium text-gray-900">{item.product_name || "Custom Item"}</p>
-                            </div>
-                            <div>
-                              <p className="text-xs text-gray-600 uppercase tracking-wide">Quantity</p>
-                              <p className="text-sm font-medium text-gray-900">{item.quantity || "N/A"}</p>
-                            </div>
-                          </div>
-
-                          {item.options && Object.keys(item.options).length > 0 && (
+                {selectedOrder &&
+                  selectedOrder.orderItems &&
+                  selectedOrder.orderItems.length > 0 && (
+                    <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                      <h4 className="font-medium text-gray-900 mb-4">
+                        Order Details
+                      </h4>
+                      <div className="space-y-4">
+                        {selectedOrder.orderItems.map((item, index) => (
+                          <div
+                            key={index}
+                            className="bg-white rounded border border-gray-200 p-4"
+                          >
                             <div className="grid grid-cols-2 gap-4 mb-4">
-                              {item.options.size && (
-                                <div>
-                                  <p className="text-xs text-gray-600 uppercase tracking-wide">Size</p>
-                                  <p className="text-sm font-medium text-gray-900">{item.options.size}</p>
-                                </div>
-                              )}
-                              {item.options.color && (
-                                <div>
-                                  <p className="text-xs text-gray-600 uppercase tracking-wide">Color</p>
-                                  <p className="text-sm font-medium text-gray-900">{item.options.color}</p>
-                                </div>
-                              )}
-                              {item.options.vinyl_finish && (
-                                <div>
-                                  <p className="text-xs text-gray-600 uppercase tracking-wide">Vinyl Finish</p>
-                                  <p className="text-sm font-medium text-gray-900">{item.options.vinyl_finish}</p>
-                                </div>
-                              )}
-                              {item.options.sticker_type && (
-                                <div>
-                                  <p className="text-xs text-gray-600 uppercase tracking-wide">Sticker Type</p>
-                                  <p className="text-sm font-medium text-gray-900">{item.options.sticker_type}</p>
-                                </div>
-                              )}
-                            </div>
-                          )}
-
-                          {item.design_file_url && (
-                            <div className="pt-4 border-t border-gray-200">
-                              <p className="text-xs text-gray-600 uppercase tracking-wide mb-2">Design Thumbnail</p>
-                              <div className="rounded border border-gray-200 overflow-hidden bg-gray-100 flex items-center justify-center" style={{ maxHeight: '120px' }}>
-                                <img
-                                  src={item.design_file_url}
-                                  alt="Design thumbnail"
-                                  className="max-w-full max-h-full object-contain"
-                                  onError={(e) => {
-                                    (e.currentTarget as HTMLImageElement).style.display = 'none';
-                                  }}
-                                />
+                              <div>
+                                <p className="text-xs text-gray-600 uppercase tracking-wide">
+                                  Product
+                                </p>
+                                <p className="text-sm font-medium text-gray-900">
+                                  {item.product_name || "Custom Item"}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-600 uppercase tracking-wide">
+                                  Quantity
+                                </p>
+                                <p className="text-sm font-medium text-gray-900">
+                                  {item.quantity || "N/A"}
+                                </p>
                               </div>
                             </div>
-                          )}
-                        </div>
-                      ))}
+
+                            {item.options &&
+                              Object.keys(item.options).length > 0 && (
+                                <div className="grid grid-cols-2 gap-4 mb-4">
+                                  {item.options.size && (
+                                    <div>
+                                      <p className="text-xs text-gray-600 uppercase tracking-wide">
+                                        Size
+                                      </p>
+                                      <p className="text-sm font-medium text-gray-900">
+                                        {item.options.size}
+                                      </p>
+                                    </div>
+                                  )}
+                                  {item.options.color && (
+                                    <div>
+                                      <p className="text-xs text-gray-600 uppercase tracking-wide">
+                                        Color
+                                      </p>
+                                      <p className="text-sm font-medium text-gray-900">
+                                        {item.options.color}
+                                      </p>
+                                    </div>
+                                  )}
+                                  {item.options.vinyl_finish && (
+                                    <div>
+                                      <p className="text-xs text-gray-600 uppercase tracking-wide">
+                                        Vinyl Finish
+                                      </p>
+                                      <p className="text-sm font-medium text-gray-900">
+                                        {item.options.vinyl_finish}
+                                      </p>
+                                    </div>
+                                  )}
+                                  {item.options.sticker_type && (
+                                    <div>
+                                      <p className="text-xs text-gray-600 uppercase tracking-wide">
+                                        Sticker Type
+                                      </p>
+                                      <p className="text-sm font-medium text-gray-900">
+                                        {item.options.sticker_type}
+                                      </p>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+
+                            {item.design_file_url && (
+                              <div className="pt-4 border-t border-gray-200">
+                                <p className="text-xs text-gray-600 uppercase tracking-wide mb-2">
+                                  Design Thumbnail
+                                </p>
+                                <div
+                                  className="rounded border border-gray-200 overflow-hidden bg-gray-100 flex items-center justify-center"
+                                  style={{ maxHeight: "120px" }}
+                                >
+                                  <img
+                                    src={item.design_file_url}
+                                    alt="Design thumbnail"
+                                    className="max-w-full max-h-full object-contain"
+                                    onError={(e) => {
+                                      (
+                                        e.currentTarget as HTMLImageElement
+                                      ).style.display = "none";
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
                 <div className="flex gap-3">
                   <Button
@@ -1073,20 +1112,29 @@ export default function AdminProofs() {
                           <p className="text-sm font-medium text-gray-900 mb-3">
                             Approved Design
                           </p>
-                          <div className="rounded border border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center mb-3" style={{ maxHeight: '200px', minHeight: '100px' }}>
-                            {proof.file_url.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i) ? (
+                          <div
+                            className="rounded border border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center mb-3"
+                            style={{ maxHeight: "200px", minHeight: "100px" }}
+                          >
+                            {proof.file_url.match(
+                              /\.(jpg|jpeg|png|gif|webp|svg)$/i,
+                            ) ? (
                               <img
                                 src={proof.file_url}
                                 alt={proof.file_name || "Approved design"}
                                 className="max-w-full max-h-full object-contain"
                                 onError={(e) => {
-                                  (e.currentTarget as HTMLImageElement).style.display = 'none';
+                                  (
+                                    e.currentTarget as HTMLImageElement
+                                  ).style.display = "none";
                                 }}
                               />
                             ) : (
                               <div className="flex flex-col items-center justify-center p-6 text-center w-full">
                                 <FileIcon className="w-10 h-10 text-gray-400 mb-2" />
-                                <p className="text-sm text-gray-600">{proof.file_name || 'File'}</p>
+                                <p className="text-sm text-gray-600">
+                                  {proof.file_name || "File"}
+                                </p>
                               </div>
                             )}
                           </div>
