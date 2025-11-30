@@ -1041,14 +1041,14 @@ export default function AdminProofs() {
           </div>
         )}
 
-        {/* Reviewed Proofs Section */}
-        {reviewedProofs.length > 0 && (
-          <div>
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Reviewed Proofs ({reviewedProofs.length})
-              </h2>
-            </div>
+            {/* Reviewed Proofs Section */}
+            {reviewedProofs.length > 0 && (
+              <div>
+                <div className="mb-3 sm:mb-4">
+                  <h2 className="text-base sm:text-lg font-semibold text-gray-900">
+                    Reviewed Proofs ({reviewedProofs.length})
+                  </h2>
+                </div>
             <div className="space-y-4">
               {reviewedProofs.map((proof) => (
                 <div
