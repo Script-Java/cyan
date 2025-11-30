@@ -236,10 +236,8 @@ export default function AdminDashboard() {
                         onClick={() => navigate(link.path)}
                         className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4 text-left transition-all hover:bg-white/10"
                       >
-                        <div className="text-[#FFD713] mb-2">
-                          {React.cloneElement(link.icon, {
-                            className: "w-5 h-5",
-                          })}
+                        <div className="text-[#FFD713] mb-2 w-5 h-5">
+                          {link.icon}
                         </div>
                         <h3 className="font-semibold text-white mb-1 text-sm">
                           {link.title}
