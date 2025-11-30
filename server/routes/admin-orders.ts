@@ -2,6 +2,14 @@ import { RequestHandler } from "express";
 import { supabase, getPendingOrders } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
 
+interface OrderItem {
+  id?: number;
+  quantity?: number;
+  product_name?: string;
+  options?: Record<string, any>;
+  design_file_url?: string;
+}
+
 interface OrderWithCustomer {
   id: number;
   customerId: number;
@@ -11,6 +19,7 @@ interface OrderWithCustomer {
   total: number;
   dateCreated: string;
   source: "ecwid" | "supabase";
+  orderItems?: OrderItem[];
 }
 
 /**
