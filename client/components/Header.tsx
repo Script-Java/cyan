@@ -142,6 +142,36 @@ export default function Header() {
                 </div>
               )}
 
+              {/* Auth Icons */}
+              {!isAuthenticated && (
+                <>
+                  <Link
+                    to="/login"
+                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    title="Login"
+                  >
+                    <LogIn className="w-6 h-6 text-blue-400" />
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    title="Sign Up"
+                  >
+                    <UserPlus className="w-6 h-6 text-green-400" />
+                  </Link>
+                </>
+              )}
+
+              {isAuthenticated && isAdmin && (
+                <Link
+                  to="/admin"
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  title="Admin Dashboard"
+                >
+                  <Shield className="w-6 h-6 text-orange-400" />
+                </Link>
+              )}
+
               {/* Profile Dropdown */}
               <div className="relative">
                 <button
