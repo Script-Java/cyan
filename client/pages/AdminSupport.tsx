@@ -482,12 +482,12 @@ export default function AdminSupport() {
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex gap-2 mb-8 flex-wrap">
+          <div className="flex gap-2 mb-6 sm:mb-8 flex-wrap">
             {["open", "in-progress", "resolved", "all"].map((status) => (
               <button
                 key={status}
                 onClick={() => setFilter(status as any)}
-                className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm font-semibold transition-colors ${
                   filter === status
                     ? "bg-blue-600 text-white"
                     : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
