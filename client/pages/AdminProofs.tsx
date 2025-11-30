@@ -490,9 +490,14 @@ export default function AdminProofs() {
           {showSendForm && (
             <div className="bg-white rounded-lg border border-blue-200 p-6 mb-6">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Send Proof to Customer
-                </h3>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Send Proof to Customer
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-1">
+                    For Supabase orders only
+                  </p>
+                </div>
                 <button
                   onClick={() => setShowSendForm(false)}
                   className="text-gray-400 hover:text-gray-600 transition-colors"
