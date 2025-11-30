@@ -12,6 +12,7 @@ import {
   LogIn,
   UserPlus,
   Shield,
+  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStoreCredit } from "@/hooks/useStoreCredit";
