@@ -1049,21 +1049,21 @@ export default function AdminProofs() {
                     Reviewed Proofs ({reviewedProofs.length})
                   </h2>
                 </div>
-            <div className="space-y-4">
-              {reviewedProofs.map((proof) => (
-                <div
-                  key={proof.id}
-                  className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
-                >
-                  {/* Proof Header */}
-                  <button
-                    onClick={() =>
-                      setExpandedProofId(
-                        expandedProofId === proof.id ? null : proof.id,
-                      )
-                    }
-                    className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
-                  >
+                <div className="space-y-3 sm:space-y-4">
+                  {reviewedProofs.map((proof) => (
+                    <div
+                      key={proof.id}
+                      className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+                    >
+                      {/* Proof Header */}
+                      <button
+                        onClick={() =>
+                          setExpandedProofId(
+                            expandedProofId === proof.id ? null : proof.id,
+                          )
+                        }
+                        className="w-full px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                      >
                     <div className="flex items-center gap-4 flex-1 text-left">
                       <div className="bg-gray-100 p-3 rounded-lg flex-shrink-0">
                         {getStatusIcon(proof.status)}
