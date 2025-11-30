@@ -238,67 +238,67 @@ export default function Customers() {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-colors">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-white/60 text-sm font-medium mb-2">
+                    <p className="text-white/60 text-xs font-medium mb-1">
                       Total Customers
                     </p>
-                    <p className="text-3xl sm:text-4xl font-bold text-white">
+                    <p className="text-2xl sm:text-3xl font-bold text-white">
                       {stats.totalCustomers}
                     </p>
                   </div>
-                  <div className="p-3 bg-[#FFD713]/20 rounded-lg">
-                    <Users className="w-6 h-6 text-[#FFD713]" />
+                  <div className="p-2 bg-[#FFD713]/20 rounded-lg">
+                    <Users className="w-5 h-5 text-[#FFD713]" />
                   </div>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-colors">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-white/60 text-sm font-medium mb-2">
+                    <p className="text-white/60 text-xs font-medium mb-1">
                       Active Customers
                     </p>
-                    <p className="text-3xl sm:text-4xl font-bold text-white">
+                    <p className="text-2xl sm:text-3xl font-bold text-white">
                       {stats.customersWithOrders}
                     </p>
                   </div>
-                  <div className="p-3 bg-purple-500/20 rounded-lg">
-                    <ShoppingBag className="w-6 h-6 text-purple-400" />
+                  <div className="p-2 bg-purple-500/20 rounded-lg">
+                    <ShoppingBag className="w-5 h-5 text-purple-400" />
                   </div>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-colors">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-white/60 text-sm font-medium mb-2">
+                    <p className="text-white/60 text-xs font-medium mb-1">
                       Total Revenue
                     </p>
-                    <p className="text-3xl sm:text-4xl font-bold text-white">
+                    <p className="text-2xl sm:text-3xl font-bold text-white">
                       ${stats.totalRevenue.toFixed(0)}
                     </p>
                   </div>
-                  <div className="p-3 bg-[#FFD713]/20 rounded-lg">
-                    <DollarSign className="w-6 h-6 text-[#FFD713]" />
+                  <div className="p-2 bg-[#FFD713]/20 rounded-lg">
+                    <DollarSign className="w-5 h-5 text-[#FFD713]" />
                   </div>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-colors">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-white/60 text-sm font-medium mb-2">
+                    <p className="text-white/60 text-xs font-medium mb-1">
                       Avg Order Value
                     </p>
-                    <p className="text-3xl sm:text-4xl font-bold text-white">
+                    <p className="text-2xl sm:text-3xl font-bold text-white">
                       ${stats.avgOrderValue.toFixed(0)}
                     </p>
                   </div>
-                  <div className="p-3 bg-purple-500/20 rounded-lg">
-                    <TrendingUp className="w-6 h-6 text-purple-400" />
+                  <div className="p-2 bg-purple-500/20 rounded-lg">
+                    <TrendingUp className="w-5 h-5 text-purple-400" />
                   </div>
                 </div>
               </div>
