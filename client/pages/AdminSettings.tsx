@@ -305,6 +305,9 @@ export default function AdminSettings() {
             </div>
           </div>
         </main>
+
+        {/* Mobile Admin Panel */}
+        <MobileAdminPanel />
       </div>
     </>
   );
