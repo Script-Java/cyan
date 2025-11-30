@@ -166,29 +166,29 @@ export default function AdminOrders() {
                   {/* Orders Table */}
                   {filteredOrders.length > 0 ? (
                     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-left text-sm">
+                      <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
+                        <table className="w-full text-left text-xs sm:text-sm">
                           <thead>
                             <tr className="border-b border-gray-200 bg-gray-50">
-                              <th className="px-6 py-4 font-semibold text-gray-900">
+                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap">
                                 Order ID
                               </th>
-                              <th className="px-6 py-4 font-semibold text-gray-900">
+                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap hidden sm:table-cell">
                                 Customer
                               </th>
-                              <th className="px-6 py-4 font-semibold text-gray-900">
+                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap hidden md:table-cell">
                                 Email
                               </th>
-                              <th className="px-6 py-4 font-semibold text-gray-900">
+                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap hidden lg:table-cell">
                                 Date
                               </th>
-                              <th className="px-6 py-4 font-semibold text-gray-900">
+                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap">
                                 Status
                               </th>
-                              <th className="px-6 py-4 font-semibold text-gray-900 text-right">
+                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 text-right whitespace-nowrap">
                                 Total
                               </th>
-                              <th className="px-6 py-4 font-semibold text-gray-900 text-right">
+                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 text-right whitespace-nowrap">
                                 Action
                               </th>
                             </tr>
@@ -199,27 +199,29 @@ export default function AdminOrders() {
                                 key={order.id}
                                 className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
                               >
-                                <td className="px-6 py-4 font-semibold text-gray-900">
+                                <td className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap">
                                   #{order.id}
                                 </td>
-                                <td className="px-6 py-4 text-gray-700">
+                                <td className="px-2 sm:px-6 py-3 sm:py-4 text-gray-700 whitespace-nowrap hidden sm:table-cell truncate max-w-xs">
                                   {order.customerName || "Guest"}
                                 </td>
-                                <td className="px-6 py-4 text-gray-600 flex items-center gap-2">
-                                  <Mail className="w-4 h-4 flex-shrink-0" />
-                                  <span className="truncate">
-                                    {order.customerEmail}
-                                  </span>
+                                <td className="px-2 sm:px-6 py-3 sm:py-4 text-gray-600 hidden md:table-cell">
+                                  <div className="flex items-center gap-1 truncate max-w-xs">
+                                    <Mail className="w-3 h-3 flex-shrink-0" />
+                                    <span className="truncate text-xs sm:text-sm">{order.customerEmail}</span>
+                                  </div>
                                 </td>
-                                <td className="px-6 py-4 text-gray-600 flex items-center gap-2">
-                                  <Calendar className="w-4 h-4 flex-shrink-0" />
-                                  {new Date(
-                                    order.dateCreated,
-                                  ).toLocaleDateString()}
+                                <td className="px-2 sm:px-6 py-3 sm:py-4 text-gray-600 hidden lg:table-cell whitespace-nowrap">
+                                  <div className="flex items-center gap-1">
+                                    <Calendar className="w-3 h-3" />
+                                    <span className="text-xs sm:text-sm">{new Date(
+                                      order.dateCreated,
+                                    ).toLocaleDateString()}</span>
+                                  </div>
                                 </td>
-                                <td className="px-6 py-4">
+                                <td className="px-2 sm:px-6 py-3 sm:py-4">
                                   <span
-                                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                                    className={`inline-flex items-center px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-semibold ${getStatusColor(
                                       order.status,
                                     )}`}
                                   >
@@ -227,13 +229,13 @@ export default function AdminOrders() {
                                       order.status.slice(1)}
                                   </span>
                                 </td>
-                                <td className="px-6 py-4 font-semibold text-gray-900 text-right">
+                                <td className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 text-right whitespace-nowrap text-xs sm:text-sm">
                                   ${order.total.toFixed(2)}
                                 </td>
-                                <td className="px-6 py-4 text-right">
-                                  <button className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs">
+                                <td className="px-2 sm:px-6 py-3 sm:py-4 text-right">
+                                  <button className="inline-flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs whitespace-nowrap">
                                     View
-                                    <ChevronRight className="w-3 h-3" />
+                                    <ChevronRight className="w-3 h-3 hidden sm:inline" />
                                   </button>
                                 </td>
                               </tr>
