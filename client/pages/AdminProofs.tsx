@@ -17,6 +17,9 @@ import {
   FileIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Header from "@/components/Header";
+import AdminSidebar from "@/components/AdminSidebar";
+import MobileAdminPanel from "@/components/MobileAdminPanel";
 import { toast } from "sonner";
 
 interface ProofComment {
