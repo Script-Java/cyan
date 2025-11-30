@@ -851,7 +851,11 @@ export default function Designs() {
                     <p className="text-xs font-semibold text-gray-600 uppercase mb-1">
                       Status
                     </p>
-                    {selectedDesign.approved ? (
+                    {selectedDesign.type === "proof_denied" ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-lg">
+                        Denied - Needs Revision
+                      </span>
+                    ) : selectedDesign.approved ? (
                       <span className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-lg">
                         <CheckCircle2 className="w-3 h-3" />
                         Approved
