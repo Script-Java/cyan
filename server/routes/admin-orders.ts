@@ -41,7 +41,7 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
       });
     }
 
-    // Format orders with customer details
+    // Format orders with customer details and order items
     const formattedOrders = pendingOrders.map((order: any) => ({
       id: order.id,
       customerId: order.customer_id,
@@ -59,6 +59,13 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
       total: order.total || 0,
       dateCreated: order.created_at || new Date().toISOString(),
       source: "supabase" as const,
+      orderItems: (order.order_items || []).map((item: any) => ({
+        id: item.id,
+        quantity: item.quantity,
+        product_name: item.product_name,
+        options: item.options,
+        design_file_url: item.design_file_url,
+      })),
     }));
 
     res.json({
