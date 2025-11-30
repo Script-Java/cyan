@@ -171,7 +171,7 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
       } else if (item.path) {
         navigate(item.path);
         // Close sidebar on mobile after navigation
-        if (onClose && !isOpen) {
+        if (onClose && isOpen) {
           onClose();
         }
       }
