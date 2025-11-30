@@ -502,56 +502,56 @@ export default function AdminSupport() {
 
           {/* Tickets List */}
           {isLoading ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="text-gray-600">Loading tickets...</div>
+            <div className="flex justify-center items-center h-48 sm:h-64">
+              <div className="text-gray-600 text-sm">Loading tickets...</div>
             </div>
           ) : tickets.length === 0 ? (
-            <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-              <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-12 text-center">
+              <MessageSquare className="w-10 sm:w-12 h-10 sm:h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
                 No tickets
               </h3>
-              <p className="text-gray-600">
+              <p className="text-sm sm:text-base text-gray-600">
                 All tickets have been resolved! Great job.
               </p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {tickets.map((ticket) => (
                 <button
                   key={ticket.id}
                   onClick={() => handleSelectTicket(ticket)}
-                  className="w-full bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all text-left hover:border-blue-300"
+                  className="w-full bg-white rounded-lg border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-all text-left hover:border-blue-300"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2 truncate">
                         {ticket.subject}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 line-clamp-2">
                         {ticket.message}
                       </p>
-                      <div className="flex items-center gap-3 flex-wrap">
-                        <span className="text-sm font-medium text-gray-700">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                        <span className="text-xs sm:text-sm font-medium text-gray-700 truncate">
                           {ticket.customer_name}
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-500 truncate hidden sm:inline">
                           {ticket.customer_email}
                         </span>
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(ticket.status)}`}
+                          className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-semibold ${getStatusColor(ticket.status)}`}
                         >
                           {ticket.status.toUpperCase()}
                         </span>
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold ${getPriorityBg(ticket.priority)} ${getPriorityColor(ticket.priority)}`}
+                          className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-semibold ${getPriorityBg(ticket.priority)} ${getPriorityColor(ticket.priority)}`}
                         >
                           {ticket.priority.toUpperCase()}
                         </span>
                       </div>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <p className="text-xs text-gray-600">
+                      <p className="text-xs text-gray-600 whitespace-nowrap">
                         {formatDate(ticket.created_at)}
                       </p>
                     </div>
