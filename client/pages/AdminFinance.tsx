@@ -9,6 +9,9 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Calendar,
+  CreditCard,
+  Wallet,
+  PieChart,
 } from "lucide-react";
 
 interface FinanceStats {
@@ -19,6 +22,55 @@ interface FinanceStats {
   revenueChange: number;
   orderChange: number;
 }
+
+const MetricCard = ({
+  icon: Icon,
+  title,
+  value,
+  trend,
+  trendLabel,
+  color,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  value: string | number;
+  trend?: number;
+  trendLabel?: string;
+  color: string;
+}) => (
+  <div className="group backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 hover:border-white/20 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:shadow-white/5">
+    <div className="flex items-start justify-between mb-6">
+      <div className="flex-1">
+        <p className="text-white/60 text-xs uppercase tracking-widest font-medium mb-1">
+          {title}
+        </p>
+        <p className="text-4xl font-bold text-white tracking-tight">{value}</p>
+      </div>
+      <div
+        className={`p-3 rounded-xl backdrop-blur-xl transition-all duration-300 group-hover:scale-110 bg-gradient-to-br ${color}`}
+      >
+        {Icon}
+      </div>
+    </div>
+    {trend !== undefined && (
+      <div className="flex items-center gap-2">
+        <div
+          className={`flex items-center gap-1 text-sm font-semibold ${
+            trend >= 0 ? "text-green-400" : "text-red-400"
+          }`}
+        >
+          {trend >= 0 ? (
+            <ArrowUpRight className="w-4 h-4" />
+          ) : (
+            <ArrowDownRight className="w-4 h-4" />
+          )}
+          {Math.abs(trend)}%
+        </div>
+        <span className="text-white/40 text-xs">{trendLabel}</span>
+      </div>
+    )}
+  </div>
+);
 
 export default function AdminFinance() {
   const navigate = useNavigate();
@@ -82,16 +134,26 @@ export default function AdminFinance() {
             {/* Header Section */}
             <div className="border-b border-white/10 pb-8">
               <div className="px-6 lg:px-8 py-8">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h1 className="text-4xl font-bold text-white flex items-center gap-3">
-                      <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                        <DollarSign className="w-8 h-8 text-green-400" />
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2.5 bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-xl">
+                        <DollarSign className="w-6 h-6 text-green-400" />
                       </div>
-                      Finance
-                    </h1>
-                    <p className="text-white/60 mt-2">
-                      Track revenue and financial metrics
+                      <h1 className="text-4xl font-bold text-white">
+                        Finance
+                      </h1>
+                    </div>
+                    <p className="text-white/50 mt-2 text-sm leading-relaxed">
+                      Monitor revenue, transactions, and financial performance
+                    </p>
+                  </div>
+                  <div className="px-6 py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-xl">
+                    <p className="text-white/60 text-xs uppercase tracking-wide font-medium">
+                      Period
+                    </p>
+                    <p className="text-white font-semibold mt-1">
+                      This Month
                     </p>
                   </div>
                 </div>
@@ -100,120 +162,226 @@ export default function AdminFinance() {
 
             {/* Main Content */}
             <div className="px-6 lg:px-8 py-8">
-              {/* Stats Cards */}
+              {/* Primary Metrics */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                {/* Total Revenue Card */}
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-white/60 text-sm uppercase tracking-wider">
-                      Total Revenue
-                    </h3>
-                    <div className="p-2 bg-green-500/20 border border-green-500/30 rounded-lg">
-                      <DollarSign className="w-4 h-4 text-green-400" />
+                <MetricCard
+                  icon={
+                    <DollarSign className="w-5 h-5 text-green-400" />
+                  }
+                  title="Total Revenue"
+                  value={`$${stats.totalRevenue.toFixed(2)}`}
+                  trend={stats.revenueChange}
+                  trendLabel="vs last month"
+                  color="from-green-500/20 to-emerald-500/20"
+                />
+                <MetricCard
+                  icon={
+                    <Wallet className="w-5 h-5 text-blue-400" />
+                  }
+                  title="This Month"
+                  value={`$${stats.monthlyRevenue.toFixed(2)}`}
+                  color="from-blue-500/20 to-cyan-500/20"
+                />
+                <MetricCard
+                  icon={
+                    <TrendingUp className="w-5 h-5 text-purple-400" />
+                  }
+                  title="Avg Order Value"
+                  value={`$${stats.averageOrderValue.toFixed(2)}`}
+                  color="from-purple-500/20 to-pink-500/20"
+                />
+                <MetricCard
+                  icon={
+                    <CreditCard className="w-5 h-5 text-orange-400" />
+                  }
+                  title="Total Orders"
+                  value={stats.totalOrders}
+                  trend={stats.orderChange}
+                  trendLabel="vs last month"
+                  color="from-orange-500/20 to-amber-500/20"
+                />
+              </div>
+
+              {/* Revenue Overview */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                {/* Revenue Breakdown */}
+                <div className="lg:col-span-2 backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-2xl p-8">
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="p-2.5 bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-xl">
+                      <TrendingUp className="w-5 h-5 text-blue-400" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-white">
+                        Revenue Trends
+                      </h2>
+                      <p className="text-white/40 text-xs mt-0.5">
+                        Last 7 days performance
+                      </p>
                     </div>
                   </div>
-                  <div className="flex items-end gap-2">
-                    <p className="text-3xl font-bold text-white">
-                      ${stats.totalRevenue.toFixed(2)}
+
+                  <div className="h-64 flex items-end justify-between gap-2 px-2">
+                    {[
+                      { day: "Mon", amount: 1200, active: false },
+                      { day: "Tue", amount: 1900, active: false },
+                      { day: "Wed", amount: 1600, active: false },
+                      { day: "Thu", amount: 2100, active: false },
+                      { day: "Fri", amount: 2400, active: false },
+                      { day: "Sat", amount: 2200, active: false },
+                      { day: "Sun", amount: 2800, active: true },
+                    ].map((data, idx) => (
+                      <div
+                        key={idx}
+                        className="flex flex-col items-center gap-2 flex-1"
+                      >
+                        <div className="relative h-48 w-full flex items-end justify-center group">
+                          <div
+                            className={`w-full transition-all duration-300 rounded-t-lg ${
+                              data.active
+                                ? "bg-gradient-to-t from-green-500 to-green-400 group-hover:from-green-600 group-hover:to-green-500"
+                                : "bg-gradient-to-t from-white/20 to-white/10 group-hover:from-white/30 group-hover:to-white/20"
+                            }`}
+                            style={{
+                              height: `${(data.amount / 3000) * 100}%`,
+                            }}
+                          />
+                          <div className="absolute -top-6 text-white/60 text-xs font-medium group-hover:text-white transition-colors">
+                            ${(data.amount / 1000).toFixed(1)}K
+                          </div>
+                        </div>
+                        <p className="text-white/60 text-xs font-medium">
+                          {data.day}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Quick Stats */}
+                <div className="space-y-4">
+                  <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-6">
+                    <p className="text-white/60 text-xs uppercase tracking-widest font-medium mb-2">
+                      Monthly Goal
                     </p>
-                    <div
-                      className={`flex items-center gap-1 text-sm font-medium mb-1 ${
-                        stats.revenueChange >= 0
-                          ? "text-green-400"
-                          : "text-red-400"
-                      }`}
-                    >
-                      {stats.revenueChange >= 0 ? (
+                    <p className="text-3xl font-bold text-white mb-4">
+                      $5,000
+                    </p>
+                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-green-500 to-emerald-400"
+                        style={{
+                          width: `${
+                            (stats.monthlyRevenue / 5000) * 100 > 100
+                              ? 100
+                              : (stats.monthlyRevenue / 5000) * 100
+                          }%`,
+                        }}
+                      />
+                    </div>
+                    <p className="text-white/40 text-xs mt-3">
+                      {((stats.monthlyRevenue / 5000) * 100).toFixed(1)}%
+                      achieved
+                    </p>
+                  </div>
+
+                  <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-6">
+                    <p className="text-white/60 text-xs uppercase tracking-widest font-medium mb-2">
+                      Conversion Rate
+                    </p>
+                    <p className="text-3xl font-bold text-white mb-4">3.2%</p>
+                    <div className="flex items-center gap-2">
+                      <div className="text-green-400 flex items-center gap-1 text-sm font-semibold">
                         <ArrowUpRight className="w-4 h-4" />
-                      ) : (
-                        <ArrowDownRight className="w-4 h-4" />
-                      )}
-                      {Math.abs(stats.revenueChange)}%
+                        +0.5%
+                      </div>
+                      <span className="text-white/40 text-xs">
+                        vs last month
+                      </span>
                     </div>
                   </div>
-                  <p className="text-white/40 text-xs mt-2">
-                    vs last month
-                  </p>
-                </div>
 
-                {/* Monthly Revenue Card */}
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-white/60 text-sm uppercase tracking-wider">
-                      This Month
-                    </h3>
-                    <div className="p-2 bg-blue-500/20 border border-blue-500/30 rounded-lg">
-                      <Calendar className="w-4 h-4 text-blue-400" />
-                    </div>
-                  </div>
-                  <p className="text-3xl font-bold text-white">
-                    ${stats.monthlyRevenue.toFixed(2)}
-                  </p>
-                  <p className="text-white/40 text-xs mt-2">
-                    Current month revenue
-                  </p>
-                </div>
-
-                {/* Average Order Value Card */}
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-white/60 text-sm uppercase tracking-wider">
-                      Avg Order Value
-                    </h3>
-                    <div className="p-2 bg-purple-500/20 border border-purple-500/30 rounded-lg">
-                      <TrendingUp className="w-4 h-4 text-purple-400" />
-                    </div>
-                  </div>
-                  <p className="text-3xl font-bold text-white">
-                    ${stats.averageOrderValue.toFixed(2)}
-                  </p>
-                  <p className="text-white/40 text-xs mt-2">
-                    Per transaction
-                  </p>
-                </div>
-
-                {/* Total Orders Card */}
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-white/60 text-sm uppercase tracking-wider">
-                      Total Orders
-                    </h3>
-                    <div className="p-2 bg-orange-500/20 border border-orange-500/30 rounded-lg">
-                      <DollarSign className="w-4 h-4 text-orange-400" />
-                    </div>
-                  </div>
-                  <div className="flex items-end gap-2">
-                    <p className="text-3xl font-bold text-white">
+                  <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-6">
+                    <p className="text-white/60 text-xs uppercase tracking-widest font-medium mb-2">
+                      Transactions
+                    </p>
+                    <p className="text-3xl font-bold text-white mb-4">
                       {stats.totalOrders}
                     </p>
-                    <div
-                      className={`flex items-center gap-1 text-sm font-medium mb-1 ${
-                        stats.orderChange >= 0
-                          ? "text-green-400"
-                          : "text-red-400"
-                      }`}
-                    >
-                      {stats.orderChange >= 0 ? (
+                    <div className="flex items-center gap-2">
+                      <div className="text-green-400 flex items-center gap-1 text-sm font-semibold">
                         <ArrowUpRight className="w-4 h-4" />
-                      ) : (
-                        <ArrowDownRight className="w-4 h-4" />
-                      )}
-                      {Math.abs(stats.orderChange)}%
+                        {stats.orderChange}%
+                      </div>
+                      <span className="text-white/40 text-xs">
+                        vs last month
+                      </span>
                     </div>
                   </div>
-                  <p className="text-white/40 text-xs mt-2">
-                    vs last month
-                  </p>
                 </div>
               </div>
 
-              {/* Placeholder for Charts */}
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8">
-                <h2 className="text-xl font-semibold text-white mb-6">
-                  Revenue Trends
-                </h2>
-                <div className="flex items-center justify-center h-64 text-white/40">
-                  <p>Chart visualization coming soon</p>
+              {/* Payment Methods */}
+              <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-2xl p-8">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="p-2.5 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl">
+                    <PieChart className="w-5 h-5 text-purple-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-white">
+                      Payment Methods
+                    </h2>
+                    <p className="text-white/40 text-xs mt-0.5">
+                      Distribution across payment types
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {[
+                    {
+                      name: "Credit Card",
+                      amount: 3400,
+                      percentage: 68,
+                      color: "from-blue-500 to-cyan-400",
+                    },
+                    {
+                      name: "Debit Card",
+                      amount: 1200,
+                      percentage: 24,
+                      color: "from-green-500 to-emerald-400",
+                    },
+                    {
+                      name: "Other",
+                      amount: 400,
+                      percentage: 8,
+                      color: "from-purple-500 to-pink-400",
+                    },
+                  ].map((method, idx) => (
+                    <div
+                      key={idx}
+                      className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6"
+                    >
+                      <p className="text-white/60 text-sm font-medium mb-2">
+                        {method.name}
+                      </p>
+                      <div className="flex items-baseline gap-2 mb-4">
+                        <p className="text-2xl font-bold text-white">
+                          ${method.amount}
+                        </p>
+                        <p className="text-green-400 text-sm font-semibold">
+                          {method.percentage}%
+                        </p>
+                      </div>
+                      <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full bg-gradient-to-r ${method.color}`}
+                          style={{
+                            width: `${method.percentage}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
