@@ -654,6 +654,7 @@ export default function AdminProofs() {
                       setUploadedFile(null);
                       setFilePreview(null);
                       setCustomerEmail("");
+                      setSelectedOrder(null);
                     }}
                     variant="outline"
                     className="flex-1"
