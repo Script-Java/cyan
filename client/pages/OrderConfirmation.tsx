@@ -71,6 +71,7 @@ export default function OrderConfirmation() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [authToken, setAuthToken] = useState<string | null>(null);
+  const { fetchStoreCredit } = useStoreCredit();
 
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
