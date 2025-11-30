@@ -373,29 +373,29 @@ export default function AdminDashboard() {
 
                     {/* Live Visitors Stats */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
-                      <div className="p-3 bg-white/5 rounded-lg">
-                        <p className="text-white/60 text-xs mb-1">Peak Hours</p>
-                        <p className="text-lg font-bold text-white">2-4 PM</p>
-                        <p className="text-white/40 text-xs mt-1">
-                          Your busiest time of day
+                      <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
+                        <p className="text-white/60 text-xs mb-1">Peak</p>
+                        <p className="text-base sm:text-lg font-bold text-white">2-4 PM</p>
+                        <p className="text-white/40 text-xs mt-1 hidden sm:block">
+                          Busiest time
                         </p>
                       </div>
-                      <div className="p-3 bg-white/5 rounded-lg">
+                      <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
                         <p className="text-white/60 text-xs mb-1">Top Page</p>
-                        <p className="text-lg font-bold text-white">
+                        <p className="text-base sm:text-lg font-bold text-white">
                           /products
                         </p>
-                        <p className="text-white/40 text-xs mt-1">
-                          Most visited page
+                        <p className="text-white/40 text-xs mt-1 hidden sm:block">
+                          Most visited
                         </p>
                       </div>
-                      <div className="p-3 bg-white/5 rounded-lg">
+                      <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
                         <p className="text-white/60 text-xs mb-1">Devices</p>
-                        <p className="text-lg font-bold text-white">
+                        <p className="text-base sm:text-lg font-bold text-white">
                           68% Mobile
                         </p>
-                        <p className="text-white/40 text-xs mt-1">
-                          Primary device type
+                        <p className="text-white/40 text-xs mt-1 hidden sm:block">
+                          Primary type
                         </p>
                       </div>
                     </div>
