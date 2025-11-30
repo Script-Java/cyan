@@ -4,7 +4,7 @@ import {
   Users,
   Search,
   Filter,
-  ChevronRight,
+  ChevronDown,
   Mail,
   Phone,
   Building2,
@@ -14,17 +14,11 @@ import {
   SortAsc,
   TrendingUp,
   ArrowUpDown,
+  MapPin,
 } from "lucide-react";
 import Header from "@/components/Header";
 import AdminSidebar from "@/components/AdminSidebar";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 
 interface Customer {
   id: number;
@@ -62,12 +56,12 @@ type SortColumn = "name" | "email" | "orders" | "spent" | "date";
 export default function Customers() {
   const navigate = useNavigate();
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerDetails | null>(null);
+  const [expandedCustomerId, setExpandedCustomerId] = useState<number | null>(null);
+  const [expandedDetails, setExpandedDetails] = useState<CustomerDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [filterOption, setFilterOption] = useState<"all" | "with-orders" | "no-orders">("all");
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [sortColumn, setSortColumn] = useState<SortColumn>("date");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
@@ -119,11 +113,20 @@ export default function Customers() {
       }
 
       const data = await response.json();
-      setSelectedCustomer(data.customer);
-      setShowDetailsModal(true);
+      setExpandedDetails(data.customer);
+      setExpandedCustomerId(customerId);
     } catch (err) {
       console.error("Error fetching customer details:", err);
       setError(err instanceof Error ? err.message : "Failed to fetch details");
+    }
+  };
+
+  const handleRowClick = (customerId: number) => {
+    if (expandedCustomerId === customerId) {
+      setExpandedCustomerId(null);
+      setExpandedDetails(null);
+    } else {
+      fetchCustomerDetails(customerId);
     }
   };
 
@@ -390,6 +393,7 @@ export default function Customers() {
                     <table className="w-full">
                       <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
                         <tr>
+                          <th className="px-6 py-4 text-left w-8"></th>
                           <th className="px-6 py-4 text-left">
                             <SortHeader label="Name" column="name" />
                           </th>
@@ -406,96 +410,295 @@ export default function Customers() {
                           <th className="px-6 py-4 text-left">
                             <SortHeader label="Signup Date" column="date" />
                           </th>
-                          <th className="px-6 py-4 text-center">Action</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200">
                         {sortedCustomers.map((customer, index) => (
-                          <tr
-                            key={customer.id}
-                            className={`hover:bg-blue-50 transition-colors duration-200 ${
-                              index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                            }`}
-                          >
-                            {/* Name */}
-                            <td className="px-6 py-4">
-                              <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center flex-shrink-0">
-                                  <span className="text-white font-bold text-sm">
-                                    {customer.firstName.charAt(0)}
-                                    {customer.lastName.charAt(0)}
+                          <tbody key={customer.id}>
+                            {/* Main Row */}
+                            <tr
+                              onClick={() => handleRowClick(customer.id)}
+                              className={`hover:bg-blue-50 transition-colors duration-200 cursor-pointer ${
+                                index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                              }`}
+                            >
+                              {/* Expand Icon */}
+                              <td className="px-6 py-4">
+                                <ChevronDown
+                                  className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
+                                    expandedCustomerId === customer.id
+                                      ? "rotate-180"
+                                      : ""
+                                  }`}
+                                />
+                              </td>
+
+                              {/* Name */}
+                              <td className="px-6 py-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center flex-shrink-0">
+                                    <span className="text-white font-bold text-sm">
+                                      {customer.firstName.charAt(0)}
+                                      {customer.lastName.charAt(0)}
+                                    </span>
+                                  </div>
+                                  <div>
+                                    <p className="font-semibold text-gray-900">
+                                      {customer.firstName} {customer.lastName}
+                                    </p>
+                                    {customer.company && (
+                                      <p className="text-xs text-gray-600">
+                                        {customer.company}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </td>
+
+                              {/* Email */}
+                              <td className="px-6 py-4">
+                                <div className="flex items-center gap-2 text-gray-700">
+                                  <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                                  <span className="text-sm">{customer.email}</span>
+                                </div>
+                              </td>
+
+                              {/* Contact */}
+                              <td className="px-6 py-4">
+                                {customer.phone ? (
+                                  <div className="flex items-center gap-2 text-gray-700">
+                                    <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                                    <span className="text-sm">{customer.phone}</span>
+                                  </div>
+                                ) : (
+                                  <span className="text-sm text-gray-500">—</span>
+                                )}
+                              </td>
+
+                              {/* Orders */}
+                              <td className="px-6 py-4">
+                                <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100">
+                                  <span className="font-bold text-blue-600 text-sm">
+                                    {customer.orderCount}
                                   </span>
                                 </div>
-                                <div>
-                                  <p className="font-semibold text-gray-900">
-                                    {customer.firstName} {customer.lastName}
-                                  </p>
-                                  {customer.company && (
-                                    <p className="text-xs text-gray-600">
-                                      {customer.company}
-                                    </p>
-                                  )}
+                              </td>
+
+                              {/* Total Spent */}
+                              <td className="px-6 py-4">
+                                <div className="font-semibold text-gray-900">
+                                  ${customer.totalSpent.toFixed(2)}
                                 </div>
-                              </div>
-                            </td>
+                              </td>
 
-                            {/* Email */}
-                            <td className="px-6 py-4">
-                              <div className="flex items-center gap-2 text-gray-700">
-                                <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                                <span className="text-sm">{customer.email}</span>
-                              </div>
-                            </td>
-
-                            {/* Contact */}
-                            <td className="px-6 py-4">
-                              {customer.phone ? (
+                              {/* Signup Date */}
+                              <td className="px-6 py-4">
                                 <div className="flex items-center gap-2 text-gray-700">
-                                  <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                                  <span className="text-sm">{customer.phone}</span>
+                                  <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                                  <span className="text-sm">
+                                    {new Date(customer.createdAt).toLocaleDateString()}
+                                  </span>
                                 </div>
-                              ) : (
-                                <span className="text-sm text-gray-500">—</span>
+                              </td>
+                            </tr>
+
+                            {/* Expanded Details Row */}
+                            {expandedCustomerId === customer.id &&
+                              expandedDetails && (
+                                <tr className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b-2 border-blue-200">
+                                  <td colSpan={8} className="p-0">
+                                    <div className="px-6 py-8 space-y-6">
+                                      {/* Personal Information */}
+                                      <div>
+                                        <h3 className="font-bold text-gray-900 mb-4 text-lg">
+                                          Personal Information
+                                        </h3>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                          <div className="bg-white rounded-lg p-4 border border-gray-200">
+                                            <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
+                                              Email
+                                            </p>
+                                            <p className="text-gray-900 flex items-start gap-2">
+                                              <Mail className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                              <span className="break-all">
+                                                {expandedDetails.email}
+                                              </span>
+                                            </p>
+                                          </div>
+
+                                          {expandedDetails.phone && (
+                                            <div className="bg-white rounded-lg p-4 border border-gray-200">
+                                              <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
+                                                Phone
+                                              </p>
+                                              <p className="text-gray-900 flex items-start gap-2">
+                                                <Phone className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                                {expandedDetails.phone}
+                                              </p>
+                                            </div>
+                                          )}
+
+                                          {expandedDetails.company && (
+                                            <div className="bg-white rounded-lg p-4 border border-gray-200">
+                                              <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
+                                                Company
+                                              </p>
+                                              <p className="text-gray-900 flex items-start gap-2">
+                                                <Building2 className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                                {expandedDetails.company}
+                                              </p>
+                                            </div>
+                                          )}
+
+                                          <div className="bg-white rounded-lg p-4 border border-gray-200">
+                                            <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
+                                              Signup Date
+                                            </p>
+                                            <p className="text-gray-900 flex items-start gap-2">
+                                              <Calendar className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                              {new Date(
+                                                expandedDetails.createdAt
+                                              ).toLocaleDateString()}
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      {/* Customer Statistics */}
+                                      <div>
+                                        <h3 className="font-bold text-gray-900 mb-4 text-lg">
+                                          Customer Statistics
+                                        </h3>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
+                                            <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
+                                              Total Orders
+                                            </p>
+                                            <p className="text-3xl font-bold text-blue-600">
+                                              {expandedDetails.orderCount}
+                                            </p>
+                                          </div>
+
+                                          <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg p-4 border border-emerald-200">
+                                            <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
+                                              Total Spent
+                                            </p>
+                                            <p className="text-3xl font-bold text-emerald-600">
+                                              ${expandedDetails.totalSpent.toFixed(2)}
+                                            </p>
+                                          </div>
+
+                                          {expandedDetails.storeCredit > 0 && (
+                                            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 border border-orange-200">
+                                              <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
+                                                Store Credit
+                                              </p>
+                                              <p className="text-3xl font-bold text-orange-600">
+                                                ${expandedDetails.storeCredit.toFixed(
+                                                  2
+                                                )}
+                                              </p>
+                                            </div>
+                                          )}
+
+                                          {expandedDetails.orderCount > 0 && (
+                                            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 border border-purple-200">
+                                              <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
+                                                Avg Order Value
+                                              </p>
+                                              <p className="text-3xl font-bold text-purple-600">
+                                                ${(
+                                                  expandedDetails.totalSpent /
+                                                  expandedDetails.orderCount
+                                                ).toFixed(2)}
+                                              </p>
+                                            </div>
+                                          )}
+                                        </div>
+                                      </div>
+
+                                      {/* Order History */}
+                                      {expandedDetails.orders &&
+                                        expandedDetails.orders.length > 0 && (
+                                          <div>
+                                            <h3 className="font-bold text-gray-900 mb-4 text-lg">
+                                              Order History ({expandedDetails.orders.length})
+                                            </h3>
+                                            <div className="space-y-3 max-h-96 overflow-y-auto">
+                                              {expandedDetails.orders.map(
+                                                (order) => (
+                                                  <div
+                                                    key={order.id}
+                                                    className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow"
+                                                  >
+                                                    <div className="flex items-center justify-between">
+                                                      <div className="flex-1">
+                                                        <p className="font-semibold text-gray-900">
+                                                          Order #{order.id}
+                                                        </p>
+                                                        <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-600">
+                                                          <span className="flex items-center gap-1">
+                                                            <Calendar className="w-4 h-4" />
+                                                            {new Date(
+                                                              order.createdAt
+                                                            ).toLocaleDateString()}
+                                                          </span>
+                                                          <span className="flex items-center gap-1">
+                                                            <ShoppingBag className="w-4 h-4" />
+                                                            {order.itemCount} item
+                                                            {order.itemCount !==
+                                                              1
+                                                              ? "s"
+                                                              : ""}
+                                                          </span>
+                                                        </div>
+                                                      </div>
+                                                      <div className="text-right ml-4">
+                                                        <p className="font-bold text-gray-900">
+                                                          ${order.total.toFixed(
+                                                            2
+                                                          )}
+                                                        </p>
+                                                        <span
+                                                          className={`text-xs font-medium inline-block mt-2 px-3 py-1 rounded-full ${
+                                                            order.status ===
+                                                            "pending"
+                                                              ? "bg-yellow-100 text-yellow-800"
+                                                              : order.status ===
+                                                                  "completed"
+                                                                ? "bg-green-100 text-green-800"
+                                                                : "bg-gray-100 text-gray-800"
+                                                          }`}
+                                                        >
+                                                          {order.status}
+                                                        </span>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                )
+                                              )}
+                                            </div>
+                                          </div>
+                                        )}
+
+                                      {(!expandedDetails.orders ||
+                                        expandedDetails.orders.length === 0) && (
+                                        <div className="bg-white rounded-lg p-8 text-center border border-gray-200">
+                                          <ShoppingBag className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                                          <p className="text-gray-600 font-medium">
+                                            No orders yet
+                                          </p>
+                                          <p className="text-gray-500 text-sm mt-1">
+                                            This customer hasn't placed any
+                                            orders
+                                          </p>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </td>
+                                </tr>
                               )}
-                            </td>
-
-                            {/* Orders */}
-                            <td className="px-6 py-4">
-                              <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100">
-                                <span className="font-bold text-blue-600 text-sm">
-                                  {customer.orderCount}
-                                </span>
-                              </div>
-                            </td>
-
-                            {/* Total Spent */}
-                            <td className="px-6 py-4">
-                              <div className="font-semibold text-gray-900">
-                                ${customer.totalSpent.toFixed(2)}
-                              </div>
-                            </td>
-
-                            {/* Signup Date */}
-                            <td className="px-6 py-4">
-                              <div className="flex items-center gap-2 text-gray-700">
-                                <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                                <span className="text-sm">
-                                  {new Date(customer.createdAt).toLocaleDateString()}
-                                </span>
-                              </div>
-                            </td>
-
-                            {/* Action */}
-                            <td className="px-6 py-4 text-center">
-                              <button
-                                onClick={() => fetchCustomerDetails(customer.id)}
-                                className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-md transition-all duration-200 text-sm font-medium"
-                              >
-                                View
-                                <ChevronRight className="w-4 h-4" />
-                              </button>
-                            </td>
-                          </tr>
+                          </tbody>
                         ))}
                       </tbody>
                     </table>
@@ -506,186 +709,6 @@ export default function Customers() {
           </div>
         </main>
       </div>
-
-      {/* Customer Details Modal */}
-      {selectedCustomer && (
-        <Dialog open={showDetailsModal} onOpenChange={setShowDetailsModal}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2 text-xl">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-bold">
-                    {selectedCustomer.firstName.charAt(0)}
-                    {selectedCustomer.lastName.charAt(0)}
-                  </span>
-                </div>
-                {selectedCustomer.firstName} {selectedCustomer.lastName}
-              </DialogTitle>
-              <DialogDescription>
-                Customer profile and detailed information
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="space-y-6">
-              {/* Customer Info */}
-              <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-lg p-6 border border-gray-200">
-                <h3 className="font-semibold text-gray-900 mb-4">
-                  Personal Information
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-xs text-gray-600 font-medium mb-1">
-                      Email
-                    </p>
-                    <p className="text-gray-900 flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-gray-400" />
-                      {selectedCustomer.email}
-                    </p>
-                  </div>
-                  {selectedCustomer.phone && (
-                    <div>
-                      <p className="text-xs text-gray-600 font-medium mb-1">
-                        Phone
-                      </p>
-                      <p className="text-gray-900 flex items-center gap-2">
-                        <Phone className="w-4 h-4 text-gray-400" />
-                        {selectedCustomer.phone}
-                      </p>
-                    </div>
-                  )}
-                  {selectedCustomer.company && (
-                    <div>
-                      <p className="text-xs text-gray-600 font-medium mb-1">
-                        Company
-                      </p>
-                      <p className="text-gray-900 flex items-center gap-2">
-                        <Building2 className="w-4 h-4 text-gray-400" />
-                        {selectedCustomer.company}
-                      </p>
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-xs text-gray-600 font-medium mb-1">
-                      Signup Date
-                    </p>
-                    <p className="text-gray-900 flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-gray-400" />
-                      {new Date(selectedCustomer.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Customer Stats */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
-                  <p className="text-gray-600 text-xs font-medium mb-2">
-                    Total Orders
-                  </p>
-                  <p className="text-3xl font-bold text-blue-600">
-                    {selectedCustomer.orderCount}
-                  </p>
-                </div>
-                <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg p-4 border border-emerald-200">
-                  <p className="text-gray-600 text-xs font-medium mb-2">
-                    Total Spent
-                  </p>
-                  <p className="text-3xl font-bold text-emerald-600">
-                    ${selectedCustomer.totalSpent.toFixed(2)}
-                  </p>
-                </div>
-                {selectedCustomer.storeCredit > 0 && (
-                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 border border-orange-200">
-                    <p className="text-gray-600 text-xs font-medium mb-2">
-                      Store Credit
-                    </p>
-                    <p className="text-3xl font-bold text-orange-600">
-                      ${selectedCustomer.storeCredit.toFixed(2)}
-                    </p>
-                  </div>
-                )}
-                {selectedCustomer.orderCount > 0 && (
-                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 border border-purple-200">
-                    <p className="text-gray-600 text-xs font-medium mb-2">
-                      Avg Order Value
-                    </p>
-                    <p className="text-3xl font-bold text-purple-600">
-                      ${(
-                        selectedCustomer.totalSpent /
-                        selectedCustomer.orderCount
-                      ).toFixed(2)}
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Order History */}
-              {selectedCustomer.orders &&
-                selectedCustomer.orders.length > 0 && (
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-4">
-                      Order History
-                    </h3>
-                    <div className="space-y-3 max-h-64 overflow-y-auto">
-                      {selectedCustomer.orders.map((order) => (
-                        <div
-                          key={order.id}
-                          className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:bg-blue-50 transition-colors"
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex-1">
-                              <p className="font-semibold text-gray-900">
-                                Order #{order.id}
-                              </p>
-                              <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
-                                <span className="flex items-center gap-1">
-                                  <Calendar className="w-4 h-4" />
-                                  {new Date(order.createdAt).toLocaleDateString()}
-                                </span>
-                                <span className="flex items-center gap-1">
-                                  <ShoppingBag className="w-4 h-4" />
-                                  {order.itemCount} item
-                                  {order.itemCount !== 1 ? "s" : ""}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="text-right ml-4">
-                              <p className="font-bold text-gray-900">
-                                ${order.total.toFixed(2)}
-                              </p>
-                              <span
-                                className={`text-xs font-medium inline-block mt-2 px-2 py-1 rounded ${
-                                  order.status === "pending"
-                                    ? "bg-yellow-100 text-yellow-800"
-                                    : order.status === "completed"
-                                      ? "bg-green-100 text-green-800"
-                                      : "bg-gray-100 text-gray-800"
-                                }`}
-                              >
-                                {order.status}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-              {(!selectedCustomer.orders ||
-                selectedCustomer.orders.length === 0) && (
-                <div className="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
-                  <ShoppingBag className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                  <p className="text-gray-600 font-medium">No orders yet</p>
-                  <p className="text-gray-500 text-sm mt-1">
-                    This customer hasn't placed any orders
-                  </p>
-                </div>
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
     </>
   );
 }
