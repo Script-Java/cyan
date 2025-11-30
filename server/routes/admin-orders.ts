@@ -1,11 +1,6 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
+import { supabase, getPendingOrders } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_KEY || "",
-);
 
 interface OrderWithCustomer {
   id: number;
