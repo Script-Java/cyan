@@ -427,17 +427,17 @@ export default function AdminSupport() {
       <main className="flex-1 md:ml-64 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 md:py-12 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900">
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">
               Support Admin Panel
             </h1>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 mt-1 sm:mt-2 text-sm">
               Manage customer support tickets and respond to inquiries
             </p>
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
             <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
               <div className="flex items-center justify-between">
                 <div>
