@@ -234,24 +234,24 @@ export default function AdminDashboard() {
                   )}
 
                   {/* Quick Access Links */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
                     {adminLinks.map((link, index) => (
                       <button
                         key={index}
                         onClick={() => navigate(link.path)}
-                        className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4 text-left transition-all hover:bg-white/10"
+                        className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-3 sm:p-4 text-left transition-all hover:bg-white/10"
                       >
-                        <div className="text-[#FFD713] mb-2 w-5 h-5">
+                        <div className="text-[#FFD713] mb-2 w-4 sm:w-5 h-4 sm:h-5">
                           {link.icon}
                         </div>
-                        <h3 className="font-semibold text-white mb-1 text-sm">
+                        <h3 className="font-semibold text-white mb-1 text-xs sm:text-sm">
                           {link.title}
                         </h3>
-                        <p className="text-xs text-white/60 mb-2">
+                        <p className="text-xs text-white/60 mb-2 hidden sm:block">
                           {link.description}
                         </p>
                         <div className="flex items-center text-purple-400 text-xs font-medium">
-                          Manage <ChevronRight className="w-3 h-3 ml-1" />
+                          Manage <ChevronRight className="w-3 h-3 ml-1 hidden sm:inline" />
                         </div>
                       </button>
                     ))}
