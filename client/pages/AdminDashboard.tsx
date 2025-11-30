@@ -152,10 +152,10 @@ export default function AdminDashboard() {
 
                   {/* Pending Orders Section */}
                   {pendingOrdersCount > 0 && (
-                    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-5">
-                      <div className="mb-4">
-                        <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                          <Package className="w-5 h-5 text-[#FFD713]" />
+                    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
+                      <div className="mb-3 sm:mb-4">
+                        <h2 className="text-sm sm:text-lg font-bold text-white flex items-center gap-2">
+                          <Package className="w-4 sm:w-5 h-4 sm:h-5 text-[#FFD713]" />
                           Pending Orders
                         </h2>
                         <p className="text-white/60 mt-1 text-xs">
@@ -166,26 +166,26 @@ export default function AdminDashboard() {
                       </div>
 
                       {/* Orders Table */}
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-left text-xs">
+                      <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
+                        <table className="w-full text-left text-xs sm:text-sm">
                           <thead>
                             <tr className="border-b border-white/10">
-                              <th className="px-3 py-2 font-semibold text-white/80">
+                              <th className="px-2 sm:px-3 py-2 font-semibold text-white/80 whitespace-nowrap">
                                 Order ID
                               </th>
-                              <th className="px-3 py-2 font-semibold text-white/80">
+                              <th className="px-2 sm:px-3 py-2 font-semibold text-white/80 whitespace-nowrap hidden sm:table-cell">
                                 Customer
                               </th>
-                              <th className="px-3 py-2 font-semibold text-white/80">
+                              <th className="px-2 sm:px-3 py-2 font-semibold text-white/80 whitespace-nowrap hidden md:table-cell">
                                 Email
                               </th>
-                              <th className="px-3 py-2 font-semibold text-white/80">
+                              <th className="px-2 sm:px-3 py-2 font-semibold text-white/80 whitespace-nowrap hidden lg:table-cell">
                                 Date
                               </th>
-                              <th className="px-3 py-2 font-semibold text-white/80 text-right">
+                              <th className="px-2 sm:px-3 py-2 font-semibold text-white/80 text-right whitespace-nowrap">
                                 Total
                               </th>
-                              <th className="px-3 py-2 font-semibold text-white/80">
+                              <th className="px-2 sm:px-3 py-2 font-semibold text-white/80 whitespace-nowrap">
                                 Action
                               </th>
                             </tr>
@@ -196,29 +196,33 @@ export default function AdminDashboard() {
                                 key={order.id}
                                 className="border-b border-white/5 hover:bg-white/5 transition-colors"
                               >
-                                <td className="px-3 py-2 font-semibold text-white">
+                                <td className="px-2 sm:px-3 py-2 font-semibold text-white whitespace-nowrap">
                                   #{order.id}
                                 </td>
-                                <td className="px-3 py-2 text-white/80">
+                                <td className="px-2 sm:px-3 py-2 text-white/80 whitespace-nowrap hidden sm:table-cell truncate max-w-xs">
                                   {order.customerName || "Guest"}
                                 </td>
-                                <td className="px-3 py-2 text-white/60 flex items-center gap-2">
-                                  <Mail className="w-3 h-3" />
-                                  {order.customerEmail}
+                                <td className="px-2 sm:px-3 py-2 text-white/60 hidden md:table-cell">
+                                  <div className="flex items-center gap-1 truncate max-w-xs">
+                                    <Mail className="w-3 h-3 flex-shrink-0" />
+                                    <span className="truncate text-xs sm:text-sm">{order.customerEmail}</span>
+                                  </div>
                                 </td>
-                                <td className="px-3 py-2 text-white/60 flex items-center gap-2">
-                                  <Calendar className="w-3 h-3" />
-                                  {new Date(
-                                    order.dateCreated,
-                                  ).toLocaleDateString()}
+                                <td className="px-2 sm:px-3 py-2 text-white/60 hidden lg:table-cell whitespace-nowrap">
+                                  <div className="flex items-center gap-1">
+                                    <Calendar className="w-3 h-3" />
+                                    <span className="text-xs sm:text-sm">{new Date(
+                                      order.dateCreated,
+                                    ).toLocaleDateString()}</span>
+                                  </div>
                                 </td>
-                                <td className="px-3 py-2 font-semibold text-white text-right">
+                                <td className="px-2 sm:px-3 py-2 font-semibold text-white text-right whitespace-nowrap">
                                   ${order.total.toFixed(2)}
                                 </td>
-                                <td className="px-3 py-2">
-                                  <button className="inline-flex items-center gap-1 px-2 py-1 rounded bg-blue-600/30 text-blue-300 hover:bg-blue-600/50 transition-colors font-medium text-xs">
+                                <td className="px-2 sm:px-3 py-2">
+                                  <button className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs sm:text-sm bg-blue-600/30 text-blue-300 hover:bg-blue-600/50 transition-colors font-medium whitespace-nowrap">
                                     View
-                                    <ChevronRight className="w-3 h-3" />
+                                    <ChevronRight className="w-3 h-3 hidden sm:inline" />
                                   </button>
                                 </td>
                               </tr>
