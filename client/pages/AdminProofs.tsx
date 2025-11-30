@@ -150,7 +150,6 @@ export default function AdminProofs() {
     try {
       setOrdersLoading(true);
 
-      // Fetch Supabase orders only
       const response = await fetch("/api/admin/pending-orders");
 
       if (!response.ok) {
@@ -169,7 +168,6 @@ export default function AdminProofs() {
 
   const handleSelectOrder = (order: PendingOrder) => {
     setOrderId(order.id.toString());
-    // Server will look up customer ID from order if needed
     setCustomerId(order.customerId ? order.customerId.toString() : "");
     setCustomerEmail(order.customerEmail || "");
     setDescription("");
@@ -182,7 +180,6 @@ export default function AdminProofs() {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Check file size (limit to 50MB)
     const maxSize = 50 * 1024 * 1024;
     if (file.size > maxSize) {
       toast.error("File size must be less than 50MB");
@@ -191,7 +188,6 @@ export default function AdminProofs() {
 
     setUploadedFile(file);
 
-    // Generate preview for images
     if (file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -199,7 +195,6 @@ export default function AdminProofs() {
       };
       reader.readAsDataURL(file);
     } else {
-      // For non-image files, show file icon
       setFilePreview(null);
     }
   };
@@ -223,12 +218,10 @@ export default function AdminProofs() {
         description,
       };
 
-      // Add customerId if available (server will look it up from order if not provided)
       if (customerId) {
         requestBody.customerId = parseInt(customerId);
       }
 
-      // If a file is uploaded, convert it to base64 and include it
       if (uploadedFile) {
         const reader = new FileReader();
         reader.onload = async (e) => {
@@ -271,7 +264,6 @@ export default function AdminProofs() {
         };
         reader.readAsDataURL(uploadedFile);
       } else {
-        // No file, send without file
         const response = await fetch("/api/admin/proofs/send", {
           method: "POST",
           headers: {
@@ -343,24 +335,24 @@ export default function AdminProofs() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "approved":
-        return <CheckCircle2 className="w-6 h-6 text-green-600" />;
+        return <CheckCircle2 className="w-6 h-6 text-green-400" />;
       case "revisions_requested":
-        return <AlertTriangle className="w-6 h-6 text-orange-600" />;
+        return <AlertTriangle className="w-6 h-6 text-orange-400" />;
       case "pending":
       default:
-        return <Clock className="w-6 h-6 text-blue-600" />;
+        return <Clock className="w-6 h-6 text-blue-400" />;
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "approved":
-        return "text-green-600 bg-green-50";
+        return "text-green-300 bg-green-500/20 border border-green-500/30";
       case "revisions_requested":
-        return "text-orange-600 bg-orange-50";
+        return "text-orange-300 bg-orange-500/20 border border-orange-500/30";
       case "pending":
       default:
-        return "text-blue-600 bg-blue-50";
+        return "text-blue-300 bg-blue-500/20 border border-blue-500/30";
     }
   };
 
@@ -395,10 +387,10 @@ export default function AdminProofs() {
         <Header />
         <div className="flex">
           <AdminSidebar />
-          <main className="flex-1 md:ml-64 min-h-screen bg-gray-50 py-6 md:py-8 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
+          <main className="flex-1 md:ml-64 min-h-screen bg-black py-6 md:py-8 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
             <div className="max-w-6xl mx-auto">
               <div className="flex justify-center items-center h-48 sm:h-64">
-                <div className="text-gray-600 text-sm">Loading proofs...</div>
+                <div className="text-white/60 text-sm">Loading proofs...</div>
               </div>
             </div>
           </main>
@@ -413,14 +405,17 @@ export default function AdminProofs() {
       <Header />
       <div className="flex">
         <AdminSidebar />
-        <main className="flex-1 md:ml-64 min-h-screen bg-gray-50 pt-[72px] px-8 pb-0">
+        <main className="flex-1 md:ml-64 min-h-screen bg-black text-white pt-[72px] px-6 sm:px-8 pb-0">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
-            <div className="mb-6 sm:mb-8">
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
+            <div className="mb-8 border-b border-white/10 pb-8">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Proofs</h1>
-                  <p className="text-gray-600 mt-1 sm:mt-2 text-sm">
+                  <h1 className="text-3xl sm:text-4xl font-bold text-white flex items-center gap-3">
+                    <Package className="w-8 sm:w-10 h-8 sm:h-10 text-green-400" />
+                    Proofs
+                  </h1>
+                  <p className="text-white/60 mt-2 text-sm">
                     Manage design proofs for customers
                   </p>
                 </div>
@@ -429,44 +424,44 @@ export default function AdminProofs() {
                     setShowSendForm(!showSendForm);
                     setShowOrderModal(false);
                   }}
-                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-sm whitespace-nowrap"
+                  className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium text-sm whitespace-nowrap px-4 py-2 rounded-lg"
                 >
                   <Plus className="w-4 h-4" />
                   Send New Proof
                 </Button>
               </div>
+            </div>
 
             {/* Pending Orders Section */}
             {pendingOrders.length > 0 && !showSendForm && (
-              <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-6 mb-4 sm:mb-6">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
-                  <Package className="w-4 sm:w-5 h-4 sm:h-5 text-blue-600" />
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-8">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-3">
+                  <Package className="w-5 h-5 text-green-400" />
                   Pending Orders Ready for Proofs
                 </h3>
-                <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
-                  Click on any order below to quickly send a proof to that
-                  customer
+                <p className="text-sm text-white/60 mb-6">
+                  Click on any order below to quickly send a proof to that customer
                 </p>
-                <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
-                  <table className="w-full text-left text-xs sm:text-sm">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
                     <thead>
-                      <tr className="border-b border-gray-200 bg-gray-50">
-                        <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-gray-900 whitespace-nowrap">
+                      <tr className="border-b border-white/10 bg-white/5">
+                        <th className="px-4 py-4 font-semibold text-purple-300 whitespace-nowrap">
                           Order #
                         </th>
-                        <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-gray-900 whitespace-nowrap hidden sm:table-cell">
+                        <th className="px-4 py-4 font-semibold text-purple-300 whitespace-nowrap hidden sm:table-cell">
                           Customer
                         </th>
-                        <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-gray-900 whitespace-nowrap hidden md:table-cell">
+                        <th className="px-4 py-4 font-semibold text-purple-300 whitespace-nowrap hidden md:table-cell">
                           Email
                         </th>
-                        <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-gray-900 whitespace-nowrap">
+                        <th className="px-4 py-4 font-semibold text-purple-300 whitespace-nowrap">
                           Status
                         </th>
-                        <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-gray-900 text-right whitespace-nowrap">
+                        <th className="px-4 py-4 font-semibold text-purple-300 text-right whitespace-nowrap">
                           Total
                         </th>
-                        <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-gray-900 whitespace-nowrap">
+                        <th className="px-4 py-4 font-semibold text-purple-300 whitespace-nowrap">
                           Action
                         </th>
                       </tr>
@@ -475,30 +470,32 @@ export default function AdminProofs() {
                       {pendingOrders.map((order) => (
                         <tr
                           key={order.id}
-                          className="border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
+                          className="border-b border-white/10 hover:bg-white/5 transition-colors cursor-pointer"
                         >
-                          <td className="px-2 sm:px-4 py-2 sm:py-4 font-semibold text-gray-900 whitespace-nowrap">
+                          <td className="px-4 py-4 font-semibold text-white whitespace-nowrap">
                             #{order.id}
                           </td>
-                          <td className="px-2 sm:px-4 py-2 sm:py-4 text-gray-700 whitespace-nowrap hidden sm:table-cell truncate max-w-xs">
+                          <td className="px-4 py-4 text-white/80 whitespace-nowrap hidden sm:table-cell truncate max-w-xs">
                             {order.customerName}
                           </td>
-                          <td className="px-2 sm:px-4 py-2 sm:py-4 text-gray-600 hidden md:table-cell">
-                            <div className="flex items-center gap-1 truncate max-w-xs">{order.customerEmail}</div>
+                          <td className="px-4 py-4 text-white/60 hidden md:table-cell">
+                            <div className="flex items-center gap-1 truncate max-w-xs">
+                              {order.customerEmail}
+                            </div>
                           </td>
-                          <td className="px-2 sm:px-4 py-2 sm:py-4">
-                            <span className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 whitespace-nowrap">
+                          <td className="px-4 py-4">
+                            <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-orange-500/20 text-orange-300 border border-orange-500/30 whitespace-nowrap">
                               {order.status.charAt(0).toUpperCase() +
                                 order.status.slice(1)}
                             </span>
                           </td>
-                          <td className="px-2 sm:px-4 py-2 sm:py-4 font-semibold text-gray-900 text-right whitespace-nowrap text-xs sm:text-sm">
+                          <td className="px-4 py-4 font-semibold text-green-300 text-right whitespace-nowrap text-sm">
                             ${order.total.toFixed(2)}
                           </td>
-                          <td className="px-2 sm:px-4 py-2 sm:py-4">
+                          <td className="px-4 py-4">
                             <button
                               onClick={() => handleSelectOrder(order)}
-                              className="inline-flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs whitespace-nowrap"
+                              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-green-600/20 text-green-300 hover:bg-green-600/30 transition-colors font-medium text-xs whitespace-nowrap border border-green-600/30"
                             >
                               Send Proof
                             </button>
@@ -513,239 +510,624 @@ export default function AdminProofs() {
 
             {/* Send Proof Form */}
             {showSendForm && (
-              <div className="bg-white rounded-lg border border-blue-200 p-4 sm:p-6 mb-4 sm:mb-6">
-                <div className="flex justify-between items-start gap-2 mb-4">
+              <div className="backdrop-blur-xl bg-white/5 border border-green-500/30 rounded-2xl p-6 sm:p-8 mb-8">
+                <div className="flex justify-between items-start gap-2 mb-6">
                   <div>
-                    <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+                    <h3 className="text-lg font-semibold text-white">
                       Send Proof to Customer
                     </h3>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-white/50 mt-1">
                       For Supabase orders only
                     </p>
                   </div>
                   <button
                     onClick={() => setShowSendForm(false)}
-                    className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
+                    className="text-white/40 hover:text-white/60 transition-colors flex-shrink-0"
                   >
-                    <X className="w-4 sm:w-5 h-4 sm:h-5" />
+                    <X className="w-5 h-5" />
                   </button>
                 </div>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Order ID * {orderId && `(#${orderId})`}
-                  </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      value={orderId}
-                      onChange={(e) => {
-                        const id = e.target.value;
-                        setOrderId(id);
-                        // Auto-populate customerId when order is found
-                        if (id) {
-                          const foundOrder = pendingOrders.find(
-                            (o) => o.id.toString() === id,
-                          );
-                          if (foundOrder) {
-                            setCustomerId(foundOrder.customerId.toString());
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-purple-300 mb-2 uppercase tracking-wider">
+                      Order ID * {orderId && `(#${orderId})`}
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="number"
+                        value={orderId}
+                        onChange={(e) => {
+                          const id = e.target.value;
+                          setOrderId(id);
+                          if (id) {
+                            const foundOrder = pendingOrders.find(
+                              (o) => o.id.toString() === id,
+                            );
+                            if (foundOrder) {
+                              setCustomerId(foundOrder.customerId.toString());
+                            }
                           }
-                        }
-                      }}
-                      placeholder="Enter order ID"
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    {pendingOrders.length > 0 && (
-                      <Button
-                        onClick={() => setShowOrderModal(true)}
-                        variant="outline"
-                        className="whitespace-nowrap"
-                      >
-                        Browse Orders
-                      </Button>
-                    )}
+                        }}
+                        placeholder="Enter order ID"
+                        className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
+                      />
+                      {pendingOrders.length > 0 && (
+                        <Button
+                          onClick={() => setShowOrderModal(true)}
+                          className="bg-white/10 hover:bg-white/20 text-white border border-white/10 whitespace-nowrap"
+                        >
+                          Browse Orders
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Customer Email (Optional)
-                  </label>
-                  <input
-                    type="email"
-                    value={customerEmail}
-                    onChange={(e) => setCustomerEmail(e.target.value)}
-                    placeholder="Enter customer email (optional)"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <input type="hidden" value={customerId} />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Proof Description *
-                  </label>
-                  <textarea
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Describe the proof (e.g., 'Front and back design mockup')"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    rows={3}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Upload File (Optional)
-                  </label>
-                  <div className="relative">
+                  <div>
+                    <label className="block text-sm font-medium text-purple-300 mb-2 uppercase tracking-wider">
+                      Customer Email (Optional)
+                    </label>
                     <input
-                      type="file"
-                      onChange={handleFileSelect}
-                      accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      type="email"
+                      value={customerEmail}
+                      onChange={(e) => setCustomerEmail(e.target.value)}
+                      placeholder="Enter customer email (optional)"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                     />
-                    <div className="px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg text-center hover:border-blue-400 transition-colors">
-                      <Upload className="w-5 h-5 text-gray-400 mx-auto mb-2" />
-                      <p className="text-sm text-gray-600">
-                        {uploadedFile
-                          ? `Selected: ${uploadedFile.name}`
-                          : "Click to upload or drag and drop"}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Images, PDF, or Office files (max 50MB)
-                      </p>
-                    </div>
+                    <input type="hidden" value={customerId} />
                   </div>
-                </div>
-                {uploadedFile && (
-                  <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
-                    <div className="flex items-start justify-between mb-3">
-                      <h4 className="font-medium text-gray-900">
-                        File Preview
-                      </h4>
-                      <button
-                        onClick={handleRemoveFile}
-                        className="text-gray-400 hover:text-gray-600 transition-colors"
-                      >
-                        <X className="w-5 h-5" />
-                      </button>
-                    </div>
-                    {filePreview ? (
-                      <div>
-                        <img
-                          src={filePreview}
-                          alt="Preview"
-                          className="w-full max-h-48 object-cover rounded border border-gray-200"
-                        />
-                        <p className="text-sm text-gray-600 mt-2">
-                          {uploadedFile.name}
+                  <div>
+                    <label className="block text-sm font-medium text-purple-300 mb-2 uppercase tracking-wider">
+                      Proof Description *
+                    </label>
+                    <textarea
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      placeholder="Describe the proof (e.g., 'Front and back design mockup')"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
+                      rows={3}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-purple-300 mb-2 uppercase tracking-wider">
+                      Upload File (Optional)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="file"
+                        onChange={handleFileSelect}
+                        accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      />
+                      <div className="px-4 py-6 border-2 border-dashed border-white/10 rounded-xl text-center hover:border-green-500/50 hover:bg-white/5 transition-all">
+                        <Upload className="w-5 h-5 text-white/40 mx-auto mb-2" />
+                        <p className="text-sm text-white/60">
+                          {uploadedFile
+                            ? `Selected: ${uploadedFile.name}`
+                            : "Click to upload or drag and drop"}
+                        </p>
+                        <p className="text-xs text-white/40 mt-1">
+                          Images, PDF, or Office files (max 50MB)
                         </p>
                       </div>
-                    ) : (
-                      <div className="flex items-center gap-3 p-4 bg-white rounded border border-gray-200">
-                        <FileIcon className="w-8 h-8 text-blue-600 flex-shrink-0" />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">
+                    </div>
+                  </div>
+                  {uploadedFile && (
+                    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4">
+                      <div className="flex items-start justify-between mb-4">
+                        <h4 className="font-medium text-white">
+                          File Preview
+                        </h4>
+                        <button
+                          onClick={handleRemoveFile}
+                          className="text-white/40 hover:text-white/60 transition-colors"
+                        >
+                          <X className="w-5 h-5" />
+                        </button>
+                      </div>
+                      {filePreview ? (
+                        <div>
+                          <img
+                            src={filePreview}
+                            alt="Preview"
+                            className="w-full max-h-48 object-cover rounded-lg border border-white/10"
+                          />
+                          <p className="text-sm text-white/60 mt-2">
                             {uploadedFile.name}
                           </p>
-                          <p className="text-xs text-gray-500">
-                            {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
-                          </p>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
+                          <FileIcon className="w-8 h-8 text-green-400 flex-shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-white truncate">
+                              {uploadedFile.name}
+                            </p>
+                            <p className="text-xs text-white/40">
+                              {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Order Details Section */}
+                  {selectedOrder &&
+                    selectedOrder.orderItems &&
+                    selectedOrder.orderItems.length > 0 && (
+                      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4">
+                        <h4 className="font-medium text-white mb-4">
+                          Order Details
+                        </h4>
+                        <div className="space-y-4">
+                          {selectedOrder.orderItems.map((item, index) => (
+                            <div
+                              key={index}
+                              className="bg-white/5 rounded-lg border border-white/10 p-4"
+                            >
+                              <div className="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                  <p className="text-xs text-white/60 uppercase tracking-wide">
+                                    Product
+                                  </p>
+                                  <p className="text-sm font-medium text-white">
+                                    {item.product_name || "Custom Item"}
+                                  </p>
+                                </div>
+                                <div>
+                                  <p className="text-xs text-white/60 uppercase tracking-wide">
+                                    Quantity
+                                  </p>
+                                  <p className="text-sm font-medium text-white">
+                                    {item.quantity || "N/A"}
+                                  </p>
+                                </div>
+                              </div>
+
+                              {item.options &&
+                                Object.keys(item.options).length > 0 && (
+                                  <div className="grid grid-cols-2 gap-4 mb-4">
+                                    {item.options.size && (
+                                      <div>
+                                        <p className="text-xs text-white/60 uppercase tracking-wide">
+                                          Size
+                                        </p>
+                                        <p className="text-sm font-medium text-white">
+                                          {item.options.size}
+                                        </p>
+                                      </div>
+                                    )}
+                                    {item.options.color && (
+                                      <div>
+                                        <p className="text-xs text-white/60 uppercase tracking-wide">
+                                          Color
+                                        </p>
+                                        <p className="text-sm font-medium text-white">
+                                          {item.options.color}
+                                        </p>
+                                      </div>
+                                    )}
+                                    {item.options.vinyl_finish && (
+                                      <div>
+                                        <p className="text-xs text-white/60 uppercase tracking-wide">
+                                          Vinyl Finish
+                                        </p>
+                                        <p className="text-sm font-medium text-white">
+                                          {item.options.vinyl_finish}
+                                        </p>
+                                      </div>
+                                    )}
+                                    {item.options.sticker_type && (
+                                      <div>
+                                        <p className="text-xs text-white/60 uppercase tracking-wide">
+                                          Sticker Type
+                                        </p>
+                                        <p className="text-sm font-medium text-white">
+                                          {item.options.sticker_type}
+                                        </p>
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+
+                              {item.design_file_url && (
+                                <div className="pt-4 border-t border-white/10">
+                                  <p className="text-xs text-white/60 uppercase tracking-wide mb-2">
+                                    Design Thumbnail
+                                  </p>
+                                  <div
+                                    className="rounded-lg border border-white/10 overflow-hidden bg-white/5 flex items-center justify-center"
+                                    style={{ maxHeight: "120px" }}
+                                  >
+                                    <img
+                                      src={item.design_file_url}
+                                      alt="Design thumbnail"
+                                      className="max-w-full max-h-full object-contain"
+                                      onError={(e) => {
+                                        (
+                                          e.currentTarget as HTMLImageElement
+                                        ).style.display = "none";
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       </div>
                     )}
-                  </div>
-                )}
 
-                {/* Order Details Section */}
-                {selectedOrder &&
-                  selectedOrder.orderItems &&
-                  selectedOrder.orderItems.length > 0 && (
-                    <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
-                      <h4 className="font-medium text-gray-900 mb-4">
-                        Order Details
-                      </h4>
-                      <div className="space-y-4">
-                        {selectedOrder.orderItems.map((item, index) => (
-                          <div
-                            key={index}
-                            className="bg-white rounded border border-gray-200 p-4"
-                          >
-                            <div className="grid grid-cols-2 gap-4 mb-4">
-                              <div>
-                                <p className="text-xs text-gray-600 uppercase tracking-wide">
-                                  Product
-                                </p>
-                                <p className="text-sm font-medium text-gray-900">
-                                  {item.product_name || "Custom Item"}
-                                </p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-600 uppercase tracking-wide">
-                                  Quantity
-                                </p>
-                                <p className="text-sm font-medium text-gray-900">
-                                  {item.quantity || "N/A"}
-                                </p>
+                  <div className="flex gap-3 pt-4">
+                    <button
+                      onClick={handleSendProof}
+                      disabled={sendingProof}
+                      className="flex-1 px-4 py-3 bg-green-600 hover:bg-green-700 disabled:bg-green-600/50 text-white font-medium rounded-xl transition-colors"
+                    >
+                      {sendingProof ? "Sending..." : "Send Proof"}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowSendForm(false);
+                        setUploadedFile(null);
+                        setFilePreview(null);
+                        setCustomerEmail("");
+                        setSelectedOrder(null);
+                      }}
+                      className="flex-1 px-4 py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-xl transition-colors border border-white/10"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Order Selection Modal */}
+            {showOrderModal && (
+              <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                <div className="bg-black border border-white/10 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-auto">
+                  <div className="sticky top-0 bg-black border-b border-white/10 p-6 flex justify-between items-center gap-3">
+                    <h2 className="text-xl font-semibold text-white">
+                      Select Order to Send Proof
+                    </h2>
+                    <button
+                      onClick={() => setShowOrderModal(false)}
+                      className="text-white/40 hover:text-white/60 transition-colors flex-shrink-0"
+                    >
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+
+                  <div className="p-6">
+                    {ordersLoading ? (
+                      <div className="flex justify-center items-center h-32">
+                        <div className="text-white/60 text-sm">Loading orders...</div>
+                      </div>
+                    ) : pendingOrders.length === 0 ? (
+                      <div className="text-center py-8">
+                        <p className="text-base text-white/60">
+                          No pending orders available
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left text-sm">
+                          <thead>
+                            <tr className="border-b border-white/10 bg-white/5">
+                              <th className="px-4 py-3 font-semibold text-purple-300">
+                                Order #
+                              </th>
+                              <th className="px-4 py-3 font-semibold text-purple-300">
+                                Customer
+                              </th>
+                              <th className="px-4 py-3 font-semibold text-purple-300">
+                                Email
+                              </th>
+                              <th className="px-4 py-3 font-semibold text-purple-300">
+                                Status
+                              </th>
+                              <th className="px-4 py-3 font-semibold text-purple-300 text-right">
+                                Total
+                              </th>
+                              <th className="px-4 py-3 font-semibold text-purple-300">
+                                Action
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {pendingOrders.map((order) => (
+                              <tr
+                                key={order.id}
+                                className="border-b border-white/10 hover:bg-white/5 transition-colors"
+                              >
+                                <td className="px-4 py-4 font-semibold text-white">
+                                  #{order.id}
+                                </td>
+                                <td className="px-4 py-4 text-white/80">
+                                  {order.customerName}
+                                </td>
+                                <td className="px-4 py-4 text-white/60">
+                                  {order.customerEmail}
+                                </td>
+                                <td className="px-4 py-4">
+                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-orange-500/20 text-orange-300 border border-orange-500/30">
+                                    {order.status.charAt(0).toUpperCase() +
+                                      order.status.slice(1)}
+                                  </span>
+                                </td>
+                                <td className="px-4 py-4 font-semibold text-green-300 text-right">
+                                  ${order.total.toFixed(2)}
+                                </td>
+                                <td className="px-4 py-4">
+                                  <button
+                                    onClick={() => handleSelectOrder(order)}
+                                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-600/20 text-green-300 hover:bg-green-600/30 transition-colors font-medium text-xs border border-green-600/30"
+                                  >
+                                    Select
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Error Message */}
+            {error && (
+              <div className="mb-8 backdrop-blur-xl bg-red-500/20 border border-red-500/30 rounded-2xl p-4 flex gap-3">
+                <AlertCircle className="w-5 h-5 text-red-300 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-red-200">{error}</p>
+              </div>
+            )}
+
+            {/* Empty State */}
+            {proofs.length === 0 && !error && (
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-12 text-center">
+                <Clock className="w-16 h-16 text-white/20 mx-auto mb-6" />
+                <h2 className="text-xl font-semibold text-white mb-2">
+                  No Proofs Yet
+                </h2>
+                <p className="text-base text-white/60 mb-8">
+                  Start by sending a proof to a customer.
+                </p>
+                <button
+                  onClick={() => setShowSendForm(true)}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+                >
+                  Send Your First Proof
+                </button>
+              </div>
+            )}
+
+            {/* Pending Proofs Section */}
+            {pendingProofs.length > 0 && (
+              <div className="mb-8">
+                <div className="mb-4">
+                  <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-blue-400" />
+                    Awaiting Customer Review ({pendingProofs.length})
+                  </h2>
+                </div>
+                <div className="space-y-4">
+                  {pendingProofs.map((proof) => (
+                    <div
+                      key={proof.id}
+                      className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 transition-colors"
+                    >
+                      {/* Proof Header */}
+                      <button
+                        onClick={() =>
+                          setExpandedProofId(
+                            expandedProofId === proof.id ? null : proof.id,
+                          )
+                        }
+                        className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors"
+                      >
+                        <div className="flex items-center gap-4 flex-1 text-left">
+                          <div className="bg-blue-500/20 border border-blue-500/30 p-3 rounded-lg flex-shrink-0">
+                            {getStatusIcon(proof.status)}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h3 className="text-lg font-semibold text-white">
+                                Order #{proof.order_id}
+                              </h3>
+                              <span
+                                className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(proof.status)}`}
+                              >
+                                {getStatusLabel(proof.status)}
+                              </span>
+                            </div>
+                            <p className="text-sm text-white/60">
+                              Customer: {proof.customers?.first_name}{" "}
+                              {proof.customers?.last_name} ({proof.customers?.email})
+                            </p>
+                            <p className="text-sm text-white/60 mt-1">
+                              {proof.description}
+                            </p>
+                            <p className="text-xs text-white/40 mt-1">
+                              Sent on {formatDate(proof.created_at)}
+                            </p>
+                          </div>
+                        </div>
+                        <ChevronDown
+                          className={`w-5 h-5 text-white/40 flex-shrink-0 transition-transform ${
+                            expandedProofId === proof.id ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+
+                      {/* Proof Details - Expanded */}
+                      {expandedProofId === proof.id && (
+                        <div className="border-t border-white/10 px-6 py-6 bg-white/5">
+                          {/* Comments Section */}
+                          {proof.comments && proof.comments.length > 0 && (
+                            <div className="mb-6">
+                              <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                                <MessageSquare className="w-4 h-4" />
+                                Comments ({proof.comments.length})
+                              </h4>
+                              <div className="space-y-4">
+                                {proof.comments.map((comment) => (
+                                  <div
+                                    key={comment.id}
+                                    className="bg-white/5 rounded-lg border border-white/10 p-4"
+                                  >
+                                    <div className="flex items-start justify-between mb-2">
+                                      <div className="flex-1">
+                                        <p className="text-sm font-medium text-white">
+                                          {comment.admin_email
+                                            ? "Admin"
+                                            : "Customer"}
+                                        </p>
+                                        <p className="text-xs text-white/40">
+                                          {formatDate(comment.created_at)}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <p className="text-sm text-white/80 whitespace-pre-wrap">
+                                      {comment.message}
+                                    </p>
+                                  </div>
+                                ))}
                               </div>
                             </div>
+                          )}
 
-                            {item.options &&
-                              Object.keys(item.options).length > 0 && (
-                                <div className="grid grid-cols-2 gap-4 mb-4">
-                                  {item.options.size && (
-                                    <div>
-                                      <p className="text-xs text-gray-600 uppercase tracking-wide">
-                                        Size
-                                      </p>
-                                      <p className="text-sm font-medium text-gray-900">
-                                        {item.options.size}
-                                      </p>
-                                    </div>
-                                  )}
-                                  {item.options.color && (
-                                    <div>
-                                      <p className="text-xs text-gray-600 uppercase tracking-wide">
-                                        Color
-                                      </p>
-                                      <p className="text-sm font-medium text-gray-900">
-                                        {item.options.color}
-                                      </p>
-                                    </div>
-                                  )}
-                                  {item.options.vinyl_finish && (
-                                    <div>
-                                      <p className="text-xs text-gray-600 uppercase tracking-wide">
-                                        Vinyl Finish
-                                      </p>
-                                      <p className="text-sm font-medium text-gray-900">
-                                        {item.options.vinyl_finish}
-                                      </p>
-                                    </div>
-                                  )}
-                                  {item.options.sticker_type && (
-                                    <div>
-                                      <p className="text-xs text-gray-600 uppercase tracking-wide">
-                                        Sticker Type
-                                      </p>
-                                      <p className="text-sm font-medium text-gray-900">
-                                        {item.options.sticker_type}
-                                      </p>
-                                    </div>
-                                  )}
-                                </div>
-                              )}
+                          {/* Add Comment Section */}
+                          <div className="bg-white/5 rounded-lg border border-white/10 p-4">
+                            <label className="block text-sm font-medium text-purple-300 mb-2 uppercase tracking-wider">
+                              Add a Comment
+                            </label>
+                            <textarea
+                              value={commentText[proof.id] || ""}
+                              onChange={(e) =>
+                                setCommentText((prev) => ({
+                                  ...prev,
+                                  [proof.id]: e.target.value,
+                                }))
+                              }
+                              placeholder="Add feedback or ask for changes..."
+                              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-green-500/50 mb-3 transition"
+                              rows={3}
+                            />
+                            <button
+                              onClick={() => handleAddComment(proof.id)}
+                              disabled={submittingComment[proof.id]}
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-green-600/50 text-white rounded-lg font-medium transition-colors"
+                            >
+                              <Send className="w-4 h-4" />
+                              Post Comment
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
-                            {item.design_file_url && (
-                              <div className="pt-4 border-t border-gray-200">
-                                <p className="text-xs text-gray-600 uppercase tracking-wide mb-2">
-                                  Design Thumbnail
+            {/* Reviewed Proofs Section */}
+            {reviewedProofs.length > 0 && (
+              <div>
+                <div className="mb-4">
+                  <h2 className="text-lg font-semibold text-white">
+                    Reviewed Proofs ({reviewedProofs.length})
+                  </h2>
+                </div>
+                <div className="space-y-4">
+                  {reviewedProofs.map((proof) => (
+                    <div
+                      key={proof.id}
+                      className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 transition-colors"
+                    >
+                      {/* Proof Header */}
+                      <button
+                        onClick={() =>
+                          setExpandedProofId(
+                            expandedProofId === proof.id ? null : proof.id,
+                          )
+                        }
+                        className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors"
+                      >
+                        <div className="flex items-center gap-4 flex-1 text-left">
+                          <div className="bg-white/10 border border-white/10 p-3 rounded-lg flex-shrink-0">
+                            {getStatusIcon(proof.status)}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h3 className="text-lg font-semibold text-white">
+                                Order #{proof.order_id}
+                              </h3>
+                              <span
+                                className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(proof.status)}`}
+                              >
+                                {getStatusLabel(proof.status)}
+                              </span>
+                            </div>
+                            <p className="text-sm text-white/60">
+                              Customer: {proof.customers?.first_name}{" "}
+                              {proof.customers?.last_name}
+                            </p>
+                            <p className="text-xs text-white/40 mt-1">
+                              Last updated on {formatDate(proof.updated_at)}
+                            </p>
+                          </div>
+                        </div>
+                        <ChevronDown
+                          className={`w-5 h-5 text-white/40 flex-shrink-0 transition-transform ${
+                            expandedProofId === proof.id ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+
+                      {/* Proof Details - Expanded */}
+                      {expandedProofId === proof.id && (
+                        <div className="border-t border-white/10 px-6 py-6 bg-white/5">
+                          {/* Status Info */}
+                          <div className="mb-6 p-4 bg-white/5 rounded-lg border border-white/10">
+                            <p className="text-sm font-medium text-white mb-2">
+                              Status
+                            </p>
+                            <p className="text-sm text-white/60">
+                              {proof.status === "approved"
+                                ? "✓ Customer approved this proof"
+                                : "Customer requested revisions"}
+                            </p>
+                            {proof.revision_notes && (
+                              <div className="mt-3 p-3 bg-orange-500/20 rounded-lg border border-orange-500/30">
+                                <p className="text-xs font-medium text-orange-300 mb-1">
+                                  Customer Notes:
                                 </p>
-                                <div
-                                  className="rounded border border-gray-200 overflow-hidden bg-gray-100 flex items-center justify-center"
-                                  style={{ maxHeight: "120px" }}
-                                >
+                                <p className="text-sm text-orange-200 whitespace-pre-wrap">
+                                  {proof.revision_notes}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Approved File Section */}
+                          {proof.file_url && (
+                            <div className="mb-6 p-4 bg-white/5 rounded-lg border border-white/10">
+                              <p className="text-sm font-medium text-white mb-3">
+                                Approved Design
+                              </p>
+                              <div
+                                className="rounded-lg border border-white/10 overflow-hidden bg-white/5 flex items-center justify-center mb-3"
+                                style={{ maxHeight: "200px", minHeight: "100px" }}
+                              >
+                                {proof.file_url.match(
+                                  /\.(jpg|jpeg|png|gif|webp|svg)$/i,
+                                ) ? (
                                   <img
-                                    src={item.design_file_url}
-                                    alt="Design thumbnail"
+                                    src={proof.file_url}
+                                    alt={proof.file_name || "Approved design"}
                                     className="max-w-full max-h-full object-contain"
                                     onError={(e) => {
                                       (
@@ -753,458 +1135,68 @@ export default function AdminProofs() {
                                       ).style.display = "none";
                                     }}
                                   />
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                <div className="flex gap-3">
-                  <Button
-                    onClick={handleSendProof}
-                    disabled={sendingProof}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700"
-                  >
-                    {sendingProof ? "Sending..." : "Send Proof"}
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setShowSendForm(false);
-                      setUploadedFile(null);
-                      setFilePreview(null);
-                      setCustomerEmail("");
-                      setSelectedOrder(null);
-                    }}
-                    variant="outline"
-                    className="flex-1"
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-
-            {/* Order Selection Modal */}
-            {showOrderModal && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
-                <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
-                  <div className="sticky top-0 bg-white border-b border-gray-200 p-4 sm:p-6 flex justify-between items-center gap-3">
-                    <h2 className="text-base sm:text-xl font-semibold text-gray-900">
-                      Select Order to Send Proof
-                    </h2>
-                    <button
-                      onClick={() => setShowOrderModal(false)}
-                      className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
-                    >
-                      <X className="w-5 sm:w-6 h-5 sm:h-6" />
-                  </button>
-                </div>
-
-                  <div className="p-4 sm:p-6">
-                    {ordersLoading ? (
-                      <div className="flex justify-center items-center h-24 sm:h-32">
-                        <div className="text-gray-600 text-sm">Loading orders...</div>
-                      </div>
-                    ) : pendingOrders.length === 0 ? (
-                      <div className="text-center py-4 sm:py-8">
-                        <p className="text-sm sm:text-base text-gray-600">
-                          No pending orders available
-                        </p>
-                      </div>
-                  ) : (
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left text-sm">
-                        <thead>
-                          <tr className="border-b border-gray-200 bg-gray-50">
-                            <th className="px-4 py-3 font-semibold text-gray-900">
-                              Order #
-                            </th>
-                            <th className="px-4 py-3 font-semibold text-gray-900">
-                              Customer
-                            </th>
-                            <th className="px-4 py-3 font-semibold text-gray-900">
-                              Email
-                            </th>
-                            <th className="px-4 py-3 font-semibold text-gray-900">
-                              Status
-                            </th>
-                            <th className="px-4 py-3 font-semibold text-gray-900 text-right">
-                              Total
-                            </th>
-                            <th className="px-4 py-3 font-semibold text-gray-900">
-                              Action
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {pendingOrders.map((order) => (
-                            <tr
-                              key={order.id}
-                              className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
-                            >
-                              <td className="px-4 py-4 font-semibold text-gray-900">
-                                #{order.id}
-                              </td>
-                              <td className="px-4 py-4 text-gray-700">
-                                {order.customerName}
-                              </td>
-                              <td className="px-4 py-4 text-gray-600">
-                                {order.customerEmail}
-                              </td>
-                              <td className="px-4 py-4">
-                                <span className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700">
-                                  {order.status.charAt(0).toUpperCase() +
-                                    order.status.slice(1)}
-                                </span>
-                              </td>
-                              <td className="px-4 py-4 font-semibold text-gray-900 text-right">
-                                ${order.total.toFixed(2)}
-                              </td>
-                              <td className="px-4 py-4">
-                                <button
-                                  onClick={() => handleSelectOrder(order)}
-                                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs"
-                                >
-                                  Select
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-            {/* Error Message */}
-            {error && (
-              <div className="mb-4 sm:mb-6 bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4 flex gap-3">
-                <AlertCircle className="w-4 sm:w-5 h-4 sm:h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                <p className="text-xs sm:text-sm text-red-800">{error}</p>
-              </div>
-            )}
-
-            {/* Empty State */}
-            {proofs.length === 0 && !error && (
-              <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-12 text-center">
-                <Clock className="w-10 sm:w-12 h-10 sm:h-12 text-gray-400 mx-auto mb-4" />
-                <h2 className="text-base sm:text-xl font-semibold text-gray-900 mb-2">
-                  No Proofs Yet
-                </h2>
-                <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
-                  Start by sending a proof to a customer.
-                </p>
-                <Button
-                  onClick={() => setShowSendForm(true)}
-                  className="bg-blue-600 hover:bg-blue-700"
-                >
-                  Send Your First Proof
-                </Button>
-              </div>
-            )}
-
-            {/* Pending Proofs Section */}
-            {pendingProofs.length > 0 && (
-              <div className="mb-6 sm:mb-8">
-                <div className="mb-3 sm:mb-4">
-                  <h2 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <Clock className="w-4 sm:w-5 h-4 sm:h-5 text-blue-600" />
-                    Awaiting Customer Review ({pendingProofs.length})
-                  </h2>
-                </div>
-                  <div className="space-y-3 sm:space-y-4">
-                  {pendingProofs.map((proof) => (
-                    <div
-                      key={proof.id}
-                      className="bg-white rounded-lg border border-blue-200 overflow-hidden hover:shadow-lg transition-shadow"
-                    >
-                      {/* Proof Header */}
-                      <button
-                        onClick={() =>
-                          setExpandedProofId(
-                            expandedProofId === proof.id ? null : proof.id,
-                          )
-                        }
-                        className="w-full px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between hover:bg-blue-50 transition-colors"
-                      >
-                    <div className="flex items-center gap-4 flex-1 text-left">
-                      <div className="bg-blue-100 p-3 rounded-lg flex-shrink-0">
-                        {getStatusIcon(proof.status)}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            Order #{proof.order_id}
-                          </h3>
-                          <span
-                            className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(proof.status)}`}
-                          >
-                            {getStatusLabel(proof.status)}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-600">
-                          Customer: {proof.customers?.first_name}{" "}
-                          {proof.customers?.last_name} ({proof.customers?.email}
-                          )
-                        </p>
-                        <p className="text-sm text-gray-600 mt-1">
-                          {proof.description}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Sent on {formatDate(proof.created_at)}
-                        </p>
-                      </div>
-                    </div>
-                    <ChevronDown
-                      className={`w-5 h-5 text-gray-400 flex-shrink-0 transition-transform ${
-                        expandedProofId === proof.id ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-
-                  {/* Proof Details - Expanded */}
-                  {expandedProofId === proof.id && (
-                    <div className="border-t border-gray-200 px-6 py-6 bg-gray-50">
-                      {/* Comments Section */}
-                      {proof.comments && proof.comments.length > 0 && (
-                        <div className="mb-6">
-                          <h4 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                            <MessageSquare className="w-4 h-4" />
-                            Comments ({proof.comments.length})
-                          </h4>
-                          <div className="space-y-4">
-                            {proof.comments.map((comment) => (
-                              <div
-                                key={comment.id}
-                                className="bg-white rounded border border-gray-200 p-4"
-                              >
-                                <div className="flex items-start justify-between mb-2">
-                                  <div className="flex-1">
-                                    <p className="text-sm font-medium text-gray-900">
-                                      {comment.admin_email
-                                        ? "Admin"
-                                        : "Customer"}
-                                    </p>
-                                    <p className="text-xs text-gray-500">
-                                      {formatDate(comment.created_at)}
+                                ) : (
+                                  <div className="flex flex-col items-center justify-center p-6 text-center w-full">
+                                    <FileIcon className="w-10 h-10 text-white/20 mb-2" />
+                                    <p className="text-sm text-white/60">
+                                      {proof.file_name || "File"}
                                     </p>
                                   </div>
-                                </div>
-                                <p className="text-sm text-gray-700 whitespace-pre-wrap">
-                                  {comment.message}
-                                </p>
+                                )}
                               </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Add Comment Section */}
-                      <div className="bg-white rounded border border-gray-200 p-4">
-                        <label className="block text-sm font-medium text-gray-900 mb-2">
-                          Add a Comment
-                        </label>
-                        <textarea
-                          value={commentText[proof.id] || ""}
-                          onChange={(e) =>
-                            setCommentText((prev) => ({
-                              ...prev,
-                              [proof.id]: e.target.value,
-                            }))
-                          }
-                          placeholder="Add feedback or ask for changes..."
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
-                          rows={3}
-                        />
-                        <button
-                          onClick={() => handleAddComment(proof.id)}
-                          disabled={submittingComment[proof.id]}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 disabled:bg-blue-400 transition-colors"
-                        >
-                          <Send className="w-4 h-4" />
-                          Post Comment
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-            {/* Reviewed Proofs Section */}
-            {reviewedProofs.length > 0 && (
-              <div>
-                <div className="mb-3 sm:mb-4">
-                  <h2 className="text-base sm:text-lg font-semibold text-gray-900">
-                    Reviewed Proofs ({reviewedProofs.length})
-                  </h2>
-                </div>
-                <div className="space-y-3 sm:space-y-4">
-                  {reviewedProofs.map((proof) => (
-                    <div
-                      key={proof.id}
-                      className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
-                    >
-                      {/* Proof Header */}
-                      <button
-                        onClick={() =>
-                          setExpandedProofId(
-                            expandedProofId === proof.id ? null : proof.id,
-                          )
-                        }
-                        className="w-full px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
-                      >
-                        <div className="flex items-center gap-2 sm:gap-4 flex-1 text-left">
-                        <div className="bg-gray-100 p-2 sm:p-3 rounded-lg flex-shrink-0">
-                          {getStatusIcon(proof.status)}
-                        </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            Order #{proof.order_id}
-                          </h3>
-                          <span
-                            className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(proof.status)}`}
-                          >
-                            {getStatusLabel(proof.status)}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-600">
-                          Customer: {proof.customers?.first_name}{" "}
-                          {proof.customers?.last_name}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Last updated on {formatDate(proof.updated_at)}
-                        </p>
-                      </div>
-                    </div>
-                    <ChevronDown
-                      className={`w-5 h-5 text-gray-400 flex-shrink-0 transition-transform ${
-                        expandedProofId === proof.id ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-
-                  {/* Proof Details - Expanded */}
-                  {expandedProofId === proof.id && (
-                    <div className="border-t border-gray-200 px-6 py-6 bg-gray-50">
-                      {/* Status Info */}
-                      <div className="mb-6 p-4 bg-white rounded border border-gray-200">
-                        <p className="text-sm font-medium text-gray-900 mb-2">
-                          Status
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {proof.status === "approved"
-                            ? "✓ Customer approved this proof"
-                            : "Customer requested revisions"}
-                        </p>
-                        {proof.revision_notes && (
-                          <div className="mt-3 p-3 bg-orange-50 rounded border border-orange-200">
-                            <p className="text-xs font-medium text-orange-900 mb-1">
-                              Customer Notes:
-                            </p>
-                            <p className="text-sm text-orange-800 whitespace-pre-wrap">
-                              {proof.revision_notes}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Approved File Section */}
-                      {proof.file_url && (
-                        <div className="mb-6 p-4 bg-white rounded border border-gray-200">
-                          <p className="text-sm font-medium text-gray-900 mb-3">
-                            Approved Design
-                          </p>
-                          <div
-                            className="rounded border border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center mb-3"
-                            style={{ maxHeight: "200px", minHeight: "100px" }}
-                          >
-                            {proof.file_url.match(
-                              /\.(jpg|jpeg|png|gif|webp|svg)$/i,
-                            ) ? (
-                              <img
-                                src={proof.file_url}
-                                alt={proof.file_name || "Approved design"}
-                                className="max-w-full max-h-full object-contain"
-                                onError={(e) => {
-                                  (
-                                    e.currentTarget as HTMLImageElement
-                                  ).style.display = "none";
-                                }}
-                              />
-                            ) : (
-                              <div className="flex flex-col items-center justify-center p-6 text-center w-full">
-                                <FileIcon className="w-10 h-10 text-gray-400 mb-2" />
-                                <p className="text-sm text-gray-600">
-                                  {proof.file_name || "File"}
+                              {proof.file_name && (
+                                <p className="text-xs text-white/40 mb-2">
+                                  {proof.file_name}
                                 </p>
-                              </div>
-                            )}
-                          </div>
-                          {proof.file_name && (
-                            <p className="text-xs text-gray-600 mb-2">
-                              {proof.file_name}
-                            </p>
+                              )}
+                              {proof.description && (
+                                <p className="text-sm text-white/80">
+                                  {proof.description}
+                                </p>
+                              )}
+                            </div>
                           )}
-                          {proof.description && (
-                            <p className="text-sm text-gray-700">
-                              {proof.description}
-                            </p>
+
+                          {/* Comments Section */}
+                          {proof.comments && proof.comments.length > 0 && (
+                            <div>
+                              <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                                <MessageSquare className="w-4 h-4" />
+                                Comments
+                              </h4>
+                              <div className="space-y-4">
+                                {proof.comments.map((comment) => (
+                                  <div
+                                    key={comment.id}
+                                    className="bg-white/5 rounded-lg border border-white/10 p-4"
+                                  >
+                                    <div className="flex items-start justify-between mb-2">
+                                      <div className="flex-1">
+                                        <p className="text-sm font-medium text-white">
+                                          {comment.admin_email
+                                            ? "Admin"
+                                            : "Customer"}
+                                        </p>
+                                        <p className="text-xs text-white/40">
+                                          {formatDate(comment.created_at)}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <p className="text-sm text-white/80 whitespace-pre-wrap">
+                                      {comment.message}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
                           )}
                         </div>
                       )}
-
-                      {/* Comments Section */}
-                      {proof.comments && proof.comments.length > 0 && (
-                        <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                            <MessageSquare className="w-4 h-4" />
-                            Comments
-                          </h4>
-                          <div className="space-y-4">
-                            {proof.comments.map((comment) => (
-                              <div
-                                key={comment.id}
-                                className="bg-white rounded border border-gray-200 p-4"
-                              >
-                                <div className="flex items-start justify-between mb-2">
-                                  <div className="flex-1">
-                                    <p className="text-sm font-medium text-gray-900">
-                                      {comment.admin_email
-                                        ? "Admin"
-                                        : "Customer"}
-                                    </p>
-                                    <p className="text-xs text-gray-500">
-                                      {formatDate(comment.created_at)}
-                                    </p>
-                                  </div>
-                                </div>
-                                <p className="text-sm text-gray-700 whitespace-pre-wrap">
-                                  {comment.message}
-                                </p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
                     </div>
-                  )}
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
+              </div>
+            )}
           </div>
         </main>
         <MobileAdminPanel />
