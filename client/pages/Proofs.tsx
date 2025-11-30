@@ -418,7 +418,9 @@ export default function Proofs() {
                               <Download className="w-4 h-4" />
                               Attached File
                             </h4>
-                            {proof.file_url.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                            {proof.file_url
+                              .toLowerCase()
+                              .match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
                               <div>
                                 <img
                                   src={proof.file_url}
@@ -445,7 +447,9 @@ export default function Proofs() {
                                   <p className="text-sm font-medium text-blue-900 truncate">
                                     {proof.file_name || "Proof file"}
                                   </p>
-                                  <p className="text-xs text-blue-700">Click to download</p>
+                                  <p className="text-xs text-blue-700">
+                                    Click to download
+                                  </p>
                                 </div>
                                 <Download className="w-5 h-5 text-blue-600 flex-shrink-0" />
                               </a>
@@ -648,7 +652,9 @@ export default function Proofs() {
                               <Download className="w-4 h-4" />
                               Attached File
                             </h4>
-                            {proof.file_url.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                            {proof.file_url
+                              .toLowerCase()
+                              .match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
                               <div>
                                 <img
                                   src={proof.file_url}
@@ -675,7 +681,9 @@ export default function Proofs() {
                                   <p className="text-sm font-medium text-blue-900 truncate">
                                     {proof.file_name || "Proof file"}
                                   </p>
-                                  <p className="text-xs text-blue-700">Click to download</p>
+                                  <p className="text-xs text-blue-700">
+                                    Click to download
+                                  </p>
                                 </div>
                                 <Download className="w-5 h-5 text-blue-600 flex-shrink-0" />
                               </a>

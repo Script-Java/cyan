@@ -363,9 +363,7 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
     const { orderId, customerId, description, fileData, fileName } = req.body;
 
     if (!orderId) {
-      return res
-        .status(400)
-        .json({ error: "Order ID is required" });
+      return res.status(400).json({ error: "Order ID is required" });
     }
 
     // Look up customer ID from order if not provided
@@ -379,9 +377,7 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
         .single();
 
       if (orderError || !order) {
-        return res
-          .status(400)
-          .json({ error: "Order not found" });
+        return res.status(400).json({ error: "Order not found" });
       }
 
       resolvedCustomerId = order.customer_id;

@@ -542,10 +542,7 @@ export default function AdminProofs() {
                     placeholder="Enter customer email (optional)"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
-                  <input
-                    type="hidden"
-                    value={customerId}
-                  />
+                  <input type="hidden" value={customerId} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -586,7 +583,9 @@ export default function AdminProofs() {
                 {uploadedFile && (
                   <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
                     <div className="flex items-start justify-between mb-3">
-                      <h4 className="font-medium text-gray-900">File Preview</h4>
+                      <h4 className="font-medium text-gray-900">
+                        File Preview
+                      </h4>
                       <button
                         onClick={handleRemoveFile}
                         className="text-gray-400 hover:text-gray-600 transition-colors"
