@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { ecwidAPI } from "../utils/ecwid";
+import { supabase } from "../utils/supabase";
 
 interface OrderDesign {
   orderId: number;
@@ -17,7 +17,7 @@ interface OrderDesign {
 }
 
 /**
- * Get all designs from customer's orders
+ * Get all designs from customer's orders stored in Supabase
  * Requires: customerId in JWT token
  */
 export const handleGetDesigns: RequestHandler = async (req, res) => {
@@ -28,91 +28,78 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    let orders: any[] = [];
+    // Get all orders for the customer from Supabase
+    const { data: orders, error: ordersError } = await supabase
+      .from("orders")
+      .select("id, customer_id, status, created_at")
+      .eq("customer_id", customerId)
+      .order("created_at", { ascending: false });
 
-    // Try to get orders from Ecwid with network error handling
-    try {
-      orders = await ecwidAPI.getCustomerOrders(customerId);
-    } catch (ecwidError) {
-      console.error("Ecwid API unreachable, returning empty designs:", ecwidError);
-      // Return empty designs gracefully if Ecwid API is unavailable
+    if (ordersError) {
+      console.error("Failed to fetch orders from Supabase:", ordersError);
+      return res.status(500).json({ error: "Failed to fetch orders" });
+    }
+
+    if (!orders || orders.length === 0) {
       return res.json({
         success: true,
         designs: [],
         totalOrders: 0,
         ordersWithDesigns: 0,
-        message: "Design service temporarily unavailable. Please try again later.",
       });
     }
 
-    // Extract designs from orders
+    // Get all order items with design files for these orders
+    const orderIds = orders.map((o) => o.id);
+    const { data: orderItems, error: itemsError } = await supabase
+      .from("order_items")
+      .select("id, order_id, product_name, design_file_url, quantity, created_at")
+      .in("order_id", orderIds)
+      .not("design_file_url", "is", null)
+      .order("created_at", { ascending: false });
+
+    if (itemsError) {
+      console.error("Failed to fetch order items from Supabase:", itemsError);
+      return res.status(500).json({ error: "Failed to fetch designs" });
+    }
+
+    // Group designs by order
     const designsByOrder: OrderDesign[] = [];
+    const ordersWithDesigns = new Set<number>();
 
-    for (const order of orders) {
-      const designs: OrderDesign["designs"] = [];
+    if (orderItems && orderItems.length > 0) {
+      for (const item of orderItems) {
+        const order = orders.find((o) => o.id === item.order_id);
+        if (!order) continue;
 
-      // Get detailed order information
-      let orderDetails: any = null;
-      try {
-        orderDetails = await ecwidAPI.getOrder(order.id);
-      } catch (err) {
-        console.error(`Failed to fetch order details for ${order.id}:`, err);
-        continue;
-      }
+        ordersWithDesigns.add(item.order_id);
 
-      if (
-        orderDetails &&
-        orderDetails.items &&
-        Array.isArray(orderDetails.items)
-      ) {
-        // Check each item for design-related information
-        for (const item of orderDetails.items) {
-          // Check for design attributes or fields
-          if (item.attributes && Array.isArray(item.attributes)) {
-            for (const attr of item.attributes) {
-              // Look for design-related attributes
-              if (
-                attr.name &&
-                (attr.name.toLowerCase().includes("design") ||
-                  attr.name.toLowerCase().includes("file") ||
-                  attr.name.toLowerCase().includes("artwork"))
-              ) {
-                designs.push({
-                  id: `${order.id}-${item.id}-${attr.id || attr.name}`,
-                  name: attr.name || "Design File",
-                  description: `From order #${order.id}`,
-                  type: attr.name || "design",
-                  url: attr.value?.startsWith("http") ? attr.value : undefined,
-                  createdAt: order.createDate,
-                });
-              }
-            }
-          }
-
-          // Also check product name for design info
-          if (item.productName) {
-            designs.push({
-              id: `${order.id}-${item.id}`,
-              name: item.productName,
-              description: `Design from order #${order.id}`,
-              type: "product",
-              createdAt: order.createDate,
-              size: item.quantity ? `Qty: ${item.quantity}` : undefined,
-            });
-          }
+        // Find or create the order design group
+        let orderDesignGroup = designsByOrder.find(
+          (og) => og.orderId === item.order_id,
+        );
+        if (!orderDesignGroup) {
+          orderDesignGroup = {
+            orderId: item.order_id,
+            orderDate: order.created_at || new Date().toISOString(),
+            orderStatus: order.status || "processing",
+            designs: [],
+          };
+          designsByOrder.push(orderDesignGroup);
         }
-      }
 
-      if (designs.length > 0) {
-        designsByOrder.push({
-          orderId: order.id,
-          orderDate: (order as any).createDate || new Date().toISOString(),
-          orderStatus:
-            (order as any).fulfillmentStatus ||
-            (order as any).paymentStatus ||
-            "processing",
-          designs,
-        });
+        // Add design to the order group
+        if (item.design_file_url) {
+          orderDesignGroup.designs.push({
+            id: `${item.order_id}-${item.id}`,
+            name: item.product_name || "Design File",
+            url: item.design_file_url,
+            description: `Design from order #${item.order_id}`,
+            type: "design",
+            size: item.quantity ? `Qty: ${item.quantity}` : undefined,
+            createdAt: item.created_at || order.created_at,
+          });
+        }
       }
     }
 
