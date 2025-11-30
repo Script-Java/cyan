@@ -77,6 +77,8 @@ export default function App() {
             <Route path="/admin/customers" element={<Customers />} />
             <Route path="/admin/products" element={<AdminProducts />} />
             <Route path="/admin/proofs" element={<AdminProofs />} />
+            <Route path="/admin/finance" element={<AdminFinance />} />
+            <Route path="/admin/analytics" element={<AdminAnalytics />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="/admin/support" element={<AdminSupport />} />
             <Route
