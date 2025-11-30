@@ -93,6 +93,9 @@ export default function AdminProducts() {
             </div>
           </div>
         </main>
+
+        {/* Mobile Admin Panel */}
+        <MobileAdminPanel />
       </div>
     </>
   );
