@@ -281,44 +281,44 @@ export default function AdminDashboard() {
 
                     {/* Traffic Stats */}
                     <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
-                      <div className="p-3 bg-white/5 rounded-lg">
+                      <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
                         <p className="text-white/60 text-xs mb-1">
-                          Total Views
+                          Views
                         </p>
-                        <p className="text-xl font-bold text-white">24,580</p>
-                        <p className="text-green-400 text-xs mt-1 flex items-center gap-1">
+                        <p className="text-lg sm:text-xl font-bold text-white">24,580</p>
+                        <p className="text-green-400 text-xs mt-1 hidden sm:flex items-center gap-1">
                           <TrendingUp className="w-3 h-3" />
-                          +12.5% from last week
+                          +12.5%
                         </p>
                       </div>
-                      <div className="p-3 bg-white/5 rounded-lg">
+                      <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
                         <p className="text-white/60 text-xs mb-1">
-                          Unique Visitors
+                          Visitors
                         </p>
-                        <p className="text-xl font-bold text-white">3,240</p>
-                        <p className="text-green-400 text-xs mt-1 flex items-center gap-1">
+                        <p className="text-lg sm:text-xl font-bold text-white">3,240</p>
+                        <p className="text-green-400 text-xs mt-1 hidden sm:flex items-center gap-1">
                           <TrendingUp className="w-3 h-3" />
-                          +8.2% from last week
+                          +8.2%
                         </p>
                       </div>
-                      <div className="p-3 bg-white/5 rounded-lg">
+                      <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
                         <p className="text-white/60 text-xs mb-1">
-                          Bounce Rate
+                          Bounce
                         </p>
-                        <p className="text-xl font-bold text-white">32.5%</p>
-                        <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                        <p className="text-lg sm:text-xl font-bold text-white">32.5%</p>
+                        <p className="text-red-400 text-xs mt-1 hidden sm:flex items-center gap-1">
                           <TrendingUp className="w-3 h-3" />
-                          +2.1% from last week
+                          +2.1%
                         </p>
                       </div>
-                      <div className="p-3 bg-white/5 rounded-lg">
+                      <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
                         <p className="text-white/60 text-xs mb-1">
-                          Avg. Session
+                          Session
                         </p>
-                        <p className="text-xl font-bold text-white">4m 32s</p>
-                        <p className="text-green-400 text-xs mt-1 flex items-center gap-1">
+                        <p className="text-lg sm:text-xl font-bold text-white">4m 32s</p>
+                        <p className="text-green-400 text-xs mt-1 hidden sm:flex items-center gap-1">
                           <TrendingUp className="w-3 h-3" />
-                          +0.5m from last week
+                          +0.5m
                         </p>
                       </div>
                     </div>
