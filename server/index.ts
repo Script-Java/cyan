@@ -225,6 +225,9 @@ export function createServer() {
 
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
   app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
+  app.get("/api/admin/customers", verifyToken, handleGetAllCustomers);
+  app.get("/api/admin/customers/search", verifyToken, handleSearchCustomers);
+  app.get("/api/admin/customers/:customerId", verifyToken, handleGetCustomerDetails);
 
   // ===== Store Credit Routes (Protected - admin only) =====
   app.get(
