@@ -1064,10 +1064,10 @@ export default function AdminProofs() {
                         }
                         className="w-full px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
                       >
-                    <div className="flex items-center gap-4 flex-1 text-left">
-                      <div className="bg-gray-100 p-3 rounded-lg flex-shrink-0">
-                        {getStatusIcon(proof.status)}
-                      </div>
+                        <div className="flex items-center gap-2 sm:gap-4 flex-1 text-left">
+                        <div className="bg-gray-100 p-2 sm:p-3 rounded-lg flex-shrink-0">
+                          {getStatusIcon(proof.status)}
+                        </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="text-lg font-semibold text-gray-900">
