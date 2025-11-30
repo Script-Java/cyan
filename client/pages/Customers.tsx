@@ -54,12 +54,17 @@ type SortColumn = "name" | "email" | "orders" | "spent" | "date";
 export default function Customers() {
   const navigate = useNavigate();
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [expandedCustomerId, setExpandedCustomerId] = useState<number | null>(null);
-  const [expandedDetails, setExpandedDetails] = useState<CustomerDetails | null>(null);
+  const [expandedCustomerId, setExpandedCustomerId] = useState<number | null>(
+    null,
+  );
+  const [expandedDetails, setExpandedDetails] =
+    useState<CustomerDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterOption, setFilterOption] = useState<"all" | "with-orders" | "no-orders">("all");
+  const [filterOption, setFilterOption] = useState<
+    "all" | "with-orders" | "no-orders"
+  >("all");
   const [sortColumn, setSortColumn] = useState<SortColumn>("date");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
@@ -93,7 +98,9 @@ export default function Customers() {
       setCustomers(data.customers || []);
     } catch (err) {
       console.error("Error fetching customers:", err);
-      setError(err instanceof Error ? err.message : "Failed to fetch customers");
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch customers",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -134,7 +141,9 @@ export default function Customers() {
         customer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
         customer.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         customer.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (customer.company?.toLowerCase() || "").includes(searchQuery.toLowerCase());
+        (customer.company?.toLowerCase() || "").includes(
+          searchQuery.toLowerCase(),
+        );
 
       const matchesFilter =
         filterOption === "all" ||
@@ -335,8 +344,15 @@ export default function Customers() {
               </div>
 
               <p className="text-sm text-white/60">
-                Showing <span className="font-semibold text-white">{sortedCustomers.length}</span> of{" "}
-                <span className="font-semibold text-white">{customers.length}</span> customers
+                Showing{" "}
+                <span className="font-semibold text-white">
+                  {sortedCustomers.length}
+                </span>{" "}
+                of{" "}
+                <span className="font-semibold text-white">
+                  {customers.length}
+                </span>{" "}
+                customers
               </p>
             </div>
 
@@ -345,7 +361,9 @@ export default function Customers() {
               <div className="flex justify-center items-center h-96">
                 <div className="text-center">
                   <Users className="w-12 h-12 text-white/40 mx-auto mb-3 animate-pulse" />
-                  <p className="text-white/60 font-medium">Loading customers...</p>
+                  <p className="text-white/60 font-medium">
+                    Loading customers...
+                  </p>
                 </div>
               </div>
             ) : error ? (
@@ -361,7 +379,9 @@ export default function Customers() {
               <div className="flex justify-center items-center h-96">
                 <div className="text-center">
                   <Users className="w-12 h-12 text-white/40 mx-auto mb-3" />
-                  <p className="text-white/60 font-medium">No customers found</p>
+                  <p className="text-white/60 font-medium">
+                    No customers found
+                  </p>
                   <p className="text-white/40 text-sm mt-1">
                     {searchQuery
                       ? "Try adjusting your search"
@@ -438,7 +458,9 @@ export default function Customers() {
                             <td className="px-4 sm:px-6 py-4 hidden sm:table-cell">
                               <div className="flex items-center gap-2 text-white/80 text-sm truncate">
                                 <Mail className="w-4 h-4 text-white/40 flex-shrink-0 hidden sm:inline" />
-                                <span className="truncate">{customer.email}</span>
+                                <span className="truncate">
+                                  {customer.email}
+                                </span>
                               </div>
                             </td>
 
@@ -471,201 +493,207 @@ export default function Customers() {
                               <div className="flex items-center gap-2 text-white/80 text-sm">
                                 <Calendar className="w-4 h-4 text-white/40 flex-shrink-0" />
                                 <span>
-                                  {new Date(customer.createdAt).toLocaleDateString()}
+                                  {new Date(
+                                    customer.createdAt,
+                                  ).toLocaleDateString()}
                                 </span>
                               </div>
                             </td>
                           </tr>
 
                           {/* Expanded Details Row */}
-                          {expandedCustomerId === customer.id && expandedDetails && (
-                            <tr className="border-b-2 border-[#FFD713]/30">
-                              <td colSpan={8} className="p-0">
-                                <div className="px-4 sm:px-6 lg:px-8 py-8 space-y-6 bg-white/5 border-t border-white/10">
-                                  {/* Personal Information */}
-                                  <div>
-                                    <h3 className="font-bold text-white mb-4 text-lg">
-                                      Personal Information
-                                    </h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                      <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
-                                        <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
-                                          Email
-                                        </p>
-                                        <p className="text-white text-sm break-all">
-                                          {expandedDetails.email}
-                                        </p>
-                                      </div>
-
-                                      {expandedDetails.phone && (
+                          {expandedCustomerId === customer.id &&
+                            expandedDetails && (
+                              <tr className="border-b-2 border-[#FFD713]/30">
+                                <td colSpan={8} className="p-0">
+                                  <div className="px-4 sm:px-6 lg:px-8 py-8 space-y-6 bg-white/5 border-t border-white/10">
+                                    {/* Personal Information */}
+                                    <div>
+                                      <h3 className="font-bold text-white mb-4 text-lg">
+                                        Personal Information
+                                      </h3>
+                                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                         <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
                                           <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
-                                            Phone
+                                            Email
                                           </p>
-                                          <p className="text-white text-sm">
-                                            {expandedDetails.phone}
+                                          <p className="text-white text-sm break-all">
+                                            {expandedDetails.email}
                                           </p>
                                         </div>
-                                      )}
 
-                                      {expandedDetails.company && (
+                                        {expandedDetails.phone && (
+                                          <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
+                                            <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
+                                              Phone
+                                            </p>
+                                            <p className="text-white text-sm">
+                                              {expandedDetails.phone}
+                                            </p>
+                                          </div>
+                                        )}
+
+                                        {expandedDetails.company && (
+                                          <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
+                                            <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
+                                              Company
+                                            </p>
+                                            <p className="text-white text-sm">
+                                              {expandedDetails.company}
+                                            </p>
+                                          </div>
+                                        )}
+
                                         <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
                                           <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
-                                            Company
+                                            Signup Date
                                           </p>
                                           <p className="text-white text-sm">
-                                            {expandedDetails.company}
+                                            {new Date(
+                                              expandedDetails.createdAt,
+                                            ).toLocaleDateString()}
                                           </p>
                                         </div>
-                                      )}
-
-                                      <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
-                                        <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
-                                          Signup Date
-                                        </p>
-                                        <p className="text-white text-sm">
-                                          {new Date(
-                                            expandedDetails.createdAt
-                                          ).toLocaleDateString()}
-                                        </p>
                                       </div>
                                     </div>
-                                  </div>
 
-                                  {/* Customer Statistics */}
-                                  <div>
-                                    <h3 className="font-bold text-white mb-4 text-lg">
-                                      Customer Statistics
-                                    </h3>
-                                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                      <div className="backdrop-blur-lg bg-[#FFD713]/10 border border-[#FFD713]/20 rounded-lg p-4">
-                                        <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
-                                          Total Orders
-                                        </p>
-                                        <p className="text-2xl sm:text-3xl font-bold text-[#FFD713]">
-                                          {expandedDetails.orderCount}
-                                        </p>
-                                      </div>
-
-                                      <div className="backdrop-blur-lg bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
-                                        <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
-                                          Total Spent
-                                        </p>
-                                        <p className="text-2xl sm:text-3xl font-bold text-purple-400">
-                                          ${expandedDetails.totalSpent.toFixed(2)}
-                                        </p>
-                                      </div>
-
-                                      {expandedDetails.storeCredit > 0 && (
+                                    {/* Customer Statistics */}
+                                    <div>
+                                      <h3 className="font-bold text-white mb-4 text-lg">
+                                        Customer Statistics
+                                      </h3>
+                                      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                         <div className="backdrop-blur-lg bg-[#FFD713]/10 border border-[#FFD713]/20 rounded-lg p-4">
                                           <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
-                                            Store Credit
+                                            Total Orders
                                           </p>
                                           <p className="text-2xl sm:text-3xl font-bold text-[#FFD713]">
-                                            ${expandedDetails.storeCredit.toFixed(
-                                              2
+                                            {expandedDetails.orderCount}
+                                          </p>
+                                        </div>
+
+                                        <div className="backdrop-blur-lg bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
+                                          <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
+                                            Total Spent
+                                          </p>
+                                          <p className="text-2xl sm:text-3xl font-bold text-purple-400">
+                                            $
+                                            {expandedDetails.totalSpent.toFixed(
+                                              2,
                                             )}
                                           </p>
                                         </div>
-                                      )}
 
-                                      {expandedDetails.orderCount > 0 && (
-                                        <div className="backdrop-blur-lg bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
-                                          <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
-                                            Avg Order Value
-                                          </p>
-                                          <p className="text-2xl sm:text-3xl font-bold text-purple-400">
-                                            ${(
-                                              expandedDetails.totalSpent /
-                                              expandedDetails.orderCount
-                                            ).toFixed(2)}
-                                          </p>
-                                        </div>
-                                      )}
+                                        {expandedDetails.storeCredit > 0 && (
+                                          <div className="backdrop-blur-lg bg-[#FFD713]/10 border border-[#FFD713]/20 rounded-lg p-4">
+                                            <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
+                                              Store Credit
+                                            </p>
+                                            <p className="text-2xl sm:text-3xl font-bold text-[#FFD713]">
+                                              $
+                                              {expandedDetails.storeCredit.toFixed(
+                                                2,
+                                              )}
+                                            </p>
+                                          </div>
+                                        )}
+
+                                        {expandedDetails.orderCount > 0 && (
+                                          <div className="backdrop-blur-lg bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
+                                            <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
+                                              Avg Order Value
+                                            </p>
+                                            <p className="text-2xl sm:text-3xl font-bold text-purple-400">
+                                              $
+                                              {(
+                                                expandedDetails.totalSpent /
+                                                expandedDetails.orderCount
+                                              ).toFixed(2)}
+                                            </p>
+                                          </div>
+                                        )}
+                                      </div>
                                     </div>
-                                  </div>
 
-                                  {/* Order History */}
-                                  {expandedDetails.orders &&
-                                    expandedDetails.orders.length > 0 && (
-                                      <div>
-                                        <h3 className="font-bold text-white mb-4 text-lg">
-                                          Order History ({expandedDetails.orders.length})
-                                        </h3>
-                                        <div className="space-y-3 max-h-96 overflow-y-auto">
-                                          {expandedDetails.orders.map(
-                                            (order) => (
-                                              <div
-                                                key={order.id}
-                                                className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-colors"
-                                              >
-                                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                                                  <div className="flex-1 min-w-0">
-                                                    <p className="font-semibold text-white text-sm">
-                                                      Order #{order.id}
-                                                    </p>
-                                                    <div className="flex flex-wrap items-center gap-3 mt-2 text-xs sm:text-sm text-white/60">
-                                                      <span className="flex items-center gap-1">
-                                                        <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
-                                                        {new Date(
-                                                          order.createdAt
-                                                        ).toLocaleDateString()}
-                                                      </span>
-                                                      <span className="flex items-center gap-1">
-                                                        <ShoppingBag className="w-3 h-3 sm:w-4 sm:h-4" />
-                                                        {order.itemCount} item
-                                                        {order.itemCount !==
-                                                          1
-                                                          ? "s"
-                                                          : ""}
+                                    {/* Order History */}
+                                    {expandedDetails.orders &&
+                                      expandedDetails.orders.length > 0 && (
+                                        <div>
+                                          <h3 className="font-bold text-white mb-4 text-lg">
+                                            Order History (
+                                            {expandedDetails.orders.length})
+                                          </h3>
+                                          <div className="space-y-3 max-h-96 overflow-y-auto">
+                                            {expandedDetails.orders.map(
+                                              (order) => (
+                                                <div
+                                                  key={order.id}
+                                                  className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-colors"
+                                                >
+                                                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                                    <div className="flex-1 min-w-0">
+                                                      <p className="font-semibold text-white text-sm">
+                                                        Order #{order.id}
+                                                      </p>
+                                                      <div className="flex flex-wrap items-center gap-3 mt-2 text-xs sm:text-sm text-white/60">
+                                                        <span className="flex items-center gap-1">
+                                                          <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+                                                          {new Date(
+                                                            order.createdAt,
+                                                          ).toLocaleDateString()}
+                                                        </span>
+                                                        <span className="flex items-center gap-1">
+                                                          <ShoppingBag className="w-3 h-3 sm:w-4 sm:h-4" />
+                                                          {order.itemCount} item
+                                                          {order.itemCount !== 1
+                                                            ? "s"
+                                                            : ""}
+                                                        </span>
+                                                      </div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                      <p className="font-bold text-white text-sm">
+                                                        $
+                                                        {order.total.toFixed(2)}
+                                                      </p>
+                                                      <span
+                                                        className={`text-xs font-medium inline-block mt-2 px-3 py-1 rounded-full ${
+                                                          order.status ===
+                                                          "pending"
+                                                            ? "bg-yellow-500/30 text-yellow-300"
+                                                            : order.status ===
+                                                                "completed"
+                                                              ? "bg-green-500/30 text-green-300"
+                                                              : "bg-gray-500/30 text-gray-300"
+                                                        }`}
+                                                      >
+                                                        {order.status}
                                                       </span>
                                                     </div>
                                                   </div>
-                                                  <div className="text-right">
-                                                    <p className="font-bold text-white text-sm">
-                                                      ${order.total.toFixed(
-                                                        2
-                                                      )}
-                                                    </p>
-                                                    <span
-                                                      className={`text-xs font-medium inline-block mt-2 px-3 py-1 rounded-full ${
-                                                        order.status ===
-                                                        "pending"
-                                                          ? "bg-yellow-500/30 text-yellow-300"
-                                                          : order.status ===
-                                                              "completed"
-                                                            ? "bg-green-500/30 text-green-300"
-                                                            : "bg-gray-500/30 text-gray-300"
-                                                      }`}
-                                                    >
-                                                      {order.status}
-                                                    </span>
-                                                  </div>
                                                 </div>
-                                              </div>
-                                            )
-                                          )}
+                                              ),
+                                            )}
+                                          </div>
                                         </div>
+                                      )}
+
+                                    {(!expandedDetails.orders ||
+                                      expandedDetails.orders.length === 0) && (
+                                      <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+                                        <ShoppingBag className="w-12 h-12 text-white/40 mx-auto mb-2" />
+                                        <p className="text-white/80 font-medium">
+                                          No orders yet
+                                        </p>
+                                        <p className="text-white/60 text-sm mt-1">
+                                          This customer hasn't placed any orders
+                                        </p>
                                       </div>
                                     )}
-
-                                  {(!expandedDetails.orders ||
-                                    expandedDetails.orders.length === 0) && (
-                                    <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-8 text-center">
-                                      <ShoppingBag className="w-12 h-12 text-white/40 mx-auto mb-2" />
-                                      <p className="text-white/80 font-medium">
-                                        No orders yet
-                                      </p>
-                                      <p className="text-white/60 text-sm mt-1">
-                                        This customer hasn't placed any
-                                        orders
-                                      </p>
-                                    </div>
-                                  )}
-                                </div>
-                              </td>
-                            </tr>
-                          )}
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
                         </React.Fragment>
                       ))}
                     </tbody>
