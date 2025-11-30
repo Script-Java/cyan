@@ -28,8 +28,22 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    // Get all customer orders from Ecwid
-    const orders = await ecwidAPI.getCustomerOrders(customerId);
+    let orders: any[] = [];
+
+    // Try to get orders from Ecwid with network error handling
+    try {
+      orders = await ecwidAPI.getCustomerOrders(customerId);
+    } catch (ecwidError) {
+      console.error("Ecwid API unreachable, returning empty designs:", ecwidError);
+      // Return empty designs gracefully if Ecwid API is unavailable
+      return res.json({
+        success: true,
+        designs: [],
+        totalOrders: 0,
+        ordersWithDesigns: 0,
+        message: "Design service temporarily unavailable. Please try again later.",
+      });
+    }
 
     // Extract designs from orders
     const designsByOrder: OrderDesign[] = [];
@@ -38,7 +52,13 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
       const designs: OrderDesign["designs"] = [];
 
       // Get detailed order information
-      const orderDetails = await ecwidAPI.getOrder(order.id);
+      let orderDetails: any = null;
+      try {
+        orderDetails = await ecwidAPI.getOrder(order.id);
+      } catch (err) {
+        console.error(`Failed to fetch order details for ${order.id}:`, err);
+        continue;
+      }
 
       if (
         orderDetails &&
