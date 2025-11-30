@@ -520,7 +520,6 @@ export default function Customers() {
                             {expandedCustomerId === customer.id &&
                               expandedDetails && (
                                 <tr
-                                  key={`expanded-${customer.id}`}
                                   className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b-2 border-blue-200"
                                 >
                                   <td colSpan={8} className="p-0">
