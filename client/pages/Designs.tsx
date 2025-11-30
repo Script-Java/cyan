@@ -779,9 +779,16 @@ export default function Designs() {
                     <p className="text-xs font-semibold text-gray-600 uppercase mb-1">
                       Type
                     </p>
-                    <p className="text-sm text-gray-900">
-                      {selectedDesign.type}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm text-gray-900 capitalize">
+                        {selectedDesign.type === "proof" ? "Design Proof" : "Uploaded Design"}
+                      </p>
+                      {selectedDesign.type === "proof" && (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-lg">
+                          Proof
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div>
@@ -793,10 +800,14 @@ export default function Designs() {
                         <CheckCircle2 className="w-3 h-3" />
                         Approved
                       </span>
-                    ) : (
+                    ) : selectedDesign.type === "proof" ? (
                       <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-50 text-amber-700 text-xs font-semibold rounded-lg">
                         <Clock className="w-3 h-3" />
-                        Pending
+                        Awaiting Approval
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-50 text-gray-700 text-xs font-semibold rounded-lg">
+                        Uploaded
                       </span>
                     )}
                   </div>
