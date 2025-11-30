@@ -85,7 +85,7 @@ export default function AdminDashboard() {
     {
       title: "Import Products",
       description: "Import products from CSV files",
-      icon: <Upload className="w-8 h-8" />,
+      icon: <Upload className="w-5 h-5" />,
       path: "/admin/import-products",
       color: "bg-purple-50 hover:bg-purple-100",
       textColor: "text-purple-600",
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
     {
       title: "Support Admin",
       description: "Manage customer support tickets",
-      icon: <BarChart3 className="w-8 h-8" />,
+      icon: <BarChart3 className="w-5 h-5" />,
       path: "/admin/support",
       color: "bg-orange-50 hover:bg-orange-100",
       textColor: "text-orange-600",
@@ -101,7 +101,7 @@ export default function AdminDashboard() {
     {
       title: "Store Credit",
       description: "Manage customer balances",
-      icon: <DollarSign className="w-8 h-8" />,
+      icon: <DollarSign className="w-5 h-5" />,
       path: "/store-credit-admin",
       color: "bg-emerald-50 hover:bg-emerald-100",
       textColor: "text-emerald-600",
@@ -109,7 +109,7 @@ export default function AdminDashboard() {
     {
       title: "Settings",
       description: "Configure store settings",
-      icon: <Settings className="w-8 h-8" />,
+      icon: <Settings className="w-5 h-5" />,
       path: "/admin/settings",
       color: "bg-blue-50 hover:bg-blue-100",
       textColor: "text-blue-600",
