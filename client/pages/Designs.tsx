@@ -74,7 +74,7 @@ export default function Designs() {
   const [selectedDesign, setSelectedDesign] = useState<Design | null>(null);
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "name">("newest");
   const [filterStatus, setFilterStatus] = useState<
-    "all" | "approved" | "pending"
+    "all" | "approved" | "pending" | "denied"
   >("all");
   const [favorites, setFavorites] = useState<Set<string>>(
     new Set(JSON.parse(localStorage.getItem("favoriteDesigns") || "[]")),
