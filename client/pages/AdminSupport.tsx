@@ -252,13 +252,13 @@ export default function AdminSupport() {
             </button>
 
             {/* Ticket Details */}
-            <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-8">
-              <div className="flex items-start justify-between mb-6">
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 sm:p-8">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4 sm:mb-6">
                 <div>
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  <h1 className="text-xl sm:text-3xl font-bold text-gray-900 mb-2">
                     {selectedTicket.subject}
                   </h1>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-gray-600">
                     From:{" "}
                     <span className="font-semibold">
                       {selectedTicket.customer_name}
