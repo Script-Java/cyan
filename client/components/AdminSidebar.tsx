@@ -248,9 +248,9 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
   return (
     <>
       {/* Mobile overlay backdrop */}
-      {!isOpen && (
+      {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
           onClick={onClose}
         />
       )}
