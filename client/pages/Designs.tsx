@@ -653,10 +653,15 @@ export default function Designs() {
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-2">
+                      <div className="flex items-center gap-3 mb-2 flex-wrap">
                         <h4 className="font-semibold text-gray-900 text-sm truncate">
                           {design.name}
                         </h4>
+                        {design.type === "proof" && (
+                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-lg flex-shrink-0">
+                            Proof
+                          </span>
+                        )}
                         {design.approved && (
                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-lg flex-shrink-0">
                             <CheckCircle2 className="w-3 h-3" />
