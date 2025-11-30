@@ -436,19 +436,19 @@ export default function AdminProofs() {
                 </Button>
               </div>
 
-          {/* Pending Orders Section */}
-          {pendingOrders.length > 0 && !showSendForm && (
-            <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <Package className="w-5 h-5 text-blue-600" />
-                Pending Orders Ready for Proofs
-              </h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Click on any order below to quickly send a proof to that
-                customer
-              </p>
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
+            {/* Pending Orders Section */}
+            {pendingOrders.length > 0 && !showSendForm && (
+              <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-6 mb-4 sm:mb-6">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
+                  <Package className="w-4 sm:w-5 h-4 sm:h-5 text-blue-600" />
+                  Pending Orders Ready for Proofs
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
+                  Click on any order below to quickly send a proof to that
+                  customer
+                </p>
+                <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
+                  <table className="w-full text-left text-xs sm:text-sm">
                   <thead>
                     <tr className="border-b border-gray-200 bg-gray-50">
                       <th className="px-4 py-3 font-semibold text-gray-900">
