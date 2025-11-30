@@ -118,7 +118,7 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
 };
 
 /**
- * Get designs for a specific order
+ * Get designs for a specific order from Supabase
  * Requires: customerId in JWT token, orderId in params
  */
 export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
@@ -134,48 +134,47 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Order ID required" });
     }
 
-    const order = await ecwidAPI.getOrder(parseInt(orderId));
+    // Get the order and verify it belongs to the customer
+    const { data: order, error: orderError } = await supabase
+      .from("orders")
+      .select("id, customer_id, status, created_at")
+      .eq("id", parseInt(orderId))
+      .single();
 
-    if (!order) {
+    if (orderError || !order) {
       return res.status(404).json({ error: "Order not found" });
     }
 
     // Verify order belongs to customer
-    if (order.customerId !== customerId) {
+    if (order.customer_id !== customerId) {
       return res.status(403).json({ error: "Unauthorized" });
+    }
+
+    // Get all order items with design files for this order
+    const { data: orderItems, error: itemsError } = await supabase
+      .from("order_items")
+      .select("id, product_name, design_file_url, quantity, created_at")
+      .eq("order_id", parseInt(orderId))
+      .not("design_file_url", "is", null);
+
+    if (itemsError) {
+      console.error("Failed to fetch order items:", itemsError);
+      return res.status(500).json({ error: "Failed to fetch designs" });
     }
 
     const designs: OrderDesign["designs"] = [];
 
-    if (order.items && Array.isArray(order.items)) {
-      for (const item of order.items) {
-        if (item.attributes && Array.isArray(item.attributes)) {
-          for (const attr of item.attributes) {
-            if (
-              attr.name &&
-              (attr.name.toLowerCase().includes("design") ||
-                attr.name.toLowerCase().includes("file") ||
-                attr.name.toLowerCase().includes("artwork"))
-            ) {
-              designs.push({
-                id: `${order.id}-${item.id}-${attr.id || attr.name}`,
-                name: attr.name || "Design File",
-                description: attr.value?.substring(0, 100),
-                type: attr.name || "design",
-                url: attr.value?.startsWith("http") ? attr.value : undefined,
-                createdAt: order.createDate,
-              });
-            }
-          }
-        }
-
-        if (item.productName) {
+    if (orderItems && orderItems.length > 0) {
+      for (const item of orderItems) {
+        if (item.design_file_url) {
           designs.push({
             id: `${order.id}-${item.id}`,
-            name: item.productName,
-            description: `Design product from order`,
-            type: "product",
-            createdAt: order.createDate,
+            name: item.product_name || "Design File",
+            url: item.design_file_url,
+            description: `Design from order #${order.id}`,
+            type: "design",
+            size: item.quantity ? `Qty: ${item.quantity}` : undefined,
+            createdAt: item.created_at || order.created_at,
           });
         }
       }
@@ -184,11 +183,8 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
     res.json({
       success: true,
       orderId: order.id,
-      orderDate: (order as any).createDate || new Date().toISOString(),
-      orderStatus:
-        (order as any).fulfillmentStatus ||
-        (order as any).paymentStatus ||
-        "processing",
+      orderDate: order.created_at || new Date().toISOString(),
+      orderStatus: order.status || "processing",
       designs,
     });
   } catch (error) {
