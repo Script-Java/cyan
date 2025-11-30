@@ -97,6 +97,11 @@ import {
   handleAddAdminProofComment,
 } from "./routes/proofs";
 import { handleGetAdminPendingOrders } from "./routes/admin-orders";
+import {
+  handleGetAllCustomers,
+  handleGetCustomerDetails,
+  handleSearchCustomers,
+} from "./routes/admin-customers";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
