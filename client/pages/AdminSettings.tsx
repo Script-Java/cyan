@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import AdminSidebar from "@/components/AdminSidebar";
+import MobileAdminPanel from "@/components/MobileAdminPanel";
 import { Settings, Save, AlertCircle } from "lucide-react";
 
 export default function AdminSettings() {
