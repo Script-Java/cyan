@@ -58,13 +58,17 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
     ] = await Promise.all([
       supabase
         .from("order_items")
-        .select("id, order_id, product_name, design_file_url, quantity, created_at")
+        .select(
+          "id, order_id, product_name, design_file_url, quantity, created_at",
+        )
         .in("order_id", orderIds)
         .not("design_file_url", "is", null)
         .order("created_at", { ascending: false }),
       supabase
         .from("proofs")
-        .select("id, order_id, file_url, file_name, description, status, created_at")
+        .select(
+          "id, order_id, file_url, file_name, description, status, created_at",
+        )
         .eq("customer_id", customerId)
         .not("file_url", "is", null)
         .order("created_at", { ascending: false }),

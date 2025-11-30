@@ -781,7 +781,9 @@ export default function Designs() {
                     </p>
                     <div className="flex items-center gap-2">
                       <p className="text-sm text-gray-900 capitalize">
-                        {selectedDesign.type === "proof" ? "Design Proof" : "Uploaded Design"}
+                        {selectedDesign.type === "proof"
+                          ? "Design Proof"
+                          : "Uploaded Design"}
                       </p>
                       {selectedDesign.type === "proof" && (
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-lg">
