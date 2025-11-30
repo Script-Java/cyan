@@ -767,8 +767,26 @@ export default function Designs() {
 
                 {/* Details */}
                 <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs font-semibold text-gray-600 uppercase mb-1">
+                      Order
+                    </p>
+                    <p className="text-sm text-gray-900 font-semibold">
+                      #{selectedDesign.orderId}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs font-semibold text-gray-600 uppercase mb-1">
+                      Date
+                    </p>
+                    <p className="text-sm text-gray-900">
+                      {formatDate(selectedDesign.orderDate || "")}
+                    </p>
+                  </div>
+
                   {selectedDesign.description && (
-                    <div>
+                    <div className="col-span-2">
                       <p className="text-xs font-semibold text-gray-600 uppercase mb-1">
                         Description
                       </p>
