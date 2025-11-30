@@ -239,7 +239,7 @@ export default function AdminSidebar() {
         </nav>
 
         {/* Secondary Navigation */}
-        <div className="border-t border-white/10">
+        <div className="border-t border-white/10 mt-1">
           <nav className="p-3 space-y-0.5">
             {secondaryNavItems.map((item) => (
               <NavLink key={item.label} item={item} />
