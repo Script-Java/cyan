@@ -1067,6 +1067,42 @@ export default function AdminProofs() {
                         )}
                       </div>
 
+                      {/* Approved File Section */}
+                      {proof.file_url && (
+                        <div className="mb-6 p-4 bg-white rounded border border-gray-200">
+                          <p className="text-sm font-medium text-gray-900 mb-3">
+                            Approved Design
+                          </p>
+                          <div className="rounded border border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center mb-3" style={{ maxHeight: '200px', minHeight: '100px' }}>
+                            {proof.file_url.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i) ? (
+                              <img
+                                src={proof.file_url}
+                                alt={proof.file_name || "Approved design"}
+                                className="max-w-full max-h-full object-contain"
+                                onError={(e) => {
+                                  (e.currentTarget as HTMLImageElement).style.display = 'none';
+                                }}
+                              />
+                            ) : (
+                              <div className="flex flex-col items-center justify-center p-6 text-center w-full">
+                                <FileIcon className="w-10 h-10 text-gray-400 mb-2" />
+                                <p className="text-sm text-gray-600">{proof.file_name || 'File'}</p>
+                              </div>
+                            )}
+                          </div>
+                          {proof.file_name && (
+                            <p className="text-xs text-gray-600 mb-2">
+                              {proof.file_name}
+                            </p>
+                          )}
+                          {proof.description && (
+                            <p className="text-sm text-gray-700">
+                              {proof.description}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
                       {/* Comments Section */}
                       {proof.comments && proof.comments.length > 0 && (
                         <div>
