@@ -121,7 +121,7 @@ export default function AdminDashboard() {
       <Header />
       <div className="flex">
         <AdminSidebar />
-        <main className="flex-1 ml-64 min-h-screen bg-black text-white">
+        <main className="flex-1 md:ml-64 min-h-screen bg-black text-white pb-20 md:pb-0">
           <div className="pt-24">
             {/* Header Section */}
             <div className="border-b border-white/10 bg-black">
