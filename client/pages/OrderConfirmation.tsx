@@ -80,6 +80,14 @@ export default function OrderConfirmation() {
   }, []);
 
   useEffect(() => {
+    // Refresh store credit when order confirmation loads
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      fetchStoreCredit();
+    }
+  }, [fetchStoreCredit]);
+
+  useEffect(() => {
     const fetchOrder = async () => {
       try {
         if (!orderId) {
