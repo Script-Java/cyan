@@ -137,6 +137,7 @@ export default function AdminProofs() {
     try {
       setOrdersLoading(true);
 
+      // Fetch Supabase orders only
       const response = await fetch("/api/admin/pending-orders");
 
       if (!response.ok) {
