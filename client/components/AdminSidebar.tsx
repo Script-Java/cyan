@@ -8,7 +8,6 @@ import {
   Target,
   Tag,
   FileText,
-  Globe,
   DollarSign,
   BarChart3,
   Settings,
