@@ -245,12 +245,12 @@ export default function AdminOrders() {
                       </div>
                     </div>
                   ) : (
-                    <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-                      <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-12 text-center">
+                      <Package className="w-12 sm:w-16 h-12 sm:h-16 text-gray-300 mx-auto mb-4" />
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
                         No Orders Found
                       </h3>
-                      <p className="text-gray-600">
+                      <p className="text-sm sm:text-base text-gray-600">
                         {searchTerm || filterStatus !== "all"
                           ? "No orders match your search or filter criteria."
                           : "There are no pending orders at this time."}
@@ -260,31 +260,31 @@ export default function AdminOrders() {
 
                   {/* Summary Stats */}
                   {pendingOrders.length > 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div className="bg-white rounded-lg border border-gray-200 p-6">
-                        <p className="text-gray-600 text-sm mb-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                      <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
+                        <p className="text-gray-600 text-xs sm:text-sm mb-2">
                           Total Orders
                         </p>
-                        <p className="text-3xl font-bold text-gray-900">
+                        <p className="text-2xl sm:text-3xl font-bold text-gray-900">
                           {pendingOrders.length}
                         </p>
                       </div>
-                      <div className="bg-white rounded-lg border border-gray-200 p-6">
-                        <p className="text-gray-600 text-sm mb-2">
+                      <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
+                        <p className="text-gray-600 text-xs sm:text-sm mb-2">
                           Total Revenue
                         </p>
-                        <p className="text-3xl font-bold text-gray-900">
+                        <p className="text-2xl sm:text-3xl font-bold text-gray-900">
                           $
                           {pendingOrders
                             .reduce((sum, order) => sum + order.total, 0)
                             .toFixed(2)}
                         </p>
                       </div>
-                      <div className="bg-white rounded-lg border border-gray-200 p-6">
-                        <p className="text-gray-600 text-sm mb-2">
-                          Average Order Value
+                      <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
+                        <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                          Avg Order Value
                         </p>
-                        <p className="text-3xl font-bold text-gray-900">
+                        <p className="text-2xl sm:text-3xl font-bold text-gray-900">
                           $
                           {(
                             pendingOrders.reduce(
