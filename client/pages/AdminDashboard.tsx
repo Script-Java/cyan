@@ -144,10 +144,10 @@ export default function AdminDashboard() {
             <div className="px-6 lg:px-8 py-6">
               {isLoading ? (
                 <div className="flex justify-center items-center h-96">
-                  <div className="text-gray-600">Loading dashboard...</div>
+                  <div className="text-white/60">Loading dashboard...</div>
                 </div>
               ) : (
-                <div className="space-y-8">
+                <div className="space-y-6">
                   {/* Proof Notifications */}
                   <ProofNotificationAlert />
 
