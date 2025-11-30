@@ -884,32 +884,32 @@ export default function AdminProofs() {
           )}
         </div>
 
-        {/* Error Message */}
-        {error && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex gap-3">
-            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-red-800">{error}</p>
-          </div>
-        )}
+            {/* Error Message */}
+            {error && (
+              <div className="mb-4 sm:mb-6 bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4 flex gap-3">
+                <AlertCircle className="w-4 sm:w-5 h-4 sm:h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <p className="text-xs sm:text-sm text-red-800">{error}</p>
+              </div>
+            )}
 
-        {/* Empty State */}
-        {proofs.length === 0 && !error && (
-          <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-            <Clock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              No Proofs Yet
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Start by sending a proof to a customer.
-            </p>
-            <Button
-              onClick={() => setShowSendForm(true)}
-              className="bg-blue-600 hover:bg-blue-700"
-            >
-              Send Your First Proof
-            </Button>
-          </div>
-        )}
+            {/* Empty State */}
+            {proofs.length === 0 && !error && (
+              <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-12 text-center">
+                <Clock className="w-10 sm:w-12 h-10 sm:h-12 text-gray-400 mx-auto mb-4" />
+                <h2 className="text-base sm:text-xl font-semibold text-gray-900 mb-2">
+                  No Proofs Yet
+                </h2>
+                <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
+                  Start by sending a proof to a customer.
+                </p>
+                <Button
+                  onClick={() => setShowSendForm(true)}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  Send Your First Proof
+                </Button>
+              </div>
+            )}
 
             {/* Pending Proofs Section */}
             {pendingProofs.length > 0 && (
