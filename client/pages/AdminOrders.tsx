@@ -299,6 +299,9 @@ export default function AdminOrders() {
             </div>
           </div>
         </main>
+
+        {/* Mobile Admin Panel */}
+        <MobileAdminPanel />
       </div>
     </>
   );
