@@ -427,10 +427,9 @@ export default function Customers() {
                       </thead>
                       <tbody className="divide-y divide-gray-200">
                         {sortedCustomers.map((customer, index) => (
-                          <>
+                          <React.Fragment key={`customer-${customer.id}`}>
                             {/* Main Row */}
                             <tr
-                              key={`main-${customer.id}`}
                               onClick={() => handleRowClick(customer.id)}
                               className={`hover:bg-blue-50 transition-colors duration-200 cursor-pointer ${
                                 index % 2 === 0 ? "bg-white" : "bg-gray-50"
@@ -725,7 +724,7 @@ export default function Customers() {
                                   </td>
                                 </tr>
                               )}
-                          </>
+                          </React.Fragment>
                         ))}
                       </tbody>
                     </table>
