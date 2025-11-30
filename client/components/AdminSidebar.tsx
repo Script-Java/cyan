@@ -129,27 +129,6 @@ export default function AdminSidebar() {
 
   const secondaryNavItems: NavItem[] = [
     {
-      label: "Sales Channels",
-      icon: <Store className="w-5 h-5" />,
-      children: [
-        {
-          label: "Point of Sale",
-          icon: <Store className="w-4 h-4" />,
-          path: "/admin/sales-channels/pos",
-        },
-        {
-          label: "Online Store",
-          icon: <Globe className="w-4 h-4" />,
-          path: "/admin/sales-channels/online",
-        },
-        {
-          label: "Shop App",
-          icon: <ShoppingCart className="w-4 h-4" />,
-          path: "/admin/sales-channels/shop",
-        },
-      ],
-    },
-    {
       label: "Apps",
       icon: <Plus className="w-5 h-5" />,
       children: [
