@@ -165,16 +165,22 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
     const active = isActive(item.path);
     const isExpanded = expandedItems.includes(item.label);
 
+    const handleClick = () => {
+      if (hasChildren) {
+        toggleExpand(item.label);
+      } else if (item.path) {
+        navigate(item.path);
+        // Close sidebar on mobile after navigation
+        if (onClose && !isOpen) {
+          onClose();
+        }
+      }
+    };
+
     return (
       <div key={item.label}>
         <button
-          onClick={() => {
-            if (hasChildren) {
-              toggleExpand(item.label);
-            } else if (item.path) {
-              navigate(item.path);
-            }
-          }}
+          onClick={handleClick}
           className={cn(
             "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200",
             isChild ? "text-xs" : "text-xs font-medium",
