@@ -60,7 +60,7 @@ export default function AdminDashboard() {
 
       // Fetch pending orders
       if (token) {
-        const response = await fetch("/api/admin/orders/pending", {
+        const response = await fetch("/api/admin/pending-orders", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
