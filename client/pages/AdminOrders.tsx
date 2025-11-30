@@ -135,25 +135,25 @@ export default function AdminOrders() {
                   <div className="text-gray-600">Loading orders...</div>
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div className="space-y-3 sm:space-y-6">
                   {/* Search and Filter */}
-                  <div className="bg-white rounded-lg border border-gray-200 p-4 flex flex-col sm:flex-row gap-4">
+                  <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-4 flex flex-col gap-3">
                     <div className="flex-1 relative">
-                      <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                      <Search className="absolute left-3 top-2.5 w-4 sm:w-5 h-4 sm:h-5 text-gray-400" />
                       <input
                         type="text"
-                        placeholder="Search by order ID, customer name, or email..."
+                        placeholder="Search orders..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <Filter className="w-5 h-5 text-gray-400" />
+                      <Filter className="w-4 sm:w-5 h-4 sm:h-5 text-gray-400 flex-shrink-0" />
                       <select
                         value={filterStatus}
                         onChange={(e) => setFilterStatus(e.target.value)}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="flex-1 px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="all">All Statuses</option>
                         <option value="pending">Pending</option>
