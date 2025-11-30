@@ -258,10 +258,10 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Traffic Section */}
-                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-5">
-                    <div className="mb-4">
-                      <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                        <BarChart3 className="w-5 h-5 text-purple-400" />
+                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
+                    <div className="mb-3 sm:mb-4">
+                      <h2 className="text-sm sm:text-lg font-bold text-white flex items-center gap-2">
+                        <BarChart3 className="w-4 sm:w-5 h-4 sm:h-5 text-purple-400" />
                         Traffic Section
                       </h2>
                       <p className="text-white/60 mt-1 text-xs">
@@ -270,20 +270,17 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Traffic Chart Placeholder */}
-                    <div className="flex items-center justify-center h-40 bg-white/5 rounded-lg border-2 border-dashed border-white/10 mb-4">
+                    <div className="flex items-center justify-center h-24 sm:h-40 bg-white/5 rounded-lg border-2 border-dashed border-white/10 mb-4">
                       <div className="text-center">
-                        <BarChart3 className="w-10 h-10 text-white/40 mx-auto mb-2" />
+                        <BarChart3 className="w-6 sm:w-10 h-6 sm:h-10 text-white/40 mx-auto mb-2" />
                         <p className="text-white/60 font-medium text-xs">
-                          Traffic Chart Placeholder
-                        </p>
-                        <p className="text-white/40 text-xs mt-1">
-                          Your traffic analytics will appear here
+                          Traffic Chart
                         </p>
                       </div>
                     </div>
 
                     {/* Traffic Stats */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
                       <div className="p-3 bg-white/5 rounded-lg">
                         <p className="text-white/60 text-xs mb-1">
                           Total Views
