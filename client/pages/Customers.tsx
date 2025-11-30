@@ -237,7 +237,7 @@ export default function Customers() {
         <div className="hidden lg:block">
           <AdminSidebar />
         </div>
-        <main className="flex-1 lg:ml-64 min-h-screen bg-black text-white px-4 sm:px-10 py-12">
+        <main className="flex-1 lg:ml-64 min-h-screen bg-black text-white px-4 sm:px-10 py-12 pb-20 lg:pb-0">
           <div className="max-w-7xl mx-auto">
             {/* Header Section */}
             <div className="mb-12">
