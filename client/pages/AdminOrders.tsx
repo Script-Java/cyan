@@ -94,13 +94,13 @@ export default function AdminOrders() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "bg-orange-100 text-orange-800";
+        return "bg-orange-500/20 text-orange-300 border border-orange-500/30";
       case "shipped":
-        return "bg-green-100 text-green-800";
+        return "bg-green-500/20 text-green-300 border border-green-500/30";
       case "delivered":
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-500/20 text-blue-300 border border-blue-500/30";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-white/10 text-white/60 border border-white/10";
     }
   };
 
@@ -109,18 +109,18 @@ export default function AdminOrders() {
       <Header />
       <div className="flex">
         <AdminSidebar />
-        <main className="flex-1 md:ml-64 min-h-screen bg-gray-50 pb-20 md:pb-0">
+        <main className="flex-1 md:ml-64 min-h-screen bg-black text-white pb-20 md:pb-0">
           <div className="pt-4 md:pt-6">
             {/* Header Section */}
-            <div className="bg-white border-b border-gray-200">
-              <div className="px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
+            <div className="border-b border-white/10">
+              <div className="px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h1 className="text-xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2 sm:gap-3">
-                      <Package className="w-6 sm:w-8 h-6 sm:h-8 text-orange-600" />
+                    <h1 className="text-2xl sm:text-4xl font-bold text-white flex items-center gap-3">
+                      <Package className="w-7 sm:w-9 h-7 sm:h-9 text-green-400" />
                       Orders Management
                     </h1>
-                    <p className="text-gray-600 mt-1 sm:mt-2 text-sm">
+                    <p className="text-white/60 mt-2 text-sm">
                       Manage and track all orders pending shipment
                     </p>
                   </div>
@@ -129,66 +129,66 @@ export default function AdminOrders() {
             </div>
 
             {/* Main Content */}
-            <div className="px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
+            <div className="px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
               {isLoading ? (
                 <div className="flex justify-center items-center h-48 sm:h-96">
-                  <div className="text-gray-600 text-sm">Loading orders...</div>
+                  <div className="text-white/60 text-sm">Loading orders...</div>
                 </div>
               ) : (
-                <div className="space-y-3 sm:space-y-6">
+                <div className="space-y-6">
                   {/* Search and Filter */}
-                  <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-4 flex flex-col gap-3">
+                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 space-y-4">
                     <div className="flex-1 relative">
-                      <Search className="absolute left-3 top-2.5 w-4 sm:w-5 h-4 sm:h-5 text-gray-400" />
+                      <Search className="absolute left-4 top-3.5 w-5 h-5 text-white/40" />
                       <input
                         type="text"
                         placeholder="Search orders..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                       />
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Filter className="w-4 sm:w-5 h-4 sm:h-5 text-gray-400 flex-shrink-0" />
+                    <div className="flex items-center gap-3">
+                      <Filter className="w-5 h-5 text-white/40 flex-shrink-0" />
                       <select
                         value={filterStatus}
                         onChange={(e) => setFilterStatus(e.target.value)}
-                        className="flex-1 px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                       >
-                        <option value="all">All Statuses</option>
-                        <option value="pending">Pending</option>
-                        <option value="shipped">Shipped</option>
-                        <option value="delivered">Delivered</option>
+                        <option value="all" className="bg-gray-900">All Statuses</option>
+                        <option value="pending" className="bg-gray-900">Pending</option>
+                        <option value="shipped" className="bg-gray-900">Shipped</option>
+                        <option value="delivered" className="bg-gray-900">Delivered</option>
                       </select>
                     </div>
                   </div>
 
                   {/* Orders Table */}
                   {filteredOrders.length > 0 ? (
-                    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
                       <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
                         <table className="w-full text-left text-xs sm:text-sm">
                           <thead>
-                            <tr className="border-b border-gray-200 bg-gray-50">
-                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap">
+                            <tr className="border-b border-white/10 bg-white/5">
+                              <th className="px-4 sm:px-6 py-4 font-semibold text-purple-300 whitespace-nowrap">
                                 Order ID
                               </th>
-                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap hidden sm:table-cell">
+                              <th className="px-4 sm:px-6 py-4 font-semibold text-purple-300 whitespace-nowrap hidden sm:table-cell">
                                 Customer
                               </th>
-                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap hidden md:table-cell">
+                              <th className="px-4 sm:px-6 py-4 font-semibold text-purple-300 whitespace-nowrap hidden md:table-cell">
                                 Email
                               </th>
-                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap hidden lg:table-cell">
+                              <th className="px-4 sm:px-6 py-4 font-semibold text-purple-300 whitespace-nowrap hidden lg:table-cell">
                                 Date
                               </th>
-                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap">
+                              <th className="px-4 sm:px-6 py-4 font-semibold text-purple-300 whitespace-nowrap">
                                 Status
                               </th>
-                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 text-right whitespace-nowrap">
+                              <th className="px-4 sm:px-6 py-4 font-semibold text-purple-300 text-right whitespace-nowrap">
                                 Total
                               </th>
-                              <th className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 text-right whitespace-nowrap">
+                              <th className="px-4 sm:px-6 py-4 font-semibold text-purple-300 text-right whitespace-nowrap">
                                 Action
                               </th>
                             </tr>
@@ -197,31 +197,31 @@ export default function AdminOrders() {
                             {filteredOrders.map((order) => (
                               <tr
                                 key={order.id}
-                                className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                                className="border-b border-white/10 hover:bg-white/5 transition-colors"
                               >
-                                <td className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap">
+                                <td className="px-4 sm:px-6 py-4 font-semibold text-white whitespace-nowrap">
                                   #{order.id}
                                 </td>
-                                <td className="px-2 sm:px-6 py-3 sm:py-4 text-gray-700 whitespace-nowrap hidden sm:table-cell truncate max-w-xs">
+                                <td className="px-4 sm:px-6 py-4 text-white/80 whitespace-nowrap hidden sm:table-cell truncate max-w-xs">
                                   {order.customerName || "Guest"}
                                 </td>
-                                <td className="px-2 sm:px-6 py-3 sm:py-4 text-gray-600 hidden md:table-cell">
-                                  <div className="flex items-center gap-1 truncate max-w-xs">
-                                    <Mail className="w-3 h-3 flex-shrink-0" />
+                                <td className="px-4 sm:px-6 py-4 text-white/60 hidden md:table-cell">
+                                  <div className="flex items-center gap-2 truncate max-w-xs">
+                                    <Mail className="w-4 h-4 flex-shrink-0" />
                                     <span className="truncate text-xs sm:text-sm">{order.customerEmail}</span>
                                   </div>
                                 </td>
-                                <td className="px-2 sm:px-6 py-3 sm:py-4 text-gray-600 hidden lg:table-cell whitespace-nowrap">
-                                  <div className="flex items-center gap-1">
-                                    <Calendar className="w-3 h-3" />
+                                <td className="px-4 sm:px-6 py-4 text-white/60 hidden lg:table-cell whitespace-nowrap">
+                                  <div className="flex items-center gap-2">
+                                    <Calendar className="w-4 h-4" />
                                     <span className="text-xs sm:text-sm">{new Date(
                                       order.dateCreated,
                                     ).toLocaleDateString()}</span>
                                   </div>
                                 </td>
-                                <td className="px-2 sm:px-6 py-3 sm:py-4">
+                                <td className="px-4 sm:px-6 py-4">
                                   <span
-                                    className={`inline-flex items-center px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                                    className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold ${getStatusColor(
                                       order.status,
                                     )}`}
                                   >
@@ -229,13 +229,13 @@ export default function AdminOrders() {
                                       order.status.slice(1)}
                                   </span>
                                 </td>
-                                <td className="px-2 sm:px-6 py-3 sm:py-4 font-semibold text-gray-900 text-right whitespace-nowrap text-xs sm:text-sm">
+                                <td className="px-4 sm:px-6 py-4 font-semibold text-green-300 text-right whitespace-nowrap text-xs sm:text-sm">
                                   ${order.total.toFixed(2)}
                                 </td>
-                                <td className="px-2 sm:px-6 py-3 sm:py-4 text-right">
-                                  <button className="inline-flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs whitespace-nowrap">
+                                <td className="px-4 sm:px-6 py-4 text-right">
+                                  <button className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-green-600/20 text-green-300 hover:bg-green-600/30 transition-colors font-medium text-xs whitespace-nowrap border border-green-600/30">
                                     View
-                                    <ChevronRight className="w-3 h-3 hidden sm:inline" />
+                                    <ChevronRight className="w-4 h-4 hidden sm:inline" />
                                   </button>
                                 </td>
                               </tr>
@@ -245,12 +245,12 @@ export default function AdminOrders() {
                       </div>
                     </div>
                   ) : (
-                    <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-12 text-center">
-                      <Package className="w-12 sm:w-16 h-12 sm:h-16 text-gray-300 mx-auto mb-4" />
-                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+                    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 sm:p-12 text-center">
+                      <Package className="w-16 sm:w-20 h-16 sm:h-20 text-white/20 mx-auto mb-6" />
+                      <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
                         No Orders Found
                       </h3>
-                      <p className="text-sm sm:text-base text-gray-600">
+                      <p className="text-sm sm:text-base text-white/60">
                         {searchTerm || filterStatus !== "all"
                           ? "No orders match your search or filter criteria."
                           : "There are no pending orders at this time."}
@@ -260,31 +260,31 @@ export default function AdminOrders() {
 
                   {/* Summary Stats */}
                   {pendingOrders.length > 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                      <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
-                        <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8">
+                        <p className="text-white/60 text-xs sm:text-sm mb-3 uppercase tracking-wider">
                           Total Orders
                         </p>
-                        <p className="text-2xl sm:text-3xl font-bold text-gray-900">
+                        <p className="text-3xl sm:text-4xl font-bold text-white">
                           {pendingOrders.length}
                         </p>
                       </div>
-                      <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
-                        <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8">
+                        <p className="text-white/60 text-xs sm:text-sm mb-3 uppercase tracking-wider">
                           Total Revenue
                         </p>
-                        <p className="text-2xl sm:text-3xl font-bold text-gray-900">
+                        <p className="text-3xl sm:text-4xl font-bold text-green-300">
                           $
                           {pendingOrders
                             .reduce((sum, order) => sum + order.total, 0)
                             .toFixed(2)}
                         </p>
                       </div>
-                      <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
-                        <p className="text-gray-600 text-xs sm:text-sm mb-2">
+                      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8">
+                        <p className="text-white/60 text-xs sm:text-sm mb-3 uppercase tracking-wider">
                           Avg Order Value
                         </p>
-                        <p className="text-2xl sm:text-3xl font-bold text-gray-900">
+                        <p className="text-3xl sm:text-4xl font-bold text-blue-300">
                           $
                           {(
                             pendingOrders.reduce(
