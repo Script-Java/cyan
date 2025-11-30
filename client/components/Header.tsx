@@ -285,6 +285,29 @@ export default function Header() {
               </button>
             </div>
 
+            {/* Auth Section - shown when not authenticated */}
+            {!isAuthenticated && (
+              <div className="mb-6 space-y-2">
+                <h3 className="text-xs font-semibold text-white/60 uppercase px-4 mb-3">Account</h3>
+                <Link
+                  to="/login"
+                  className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 transition-colors text-blue-300 font-medium text-sm border border-blue-500/30"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <LogIn className="w-5 h-5" />
+                  Log In
+                </Link>
+                <Link
+                  to="/signup"
+                  className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-green-600/20 hover:bg-green-600/30 transition-colors text-green-300 font-medium text-sm border border-green-500/30"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <UserPlus className="w-5 h-5" />
+                  Sign Up
+                </Link>
+              </div>
+            )}
+
             {/* Mobile Search Bar */}
             <form
               onSubmit={handleSearchSubmit}
