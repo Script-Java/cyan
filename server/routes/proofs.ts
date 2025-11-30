@@ -357,6 +357,7 @@ export const handleGetProofNotifications: RequestHandler = async (req, res) => {
 
 /**
  * Admin: Send proof to customer
+ * Note: Only allows sending proofs for orders from Supabase database
  */
 export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
   try {
@@ -366,27 +367,26 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Order ID is required" });
     }
 
-    // Look up customer ID from order if not provided
-    let resolvedCustomerId = customerId;
+    // Validate order exists in Supabase (required)
+    const { data: order, error: orderError } = await supabase
+      .from("orders")
+      .select("id, customer_id")
+      .eq("id", orderId)
+      .single();
 
-    if (!resolvedCustomerId) {
-      const { data: order, error: orderError } = await supabase
-        .from("orders")
-        .select("customer_id")
-        .eq("id", orderId)
-        .single();
-
-      if (orderError || !order) {
-        return res.status(400).json({ error: "Order not found" });
-      }
-
-      resolvedCustomerId = order.customer_id;
+    if (orderError || !order) {
+      return res
+        .status(404)
+        .json({ error: "Order not found. Only Supabase orders are supported for proofs." });
     }
+
+    // Use customer ID from order lookup
+    const resolvedCustomerId = order.customer_id;
 
     if (!resolvedCustomerId) {
       return res
         .status(400)
-        .json({ error: "Could not determine customer for this order" });
+        .json({ error: "Order has no associated customer" });
     }
 
     let fileUrl: string | undefined;
