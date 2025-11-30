@@ -232,7 +232,7 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-12 h-[calc(100vh-3rem)] w-64 bg-black border-r border-white/10 flex flex-col overflow-hidden">
+    <aside className="hidden md:flex fixed left-0 top-12 h-[calc(100vh-3rem)] w-64 bg-black border-r border-white/10 flex-col overflow-hidden">
       {/* Main Navigation */}
       <div className="flex-1 overflow-y-auto mt-5">
         <nav className="p-3 space-y-0.5">
