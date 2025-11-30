@@ -121,7 +121,10 @@ export default function AdminDashboard() {
     <>
       <Header onMobileMenuClick={() => setSidebarOpen(!sidebarOpen)} />
       <div className="flex">
-        <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        <AdminSidebar
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
         <main className="flex-1 md:ml-64 min-h-screen bg-black text-white">
           <div className="pt-24">
             {/* Header Section */}

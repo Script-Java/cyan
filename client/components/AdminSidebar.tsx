@@ -35,7 +35,10 @@ interface AdminSidebarProps {
   onClose?: () => void;
 }
 
-export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarProps) {
+export default function AdminSidebar({
+  isOpen = true,
+  onClose,
+}: AdminSidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [expandedItems, setExpandedItems] = useState<string[]>(["apps"]);
@@ -254,12 +257,13 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
         />
       )}
 
-      <aside className={cn(
-        "fixed left-0 top-12 h-[calc(100vh-3rem)] w-64 bg-black border-r border-white/10 flex flex-col overflow-hidden transition-all duration-300 z-40",
-        "md:static md:top-0 md:h-auto md:translate-x-0",
-        isOpen ? "translate-x-0" : "-translate-x-full"
-      )}>
-
+      <aside
+        className={cn(
+          "fixed left-0 top-12 h-[calc(100vh-3rem)] w-64 bg-black border-r border-white/10 flex flex-col overflow-hidden transition-all duration-300 z-40",
+          "md:static md:top-0 md:h-auto md:translate-x-0",
+          isOpen ? "translate-x-0" : "-translate-x-full",
+        )}
+      >
         {/* Main Navigation */}
         <div className="flex-1 overflow-y-auto mt-5">
           <nav className="p-3 space-y-0.5">
