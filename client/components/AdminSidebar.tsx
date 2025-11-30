@@ -229,18 +229,18 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-gray-50 border-r border-gray-200 flex flex-col overflow-hidden">
+    <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-black border-r border-white/10 flex flex-col overflow-hidden">
       {/* Main Navigation */}
       <div className="flex-1 overflow-y-auto">
-        <nav className="p-4 space-y-1">
+        <nav className="p-3 space-y-0.5">
           {mainNavItems.map((item) => (
             <NavLink key={item.label} item={item} />
           ))}
         </nav>
 
         {/* Secondary Navigation */}
-        <div className="border-t border-gray-200">
-          <nav className="p-4 space-y-2">
+        <div className="border-t border-white/10">
+          <nav className="p-3 space-y-0.5">
             {secondaryNavItems.map((item) => (
               <NavLink key={item.label} item={item} />
             ))}
@@ -249,25 +249,25 @@ export default function AdminSidebar() {
       </div>
 
       {/* Bottom Settings */}
-      <div className="border-t border-gray-200 p-4">
+      <div className="border-t border-white/10 p-3 space-y-2">
         <button
           onClick={() => navigate("/admin/settings")}
           className={cn(
-            "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-sm font-medium",
+            "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 text-xs font-medium",
             isActive("/admin/settings")
-              ? "bg-blue-100 text-blue-900"
-              : "text-gray-700 hover:bg-gray-100",
+              ? "bg-white/10 text-[#FFD713]"
+              : "text-white/60 hover:bg-white/5 hover:text-white",
           )}
         >
-          <Settings className="w-5 h-5" />
+          <Settings className="w-4 h-4" />
           <span>Settings</span>
         </button>
 
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-200 mt-2"
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className="w-4 h-4" />
           <span>Logout</span>
         </button>
       </div>
