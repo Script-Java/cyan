@@ -154,9 +154,13 @@ export default function AdminProofs() {
   };
 
   const handleSelectOrder = (order: PendingOrder) => {
+    if (!order.customerId) {
+      toast.error("Invalid order: customer ID not found");
+      return;
+    }
     setOrderId(order.id.toString());
     setCustomerId(order.customerId.toString());
-    setCustomerEmail("");
+    setCustomerEmail(order.customerEmail || "");
     setDescription("");
     setShowOrderModal(false);
     setShowSendForm(true);
