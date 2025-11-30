@@ -437,7 +437,7 @@ export default function Designs() {
                       value={filterStatus}
                       onChange={(e) =>
                         setFilterStatus(
-                          e.target.value as "all" | "approved" | "pending",
+                          e.target.value as "all" | "approved" | "pending" | "denied",
                         )
                       }
                       className="px-3 py-2 text-sm font-medium border-0 focus:outline-none bg-transparent cursor-pointer"
