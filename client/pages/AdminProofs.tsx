@@ -196,8 +196,8 @@ export default function AdminProofs() {
 
   const handleSendProof = async () => {
     try {
-      if (!orderId || !customerId || !description) {
-        toast.error("Please fill in all required fields");
+      if (!orderId || !description) {
+        toast.error("Please fill in Order ID and Proof Description");
         return;
       }
 
@@ -205,9 +205,13 @@ export default function AdminProofs() {
 
       const requestBody: any = {
         orderId: parseInt(orderId),
-        customerId: parseInt(customerId),
         description,
       };
+
+      // Add customerId if available (server will look it up from order if not provided)
+      if (customerId) {
+        requestBody.customerId = parseInt(customerId);
+      }
 
       // If a file is uploaded, convert it to base64 and include it
       if (uploadedFile) {
