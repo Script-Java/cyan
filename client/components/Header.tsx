@@ -9,6 +9,9 @@ import {
   Bookmark,
   BarChart3,
   Search,
+  LogIn,
+  UserPlus,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStoreCredit } from "@/hooks/useStoreCredit";
