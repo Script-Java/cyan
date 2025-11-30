@@ -314,12 +314,12 @@ export default function Proofs() {
                   Review and approve design proofs for your orders
                 </p>
               </div>
-              {unreadCount > 0 && (
+              {pendingProofsCount > 0 && (
                 <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-4 py-2">
                   <Bell className="w-5 h-5 text-blue-600" />
                   <span className="text-sm font-medium text-blue-900">
-                    {unreadCount} new {unreadCount === 1 ? "proof" : "proofs"}{" "}
-                    ready
+                    {pendingProofsCount} {pendingProofsCount === 1 ? "proof" : "proofs"}{" "}
+                    awaiting your review
                   </span>
                 </div>
               )}
