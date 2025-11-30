@@ -234,6 +234,8 @@ export function createServer() {
     verifyToken,
     handleGetCustomerDetails,
   );
+  app.get("/api/admin/analytics", verifyToken, handleGetAnalytics);
+  app.get("/api/admin/finance", verifyToken, handleGetFinance);
 
   // ===== Store Credit Routes (Protected - admin only) =====
   app.get(
