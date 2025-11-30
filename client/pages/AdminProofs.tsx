@@ -804,17 +804,17 @@ export default function AdminProofs() {
                   </button>
                 </div>
 
-                <div className="p-6">
-                  {ordersLoading ? (
-                    <div className="flex justify-center items-center h-32">
-                      <div className="text-gray-600">Loading orders...</div>
-                    </div>
-                  ) : pendingOrders.length === 0 ? (
-                    <div className="text-center py-8">
-                      <p className="text-gray-600">
-                        No pending orders available
-                      </p>
-                    </div>
+                  <div className="p-4 sm:p-6">
+                    {ordersLoading ? (
+                      <div className="flex justify-center items-center h-24 sm:h-32">
+                        <div className="text-gray-600 text-sm">Loading orders...</div>
+                      </div>
+                    ) : pendingOrders.length === 0 ? (
+                      <div className="text-center py-4 sm:py-8">
+                        <p className="text-sm sm:text-base text-gray-600">
+                          No pending orders available
+                        </p>
+                      </div>
                   ) : (
                     <div className="overflow-x-auto">
                       <table className="w-full text-left text-sm">
