@@ -830,13 +830,18 @@ export default function Designs() {
                     </p>
                     <div className="flex items-center gap-2">
                       <p className="text-sm text-gray-900 capitalize">
-                        {selectedDesign.type === "proof"
+                        {selectedDesign.type === "proof" || selectedDesign.type === "proof_denied"
                           ? "Design Proof"
                           : "Uploaded Design"}
                       </p>
                       {selectedDesign.type === "proof" && (
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-lg">
                           Proof
+                        </span>
+                      )}
+                      {selectedDesign.type === "proof_denied" && (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-lg">
+                          Denied
                         </span>
                       )}
                     </div>
