@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Home,
@@ -17,6 +18,8 @@ import {
   Plus,
   Eye,
   LogOut,
+  X,
+  Menu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
