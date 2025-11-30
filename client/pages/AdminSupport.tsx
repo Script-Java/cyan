@@ -438,45 +438,45 @@ export default function AdminSupport() {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
                     Open Tickets
                   </p>
-                  <p className="text-3xl font-bold text-gray-900">
+                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">
                     {tickets.filter((t) => t.status === "open").length}
                   </p>
                 </div>
-                <AlertCircle className="w-8 h-8 text-red-600" />
+                <AlertCircle className="w-6 sm:w-8 h-6 sm:h-8 text-red-600" />
               </div>
             </div>
 
-            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
                     In Progress
                   </p>
-                  <p className="text-3xl font-bold text-gray-900">
+                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">
                     {tickets.filter((t) => t.status === "in-progress").length}
                   </p>
                 </div>
-                <Clock className="w-8 h-8 text-yellow-600" />
+                <Clock className="w-6 sm:w-8 h-6 sm:h-8 text-yellow-600" />
               </div>
             </div>
 
-            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
                     Resolved
                   </p>
-                  <p className="text-3xl font-bold text-gray-900">
+                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">
                     {tickets.filter((t) => t.status === "resolved").length}
                   </p>
                 </div>
-                <CheckCircle className="w-8 h-8 text-green-600" />
+                <CheckCircle className="w-6 sm:w-8 h-6 sm:h-8 text-green-600" />
               </div>
             </div>
           </div>
