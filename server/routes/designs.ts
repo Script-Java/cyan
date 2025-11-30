@@ -149,12 +149,13 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
 
         // Add proof to the order group
         if (proof.file_url) {
+          const isDenied = proof.status === "denied";
           orderDesignGroup.designs.push({
             id: `proof-${proof.id}`,
             name: proof.file_name || "Design Proof",
             url: proof.file_url,
             description: proof.description || "Design proof for approval",
-            type: "proof",
+            type: isDenied ? "proof_denied" : "proof",
             createdAt: proof.created_at || order.created_at,
             approved: proof.status === "approved",
           });
