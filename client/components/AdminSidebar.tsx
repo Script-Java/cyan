@@ -116,11 +116,6 @@ export default function AdminSidebar() {
       path: "/admin/content",
     },
     {
-      label: "Markets",
-      icon: <Globe className="w-5 h-5" />,
-      path: "/admin/markets",
-    },
-    {
       label: "Finance",
       icon: <DollarSign className="w-5 h-5" />,
       path: "/admin/finance",
