@@ -153,13 +153,13 @@ export default function AdminDashboard() {
 
                   {/* Pending Orders Section */}
                   {pendingOrdersCount > 0 && (
-                    <div className="bg-white rounded-lg border border-gray-200 p-8">
-                      <div className="mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                          <Package className="w-7 h-7 text-orange-600" />
+                    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-5">
+                      <div className="mb-4">
+                        <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                          <Package className="w-5 h-5 text-[#FFD713]" />
                           Pending Orders
                         </h2>
-                        <p className="text-gray-600 mt-2">
+                        <p className="text-white/60 mt-1 text-xs">
                           {pendingOrdersCount} order
                           {pendingOrdersCount !== 1 ? "s" : ""} awaiting
                           shipment
@@ -168,25 +168,25 @@ export default function AdminDashboard() {
 
                       {/* Orders Table */}
                       <div className="overflow-x-auto">
-                        <table className="w-full text-left text-sm">
+                        <table className="w-full text-left text-xs">
                           <thead>
-                            <tr className="border-b border-gray-200 bg-gray-50">
-                              <th className="px-4 py-3 font-semibold text-gray-900">
+                            <tr className="border-b border-white/10">
+                              <th className="px-3 py-2 font-semibold text-white/80">
                                 Order ID
                               </th>
-                              <th className="px-4 py-3 font-semibold text-gray-900">
+                              <th className="px-3 py-2 font-semibold text-white/80">
                                 Customer
                               </th>
-                              <th className="px-4 py-3 font-semibold text-gray-900">
+                              <th className="px-3 py-2 font-semibold text-white/80">
                                 Email
                               </th>
-                              <th className="px-4 py-3 font-semibold text-gray-900">
+                              <th className="px-3 py-2 font-semibold text-white/80">
                                 Date
                               </th>
-                              <th className="px-4 py-3 font-semibold text-gray-900 text-right">
+                              <th className="px-3 py-2 font-semibold text-white/80 text-right">
                                 Total
                               </th>
-                              <th className="px-4 py-3 font-semibold text-gray-900">
+                              <th className="px-3 py-2 font-semibold text-white/80">
                                 Action
                               </th>
                             </tr>
@@ -195,29 +195,29 @@ export default function AdminDashboard() {
                             {pendingOrders.map((order) => (
                               <tr
                                 key={order.id}
-                                className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                                className="border-b border-white/5 hover:bg-white/5 transition-colors"
                               >
-                                <td className="px-4 py-4 font-semibold text-gray-900">
+                                <td className="px-3 py-2 font-semibold text-white">
                                   #{order.id}
                                 </td>
-                                <td className="px-4 py-4 text-gray-700">
+                                <td className="px-3 py-2 text-white/80">
                                   {order.customerName || "Guest"}
                                 </td>
-                                <td className="px-4 py-4 text-gray-600 flex items-center gap-2">
-                                  <Mail className="w-4 h-4" />
+                                <td className="px-3 py-2 text-white/60 flex items-center gap-2">
+                                  <Mail className="w-3 h-3" />
                                   {order.customerEmail}
                                 </td>
-                                <td className="px-4 py-4 text-gray-600 flex items-center gap-2">
-                                  <Calendar className="w-4 h-4" />
+                                <td className="px-3 py-2 text-white/60 flex items-center gap-2">
+                                  <Calendar className="w-3 h-3" />
                                   {new Date(
                                     order.dateCreated,
                                   ).toLocaleDateString()}
                                 </td>
-                                <td className="px-4 py-4 font-semibold text-gray-900 text-right">
+                                <td className="px-3 py-2 font-semibold text-white text-right">
                                   ${order.total.toFixed(2)}
                                 </td>
-                                <td className="px-4 py-4">
-                                  <button className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-medium text-xs">
+                                <td className="px-3 py-2">
+                                  <button className="inline-flex items-center gap-1 px-2 py-1 rounded bg-blue-600/30 text-blue-300 hover:bg-blue-600/50 transition-colors font-medium text-xs">
                                     View
                                     <ChevronRight className="w-3 h-3" />
                                   </button>
