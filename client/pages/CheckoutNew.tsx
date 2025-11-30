@@ -349,6 +349,9 @@ export default function CheckoutNew() {
   };
 
   const handlePaymentSuccess = (token: string) => {
+    // Refresh store credit after successful payment
+    fetchStoreCredit();
+
     // Redirect to order confirmation page
     if (createdOrderId) {
       setTimeout(() => {
