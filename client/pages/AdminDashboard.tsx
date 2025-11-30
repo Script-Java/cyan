@@ -15,6 +15,8 @@ import {
   Calendar,
   Mail,
   Upload,
+  Home,
+  ShoppingCart,
 } from "lucide-react";
 
 interface PendingOrder {
