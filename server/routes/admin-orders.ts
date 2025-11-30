@@ -14,75 +14,48 @@ interface OrderWithCustomer {
 }
 
 /**
- * Get all pending/unshipped orders from Supabase only (admin only)
- * Returns orders that haven't shipped yet
- * Note: Only fetches from Supabase, not from Ecwid
+ * Get all pending orders from Supabase only (admin only)
+ * Uses the same getPendingOrders function as OrderHistory
+ * Returns orders that have status="pending" with customer details
+ * Note: Only fetches from Supabase database, not from Ecwid
  */
 export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
   try {
-    const allOrders: OrderWithCustomer[] = [];
+    // Use the same function as OrderHistory for consistency
+    const pendingOrders = await getPendingOrders();
 
-    // Fetch only from Supabase
-    try {
-      const { data: supabaseOrders, error } = await supabase
-        .from("orders")
-        .select(
-          `
-          id,
-          customer_id,
-          status,
-          total,
-          created_at,
-          customers:customer_id (id, email, first_name, last_name)
-        `,
-        )
-        .in("status", ["pending", "paid", "processing", "ready_to_ship"]);
-
-      if (error) {
-        console.error("Failed to fetch Supabase orders:", error);
-        return res
-          .status(500)
-          .json({ error: "Failed to fetch orders from database" });
-      }
-
-      if (supabaseOrders && Array.isArray(supabaseOrders)) {
-        const pendingSupabaseOrders = supabaseOrders.map((order: any) => ({
-          id: order.id,
-          customerId: order.customer_id,
-          customerName:
-            order.customers && Array.isArray(order.customers)
-              ? `${order.customers[0]?.first_name || ""} ${order.customers[0]?.last_name || ""}`.trim()
-              : order.customers
-                ? `${order.customers.first_name || ""} ${order.customers.last_name || ""}`.trim()
-                : "Guest",
-          customerEmail:
-            order.customers && Array.isArray(order.customers)
-              ? order.customers[0]?.email || "N/A"
-              : order.customers?.email || "N/A",
-          status: order.status,
-          total: order.total || 0,
-          dateCreated: order.created_at || new Date().toISOString(),
-          source: "supabase" as const,
-        }));
-        allOrders.push(...pendingSupabaseOrders);
-      }
-    } catch (supabaseError) {
-      console.error("Failed to fetch Supabase orders:", supabaseError);
-      return res
-        .status(500)
-        .json({ error: "Failed to fetch orders from database" });
+    if (!pendingOrders || pendingOrders.length === 0) {
+      return res.json({
+        success: true,
+        orders: [],
+        count: 0,
+      });
     }
 
-    // Sort by date (newest first)
-    const sortedOrders = allOrders.sort(
-      (a, b) =>
-        new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime(),
-    );
+    // Format orders with customer details
+    const formattedOrders = pendingOrders.map((order: any) => ({
+      id: order.id,
+      customerId: order.customer_id,
+      customerName:
+        order.customers && Array.isArray(order.customers)
+          ? `${order.customers[0]?.first_name || ""} ${order.customers[0]?.last_name || ""}`.trim()
+          : order.customers
+            ? `${order.customers.first_name || ""} ${order.customers.last_name || ""}`.trim()
+            : "Guest",
+      customerEmail:
+        order.customers && Array.isArray(order.customers)
+          ? order.customers[0]?.email || "N/A"
+          : order.customers?.email || "N/A",
+      status: order.status,
+      total: order.total || 0,
+      dateCreated: order.created_at || new Date().toISOString(),
+      source: "supabase" as const,
+    }));
 
     res.json({
       success: true,
-      orders: sortedOrders,
-      count: sortedOrders.length,
+      orders: formattedOrders,
+      count: formattedOrders.length,
     });
   } catch (error) {
     console.error("Get admin pending orders error:", error);
