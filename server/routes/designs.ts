@@ -49,24 +49,42 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
       });
     }
 
-    // Get all order items with design files for these orders
     const orderIds = orders.map((o) => o.id);
-    const { data: orderItems, error: itemsError } = await supabase
-      .from("order_items")
-      .select("id, order_id, product_name, design_file_url, quantity, created_at")
-      .in("order_id", orderIds)
-      .not("design_file_url", "is", null)
-      .order("created_at", { ascending: false });
+
+    // Fetch both order items with designs and proofs in parallel
+    const [
+      { data: orderItems, error: itemsError },
+      { data: proofs, error: proofsError },
+    ] = await Promise.all([
+      supabase
+        .from("order_items")
+        .select("id, order_id, product_name, design_file_url, quantity, created_at")
+        .in("order_id", orderIds)
+        .not("design_file_url", "is", null)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("proofs")
+        .select("id, order_id, file_url, file_name, description, status, created_at")
+        .eq("customer_id", customerId)
+        .not("file_url", "is", null)
+        .order("created_at", { ascending: false }),
+    ]);
 
     if (itemsError) {
       console.error("Failed to fetch order items from Supabase:", itemsError);
       return res.status(500).json({ error: "Failed to fetch designs" });
     }
 
+    if (proofsError) {
+      console.error("Failed to fetch proofs from Supabase:", proofsError);
+      return res.status(500).json({ error: "Failed to fetch proofs" });
+    }
+
     // Group designs by order
     const designsByOrder: OrderDesign[] = [];
     const ordersWithDesigns = new Set<number>();
 
+    // Add order items (uploaded designs)
     if (orderItems && orderItems.length > 0) {
       for (const item of orderItems) {
         const order = orders.find((o) => o.id === item.order_id);
@@ -102,6 +120,49 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
         }
       }
     }
+
+    // Add proofs (design approvals)
+    if (proofs && proofs.length > 0) {
+      for (const proof of proofs) {
+        const order = orders.find((o) => o.id === proof.order_id);
+        if (!order) continue;
+
+        ordersWithDesigns.add(proof.order_id);
+
+        // Find or create the order design group
+        let orderDesignGroup = designsByOrder.find(
+          (og) => og.orderId === proof.order_id,
+        );
+        if (!orderDesignGroup) {
+          orderDesignGroup = {
+            orderId: proof.order_id,
+            orderDate: order.created_at || new Date().toISOString(),
+            orderStatus: order.status || "processing",
+            designs: [],
+          };
+          designsByOrder.push(orderDesignGroup);
+        }
+
+        // Add proof to the order group
+        if (proof.file_url) {
+          orderDesignGroup.designs.push({
+            id: `proof-${proof.id}`,
+            name: proof.file_name || "Design Proof",
+            url: proof.file_url,
+            description: proof.description || "Design proof for approval",
+            type: "proof",
+            createdAt: proof.created_at || order.created_at,
+            approved: proof.status === "approved",
+          });
+        }
+      }
+    }
+
+    // Sort orders by date
+    designsByOrder.sort(
+      (a, b) =>
+        new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime(),
+    );
 
     res.json({
       success: true,
