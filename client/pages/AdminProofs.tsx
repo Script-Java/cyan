@@ -57,6 +57,14 @@ interface AdminProofsResponse {
   unreadNotifications: number;
 }
 
+interface OrderItem {
+  id?: number;
+  quantity?: number;
+  product_name?: string;
+  options?: Record<string, any>;
+  design_file_url?: string;
+}
+
 interface PendingOrder {
   id: number;
   customerId: number;
@@ -66,6 +74,7 @@ interface PendingOrder {
   total: number;
   dateCreated: string;
   source: "ecwid" | "supabase";
+  orderItems?: OrderItem[];
 }
 
 interface PendingOrdersResponse {
