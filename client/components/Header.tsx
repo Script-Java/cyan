@@ -26,8 +26,10 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const ecwidScriptLoaded = useRef(false);
   const { storeCredit, fetchStoreCredit } = useStoreCredit();
+  const isAdminPage = location.pathname.startsWith("/admin");
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
