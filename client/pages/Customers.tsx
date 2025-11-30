@@ -209,12 +209,12 @@ export default function Customers() {
   }) => (
     <button
       onClick={() => handleSort(column)}
-      className="flex items-center gap-2 hover:text-[#030140] transition-colors"
+      className="flex items-center gap-2 hover:text-[#FFD713] transition-colors"
     >
       {label}
       <ArrowUpDown
         className={`w-4 h-4 transition-all ${
-          sortColumn === column ? "text-[#030140]" : "text-gray-400"
+          sortColumn === column ? "text-[#FFD713]" : "text-white/40"
         }`}
       />
     </button>
@@ -227,468 +227,452 @@ export default function Customers() {
         <div className="hidden lg:block">
           <AdminSidebar />
         </div>
-        <main className="flex-1 lg:ml-64 min-h-screen bg-white">
-          <div className="pt-0">
+        <main className="flex-1 lg:ml-64 min-h-screen bg-black text-white px-4 sm:px-10 py-12">
+          <div className="max-w-7xl mx-auto">
             {/* Header Section */}
-            <div className="bg-gradient-to-r from-[#030140] to-[#1a1860] text-white sticky top-0 z-10">
-              <div className="px-4 sm:px-6 lg:px-8 py-8">
-                <div className="flex items-start justify-between">
+            <div className="mb-12">
+              <h1 className="text-3xl sm:text-4xl font-bold mb-2">Customers</h1>
+              <p className="text-white/60">
+                Manage and analyze all customer information
+              </p>
+            </div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+                <div className="flex items-center justify-between">
                   <div>
-                    <h1 className="text-3xl sm:text-4xl font-bold flex items-center gap-3">
-                      <div className="p-2 bg-white/10 rounded-lg backdrop-blur">
-                        <Users className="w-8 h-8" />
-                      </div>
-                      Customers
-                    </h1>
-                    <p className="text-white/70 mt-2 text-sm sm:text-base">
-                      Manage and analyze all customer information
+                    <p className="text-white/60 text-sm font-medium mb-2">
+                      Total Customers
                     </p>
+                    <p className="text-3xl sm:text-4xl font-bold text-white">
+                      {stats.totalCustomers}
+                    </p>
+                  </div>
+                  <div className="p-3 bg-[#FFD713]/20 rounded-lg">
+                    <Users className="w-6 h-6 text-[#FFD713]" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white/60 text-sm font-medium mb-2">
+                      Active Customers
+                    </p>
+                    <p className="text-3xl sm:text-4xl font-bold text-white">
+                      {stats.customersWithOrders}
+                    </p>
+                  </div>
+                  <div className="p-3 bg-purple-500/20 rounded-lg">
+                    <ShoppingBag className="w-6 h-6 text-purple-400" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white/60 text-sm font-medium mb-2">
+                      Total Revenue
+                    </p>
+                    <p className="text-3xl sm:text-4xl font-bold text-white">
+                      ${stats.totalRevenue.toFixed(0)}
+                    </p>
+                  </div>
+                  <div className="p-3 bg-[#FFD713]/20 rounded-lg">
+                    <DollarSign className="w-6 h-6 text-[#FFD713]" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white/60 text-sm font-medium mb-2">
+                      Avg Order Value
+                    </p>
+                    <p className="text-3xl sm:text-4xl font-bold text-white">
+                      ${stats.avgOrderValue.toFixed(0)}
+                    </p>
+                  </div>
+                  <div className="p-3 bg-purple-500/20 rounded-lg">
+                    <TrendingUp className="w-6 h-6 text-purple-400" />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Main Content */}
-            <div className="px-4 sm:px-6 lg:px-8 py-8">
-              {/* Stats Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-300">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-gray-600 text-sm font-medium mb-2">
-                        Total Customers
-                      </p>
-                      <p className="text-4xl font-bold text-[#030140]">
-                        {stats.totalCustomers}
-                      </p>
-                    </div>
-                    <div className="p-3 bg-[#030140]/10 rounded-lg">
-                      <Users className="w-6 h-6 text-[#030140]" />
-                    </div>
-                  </div>
+            {/* Search and Filter Controls */}
+            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 mb-8">
+              <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-3.5 w-5 h-5 text-white/40" />
+                  <input
+                    type="text"
+                    placeholder="Search by name, email, or company..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all text-white placeholder-white/40"
+                  />
                 </div>
 
-                <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-300">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-gray-600 text-sm font-medium mb-2">
-                        Active Customers
-                      </p>
-                      <p className="text-4xl font-bold text-[#030140]">
-                        {stats.customersWithOrders}
-                      </p>
-                    </div>
-                    <div className="p-3 bg-[#FFD713]/20 rounded-lg">
-                      <ShoppingBag className="w-6 h-6 text-[#FFD713]" />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-300">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-gray-600 text-sm font-medium mb-2">
-                        Total Revenue
-                      </p>
-                      <p className="text-4xl font-bold text-[#030140]">
-                        ${stats.totalRevenue.toFixed(0)}
-                      </p>
-                    </div>
-                    <div className="p-3 bg-[#030140]/10 rounded-lg">
-                      <DollarSign className="w-6 h-6 text-[#030140]" />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-300">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-gray-600 text-sm font-medium mb-2">
-                        Avg Order Value
-                      </p>
-                      <p className="text-4xl font-bold text-[#030140]">
-                        ${stats.avgOrderValue.toFixed(0)}
-                      </p>
-                    </div>
-                    <div className="p-3 bg-[#FFD713]/20 rounded-lg">
-                      <TrendingUp className="w-6 h-6 text-[#FFD713]" />
-                    </div>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <Filter className="w-5 h-5 text-white/60" />
+                  <select
+                    value={filterOption}
+                    onChange={(e) =>
+                      setFilterOption(e.target.value as typeof filterOption)
+                    }
+                    className="px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all text-white"
+                  >
+                    <option value="all">All Customers</option>
+                    <option value="with-orders">With Orders</option>
+                    <option value="no-orders">No Orders</option>
+                  </select>
                 </div>
               </div>
 
-              {/* Search and Filter Controls */}
-              <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 mb-6 shadow-sm">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="Search by name, email, or company..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#030140] focus:border-transparent transition-all"
-                    />
-                  </div>
+              <p className="text-sm text-white/60">
+                Showing <span className="font-semibold text-white">{sortedCustomers.length}</span> of{" "}
+                <span className="font-semibold text-white">{customers.length}</span> customers
+              </p>
+            </div>
 
-                  <div className="flex items-center gap-2">
-                    <Filter className="w-5 h-5 text-gray-500" />
-                    <select
-                      value={filterOption}
-                      onChange={(e) =>
-                        setFilterOption(e.target.value as typeof filterOption)
-                      }
-                      className="px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#030140] focus:border-transparent bg-white transition-all"
-                    >
-                      <option value="all">All Customers</option>
-                      <option value="with-orders">With Orders</option>
-                      <option value="no-orders">No Orders</option>
-                    </select>
-                  </div>
+            {/* Table */}
+            {isLoading ? (
+              <div className="flex justify-center items-center h-96">
+                <div className="text-center">
+                  <Users className="w-12 h-12 text-white/40 mx-auto mb-3 animate-pulse" />
+                  <p className="text-white/60 font-medium">Loading customers...</p>
                 </div>
-
-                <p className="text-sm text-gray-600 mt-3">
-                  Showing <span className="font-semibold text-gray-900">{sortedCustomers.length}</span> of{" "}
-                  <span className="font-semibold text-gray-900">{customers.length}</span> customers
-                </p>
               </div>
+            ) : error ? (
+              <div className="flex justify-center items-center h-96">
+                <div className="text-center">
+                  <p className="text-red-400 font-medium">{error}</p>
+                  <Button onClick={fetchCustomers} className="mt-4">
+                    Retry
+                  </Button>
+                </div>
+              </div>
+            ) : sortedCustomers.length === 0 ? (
+              <div className="flex justify-center items-center h-96">
+                <div className="text-center">
+                  <Users className="w-12 h-12 text-white/40 mx-auto mb-3" />
+                  <p className="text-white/60 font-medium">No customers found</p>
+                  <p className="text-white/40 text-sm mt-1">
+                    {searchQuery
+                      ? "Try adjusting your search"
+                      : "Customers will appear here"}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-white/10 bg-white/5">
+                        <th className="px-4 sm:px-6 py-4 text-left w-8"></th>
+                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-white">
+                          <SortHeader label="Name" column="name" />
+                        </th>
+                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-white hidden sm:table-cell">
+                          <SortHeader label="Email" column="email" />
+                        </th>
+                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-white hidden md:table-cell">
+                          Contact
+                        </th>
+                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-white">
+                          <SortHeader label="Orders" column="orders" />
+                        </th>
+                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-white hidden sm:table-cell">
+                          <SortHeader label="Spent" column="spent" />
+                        </th>
+                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-white hidden lg:table-cell">
+                          <SortHeader label="Date" column="date" />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/10">
+                      {sortedCustomers.map((customer, index) => (
+                        <React.Fragment key={`customer-${customer.id}`}>
+                          {/* Main Row */}
+                          <tr
+                            onClick={() => handleRowClick(customer.id)}
+                            className="hover:bg-white/5 transition-colors duration-200 cursor-pointer"
+                          >
+                            <td className="px-4 sm:px-6 py-4">
+                              <ChevronDown
+                                className={`w-5 h-5 text-white/40 transition-transform duration-300 ${
+                                  expandedCustomerId === customer.id
+                                    ? "rotate-180 text-[#FFD713]"
+                                    : ""
+                                }`}
+                              />
+                            </td>
 
-              {/* Table */}
-              {isLoading ? (
-                <div className="flex justify-center items-center h-96">
-                  <div className="text-center">
-                    <Users className="w-12 h-12 text-gray-400 mx-auto mb-3 animate-pulse" />
-                    <p className="text-gray-600 font-medium">Loading customers...</p>
-                  </div>
-                </div>
-              ) : error ? (
-                <div className="flex justify-center items-center h-96">
-                  <div className="text-center">
-                    <p className="text-red-600 font-medium">{error}</p>
-                    <Button onClick={fetchCustomers} className="mt-4">
-                      Retry
-                    </Button>
-                  </div>
-                </div>
-              ) : sortedCustomers.length === 0 ? (
-                <div className="flex justify-center items-center h-96">
-                  <div className="text-center">
-                    <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                    <p className="text-gray-600 font-medium">No customers found</p>
-                    <p className="text-gray-500 text-sm mt-1">
-                      {searchQuery
-                        ? "Try adjusting your search"
-                        : "Customers will appear here"}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
-                        <tr>
-                          <th className="px-4 sm:px-6 py-4 text-left w-8"></th>
-                          <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-[#030140]">
-                            <SortHeader label="Name" column="name" />
-                          </th>
-                          <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-[#030140] hidden sm:table-cell">
-                            <SortHeader label="Email" column="email" />
-                          </th>
-                          <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-[#030140] hidden md:table-cell">
-                            Contact
-                          </th>
-                          <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-[#030140]">
-                            <SortHeader label="Orders" column="orders" />
-                          </th>
-                          <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-[#030140] hidden sm:table-cell">
-                            <SortHeader label="Spent" column="spent" />
-                          </th>
-                          <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-[#030140] hidden lg:table-cell">
-                            <SortHeader label="Date" column="date" />
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200">
-                        {sortedCustomers.map((customer, index) => (
-                          <React.Fragment key={`customer-${customer.id}`}>
-                            {/* Main Row */}
-                            <tr
-                              onClick={() => handleRowClick(customer.id)}
-                              className={`hover:bg-[#030140]/5 transition-colors duration-200 cursor-pointer ${
-                                index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                              }`}
-                            >
-                              <td className="px-4 sm:px-6 py-4">
-                                <ChevronDown
-                                  className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
-                                    expandedCustomerId === customer.id
-                                      ? "rotate-180"
-                                      : ""
-                                  }`}
-                                />
-                              </td>
-
-                              <td className="px-4 sm:px-6 py-4">
-                                <div className="flex items-center gap-3">
-                                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#030140] to-[#1a1860] flex items-center justify-center flex-shrink-0">
-                                    <span className="text-white font-bold text-sm">
-                                      {customer.firstName.charAt(0)}
-                                      {customer.lastName.charAt(0)}
-                                    </span>
-                                  </div>
-                                  <div className="min-w-0">
-                                    <p className="font-semibold text-gray-900 text-sm truncate">
-                                      {customer.firstName} {customer.lastName}
+                            <td className="px-4 sm:px-6 py-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFD713] to-purple-500 flex items-center justify-center flex-shrink-0">
+                                  <span className="text-black font-bold text-sm">
+                                    {customer.firstName.charAt(0)}
+                                    {customer.lastName.charAt(0)}
+                                  </span>
+                                </div>
+                                <div className="min-w-0">
+                                  <p className="font-semibold text-white text-sm truncate">
+                                    {customer.firstName} {customer.lastName}
+                                  </p>
+                                  {customer.company && (
+                                    <p className="text-xs text-white/60 truncate">
+                                      {customer.company}
                                     </p>
-                                    {customer.company && (
-                                      <p className="text-xs text-gray-600 truncate">
-                                        {customer.company}
-                                      </p>
-                                    )}
-                                  </div>
+                                  )}
                                 </div>
-                              </td>
+                              </div>
+                            </td>
 
-                              <td className="px-4 sm:px-6 py-4 hidden sm:table-cell">
-                                <div className="flex items-center gap-2 text-gray-700 text-sm truncate">
-                                  <Mail className="w-4 h-4 text-gray-400 flex-shrink-0 hidden sm:inline" />
-                                  <span className="truncate">{customer.email}</span>
+                            <td className="px-4 sm:px-6 py-4 hidden sm:table-cell">
+                              <div className="flex items-center gap-2 text-white/80 text-sm truncate">
+                                <Mail className="w-4 h-4 text-white/40 flex-shrink-0 hidden sm:inline" />
+                                <span className="truncate">{customer.email}</span>
+                              </div>
+                            </td>
+
+                            <td className="px-4 sm:px-6 py-4 hidden md:table-cell">
+                              {customer.phone ? (
+                                <div className="flex items-center gap-2 text-white/80 text-sm">
+                                  <Phone className="w-4 h-4 text-white/40 flex-shrink-0" />
+                                  {customer.phone}
                                 </div>
-                              </td>
+                              ) : (
+                                <span className="text-sm text-white/40">—</span>
+                              )}
+                            </td>
 
-                              <td className="px-4 sm:px-6 py-4 hidden md:table-cell">
-                                {customer.phone ? (
-                                  <div className="flex items-center gap-2 text-gray-700 text-sm">
-                                    <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                                    {customer.phone}
-                                  </div>
-                                ) : (
-                                  <span className="text-sm text-gray-500">—</span>
-                                )}
-                              </td>
+                            <td className="px-4 sm:px-6 py-4">
+                              <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-[#FFD713]/20">
+                                <span className="font-bold text-[#FFD713] text-sm">
+                                  {customer.orderCount}
+                                </span>
+                              </div>
+                            </td>
 
-                              <td className="px-4 sm:px-6 py-4">
-                                <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-[#FFD713]/20">
-                                  <span className="font-bold text-[#030140] text-sm">
-                                    {customer.orderCount}
-                                  </span>
-                                </div>
-                              </td>
+                            <td className="px-4 sm:px-6 py-4 hidden sm:table-cell">
+                              <div className="font-semibold text-white text-sm">
+                                ${customer.totalSpent.toFixed(2)}
+                              </div>
+                            </td>
 
-                              <td className="px-4 sm:px-6 py-4 hidden sm:table-cell">
-                                <div className="font-semibold text-gray-900 text-sm">
-                                  ${customer.totalSpent.toFixed(2)}
-                                </div>
-                              </td>
+                            <td className="px-4 sm:px-6 py-4 hidden lg:table-cell">
+                              <div className="flex items-center gap-2 text-white/80 text-sm">
+                                <Calendar className="w-4 h-4 text-white/40 flex-shrink-0" />
+                                <span>
+                                  {new Date(customer.createdAt).toLocaleDateString()}
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
 
-                              <td className="px-4 sm:px-6 py-4 hidden lg:table-cell">
-                                <div className="flex items-center gap-2 text-gray-700 text-sm">
-                                  <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                                  <span>
-                                    {new Date(customer.createdAt).toLocaleDateString()}
-                                  </span>
-                                </div>
-                              </td>
-                            </tr>
-
-                            {/* Expanded Details Row */}
-                            {expandedCustomerId === customer.id && expandedDetails && (
-                              <tr className="bg-gradient-to-r from-[#030140]/5 to-[#FFD713]/5 border-b-2 border-[#030140]/10">
-                                <td colSpan={8} className="p-0">
-                                  <div className="px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-                                    {/* Personal Information */}
-                                    <div>
-                                      <h3 className="font-bold text-gray-900 mb-4 text-lg">
-                                        Personal Information
-                                      </h3>
-                                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        <div className="bg-white rounded-lg p-4 border border-gray-200">
-                                          <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
-                                            Email
-                                          </p>
-                                          <p className="text-gray-900 text-sm break-all">
-                                            {expandedDetails.email}
-                                          </p>
-                                        </div>
-
-                                        {expandedDetails.phone && (
-                                          <div className="bg-white rounded-lg p-4 border border-gray-200">
-                                            <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
-                                              Phone
-                                            </p>
-                                            <p className="text-gray-900 text-sm">
-                                              {expandedDetails.phone}
-                                            </p>
-                                          </div>
-                                        )}
-
-                                        {expandedDetails.company && (
-                                          <div className="bg-white rounded-lg p-4 border border-gray-200">
-                                            <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
-                                              Company
-                                            </p>
-                                            <p className="text-gray-900 text-sm">
-                                              {expandedDetails.company}
-                                            </p>
-                                          </div>
-                                        )}
-
-                                        <div className="bg-white rounded-lg p-4 border border-gray-200">
-                                          <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
-                                            Signup Date
-                                          </p>
-                                          <p className="text-gray-900 text-sm">
-                                            {new Date(
-                                              expandedDetails.createdAt
-                                            ).toLocaleDateString()}
-                                          </p>
-                                        </div>
+                          {/* Expanded Details Row */}
+                          {expandedCustomerId === customer.id && expandedDetails && (
+                            <tr className="border-b-2 border-[#FFD713]/30">
+                              <td colSpan={8} className="p-0">
+                                <div className="px-4 sm:px-6 lg:px-8 py-8 space-y-6 bg-white/5 border-t border-white/10">
+                                  {/* Personal Information */}
+                                  <div>
+                                    <h3 className="font-bold text-white mb-4 text-lg">
+                                      Personal Information
+                                    </h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                      <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
+                                        <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
+                                          Email
+                                        </p>
+                                        <p className="text-white text-sm break-all">
+                                          {expandedDetails.email}
+                                        </p>
                                       </div>
-                                    </div>
 
-                                    {/* Customer Statistics */}
-                                    <div>
-                                      <h3 className="font-bold text-gray-900 mb-4 text-lg">
-                                        Customer Statistics
-                                      </h3>
-                                      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        <div className="bg-gradient-to-br from-[#030140]/10 to-[#030140]/5 rounded-lg p-4 border border-[#030140]/20">
-                                          <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
-                                            Total Orders
+                                      {expandedDetails.phone && (
+                                        <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
+                                          <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
+                                            Phone
                                           </p>
-                                          <p className="text-2xl sm:text-3xl font-bold text-[#030140]">
-                                            {expandedDetails.orderCount}
+                                          <p className="text-white text-sm">
+                                            {expandedDetails.phone}
                                           </p>
-                                        </div>
-
-                                        <div className="bg-gradient-to-br from-[#FFD713]/20 to-[#FFD713]/10 rounded-lg p-4 border border-[#FFD713]/30">
-                                          <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
-                                            Total Spent
-                                          </p>
-                                          <p className="text-2xl sm:text-3xl font-bold text-[#030140]">
-                                            ${expandedDetails.totalSpent.toFixed(2)}
-                                          </p>
-                                        </div>
-
-                                        {expandedDetails.storeCredit > 0 && (
-                                          <div className="bg-gradient-to-br from-[#030140]/10 to-[#030140]/5 rounded-lg p-4 border border-[#030140]/20">
-                                            <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
-                                              Store Credit
-                                            </p>
-                                            <p className="text-2xl sm:text-3xl font-bold text-[#030140]">
-                                              ${expandedDetails.storeCredit.toFixed(
-                                                2
-                                              )}
-                                            </p>
-                                          </div>
-                                        )}
-
-                                        {expandedDetails.orderCount > 0 && (
-                                          <div className="bg-gradient-to-br from-[#FFD713]/20 to-[#FFD713]/10 rounded-lg p-4 border border-[#FFD713]/30">
-                                            <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
-                                              Avg Order Value
-                                            </p>
-                                            <p className="text-2xl sm:text-3xl font-bold text-[#030140]">
-                                              ${(
-                                                expandedDetails.totalSpent /
-                                                expandedDetails.orderCount
-                                              ).toFixed(2)}
-                                            </p>
-                                          </div>
-                                        )}
-                                      </div>
-                                    </div>
-
-                                    {/* Order History */}
-                                    {expandedDetails.orders &&
-                                      expandedDetails.orders.length > 0 && (
-                                        <div>
-                                          <h3 className="font-bold text-gray-900 mb-4 text-lg">
-                                            Order History ({expandedDetails.orders.length})
-                                          </h3>
-                                          <div className="space-y-3 max-h-96 overflow-y-auto">
-                                            {expandedDetails.orders.map(
-                                              (order) => (
-                                                <div
-                                                  key={order.id}
-                                                  className="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow"
-                                                >
-                                                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                                                    <div className="flex-1 min-w-0">
-                                                      <p className="font-semibold text-gray-900 text-sm">
-                                                        Order #{order.id}
-                                                      </p>
-                                                      <div className="flex flex-wrap items-center gap-3 mt-2 text-xs sm:text-sm text-gray-600">
-                                                        <span className="flex items-center gap-1">
-                                                          <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
-                                                          {new Date(
-                                                            order.createdAt
-                                                          ).toLocaleDateString()}
-                                                        </span>
-                                                        <span className="flex items-center gap-1">
-                                                          <ShoppingBag className="w-3 h-3 sm:w-4 sm:h-4" />
-                                                          {order.itemCount} item
-                                                          {order.itemCount !==
-                                                            1
-                                                            ? "s"
-                                                            : ""}
-                                                        </span>
-                                                      </div>
-                                                    </div>
-                                                    <div className="text-right">
-                                                      <p className="font-bold text-gray-900 text-sm">
-                                                        ${order.total.toFixed(
-                                                          2
-                                                        )}
-                                                      </p>
-                                                      <span
-                                                        className={`text-xs font-medium inline-block mt-2 px-3 py-1 rounded-full ${
-                                                          order.status ===
-                                                          "pending"
-                                                            ? "bg-yellow-100 text-yellow-800"
-                                                            : order.status ===
-                                                                "completed"
-                                                              ? "bg-green-100 text-green-800"
-                                                              : "bg-gray-100 text-gray-800"
-                                                        }`}
-                                                      >
-                                                        {order.status}
-                                                      </span>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              )
-                                            )}
-                                          </div>
                                         </div>
                                       )}
 
-                                    {(!expandedDetails.orders ||
-                                      expandedDetails.orders.length === 0) && (
-                                      <div className="bg-white rounded-lg p-8 text-center border border-gray-200">
-                                        <ShoppingBag className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                                        <p className="text-gray-600 font-medium">
-                                          No orders yet
+                                      {expandedDetails.company && (
+                                        <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
+                                          <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
+                                            Company
+                                          </p>
+                                          <p className="text-white text-sm">
+                                            {expandedDetails.company}
+                                          </p>
+                                        </div>
+                                      )}
+
+                                      <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
+                                        <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
+                                          Signup Date
                                         </p>
-                                        <p className="text-gray-500 text-sm mt-1">
-                                          This customer hasn't placed any
-                                          orders
+                                        <p className="text-white text-sm">
+                                          {new Date(
+                                            expandedDetails.createdAt
+                                          ).toLocaleDateString()}
                                         </p>
                                       </div>
-                                    )}
+                                    </div>
                                   </div>
-                                </td>
-                              </tr>
-                            )}
-                          </React.Fragment>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+
+                                  {/* Customer Statistics */}
+                                  <div>
+                                    <h3 className="font-bold text-white mb-4 text-lg">
+                                      Customer Statistics
+                                    </h3>
+                                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                      <div className="backdrop-blur-lg bg-[#FFD713]/10 border border-[#FFD713]/20 rounded-lg p-4">
+                                        <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
+                                          Total Orders
+                                        </p>
+                                        <p className="text-2xl sm:text-3xl font-bold text-[#FFD713]">
+                                          {expandedDetails.orderCount}
+                                        </p>
+                                      </div>
+
+                                      <div className="backdrop-blur-lg bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
+                                        <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
+                                          Total Spent
+                                        </p>
+                                        <p className="text-2xl sm:text-3xl font-bold text-purple-400">
+                                          ${expandedDetails.totalSpent.toFixed(2)}
+                                        </p>
+                                      </div>
+
+                                      {expandedDetails.storeCredit > 0 && (
+                                        <div className="backdrop-blur-lg bg-[#FFD713]/10 border border-[#FFD713]/20 rounded-lg p-4">
+                                          <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
+                                            Store Credit
+                                          </p>
+                                          <p className="text-2xl sm:text-3xl font-bold text-[#FFD713]">
+                                            ${expandedDetails.storeCredit.toFixed(
+                                              2
+                                            )}
+                                          </p>
+                                        </div>
+                                      )}
+
+                                      {expandedDetails.orderCount > 0 && (
+                                        <div className="backdrop-blur-lg bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
+                                          <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
+                                            Avg Order Value
+                                          </p>
+                                          <p className="text-2xl sm:text-3xl font-bold text-purple-400">
+                                            ${(
+                                              expandedDetails.totalSpent /
+                                              expandedDetails.orderCount
+                                            ).toFixed(2)}
+                                          </p>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* Order History */}
+                                  {expandedDetails.orders &&
+                                    expandedDetails.orders.length > 0 && (
+                                      <div>
+                                        <h3 className="font-bold text-white mb-4 text-lg">
+                                          Order History ({expandedDetails.orders.length})
+                                        </h3>
+                                        <div className="space-y-3 max-h-96 overflow-y-auto">
+                                          {expandedDetails.orders.map(
+                                            (order) => (
+                                              <div
+                                                key={order.id}
+                                                className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-colors"
+                                              >
+                                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                                  <div className="flex-1 min-w-0">
+                                                    <p className="font-semibold text-white text-sm">
+                                                      Order #{order.id}
+                                                    </p>
+                                                    <div className="flex flex-wrap items-center gap-3 mt-2 text-xs sm:text-sm text-white/60">
+                                                      <span className="flex items-center gap-1">
+                                                        <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+                                                        {new Date(
+                                                          order.createdAt
+                                                        ).toLocaleDateString()}
+                                                      </span>
+                                                      <span className="flex items-center gap-1">
+                                                        <ShoppingBag className="w-3 h-3 sm:w-4 sm:h-4" />
+                                                        {order.itemCount} item
+                                                        {order.itemCount !==
+                                                          1
+                                                          ? "s"
+                                                          : ""}
+                                                      </span>
+                                                    </div>
+                                                  </div>
+                                                  <div className="text-right">
+                                                    <p className="font-bold text-white text-sm">
+                                                      ${order.total.toFixed(
+                                                        2
+                                                      )}
+                                                    </p>
+                                                    <span
+                                                      className={`text-xs font-medium inline-block mt-2 px-3 py-1 rounded-full ${
+                                                        order.status ===
+                                                        "pending"
+                                                          ? "bg-yellow-500/30 text-yellow-300"
+                                                          : order.status ===
+                                                              "completed"
+                                                            ? "bg-green-500/30 text-green-300"
+                                                            : "bg-gray-500/30 text-gray-300"
+                                                      }`}
+                                                    >
+                                                      {order.status}
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            )
+                                          )}
+                                        </div>
+                                      </div>
+                                    )}
+
+                                  {(!expandedDetails.orders ||
+                                    expandedDetails.orders.length === 0) && (
+                                    <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-8 text-center">
+                                      <ShoppingBag className="w-12 h-12 text-white/40 mx-auto mb-2" />
+                                      <p className="text-white/80 font-medium">
+                                        No orders yet
+                                      </p>
+                                      <p className="text-white/60 text-sm mt-1">
+                                        This customer hasn't placed any
+                                        orders
+                                      </p>
+                                    </div>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </main>
       </div>
