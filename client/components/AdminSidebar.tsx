@@ -73,53 +73,53 @@ export default function AdminSidebar() {
   const mainNavItems: NavItem[] = [
     {
       label: "Home",
-      icon: <Home className="w-5 h-5" />,
+      icon: <Home className="w-4 h-4" />,
       path: "/admin",
     },
     {
       label: "Orders",
-      icon: <ShoppingCart className="w-5 h-5" />,
+      icon: <ShoppingCart className="w-4 h-4" />,
       path: "/admin/orders",
       badge: pendingOrdersCount,
     },
     {
       label: "Proofs",
-      icon: <Eye className="w-5 h-5" />,
+      icon: <Eye className="w-4 h-4" />,
       path: "/admin/proofs",
     },
     {
       label: "Products",
-      icon: <Package className="w-5 h-5" />,
+      icon: <Package className="w-4 h-4" />,
       path: "/admin/products",
     },
     {
       label: "Customers",
-      icon: <Users className="w-5 h-5" />,
+      icon: <Users className="w-4 h-4" />,
       path: "/admin/customers",
     },
     {
       label: "Marketing",
-      icon: <Target className="w-5 h-5" />,
+      icon: <Target className="w-4 h-4" />,
       path: "/admin/marketing",
     },
     {
       label: "Discounts",
-      icon: <Tag className="w-5 h-5" />,
+      icon: <Tag className="w-4 h-4" />,
       path: "/admin/discounts",
     },
     {
       label: "Content",
-      icon: <FileText className="w-5 h-5" />,
+      icon: <FileText className="w-4 h-4" />,
       path: "/admin/content",
     },
     {
       label: "Finance",
-      icon: <DollarSign className="w-5 h-5" />,
+      icon: <DollarSign className="w-4 h-4" />,
       path: "/admin/finance",
     },
     {
       label: "Analytics",
-      icon: <BarChart3 className="w-5 h-5" />,
+      icon: <BarChart3 className="w-4 h-4" />,
       path: "/admin/analytics",
     },
   ];
@@ -127,16 +127,16 @@ export default function AdminSidebar() {
   const secondaryNavItems: NavItem[] = [
     {
       label: "Apps",
-      icon: <Plus className="w-5 h-5" />,
+      icon: <Plus className="w-4 h-4" />,
       children: [
         {
           label: "Email",
-          icon: <Mail className="w-4 h-4" />,
+          icon: <Mail className="w-3.5 h-3.5" />,
           path: "/admin/apps/email",
         },
         {
           label: "Forms",
-          icon: <Clipboard className="w-4 h-4" />,
+          icon: <Clipboard className="w-3.5 h-3.5" />,
           path: "/admin/apps/forms",
         },
       ],
