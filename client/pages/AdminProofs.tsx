@@ -920,7 +920,7 @@ export default function AdminProofs() {
                     Awaiting Customer Review ({pendingProofs.length})
                   </h2>
                 </div>
-            <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
               {pendingProofs.map((proof) => (
                 <div
                   key={proof.id}
