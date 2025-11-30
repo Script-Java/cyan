@@ -260,15 +260,6 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
         "md:static md:top-0 md:h-auto md:translate-x-0",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
-        {/* Mobile Close Button */}
-        {!isOpen && (
-          <button
-            onClick={onClose}
-            className="md:hidden absolute top-3 right-3 p-2 text-white/60 hover:text-white transition-colors z-50"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        )}
 
         {/* Main Navigation */}
         <div className="flex-1 overflow-y-auto mt-5">
