@@ -67,9 +67,12 @@ export default function AdminSettings() {
         <Header />
         <div className="flex">
           <AdminSidebar />
-          <main className="flex-1 ml-64 min-h-screen bg-gray-50 flex items-center justify-center">
+          <main className="flex-1 md:ml-64 min-h-screen bg-gray-50 flex items-center justify-center pb-20 md:pb-0">
             <div className="text-gray-600">Loading settings...</div>
           </main>
+
+          {/* Mobile Admin Panel */}
+          <MobileAdminPanel />
         </div>
       </>
     );
@@ -80,7 +83,7 @@ export default function AdminSettings() {
       <Header />
       <div className="flex">
         <AdminSidebar />
-        <main className="flex-1 ml-64 min-h-screen bg-gray-50">
+        <main className="flex-1 md:ml-64 min-h-screen bg-gray-50 pb-20 md:pb-0">
           <div className="pt-6">
             {/* Header Section */}
             <div className="bg-white border-b border-gray-200">
