@@ -331,11 +331,21 @@ export default function CheckoutNew() {
         throw new Error(result.error || "Checkout failed");
       }
 
-      // Store the order ID and show the payment form
+      // Store the order ID
       if (result.order?.id) {
         setCreatedOrderId(result.order.id);
-        setShowPaymentForm(true);
-        toast.success("Order created! Please complete payment below.");
+
+        // If there's a checkout URL (Square Payment Link), redirect to it
+        if (result.checkoutUrl) {
+          toast.success("Order created! Redirecting to payment...");
+          setTimeout(() => {
+            window.location.href = result.checkoutUrl;
+          }, 1000);
+        } else {
+          // Otherwise show the payment form
+          setShowPaymentForm(true);
+          toast.success("Order created! Please complete payment below.");
+        }
       } else {
         throw new Error("No order ID returned from checkout");
       }
