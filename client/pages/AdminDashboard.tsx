@@ -122,7 +122,7 @@ export default function AdminDashboard() {
       <div className="flex">
         <AdminSidebar />
         <main className="flex-1 ml-64 min-h-screen bg-black text-white">
-          <div className="pt-4">
+          <div className="pt-24">
             {/* Header Section */}
             <div className="border-b border-white/10 bg-black">
               <div className="px-6 lg:px-8 py-4">
