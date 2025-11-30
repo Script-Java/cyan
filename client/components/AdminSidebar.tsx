@@ -96,21 +96,6 @@ export default function AdminSidebar() {
       path: "/admin/customers",
     },
     {
-      label: "Marketing",
-      icon: <Target className="w-4 h-4" />,
-      path: "/admin/marketing",
-    },
-    {
-      label: "Discounts",
-      icon: <Tag className="w-4 h-4" />,
-      path: "/admin/discounts",
-    },
-    {
-      label: "Content",
-      icon: <FileText className="w-4 h-4" />,
-      path: "/admin/content",
-    },
-    {
       label: "Finance",
       icon: <DollarSign className="w-4 h-4" />,
       path: "/admin/finance",
