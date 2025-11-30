@@ -391,13 +391,20 @@ export default function AdminProofs() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex justify-center items-center h-64">
-            <div className="text-gray-600 text-lg">Loading proofs...</div>
-          </div>
+      <>
+        <Header />
+        <div className="flex">
+          <AdminSidebar />
+          <main className="flex-1 md:ml-64 min-h-screen bg-gray-50 py-6 md:py-8 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
+            <div className="max-w-6xl mx-auto">
+              <div className="flex justify-center items-center h-48 sm:h-64">
+                <div className="text-gray-600 text-sm">Loading proofs...</div>
+              </div>
+            </div>
+          </main>
+          <MobileAdminPanel />
         </div>
-      </main>
+      </>
     );
   }
 
