@@ -394,8 +394,24 @@ export default function Header() {
                   </Link>
                 </>
               )}
-
             </nav>
+
+            {/* Logout Section - shown when authenticated */}
+            {isAuthenticated && (
+              <div className="mt-6 space-y-2">
+                <h3 className="text-xs font-semibold text-white/60 uppercase px-4 mb-3">Account</h3>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-red-600/20 hover:bg-red-600/30 transition-colors text-red-300 font-medium text-sm border border-red-500/30"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Log Out
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
