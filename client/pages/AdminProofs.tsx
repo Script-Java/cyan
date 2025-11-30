@@ -911,15 +911,15 @@ export default function AdminProofs() {
           </div>
         )}
 
-        {/* Pending Proofs Section */}
-        {pendingProofs.length > 0 && (
-          <div className="mb-8">
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-blue-600" />
-                Awaiting Customer Review ({pendingProofs.length})
-              </h2>
-            </div>
+            {/* Pending Proofs Section */}
+            {pendingProofs.length > 0 && (
+              <div className="mb-6 sm:mb-8">
+                <div className="mb-3 sm:mb-4">
+                  <h2 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
+                    <Clock className="w-4 sm:w-5 h-4 sm:h-5 text-blue-600" />
+                    Awaiting Customer Review ({pendingProofs.length})
+                  </h2>
+                </div>
             <div className="space-y-4">
               {pendingProofs.map((proof) => (
                 <div
