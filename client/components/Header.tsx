@@ -75,8 +75,8 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black text-white border-b border-white/10 h-16">
-      <div className="mx-auto px-4 py-0 h-full flex items-center">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-black text-white border-b border-white/10">
+      <div className="mx-auto px-4 pt-0.5 pb-0">
         <div className="max-w-7xl mx-auto">
           <div
             className="flex items-center justify-between"
