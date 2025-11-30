@@ -154,17 +154,9 @@ export default function AdminProofs() {
   };
 
   const handleSelectOrder = (order: PendingOrder) => {
-    // Use customerId if available, otherwise use a placeholder
-    // The server will look up the customer based on order ID if needed
-    const cId = order.customerId || order.id;
-
-    if (!cId) {
-      toast.error("Invalid order selected");
-      return;
-    }
-
     setOrderId(order.id.toString());
-    setCustomerId(cId.toString());
+    // Server will look up customer ID from order if needed
+    setCustomerId(order.customerId ? order.customerId.toString() : "");
     setCustomerEmail(order.customerEmail || "");
     setDescription("");
     setShowOrderModal(false);
