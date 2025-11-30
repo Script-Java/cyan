@@ -362,10 +362,35 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
   try {
     const { orderId, customerId, description, fileData, fileName } = req.body;
 
-    if (!orderId || !customerId) {
+    if (!orderId) {
       return res
         .status(400)
-        .json({ error: "Order ID and Customer ID are required" });
+        .json({ error: "Order ID is required" });
+    }
+
+    // Look up customer ID from order if not provided
+    let resolvedCustomerId = customerId;
+
+    if (!resolvedCustomerId) {
+      const { data: order, error: orderError } = await supabase
+        .from("orders")
+        .select("customer_id")
+        .eq("id", orderId)
+        .single();
+
+      if (orderError || !order) {
+        return res
+          .status(400)
+          .json({ error: "Order not found" });
+      }
+
+      resolvedCustomerId = order.customer_id;
+    }
+
+    if (!resolvedCustomerId) {
+      return res
+        .status(400)
+        .json({ error: "Could not determine customer for this order" });
     }
 
     let fileUrl: string | undefined;
