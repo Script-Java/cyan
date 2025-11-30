@@ -731,13 +731,24 @@ export default function Designs() {
           {selectedDesign && (
             <>
               <DialogHeader>
-                <DialogTitle className="text-2xl">
-                  {selectedDesign.name}
-                </DialogTitle>
-                <DialogDescription className="text-base mt-2">
-                  Order #{selectedDesign.orderId} •{" "}
-                  {formatDate(selectedDesign.createdAt || "")}
-                </DialogDescription>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <DialogTitle className="text-2xl">
+                      {selectedDesign.name}
+                    </DialogTitle>
+                    <DialogDescription className="text-base mt-2">
+                      {formatDate(selectedDesign.createdAt || "")}
+                    </DialogDescription>
+                  </div>
+                  <div className="flex-shrink-0 text-right">
+                    <div className="text-xs font-semibold text-gray-600 uppercase mb-1">
+                      Order Number
+                    </div>
+                    <div className="text-2xl font-bold text-blue-600">
+                      #{selectedDesign.orderId}
+                    </div>
+                  </div>
+                </div>
               </DialogHeader>
 
               <div className="space-y-6 py-4">
