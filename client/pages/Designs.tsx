@@ -180,10 +180,16 @@ export default function Designs() {
         design.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         design.description?.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesStatus =
-        filterStatus === "all" ||
-        (filterStatus === "approved" && design.approved) ||
-        (filterStatus === "pending" && !design.approved);
+      let matchesStatus = true;
+      if (filterStatus !== "all") {
+        if (filterStatus === "approved") {
+          matchesStatus = design.approved === true;
+        } else if (filterStatus === "pending") {
+          matchesStatus = design.approved === false && design.type !== "proof_denied";
+        } else if (filterStatus === "denied") {
+          matchesStatus = design.type === "proof_denied";
+        }
+      }
 
       return matchesSearch && matchesStatus;
     });
