@@ -128,9 +128,7 @@ export default function AdminDashboard() {
               <div className="px-6 lg:px-8 py-4">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h1 className="text-2xl font-bold text-white">
-                      Dashboard
-                    </h1>
+                    <h1 className="text-2xl font-bold text-white">Dashboard</h1>
                     <p className="text-white/60 mt-1 text-sm">
                       Welcome back! Here's what's happening with your store
                       today.
@@ -239,7 +237,9 @@ export default function AdminDashboard() {
                         className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4 text-left transition-all hover:bg-white/10"
                       >
                         <div className="text-[#FFD713] mb-2">
-                          {React.cloneElement(link.icon, { className: "w-5 h-5" })}
+                          {React.cloneElement(link.icon, {
+                            className: "w-5 h-5",
+                          })}
                         </div>
                         <h3 className="font-semibold text-white mb-1 text-sm">
                           {link.title}
@@ -285,9 +285,7 @@ export default function AdminDashboard() {
                         <p className="text-white/60 text-xs mb-1">
                           Total Views
                         </p>
-                        <p className="text-xl font-bold text-white">
-                          24,580
-                        </p>
+                        <p className="text-xl font-bold text-white">24,580</p>
                         <p className="text-green-400 text-xs mt-1 flex items-center gap-1">
                           <TrendingUp className="w-3 h-3" />
                           +12.5% from last week
@@ -297,9 +295,7 @@ export default function AdminDashboard() {
                         <p className="text-white/60 text-xs mb-1">
                           Unique Visitors
                         </p>
-                        <p className="text-xl font-bold text-white">
-                          3,240
-                        </p>
+                        <p className="text-xl font-bold text-white">3,240</p>
                         <p className="text-green-400 text-xs mt-1 flex items-center gap-1">
                           <TrendingUp className="w-3 h-3" />
                           +8.2% from last week
@@ -309,9 +305,7 @@ export default function AdminDashboard() {
                         <p className="text-white/60 text-xs mb-1">
                           Bounce Rate
                         </p>
-                        <p className="text-xl font-bold text-white">
-                          32.5%
-                        </p>
+                        <p className="text-xl font-bold text-white">32.5%</p>
                         <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
                           <TrendingUp className="w-3 h-3" />
                           +2.1% from last week
@@ -321,9 +315,7 @@ export default function AdminDashboard() {
                         <p className="text-white/60 text-xs mb-1">
                           Avg. Session
                         </p>
-                        <p className="text-xl font-bold text-white">
-                          4m 32s
-                        </p>
+                        <p className="text-xl font-bold text-white">4m 32s</p>
                         <p className="text-green-400 text-xs mt-1 flex items-center gap-1">
                           <TrendingUp className="w-3 h-3" />
                           +0.5m from last week
@@ -355,7 +347,9 @@ export default function AdminDashboard() {
                             <span className="text-3xl font-bold text-[#FFD713]">
                               {liveVisitors}
                             </span>
-                            <span className="text-white/60 text-xs">visitors</span>
+                            <span className="text-white/60 text-xs">
+                              visitors
+                            </span>
                           </div>
                         </div>
                         <div className="relative w-16 h-16">
@@ -385,9 +379,7 @@ export default function AdminDashboard() {
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <div className="p-3 bg-white/5 rounded-lg">
                         <p className="text-white/60 text-xs mb-1">Peak Hours</p>
-                        <p className="text-lg font-bold text-white">
-                          2-4 PM
-                        </p>
+                        <p className="text-lg font-bold text-white">2-4 PM</p>
                         <p className="text-white/40 text-xs mt-1">
                           Your busiest time of day
                         </p>
