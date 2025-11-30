@@ -677,6 +677,11 @@ export default function Designs() {
                             Proof
                           </span>
                         )}
+                        {design.type === "proof_denied" && (
+                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-lg flex-shrink-0">
+                            Denied
+                          </span>
+                        )}
                         {design.approved && (
                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-lg flex-shrink-0">
                             <CheckCircle2 className="w-3 h-3" />
