@@ -49,16 +49,16 @@ const StatCard = ({
   color: string;
   isLive?: boolean;
 }) => (
-  <div className="group backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 hover:border-white/20 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:shadow-white/5">
-    <div className="flex items-start justify-between mb-6">
+  <div className="group backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 hover:border-white/20 rounded-xl p-4 transition-all duration-300 hover:shadow-lg hover:shadow-white/5">
+    <div className="flex items-start justify-between mb-4">
       <div>
-        <p className="text-white/60 text-xs uppercase tracking-widest font-medium mb-1">
+        <p className="text-white/60 text-xs uppercase tracking-widest font-medium mb-0.5">
           {title}
         </p>
-        <p className="text-4xl font-bold text-white tracking-tight">{value}</p>
+        <p className="text-3xl font-bold text-white tracking-tight">{value}</p>
       </div>
       <div
-        className={`p-3 rounded-xl backdrop-blur-xl transition-all duration-300 group-hover:scale-110 ${
+        className={`p-2 rounded-lg backdrop-blur-xl transition-all duration-300 group-hover:scale-110 ${
           isLive
             ? `${color} animate-pulse`
             : `bg-gradient-to-br ${color}`
@@ -68,16 +68,16 @@ const StatCard = ({
       </div>
     </div>
     {trend !== undefined && (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5">
         <div
-          className={`flex items-center gap-1 text-sm font-semibold ${
+          className={`flex items-center gap-0.5 text-xs font-semibold ${
             trend >= 0 ? "text-green-400" : "text-red-400"
           }`}
         >
           {trend >= 0 ? (
-            <ArrowUpRight className="w-4 h-4" />
+            <ArrowUpRight className="w-3 h-3" />
           ) : (
-            <ArrowDownRight className="w-4 h-4" />
+            <ArrowDownRight className="w-3 h-3" />
           )}
           {Math.abs(trend)}%
         </div>
@@ -122,7 +122,6 @@ export default function AdminAnalytics() {
     setIsAuthenticated(true);
     fetchAnalyticsData();
 
-    // Refresh analytics every 30 seconds
     const interval = setInterval(fetchAnalyticsData, 30000);
     return () => clearInterval(interval);
   }, [navigate]);
@@ -213,32 +212,31 @@ export default function AdminAnalytics() {
       <div className="flex">
         <AdminSidebar />
         <main className="flex-1 md:ml-64 min-h-screen bg-black text-white pb-20 md:pb-0">
-          <div className="pt-6">
+          <div className="pt-4">
             {/* Header Section */}
-            <div className="border-b border-white/10 pb-8">
-              <div className="px-6 lg:px-8 py-8">
-                <div className="flex items-start justify-between gap-4">
+            <div className="border-b border-white/10 pb-4">
+              <div className="px-6 lg:px-8 py-5">
+                <div className="flex items-center justify-between gap-4">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2.5 bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-xl">
-                        <BarChart3 className="w-6 h-6 text-green-400" />
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="p-1.5 bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-lg">
+                        <BarChart3 className="w-4 h-4 text-green-400" />
                       </div>
-                      <h1 className="text-4xl font-bold text-white">
+                      <h1 className="text-2xl font-bold text-white">
                         Analytics
                       </h1>
                     </div>
-                    <p className="text-white/50 mt-2 text-sm leading-relaxed">
-                      Real-time insights into customer activity and traffic
-                      performance
+                    <p className="text-white/50 text-xs mt-1">
+                      Real-time customer activity and traffic insights
                     </p>
                   </div>
                   <button
                     onClick={fetchAnalyticsData}
                     disabled={isRefreshing}
-                    className="px-4 py-2.5 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 disabled:from-green-600/50 disabled:to-green-500/50 text-white rounded-xl font-semibold transition-all duration-300 text-sm flex items-center gap-2 whitespace-nowrap"
+                    className="px-3 py-1.5 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 disabled:from-green-600/50 disabled:to-green-500/50 text-white rounded-lg font-medium transition-all duration-300 text-xs flex items-center gap-1.5 whitespace-nowrap"
                   >
                     <RefreshCw
-                      className={`w-4 h-4 ${
+                      className={`w-3 h-3 ${
                         isRefreshing ? "animate-spin" : ""
                       }`}
                     />
@@ -249,12 +247,12 @@ export default function AdminAnalytics() {
             </div>
 
             {/* Main Content */}
-            <div className="px-6 lg:px-8 py-8">
+            <div className="px-6 lg:px-8 py-5">
               {/* Key Metrics Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                 <StatCard
                   icon={
-                    <Activity className="w-5 h-5 text-green-400" />
+                    <Activity className="w-4 h-4 text-green-400" />
                   }
                   title="Active Users Now"
                   value={analytics.activeUsers}
@@ -264,7 +262,7 @@ export default function AdminAnalytics() {
                 />
                 <StatCard
                   icon={
-                    <TrendingUp className="w-5 h-5 text-blue-400" />
+                    <TrendingUp className="w-4 h-4 text-blue-400" />
                   }
                   title="Page Views Today"
                   value={analytics.totalPageViews}
@@ -274,22 +272,22 @@ export default function AdminAnalytics() {
               </div>
 
               {/* Device Breakdown */}
-              <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-2xl p-8 mb-8">
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="p-2.5 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl">
-                    <Smartphone className="w-5 h-5 text-purple-400" />
+              <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-5 mb-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="p-1.5 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg">
+                    <Smartphone className="w-4 h-4 text-purple-400" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-white">
+                    <h2 className="text-sm font-bold text-white">
                       Device Distribution
                     </h2>
-                    <p className="text-white/40 text-xs mt-0.5">
-                      How users access your site
+                    <p className="text-white/40 text-xs">
+                      Traffic by device type
                     </p>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-3 gap-3">
                   {[
                     {
                       name: "Mobile",
@@ -321,26 +319,26 @@ export default function AdminAnalytics() {
                     return (
                       <div
                         key={idx}
-                        className="group backdrop-blur-xl bg-white/5 border border-white/10 hover:border-white/20 rounded-xl p-6 transition-all duration-300"
+                        className="backdrop-blur-xl bg-white/5 border border-white/10 hover:border-white/20 rounded-lg p-3 transition-all duration-300"
                       >
-                        <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center justify-between mb-2">
                           <div>
                             <p className="text-white/60 text-xs uppercase tracking-wide font-medium">
                               {device.name}
                             </p>
-                            <p className="text-2xl font-bold text-white mt-1">
+                            <p className="text-lg font-bold text-white">
                               {device.value}
                             </p>
                           </div>
                           <div
-                            className={`p-3 rounded-lg bg-gradient-to-br ${device.color} transition-transform duration-300 group-hover:scale-110`}
+                            className={`p-2 rounded-lg bg-gradient-to-br ${device.color}`}
                           >
-                            <Icon className={`w-5 h-5 ${device.iconColor}`} />
+                            <Icon className={`w-4 h-4 ${device.iconColor}`} />
                           </div>
                         </div>
 
-                        <div className="space-y-2">
-                          <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                        <div className="space-y-1">
+                          <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                             <div
                               className={`h-full bg-gradient-to-r ${device.color} transition-all duration-500`}
                               style={{
@@ -348,8 +346,8 @@ export default function AdminAnalytics() {
                               }}
                             />
                           </div>
-                          <p className="text-white/40 text-xs font-medium">
-                            {percentage.toFixed(1)}% of traffic
+                          <p className="text-white/40 text-xs">
+                            {percentage.toFixed(1)}%
                           </p>
                         </div>
                       </div>
@@ -359,22 +357,22 @@ export default function AdminAnalytics() {
               </div>
 
               {/* Traffic Sources */}
-              <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-2xl p-8">
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="p-2.5 bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-xl">
-                    <BarChart3 className="w-5 h-5 text-blue-400" />
+              <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="p-1.5 bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-lg">
+                    <BarChart3 className="w-4 h-4 text-blue-400" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-white">
+                    <h2 className="text-sm font-bold text-white">
                       Traffic Sources
                     </h2>
-                    <p className="text-white/40 text-xs mt-0.5">
-                      Where your visitors are coming from
+                    <p className="text-white/40 text-xs">
+                      Where visitors come from
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {trafficData.map((source, idx) => {
                     const percentage =
                       totalTraffic > 0
@@ -383,11 +381,11 @@ export default function AdminAnalytics() {
                     return (
                       <div
                         key={idx}
-                        className={`group backdrop-blur-xl bg-gradient-to-r ${source.color} border ${source.borderColor} rounded-xl p-5 transition-all duration-300 hover:border-white/30`}
+                        className={`backdrop-blur-xl bg-gradient-to-r ${source.color} border ${source.borderColor} rounded-lg p-3 transition-all duration-300 hover:border-white/30`}
                       >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-3">
-                            <span className="text-2xl">{source.icon}</span>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">{source.icon}</span>
                             <div>
                               <p className="text-white font-semibold text-sm">
                                 {source.name}
@@ -397,14 +395,12 @@ export default function AdminAnalytics() {
                               </p>
                             </div>
                           </div>
-                          <div className="text-right">
-                            <p className="text-white font-bold text-lg">
-                              {percentage.toFixed(1)}%
-                            </p>
-                          </div>
+                          <p className="text-white font-bold text-sm">
+                            {percentage.toFixed(1)}%
+                          </p>
                         </div>
 
-                        <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
                           <div
                             className={`h-full ${source.barColor} transition-all duration-500`}
                             style={{
@@ -415,26 +411,6 @@ export default function AdminAnalytics() {
                       </div>
                     );
                   })}
-                </div>
-
-                {/* Traffic Summary */}
-                <div className="mt-8 grid grid-cols-2 gap-4 p-4 bg-white/5 border border-white/10 rounded-xl">
-                  <div>
-                    <p className="text-white/60 text-xs uppercase tracking-wide font-medium">
-                      Total Traffic
-                    </p>
-                    <p className="text-2xl font-bold text-white mt-1">
-                      {totalTraffic}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-white/60 text-xs uppercase tracking-wide font-medium">
-                      Avg per Source
-                    </p>
-                    <p className="text-2xl font-bold text-white mt-1">
-                      {totalTraffic > 0 ? (totalTraffic / 5).toFixed(0) : 0}
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
