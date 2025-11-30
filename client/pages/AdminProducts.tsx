@@ -33,24 +33,24 @@ export default function AdminProducts() {
       <Header />
       <div className="flex">
         <AdminSidebar />
-        <main className="flex-1 md:ml-64 min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 pb-20 md:pb-0">
+        <main className="flex-1 md:ml-64 min-h-screen bg-black text-white pb-20 md:pb-0">
           <div className="pt-6">
             {/* Header Section */}
-            <div className="bg-white border-b border-gray-200">
+            <div className="border-b border-white/10">
               <div className="px-6 lg:px-8 py-8">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h1 className="text-4xl font-bold text-gray-900 flex items-center gap-3">
-                      <div className="p-2 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg">
-                        <Package className="w-8 h-8 text-white" />
+                    <h1 className="text-4xl font-bold text-white flex items-center gap-3">
+                      <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                        <Package className="w-8 h-8 text-green-400" />
                       </div>
                       Products
                     </h1>
-                    <p className="text-gray-600 mt-2">
+                    <p className="text-white/60 mt-2">
                       Manage your product catalog and inventory
                     </p>
                   </div>
-                  <Button className="bg-gradient-to-r from-blue-600 to-blue-700 text-white gap-2">
+                  <Button className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-4 py-2">
                     <Plus className="w-4 h-4" />
                     Add Product
                   </Button>
@@ -61,30 +61,30 @@ export default function AdminProducts() {
             {/* Main Content */}
             <div className="px-6 lg:px-8 py-8">
               {/* Search Section */}
-              <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-8">
                 <div className="flex gap-4">
                   <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
+                    <Search className="absolute left-4 top-3.5 w-5 h-5 text-white/40" />
                     <input
                       type="text"
                       placeholder="Search products..."
-                      className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Placeholder Content */}
-              <div className="flex justify-center items-center h-96 bg-white rounded-xl border border-gray-200">
+              <div className="flex justify-center items-center h-96 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl">
                 <div className="text-center">
-                  <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 font-medium mb-2">
+                  <Package className="w-16 h-16 text-white/20 mx-auto mb-6" />
+                  <p className="text-white font-medium mb-2">
                     No products yet
                   </p>
-                  <p className="text-gray-500 text-sm mb-4">
+                  <p className="text-white/60 text-sm mb-6">
                     Click the "Add Product" button to get started
                   </p>
-                  <Button className="bg-gradient-to-r from-blue-600 to-blue-700 text-white gap-2">
+                  <Button className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-6 py-2">
                     <Plus className="w-4 h-4" />
                     Add Your First Product
                   </Button>
