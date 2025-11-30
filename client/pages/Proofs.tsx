@@ -274,6 +274,7 @@ export default function Proofs() {
 
   const pendingProofs = proofs.filter((p) => p.status === "pending");
   const reviewedProofs = proofs.filter((p) => p.status !== "pending");
+  const pendingProofsCount = pendingProofs.length;
 
   if (isLoading) {
     return (
