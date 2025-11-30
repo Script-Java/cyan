@@ -33,7 +33,7 @@ export default function AdminProducts() {
       <Header />
       <div className="flex">
         <AdminSidebar />
-        <main className="flex-1 ml-64 min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
+        <main className="flex-1 md:ml-64 min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 pb-20 md:pb-0">
           <div className="pt-6">
             {/* Header Section */}
             <div className="bg-white border-b border-gray-200">
