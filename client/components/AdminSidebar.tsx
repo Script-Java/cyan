@@ -31,9 +31,7 @@ interface NavItem {
 export default function AdminSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [expandedItems, setExpandedItems] = useState<string[]>([
-    "apps",
-  ]);
+  const [expandedItems, setExpandedItems] = useState<string[]>(["apps"]);
   const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
 
   useEffect(() => {
@@ -179,7 +177,12 @@ export default function AdminSidebar() {
           )}
         >
           <div className="flex items-center gap-3 flex-1">
-            <span className={cn("flex-shrink-0 transition-colors", active && "text-[#FFD713]")}>
+            <span
+              className={cn(
+                "flex-shrink-0 transition-colors",
+                active && "text-[#FFD713]",
+              )}
+            >
               {item.icon}
             </span>
             <span className="truncate">{item.label}</span>
