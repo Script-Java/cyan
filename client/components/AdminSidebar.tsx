@@ -240,48 +240,72 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
   };
 
   return (
-    <aside className="fixed left-0 top-12 h-[calc(100vh-3rem)] w-64 bg-black border-r border-white/10 flex flex-col overflow-hidden">
-      {/* Main Navigation */}
-      <div className="flex-1 overflow-y-auto mt-5">
-        <nav className="p-3 space-y-0.5">
-          {mainNavItems.map((item) => (
-            <NavLink key={item.label} item={item} />
-          ))}
-        </nav>
+    <>
+      {/* Mobile overlay backdrop */}
+      {!isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={onClose}
+        />
+      )}
 
-        {/* Secondary Navigation */}
-        <div className="border-t border-white/10 mt-1">
+      <aside className={cn(
+        "fixed left-0 top-12 h-[calc(100vh-3rem)] w-64 bg-black border-r border-white/10 flex flex-col overflow-hidden transition-all duration-300 z-40",
+        "md:static md:w-64 md:h-auto",
+        isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+      )}>
+        {/* Mobile Close Button */}
+        {!isOpen && (
+          <button
+            onClick={onClose}
+            className="md:hidden absolute top-3 right-3 p-2 text-white/60 hover:text-white transition-colors z-50"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
+
+        {/* Main Navigation */}
+        <div className="flex-1 overflow-y-auto mt-5">
           <nav className="p-3 space-y-0.5">
-            {secondaryNavItems.map((item) => (
+            {mainNavItems.map((item) => (
               <NavLink key={item.label} item={item} />
             ))}
           </nav>
+
+          {/* Secondary Navigation */}
+          <div className="border-t border-white/10 mt-1">
+            <nav className="p-3 space-y-0.5">
+              {secondaryNavItems.map((item) => (
+                <NavLink key={item.label} item={item} />
+              ))}
+            </nav>
+          </div>
         </div>
-      </div>
 
-      {/* Bottom Settings */}
-      <div className="border-t border-white/10 p-3 space-y-2">
-        <button
-          onClick={() => navigate("/admin/settings")}
-          className={cn(
-            "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 text-xs font-medium",
-            isActive("/admin/settings")
-              ? "bg-white/10 text-[#FFD713]"
-              : "text-white/60 hover:bg-white/5 hover:text-white",
-          )}
-        >
-          <Settings className="w-4 h-4" />
-          <span>Settings</span>
-        </button>
+        {/* Bottom Settings */}
+        <div className="border-t border-white/10 p-3 space-y-2">
+          <button
+            onClick={() => navigate("/admin/settings")}
+            className={cn(
+              "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 text-xs font-medium",
+              isActive("/admin/settings")
+                ? "bg-white/10 text-[#FFD713]"
+                : "text-white/60 hover:bg-white/5 hover:text-white",
+            )}
+          >
+            <Settings className="w-4 h-4" />
+            <span>Settings</span>
+          </button>
 
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
-        >
-          <LogOut className="w-4 h-4" />
-          <span>Logout</span>
-        </button>
-      </div>
-    </aside>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 }
