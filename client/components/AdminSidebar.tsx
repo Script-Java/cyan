@@ -170,29 +170,29 @@ export default function AdminSidebar() {
             }
           }}
           className={cn(
-            "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
-            isChild ? "text-sm" : "text-sm font-medium",
+            "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200",
+            isChild ? "text-xs" : "text-xs font-medium",
             active && !hasChildren
-              ? "bg-blue-100 text-blue-900 font-semibold"
-              : "text-gray-700 hover:bg-gray-100",
+              ? "bg-white/10 text-[#FFD713] font-semibold"
+              : "text-white/60 hover:bg-white/5 hover:text-white",
             hasChildren && "justify-between",
           )}
         >
           <div className="flex items-center gap-3 flex-1">
-            <span className={cn("flex-shrink-0", active && "text-blue-600")}>
+            <span className={cn("flex-shrink-0 transition-colors", active && "text-[#FFD713]")}>
               {item.icon}
             </span>
             <span className="truncate">{item.label}</span>
           </div>
           {item.badge && (
-            <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5 flex-shrink-0">
+            <span className="bg-[#FFD713] text-black text-xs font-bold rounded-full px-1.5 py-0.5 flex-shrink-0">
               {item.badge}
             </span>
           )}
           {hasChildren && (
             <ChevronDown
               className={cn(
-                "w-4 h-4 flex-shrink-0 transition-transform",
+                "w-3 h-3 flex-shrink-0 transition-transform",
                 isExpanded && "rotate-180",
               )}
             />
@@ -200,16 +200,16 @@ export default function AdminSidebar() {
         </button>
 
         {hasChildren && isExpanded && (
-          <div className="ml-2 mt-1 space-y-1 border-l-2 border-gray-200 pl-2">
+          <div className="ml-2 mt-0.5 space-y-0.5 border-l-2 border-white/10 pl-2">
             {item.children!.map((child) => (
               <button
                 key={child.label}
                 onClick={() => child.path && navigate(child.path)}
                 className={cn(
-                  "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs transition-all",
+                  "w-full flex items-center gap-3 px-3 py-1.5 rounded-lg text-xs transition-all",
                   isActive(child.path)
-                    ? "bg-blue-50 text-blue-700 font-semibold"
-                    : "text-gray-600 hover:bg-gray-50",
+                    ? "bg-purple-500/20 text-purple-300 font-semibold"
+                    : "text-white/50 hover:bg-white/5 hover:text-white/80",
                 )}
               >
                 <span className="flex-shrink-0">{child.icon}</span>
