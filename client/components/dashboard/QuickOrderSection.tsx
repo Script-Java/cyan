@@ -76,12 +76,7 @@ export default function QuickOrderSection() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {PRODUCT_CATEGORIES.map((product) => (
             <div key={product.id} className="group">
-              <div
-                className="rounded-xl sm:rounded-2xl border p-2 sm:p-4 text-center transition-all duration-500 hover:shadow-md hover:bg-gray-50 flex flex-col items-center bg-white"
-                style={{
-                  borderColor: "rgba(100, 116, 139, 0.2)",
-                }}
-              >
+              <div className="rounded-xl sm:rounded-2xl border p-2 sm:p-4 text-center transition-all duration-500 hover:bg-white/10 flex flex-col items-center backdrop-blur-sm bg-white/5 border-white/10">
                 {/* Image Container */}
                 <div
                   className="w-16 sm:w-24 h-16 sm:h-24 flex items-center justify-center mb-2 sm:mb-3 rounded-lg transition-transform duration-500 group-hover:scale-110"
@@ -100,7 +95,7 @@ export default function QuickOrderSection() {
                 {/* Title Link */}
                 <a
                   href={product.href}
-                  className="text-xs sm:text-sm font-semibold text-gray-900 text-center transition-colors hover:text-purple-600 hover:underline"
+                  className="text-xs sm:text-sm font-semibold text-white text-center transition-colors hover:text-purple-400 hover:underline"
                 >
                   {product.name}
                 </a>
