@@ -135,32 +135,32 @@ export default function ActiveOrdersSummary({
 
               {/* Expanded Details Section */}
               {expandedOrderId === order.id && (
-                <div className="bg-gray-50 border-t p-4 space-y-4">
+                <div className="bg-black/40 border-t border-white/10 p-4 space-y-4 backdrop-blur-sm">
                   {/* Tracking Information */}
                   {(order.tracking_number || order.shipped_date) && (
-                    <div className="bg-white rounded-lg p-4 border border-gray-200">
-                      <h3 className="font-semibold text-sm text-gray-900 mb-3 flex items-center gap-2">
-                        <Truck className="w-4 h-4 text-blue-600" />
+                    <div className="bg-white/5 rounded-lg p-4 border border-white/10 backdrop-blur-sm">
+                      <h3 className="font-semibold text-sm text-white mb-3 flex items-center gap-2">
+                        <Truck className="w-4 h-4 text-blue-400" />
                         Shipping & Tracking
                       </h3>
                       <div className="space-y-2 text-sm">
                         {order.shipped_date && (
                           <div className="flex justify-between">
-                            <span className="text-gray-600">Shipped Date:</span>
-                            <span className="font-medium text-gray-900">
+                            <span className="text-white/60">Shipped Date:</span>
+                            <span className="font-medium text-white">
                               {new Date(order.shipped_date).toLocaleDateString()}
                             </span>
                           </div>
                         )}
                         {order.tracking_number && (
                           <div className="flex justify-between items-start">
-                            <span className="text-gray-600">Tracking Number:</span>
+                            <span className="text-white/60">Tracking Number:</span>
                             <div className="flex flex-col items-end gap-1">
-                              <span className="font-mono font-medium text-gray-900">
+                              <span className="font-mono font-medium text-white">
                                 {order.tracking_number}
                               </span>
                               {order.tracking_carrier && (
-                                <span className="text-xs text-gray-500">
+                                <span className="text-xs text-white/40">
                                   {order.tracking_carrier}
                                 </span>
                               )}
@@ -173,7 +173,7 @@ export default function ActiveOrdersSummary({
                               href={order.tracking_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-xs px-3 py-2 rounded bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors font-medium"
+                              className="inline-flex items-center gap-1 text-xs px-3 py-2 rounded bg-blue-600/30 text-blue-300 hover:bg-blue-600/50 border border-blue-500/30 transition-colors font-medium"
                             >
                               <MapPin className="w-3 h-3" />
                               Track Package
@@ -186,37 +186,37 @@ export default function ActiveOrdersSummary({
 
                   {/* Estimated Delivery */}
                   {order.estimated_delivery_date && (
-                    <div className="bg-white rounded-lg p-4 border border-gray-200">
-                      <h3 className="font-semibold text-sm text-gray-900 mb-2">
+                    <div className="bg-white/5 rounded-lg p-4 border border-white/10 backdrop-blur-sm">
+                      <h3 className="font-semibold text-sm text-white mb-2">
                         Estimated Delivery
                       </h3>
-                      <p className="text-sm text-gray-700">
+                      <p className="text-sm text-white/70">
                         {new Date(order.estimated_delivery_date).toLocaleDateString()}
                       </p>
                     </div>
                   )}
 
                   {/* Order Summary */}
-                  <div className="bg-white rounded-lg p-4 border border-gray-200">
-                    <h3 className="font-semibold text-sm text-gray-900 mb-3">
+                  <div className="bg-white/5 rounded-lg p-4 border border-white/10 backdrop-blur-sm">
+                    <h3 className="font-semibold text-sm text-white mb-3">
                       Order Summary
                     </h3>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Items:</span>
-                        <span className="font-medium text-gray-900">
+                        <span className="text-white/60">Items:</span>
+                        <span className="font-medium text-white">
                           {order.itemCount}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Order Date:</span>
-                        <span className="font-medium text-gray-900">
+                        <span className="text-white/60">Order Date:</span>
+                        <span className="font-medium text-white">
                           {new Date(order.dateCreated).toLocaleDateString()}
                         </span>
                       </div>
-                      <div className="pt-2 border-t flex justify-between">
-                        <span className="font-semibold text-gray-900">Total:</span>
-                        <span className="font-semibold text-emerald-600">
+                      <div className="pt-2 border-t border-white/10 flex justify-between">
+                        <span className="font-semibold text-white">Total:</span>
+                        <span className="font-semibold text-emerald-400">
                           ${order.total.toFixed(2)}
                         </span>
                       </div>
