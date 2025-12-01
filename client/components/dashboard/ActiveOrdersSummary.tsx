@@ -59,15 +59,10 @@ export default function ActiveOrdersSummary({
   };
 
   return (
-    <div
-      className="rounded-2xl border p-6 mb-6 overflow-hidden bg-white shadow-sm"
-      style={{
-        borderColor: "rgba(5, 150, 105, 0.2)",
-      }}
-    >
+    <div className="rounded-2xl border p-6 mb-6 overflow-hidden backdrop-blur-xl bg-white/5 border-white/10">
       <div
         className="border-b pb-4 mb-6"
-        style={{ borderColor: "rgba(5, 150, 105, 0.1)" }}
+        style={{ borderColor: "rgba(255, 255, 255, 0.1)" }}
       >
         <div className="flex items-center justify-between">
           <h2 className="flex items-center gap-3 text-lg sm:text-xl font-bold text-gray-900">
