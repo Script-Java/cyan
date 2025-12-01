@@ -98,14 +98,44 @@ export default function CheckoutNew() {
         const id = cartId || localStorage.getItem("cart_id");
 
         if (!id) {
+          console.log("No cart ID found, skipping cart load");
           setIsLoading(false);
           return;
         }
 
+        console.log("Loading cart with ID:", id);
+
         const response = await fetch(`/api/cart/${id}`);
-        if (response.ok) {
+
+        if (!response.ok) {
+          console.error("Failed to load cart - HTTP error:", {
+            status: response.status,
+            statusText: response.statusText,
+          });
+
+          try {
+            const errorData = await response.json();
+            console.error("Error response data:", errorData);
+          } catch (e) {
+            console.error("Could not parse error response");
+          }
+
+          if (response.status === 404) {
+            console.warn("Cart not found, continuing with empty cart");
+            setIsLoading(false);
+            return;
+          }
+
+          throw new Error(`Failed to load cart: ${response.status} ${response.statusText}`);
+        }
+
+        try {
           const data = await response.json();
           const items = data.data?.line_items || [];
+          console.log("Cart loaded successfully:", {
+            itemCount: items.length,
+            subtotal: data.data?.subtotal,
+          });
           setCartItems(items);
 
           const subtotal = items.reduce((sum: number, item: CartItem) => {
@@ -113,9 +143,17 @@ export default function CheckoutNew() {
           }, 0);
 
           calculateOrderData(subtotal, 0);
+        } catch (parseError) {
+          console.error("Error parsing cart response:", parseError);
+          throw new Error("Failed to parse cart response");
         }
       } catch (err) {
-        console.error("Failed to load cart:", err);
+        const errorMsg = err instanceof Error ? err.message : String(err);
+        console.error("Failed to load cart:", {
+          message: errorMsg,
+          error: err,
+        });
+        toast.error(`Cart loading error: ${errorMsg}`);
       } finally {
         setIsLoading(false);
       }
