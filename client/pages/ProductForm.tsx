@@ -125,6 +125,7 @@ export default function ProductForm() {
     images: [],
     options: [],
     pricingRules: [],
+    sharedVariants: [],
     customerUploadConfig: {
       enabled: true,
       maxFileSize: 5,
