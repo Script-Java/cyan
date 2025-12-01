@@ -170,8 +170,9 @@ export function createServer() {
     }
     if (err) {
       console.error("Unhandled middleware error:", err);
+      return next(err);
     }
-    next(err);
+    next();
   });
 
   // Example API routes
