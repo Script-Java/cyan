@@ -188,6 +188,7 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
       images: productData.images || [],
       options: productData.options || [],
       pricing_rules: productData.pricingRules || [],
+      shared_variants: productData.sharedVariants || [],
       customer_upload_config: productData.customerUploadConfig || {
         enabled: false,
         maxFileSize: 5,
