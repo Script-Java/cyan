@@ -46,9 +46,9 @@ export default function ProofNotificationBadge() {
   }
 
   return (
-    <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
-      <Bell className="w-4 h-4 text-blue-600" />
-      <span className="text-xs font-medium text-blue-900">
+    <div className="flex items-center gap-2 px-3 py-2 bg-blue-600/20 border border-blue-500/30 rounded-lg backdrop-blur-sm">
+      <Bell className="w-4 h-4 text-blue-400" />
+      <span className="text-xs font-medium text-blue-200">
         {pendingCount} {pendingCount === 1 ? "proof" : "proofs"} ready to review
       </span>
     </div>
