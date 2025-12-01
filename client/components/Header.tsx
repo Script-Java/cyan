@@ -145,15 +145,39 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
               </Link>
               {isAuthenticated && (
                 <div
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-yellow-500/40 bg-gradient-to-br from-yellow-500/30 to-yellow-600/10 font-medium text-sm"
+                  className="flex items-center rounded-lg border"
                   title="Store credit from your BigCommerce account"
+                  style={{
+                    alignItems: "center",
+                    backgroundImage:
+                      "linear-gradient(to right bottom, rgba(234, 179, 8, 0.3), rgba(202, 138, 4, 0.1))",
+                    borderColor: "rgba(234, 179, 8, 0.4)",
+                    borderRadius: "8px",
+                    borderWidth: "1.11111px",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    gap: "8px",
+                    lineHeight: "20px",
+                    padding: "8px 16px",
+                  }}
                 >
                   <img
                     src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1753923671/StickerShuttle_CoinIcon_aperue.png"
                     alt="Credits"
-                    className="w-5 h-5"
+                    style={{
+                      display: "block",
+                      fontWeight: "500",
+                      height: "20px",
+                      width: "20px",
+                    }}
                   />
-                  <span className="text-yellow-300">
+                  <span
+                    style={{
+                      display: "block",
+                      color: "rgb(253, 224, 71)",
+                      fontWeight: "500",
+                    }}
+                  >
                     $ {storeCredit.toFixed(2)}
                   </span>
                 </div>
