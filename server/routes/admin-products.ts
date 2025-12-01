@@ -12,12 +12,39 @@ interface ProductImage {
   preview?: string;
 }
 
+interface VariantValue {
+  id: string;
+  name: string;
+  priceModifier: number;
+  image?: {
+    id: string;
+    url: string;
+    name: string;
+    preview?: string;
+  };
+}
+
 interface ProductOption {
   id: string;
   name: string;
-  type: "select" | "text" | "radio" | "checkbox";
+  type: "dropdown" | "swatch" | "radio" | "text";
   required: boolean;
-  values: string[];
+  values: VariantValue[];
+  defaultValueId?: string;
+  displayOrder: number;
+}
+
+interface PricingRule {
+  id: string;
+  conditions: { optionId: string; valueId: string }[];
+  price: number;
+}
+
+interface CustomerUploadConfig {
+  enabled: boolean;
+  maxFileSize: number;
+  allowedFormats: string[];
+  description: string;
 }
 
 interface TaxConfig {
@@ -29,12 +56,14 @@ interface TaxConfig {
 
 interface ProductFormData {
   name: string;
-  price: number;
+  basePrice: number;
   description: string;
   sku: string;
   weight: number;
   images: ProductImage[];
   options: ProductOption[];
+  pricingRules: PricingRule[];
+  customerUploadConfig: CustomerUploadConfig;
   optionalFields: { name: string; type: string }[];
   textArea: string;
   uploadedFiles: { name: string; file: File }[];
@@ -53,28 +82,33 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
   try {
     const productData: ProductFormData = req.body;
 
-    // Validation
     if (!productData.name?.trim()) {
       return res
         .status(400)
         .json({ error: "Product name is required" });
     }
 
-    if (productData.price <= 0) {
+    if (productData.basePrice <= 0) {
       return res
         .status(400)
-        .json({ error: "Price must be greater than 0" });
+        .json({ error: "Base price must be greater than 0" });
     }
 
-    // Prepare data for database
     const dbProduct = {
       name: productData.name,
-      price: productData.price,
+      base_price: productData.basePrice,
       description: productData.description || "",
       sku: productData.sku || "",
       weight: productData.weight || 0,
       images: productData.images || [],
       options: productData.options || [],
+      pricing_rules: productData.pricingRules || [],
+      customer_upload_config: productData.customerUploadConfig || {
+        enabled: false,
+        maxFileSize: 5,
+        allowedFormats: ["png", "jpg", "jpeg", "gif"],
+        description: "",
+      },
       optional_fields: productData.optionalFields || [],
       text_area: productData.textArea || "",
       condition_logic: productData.conditionLogic || "all",
@@ -89,7 +123,6 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
       created_at: new Date().toISOString(),
     };
 
-    // Insert into database
     const { data, error } = await supabase
       .from("admin_products")
       .insert([dbProduct])
@@ -125,28 +158,33 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Product ID is required" });
     }
 
-    // Validation
     if (!productData.name?.trim()) {
       return res
         .status(400)
         .json({ error: "Product name is required" });
     }
 
-    if (productData.price <= 0) {
+    if (productData.basePrice <= 0) {
       return res
         .status(400)
-        .json({ error: "Price must be greater than 0" });
+        .json({ error: "Base price must be greater than 0" });
     }
 
-    // Prepare data for database
     const dbProduct = {
       name: productData.name,
-      price: productData.price,
+      base_price: productData.basePrice,
       description: productData.description || "",
       sku: productData.sku || "",
       weight: productData.weight || 0,
       images: productData.images || [],
       options: productData.options || [],
+      pricing_rules: productData.pricingRules || [],
+      customer_upload_config: productData.customerUploadConfig || {
+        enabled: false,
+        maxFileSize: 5,
+        allowedFormats: ["png", "jpg", "jpeg", "gif"],
+        description: "",
+      },
       optional_fields: productData.optionalFields || [],
       text_area: productData.textArea || "",
       condition_logic: productData.conditionLogic || "all",
@@ -161,7 +199,6 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
       updated_at: new Date().toISOString(),
     };
 
-    // Update in database
     const { data, error } = await supabase
       .from("admin_products")
       .update(dbProduct)
