@@ -86,7 +86,7 @@ export default function ProductPage() {
       try {
         if (!productId) return;
 
-        const response = await fetch(`/api/products/${productId}`);
+        const response = await fetch(`/api/public/products/${productId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch product");
         }
