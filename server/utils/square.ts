@@ -188,6 +188,13 @@ export async function createSquarePaymentLink(data: {
   customerEmail: string;
   customerName: string;
   redirectUrl: string;
+  shippingAddress?: {
+    street?: string;
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    country?: string;
+  };
 }): Promise<{
   success: boolean;
   paymentLinkUrl?: string;
@@ -211,11 +218,26 @@ export async function createSquarePaymentLink(data: {
       );
     }
 
+    // Build the pre-populated buyer address from shipping data
+    const buyerAddress: any = {};
+    if (data.shippingAddress) {
+      if (data.shippingAddress.street)
+        buyerAddress.address_line_1 = data.shippingAddress.street;
+      if (data.shippingAddress.city) buyerAddress.locality = data.shippingAddress.city;
+      if (data.shippingAddress.state)
+        buyerAddress.administrative_district_level_1 =
+          data.shippingAddress.state;
+      if (data.shippingAddress.postalCode)
+        buyerAddress.postal_code = data.shippingAddress.postalCode;
+      if (data.shippingAddress.country)
+        buyerAddress.country = data.shippingAddress.country;
+    }
+
     // Build the payment link request body for Square's Payment Links API
     const paymentLinkBody = {
       idempotency_key: `${data.orderId}-${Date.now()}-${Math.random()}`,
       quick_pay: {
-        name: `Order #${data.orderId}`,
+        name: "Stickyslap",
         location_id: locationId,
         price_money: {
           amount: amountInCents,
@@ -223,10 +245,19 @@ export async function createSquarePaymentLink(data: {
         },
       },
       checkout_options: {
+        shipping_fee: {
+          charge: {
+            currency: data.currency || "USD",
+            amount: 1000, // $10.00 in cents
+          },
+          name: "First Class",
+        },
+        ask_for_shipping_address: true,
         redirect_url: data.redirectUrl,
       },
       pre_populated_data: {
         buyer_email: data.customerEmail,
+        buyer_address: buyerAddress,
       },
     };
 
