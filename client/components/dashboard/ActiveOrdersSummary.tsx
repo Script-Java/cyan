@@ -96,7 +96,7 @@ export default function ActiveOrdersSummary({
                       <p className="font-semibold text-sm text-white">
                         Order #{order.id}
                       </p>
-                      <span className={`text-xs font-medium px-2 py-1 rounded ${getStatusBadgeColor(order.status)}`}>
+                      <span className={`text-xs font-medium px-2 py-1 rounded border ${getStatusBadgeColor(order.status)}`}>
                         {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                       </span>
                     </div>
