@@ -39,6 +39,7 @@ export default function AdminDashboard() {
   const [pendingOrders, setPendingOrders] = useState<PendingOrder[]>([]);
   const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -119,11 +120,14 @@ export default function AdminDashboard() {
 
   return (
     <>
-      <Header />
+      <Header onMobileMenuClick={() => setSidebarOpen(!sidebarOpen)} />
       <div className="flex">
-        <AdminSidebar />
-        <main className="flex-1 md:ml-64 min-h-screen bg-black text-white pb-20 md:pb-0">
-          <div className="pt-16 md:pt-24">
+        <AdminSidebar
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
+        <main className="flex-1 md:ml-64 min-h-screen bg-black text-white">
+          <div className="pt-24">
             {/* Header Section */}
             <div className="border-b border-white/10 bg-black">
               <div className="px-3 sm:px-6 lg:px-8 py-2 sm:py-4">

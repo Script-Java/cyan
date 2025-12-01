@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   Menu,
   X,
@@ -19,15 +19,21 @@ import { useStoreCredit } from "@/hooks/useStoreCredit";
 
 const ECWID_STORE_ID = "120154275";
 
-export default function Header() {
+interface HeaderProps {
+  onMobileMenuClick?: () => void;
+}
+
+export default function Header({ onMobileMenuClick }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const ecwidScriptLoaded = useRef(false);
   const { storeCredit, fetchStoreCredit } = useStoreCredit();
+  const isAdminPage = location.pathname.startsWith("/admin");
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,15 +92,25 @@ export default function Header() {
             className="flex items-center justify-between"
             style={{ margin: "-4px 0 -5px" }}
           >
-            {/* Mobile Profile Button - Left Side */}
+            {/* Mobile Menu/Profile Button - Left Side */}
             <div className="flex md:hidden items-center">
-              <button className="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center gap-2">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Ff84956aaeddb4872bf448e0f5fbc3371?format=webp&width=800"
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full border border-white/20"
-                />
-              </button>
+              {isAdminPage && onMobileMenuClick ? (
+                <button
+                  onClick={onMobileMenuClick}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  title="Toggle sidebar"
+                >
+                  <Menu className="w-6 h-6 text-white" />
+                </button>
+              ) : (
+                <button className="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center gap-2">
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Ff84956aaeddb4872bf448e0f5fbc3371?format=webp&width=800"
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full border border-white/20"
+                  />
+                </button>
+              )}
             </div>
 
             {/* Desktop Logo Area */}

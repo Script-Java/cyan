@@ -14,6 +14,8 @@ import {
   Plus,
   Eye,
   LogOut,
+  X,
+  Menu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -25,7 +27,15 @@ interface NavItem {
   badge?: number;
 }
 
-export default function AdminSidebar() {
+interface AdminSidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function AdminSidebar({
+  isOpen = true,
+  onClose,
+}: AdminSidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [expandedItems, setExpandedItems] = useState<string[]>(["apps"]);
@@ -139,16 +149,22 @@ export default function AdminSidebar() {
     const active = isActive(item.path);
     const isExpanded = expandedItems.includes(item.label);
 
+    const handleClick = () => {
+      if (hasChildren) {
+        toggleExpand(item.label);
+      } else if (item.path) {
+        navigate(item.path);
+        // Close sidebar on mobile after navigation
+        if (onClose && isOpen) {
+          onClose();
+        }
+      }
+    };
+
     return (
       <div key={item.label}>
         <button
-          onClick={() => {
-            if (hasChildren) {
-              toggleExpand(item.label);
-            } else if (item.path) {
-              navigate(item.path);
-            }
-          }}
+          onClick={handleClick}
           className={cn(
             "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200",
             isChild ? "text-xs" : "text-xs font-medium",
@@ -214,48 +230,64 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="hidden md:flex fixed left-0 top-12 h-[calc(100vh-3rem)] w-64 bg-black border-r border-white/10 flex-col overflow-hidden">
-      {/* Main Navigation */}
-      <div className="flex-1 overflow-y-auto mt-5">
-        <nav className="p-3 space-y-0.5">
-          {mainNavItems.map((item) => (
-            <NavLink key={item.label} item={item} />
-          ))}
-        </nav>
+    <>
+      {/* Mobile overlay backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={onClose}
+        />
+      )}
 
-        {/* Secondary Navigation */}
-        <div className="border-t border-white/10 mt-1">
+      <aside
+        className={cn(
+          "fixed left-0 top-12 h-[calc(100vh-3rem)] w-64 bg-black border-r border-white/10 flex flex-col overflow-hidden transition-all duration-300 z-40",
+          "md:static md:top-0 md:h-auto md:translate-x-0",
+          isOpen ? "translate-x-0" : "-translate-x-full",
+        )}
+      >
+        {/* Main Navigation */}
+        <div className="flex-1 overflow-y-auto mt-5">
           <nav className="p-3 space-y-0.5">
-            {secondaryNavItems.map((item) => (
+            {mainNavItems.map((item) => (
               <NavLink key={item.label} item={item} />
             ))}
           </nav>
+
+          {/* Secondary Navigation */}
+          <div className="border-t border-white/10 mt-1">
+            <nav className="p-3 space-y-0.5">
+              {secondaryNavItems.map((item) => (
+                <NavLink key={item.label} item={item} />
+              ))}
+            </nav>
+          </div>
         </div>
-      </div>
 
-      {/* Bottom Settings */}
-      <div className="border-t border-white/10 p-3 space-y-2">
-        <button
-          onClick={() => navigate("/admin/settings")}
-          className={cn(
-            "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 text-xs font-medium",
-            isActive("/admin/settings")
-              ? "bg-white/10 text-[#FFD713]"
-              : "text-white/60 hover:bg-white/5 hover:text-white",
-          )}
-        >
-          <Settings className="w-4 h-4" />
-          <span>Settings</span>
-        </button>
+        {/* Bottom Settings */}
+        <div className="border-t border-white/10 p-3 space-y-2">
+          <button
+            onClick={() => navigate("/admin/settings")}
+            className={cn(
+              "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 text-xs font-medium",
+              isActive("/admin/settings")
+                ? "bg-white/10 text-[#FFD713]"
+                : "text-white/60 hover:bg-white/5 hover:text-white",
+            )}
+          >
+            <Settings className="w-4 h-4" />
+            <span>Settings</span>
+          </button>
 
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
-        >
-          <LogOut className="w-4 h-4" />
-          <span>Logout</span>
-        </button>
-      </div>
-    </aside>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 }
