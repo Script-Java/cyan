@@ -196,85 +196,100 @@ export async function createSquarePaymentLink(data: {
   try {
     const amountInCents = Math.round(data.amount * 100);
 
-    // Get the first location ID from the account (required by Square Payment Links API)
+    // Get the location ID (required by Square Payment Links API)
     const locationId = process.env.SQUARE_LOCATION_ID;
     if (!locationId) {
       throw new Error(
-        "SQUARE_LOCATION_ID environment variable is not configured. Please set it to your Square location ID.",
+        "SQUARE_LOCATION_ID environment variable is not configured.",
       );
     }
 
+    const accessToken = process.env.SQUARE_ACCESS_TOKEN;
+    if (!accessToken) {
+      throw new Error(
+        "SQUARE_ACCESS_TOKEN environment variable is not configured.",
+      );
+    }
+
+    // Build the payment link request body for Square's Payment Links API
     const paymentLinkBody = {
-      idempotencyKey: `${data.orderId}-${Date.now()}`,
-      quickPay: {
-        locationId: locationId,
+      idempotency_key: `${data.orderId}-${Date.now()}-${Math.random()}`,
+      quick_pay: {
         name: `Order #${data.orderId}`,
-        description: data.description,
-        priceMoney: {
-          amount: BigInt(amountInCents),
+        location_id: locationId,
+        price_money: {
+          amount: amountInCents,
           currency: data.currency || "USD",
         },
       },
-      checkoutOptions: {
-        redirectUrl: data.redirectUrl,
+      checkout_options: {
+        redirect_url: data.redirectUrl,
       },
-      prePopulatedData: {
-        buyerEmail: data.customerEmail,
+      pre_populated_data: {
+        buyer_email: data.customerEmail,
       },
     };
 
-    console.log("Creating Square Payment Link:", {
+    console.log("Creating Square Payment Link via REST API:", {
       orderId: data.orderId,
       amount: amountInCents,
       currency: data.currency,
       locationId: locationId,
     });
 
-    const client = getSquareClient();
+    // Make direct HTTP call to Square Payment Links API
+    const response = await fetch(
+      "https://connect.squareup.com/v2/online-checkout/payment-links",
+      {
+        method: "POST",
+        headers: {
+          "Square-Version": "2025-10-16",
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(paymentLinkBody),
+      },
+    );
 
-    // Use checkoutApi if available, otherwise use a direct API call
-    let response;
-    if (client.checkoutApi) {
-      response = await client.checkoutApi.createPaymentLink(paymentLinkBody);
-    } else {
-      // Fallback: Try using ordersApi or make a direct HTTP request
-      console.warn(
-        "checkoutApi not available, attempting alternative payment link creation",
-      );
-      throw new Error(
-        "Checkout API not available. Using Web Payments SDK fallback.",
-      );
-    }
+    const responseData = await response.json();
 
-    if (response.result?.url) {
-      console.log("Payment Link created successfully:", response.result.id);
+    if (!response.ok) {
+      console.error("Square Payment Link API error:", {
+        status: response.status,
+        statusText: response.statusText,
+        error: responseData,
+      });
+
+      const errorMessage =
+        responseData?.errors?.[0]?.detail ||
+        responseData?.message ||
+        `API returned ${response.status}`;
+
       return {
-        success: true,
-        paymentLinkUrl: response.result.url,
+        success: false,
+        error: errorMessage,
       };
     }
 
-    throw new Error("Failed to create payment link - no URL returned");
+    if (responseData?.payment_link?.url) {
+      console.log("Payment Link created successfully:", {
+        linkId: responseData.payment_link.id,
+        url: responseData.payment_link.url,
+      });
+
+      return {
+        success: true,
+        paymentLinkUrl: responseData.payment_link.url,
+      };
+    }
+
+    console.error("Payment link response missing URL:", responseData);
+    return {
+      success: false,
+      error: "Payment link created but no URL returned",
+    };
   } catch (error) {
     console.error("Square Payment Link error:", error);
-
-    if (error && typeof error === "object") {
-      const errorObj = error as any;
-
-      if (errorObj?.errors?.[0]?.detail) {
-        return {
-          success: false,
-          error: errorObj.errors[0].detail,
-        };
-      }
-
-      if (errorObj?.message) {
-        return {
-          success: false,
-          error: errorObj.message,
-        };
-      }
-    }
 
     return {
       success: false,
