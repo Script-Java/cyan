@@ -34,6 +34,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminProductImport from "./pages/AdminProductImport";
 import AdminProducts from "./pages/AdminProducts";
 import ProductForm from "./pages/ProductForm";
+import ProductPage from "./pages/ProductPage";
 import AdminFinance from "./pages/AdminFinance";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import Customers from "./pages/Customers";
