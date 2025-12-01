@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { supabase, getPendingOrders } from "../utils/supabase";
+import { supabase, getPendingOrders, getActiveOrders } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
 
 interface OrderItem {
