@@ -158,8 +158,69 @@ export default function ProductForm() {
     }
 
     setIsAuthenticated(true);
-    setIsLoading(false);
-  }, [navigate]);
+
+    if (productId) {
+      fetchProduct(token, productId);
+    } else {
+      setIsLoading(false);
+    }
+  }, [navigate, productId]);
+
+  const fetchProduct = async (token: string, id: string) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`/api/admin/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch product");
+      }
+
+      const data = await response.json();
+      const product = data.product;
+
+      setFormData({
+        name: product.name || "",
+        basePrice: product.base_price || 0,
+        description: product.description || "",
+        sku: product.sku || "",
+        weight: product.weight || 0,
+        images: product.images || [],
+        options: product.options || [],
+        pricingRules: product.pricing_rules || [],
+        customerUploadConfig: product.customer_upload_config || {
+          enabled: false,
+          maxFileSize: 5,
+          allowedFormats: ["png", "jpg", "jpeg", "gif"],
+          description: "",
+        },
+        optionalFields: product.optional_fields || [],
+        textArea: product.text_area || "",
+        uploadedFiles: [],
+        conditionLogic: product.condition_logic || "all",
+        taxes: product.taxes || [],
+        seo: product.seo || {
+          productUrl: "",
+          pageTitle: "",
+          metaDescription: "",
+        },
+        categories: product.categories || [],
+        availability: product.availability !== false,
+      });
+    } catch (error) {
+      console.error("Error fetching product:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load product",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (!isAuthenticated || isLoading) {
     return null;
