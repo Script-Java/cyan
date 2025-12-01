@@ -128,7 +128,7 @@ export default function ActiveOrdersSummary({
                     }}
                     className="text-xs px-3 py-1 rounded bg-emerald-600 text-white hover:bg-emerald-700 transition-colors whitespace-nowrap flex items-center gap-1"
                   >
-                    View Details
+                    {expandedOrderId === order.id ? "Hide" : "Show"} Details
                     {expandedOrderId === order.id ? (
                       <ChevronUp className="w-3 h-3" />
                     ) : (
