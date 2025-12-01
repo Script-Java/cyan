@@ -110,6 +110,7 @@ import {
   handleGetAdminProducts,
   handleGetAdminProduct,
   handleDeleteAdminProduct,
+  handleGetPublicProduct,
 } from "./routes/admin-products";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
