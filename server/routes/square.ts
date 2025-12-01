@@ -572,6 +572,11 @@ export const handleSquareWebhook: RequestHandler = async (req, res) => {
       await handleSquareCustomerCreated(event.data);
     }
 
+    // Handle customer deleted events
+    if (event.type === "customer.deleted") {
+      await handleSquareCustomerDeleted(event.data);
+    }
+
     // Acknowledge webhook receipt to Square
     res.json({ received: true });
   } catch (error) {
