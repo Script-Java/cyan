@@ -1069,6 +1069,140 @@ export default function ProductForm() {
                 </div>
               </section>
 
+              {/* Shared Variants Section */}
+              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold flex items-center gap-2">
+                    <div className="p-2 bg-purple-600/20 border border-purple-500/30 rounded-lg">
+                      <Plus className="w-5 h-5 text-purple-400" />
+                    </div>
+                    Shared Variants
+                  </h2>
+                  <Button
+                    onClick={addSharedVariant}
+                    className="bg-purple-600 hover:bg-purple-700 text-white gap-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Add Shared Variant
+                  </Button>
+                </div>
+
+                <p className="text-white/60 text-sm mb-6">
+                  Create shared variant groups that apply the same set of options across multiple products.
+                </p>
+
+                <div className="space-y-6">
+                  {formData.sharedVariants.length === 0 ? (
+                    <p className="text-white/60 text-center py-8">
+                      No shared variants added yet. Click "Add Shared Variant" to create a reusable variant group.
+                    </p>
+                  ) : (
+                    formData.sharedVariants.map((sharedVariant) => (
+                      <div
+                        key={sharedVariant.id}
+                        className="bg-white/5 border border-white/10 rounded-lg p-4 space-y-4"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="flex-1 space-y-4 w-full">
+                            <div>
+                              <Label className="text-white/80 mb-2 block">
+                                Shared Variant Name
+                              </Label>
+                              <Input
+                                value={sharedVariant.name}
+                                onChange={(e) =>
+                                  updateSharedVariant(
+                                    sharedVariant.id,
+                                    "name",
+                                    e.target.value,
+                                  )
+                                }
+                                placeholder="e.g., Size & Color Combo"
+                                className="bg-white/10 border-white/10 text-white placeholder-white/40"
+                              />
+                            </div>
+
+                            <div>
+                              <Label className="text-white/80 mb-2 block">
+                                Description
+                              </Label>
+                              <Textarea
+                                value={sharedVariant.description}
+                                onChange={(e) =>
+                                  updateSharedVariant(
+                                    sharedVariant.id,
+                                    "description",
+                                    e.target.value,
+                                  )
+                                }
+                                placeholder="Describe this shared variant group..."
+                                className="bg-white/10 border-white/10 text-white placeholder-white/40 min-h-24"
+                              />
+                            </div>
+
+                            {/* Option Selection */}
+                            {formData.options.length > 0 ? (
+                              <div>
+                                <Label className="text-white/80 mb-3 block">
+                                  Select Options to Include
+                                </Label>
+                                <div className="bg-white/10 rounded-lg p-4 space-y-2">
+                                  {formData.options.map((option) => (
+                                    <label
+                                      key={option.id}
+                                      className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-2 rounded transition"
+                                    >
+                                      <input
+                                        type="checkbox"
+                                        checked={sharedVariant.optionIds.includes(
+                                          option.id,
+                                        )}
+                                        onChange={() =>
+                                          toggleSharedVariantOption(
+                                            sharedVariant.id,
+                                            option.id,
+                                          )
+                                        }
+                                        className="w-4 h-4 cursor-pointer"
+                                      />
+                                      <div className="flex-1">
+                                        <span className="text-white">
+                                          {option.name || "Unnamed Option"}
+                                        </span>
+                                        <p className="text-white/40 text-sm">
+                                          Type: {option.type} • Values:{" "}
+                                          {option.values.length}
+                                        </p>
+                                      </div>
+                                    </label>
+                                  ))}
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="text-white/40 text-sm">
+                                Add options above to include them in this shared variant group.
+                              </p>
+                            )}
+
+                            <div className="flex justify-end">
+                              <button
+                                onClick={() =>
+                                  removeSharedVariant(sharedVariant.id)
+                                }
+                                className="text-red-400 hover:text-red-300 transition flex items-center gap-1"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </section>
+
               {/* Customer Design Upload Configuration */}
               <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
