@@ -97,66 +97,38 @@ export default function DashboardNavigation({
     },
   ];
 
+  const allItems = [...actionItems, ...bottomItems];
+
   return (
     <div className="mb-8">
-      {/* Action Items Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {actionItems.map((item: any) => {
+      {/* All Items in One Row */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3">
+        {allItems.map((item: any) => {
           const Icon = item.icon;
           return (
             <button
               key={item.title}
-              onClick={item.onClick}
-              className="p-4 rounded-2xl border transition-all duration-500 flex gap-3 items-center hover:shadow-md hover:bg-gray-50"
+              onClick={item.isLogout ? onLogout : item.onClick}
+              className="p-3 rounded-2xl border transition-all duration-500 flex flex-col gap-2 items-center text-center hover:shadow-md hover:bg-gray-50"
               style={{
                 backgroundColor: item.bgColor,
                 borderColor: item.borderColor,
                 borderWidth: "1px",
+                opacity: item.isLogout ? 0.85 : 1,
               }}
             >
               <div className="p-2 bg-gray-100 rounded-lg flex-shrink-0">
-                <Icon className={`w-7 h-7 ${item.color}`} />
+                <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${item.color}`} />
               </div>
-              <div className="text-left">
-                <h4 className="text-sm font-semibold text-gray-900">
+              <div className="text-center">
+                <h4 className="text-xs sm:text-sm font-semibold text-gray-900 leading-tight">
                   {item.title}
                 </h4>
-                <p className="text-xs text-gray-600">{item.description}</p>
+                <p className="text-xs text-gray-600 hidden sm:block">{item.description}</p>
               </div>
             </button>
           );
         })}
-
-        {/* Bottom Row Items */}
-        <div className="col-span-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-          {bottomItems.map((item: any) => {
-            const Icon = item.icon;
-            const buttonContent = (
-              <button
-                onClick={item.isLogout ? onLogout : item.onClick}
-                className="w-full p-4 rounded-2xl border transition-all duration-500 flex gap-3 items-center hover:shadow-md hover:bg-gray-50"
-                style={{
-                  backgroundColor: item.bgColor,
-                  borderColor: item.borderColor,
-                  borderWidth: "1px",
-                  opacity: item.isLogout ? 0.85 : 1,
-                }}
-              >
-                <div className="p-2 bg-gray-100 rounded-lg flex-shrink-0">
-                  <Icon className={`w-7 h-7 ${item.color}`} />
-                </div>
-                <div className="text-left">
-                  <h4 className="text-sm font-semibold text-gray-900">
-                    {item.title}
-                  </h4>
-                  <p className="text-xs text-gray-600">{item.description}</p>
-                </div>
-              </button>
-            );
-
-            return <div key={item.title}>{buttonContent}</div>;
-          })}
-        </div>
       </div>
     </div>
   );
