@@ -923,7 +923,9 @@ export const handleCreatePayment: RequestHandler = async (req, res) => {
     } catch (squareError) {
       console.error("Square API error:", squareError);
       const errorMsg =
-        squareError instanceof Error ? squareError.message : String(squareError);
+        squareError instanceof Error
+          ? squareError.message
+          : String(squareError);
       return res.status(400).json({
         success: false,
         error: "Payment processing failed",

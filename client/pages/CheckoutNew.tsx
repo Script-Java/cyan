@@ -126,7 +126,9 @@ export default function CheckoutNew() {
             return;
           }
 
-          throw new Error(`Failed to load cart: ${response.status} ${response.statusText}`);
+          throw new Error(
+            `Failed to load cart: ${response.status} ${response.statusText}`,
+          );
         }
 
         try {
