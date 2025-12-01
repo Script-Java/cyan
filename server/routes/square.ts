@@ -873,7 +873,11 @@ export const handleCreatePayment: RequestHandler = async (req, res) => {
     const paymentRequest = req.body;
 
     // Validate required fields
-    if (!paymentRequest.sourceId || !paymentRequest.amount) {
+    if (!paymentRequest.sourceId || paymentRequest.amount === undefined) {
+      console.error("Missing required fields:", {
+        sourceId: !!paymentRequest.sourceId,
+        amount: paymentRequest.amount,
+      });
       return res.status(400).json({
         error: "Missing required fields: sourceId, amount",
       });
@@ -906,14 +910,26 @@ export const handleCreatePayment: RequestHandler = async (req, res) => {
       }),
     };
 
-    const paymentsApi = getPaymentsApi();
-    const response = await paymentsApi.createPayment(paymentBody);
+    let payment;
+    try {
+      const paymentsApi = getPaymentsApi();
+      const response = await paymentsApi.createPayment(paymentBody);
 
-    if (!response.result) {
-      throw new Error("No payment result returned from Square API");
+      if (!response.result) {
+        throw new Error("No payment result returned from Square API");
+      }
+
+      payment = response.result;
+    } catch (squareError) {
+      console.error("Square API error:", squareError);
+      const errorMsg =
+        squareError instanceof Error ? squareError.message : String(squareError);
+      return res.status(400).json({
+        success: false,
+        error: "Payment processing failed",
+        details: errorMsg,
+      });
     }
-
-    const payment = response.result;
 
     console.log("Square payment created successfully:", {
       paymentId: payment.id,
@@ -923,90 +939,97 @@ export const handleCreatePayment: RequestHandler = async (req, res) => {
 
     // Update order with payment details if we have an orderId
     if (orderId && payment.status === "COMPLETED") {
-      const { data: order } = await supabase
-        .from("orders")
-        .select("id, customer_id, total")
-        .eq("id", orderId)
-        .single()
-        .catch(() => ({ data: null }));
-
-      if (order) {
-        const paymentDetails = {
-          payment_id: payment.id,
-          payment_status: payment.status,
-          card_status: payment.cardDetails?.status || "",
-          amount: payment.amountMoney?.amount
-            ? payment.amountMoney.amount / 100
-            : 0,
-          currency: payment.amountMoney?.currency || "USD",
-          payment_created_at: payment.createdAt,
-          payment_updated_at: payment.updatedAt,
-          card_brand: payment.cardDetails?.card?.cardBrand || "",
-          card_last_4: payment.cardDetails?.card?.last4 || "",
-          card_exp_month: payment.cardDetails?.card?.expMonth || null,
-          card_exp_year: payment.cardDetails?.card?.expYear || null,
-          entry_method: payment.cardDetails?.entryMethod || "",
-          receipt_number: payment.receiptNumber || "",
-          receipt_url: payment.receiptUrl || "",
-          authorized_at:
-            payment.cardDetails?.cardPaymentTimeline?.authorizedAt || null,
-          captured_at:
-            payment.cardDetails?.cardPaymentTimeline?.capturedAt || null,
-        };
-
-        // Update order status and payment details
-        await supabase
+      try {
+        const { data: order } = await supabase
           .from("orders")
-          .update({
-            status: "paid",
-            square_payment_details: paymentDetails,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", orderId);
+          .select("id, customer_id, total")
+          .eq("id", orderId)
+          .single()
+          .catch(() => ({ data: null }));
 
-        // Award store credit
-        if (order.customer_id) {
-          const earnedCredit = order.total * 0.05;
-          await updateCustomerStoreCredit(
-            order.customer_id,
-            earnedCredit,
-            `Earned 5% from order ${orderId}`,
-          );
+        if (order) {
+          const paymentDetails = {
+            payment_id: payment.id,
+            payment_status: payment.status,
+            card_status: payment.cardDetails?.status || "",
+            amount: payment.amountMoney?.amount
+              ? payment.amountMoney.amount / 100
+              : 0,
+            currency: payment.amountMoney?.currency || "USD",
+            payment_created_at: payment.createdAt,
+            payment_updated_at: payment.updatedAt,
+            card_brand: payment.cardDetails?.card?.cardBrand || "",
+            card_last_4: payment.cardDetails?.card?.last4 || "",
+            card_exp_month: payment.cardDetails?.card?.expMonth || null,
+            card_exp_year: payment.cardDetails?.card?.expYear || null,
+            entry_method: payment.cardDetails?.entryMethod || "",
+            receipt_number: payment.receiptNumber || "",
+            receipt_url: payment.receiptUrl || "",
+            authorized_at:
+              payment.cardDetails?.cardPaymentTimeline?.authorizedAt || null,
+            captured_at:
+              payment.cardDetails?.cardPaymentTimeline?.capturedAt || null,
+          };
 
-          console.log("Store credit awarded:", {
-            orderId,
-            customerId: order.customer_id,
-            earnedCredit,
-          });
+          // Update order status and payment details
+          await supabase
+            .from("orders")
+            .update({
+              status: "paid",
+              square_payment_details: paymentDetails,
+              updated_at: new Date().toISOString(),
+            })
+            .eq("id", orderId);
+
+          // Award store credit
+          if (order.customer_id) {
+            const earnedCredit = order.total * 0.05;
+            await updateCustomerStoreCredit(
+              order.customer_id,
+              earnedCredit,
+              `Earned 5% from order ${orderId}`,
+            );
+
+            console.log("Store credit awarded:", {
+              orderId,
+              customerId: order.customer_id,
+              earnedCredit,
+            });
+          }
         }
+      } catch (dbError) {
+        console.error("Error updating order in Supabase:", dbError);
       }
     }
 
     // Return the payment response
-    res.status(201).json({
+    const paymentAmount = payment.amountMoney?.amount
+      ? payment.amountMoney.amount / 100
+      : 0;
+
+    return res.status(201).json({
       success: true,
       payment: {
         id: payment.id,
         status: payment.status,
-        amount: payment.amountMoney?.amount
-          ? payment.amountMoney.amount / 100
-          : 0,
+        amount: paymentAmount,
         currency: payment.amountMoney?.currency || "USD",
-        receiptUrl: payment.receiptUrl,
-        receiptNumber: payment.receiptNumber,
+        receiptUrl: payment.receiptUrl || "",
+        receiptNumber: payment.receiptNumber || "",
         cardDetails: {
-          brand: payment.cardDetails?.card?.cardBrand,
-          lastFour: payment.cardDetails?.card?.last4,
-          expMonth: payment.cardDetails?.card?.expMonth,
-          expYear: payment.cardDetails?.card?.expYear,
+          brand: payment.cardDetails?.card?.cardBrand || "",
+          lastFour: payment.cardDetails?.card?.last4 || "",
+          expMonth: payment.cardDetails?.card?.expMonth || null,
+          expYear: payment.cardDetails?.card?.expYear || null,
         },
       },
     });
   } catch (error) {
-    console.error("Create payment error:", error);
+    console.error("Create payment error - uncaught exception:", error);
     const errorMessage =
       error instanceof Error ? error.message : "Payment creation failed";
-    res.status(400).json({
+    return res.status(500).json({
+      success: false,
       error: errorMessage,
       details:
         error instanceof Error ? error.message : "Unknown error occurred",
