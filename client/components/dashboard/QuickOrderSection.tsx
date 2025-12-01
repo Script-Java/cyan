@@ -53,25 +53,17 @@ const PRODUCT_CATEGORIES: Product[] = [
 
 export default function QuickOrderSection() {
   return (
-    <div
-      className="rounded-2xl border overflow-hidden bg-white shadow-sm"
-      style={{
-        borderColor: "rgba(100, 116, 139, 0.2)",
-      }}
-    >
+    <div className="rounded-2xl border overflow-hidden backdrop-blur-xl bg-white/5 border-white/10">
       {/* Header */}
-      <div
-        className="border-b p-4 sm:p-6"
-        style={{ borderColor: "rgba(100, 116, 139, 0.1)" }}
-      >
+      <div className="border-b p-4 sm:p-6" style={{ borderColor: "rgba(255, 255, 255, 0.1)" }}>
         <div className="flex items-center justify-between">
-          <h2 className="flex items-center gap-3 text-lg sm:text-xl font-bold text-gray-900">
-            <RefreshCw className="w-5 h-5 text-gray-700" />
+          <h2 className="flex items-center gap-3 text-lg sm:text-xl font-bold text-white">
+            <RefreshCw className="w-5 h-5 text-white/70" />
             Quick Order
           </h2>
           <a
             href="/designs"
-            className="hidden md:flex items-center gap-2 text-sm font-medium transition-colors text-purple-600 hover:text-purple-700"
+            className="hidden md:flex items-center gap-2 text-sm font-medium transition-colors text-purple-400 hover:text-purple-300"
           >
             <span>View All Products</span>
             <ArrowRight className="w-4 h-4" />
