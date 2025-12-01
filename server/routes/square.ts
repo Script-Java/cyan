@@ -758,3 +758,111 @@ async function handleSquareCustomerDeleted(data: any): Promise<void> {
     console.error("Error processing Square customer deletion:", error);
   }
 }
+
+/**
+ * Handle Square payment.created webhook event
+ */
+async function handleSquarePaymentCreated(data: any): Promise<void> {
+  try {
+    const { supabase } = await import("../utils/supabase");
+
+    const payment = data?.object?.payment;
+    if (!payment) {
+      console.warn("No payment data in Square webhook");
+      return;
+    }
+
+    const paymentId = payment.id;
+    const orderId = payment.order_id;
+    const paymentStatus = payment.status;
+    const amountMoney = payment.amount_money || {};
+    const cardDetails = payment.card_details || {};
+    const card = cardDetails.card || {};
+
+    console.log("Processing Square payment creation:", {
+      paymentId,
+      orderId,
+      status: paymentStatus,
+      amount: amountMoney.amount,
+    });
+
+    // Only process approved payments
+    if (paymentStatus !== "APPROVED" && paymentStatus !== "COMPLETED") {
+      console.log(
+        `Payment status is ${paymentStatus}, skipping order update`,
+      );
+      return;
+    }
+
+    if (!orderId) {
+      console.warn("No order ID associated with payment:", paymentId);
+      return;
+    }
+
+    // Prepare payment details object to store in order
+    const paymentDetails = {
+      payment_id: paymentId,
+      payment_status: paymentStatus,
+      amount: amountMoney.amount ? amountMoney.amount / 100 : 0,
+      currency: amountMoney.currency || "USD",
+      payment_timestamp: payment.created_at,
+      card_brand: card.card_brand || "",
+      card_last_4: card.last_4 || "",
+      card_exp_month: card.exp_month || null,
+      card_exp_year: card.exp_year || null,
+      entry_method: cardDetails.entry_method || "",
+      receipt_number: payment.receipt_number || "",
+    };
+
+    // Get the order from Supabase
+    const { data: order, error: orderError } = await supabase
+      .from("orders")
+      .select("id, customer_id, total, items")
+      .eq("id", orderId)
+      .single();
+
+    if (orderError || !order) {
+      console.warn(
+        "Order not found in Supabase for payment:",
+        orderId,
+        orderError,
+      );
+      return;
+    }
+
+    // Update order with payment details and mark as paid
+    const { error: updateError } = await supabase
+      .from("orders")
+      .update({
+        status: "paid",
+        square_payment_details: paymentDetails,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", orderId);
+
+    if (updateError) {
+      console.error("Error updating order with payment details:", updateError);
+      return;
+    }
+
+    console.log("Order marked as paid with payment details:", orderId);
+
+    // Award store credit to customer (5% of order total)
+    if (order.customer_id) {
+      const earnedCredit = order.total * 0.05;
+      await updateCustomerStoreCredit(
+        order.customer_id,
+        earnedCredit,
+        `Earned 5% from order ${orderId}`,
+      );
+
+      console.log("Store credit awarded for order:", {
+        orderId,
+        customerId: order.customer_id,
+        earnedCredit,
+      });
+    }
+  } catch (error) {
+    console.error("Error processing Square payment creation:", error);
+  }
+}
