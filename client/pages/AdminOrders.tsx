@@ -260,7 +260,7 @@ export default function AdminOrders() {
                       <p className="text-sm sm:text-base text-white/60">
                         {searchTerm || filterStatus !== "all"
                           ? "No orders match your search or filter criteria."
-                          : "There are no pending orders at this time."}
+                          : "There are no active orders (pending, processing, printing, or in transit) at this time."}
                       </p>
                     </div>
                   )}
