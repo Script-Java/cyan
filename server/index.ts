@@ -104,6 +104,13 @@ import {
 } from "./routes/admin-customers";
 import { handleGetAnalytics } from "./routes/admin-analytics";
 import { handleGetFinance } from "./routes/admin-finance";
+import {
+  handleCreateProduct,
+  handleUpdateProduct,
+  handleGetAdminProducts,
+  handleGetAdminProduct,
+  handleDeleteAdminProduct,
+} from "./routes/admin-products";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
