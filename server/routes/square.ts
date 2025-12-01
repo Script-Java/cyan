@@ -871,3 +871,137 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
     console.error("Error processing Square payment creation:", error);
   }
 }
+
+/**
+ * Handle Square payment.updated webhook event
+ */
+async function handleSquarePaymentUpdated(data: any): Promise<void> {
+  try {
+    const { supabase } = await import("../utils/supabase");
+
+    const payment = data?.object?.payment;
+    if (!payment) {
+      console.warn("No payment data in Square webhook");
+      return;
+    }
+
+    const paymentId = payment.id;
+    const orderId = payment.order_id;
+    const paymentStatus = payment.status;
+    const amountMoney = payment.amount_money || {};
+    const cardDetails = payment.card_details || {};
+    const card = cardDetails.card || {};
+
+    console.log("Processing Square payment update:", {
+      paymentId,
+      orderId,
+      status: paymentStatus,
+      amount: amountMoney.amount,
+    });
+
+    // Only process completed or captured payments
+    if (
+      paymentStatus !== "COMPLETED" &&
+      paymentStatus !== "APPROVED" &&
+      cardDetails.status !== "CAPTURED"
+    ) {
+      console.log(
+        `Payment status is ${paymentStatus}, skipping order update`,
+      );
+      return;
+    }
+
+    if (!orderId) {
+      console.warn("No order ID associated with payment:", paymentId);
+      return;
+    }
+
+    // Get the current order to check if we need to award store credit
+    const { data: order, error: orderError } = await supabase
+      .from("orders")
+      .select("id, customer_id, total, status, square_payment_details")
+      .eq("id", orderId)
+      .single();
+
+    if (orderError || !order) {
+      console.warn(
+        "Order not found in Supabase for payment:",
+        orderId,
+        orderError,
+      );
+      return;
+    }
+
+    // Check if this is the first time the payment is being marked as completed
+    const previousPaymentDetails = order.square_payment_details || {};
+    const wasAlreadyCompleted =
+      previousPaymentDetails.payment_status === "COMPLETED" ||
+      previousPaymentDetails.card_status === "CAPTURED";
+
+    // Prepare updated payment details object
+    const updatedPaymentDetails = {
+      ...previousPaymentDetails,
+      payment_id: paymentId,
+      payment_status: paymentStatus,
+      card_status: cardDetails.status || "",
+      amount: amountMoney.amount ? amountMoney.amount / 100 : 0,
+      currency: amountMoney.currency || "USD",
+      payment_created_at: payment.created_at,
+      payment_updated_at: payment.updated_at,
+      card_brand: card.card_brand || "",
+      card_last_4: card.last_4 || "",
+      card_exp_month: card.exp_month || null,
+      card_exp_year: card.exp_year || null,
+      entry_method: cardDetails.entry_method || "",
+      receipt_number: payment.receipt_number || "",
+      receipt_url: payment.receipt_url || "",
+      authorized_at: cardDetails.card_payment_timeline?.authorized_at || null,
+      captured_at: cardDetails.card_payment_timeline?.captured_at || null,
+    };
+
+    // Update order with payment details
+    const newStatus = paymentStatus === "COMPLETED" ? "paid" : order.status;
+    const { error: updateError } = await supabase
+      .from("orders")
+      .update({
+        status: newStatus,
+        square_payment_details: updatedPaymentDetails,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", orderId);
+
+    if (updateError) {
+      console.error("Error updating order with payment details:", updateError);
+      return;
+    }
+
+    console.log("Order updated with payment details:", orderId);
+
+    // Award store credit only if this is the first time payment is completed
+    if (
+      !wasAlreadyCompleted &&
+      order.customer_id &&
+      (paymentStatus === "COMPLETED" || cardDetails.status === "CAPTURED")
+    ) {
+      const earnedCredit = order.total * 0.05;
+      await updateCustomerStoreCredit(
+        order.customer_id,
+        earnedCredit,
+        `Earned 5% from order ${orderId}`,
+      );
+
+      console.log("Store credit awarded for order:", {
+        orderId,
+        customerId: order.customer_id,
+        earnedCredit,
+      });
+    } else if (wasAlreadyCompleted) {
+      console.log(
+        "Payment already completed, skipping duplicate store credit award:",
+        orderId,
+      );
+    }
+  } catch (error) {
+    console.error("Error processing Square payment update:", error);
+  }
+}
