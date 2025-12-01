@@ -199,6 +199,13 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       customerEmail: checkoutData.customerEmail,
       customerName: checkoutData.customerName || "Customer",
       redirectUrl,
+      shippingAddress: {
+        street: checkoutData.shippingAddress.street,
+        city: checkoutData.shippingAddress.city,
+        state: checkoutData.shippingAddress.state,
+        postalCode: checkoutData.shippingAddress.postalCode,
+        country: checkoutData.shippingAddress.country,
+      },
     });
 
     if (!paymentLinkResult.success || !paymentLinkResult.paymentLinkUrl) {
