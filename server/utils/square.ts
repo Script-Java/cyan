@@ -54,20 +54,35 @@ export function getSquareClient() {
 }
 
 export function getPaymentsApi() {
-  return getSquareClient().paymentsApi;
+  const client = getSquareClient();
+  if (!client.paymentsApi) {
+    throw new Error("Square paymentsApi is not available");
+  }
+  return client.paymentsApi;
 }
 
 export function getLocationsApi() {
-  return getSquareClient().locationsApi;
+  const client = getSquareClient();
+  if (!client.locationsApi) {
+    throw new Error("Square locationsApi is not available");
+  }
+  return client.locationsApi;
 }
 
 export function getOrdersApi() {
-  return getSquareClient().ordersApi;
+  const client = getSquareClient();
+  if (!client.ordersApi) {
+    throw new Error("Square ordersApi is not available");
+  }
+  return client.ordersApi;
 }
 
 export function getCheckoutApi() {
-  // Square SDK doesn't have a dedicated checkoutApi, we use ordersApi instead
-  return getSquareClient().ordersApi;
+  const client = getSquareClient();
+  if (!client.checkoutApi) {
+    throw new Error("Square checkoutApi is not available");
+  }
+  return client.checkoutApi;
 }
 
 export async function processSquarePayment(paymentData: {
