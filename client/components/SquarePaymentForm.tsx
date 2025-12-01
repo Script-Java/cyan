@@ -73,56 +73,78 @@ export default function SquarePaymentForm({
             );
 
             try {
+              if (statusContainer) {
+                statusContainer.innerHTML = '<div class="text-white">Processing payment...</div>';
+              }
+
               const result = await card.tokenize();
               if (result.status === "OK") {
                 console.log(`Payment token is ${result.token}`);
+
                 if (statusContainer) {
-                  statusContainer.innerHTML = "Payment Successful";
+                  statusContainer.innerHTML = '<div class="text-white">Sending payment to Square...</div>';
                 }
 
-                // Send token to backend for payment processing
-                const response = await fetch("/api/square/process-payment", {
+                // Send token to backend to create payment using Square's Payments API (POST /v2/payments)
+                const response = await fetch("/api/square/create-payment", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
-                    token: result.token,
+                    sourceId: result.token,
+                    amount: amount / 100, // Convert from cents to dollars
+                    currency: "USD",
                     orderId: orderId,
-                    amount: amount,
                     customerEmail: customerEmail,
-                    customerName: customerName,
+                    customerId: customerName,
                   }),
                 });
 
-                if (!response.ok) {
-                  const errorText = await response.text();
-                  let errorMessage = "Payment processing failed";
-                  try {
-                    const errorData = JSON.parse(errorText);
-                    errorMessage = errorData.error || errorMessage;
-                  } catch {
-                    errorMessage = errorText || errorMessage;
+                const paymentResult = await response.json();
+                console.log("Payment response:", response.status, paymentResult);
+
+                if (response.ok && paymentResult.success) {
+                  console.log("Payment created successfully:", paymentResult.payment);
+
+                  if (statusContainer) {
+                    statusContainer.innerHTML = `
+                      <div class="bg-green-400/10 border border-green-400/30 rounded-lg p-3 space-y-2">
+                        <div class="text-green-400 font-bold">✓ Payment completed successfully!</div>
+                        <div class="text-sm text-green-300">Payment ID: ${paymentResult.payment.id}</div>
+                        <div class="text-sm text-green-300">Amount: $${paymentResult.payment.amount.toFixed(2)}</div>
+                      </div>
+                    `;
+                  }
+
+                  // Redirect after a brief delay
+                  setTimeout(() => {
+                    onPaymentSuccess(result.token);
+                  }, 2000);
+                } else {
+                  let errorMessage = `Payment creation failed: ${paymentResult.error || "Unknown error"}`;
+                  if (paymentResult.details) {
+                    errorMessage += ` - ${paymentResult.details}`;
                   }
                   throw new Error(errorMessage);
                 }
-
-                const paymentResult = await response.json();
-                onPaymentSuccess(result.token);
               } else {
                 let errorMessage = `Tokenization failed with status: ${result.status}`;
                 if (result.errors) {
-                  errorMessage += ` and errors: ${JSON.stringify(
-                    result.errors,
-                  )}`;
+                  errorMessage += ` - ${JSON.stringify(result.errors)}`;
                 }
-
                 throw new Error(errorMessage);
               }
             } catch (e) {
-              console.error(e);
+              console.error("Payment error:", e);
               if (statusContainer) {
-                statusContainer.innerHTML = "Payment Failed";
+                const errorMsg = e instanceof Error ? e.message : "Payment failed";
+                statusContainer.innerHTML = `
+                  <div class="bg-red-400/10 border border-red-400/30 rounded-lg p-3">
+                    <div class="text-red-400 font-bold">✗ Payment Failed</div>
+                    <div class="text-sm text-red-300 mt-1">${errorMsg}</div>
+                  </div>
+                `;
               }
             }
           });
