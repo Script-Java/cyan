@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import {
-  Bookmark,
-  BarChart3,
-  Cloud,
-  Eye,
-  MessageCircle,
-  Settings,
+  ShoppingBag,
+  TrendingUp,
+  Palette,
+  CheckCircle2,
+  Headphones,
+  Ticket,
+  CircleUserRound,
   LogOut,
-  Inbox,
 } from "lucide-react";
 
 interface DashboardNavigationProps {
