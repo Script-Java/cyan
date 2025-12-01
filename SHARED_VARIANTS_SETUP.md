@@ -1,22 +1,27 @@
 # Shared Variants Feature Setup Guide
 
 ## Overview
+
 The Shared Variants feature allows you to create reusable variant groups that can be applied across multiple products. This is useful when you have common option combinations that repeat across your product catalog.
 
 ## Database Setup
 
 ### Migration
+
 A migration file has been created to add the `shared_variants` column to the `admin_products` table:
+
 - **File**: `supabase/migrations/add_shared_variants_to_products.sql`
 
 To apply this migration using Supabase CLI:
+
 ```bash
 supabase migration up
 ```
 
 Or manually run the SQL in your Supabase dashboard:
+
 ```sql
-ALTER TABLE admin_products 
+ALTER TABLE admin_products
 ADD COLUMN IF NOT EXISTS shared_variants JSONB DEFAULT '[]'::jsonb;
 
 CREATE INDEX IF NOT EXISTS idx_admin_products_shared_variants ON admin_products USING gin(shared_variants);
@@ -25,6 +30,7 @@ CREATE INDEX IF NOT EXISTS idx_admin_products_shared_variants ON admin_products 
 ## Code Changes
 
 ### Frontend (client/pages/ProductForm.tsx)
+
 1. **New Interface**: `SharedVariant` - Represents a shared variant group
 2. **New State**: `sharedVariants` array in `ProductFormData`
 3. **New Handlers**:
@@ -36,6 +42,7 @@ CREATE INDEX IF NOT EXISTS idx_admin_products_shared_variants ON admin_products 
 4. **New UI Section**: "Shared Variants" section between "Product Options & Variants" and "Customer Design Upload" sections
 
 ### Backend (server/routes/admin-products.ts)
+
 1. **New Interface**: `SharedVariant` - Type definition for shared variants
 2. **Updated ProductFormData**: Includes `sharedVariants` array
 3. **Updated Handlers**: Both `handleCreateProduct` and `handleUpdateProduct` now include `shared_variants` in the database mapping
@@ -55,6 +62,7 @@ CREATE INDEX IF NOT EXISTS idx_admin_products_shared_variants ON admin_products 
 ### Example Use Case
 
 If you have products that all use the same combination of "Size" and "Color" options:
+
 1. Create an option called "Size" with values: Small, Medium, Large
 2. Create an option called "Color" with values: Red, Blue, Green
 3. Create a shared variant group named "Standard Size & Color"
@@ -64,19 +72,22 @@ If you have products that all use the same combination of "Size" and "Color" opt
 ## Data Structure
 
 ### Shared Variant JSON Format
+
 ```typescript
 interface SharedVariant {
-  id: string;              // Unique identifier
-  name: string;            // Display name
-  description: string;     // Detailed description
-  optionIds: string[];     // Array of option IDs included in this group
+  id: string; // Unique identifier
+  name: string; // Display name
+  description: string; // Detailed description
+  optionIds: string[]; // Array of option IDs included in this group
 }
 ```
 
 ### Database Storage
+
 The `shared_variants` column in `admin_products` table stores an array of `SharedVariant` objects as JSONB.
 
 Example:
+
 ```json
 [
   {
@@ -97,6 +108,7 @@ Example:
 ## API Endpoints
 
 ### Create Product (with Shared Variants)
+
 ```
 POST /api/products
 Content-Type: application/json
@@ -119,6 +131,7 @@ Authorization: Bearer <token>
 ```
 
 ### Update Product (with Shared Variants)
+
 ```
 PUT /api/products/:productId
 Content-Type: application/json

@@ -754,10 +754,7 @@ async function handleSquareCustomerDeleted(data: any): Promise<void> {
         );
       }
     } else {
-      console.log(
-        "Square customer not found in Supabase:",
-        squareCustomerId,
-      );
+      console.log("Square customer not found in Supabase:", squareCustomerId);
     }
   } catch (error) {
     console.error("Error processing Square customer deletion:", error);
@@ -793,9 +790,7 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
 
     // Only process approved payments
     if (paymentStatus !== "APPROVED" && paymentStatus !== "COMPLETED") {
-      console.log(
-        `Payment status is ${paymentStatus}, skipping order update`,
-      );
+      console.log(`Payment status is ${paymentStatus}, skipping order update`);
       return;
     }
 
@@ -905,9 +900,7 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
       paymentStatus !== "APPROVED" &&
       cardDetails.status !== "CAPTURED"
     ) {
-      console.log(
-        `Payment status is ${paymentStatus}, skipping order update`,
-      );
+      console.log(`Payment status is ${paymentStatus}, skipping order update`);
       return;
     }
 

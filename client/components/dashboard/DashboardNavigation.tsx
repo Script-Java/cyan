@@ -121,7 +121,9 @@ export default function DashboardNavigation({
                 <h4 className="text-xs sm:text-sm font-semibold text-white leading-tight">
                   {item.title}
                 </h4>
-                <p className="text-xs text-white/60 hidden sm:block">{item.description}</p>
+                <p className="text-xs text-white/60 hidden sm:block">
+                  {item.description}
+                </p>
               </div>
             </button>
           );

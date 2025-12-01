@@ -289,7 +289,9 @@ export default function Header() {
             {/* Auth Section - shown when not authenticated */}
             {!isAuthenticated && (
               <div className="mb-6 space-y-2">
-                <h3 className="text-xs font-semibold text-white/60 uppercase px-4 mb-3">Account</h3>
+                <h3 className="text-xs font-semibold text-white/60 uppercase px-4 mb-3">
+                  Account
+                </h3>
                 <Link
                   to="/login"
                   className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 transition-colors text-blue-300 font-medium text-sm border border-blue-500/30"
@@ -409,7 +411,9 @@ export default function Header() {
             {/* Logout Section - shown when authenticated */}
             {isAuthenticated && (
               <div className="mt-6 space-y-2">
-                <h3 className="text-xs font-semibold text-white/60 uppercase px-4 mb-3">Account</h3>
+                <h3 className="text-xs font-semibold text-white/60 uppercase px-4 mb-3">
+                  Account
+                </h3>
                 <button
                   onClick={() => {
                     handleLogout();

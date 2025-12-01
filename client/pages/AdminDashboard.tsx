@@ -129,7 +129,9 @@ export default function AdminDashboard() {
               <div className="px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h1 className="text-lg sm:text-2xl font-bold text-white">Dashboard</h1>
+                    <h1 className="text-lg sm:text-2xl font-bold text-white">
+                      Dashboard
+                    </h1>
                     <p className="text-white/60 mt-1 text-xs sm:text-sm">
                       Welcome back! Here's what's happening with your store
                       today.
@@ -205,15 +207,19 @@ export default function AdminDashboard() {
                                 <td className="px-2 sm:px-3 py-2 text-white/60 hidden md:table-cell">
                                   <div className="flex items-center gap-1 truncate max-w-xs">
                                     <Mail className="w-3 h-3 flex-shrink-0" />
-                                    <span className="truncate text-xs sm:text-sm">{order.customerEmail}</span>
+                                    <span className="truncate text-xs sm:text-sm">
+                                      {order.customerEmail}
+                                    </span>
                                   </div>
                                 </td>
                                 <td className="px-2 sm:px-3 py-2 text-white/60 hidden lg:table-cell whitespace-nowrap">
                                   <div className="flex items-center gap-1">
                                     <Calendar className="w-3 h-3" />
-                                    <span className="text-xs sm:text-sm">{new Date(
-                                      order.dateCreated,
-                                    ).toLocaleDateString()}</span>
+                                    <span className="text-xs sm:text-sm">
+                                      {new Date(
+                                        order.dateCreated,
+                                      ).toLocaleDateString()}
+                                    </span>
                                   </div>
                                 </td>
                                 <td className="px-2 sm:px-3 py-2 font-semibold text-white text-right whitespace-nowrap">
@@ -251,7 +257,8 @@ export default function AdminDashboard() {
                           {link.description}
                         </p>
                         <div className="flex items-center text-purple-400 text-xs font-medium">
-                          Manage <ChevronRight className="w-3 h-3 ml-1 hidden sm:inline" />
+                          Manage{" "}
+                          <ChevronRight className="w-3 h-3 ml-1 hidden sm:inline" />
                         </div>
                       </button>
                     ))}
@@ -282,40 +289,40 @@ export default function AdminDashboard() {
                     {/* Traffic Stats */}
                     <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
                       <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
-                        <p className="text-white/60 text-xs mb-1">
-                          Views
+                        <p className="text-white/60 text-xs mb-1">Views</p>
+                        <p className="text-lg sm:text-xl font-bold text-white">
+                          24,580
                         </p>
-                        <p className="text-lg sm:text-xl font-bold text-white">24,580</p>
                         <p className="text-green-400 text-xs mt-1 hidden sm:flex items-center gap-1">
                           <TrendingUp className="w-3 h-3" />
                           +12.5%
                         </p>
                       </div>
                       <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
-                        <p className="text-white/60 text-xs mb-1">
-                          Visitors
+                        <p className="text-white/60 text-xs mb-1">Visitors</p>
+                        <p className="text-lg sm:text-xl font-bold text-white">
+                          3,240
                         </p>
-                        <p className="text-lg sm:text-xl font-bold text-white">3,240</p>
                         <p className="text-green-400 text-xs mt-1 hidden sm:flex items-center gap-1">
                           <TrendingUp className="w-3 h-3" />
                           +8.2%
                         </p>
                       </div>
                       <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
-                        <p className="text-white/60 text-xs mb-1">
-                          Bounce
+                        <p className="text-white/60 text-xs mb-1">Bounce</p>
+                        <p className="text-lg sm:text-xl font-bold text-white">
+                          32.5%
                         </p>
-                        <p className="text-lg sm:text-xl font-bold text-white">32.5%</p>
                         <p className="text-red-400 text-xs mt-1 hidden sm:flex items-center gap-1">
                           <TrendingUp className="w-3 h-3" />
                           +2.1%
                         </p>
                       </div>
                       <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
-                        <p className="text-white/60 text-xs mb-1">
-                          Session
+                        <p className="text-white/60 text-xs mb-1">Session</p>
+                        <p className="text-lg sm:text-xl font-bold text-white">
+                          4m 32s
                         </p>
-                        <p className="text-lg sm:text-xl font-bold text-white">4m 32s</p>
                         <p className="text-green-400 text-xs mt-1 hidden sm:flex items-center gap-1">
                           <TrendingUp className="w-3 h-3" />
                           +0.5m
@@ -375,7 +382,9 @@ export default function AdminDashboard() {
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
                       <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
                         <p className="text-white/60 text-xs mb-1">Peak</p>
-                        <p className="text-base sm:text-lg font-bold text-white">2-4 PM</p>
+                        <p className="text-base sm:text-lg font-bold text-white">
+                          2-4 PM
+                        </p>
                         <p className="text-white/40 text-xs mt-1 hidden sm:block">
                           Busiest time
                         </p>

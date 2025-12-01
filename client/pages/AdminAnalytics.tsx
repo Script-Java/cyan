@@ -59,9 +59,7 @@ const StatCard = ({
       </div>
       <div
         className={`p-2 rounded-lg backdrop-blur-xl transition-all duration-300 group-hover:scale-110 ${
-          isLive
-            ? `${color} animate-pulse`
-            : `bg-gradient-to-br ${color}`
+          isLive ? `${color} animate-pulse` : `bg-gradient-to-br ${color}`
         }`}
       >
         {Icon}
@@ -251,9 +249,7 @@ export default function AdminAnalytics() {
               {/* Key Metrics Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                 <StatCard
-                  icon={
-                    <Activity className="w-4 h-4 text-green-400" />
-                  }
+                  icon={<Activity className="w-4 h-4 text-green-400" />}
                   title="Active Users Now"
                   value={analytics.activeUsers}
                   trend={12}
@@ -261,9 +257,7 @@ export default function AdminAnalytics() {
                   isLive
                 />
                 <StatCard
-                  icon={
-                    <TrendingUp className="w-4 h-4 text-blue-400" />
-                  }
+                  icon={<TrendingUp className="w-4 h-4 text-blue-400" />}
                   title="Page Views Today"
                   value={analytics.totalPageViews}
                   trend={8}

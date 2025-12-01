@@ -140,9 +140,7 @@ export default function AdminFinance() {
                       <div className="p-1.5 bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-lg">
                         <DollarSign className="w-4 h-4 text-green-400" />
                       </div>
-                      <h1 className="text-2xl font-bold text-white">
-                        Finance
-                      </h1>
+                      <h1 className="text-2xl font-bold text-white">Finance</h1>
                     </div>
                     <p className="text-white/50 text-xs mt-1">
                       Revenue, transactions, and financial performance
@@ -162,9 +160,7 @@ export default function AdminFinance() {
               {/* Primary Metrics */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
                 <MetricCard
-                  icon={
-                    <DollarSign className="w-4 h-4 text-green-400" />
-                  }
+                  icon={<DollarSign className="w-4 h-4 text-green-400" />}
                   title="Total Revenue"
                   value={`$${stats.totalRevenue.toFixed(2)}`}
                   trend={stats.revenueChange}
@@ -172,25 +168,19 @@ export default function AdminFinance() {
                   color="from-green-500/20 to-emerald-500/20"
                 />
                 <MetricCard
-                  icon={
-                    <Wallet className="w-4 h-4 text-blue-400" />
-                  }
+                  icon={<Wallet className="w-4 h-4 text-blue-400" />}
                   title="This Month"
                   value={`$${stats.monthlyRevenue.toFixed(2)}`}
                   color="from-blue-500/20 to-cyan-500/20"
                 />
                 <MetricCard
-                  icon={
-                    <TrendingUp className="w-4 h-4 text-purple-400" />
-                  }
+                  icon={<TrendingUp className="w-4 h-4 text-purple-400" />}
                   title="Avg Order Value"
                   value={`$${stats.averageOrderValue.toFixed(2)}`}
                   color="from-purple-500/20 to-pink-500/20"
                 />
                 <MetricCard
-                  icon={
-                    <CreditCard className="w-4 h-4 text-orange-400" />
-                  }
+                  icon={<CreditCard className="w-4 h-4 text-orange-400" />}
                   title="Total Orders"
                   value={stats.totalOrders}
                   trend={stats.orderChange}
@@ -258,9 +248,7 @@ export default function AdminFinance() {
                     <p className="text-white/60 text-xs uppercase tracking-widest font-medium mb-1">
                       Monthly Goal
                     </p>
-                    <p className="text-2xl font-bold text-white mb-2">
-                      $5,000
-                    </p>
+                    <p className="text-2xl font-bold text-white mb-2">$5,000</p>
                     <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-gradient-to-r from-green-500 to-emerald-400"
@@ -282,17 +270,13 @@ export default function AdminFinance() {
                     <p className="text-white/60 text-xs uppercase tracking-widest font-medium mb-1">
                       Conversion Rate
                     </p>
-                    <p className="text-2xl font-bold text-white mb-2">
-                      3.2%
-                    </p>
+                    <p className="text-2xl font-bold text-white mb-2">3.2%</p>
                     <div className="flex items-center gap-1">
                       <div className="text-green-400 flex items-center gap-0.5 text-xs font-semibold">
                         <ArrowUpRight className="w-3 h-3" />
                         +0.5%
                       </div>
-                      <span className="text-white/40 text-xs">
-                        vs last
-                      </span>
+                      <span className="text-white/40 text-xs">vs last</span>
                     </div>
                   </div>
 
@@ -308,9 +292,7 @@ export default function AdminFinance() {
                         <ArrowUpRight className="w-3 h-3" />
                         {stats.orderChange}%
                       </div>
-                      <span className="text-white/40 text-xs">
-                        vs last
-                      </span>
+                      <span className="text-white/40 text-xs">vs last</span>
                     </div>
                   </div>
                 </div>

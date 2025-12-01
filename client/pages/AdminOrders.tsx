@@ -161,11 +161,21 @@ export default function AdminOrders() {
                         onChange={(e) => setFilterStatus(e.target.value)}
                         className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                       >
-                        <option value="all" className="bg-gray-900">All Active Statuses</option>
-                        <option value="pending" className="bg-gray-900">Pending</option>
-                        <option value="processing" className="bg-gray-900">Processing</option>
-                        <option value="printing" className="bg-gray-900">Printing</option>
-                        <option value="in transit" className="bg-gray-900">In Transit</option>
+                        <option value="all" className="bg-gray-900">
+                          All Active Statuses
+                        </option>
+                        <option value="pending" className="bg-gray-900">
+                          Pending
+                        </option>
+                        <option value="processing" className="bg-gray-900">
+                          Processing
+                        </option>
+                        <option value="printing" className="bg-gray-900">
+                          Printing
+                        </option>
+                        <option value="in transit" className="bg-gray-900">
+                          In Transit
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -215,15 +225,19 @@ export default function AdminOrders() {
                                 <td className="px-4 sm:px-6 py-4 text-white/60 hidden md:table-cell">
                                   <div className="flex items-center gap-2 truncate max-w-xs">
                                     <Mail className="w-4 h-4 flex-shrink-0" />
-                                    <span className="truncate text-xs sm:text-sm">{order.customerEmail}</span>
+                                    <span className="truncate text-xs sm:text-sm">
+                                      {order.customerEmail}
+                                    </span>
                                   </div>
                                 </td>
                                 <td className="px-4 sm:px-6 py-4 text-white/60 hidden lg:table-cell whitespace-nowrap">
                                   <div className="flex items-center gap-2">
                                     <Calendar className="w-4 h-4" />
-                                    <span className="text-xs sm:text-sm">{new Date(
-                                      order.dateCreated,
-                                    ).toLocaleDateString()}</span>
+                                    <span className="text-xs sm:text-sm">
+                                      {new Date(
+                                        order.dateCreated,
+                                      ).toLocaleDateString()}
+                                    </span>
                                   </div>
                                 </td>
                                 <td className="px-4 sm:px-6 py-4">

@@ -294,11 +294,7 @@ export default function ProductForm() {
     }));
   };
 
-  const updateOption = (
-    id: string,
-    field: keyof ProductOption,
-    value: any,
-  ) => {
+  const updateOption = (id: string, field: keyof ProductOption, value: any) => {
     setFormData((prev) => ({
       ...prev,
       options: prev.options.map((opt) =>
@@ -439,7 +435,10 @@ export default function ProductForm() {
     }));
   };
 
-  const toggleSharedVariantOption = (sharedVariantId: string, optionId: string) => {
+  const toggleSharedVariantOption = (
+    sharedVariantId: string,
+    optionId: string,
+  ) => {
     setFormData((prev) => ({
       ...prev,
       sharedVariants: prev.sharedVariants.map((sv) =>
@@ -594,7 +593,7 @@ export default function ProductForm() {
         method,
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });
@@ -602,7 +601,7 @@ export default function ProductForm() {
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(
-          errorData.error || `Failed to save product (${response.status})`
+          errorData.error || `Failed to save product (${response.status})`,
         );
       }
 
@@ -664,7 +663,9 @@ export default function ProductForm() {
                     </Label>
                     <Input
                       value={formData.name}
-                      onChange={(e) => handleInputChange("name", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("name", e.target.value)
+                      }
                       placeholder="Enter product name"
                       className="bg-white/5 border-white/10 text-white placeholder-white/40"
                     />
@@ -681,7 +682,10 @@ export default function ProductForm() {
                         min="0"
                         value={formData.basePrice}
                         onChange={(e) =>
-                          handleInputChange("basePrice", parseFloat(e.target.value))
+                          handleInputChange(
+                            "basePrice",
+                            parseFloat(e.target.value),
+                          )
                         }
                         placeholder="0.00"
                         className="bg-white/5 border-white/10 text-white placeholder-white/40"
@@ -694,7 +698,9 @@ export default function ProductForm() {
                       <Label className="text-white/80 mb-2 block">SKU</Label>
                       <Input
                         value={formData.sku}
-                        onChange={(e) => handleInputChange("sku", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("sku", e.target.value)
+                        }
                         placeholder="e.g., SKU-001"
                         className="bg-white/5 border-white/10 text-white placeholder-white/40"
                       />
@@ -809,7 +815,8 @@ export default function ProductForm() {
                 <div className="space-y-6">
                   {formData.options.length === 0 ? (
                     <p className="text-white/60 text-center py-8">
-                      No options added yet. Click "Add Option" to get started with variants.
+                      No options added yet. Click "Add Option" to get started
+                      with variants.
                     </p>
                   ) : (
                     formData.options.map((option, index) => (
@@ -873,8 +880,12 @@ export default function ProductForm() {
                                       Dropdown
                                     </SelectItem>
                                     <SelectItem value="radio">Radio</SelectItem>
-                                    <SelectItem value="swatch">Swatch</SelectItem>
-                                    <SelectItem value="text">Text Input</SelectItem>
+                                    <SelectItem value="swatch">
+                                      Swatch
+                                    </SelectItem>
+                                    <SelectItem value="text">
+                                      Text Input
+                                    </SelectItem>
                                   </SelectContent>
                                 </Select>
                               </div>
@@ -1048,7 +1059,10 @@ export default function ProductForm() {
                                       <div className="flex justify-end">
                                         <button
                                           onClick={() =>
-                                            removeVariantValue(option.id, value.id)
+                                            removeVariantValue(
+                                              option.id,
+                                              value.id,
+                                            )
                                           }
                                           className="text-red-400 hover:text-red-300 text-sm flex items-center gap-1"
                                         >
@@ -1088,13 +1102,15 @@ export default function ProductForm() {
                 </div>
 
                 <p className="text-white/60 text-sm mb-6">
-                  Create shared variant groups that apply the same set of options across multiple products.
+                  Create shared variant groups that apply the same set of
+                  options across multiple products.
                 </p>
 
                 <div className="space-y-6">
                   {formData.sharedVariants.length === 0 ? (
                     <p className="text-white/60 text-center py-8">
-                      No shared variants added yet. Click "Add Shared Variant" to create a reusable variant group.
+                      No shared variants added yet. Click "Add Shared Variant"
+                      to create a reusable variant group.
                     </p>
                   ) : (
                     formData.sharedVariants.map((sharedVariant) => (
@@ -1180,7 +1196,8 @@ export default function ProductForm() {
                               </div>
                             ) : (
                               <p className="text-white/40 text-sm">
-                                Add options above to include them in this shared variant group.
+                                Add options above to include them in this shared
+                                variant group.
                               </p>
                             )}
 
@@ -1272,38 +1289,41 @@ export default function ProductForm() {
                         </Label>
                         <div className="bg-white/5 border border-white/10 rounded-lg p-4">
                           <div className="space-y-2">
-                            {["png", "jpg", "jpeg", "gif", "svg"].map((format) => (
-                              <label
-                                key={format}
-                                className="flex items-center gap-2 cursor-pointer"
-                              >
-                                <input
-                                  type="checkbox"
-                                  checked={formData.customerUploadConfig.allowedFormats.includes(
-                                    format,
-                                  )}
-                                  onChange={(e) => {
-                                    const formats =
-                                      formData.customerUploadConfig.allowedFormats;
-                                    if (e.target.checked) {
-                                      updateCustomerUploadConfig(
-                                        "allowedFormats",
-                                        [...formats, format],
-                                      );
-                                    } else {
-                                      updateCustomerUploadConfig(
-                                        "allowedFormats",
-                                        formats.filter((f) => f !== format),
-                                      );
-                                    }
-                                  }}
-                                  className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
-                                />
-                                <span className="text-white/80 uppercase text-sm">
-                                  {format}
-                                </span>
-                              </label>
-                            ))}
+                            {["png", "jpg", "jpeg", "gif", "svg"].map(
+                              (format) => (
+                                <label
+                                  key={format}
+                                  className="flex items-center gap-2 cursor-pointer"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={formData.customerUploadConfig.allowedFormats.includes(
+                                      format,
+                                    )}
+                                    onChange={(e) => {
+                                      const formats =
+                                        formData.customerUploadConfig
+                                          .allowedFormats;
+                                      if (e.target.checked) {
+                                        updateCustomerUploadConfig(
+                                          "allowedFormats",
+                                          [...formats, format],
+                                        );
+                                      } else {
+                                        updateCustomerUploadConfig(
+                                          "allowedFormats",
+                                          formats.filter((f) => f !== format),
+                                        );
+                                      }
+                                    }}
+                                    className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
+                                  />
+                                  <span className="text-white/80 uppercase text-sm">
+                                    {format}
+                                  </span>
+                                </label>
+                              ),
+                            )}
                           </div>
                         </div>
                       </div>
@@ -1350,9 +1370,7 @@ export default function ProductForm() {
                         />
                       </div>
                       <div className="flex-1">
-                        <Label className="text-white/80 mb-2 block">
-                          Type
-                        </Label>
+                        <Label className="text-white/80 mb-2 block">Type</Label>
                         <Select
                           value={field.type}
                           onValueChange={(value) =>
@@ -1466,9 +1484,7 @@ export default function ProductForm() {
                 </h2>
 
                 <div>
-                  <Label className="text-white/80 mb-2 block">
-                    Logic Type
-                  </Label>
+                  <Label className="text-white/80 mb-2 block">Logic Type</Label>
                   <Select
                     value={formData.conditionLogic}
                     onValueChange={(value) =>
@@ -1595,7 +1611,9 @@ export default function ProductForm() {
                     </Label>
                     <Input
                       value={formData.seo.productUrl}
-                      onChange={(e) => handleSEOChange("productUrl", e.target.value)}
+                      onChange={(e) =>
+                        handleSEOChange("productUrl", e.target.value)
+                      }
                       placeholder="product-name"
                       className="bg-white/5 border-white/10 text-white placeholder-white/40"
                     />
@@ -1610,7 +1628,9 @@ export default function ProductForm() {
                     </Label>
                     <Input
                       value={formData.seo.pageTitle}
-                      onChange={(e) => handleSEOChange("pageTitle", e.target.value)}
+                      onChange={(e) =>
+                        handleSEOChange("pageTitle", e.target.value)
+                      }
                       placeholder="Product Name - Your Store"
                       className="bg-white/5 border-white/10 text-white placeholder-white/40"
                     />
@@ -1683,7 +1703,9 @@ export default function ProductForm() {
                   />
                   <div>
                     <Label className="text-white/80 font-normal cursor-pointer block">
-                      {formData.availability ? "Product is Available" : "Product is Unavailable"}
+                      {formData.availability
+                        ? "Product is Available"
+                        : "Product is Unavailable"}
                     </Label>
                     <p className="text-white/40 text-sm mt-1">
                       {formData.availability

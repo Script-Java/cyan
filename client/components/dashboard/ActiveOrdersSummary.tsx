@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { CheckCircle, Package, Calendar, ChevronDown, ChevronUp, Truck, MapPin } from "lucide-react";
+import {
+  CheckCircle,
+  Package,
+  Calendar,
+  ChevronDown,
+  ChevronUp,
+  Truck,
+  MapPin,
+} from "lucide-react";
 
 interface Order {
   id: number;
@@ -84,7 +92,10 @@ export default function ActiveOrdersSummary({
       {activeOrders.length > 0 ? (
         <div className="space-y-3">
           {activeOrders.map((order) => (
-            <div key={order.id} className="border border-white/10 rounded-lg overflow-hidden bg-white/5">
+            <div
+              key={order.id}
+              className="border border-white/10 rounded-lg overflow-hidden bg-white/5"
+            >
               <div
                 className={`p-4 flex items-center justify-between cursor-pointer hover:bg-white/10 transition-colors backdrop-blur-sm`}
                 onClick={() => toggleExpanded(order.id)}
@@ -96,8 +107,11 @@ export default function ActiveOrdersSummary({
                       <p className="font-semibold text-sm text-white">
                         Order #{order.id}
                       </p>
-                      <span className={`text-xs font-medium px-2 py-1 rounded border ${getStatusBadgeColor(order.status)}`}>
-                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                      <span
+                        className={`text-xs font-medium px-2 py-1 rounded border ${getStatusBadgeColor(order.status)}`}
+                      >
+                        {order.status.charAt(0).toUpperCase() +
+                          order.status.slice(1)}
                       </span>
                     </div>
                     <div className="flex items-center gap-4 text-xs text-white/60 mt-1">
@@ -107,7 +121,8 @@ export default function ActiveOrdersSummary({
                       </span>
                       <span className="flex items-center gap-1">
                         <Package className="w-3 h-3" />
-                        {order.itemCount} {order.itemCount === 1 ? "item" : "items"}
+                        {order.itemCount}{" "}
+                        {order.itemCount === 1 ? "item" : "items"}
                       </span>
                     </div>
                   </div>
@@ -148,13 +163,17 @@ export default function ActiveOrdersSummary({
                           <div className="flex justify-between">
                             <span className="text-white/60">Shipped Date:</span>
                             <span className="font-medium text-white">
-                              {new Date(order.shipped_date).toLocaleDateString()}
+                              {new Date(
+                                order.shipped_date,
+                              ).toLocaleDateString()}
                             </span>
                           </div>
                         )}
                         {order.tracking_number && (
                           <div className="flex justify-between items-start">
-                            <span className="text-white/60">Tracking Number:</span>
+                            <span className="text-white/60">
+                              Tracking Number:
+                            </span>
                             <div className="flex flex-col items-end gap-1">
                               <span className="font-mono font-medium text-white">
                                 {order.tracking_number}
@@ -191,7 +210,9 @@ export default function ActiveOrdersSummary({
                         Estimated Delivery
                       </h3>
                       <p className="text-sm text-white/70">
-                        {new Date(order.estimated_delivery_date).toLocaleDateString()}
+                        {new Date(
+                          order.estimated_delivery_date,
+                        ).toLocaleDateString()}
                       </p>
                     </div>
                   )}

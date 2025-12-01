@@ -189,11 +189,13 @@ export default function Dashboard() {
 
           {/* Active Orders Summary */}
           <ActiveOrdersSummary
-            activeOrders={
-              orders.filter(
-                (o) => o.status === "pending" || o.status === "processing" || o.status === "printing" || o.status === "in transit",
-              )
-            }
+            activeOrders={orders.filter(
+              (o) =>
+                o.status === "pending" ||
+                o.status === "processing" ||
+                o.status === "printing" ||
+                o.status === "in transit",
+            )}
           />
 
           {/* Quick Order Section */}

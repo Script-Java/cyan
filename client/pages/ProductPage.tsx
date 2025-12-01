@@ -128,9 +128,11 @@ export default function ProductPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!product?.customer_upload_config.allowedFormats.includes(
-      file.name.split(".").pop()?.toLowerCase() || "",
-    )) {
+    if (
+      !product?.customer_upload_config.allowedFormats.includes(
+        file.name.split(".").pop()?.toLowerCase() || "",
+      )
+    ) {
       toast({
         title: "Invalid File Format",
         description: `Allowed formats: ${product?.customer_upload_config.allowedFormats.join(", ")}`,
@@ -139,7 +141,10 @@ export default function ProductPage() {
       return;
     }
 
-    if (file.size > (product?.customer_upload_config.maxFileSize || 5) * 1024 * 1024) {
+    if (
+      file.size >
+      (product?.customer_upload_config.maxFileSize || 5) * 1024 * 1024
+    ) {
       toast({
         title: "File Too Large",
         description: `Maximum file size: ${product?.customer_upload_config.maxFileSize}MB`,
@@ -270,7 +275,10 @@ export default function ProductPage() {
                 {product.images.length > 0 ? (
                   <>
                     <img
-                      src={product.images[currentImageIndex].preview || product.images[currentImageIndex].url}
+                      src={
+                        product.images[currentImageIndex].preview ||
+                        product.images[currentImageIndex].url
+                      }
                       alt={product.name}
                       className="w-full h-full object-cover"
                     />
@@ -291,8 +299,7 @@ export default function ProductPage() {
                         <button
                           onClick={() =>
                             setCurrentImageIndex(
-                              (prev) =>
-                                (prev + 1) % product.images.length,
+                              (prev) => (prev + 1) % product.images.length,
                             )
                           }
                           className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
@@ -353,7 +360,9 @@ export default function ProductPage() {
                   <div key={option.id}>
                     <Label className="text-white text-lg mb-4 block">
                       {option.name}
-                      {option.required && <span className="text-red-400">*</span>}
+                      {option.required && (
+                        <span className="text-red-400">*</span>
+                      )}
                     </Label>
 
                     {option.type === "dropdown" && (
@@ -487,14 +496,17 @@ export default function ProductPage() {
                         </button>
                       </div>
                       <p className="text-white/60 text-sm">
-                        {designFile?.name} ({((designFile?.size || 0) / 1024 / 1024).toFixed(2)} MB)
+                        {designFile?.name} (
+                        {((designFile?.size || 0) / 1024 / 1024).toFixed(2)} MB)
                       </p>
                     </div>
                   ) : (
                     <label className="flex items-center justify-center gap-2 border-2 border-dashed border-blue-500/50 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition">
                       <Upload className="w-5 h-5 text-blue-400" />
                       <div className="text-center">
-                        <p className="text-white font-medium">Click to upload</p>
+                        <p className="text-white font-medium">
+                          Click to upload
+                        </p>
                         <p className="text-white/60 text-sm">
                           Max {product.customer_upload_config.maxFileSize}MB -{" "}
                           {product.customer_upload_config.allowedFormats.join(
@@ -518,7 +530,9 @@ export default function ProductPage() {
               {/* Optional Fields */}
               {product.optional_fields.length > 0 && (
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Additional Information</h3>
+                  <h3 className="text-lg font-semibold">
+                    Additional Information
+                  </h3>
                   {product.optional_fields.map((field) => (
                     <div key={field.name}>
                       <Label className="text-white/80 mb-2 block">

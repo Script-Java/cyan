@@ -91,9 +91,7 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
     const productData: ProductFormData = req.body;
 
     if (!productData.name?.trim()) {
-      return res
-        .status(400)
-        .json({ error: "Product name is required" });
+      return res.status(400).json({ error: "Product name is required" });
     }
 
     if (productData.basePrice <= 0) {
@@ -168,9 +166,7 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
     }
 
     if (!productData.name?.trim()) {
-      return res
-        .status(400)
-        .json({ error: "Product name is required" });
+      return res.status(400).json({ error: "Product name is required" });
     }
 
     if (productData.basePrice <= 0) {

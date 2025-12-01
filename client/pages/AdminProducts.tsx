@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Package, Search, Plus, Edit2, Trash2, AlertCircle } from "lucide-react";
+import {
+  Package,
+  Search,
+  Plus,
+  Edit2,
+  Trash2,
+  AlertCircle,
+} from "lucide-react";
 import Header from "@/components/Header";
 import AdminSidebar from "@/components/AdminSidebar";
 import MobileAdminPanel from "@/components/MobileAdminPanel";
@@ -105,9 +112,10 @@ export default function AdminProducts() {
     }
   };
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    product.sku?.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.sku?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const formatDate = (dateString: string) => {
