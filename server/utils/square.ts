@@ -6,25 +6,43 @@ let squareClient: any = null;
 export function getSquareClient() {
   if (!squareClient) {
     try {
-      const squarePkg = require("square");
-      const SquareClient = squarePkg.SquareClient;
-      const SquareEnvironment = squarePkg.SquareEnvironment;
+      console.log("Initializing Square SDK...");
 
-      if (!SquareClient) {
-        throw new Error("SquareClient not found in package exports");
-      }
-
+      // Check environment variables first
       const accessToken = process.env.SQUARE_ACCESS_TOKEN;
       if (!accessToken) {
         throw new Error("SQUARE_ACCESS_TOKEN environment variable is not set");
       }
 
-      squareClient = new SquareClient({
+      console.log("Access token found, length:", accessToken.length);
+
+      // Import Square SDK with correct destructuring for v43+
+      const { Client } = require("square");
+
+      if (!Client) {
+        throw new Error("Square Client not found in package exports");
+      }
+
+      // Initialize with correct environment string
+      squareClient = new Client({
         accessToken: accessToken,
-        environment: SquareEnvironment.Sandbox,
+        environment: "sandbox",
       });
 
-      console.log("Square client initialized successfully (Sandbox)");
+      console.log("Square SDK client initialized successfully");
+
+      // Verify APIs are accessible
+      if (!squareClient.paymentsApi) {
+        throw new Error("paymentsApi not accessible on Square client");
+      }
+
+      if (!squareClient.ordersApi) {
+        throw new Error("ordersApi not accessible on Square client");
+      }
+
+      console.log(
+        "Square APIs verified - paymentsApi and ordersApi accessible",
+      );
     } catch (error) {
       console.error("Failed to initialize Square client:", error);
       throw new Error(
