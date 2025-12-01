@@ -28,17 +28,23 @@ export default function SquarePaymentForm({
       try {
         // Wait for Square SDK to be loaded
         let attempts = 0;
-        while (!(window as any).Square && attempts < 50) {
-          await new Promise((resolve) => setTimeout(resolve, 50));
+        while (!(window as any).Square && attempts < 100) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
           attempts++;
         }
 
         if (!(window as any).Square) {
-          console.error("Square SDK not loaded after timeout");
+          console.error("Square SDK not loaded after timeout - check CSP headers and network");
+          const statusContainer = document.getElementById(
+            "payment-status-container",
+          );
+          if (statusContainer) {
+            statusContainer.innerHTML = `<div class="text-red-400">Square SDK failed to load. Check browser console for details.</div>`;
+          }
           return;
         }
 
-        console.log("Square SDK loaded successfully");
+        console.log("Square SDK loaded successfully after", attempts, "attempts");
         initializeRef.current = true;
 
         const appId = "sq0idp-aI75bRHWpnYqioPYqvKvsw";
@@ -46,13 +52,18 @@ export default function SquarePaymentForm({
 
         const payments = (window as any).Square.payments(appId, locationId);
 
-        console.log("Square payments object created");
+        console.log("Square payments object created with appId:", appId);
 
         const card = await payments.card();
         console.log("Card object created");
 
+        const cardContainer = document.getElementById("card-container");
+        if (!cardContainer) {
+          throw new Error("Card container element (#card-container) not found in DOM");
+        }
+
         await card.attach("#card-container");
-        console.log("Card attached to container");
+        console.log("Card attached to container successfully");
 
         const cardButton = document.getElementById("card-button");
         if (cardButton) {
