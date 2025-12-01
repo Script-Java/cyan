@@ -35,6 +35,11 @@ interface Order {
   dateCreated: string;
   total: number;
   itemCount: number;
+  tracking_number?: string;
+  tracking_carrier?: string;
+  tracking_url?: string;
+  shipped_date?: string;
+  estimated_delivery_date?: string;
 }
 
 export default function Dashboard() {
