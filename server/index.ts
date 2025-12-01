@@ -244,6 +244,17 @@ export function createServer() {
   app.get("/api/admin/analytics", verifyToken, handleGetAnalytics);
   app.get("/api/admin/finance", verifyToken, handleGetFinance);
 
+  // ===== Admin Products Routes (Protected) =====
+  app.post("/api/products", verifyToken, handleCreateProduct);
+  app.put("/api/products/:productId", verifyToken, handleUpdateProduct);
+  app.get("/api/admin/products", verifyToken, handleGetAdminProducts);
+  app.get("/api/admin/products/:productId", verifyToken, handleGetAdminProduct);
+  app.delete(
+    "/api/admin/products/:productId",
+    verifyToken,
+    handleDeleteAdminProduct,
+  );
+
   // ===== Store Credit Routes (Protected - admin only) =====
   app.get(
     "/api/store-credit/customers",
