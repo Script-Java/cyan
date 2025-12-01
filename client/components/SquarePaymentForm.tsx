@@ -34,7 +34,9 @@ export default function SquarePaymentForm({
         }
 
         if (!(window as any).Square) {
-          console.error("Square SDK not loaded after timeout - check CSP headers and network");
+          console.error(
+            "Square SDK not loaded after timeout - check CSP headers and network",
+          );
           const statusContainer = document.getElementById(
             "payment-status-container",
           );
@@ -44,7 +46,11 @@ export default function SquarePaymentForm({
           return;
         }
 
-        console.log("Square SDK loaded successfully after", attempts, "attempts");
+        console.log(
+          "Square SDK loaded successfully after",
+          attempts,
+          "attempts",
+        );
         initializeRef.current = true;
 
         const appId = "sq0idp-aI75bRHWpnYqioPYqvKvsw";
@@ -59,7 +65,9 @@ export default function SquarePaymentForm({
 
         const cardContainer = document.getElementById("card-container");
         if (!cardContainer) {
-          throw new Error("Card container element (#card-container) not found in DOM");
+          throw new Error(
+            "Card container element (#card-container) not found in DOM",
+          );
         }
 
         await card.attach("#card-container");
@@ -74,7 +82,8 @@ export default function SquarePaymentForm({
 
             try {
               if (statusContainer) {
-                statusContainer.innerHTML = '<div class="text-white">Processing payment...</div>';
+                statusContainer.innerHTML =
+                  '<div class="text-white">Processing payment...</div>';
               }
 
               const result = await card.tokenize();
@@ -82,7 +91,8 @@ export default function SquarePaymentForm({
                 console.log(`Payment token is ${result.token}`);
 
                 if (statusContainer) {
-                  statusContainer.innerHTML = '<div class="text-white">Sending payment to Square...</div>';
+                  statusContainer.innerHTML =
+                    '<div class="text-white">Sending payment to Square...</div>';
                 }
 
                 // Send token to backend to create payment using Square's Payments API (POST /v2/payments)
@@ -102,10 +112,17 @@ export default function SquarePaymentForm({
                 });
 
                 const paymentResult = await response.json();
-                console.log("Payment response:", response.status, paymentResult);
+                console.log(
+                  "Payment response:",
+                  response.status,
+                  paymentResult,
+                );
 
                 if (response.ok && paymentResult.success) {
-                  console.log("Payment created successfully:", paymentResult.payment);
+                  console.log(
+                    "Payment created successfully:",
+                    paymentResult.payment,
+                  );
 
                   if (statusContainer) {
                     statusContainer.innerHTML = `
@@ -138,7 +155,8 @@ export default function SquarePaymentForm({
             } catch (e) {
               console.error("Payment error:", e);
               if (statusContainer) {
-                const errorMsg = e instanceof Error ? e.message : "Payment failed";
+                const errorMsg =
+                  e instanceof Error ? e.message : "Payment failed";
                 statusContainer.innerHTML = `
                   <div class="bg-red-400/10 border border-red-400/30 rounded-lg p-3">
                     <div class="text-red-400 font-bold">✗ Payment Failed</div>

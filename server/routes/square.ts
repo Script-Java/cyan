@@ -944,8 +944,7 @@ export const handleCreatePayment: RequestHandler = async (req, res) => {
           currency: payment.amountMoney?.currency || "USD",
           payment_created_at: payment.createdAt,
           payment_updated_at: payment.updatedAt,
-          card_brand:
-            payment.cardDetails?.card?.cardBrand || "",
+          card_brand: payment.cardDetails?.card?.cardBrand || "",
           card_last_4: payment.cardDetails?.card?.last4 || "",
           card_exp_month: payment.cardDetails?.card?.expMonth || null,
           card_exp_year: payment.cardDetails?.card?.expYear || null,
