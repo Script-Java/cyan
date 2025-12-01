@@ -184,10 +184,10 @@ export default function Dashboard() {
 
           {/* Active Orders Summary */}
           <ActiveOrdersSummary
-            activeOrderCount={
+            activeOrders={
               orders.filter(
-                (o) => o.status === "pending" || o.status === "processing",
-              ).length
+                (o) => o.status === "pending" || o.status === "processing" || o.status === "printing" || o.status === "in transit",
+              )
             }
           />
 
