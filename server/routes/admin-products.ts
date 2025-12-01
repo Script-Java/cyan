@@ -320,3 +320,39 @@ export const handleDeleteAdminProduct: RequestHandler = async (req, res) => {
     });
   }
 };
+
+export const handleGetPublicProduct: RequestHandler = async (req, res) => {
+  try {
+    const { productId } = req.params;
+
+    if (!productId) {
+      return res.status(400).json({ error: "Product ID is required" });
+    }
+
+    const { data, error } = await supabase
+      .from("admin_products")
+      .select("*")
+      .eq("id", productId)
+      .eq("availability", true)
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      console.error("Database error:", error);
+      return res
+        .status(500)
+        .json({ error: "Failed to fetch product", details: error.message });
+    }
+
+    res.json({ product: data });
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    res.status(500).json({
+      error: "Failed to fetch product",
+      details:
+        error instanceof Error ? error.message : "Unknown error occurred",
+    });
+  }
+};
