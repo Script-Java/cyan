@@ -406,6 +406,55 @@ export default function ProductForm() {
     updateVariantValue(optionId, valueId, "image", undefined);
   };
 
+  const addSharedVariant = () => {
+    const newSharedVariant: SharedVariant = {
+      id: Math.random().toString(36),
+      name: "",
+      description: "",
+      optionIds: [],
+    };
+    setFormData((prev) => ({
+      ...prev,
+      sharedVariants: [...prev.sharedVariants, newSharedVariant],
+    }));
+  };
+
+  const updateSharedVariant = (
+    id: string,
+    field: keyof SharedVariant,
+    value: any,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      sharedVariants: prev.sharedVariants.map((sv) =>
+        sv.id === id ? { ...sv, [field]: value } : sv,
+      ),
+    }));
+  };
+
+  const removeSharedVariant = (id: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      sharedVariants: prev.sharedVariants.filter((sv) => sv.id !== id),
+    }));
+  };
+
+  const toggleSharedVariantOption = (sharedVariantId: string, optionId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      sharedVariants: prev.sharedVariants.map((sv) =>
+        sv.id === sharedVariantId
+          ? {
+              ...sv,
+              optionIds: sv.optionIds.includes(optionId)
+                ? sv.optionIds.filter((id) => id !== optionId)
+                : [...sv.optionIds, optionId],
+            }
+          : sv,
+      ),
+    }));
+  };
+
   const moveOption = (fromIndex: number, toIndex: number) => {
     const newOptions = [...formData.options];
     [newOptions[fromIndex], newOptions[toIndex]] = [
