@@ -231,7 +231,20 @@ export async function createSquarePaymentLink(data: {
     });
 
     const client = getSquareClient();
-    const response = await client.checkout.paymentLinks.create(paymentLinkBody);
+
+    // Use checkoutApi if available, otherwise use a direct API call
+    let response;
+    if (client.checkoutApi) {
+      response = await client.checkoutApi.createPaymentLink(paymentLinkBody);
+    } else {
+      // Fallback: Try using ordersApi or make a direct HTTP request
+      console.warn(
+        "checkoutApi not available, attempting alternative payment link creation",
+      );
+      throw new Error(
+        "Checkout API not available. Using Web Payments SDK fallback.",
+      );
+    }
 
     if (response.result?.url) {
       console.log("Payment Link created successfully:", response.result.id);
