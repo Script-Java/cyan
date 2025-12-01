@@ -61,6 +61,13 @@ interface ProductOption {
   displayOrder: number;
 }
 
+interface SharedVariant {
+  id: string;
+  name: string;
+  description: string;
+  optionIds: string[];
+}
+
 interface CustomerUploadConfig {
   enabled: boolean;
   maxFileSize: number;
