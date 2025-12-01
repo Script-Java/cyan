@@ -274,6 +274,7 @@ export function createServer() {
   app.post("/api/square/confirm-checkout", handleConfirmCheckout);
   app.post("/api/square/pay", handleSquarePayment);
   app.post("/api/square/process-payment", processSquarePayment);
+  app.post("/api/square/create-payment", handleCreatePayment);
   app.post("/api/webhooks/square", handleSquareWebhook);
 
   // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
