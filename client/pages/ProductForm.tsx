@@ -460,6 +460,11 @@ export default function ProductForm() {
 
     setIsSaving(true);
     try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        throw new Error("Authentication token not found. Please log in again.");
+      }
+
       const endpoint = productId
         ? `/api/products/${productId}`
         : "/api/products";
@@ -469,12 +474,16 @@ export default function ProductForm() {
         method,
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save product");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || `Failed to save product (${response.status})`
+        );
       }
 
       toast({
@@ -484,9 +493,11 @@ export default function ProductForm() {
       navigate("/admin/products");
     } catch (error) {
       console.error("Error saving product:", error);
+      const message =
+        error instanceof Error ? error.message : "Failed to save product";
       toast({
         title: "Error",
-        description: "Failed to save product",
+        description: message,
         variant: "destructive",
       });
     } finally {
