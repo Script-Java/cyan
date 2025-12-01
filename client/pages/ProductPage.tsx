@@ -487,7 +487,7 @@ export default function ProductPage() {
                         </button>
                       </div>
                       <p className="text-white/60 text-sm">
-                        {designFile?.name} ({(designFile?.size || 0) / 1024 / 1024}.toFixed(2) MB)
+                        {designFile?.name} ({((designFile?.size || 0) / 1024 / 1024).toFixed(2)} MB)
                       </p>
                     </div>
                   ) : (
