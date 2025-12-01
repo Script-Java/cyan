@@ -290,3 +290,24 @@ export async function getPendingOrders(): Promise<any[]> {
     throw error;
   }
 }
+
+export async function getActiveOrders(): Promise<any[]> {
+  try {
+    const activeStatuses = ["pending", "processing", "printing", "in transit"];
+    const { data, error } = await supabase
+      .from("orders")
+      .select("*, customers(*), order_items(*)")
+      .in("status", activeStatuses)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching active orders:", error);
+      throw error;
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error("Error getting active orders:", error);
+    throw error;
+  }
+}
