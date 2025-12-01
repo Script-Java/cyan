@@ -868,6 +868,157 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
 }
 
 /**
+ * Create a payment using Square's Payments API (POST /v2/payments)
+ */
+export const handleCreatePayment: RequestHandler = async (req, res) => {
+  try {
+    const { supabase } = await import("../utils/supabase");
+    const paymentRequest = req.body;
+
+    // Validate required fields
+    if (!paymentRequest.sourceId || !paymentRequest.amount) {
+      return res.status(400).json({
+        error: "Missing required fields: sourceId, amount",
+      });
+    }
+
+    const amountInCents = Math.round(paymentRequest.amount * 100);
+    const orderId = paymentRequest.orderId;
+
+    console.log("Creating Square payment:", {
+      orderId,
+      amount: amountInCents,
+      currency: paymentRequest.currency || "USD",
+    });
+
+    // Create the payment using Square's Payments API
+    const paymentBody = {
+      sourceId: paymentRequest.sourceId,
+      amountMoney: {
+        amount: amountInCents,
+        currency: paymentRequest.currency || "USD",
+      },
+      autocomplete: true,
+      idempotencyKey: `${Date.now()}-${Math.random()}`,
+      ...(orderId && { orderId: orderId.toString() }),
+      ...(paymentRequest.customerEmail && {
+        receiptEmail: paymentRequest.customerEmail,
+      }),
+      ...(paymentRequest.customerId && {
+        customerId: paymentRequest.customerId.toString(),
+      }),
+    };
+
+    const paymentsApi = getPaymentsApi();
+    const response = await paymentsApi.createPayment(paymentBody);
+
+    if (!response.result) {
+      throw new Error("No payment result returned from Square API");
+    }
+
+    const payment = response.result;
+
+    console.log("Square payment created successfully:", {
+      paymentId: payment.id,
+      status: payment.status,
+      amount: payment.amountMoney?.amount,
+    });
+
+    // Update order with payment details if we have an orderId
+    if (orderId && payment.status === "COMPLETED") {
+      const { data: order } = await supabase
+        .from("orders")
+        .select("id, customer_id, total")
+        .eq("id", orderId)
+        .single()
+        .catch(() => ({ data: null }));
+
+      if (order) {
+        const paymentDetails = {
+          payment_id: payment.id,
+          payment_status: payment.status,
+          card_status: payment.cardDetails?.status || "",
+          amount: payment.amountMoney?.amount
+            ? payment.amountMoney.amount / 100
+            : 0,
+          currency: payment.amountMoney?.currency || "USD",
+          payment_created_at: payment.createdAt,
+          payment_updated_at: payment.updatedAt,
+          card_brand:
+            payment.cardDetails?.card?.cardBrand || "",
+          card_last_4: payment.cardDetails?.card?.last4 || "",
+          card_exp_month: payment.cardDetails?.card?.expMonth || null,
+          card_exp_year: payment.cardDetails?.card?.expYear || null,
+          entry_method: payment.cardDetails?.entryMethod || "",
+          receipt_number: payment.receiptNumber || "",
+          receipt_url: payment.receiptUrl || "",
+          authorized_at:
+            payment.cardDetails?.cardPaymentTimeline?.authorizedAt || null,
+          captured_at:
+            payment.cardDetails?.cardPaymentTimeline?.capturedAt || null,
+        };
+
+        // Update order status and payment details
+        await supabase
+          .from("orders")
+          .update({
+            status: "paid",
+            square_payment_details: paymentDetails,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", orderId);
+
+        // Award store credit
+        if (order.customer_id) {
+          const earnedCredit = order.total * 0.05;
+          await updateCustomerStoreCredit(
+            order.customer_id,
+            earnedCredit,
+            `Earned 5% from order ${orderId}`,
+          );
+
+          console.log("Store credit awarded:", {
+            orderId,
+            customerId: order.customer_id,
+            earnedCredit,
+          });
+        }
+      }
+    }
+
+    // Return the payment response
+    res.status(201).json({
+      success: true,
+      payment: {
+        id: payment.id,
+        status: payment.status,
+        amount: payment.amountMoney?.amount
+          ? payment.amountMoney.amount / 100
+          : 0,
+        currency: payment.amountMoney?.currency || "USD",
+        receiptUrl: payment.receiptUrl,
+        receiptNumber: payment.receiptNumber,
+        cardDetails: {
+          brand: payment.cardDetails?.card?.cardBrand,
+          lastFour: payment.cardDetails?.card?.last4,
+          expMonth: payment.cardDetails?.card?.expMonth,
+          expYear: payment.cardDetails?.card?.expYear,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Create payment error:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Payment creation failed";
+    res.status(400).json({
+      error: errorMessage,
+      details:
+        error instanceof Error ? error.message : "Unknown error occurred",
+    });
+  }
+};
+
+/**
  * Handle Square payment.updated webhook event
  */
 async function handleSquarePaymentUpdated(data: any): Promise<void> {
