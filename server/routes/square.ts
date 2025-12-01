@@ -582,6 +582,11 @@ export const handleSquareWebhook: RequestHandler = async (req, res) => {
       await handleSquarePaymentCreated(event.data);
     }
 
+    // Handle payment updated events
+    if (event.type === "payment.updated") {
+      await handleSquarePaymentUpdated(event.data);
+    }
+
     // Acknowledge webhook receipt to Square
     res.json({ received: true });
   } catch (error) {
