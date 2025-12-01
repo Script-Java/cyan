@@ -109,22 +109,19 @@ export default function DashboardNavigation({
             <button
               key={item.title}
               onClick={item.isLogout ? onLogout : item.onClick}
-              className="p-3 rounded-2xl border transition-all duration-500 flex flex-col gap-2 items-center text-center hover:shadow-md hover:bg-gray-50"
+              className="p-3 rounded-2xl border transition-all duration-500 flex flex-col gap-2 items-center text-center hover:bg-white/10 backdrop-blur-xl bg-white/5 border-white/10"
               style={{
-                backgroundColor: item.bgColor,
-                borderColor: item.borderColor,
-                borderWidth: "1px",
                 opacity: item.isLogout ? 0.85 : 1,
               }}
             >
-              <div className="p-2 bg-gray-100 rounded-lg flex-shrink-0">
+              <div className="p-2 bg-white/10 rounded-lg flex-shrink-0 backdrop-blur-sm">
                 <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${item.color}`} />
               </div>
               <div className="text-center">
-                <h4 className="text-xs sm:text-sm font-semibold text-gray-900 leading-tight">
+                <h4 className="text-xs sm:text-sm font-semibold text-white leading-tight">
                   {item.title}
                 </h4>
-                <p className="text-xs text-gray-600 hidden sm:block">{item.description}</p>
+                <p className="text-xs text-white/60 hidden sm:block">{item.description}</p>
               </div>
             </button>
           );
