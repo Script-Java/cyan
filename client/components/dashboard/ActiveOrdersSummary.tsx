@@ -113,7 +113,7 @@ export default function ActiveOrdersSummary({
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-2 ml-4">
-                  <p className="font-semibold text-sm">
+                  <p className="font-semibold text-sm text-white">
                     ${order.total.toFixed(2)}
                   </p>
                   <button
@@ -121,7 +121,7 @@ export default function ActiveOrdersSummary({
                       e.stopPropagation();
                       toggleExpanded(order.id);
                     }}
-                    className="text-xs px-3 py-1 rounded bg-emerald-600 text-white hover:bg-emerald-700 transition-colors whitespace-nowrap flex items-center gap-1"
+                    className="text-xs px-3 py-1 rounded bg-emerald-600 text-white hover:bg-emerald-500 transition-colors whitespace-nowrap flex items-center gap-1"
                   >
                     {expandedOrderId === order.id ? "Hide" : "Show"} Details
                     {expandedOrderId === order.id ? (
