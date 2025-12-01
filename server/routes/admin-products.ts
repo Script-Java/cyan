@@ -34,6 +34,13 @@ interface ProductOption {
   displayOrder: number;
 }
 
+interface SharedVariant {
+  id: string;
+  name: string;
+  description: string;
+  optionIds: string[];
+}
+
 interface PricingRule {
   id: string;
   conditions: { optionId: string; valueId: string }[];
