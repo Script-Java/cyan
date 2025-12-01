@@ -111,12 +111,19 @@ export default function SquarePaymentForm({
                   }),
                 });
 
-                const paymentResult = await response.json();
-                console.log(
-                  "Payment response:",
-                  response.status,
-                  paymentResult,
-                );
+                console.log("Payment response status:", response.status);
+
+                let paymentResult;
+                try {
+                  paymentResult = await response.json();
+                } catch (parseError) {
+                  console.error("Error parsing payment response:", parseError);
+                  throw new Error(
+                    "Failed to parse payment response from server",
+                  );
+                }
+
+                console.log("Payment response data:", paymentResult);
 
                 if (response.ok && paymentResult.success) {
                   console.log(
