@@ -70,6 +70,7 @@ interface ProductFormData {
   images: ProductImage[];
   options: ProductOption[];
   pricingRules: PricingRule[];
+  sharedVariants: SharedVariant[];
   customerUploadConfig: CustomerUploadConfig;
   optionalFields: { name: string; type: string }[];
   textArea: string;
