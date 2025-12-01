@@ -7,6 +7,7 @@ import {
   Upload,
   X,
   Image as ImageIcon,
+  GripVertical,
 } from "lucide-react";
 import Header from "@/components/Header";
 import AdminSidebar from "@/components/AdminSidebar";
@@ -32,12 +33,39 @@ interface ProductImage {
   preview?: string;
 }
 
+interface VariantValue {
+  id: string;
+  name: string;
+  priceModifier: number;
+  image?: {
+    id: string;
+    url: string;
+    name: string;
+    preview?: string;
+  };
+}
+
+interface PricingRule {
+  id: string;
+  conditions: { optionId: string; valueId: string }[];
+  price: number;
+}
+
 interface ProductOption {
   id: string;
   name: string;
-  type: "select" | "text" | "radio" | "checkbox";
+  type: "dropdown" | "swatch" | "radio" | "text";
   required: boolean;
-  values: string[];
+  values: VariantValue[];
+  defaultValueId?: string;
+  displayOrder: number;
+}
+
+interface CustomerUploadConfig {
+  enabled: boolean;
+  maxFileSize: number;
+  allowedFormats: string[];
+  description: string;
 }
 
 interface TaxConfig {
@@ -49,12 +77,14 @@ interface TaxConfig {
 
 interface ProductFormData {
   name: string;
-  price: number;
+  basePrice: number;
   description: string;
   sku: string;
   weight: number;
   images: ProductImage[];
   options: ProductOption[];
+  pricingRules: PricingRule[];
+  customerUploadConfig: CustomerUploadConfig;
   optionalFields: { name: string; type: string }[];
   textArea: string;
   uploadedFiles: { name: string; file: File }[];
@@ -76,15 +106,23 @@ export default function ProductForm() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [draggedOption, setDraggedOption] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<ProductFormData>({
     name: "",
-    price: 0,
+    basePrice: 0,
     description: "",
     sku: "",
     weight: 0,
     images: [],
     options: [],
+    pricingRules: [],
+    customerUploadConfig: {
+      enabled: true,
+      maxFileSize: 5,
+      allowedFormats: ["png", "jpg", "jpeg", "gif"],
+      description: "Upload your custom sticker design",
+    },
     optionalFields: [],
     textArea: "",
     uploadedFiles: [],
@@ -127,10 +165,7 @@ export default function ProductForm() {
     return null;
   }
 
-  const handleInputChange = (
-    field: keyof ProductFormData,
-    value: any,
-  ) => {
+  const handleInputChange = (field: keyof ProductFormData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -177,9 +212,10 @@ export default function ProductForm() {
     const newOption: ProductOption = {
       id: Math.random().toString(36),
       name: "",
-      type: "select",
+      type: "dropdown",
       required: false,
       values: [],
+      displayOrder: formData.options.length,
     };
     setFormData((prev) => ({
       ...prev,
@@ -204,6 +240,119 @@ export default function ProductForm() {
     setFormData((prev) => ({
       ...prev,
       options: prev.options.filter((opt) => opt.id !== id),
+      pricingRules: prev.pricingRules.filter(
+        (rule) => !rule.conditions.some((cond) => cond.optionId === id),
+      ),
+    }));
+  };
+
+  const addVariantValue = (optionId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      options: prev.options.map((opt) =>
+        opt.id === optionId
+          ? {
+              ...opt,
+              values: [
+                ...opt.values,
+                {
+                  id: Math.random().toString(36),
+                  name: "",
+                  priceModifier: 0,
+                },
+              ],
+            }
+          : opt,
+      ),
+    }));
+  };
+
+  const updateVariantValue = (
+    optionId: string,
+    valueId: string,
+    field: keyof VariantValue,
+    value: any,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      options: prev.options.map((opt) =>
+        opt.id === optionId
+          ? {
+              ...opt,
+              values: opt.values.map((val) =>
+                val.id === valueId ? { ...val, [field]: value } : val,
+              ),
+            }
+          : opt,
+      ),
+    }));
+  };
+
+  const removeVariantValue = (optionId: string, valueId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      options: prev.options.map((opt) =>
+        opt.id === optionId
+          ? {
+              ...opt,
+              values: opt.values.filter((val) => val.id !== valueId),
+              defaultValueId:
+                opt.defaultValueId === valueId ? undefined : opt.defaultValueId,
+            }
+          : opt,
+      ),
+      pricingRules: prev.pricingRules.filter(
+        (rule) =>
+          !rule.conditions.some(
+            (cond) => cond.optionId === optionId && cond.valueId === valueId,
+          ),
+      ),
+    }));
+  };
+
+  const uploadVariantImage = (
+    optionId: string,
+    valueId: string,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageData = {
+          id: Math.random().toString(36),
+          url: (event.target?.result as string) || "",
+          name: file.name,
+          preview: (event.target?.result as string) || "",
+        };
+        updateVariantValue(optionId, valueId, "image", imageData);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeVariantImage = (optionId: string, valueId: string) => {
+    updateVariantValue(optionId, valueId, "image", undefined);
+  };
+
+  const moveOption = (fromIndex: number, toIndex: number) => {
+    const newOptions = [...formData.options];
+    [newOptions[fromIndex], newOptions[toIndex]] = [
+      newOptions[toIndex],
+      newOptions[fromIndex],
+    ];
+    newOptions.forEach((opt, idx) => (opt.displayOrder = idx));
+    setFormData((prev) => ({ ...prev, options: newOptions }));
+    setDraggedOption(null);
+  };
+
+  const updateCustomerUploadConfig = (field: string, value: any) => {
+    setFormData((prev) => ({
+      ...prev,
+      customerUploadConfig: {
+        ...prev.customerUploadConfig,
+        [field]: value,
+      },
     }));
   };
 
@@ -214,11 +363,7 @@ export default function ProductForm() {
     }));
   };
 
-  const updateOptionalField = (
-    index: number,
-    field: string,
-    value: string,
-  ) => {
+  const updateOptionalField = (index: number, field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
       optionalFields: prev.optionalFields.map((f, i) =>
@@ -304,10 +449,10 @@ export default function ProductForm() {
       return;
     }
 
-    if (formData.price <= 0) {
+    if (formData.basePrice <= 0) {
       toast({
         title: "Validation Error",
-        description: "Price must be greater than 0",
+        description: "Base price must be greater than 0",
         variant: "destructive",
       });
       return;
@@ -355,7 +500,6 @@ export default function ProductForm() {
       <div className="flex">
         <AdminSidebar />
         <main className="flex-1 md:ml-64 min-h-screen bg-black text-white pb-20 md:pb-0">
-          {/* Header */}
           <div className="border-b border-white/10">
             <div className="px-6 lg:px-8 py-6">
               <button
@@ -371,7 +515,6 @@ export default function ProductForm() {
             </div>
           </div>
 
-          {/* Content */}
           <div className="px-6 lg:px-8 py-8">
             <div className="max-w-4xl">
               {/* Basic Information Section */}
@@ -399,19 +542,22 @@ export default function ProductForm() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label className="text-white/80 mb-2 block">
-                        Price (USD) *
+                        Base Price (USD) *
                       </Label>
                       <Input
                         type="number"
                         step="0.01"
                         min="0"
-                        value={formData.price}
+                        value={formData.basePrice}
                         onChange={(e) =>
-                          handleInputChange("price", parseFloat(e.target.value))
+                          handleInputChange("basePrice", parseFloat(e.target.value))
                         }
                         placeholder="0.00"
                         className="bg-white/5 border-white/10 text-white placeholder-white/40"
                       />
+                      <p className="text-white/40 text-sm mt-1">
+                        Variant prices adjust from this base price
+                      </p>
                     </div>
                     <div>
                       <Label className="text-white/80 mb-2 block">SKU</Label>
@@ -518,7 +664,7 @@ export default function ProductForm() {
                     <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
                       <Plus className="w-5 h-5 text-green-400" />
                     </div>
-                    Product Options
+                    Product Options & Variants
                   </h2>
                   <Button
                     onClick={addOption}
@@ -529,74 +675,375 @@ export default function ProductForm() {
                   </Button>
                 </div>
 
+                <div className="space-y-6">
+                  {formData.options.length === 0 ? (
+                    <p className="text-white/60 text-center py-8">
+                      No options added yet. Click "Add Option" to get started with variants.
+                    </p>
+                  ) : (
+                    formData.options.map((option, index) => (
+                      <div
+                        key={option.id}
+                        draggable
+                        onDragStart={() => setDraggedOption(option.id)}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={() => {
+                          if (draggedOption && draggedOption !== option.id) {
+                            const draggedIndex = formData.options.findIndex(
+                              (o) => o.id === draggedOption,
+                            );
+                            moveOption(draggedIndex, index);
+                          }
+                        }}
+                        className={`bg-white/5 border border-white/10 rounded-lg p-4 space-y-4 transition ${
+                          draggedOption === option.id ? "opacity-50" : ""
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <GripVertical className="w-5 h-5 text-white/40 mt-1 flex-shrink-0" />
+                          <div className="flex-1">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                              <div>
+                                <Label className="text-white/80 mb-2 block">
+                                  Option Name
+                                </Label>
+                                <Input
+                                  value={option.name}
+                                  onChange={(e) =>
+                                    updateOption(
+                                      option.id,
+                                      "name",
+                                      e.target.value,
+                                    )
+                                  }
+                                  placeholder="e.g., Finish, Size, Color"
+                                  className="bg-white/10 border-white/10 text-white placeholder-white/40"
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-white/80 mb-2 block">
+                                  Type
+                                </Label>
+                                <Select
+                                  value={option.type}
+                                  onValueChange={(value) =>
+                                    updateOption(
+                                      option.id,
+                                      "type",
+                                      value as ProductOption["type"],
+                                    )
+                                  }
+                                >
+                                  <SelectTrigger className="bg-white/10 border-white/10 text-white">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-gray-900 border-white/10">
+                                    <SelectItem value="dropdown">
+                                      Dropdown
+                                    </SelectItem>
+                                    <SelectItem value="radio">Radio</SelectItem>
+                                    <SelectItem value="swatch">Swatch</SelectItem>
+                                    <SelectItem value="text">Text Input</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div>
+                                <Label className="text-white/80 mb-2 block">
+                                  Default Value
+                                </Label>
+                                <Select
+                                  value={option.defaultValueId || ""}
+                                  onValueChange={(value) =>
+                                    updateOption(
+                                      option.id,
+                                      "defaultValueId",
+                                      value || undefined,
+                                    )
+                                  }
+                                >
+                                  <SelectTrigger className="bg-white/10 border-white/10 text-white">
+                                    <SelectValue placeholder="Select default" />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-gray-900 border-white/10">
+                                    {option.values.map((val) => (
+                                      <SelectItem key={val.id} value={val.id}>
+                                        {val.name}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-4 mb-4">
+                              <div className="flex items-center gap-2">
+                                <Switch
+                                  checked={option.required}
+                                  onCheckedChange={(checked) =>
+                                    updateOption(option.id, "required", checked)
+                                  }
+                                />
+                                <Label className="text-white/80 font-normal cursor-pointer">
+                                  Required
+                                </Label>
+                              </div>
+                              <button
+                                onClick={() => removeOption(option.id)}
+                                className="ml-auto text-red-400 hover:text-red-300 transition"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+
+                            {/* Variant Values */}
+                            <div className="bg-white/10 rounded-lg p-4 space-y-3">
+                              <div className="flex items-center justify-between">
+                                <h4 className="text-white font-semibold">
+                                  Option Values
+                                </h4>
+                                <Button
+                                  onClick={() => addVariantValue(option.id)}
+                                  size="sm"
+                                  className="bg-blue-600 hover:bg-blue-700 text-white gap-1"
+                                >
+                                  <Plus className="w-3 h-3" />
+                                  Add Value
+                                </Button>
+                              </div>
+
+                              {option.values.length === 0 ? (
+                                <p className="text-white/40 text-sm">
+                                  Add values for this option
+                                </p>
+                              ) : (
+                                <div className="space-y-3">
+                                  {option.values.map((value) => (
+                                    <div
+                                      key={value.id}
+                                      className="bg-black/40 rounded-lg p-3 space-y-3"
+                                    >
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <div>
+                                          <Label className="text-white/70 text-sm mb-1 block">
+                                            Value Name
+                                          </Label>
+                                          <Input
+                                            value={value.name}
+                                            onChange={(e) =>
+                                              updateVariantValue(
+                                                option.id,
+                                                value.id,
+                                                "name",
+                                                e.target.value,
+                                              )
+                                            }
+                                            placeholder="e.g., Satin, 5 inches"
+                                            className="bg-white/5 border-white/10 text-white placeholder-white/40 text-sm"
+                                          />
+                                        </div>
+                                        <div>
+                                          <Label className="text-white/70 text-sm mb-1 block">
+                                            Price Modifier ($)
+                                          </Label>
+                                          <Input
+                                            type="number"
+                                            step="0.01"
+                                            value={value.priceModifier}
+                                            onChange={(e) =>
+                                              updateVariantValue(
+                                                option.id,
+                                                value.id,
+                                                "priceModifier",
+                                                parseFloat(e.target.value),
+                                              )
+                                            }
+                                            placeholder="0.00"
+                                            className="bg-white/5 border-white/10 text-white placeholder-white/40 text-sm"
+                                          />
+                                          <p className="text-white/40 text-xs mt-1">
+                                            Add to base price
+                                          </p>
+                                        </div>
+                                      </div>
+
+                                      {(option.type === "swatch" ||
+                                        option.type === "radio") && (
+                                        <div className="space-y-2">
+                                          <Label className="text-white/70 text-sm block">
+                                            Swatch Image (Optional)
+                                          </Label>
+                                          {value.image ? (
+                                            <div className="flex items-center gap-2">
+                                              <img
+                                                src={value.image.preview}
+                                                alt={value.image.name}
+                                                className="w-12 h-12 rounded object-cover"
+                                              />
+                                              <button
+                                                onClick={() =>
+                                                  removeVariantImage(
+                                                    option.id,
+                                                    value.id,
+                                                  )
+                                                }
+                                                className="text-red-400 hover:text-red-300 text-sm"
+                                              >
+                                                Remove
+                                              </button>
+                                            </div>
+                                          ) : (
+                                            <label className="flex items-center justify-center gap-2 border border-dashed border-white/20 rounded p-2 cursor-pointer hover:border-white/40 transition">
+                                              <Upload className="w-4 h-4 text-white/60" />
+                                              <span className="text-white/60 text-sm">
+                                                Upload swatch
+                                              </span>
+                                              <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) =>
+                                                  uploadVariantImage(
+                                                    option.id,
+                                                    value.id,
+                                                    e,
+                                                  )
+                                                }
+                                                className="hidden"
+                                              />
+                                            </label>
+                                          )}
+                                        </div>
+                                      )}
+
+                                      <div className="flex justify-end">
+                                        <button
+                                          onClick={() =>
+                                            removeVariantValue(option.id, value.id)
+                                          }
+                                          className="text-red-400 hover:text-red-300 text-sm flex items-center gap-1"
+                                        >
+                                          <X className="w-3 h-3" />
+                                          Remove Value
+                                        </button>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </section>
+
+              {/* Customer Design Upload Configuration */}
+              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                  <div className="p-2 bg-blue-600/20 border border-blue-500/30 rounded-lg">
+                    <Upload className="w-5 h-5 text-blue-400" />
+                  </div>
+                  Customer Design Upload
+                </h2>
+
                 <div className="space-y-4">
-                  {formData.options.map((option) => (
-                    <div
-                      key={option.id}
-                      className="bg-white/5 border border-white/10 rounded-lg p-4 space-y-4"
-                    >
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <Label className="text-white/80 mb-2 block">
-                            Option Name
-                          </Label>
-                          <Input
-                            value={option.name}
-                            onChange={(e) =>
-                              updateOption(option.id, "name", e.target.value)
-                            }
-                            placeholder="e.g., Color, Size"
-                            className="bg-white/10 border-white/10 text-white placeholder-white/40"
-                          />
-                        </div>
-                        <div>
-                          <Label className="text-white/80 mb-2 block">
-                            Type
-                          </Label>
-                          <Select
-                            value={option.type}
-                            onValueChange={(value) =>
-                              updateOption(
-                                option.id,
-                                "type",
-                                value as ProductOption["type"],
-                              )
-                            }
-                          >
-                            <SelectTrigger className="bg-white/10 border-white/10 text-white">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="bg-gray-900 border-white/10">
-                              <SelectItem value="select">Select</SelectItem>
-                              <SelectItem value="text">Text</SelectItem>
-                              <SelectItem value="radio">Radio</SelectItem>
-                              <SelectItem value="checkbox">Checkbox</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
+                  <div className="flex items-center gap-4">
+                    <Switch
+                      checked={formData.customerUploadConfig.enabled}
+                      onCheckedChange={(checked) =>
+                        updateCustomerUploadConfig("enabled", checked)
+                      }
+                    />
+                    <Label className="text-white/80 font-normal cursor-pointer">
+                      Enable customer design uploads
+                    </Label>
+                  </div>
+
+                  {formData.customerUploadConfig.enabled && (
+                    <>
+                      <div>
+                        <Label className="text-white/80 mb-2 block">
+                          Upload Description
+                        </Label>
+                        <Input
+                          value={formData.customerUploadConfig.description}
+                          onChange={(e) =>
+                            updateCustomerUploadConfig(
+                              "description",
+                              e.target.value,
+                            )
+                          }
+                          placeholder="e.g., Upload your custom sticker design"
+                          className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                        />
+                        <p className="text-white/40 text-sm mt-1">
+                          This text will appear on the product page
+                        </p>
                       </div>
 
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                          <Switch
-                            checked={option.required}
-                            onCheckedChange={(checked) =>
-                              updateOption(option.id, "required", checked)
-                            }
-                          />
-                          <Label className="text-white/80 font-normal cursor-pointer">
-                            Required
-                          </Label>
-                        </div>
-                        <button
-                          onClick={() => removeOption(option.id)}
-                          className="ml-auto text-red-400 hover:text-red-300 transition"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                      <div>
+                        <Label className="text-white/80 mb-2 block">
+                          Max File Size (MB)
+                        </Label>
+                        <Input
+                          type="number"
+                          min="1"
+                          max="100"
+                          value={formData.customerUploadConfig.maxFileSize}
+                          onChange={(e) =>
+                            updateCustomerUploadConfig(
+                              "maxFileSize",
+                              parseInt(e.target.value),
+                            )
+                          }
+                          className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                        />
                       </div>
-                    </div>
-                  ))}
+
+                      <div>
+                        <Label className="text-white/80 mb-2 block">
+                          Allowed File Formats
+                        </Label>
+                        <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                          <div className="space-y-2">
+                            {["png", "jpg", "jpeg", "gif", "svg"].map((format) => (
+                              <label
+                                key={format}
+                                className="flex items-center gap-2 cursor-pointer"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={formData.customerUploadConfig.allowedFormats.includes(
+                                    format,
+                                  )}
+                                  onChange={(e) => {
+                                    const formats =
+                                      formData.customerUploadConfig.allowedFormats;
+                                    if (e.target.checked) {
+                                      updateCustomerUploadConfig(
+                                        "allowedFormats",
+                                        [...formats, format],
+                                      );
+                                    } else {
+                                      updateCustomerUploadConfig(
+                                        "allowedFormats",
+                                        formats.filter((f) => f !== format),
+                                      );
+                                    }
+                                  }}
+                                  className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
+                                />
+                                <span className="text-white/80 uppercase text-sm">
+                                  {format}
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </section>
 
@@ -669,7 +1116,7 @@ export default function ProductForm() {
                 </div>
               </section>
 
-              {/* Text Area Section */}
+              {/* Additional Information Section */}
               <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                   <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
@@ -701,7 +1148,7 @@ export default function ProductForm() {
                   <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
                     <Upload className="w-5 h-5 text-green-400" />
                   </div>
-                  Upload Files
+                  Upload Additional Files
                 </h2>
 
                 <div className="space-y-4">
@@ -1003,7 +1450,6 @@ export default function ProductForm() {
           </div>
         </main>
 
-        {/* Mobile Admin Panel */}
         <MobileAdminPanel />
       </div>
     </>
