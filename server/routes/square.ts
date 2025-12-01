@@ -516,7 +516,7 @@ export const handleTestSquareConfig: RequestHandler = async (req, res) => {
 };
 
 /**
- * Handle Square webhook for payment completion
+ * Handle Square webhook for payment completion and customer events
  */
 export const handleSquareWebhook: RequestHandler = async (req, res) => {
   try {
@@ -567,6 +567,11 @@ export const handleSquareWebhook: RequestHandler = async (req, res) => {
       }
     }
 
+    // Handle customer created events
+    if (event.type === "customer.created") {
+      await handleSquareCustomerCreated(event.data);
+    }
+
     // Acknowledge webhook receipt to Square
     res.json({ received: true });
   } catch (error) {
@@ -577,3 +582,116 @@ export const handleSquareWebhook: RequestHandler = async (req, res) => {
     });
   }
 };
+
+/**
+ * Handle Square customer.created webhook event
+ */
+async function handleSquareCustomerCreated(data: any): Promise<void> {
+  try {
+    const { supabase } = await import("../utils/supabase");
+
+    const customer = data?.object?.customer;
+    if (!customer) {
+      console.warn("No customer data in Square webhook");
+      return;
+    }
+
+    const squareCustomerId = customer.id;
+    const email = customer.email_address;
+    const firstName = customer.given_name || "";
+    const lastName = customer.family_name || "";
+    const phone = customer.phone_number || "";
+
+    console.log("Processing Square customer creation:", {
+      squareCustomerId,
+      email,
+      name: `${firstName} ${lastName}`,
+    });
+
+    // Check if customer already exists in Supabase by Square customer ID
+    const { data: existingCustomer } = await supabase
+      .from("customers")
+      .select("id, square_customer_id")
+      .eq("square_customer_id", squareCustomerId)
+      .single()
+      .catch(() => ({ data: null }));
+
+    if (existingCustomer) {
+      // Customer already linked, update their information
+      const { error } = await supabase
+        .from("customers")
+        .update({
+          email: email || existingCustomer.id,
+          first_name: firstName,
+          last_name: lastName,
+          phone: phone,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", existingCustomer.id);
+
+      if (error) {
+        console.error("Error updating existing Square customer:", error);
+      } else {
+        console.log(
+          "Square customer updated in Supabase:",
+          existingCustomer.id,
+        );
+      }
+    } else {
+      // Check if customer exists by email
+      const { data: customerByEmail } = await supabase
+        .from("customers")
+        .select("id")
+        .eq("email", email)
+        .single()
+        .catch(() => ({ data: null }));
+
+      if (customerByEmail) {
+        // Link existing customer to Square ID
+        const { error } = await supabase
+          .from("customers")
+          .update({
+            square_customer_id: squareCustomerId,
+            first_name: firstName || customerByEmail.id,
+            last_name: lastName || "",
+            phone: phone || "",
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", customerByEmail.id);
+
+        if (error) {
+          console.error("Error linking Square customer ID:", error);
+        } else {
+          console.log(
+            "Square customer linked to existing Supabase customer:",
+            customerByEmail.id,
+          );
+        }
+      } else {
+        // Create new customer in Supabase with Square customer ID
+        const { data: newCustomer, error } = await supabase
+          .from("customers")
+          .insert({
+            email: email || `square_${squareCustomerId}@placeholder.com`,
+            first_name: firstName || "Square Customer",
+            last_name: lastName || "",
+            phone: phone || "",
+            company: "",
+            store_credit: 0,
+            square_customer_id: squareCustomerId,
+            password_hash: null,
+          })
+          .select("id")
+          .single();
+
+        if (error) {
+          console.error("Error creating Square customer in Supabase:", error);
+        } else {
+          console.log("Square customer created in Supabase:", newCustomer.id);
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Error processing Square customer creation:", error);
+  }
+}
