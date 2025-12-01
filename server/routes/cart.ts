@@ -76,8 +76,11 @@ export const handleGetCart: RequestHandler = async (req, res) => {
     const { cartId } = req.params;
 
     if (!cartId) {
+      console.error("Cart ID is required");
       return res.status(400).json({ error: "Cart ID is required" });
     }
+
+    console.log("Fetching cart:", cartId);
 
     const { data, error } = await supabase
       .from("carts")
@@ -86,7 +89,12 @@ export const handleGetCart: RequestHandler = async (req, res) => {
       .single();
 
     if (error) {
-      console.error("Get cart error:", error);
+      console.error("Get cart error - Supabase error:", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        cartId,
+      });
       if (error.code === "PGRST116") {
         return res.status(404).json({ error: "Cart not found" });
       }
@@ -94,8 +102,11 @@ export const handleGetCart: RequestHandler = async (req, res) => {
     }
 
     if (!data) {
+      console.warn("Get cart - no data returned for cartId:", cartId);
       return res.status(404).json({ error: "Cart not found" });
     }
+
+    console.log("Cart found successfully:", cartId);
 
     res.json({
       success: true,
@@ -109,7 +120,10 @@ export const handleGetCart: RequestHandler = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Get cart error:", error);
+    console.error("Get cart error - caught exception:", {
+      message: error instanceof Error ? error.message : String(error),
+      error,
+    });
     const message =
       error instanceof Error ? error.message : "Failed to get cart";
     res.status(500).json({ error: message });
