@@ -56,6 +56,7 @@ export default function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/products" element={<Products />} />
             <Route path="/product/:productId" element={<Product />} />
+            <Route path="/product-page/:productId" element={<ProductPage />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/ecwid-store" element={<EcwidStore />} />
             <Route
