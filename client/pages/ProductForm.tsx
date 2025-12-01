@@ -200,6 +200,7 @@ export default function ProductForm() {
         images: product.images || [],
         options: product.options || [],
         pricingRules: product.pricing_rules || [],
+        sharedVariants: product.shared_variants || [],
         customerUploadConfig: product.customer_upload_config || {
           enabled: false,
           maxFileSize: 5,
