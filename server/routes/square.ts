@@ -700,3 +700,56 @@ async function handleSquareCustomerCreated(data: any): Promise<void> {
     console.error("Error processing Square customer creation:", error);
   }
 }
+
+/**
+ * Handle Square customer.deleted webhook event
+ */
+async function handleSquareCustomerDeleted(data: any): Promise<void> {
+  try {
+    const { supabase } = await import("../utils/supabase");
+
+    const squareCustomerId = data?.id;
+    if (!squareCustomerId) {
+      console.warn("No customer ID in Square deletion webhook");
+      return;
+    }
+
+    console.log("Processing Square customer deletion:", squareCustomerId);
+
+    // Find customer by Square customer ID
+    const { data: customer } = await supabase
+      .from("customers")
+      .select("id")
+      .eq("square_customer_id", squareCustomerId)
+      .single()
+      .catch(() => ({ data: null }));
+
+    if (customer) {
+      // Unlink the Square customer ID from the Supabase record
+      // We preserve the customer record to maintain order history
+      const { error } = await supabase
+        .from("customers")
+        .update({
+          square_customer_id: null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", customer.id);
+
+      if (error) {
+        console.error("Error unlinking Square customer:", error);
+      } else {
+        console.log(
+          "Square customer unlinked from Supabase record:",
+          customer.id,
+        );
+      }
+    } else {
+      console.log(
+        "Square customer not found in Supabase:",
+        squareCustomerId,
+      );
+    }
+  } catch (error) {
+    console.error("Error processing Square customer deletion:", error);
+  }
+}
