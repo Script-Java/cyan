@@ -161,10 +161,11 @@ export default function AdminOrders() {
                         onChange={(e) => setFilterStatus(e.target.value)}
                         className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                       >
-                        <option value="all" className="bg-gray-900">All Statuses</option>
+                        <option value="all" className="bg-gray-900">All Active Statuses</option>
                         <option value="pending" className="bg-gray-900">Pending</option>
-                        <option value="shipped" className="bg-gray-900">Shipped</option>
-                        <option value="delivered" className="bg-gray-900">Delivered</option>
+                        <option value="processing" className="bg-gray-900">Processing</option>
+                        <option value="printing" className="bg-gray-900">Printing</option>
+                        <option value="in transit" className="bg-gray-900">In Transit</option>
                       </select>
                     </div>
                   </div>
