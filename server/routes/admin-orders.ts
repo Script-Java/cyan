@@ -23,15 +23,15 @@ interface OrderWithCustomer {
 }
 
 /**
- * Get all pending orders from Supabase only (admin only)
- * Uses the same getPendingOrders function as OrderHistory
- * Returns orders that have status="pending" with customer details
+ * Get all active orders from Supabase only (admin only)
+ * Fetches orders with statuses: pending, processing, printing, in transit
+ * Returns orders with customer details
  * Note: Only fetches from Supabase database, not from Ecwid
  */
 export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
   try {
-    // Use the same function as OrderHistory for consistency
-    const pendingOrders = await getPendingOrders();
+    // Fetch active orders with specific statuses
+    const pendingOrders = await getActiveOrders();
 
     if (!pendingOrders || pendingOrders.length === 0) {
       return res.json({
