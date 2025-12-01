@@ -27,30 +27,30 @@ export default function ActiveOrdersSummary({
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "bg-orange-500/10 text-orange-700 border border-orange-200";
+        return "bg-orange-500/10 text-orange-400 border border-orange-500/30";
       case "processing":
-        return "bg-yellow-500/10 text-yellow-700 border border-yellow-200";
+        return "bg-yellow-500/10 text-yellow-400 border border-yellow-500/30";
       case "printing":
-        return "bg-purple-500/10 text-purple-700 border border-purple-200";
+        return "bg-purple-500/10 text-purple-400 border border-purple-500/30";
       case "in transit":
-        return "bg-blue-500/10 text-blue-700 border border-blue-200";
+        return "bg-blue-500/10 text-blue-400 border border-blue-500/30";
       default:
-        return "bg-gray-100 text-gray-700 border border-gray-200";
+        return "bg-white/5 text-white/60 border border-white/10";
     }
   };
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "bg-orange-100 text-orange-800";
+        return "bg-orange-600/30 text-orange-300 border border-orange-500/30";
       case "processing":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-600/30 text-yellow-300 border border-yellow-500/30";
       case "printing":
-        return "bg-purple-100 text-purple-800";
+        return "bg-purple-600/30 text-purple-300 border border-purple-500/30";
       case "in transit":
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-600/30 text-blue-300 border border-blue-500/30";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-white/10 text-white/60 border border-white/10";
     }
   };
 
