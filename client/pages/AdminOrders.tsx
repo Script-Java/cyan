@@ -95,10 +95,16 @@ export default function AdminOrders() {
     switch (status) {
       case "pending":
         return "bg-orange-500/20 text-orange-300 border border-orange-500/30";
+      case "processing":
+        return "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30";
+      case "printing":
+        return "bg-purple-500/20 text-purple-300 border border-purple-500/30";
+      case "in transit":
+        return "bg-blue-500/20 text-blue-300 border border-blue-500/30";
       case "shipped":
         return "bg-green-500/20 text-green-300 border border-green-500/30";
       case "delivered":
-        return "bg-blue-500/20 text-blue-300 border border-blue-500/30";
+        return "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30";
       default:
         return "bg-white/10 text-white/60 border border-white/10";
     }
