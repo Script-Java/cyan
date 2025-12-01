@@ -122,6 +122,45 @@ export function createServer() {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
+  // Security headers for Square Web Payments SDK and general security
+  app.use((req, res, next) => {
+    // Content Security Policy for Square Web Payments SDK
+    // Allows Square's scripts and connections for payment processing
+    res.setHeader(
+      "Content-Security-Policy",
+      [
+        "default-src 'self'",
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web.squarecdn.com https://square.com",
+        "connect-src 'self' https://web.squarecdn.com https://square.com https://*.squareupsandbox.com https://connect.squareup.com",
+        "frame-src https://web.squarecdn.com https://square.com https://*.squareupsandbox.com",
+        "img-src 'self' https: data:",
+        "style-src 'self' 'unsafe-inline' https://web.squarecdn.com",
+        "font-src 'self' https://web.squarecdn.com",
+        "object-src 'none'",
+      ].join("; "),
+    );
+
+    // HTTPS enforcement (Secure Context requirement)
+    // Redirect HTTP to HTTPS in production
+    if (
+      process.env.NODE_ENV === "production" &&
+      req.header("x-forwarded-proto") !== "https"
+    ) {
+      return res.redirect(
+        301,
+        `https://${req.header("host")}${req.originalUrl}`,
+      );
+    }
+
+    // Additional security headers
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "SAMEORIGIN");
+    res.setHeader("X-XSS-Protection", "1; mode=block");
+    res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+
+    next();
+  });
+
   // Error handling for JSON parsing
   app.use((err: any, _req: any, res: any, next: any) => {
     if (err instanceof SyntaxError && "body" in err) {
