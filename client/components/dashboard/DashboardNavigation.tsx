@@ -21,7 +21,7 @@ export default function DashboardNavigation({
 
   const actionItems = [
     {
-      icon: Bookmark,
+      icon: ShoppingBag,
       title: "Orders",
       description: "View order history",
       color: "text-emerald-600",
@@ -30,7 +30,7 @@ export default function DashboardNavigation({
       onClick: () => navigate("/order-history"),
     },
     {
-      icon: BarChart3,
+      icon: TrendingUp,
       title: "Finances",
       description: "View spending & savings",
       color: "text-blue-600",
@@ -39,7 +39,7 @@ export default function DashboardNavigation({
       onClick: () => navigate("/finances"),
     },
     {
-      icon: Cloud,
+      icon: Palette,
       title: "Designs",
       description: "Manage designs",
       color: "text-pink-600",
@@ -51,7 +51,7 @@ export default function DashboardNavigation({
 
   const bottomItems = [
     {
-      icon: Eye,
+      icon: CheckCircle2,
       title: "Proofs",
       description: "Review designs",
       color: "text-orange-600",
@@ -60,7 +60,7 @@ export default function DashboardNavigation({
       onClick: () => navigate("/proofs"),
     },
     {
-      icon: MessageCircle,
+      icon: Headphones,
       title: "Support",
       description: "Contact ground crew",
       color: "text-red-600",
@@ -69,7 +69,7 @@ export default function DashboardNavigation({
       onClick: () => navigate("/support"),
     },
     {
-      icon: Inbox,
+      icon: Ticket,
       title: "My Tickets",
       description: "View your support tickets",
       color: "text-purple-600",
@@ -78,7 +78,7 @@ export default function DashboardNavigation({
       onClick: () => navigate("/my-tickets"),
     },
     {
-      icon: Settings,
+      icon: CircleUserRound,
       title: "Account Settings",
       description: "Manage account",
       color: "text-gray-600",
