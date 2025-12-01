@@ -130,12 +130,12 @@ export function createServer() {
       "Content-Security-Policy",
       [
         "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web.squarecdn.com https://square.com",
-        "connect-src 'self' https://web.squarecdn.com https://square.com https://*.squareupsandbox.com https://connect.squareup.com",
-        "frame-src https://web.squarecdn.com https://square.com https://*.squareupsandbox.com",
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://connect.squareup.com",
+        "connect-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://*.squareupsandbox.com https://*.squareup.com https://connect.squareup.com https://connect.squareupsandbox.com",
+        "frame-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://*.squareupsandbox.com https://*.squareup.com",
         "img-src 'self' https: data:",
-        "style-src 'self' 'unsafe-inline' https://web.squarecdn.com",
-        "font-src 'self' https://web.squarecdn.com",
+        "style-src 'self' 'unsafe-inline' https://web.squarecdn.com https://sandbox.web.squarecdn.com",
+        "font-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://fonts.googleapis.com",
         "object-src 'none'",
       ].join("; "),
     );
