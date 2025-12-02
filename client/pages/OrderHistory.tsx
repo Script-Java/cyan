@@ -328,7 +328,7 @@ export default function OrderHistory() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {orders.map((order) => (
+                    {filteredOrders.map((order) => (
                       <tr
                         key={order.id}
                         className="hover:bg-gray-50 transition-colors cursor-pointer"
