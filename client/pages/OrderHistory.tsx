@@ -278,8 +278,27 @@ export default function OrderHistory() {
             </div>
           )}
 
+          {/* No search results */}
+          {orders.length > 0 && filteredOrders.length === 0 && searchQuery && (
+            <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-12 text-center">
+              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                No Orders Found
+              </h2>
+              <p className="text-gray-600 mb-6">
+                No orders match "{searchQuery}". Try searching by order number, date, or amount.
+              </p>
+              <Button
+                onClick={() => setSearchQuery("")}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Clear Search
+              </Button>
+            </div>
+          )}
+
           {/* Orders Table View */}
-          {orders.length > 0 && (
+          {filteredOrders.length > 0 && (
             <div className="hidden lg:block mb-8 bg-white rounded-lg border border-gray-200 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
