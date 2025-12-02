@@ -228,6 +228,36 @@ export default function OrderHistory() {
             </div>
           )}
 
+          {/* Search Bar */}
+          {orders.length > 0 && (
+            <div className="mb-6 bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Search orders by number, date (Dec 1), or amount ($50)..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    title="Clear search"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
+              {searchQuery && (
+                <p className="mt-2 text-sm text-gray-600">
+                  Found {filteredOrders.length} order{filteredOrders.length !== 1 ? "s" : ""}
+                </p>
+              )}
+            </div>
+          )}
+
           {/* Empty State */}
           {orders.length === 0 && !error && (
             <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-12 text-center">
