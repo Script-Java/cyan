@@ -8,6 +8,8 @@ import {
   ArrowRight,
   AlertCircle,
   ChevronDown,
+  Search,
+  X,
 } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
