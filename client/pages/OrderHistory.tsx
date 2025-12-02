@@ -76,6 +76,22 @@ export default function OrderHistory() {
   const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Helper functions
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
+  };
+
   // Filter orders based on search query
   const filteredOrders = orders.filter((order) => {
     if (!searchQuery.trim()) return true;
