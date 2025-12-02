@@ -451,11 +451,11 @@ export default function AccountSettings() {
         <DashboardLayout>
           <div className="max-w-4xl mx-auto py-8">
             {/* Header */}
-            <div className="mb-8 bg-gray-900 rounded-lg p-6 -mx-4 md:mx-0">
-              <h1 className="text-3xl font-bold text-white mb-2">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Account Settings
               </h1>
-              <p className="text-gray-300">
+              <p className="text-gray-600">
                 Manage your personal information and account preferences
               </p>
             </div>
