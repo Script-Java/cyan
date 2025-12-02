@@ -252,7 +252,8 @@ export default function OrderHistory() {
               </div>
               {searchQuery && (
                 <p className="mt-2 text-sm text-gray-600">
-                  Found {filteredOrders.length} order{filteredOrders.length !== 1 ? "s" : ""}
+                  Found {filteredOrders.length} order
+                  {filteredOrders.length !== 1 ? "s" : ""}
                 </p>
               )}
             </div>
@@ -286,7 +287,8 @@ export default function OrderHistory() {
                 No Orders Found
               </h2>
               <p className="text-gray-600 mb-6">
-                No orders match "{searchQuery}". Try searching by order number, date, or amount.
+                No orders match "{searchQuery}". Try searching by order number,
+                date, or amount.
               </p>
               <Button
                 onClick={() => setSearchQuery("")}
@@ -686,7 +688,10 @@ export default function OrderHistory() {
                   </p>
                   <p className="text-xl sm:text-2xl font-bold text-gray-900">
                     {formatCurrency(
-                      filteredOrders.reduce((sum, order) => sum + order.total, 0),
+                      filteredOrders.reduce(
+                        (sum, order) => sum + order.total,
+                        0,
+                      ),
                     )}
                   </p>
                 </div>
@@ -695,7 +700,10 @@ export default function OrderHistory() {
                     {searchQuery ? "Matching Total Items" : "Total Items"}
                   </p>
                   <p className="text-xl sm:text-2xl font-bold text-gray-900">
-                    {filteredOrders.reduce((sum, order) => sum + order.itemCount, 0)}
+                    {filteredOrders.reduce(
+                      (sum, order) => sum + order.itemCount,
+                      0,
+                    )}
                   </p>
                 </div>
               </div>
