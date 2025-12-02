@@ -74,6 +74,33 @@ export default function OrderHistory() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filter orders based on search query
+  const filteredOrders = orders.filter((order) => {
+    if (!searchQuery.trim()) return true;
+
+    const query = searchQuery.toLowerCase().trim();
+
+    // Search by order number/ID
+    if (order.id.toString().includes(query)) return true;
+
+    // Search by date (flexible matching: "dec", "2025", "12/25", etc.)
+    const orderDate = formatDate(order.dateCreated).toLowerCase();
+    if (orderDate.includes(query)) return true;
+
+    // Search by amount (without currency symbol)
+    const amount = order.total.toFixed(2);
+    if (amount.includes(query)) return true;
+
+    // Search by formatted currency amount
+    const currencyAmount = formatCurrency(order.total)
+      .replace("$", "")
+      .toLowerCase();
+    if (currencyAmount.includes(query)) return true;
+
+    return false;
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
