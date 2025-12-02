@@ -420,9 +420,9 @@ export default function OrderHistory() {
           )}
 
           {/* Orders Detailed View */}
-          {orders.length > 0 && (
+          {filteredOrders.length > 0 && (
             <div className="space-y-4">
-              {orders.map((order) => (
+              {filteredOrders.map((order) => (
                 <div
                   key={order.id}
                   className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
