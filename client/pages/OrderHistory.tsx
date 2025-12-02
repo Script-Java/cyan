@@ -669,33 +669,33 @@ export default function OrderHistory() {
           )}
 
           {/* Total Summary */}
-          {orders.length > 0 && (
+          {filteredOrders.length > 0 && (
             <div className="mt-8 bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div>
                   <p className="text-xs sm:text-sm text-gray-600 mb-1">
-                    Total Orders
+                    {searchQuery ? "Matching Orders" : "Total Orders"}
                   </p>
                   <p className="text-xl sm:text-2xl font-bold text-gray-900">
-                    {orders.length}
+                    {filteredOrders.length}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs sm:text-sm text-gray-600 mb-1">
-                    Total Spent
+                    {searchQuery ? "Matching Total Spent" : "Total Spent"}
                   </p>
                   <p className="text-xl sm:text-2xl font-bold text-gray-900">
                     {formatCurrency(
-                      orders.reduce((sum, order) => sum + order.total, 0),
+                      filteredOrders.reduce((sum, order) => sum + order.total, 0),
                     )}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs sm:text-sm text-gray-600 mb-1">
-                    Total Items
+                    {searchQuery ? "Matching Total Items" : "Total Items"}
                   </p>
                   <p className="text-xl sm:text-2xl font-bold text-gray-900">
-                    {orders.reduce((sum, order) => sum + order.itemCount, 0)}
+                    {filteredOrders.reduce((sum, order) => sum + order.itemCount, 0)}
                   </p>
                 </div>
               </div>
