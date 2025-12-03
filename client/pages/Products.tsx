@@ -293,7 +293,7 @@ export default function Products() {
               </h2>
               <p className="text-center text-white/60 mb-8 text-sm">TYPE:</p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
                 {categories.map((category) => (
                   <ProductCategoryCard
                     key={category.id}
