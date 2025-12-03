@@ -480,7 +480,7 @@ export default function AdminOrders() {
                   <p className="text-sm text-white/60">
                     {searchTerm || filterStatus !== "all"
                       ? "No orders match your search or filter criteria."
-                      : "There are no active orders at this time."}
+                      : "There are no orders at this time."}
                   </p>
                 </div>
               )}
