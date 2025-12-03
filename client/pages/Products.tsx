@@ -363,7 +363,7 @@ export default function Products() {
               {filteredProducts.map((product) => (
                 <div
                   key={product.id}
-                  className="group rounded-lg overflow-hidden bg-white/5 border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all duration-300 flex flex-col"
+                  className="group rounded-lg overflow-hidden bg-white/5 hover:bg-white/10 transition-all duration-300 flex flex-col"
                 >
                   {/* Product Image */}
                   <div className="relative bg-white/10 aspect-square overflow-hidden flex items-center justify-center">
