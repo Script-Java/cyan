@@ -72,7 +72,9 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
       tracking_carrier: order.tracking_carrier,
       tracking_url: order.tracking_url,
       shipped_date: order.shipped_date,
-      shipping_addresses: order.shipping_address ? [order.shipping_address] : [],
+      shipping_addresses: order.shipping_address
+        ? [order.shipping_address]
+        : [],
       source: "supabase" as const,
       orderItems: (order.order_items || []).map((item: any) => ({
         id: item.id,
@@ -132,7 +134,9 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
       status: order.status,
       total: order.total || 0,
       dateCreated: order.created_at || new Date().toISOString(),
-      shipping_addresses: order.shipping_address ? [order.shipping_address] : [],
+      shipping_addresses: order.shipping_address
+        ? [order.shipping_address]
+        : [],
       source: "supabase" as const,
       orderItems: (order.order_items || []).map((item: any) => ({
         id: item.id,
@@ -240,10 +244,7 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
  * Update shipping address for an order
  * Allows admins to edit shipping address details
  */
-export const handleUpdateShippingAddress: RequestHandler = async (
-  req,
-  res,
-) => {
+export const handleUpdateShippingAddress: RequestHandler = async (req, res) => {
   try {
     const { orderId } = req.params;
     const {
@@ -303,7 +304,9 @@ export const handleUpdateShippingAddress: RequestHandler = async (
 
     if (error) {
       console.error("Error updating shipping address:", error);
-      return res.status(500).json({ error: "Failed to update shipping address" });
+      return res
+        .status(500)
+        .json({ error: "Failed to update shipping address" });
     }
 
     res.json({
@@ -314,7 +317,9 @@ export const handleUpdateShippingAddress: RequestHandler = async (
   } catch (error) {
     console.error("Update shipping address error:", error);
     const message =
-      error instanceof Error ? error.message : "Failed to update shipping address";
+      error instanceof Error
+        ? error.message
+        : "Failed to update shipping address";
     res.status(500).json({ error: message });
   }
 };

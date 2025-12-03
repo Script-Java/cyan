@@ -548,7 +548,8 @@ export default function AdminOrders() {
                                       </p>
                                     )}
                                     <p className="text-white/60">
-                                      {address.city}, {address.state_or_province}{" "}
+                                      {address.city},{" "}
+                                      {address.state_or_province}{" "}
                                       {address.postal_code}
                                     </p>
                                     <p className="text-white/60">
@@ -563,7 +564,8 @@ export default function AdminOrders() {
                                 ))
                               ) : (
                                 <p className="text-sm text-white/60">
-                                  No shipping address yet. Click "Add" to add one.
+                                  No shipping address yet. Click "Add" to add
+                                  one.
                                 </p>
                               )}
                             </div>

@@ -72,24 +72,27 @@ export default function ShippingAddressEditor({
         return;
       }
 
-      const response = await fetch(`/api/admin/orders/${orderId}/shipping-address`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `/api/admin/orders/${orderId}/shipping-address`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            first_name: firstName,
+            last_name: lastName,
+            street_1: street1,
+            street_2: street2 || undefined,
+            city,
+            state_or_province: stateProvince,
+            postal_code: postalCode,
+            country_iso2: countryIso2,
+            phone: phone || undefined,
+          }),
         },
-        body: JSON.stringify({
-          first_name: firstName,
-          last_name: lastName,
-          street_1: street1,
-          street_2: street2 || undefined,
-          city,
-          state_or_province: stateProvince,
-          postal_code: postalCode,
-          country_iso2: countryIso2,
-          phone: phone || undefined,
-        }),
-      });
+      );
 
       if (!response.ok) {
         const data = await response.json();
