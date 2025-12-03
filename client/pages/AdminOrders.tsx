@@ -42,6 +42,17 @@ interface PendingOrder {
   tracking_carrier?: string;
   tracking_url?: string;
   shipped_date?: string;
+  shipping_addresses?: Array<{
+    first_name: string;
+    last_name: string;
+    street_1: string;
+    street_2?: string;
+    city: string;
+    state_or_province: string;
+    postal_code: string;
+    country_iso2: string;
+    phone?: string;
+  }>;
 }
 
 export default function AdminOrders() {
