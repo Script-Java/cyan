@@ -66,7 +66,9 @@ export default function AdminSettings() {
       <>
         <Header />
         <div className="flex">
-          <AdminSidebar />
+          <div className="hidden md:block">
+            <AdminSidebar />
+          </div>
           <main className="flex-1 md:ml-64 min-h-screen bg-gray-50 flex items-center justify-center pb-20 md:pb-0">
             <div className="text-gray-600">Loading settings...</div>
           </main>
@@ -82,7 +84,9 @@ export default function AdminSettings() {
     <>
       <Header />
       <div className="flex">
-        <AdminSidebar />
+        <div className="hidden md:block">
+          <AdminSidebar />
+        </div>
         <main className="flex-1 md:ml-64 min-h-screen bg-gray-50 pb-20 md:pb-0">
           <div className="pt-6">
             {/* Header Section */}
