@@ -242,8 +242,12 @@ export default function AdminDashboard() {
                           <div className="px-6 py-4 bg-white/5 border-t border-white/10">
                             <div className="space-y-3">
                               <div>
-                                <p className="text-sm text-white/60">Customer</p>
-                                <p className="text-white">{order.customerName}</p>
+                                <p className="text-sm text-white/60">
+                                  Customer
+                                </p>
+                                <p className="text-white">
+                                  {order.customerName}
+                                </p>
                                 <p className="text-sm text-white/60">
                                   {order.customerEmail}
                                 </p>
@@ -280,9 +284,7 @@ export default function AdminDashboard() {
                               </div>
                               <button
                                 onClick={() =>
-                                  navigate(
-                                    `/admin/orders?orderId=${order.id}`,
-                                  )
+                                  navigate(`/admin/orders?orderId=${order.id}`)
                                 }
                                 className="mt-3 w-full px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm font-medium transition-colors"
                               >

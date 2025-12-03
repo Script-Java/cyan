@@ -65,7 +65,9 @@ export default function AdminOrders() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
   const [editingOrderId, setEditingOrderId] = useState<number | null>(null);
-  const [shippingLabelOrderId, setShippingLabelOrderId] = useState<number | null>(null);
+  const [shippingLabelOrderId, setShippingLabelOrderId] = useState<
+    number | null
+  >(null);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -217,7 +219,10 @@ export default function AdminOrders() {
                     <option value="printing" className="bg-gray-900">
                       Printing
                     </option>
-                    <option value="preparing for shipping" className="bg-gray-900">
+                    <option
+                      value="preparing for shipping"
+                      className="bg-gray-900"
+                    >
                       Preparing for Shipping
                     </option>
                     <option value="in transit" className="bg-gray-900">
@@ -244,7 +249,8 @@ export default function AdminOrders() {
                     <h2 className="text-lg font-semibold text-white">
                       Orders
                       <span className="ml-3 text-sm font-normal text-white/60">
-                        {filteredOrders.length} {filteredOrders.length === 1 ? "order" : "orders"}
+                        {filteredOrders.length}{" "}
+                        {filteredOrders.length === 1 ? "order" : "orders"}
                       </span>
                     </h2>
                   </div>
@@ -311,7 +317,9 @@ export default function AdminOrders() {
                                 Edit Status & Tracking
                               </button>
                               <button
-                                onClick={() => setShippingLabelOrderId(order.id)}
+                                onClick={() =>
+                                  setShippingLabelOrderId(order.id)
+                                }
                                 className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 rounded-lg text-blue-300 hover:text-blue-200 transition-colors text-sm font-medium"
                               >
                                 <Truck className="w-4 h-4" />
@@ -329,13 +337,19 @@ export default function AdminOrders() {
                                     Subtotal
                                   </p>
                                   <p className="text-sm font-semibold text-white">
-                                    ${(order.subtotal || order.total * 0.8).toFixed(2)}
+                                    $
+                                    {(
+                                      order.subtotal || order.total * 0.8
+                                    ).toFixed(2)}
                                   </p>
                                 </div>
                                 <div className="bg-white/5 rounded border border-white/10 p-3">
                                   <p className="text-xs text-white/60">Tax</p>
                                   <p className="text-sm font-semibold text-white">
-                                    ${(order.tax || order.total * 0.1).toFixed(2)}
+                                    $
+                                    {(order.tax || order.total * 0.1).toFixed(
+                                      2,
+                                    )}
                                   </p>
                                 </div>
                                 <div className="bg-white/5 rounded border border-white/10 p-3">
@@ -356,76 +370,77 @@ export default function AdminOrders() {
                             </div>
 
                             {/* Items */}
-                            {order.orderItems && order.orderItems.length > 0 && (
-                              <div>
-                                <h4 className="text-sm font-semibold text-white mb-3">
-                                  Items ({order.orderItems.length})
-                                </h4>
-                                <div className="space-y-3">
-                                  {order.orderItems.map((item, idx) => (
-                                    <div
-                                      key={idx}
-                                      className="bg-white/5 rounded border border-white/10 p-3"
-                                    >
-                                      <div className="flex gap-4 items-start">
-                                        <div className="flex-1 min-w-0">
-                                          <p className="text-white font-medium text-sm">
-                                            {item.product_name || "Product"}
-                                          </p>
-                                          <p className="text-white/60 text-xs mt-1">
-                                            Qty: {item.quantity || 1}
-                                          </p>
-                                          {item.options &&
-                                            Object.keys(item.options).length >
-                                              0 && (
-                                              <div className="mt-2 text-xs text-white/60 space-y-1">
-                                                {Object.entries(
-                                                  item.options,
-                                                ).map(([key, val]) => (
-                                                  <div key={key}>
-                                                    <span className="text-white/80">
-                                                      {key}:
-                                                    </span>{" "}
-                                                    {String(val)}
-                                                  </div>
-                                                ))}
-                                              </div>
-                                            )}
-                                        </div>
-                                        {item.design_file_url && (
-                                          <div className="flex-shrink-0">
-                                            <div className="w-16 h-16 bg-white/5 border border-white/10 rounded overflow-hidden flex items-center justify-center">
-                                              {item.design_file_url.match(
-                                                /\.(jpg|jpeg|png|gif|webp)$/i,
-                                              ) ? (
-                                                <img
-                                                  src={item.design_file_url}
-                                                  alt="Design"
-                                                  className="w-full h-full object-cover"
-                                                  onError={(e) => {
-                                                    e.currentTarget.style.display =
-                                                      "none";
-                                                  }}
-                                                />
-                                              ) : (
-                                                <a
-                                                  href={item.design_file_url}
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                  className="flex items-center gap-1 p-1 hover:text-green-300 transition-colors"
-                                                >
-                                                  <ImageIcon className="w-5 h-5 text-white/60" />
-                                                </a>
+                            {order.orderItems &&
+                              order.orderItems.length > 0 && (
+                                <div>
+                                  <h4 className="text-sm font-semibold text-white mb-3">
+                                    Items ({order.orderItems.length})
+                                  </h4>
+                                  <div className="space-y-3">
+                                    {order.orderItems.map((item, idx) => (
+                                      <div
+                                        key={idx}
+                                        className="bg-white/5 rounded border border-white/10 p-3"
+                                      >
+                                        <div className="flex gap-4 items-start">
+                                          <div className="flex-1 min-w-0">
+                                            <p className="text-white font-medium text-sm">
+                                              {item.product_name || "Product"}
+                                            </p>
+                                            <p className="text-white/60 text-xs mt-1">
+                                              Qty: {item.quantity || 1}
+                                            </p>
+                                            {item.options &&
+                                              Object.keys(item.options).length >
+                                                0 && (
+                                                <div className="mt-2 text-xs text-white/60 space-y-1">
+                                                  {Object.entries(
+                                                    item.options,
+                                                  ).map(([key, val]) => (
+                                                    <div key={key}>
+                                                      <span className="text-white/80">
+                                                        {key}:
+                                                      </span>{" "}
+                                                      {String(val)}
+                                                    </div>
+                                                  ))}
+                                                </div>
                                               )}
-                                            </div>
                                           </div>
-                                        )}
+                                          {item.design_file_url && (
+                                            <div className="flex-shrink-0">
+                                              <div className="w-16 h-16 bg-white/5 border border-white/10 rounded overflow-hidden flex items-center justify-center">
+                                                {item.design_file_url.match(
+                                                  /\.(jpg|jpeg|png|gif|webp)$/i,
+                                                ) ? (
+                                                  <img
+                                                    src={item.design_file_url}
+                                                    alt="Design"
+                                                    className="w-full h-full object-cover"
+                                                    onError={(e) => {
+                                                      e.currentTarget.style.display =
+                                                        "none";
+                                                    }}
+                                                  />
+                                                ) : (
+                                                  <a
+                                                    href={item.design_file_url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="flex items-center gap-1 p-1 hover:text-green-300 transition-colors"
+                                                  >
+                                                    <ImageIcon className="w-5 h-5 text-white/60" />
+                                                  </a>
+                                                )}
+                                              </div>
+                                            </div>
+                                          )}
+                                        </div>
                                       </div>
-                                    </div>
-                                  ))}
+                                    ))}
+                                  </div>
                                 </div>
-                              </div>
-                            )}
+                              )}
 
                             {/* Tracking Information */}
                             <div className="bg-white/5 rounded border border-white/10 p-3">
@@ -435,14 +450,18 @@ export default function AdminOrders() {
                               {order.tracking_number ? (
                                 <div className="space-y-2">
                                   <div>
-                                    <p className="text-xs text-white/60">Tracking Number</p>
+                                    <p className="text-xs text-white/60">
+                                      Tracking Number
+                                    </p>
                                     <p className="text-sm font-mono text-white">
                                       {order.tracking_number}
                                     </p>
                                   </div>
                                   {order.tracking_carrier && (
                                     <div>
-                                      <p className="text-xs text-white/60">Carrier</p>
+                                      <p className="text-xs text-white/60">
+                                        Carrier
+                                      </p>
                                       <p className="text-sm text-white">
                                         {order.tracking_carrier}
                                       </p>
@@ -462,7 +481,9 @@ export default function AdminOrders() {
                                   )}
                                   {order.shipped_date && (
                                     <div>
-                                      <p className="text-xs text-white/60">Shipped</p>
+                                      <p className="text-xs text-white/60">
+                                        Shipped
+                                      </p>
                                       <p className="text-sm text-white">
                                         {formatDate(order.shipped_date)}
                                       </p>

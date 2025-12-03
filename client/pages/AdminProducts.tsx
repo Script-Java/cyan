@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Package,
-  Search,
-  Plus,
-  Edit2,
-  Trash2,
-} from "lucide-react";
+import { Package, Search, Plus, Edit2, Trash2 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import { Button } from "@/components/ui/button";
@@ -211,7 +205,8 @@ export default function AdminProducts() {
                 <p className="text-sm font-semibold text-white">
                   Products
                   <span className="ml-2 text-xs font-normal text-white/60">
-                    {filteredProducts.length} {filteredProducts.length === 1 ? "item" : "items"}
+                    {filteredProducts.length}{" "}
+                    {filteredProducts.length === 1 ? "item" : "items"}
                   </span>
                 </p>
               </div>

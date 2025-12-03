@@ -161,20 +161,30 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
 export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { status, tracking_number, tracking_carrier, tracking_url } = req.body;
+    const { status, tracking_number, tracking_carrier, tracking_url } =
+      req.body;
 
     if (!orderId) {
       return res.status(400).json({ error: "Order ID is required" });
     }
 
     const updateData: any = {};
-    const validStatuses = ["pending", "processing", "printing", "preparing for shipping", "in transit", "shipped", "delivered", "cancelled"];
+    const validStatuses = [
+      "pending",
+      "processing",
+      "printing",
+      "preparing for shipping",
+      "in transit",
+      "shipped",
+      "delivered",
+      "cancelled",
+    ];
 
     // Validate status if provided
     if (status) {
       if (!validStatuses.includes(status)) {
         return res.status(400).json({
-          error: `Invalid status. Valid statuses are: ${validStatuses.join(", ")}`
+          error: `Invalid status. Valid statuses are: ${validStatuses.join(", ")}`,
         });
       }
       updateData.status = status;

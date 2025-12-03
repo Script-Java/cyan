@@ -180,7 +180,10 @@ export default function AdminFinance() {
                     { day: "Sat", amount: 2200 },
                     { day: "Sun", amount: 2800 },
                   ].map((data, idx) => (
-                    <div key={idx} className="flex flex-col items-center gap-1 flex-1">
+                    <div
+                      key={idx}
+                      className="flex flex-col items-center gap-1 flex-1"
+                    >
                       <div className="w-full h-full flex items-end justify-center">
                         <div
                           className="w-full bg-gradient-to-t from-green-500 to-green-400 rounded-t transition-all"

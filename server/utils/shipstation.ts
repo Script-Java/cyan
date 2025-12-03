@@ -70,7 +70,7 @@ export class ShipStationAPI {
   }
 
   async createShippingLabel(
-    payload: CreateLabelPayload
+    payload: CreateLabelPayload,
   ): Promise<LabelResponse> {
     try {
       const response = await fetch(`${this.apiUrl}/orders/createlabel`, {
@@ -86,7 +86,8 @@ export class ShipStationAPI {
         const error = await response.json().catch(() => ({}));
         console.error("ShipStation API error:", error);
         throw new Error(
-          error.message || `Failed to create shipping label: ${response.status}`
+          error.message ||
+            `Failed to create shipping label: ${response.status}`,
         );
       }
 
@@ -119,7 +120,10 @@ export class ShipStationAPI {
       usps: [
         { name: "USPS First Class Mail", code: "usps_first_class_mail" },
         { name: "USPS Priority Mail", code: "usps_priority_mail" },
-        { name: "USPS Priority Mail Express", code: "usps_priority_mail_express" },
+        {
+          name: "USPS Priority Mail Express",
+          code: "usps_priority_mail_express",
+        },
         { name: "USPS Media Mail", code: "usps_media_mail" },
         { name: "USPS Parcel Select", code: "usps_parcel_select" },
       ],
@@ -148,7 +152,9 @@ export class ShipStationAPI {
     };
 
     const services = servicesByCarrier[carrierCode] || [];
-    console.log(`Returning ${services.length} services for carrier: ${carrierCode}`);
+    console.log(
+      `Returning ${services.length} services for carrier: ${carrierCode}`,
+    );
     return services;
   }
 

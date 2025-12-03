@@ -97,7 +97,11 @@ import {
   handleGetAdminProofs,
   handleAddAdminProofComment,
 } from "./routes/proofs";
-import { handleGetAdminPendingOrders, handleUpdateOrderStatus, handleGetAllAdminOrders } from "./routes/admin-orders";
+import {
+  handleGetAdminPendingOrders,
+  handleUpdateOrderStatus,
+  handleGetAllAdminOrders,
+} from "./routes/admin-orders";
 import {
   handleGetAllCustomers,
   handleGetCustomerDetails,
@@ -368,7 +372,11 @@ export function createServer() {
   app.post("/api/admin/proofs/:proofId/comments", handleAddAdminProofComment);
   app.get("/api/admin/pending-orders", handleGetAdminPendingOrders);
   app.get("/api/admin/all-orders", verifyToken, handleGetAllAdminOrders);
-  app.put("/api/admin/orders/:orderId/status", verifyToken, handleUpdateOrderStatus);
+  app.put(
+    "/api/admin/orders/:orderId/status",
+    verifyToken,
+    handleUpdateOrderStatus,
+  );
 
   // ===== Shipping Routes (Protected - admin only) =====
   app.post("/api/shipping/label", verifyToken, handleCreateLabel);

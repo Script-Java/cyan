@@ -324,22 +324,22 @@ export default function AdminNavbar() {
                 {mainNavItems.map((item) => (
                   <button
                     key={item.label}
-                  onClick={() => handleNavItemClick(item.path)}
-                  className={cn(
-                    "w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-all text-sm",
-                    isActive(item.path)
-                      ? "bg-white/10 text-[#FFD713] font-semibold"
-                      : "text-white/60 hover:text-white hover:bg-white/5",
-                  )}
-                >
-                  {item.icon}
-                  <span>{item.label}</span>
-                  {item.badge ? (
-                    <span className="ml-auto bg-[#FFD713] text-black text-xs font-bold rounded-full px-1.5 py-0.5">
-                      {item.badge}
-                    </span>
-                  ) : null}
-                </button>
+                    onClick={() => handleNavItemClick(item.path)}
+                    className={cn(
+                      "w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-all text-sm",
+                      isActive(item.path)
+                        ? "bg-white/10 text-[#FFD713] font-semibold"
+                        : "text-white/60 hover:text-white hover:bg-white/5",
+                    )}
+                  >
+                    {item.icon}
+                    <span>{item.label}</span>
+                    {item.badge ? (
+                      <span className="ml-auto bg-[#FFD713] text-black text-xs font-bold rounded-full px-1.5 py-0.5">
+                        {item.badge}
+                      </span>
+                    ) : null}
+                  </button>
                 ))}
 
                 <div className="border-t border-white/10 my-1.5 pt-1.5">

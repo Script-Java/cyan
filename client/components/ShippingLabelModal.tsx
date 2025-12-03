@@ -119,7 +119,7 @@ export default function ShippingLabelModal({
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -141,7 +141,10 @@ export default function ShippingLabelModal({
       const defaultServices: Record<string, any[]> = {
         usps: [
           { name: "USPS Priority Mail", code: "usps_priority_mail" },
-          { name: "USPS Priority Mail Express", code: "usps_priority_mail_express" },
+          {
+            name: "USPS Priority Mail Express",
+            code: "usps_priority_mail_express",
+          },
           { name: "USPS First Class Mail", code: "usps_first_class_mail" },
         ],
         ups: [
@@ -198,12 +201,12 @@ export default function ShippingLabelModal({
         ...(length &&
           width &&
           height && {
-          dimensions: {
-            length: parseFloat(length),
-            width: parseFloat(width),
-            height: parseFloat(height),
-          },
-        }),
+            dimensions: {
+              length: parseFloat(length),
+              width: parseFloat(width),
+              height: parseFloat(height),
+            },
+          }),
         testLabel: isTestLabel,
       };
 
@@ -248,7 +251,9 @@ export default function ShippingLabelModal({
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
           <div className="flex items-center gap-3">
             <Package className="w-5 h-5 text-green-400" />
-            <h2 className="text-lg font-semibold text-white">Purchase Shipping Label</h2>
+            <h2 className="text-lg font-semibold text-white">
+              Purchase Shipping Label
+            </h2>
           </div>
           <button
             onClick={onClose}
@@ -294,7 +299,11 @@ export default function ShippingLabelModal({
               className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 disabled:opacity-50"
             >
               {carriers.map((carrier) => (
-                <option key={carrier.code} value={carrier.code} className="bg-gray-900">
+                <option
+                  key={carrier.code}
+                  value={carrier.code}
+                  className="bg-gray-900"
+                >
                   {carrier.name}
                 </option>
               ))}
@@ -313,10 +322,16 @@ export default function ShippingLabelModal({
               className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 disabled:opacity-50"
             >
               <option value="" className="bg-gray-900">
-                {services.length === 0 ? "Loading services..." : "Select a service..."}
+                {services.length === 0
+                  ? "Loading services..."
+                  : "Select a service..."}
               </option>
               {services.map((service) => (
-                <option key={service.code} value={service.code} className="bg-gray-900">
+                <option
+                  key={service.code}
+                  value={service.code}
+                  className="bg-gray-900"
+                >
                   {service.name}
                 </option>
               ))}

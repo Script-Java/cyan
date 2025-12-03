@@ -15,7 +15,11 @@ const STATUS_OPTIONS = [
   { value: "pending", label: "Pending", color: "orange" },
   { value: "processing", label: "Processing", color: "yellow" },
   { value: "printing", label: "Printing", color: "purple" },
-  { value: "preparing for shipping", label: "Preparing for Shipping", color: "blue" },
+  {
+    value: "preparing for shipping",
+    label: "Preparing for Shipping",
+    color: "blue",
+  },
   { value: "in transit", label: "In Transit", color: "blue" },
   { value: "shipped", label: "Shipped", color: "green" },
   { value: "delivered", label: "Delivered", color: "cyan" },
@@ -32,8 +36,12 @@ export default function OrderStatusEditor({
   onSuccess,
 }: OrderStatusEditorProps) {
   const [status, setStatus] = useState(currentStatus);
-  const [trackingNumber, setTrackingNumber] = useState(currentTrackingNumber || "");
-  const [trackingCarrier, setTrackingCarrier] = useState(currentTrackingCarrier || "");
+  const [trackingNumber, setTrackingNumber] = useState(
+    currentTrackingNumber || "",
+  );
+  const [trackingCarrier, setTrackingCarrier] = useState(
+    currentTrackingCarrier || "",
+  );
   const [trackingUrl, setTrackingUrl] = useState(currentTrackingUrl || "");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -87,7 +95,9 @@ export default function OrderStatusEditor({
       <div className="bg-gray-900 border border-white/10 rounded-lg max-w-md w-full shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <h2 className="text-lg font-semibold text-white">Update Order #{orderId}</h2>
+          <h2 className="text-lg font-semibold text-white">
+            Update Order #{orderId}
+          </h2>
           <button
             onClick={onClose}
             className="text-white/60 hover:text-white transition-colors"
@@ -109,7 +119,11 @@ export default function OrderStatusEditor({
               className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
             >
               {STATUS_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value} className="bg-gray-900">
+                <option
+                  key={opt.value}
+                  value={opt.value}
+                  className="bg-gray-900"
+                >
                   {opt.label}
                 </option>
               ))}

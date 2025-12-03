@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_KEY || ""
+  process.env.SUPABASE_SERVICE_KEY || "",
 );
 
 export const handleCreateLabel: RequestHandler = async (req, res) => {
@@ -27,19 +27,15 @@ export const handleCreateLabel: RequestHandler = async (req, res) => {
       .single();
 
     if (orderError || !order) {
-      return res
-        .status(404)
-        .json({ error: "Order not found" });
+      return res.status(404).json({ error: "Order not found" });
     }
 
     // Get shipping address from order
     const shippingAddress = order.shipping_addresses?.[0];
     if (!shippingAddress) {
-      return res
-        .status(400)
-        .json({
-          error: "Order does not have shipping address information",
-        });
+      return res.status(400).json({
+        error: "Order does not have shipping address information",
+      });
     }
 
     // Prepare shipment payload for ShipStation
@@ -74,9 +70,8 @@ export const handleCreateLabel: RequestHandler = async (req, res) => {
     };
 
     // Create shipping label
-    const labelResponse = await shipstationAPI.createShippingLabel(
-      shipmentPayload
-    );
+    const labelResponse =
+      await shipstationAPI.createShippingLabel(shipmentPayload);
 
     // Store label info in database
     if (labelResponse.labelDownload?.href || labelResponse.tracking) {
@@ -105,7 +100,9 @@ export const handleCreateLabel: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Failed to create shipping label:", error);
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to create shipping label";
+      error instanceof Error
+        ? error.message
+        : "Failed to create shipping label";
     res.status(500).json({ error: errorMessage });
   }
 };
@@ -128,18 +125,14 @@ export const handleGetRates: RequestHandler = async (req, res) => {
       .single();
 
     if (orderError || !order) {
-      return res
-        .status(404)
-        .json({ error: "Order not found" });
+      return res.status(404).json({ error: "Order not found" });
     }
 
     const shippingAddress = order.shipping_addresses?.[0];
     if (!shippingAddress) {
-      return res
-        .status(400)
-        .json({
-          error: "Order does not have shipping address information",
-        });
+      return res.status(400).json({
+        error: "Order does not have shipping address information",
+      });
     }
 
     // Get rates from ShipStation
@@ -191,9 +184,7 @@ export const handleGetServices: RequestHandler = async (req, res) => {
     const { carrierCode } = req.query;
 
     if (!carrierCode) {
-      return res
-        .status(400)
-        .json({ error: "carrierCode is required" });
+      return res.status(400).json({ error: "carrierCode is required" });
     }
 
     const services = await shipstationAPI.getServices(carrierCode as string);

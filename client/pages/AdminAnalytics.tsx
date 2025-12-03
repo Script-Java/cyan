@@ -268,9 +268,7 @@ export default function AdminAnalytics() {
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div>
-                        <p className="text-white/60 text-xs">
-                          {device.name}
-                        </p>
+                        <p className="text-white/60 text-xs">{device.name}</p>
                         <p className="text-lg font-bold text-white">
                           {device.value}
                         </p>
@@ -304,7 +302,10 @@ export default function AdminAnalytics() {
                 const percentage =
                   totalTraffic > 0 ? (source.value / totalTraffic) * 100 : 0;
                 return (
-                  <div key={idx} className="bg-white/5 rounded border border-white/10 p-2.5">
+                  <div
+                    key={idx}
+                    className="bg-white/5 rounded border border-white/10 p-2.5"
+                  >
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-2 min-w-0">
                         <span className="text-sm">{source.icon}</span>
