@@ -509,6 +509,46 @@ export default function AdminOrders() {
                                 {order.customerEmail}
                               </p>
                             </div>
+
+                            {/* Shipping Address */}
+                            {order.shipping_addresses &&
+                              order.shipping_addresses.length > 0 && (
+                                <div className="bg-white/5 rounded border border-white/10 p-3">
+                                  <h4 className="text-sm font-semibold text-white mb-2">
+                                    Shipping Address
+                                  </h4>
+                                  {order.shipping_addresses.map(
+                                    (address, idx) => (
+                                      <div key={idx} className="text-sm">
+                                        <p className="text-white">
+                                          {address.first_name}{" "}
+                                          {address.last_name}
+                                        </p>
+                                        <p className="text-white/60">
+                                          {address.street_1}
+                                        </p>
+                                        {address.street_2 && (
+                                          <p className="text-white/60">
+                                            {address.street_2}
+                                          </p>
+                                        )}
+                                        <p className="text-white/60">
+                                          {address.city}, {address.state_or_province}{" "}
+                                          {address.postal_code}
+                                        </p>
+                                        <p className="text-white/60">
+                                          {address.country_iso2}
+                                        </p>
+                                        {address.phone && (
+                                          <p className="text-white/60 mt-1">
+                                            {address.phone}
+                                          </p>
+                                        )}
+                                      </div>
+                                    ),
+                                  )}
+                                </div>
+                              )}
                           </div>
                         )}
                       </div>
