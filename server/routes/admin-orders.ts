@@ -80,3 +80,73 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
     res.status(500).json({ error: message });
   }
 };
+
+/**
+ * Update order status and/or tracking information
+ * Allows admins to change order status and add tracking details
+ */
+export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status, tracking_number, tracking_carrier, tracking_url } = req.body;
+
+    if (!orderId) {
+      return res.status(400).json({ error: "Order ID is required" });
+    }
+
+    const updateData: any = {};
+    const validStatuses = ["pending", "processing", "printing", "preparing for shipping", "in transit", "shipped", "delivered", "cancelled"];
+
+    // Validate status if provided
+    if (status) {
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({
+          error: `Invalid status. Valid statuses are: ${validStatuses.join(", ")}`
+        });
+      }
+      updateData.status = status;
+    }
+
+    // Add tracking information if provided
+    if (tracking_number !== undefined) {
+      updateData.tracking_number = tracking_number || null;
+    }
+    if (tracking_carrier !== undefined) {
+      updateData.tracking_carrier = tracking_carrier || null;
+    }
+    if (tracking_url !== undefined) {
+      updateData.tracking_url = tracking_url || null;
+    }
+
+    // If tracking information is provided, set the shipped date
+    if (tracking_number) {
+      updateData.shipped_date = new Date().toISOString();
+    }
+
+    updateData.updated_at = new Date().toISOString();
+
+    // Update the order in Supabase
+    const { data, error } = await supabase
+      .from("orders")
+      .update(updateData)
+      .eq("id", orderId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error updating order:", error);
+      return res.status(500).json({ error: "Failed to update order" });
+    }
+
+    res.json({
+      success: true,
+      message: "Order updated successfully",
+      order: data,
+    });
+  } catch (error) {
+    console.error("Update order status error:", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to update order";
+    res.status(500).json({ error: message });
+  }
+};
