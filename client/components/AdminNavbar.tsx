@@ -245,23 +245,23 @@ export default function AdminNavbar() {
     <nav className="bg-black border-b border-white/10">
       <div className="px-4 sm:px-6 lg:px-8">
         {/* Desktop Navigation */}
-        <div className="hidden md:flex h-16 items-center justify-between">
+        <div className="hidden md:flex h-14 items-center justify-between">
           {/* Main Items */}
-          <div className="flex items-center gap-1 flex-1">
+          <div className="flex items-center gap-0.5 flex-1">
             {mainNavItems.map((item) => (
               <NavItem key={item.label} item={item} />
             ))}
           </div>
 
           {/* Secondary Items */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0.5">
             {secondaryNavItems.map((item) => (
               <NavItem key={item.label} item={item} />
             ))}
           </div>
 
           {/* Settings and Logout */}
-          <div className="flex items-center gap-1 ml-4 pl-4 border-l border-white/10">
+          <div className="flex items-center gap-0.5 ml-3 pl-3 border-l border-white/10">
             <button
               onClick={() => navigate("/admin/settings")}
               className={cn(
