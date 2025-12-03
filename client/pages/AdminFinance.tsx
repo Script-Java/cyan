@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import AdminSidebar from "@/components/AdminSidebar";
-import MobileAdminPanel from "@/components/MobileAdminPanel";
+import AdminNavbar from "@/components/AdminNavbar";
 import {
   DollarSign,
   TrendingUp,
