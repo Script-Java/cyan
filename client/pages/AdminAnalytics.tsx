@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminLayout from "@/components/AdminLayout";
+import Header from "@/components/Header";
+import AdminSidebar from "@/components/AdminSidebar";
+import MobileAdminPanel from "@/components/MobileAdminPanel";
 import {
   BarChart3,
   Users,
