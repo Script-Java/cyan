@@ -67,6 +67,7 @@ export const useStoreCredit = () => {
       setStoreCredit(0);
       console.warn("Store credit fetch error:", error);
     } finally {
+      fetchInProgressRef.current = false;
       setIsLoading(false);
     }
   }, []);
