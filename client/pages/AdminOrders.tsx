@@ -290,14 +290,23 @@ export default function AdminOrders() {
                         {/* Order Details */}
                         {expandedOrderId === order.id && (
                           <div className="px-6 py-4 bg-white/5 border-t border-white/10 space-y-4">
-                            {/* Edit Button */}
-                            <button
-                              onClick={() => setEditingOrderId(order.id)}
-                              className="inline-flex items-center gap-2 px-4 py-2 bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 rounded-lg text-green-300 hover:text-green-200 transition-colors text-sm font-medium"
-                            >
-                              <Edit className="w-4 h-4" />
-                              Edit Status & Tracking
-                            </button>
+                            {/* Action Buttons */}
+                            <div className="flex gap-2 flex-wrap">
+                              <button
+                                onClick={() => setEditingOrderId(order.id)}
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 rounded-lg text-green-300 hover:text-green-200 transition-colors text-sm font-medium"
+                              >
+                                <Edit className="w-4 h-4" />
+                                Edit Status & Tracking
+                              </button>
+                              <button
+                                onClick={() => setShippingLabelOrderId(order.id)}
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 rounded-lg text-blue-300 hover:text-blue-200 transition-colors text-sm font-medium"
+                              >
+                                <Truck className="w-4 h-4" />
+                                Purchase Shipping Label
+                              </button>
+                            </div>
                             {/* Price Breakdown */}
                             <div>
                               <h4 className="text-sm font-semibold text-white mb-3">
