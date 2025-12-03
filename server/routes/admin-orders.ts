@@ -72,6 +72,7 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
       tracking_carrier: order.tracking_carrier,
       tracking_url: order.tracking_url,
       shipped_date: order.shipped_date,
+      shipping_addresses: order.shipping_addresses || [],
       source: "supabase" as const,
       orderItems: (order.order_items || []).map((item: any) => ({
         id: item.id,
