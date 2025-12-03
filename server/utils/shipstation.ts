@@ -114,47 +114,42 @@ export class ShipStationAPI {
   }
 
   async getServices(carrierCode: string): Promise<any[]> {
-    try {
-      console.log("Fetching services for carrier:", carrierCode);
+    // Return services based on carrier
+    const servicesByCarrier: Record<string, any[]> = {
+      usps: [
+        { name: "USPS First Class Mail", code: "usps_first_class_mail" },
+        { name: "USPS Priority Mail", code: "usps_priority_mail" },
+        { name: "USPS Priority Mail Express", code: "usps_priority_mail_express" },
+        { name: "USPS Media Mail", code: "usps_media_mail" },
+        { name: "USPS Parcel Select", code: "usps_parcel_select" },
+      ],
+      ups: [
+        { name: "UPS Ground", code: "ups_ground" },
+        { name: "UPS 3 Day Select", code: "ups_3_day_select" },
+        { name: "UPS 2nd Day Air", code: "ups_2nd_day_air" },
+        { name: "UPS Next Day Air", code: "ups_next_day_air" },
+        { name: "UPS Next Day Air Saver", code: "ups_next_day_air_saver" },
+      ],
+      fedex: [
+        { name: "FedEx Ground", code: "fedex_ground" },
+        { name: "FedEx Home Delivery", code: "fedex_home_delivery" },
+        { name: "FedEx 2Day", code: "fedex_2day" },
+        { name: "FedEx Overnight", code: "fedex_overnight" },
+        { name: "FedEx Priority Overnight", code: "fedex_priority_overnight" },
+      ],
+      dhl_express: [
+        { name: "DHL Express 12:00", code: "dhl_express_12_00" },
+        { name: "DHL Express Worldwide", code: "dhl_express_worldwide" },
+      ],
+      ontrac: [
+        { name: "OnTrac Ground", code: "ontrac_ground" },
+        { name: "OnTrac Plus", code: "ontrac_plus" },
+      ],
+    };
 
-      const response = await fetch(
-        `${this.apiUrl}/carriers/${carrierCode}/services`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: this.getAuthHeader(),
-            "Content-Type": "application/json",
-            "User-Agent": "Builder.io ShipStation Integration",
-          },
-        }
-      );
-
-      console.log("Services Response:", {
-        status: response.status,
-        statusText: response.statusText,
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("ShipStation Error:", {
-          status: response.status,
-          body: errorText.substring(0, 500),
-        });
-
-        if (response.status === 401) {
-          throw new Error(`Unauthorized: Invalid ShipStation API key.`);
-        }
-
-        throw new Error(`Failed to fetch services: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("Services fetched successfully:", data?.length || 0);
-      return data;
-    } catch (error) {
-      console.error("Failed to get services:", error);
-      throw error;
-    }
+    const services = servicesByCarrier[carrierCode] || [];
+    console.log(`Returning ${services.length} services for carrier: ${carrierCode}`);
+    return services;
   }
 
   async getRates(payload: any): Promise<any[]> {
