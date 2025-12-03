@@ -310,22 +310,22 @@ export default function Products() {
 
           {/* Category Filter Indicator */}
           {selectedCategory && (
-            <div className="mb-8 flex items-center justify-between">
+            <div className="mb-6 flex items-center justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-bold text-white">
+                <h2 className="text-xl font-bold text-white">
                   {categories.find((c) => c.id === selectedCategory)?.name ||
                     "Products"}
                 </h2>
-                <p className="text-white/60 mt-1">
+                <p className="text-white/60 mt-0.5 text-xs">
                   {filteredProducts.length} product
                   {filteredProducts.length !== 1 ? "s" : ""} available
                 </p>
               </div>
               <Link
                 to="/products"
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg transition-colors text-sm font-medium"
+                className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg transition-colors text-xs font-medium whitespace-nowrap"
               >
-                View All Categories
+                View All
               </Link>
             </div>
           )}
