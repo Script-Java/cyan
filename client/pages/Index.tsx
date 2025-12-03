@@ -3,33 +3,6 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles, Zap } from "lucide-react";
 
 export default function Index() {
-  const stickerTypes = [
-    {
-      name: "Vinyl Stickers",
-      description: "Durable, waterproof stickers",
-      emoji: "✨",
-      color: "from-green-400 to-emerald-600",
-    },
-    {
-      name: "Holographic Stickers",
-      description: "Shimmering iridescent finish",
-      emoji: "🌈",
-      color: "from-purple-400 to-pink-600",
-    },
-    {
-      name: "Chrome Stickers",
-      description: "Metallic mirror effect",
-      emoji: "💎",
-      color: "from-gray-200 to-gray-400",
-    },
-    {
-      name: "Glitter Stickers",
-      description: "Sparkly, eye-catching designs",
-      emoji: "⭐",
-      color: "from-blue-400 to-cyan-600",
-    },
-  ];
-
   const features = [
     {
       icon: "🎨",
