@@ -21,6 +21,10 @@ interface ProductData {
 const PRODUCT_ID_MAP: Record<string, number> = {
   "custom-stickers": 112,
   "vinyl-stickers": 112,
+  "die-cut-stickers": 112,
+  "holographic-stickers": 112,
+  "chrome-stickers": 112,
+  "glitter-stickers": 112,
 };
 
 // Mock product data for testing (non-BigCommerce products)
