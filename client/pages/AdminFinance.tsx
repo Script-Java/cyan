@@ -123,10 +123,8 @@ export default function AdminFinance() {
   }
 
   return (
-    <>
-      <Header />
-      <AdminNavbar />
-      <main className="min-h-screen bg-black text-white pb-20 md:pb-0">
+    <AdminLayout>
+      <div className="w-full bg-black text-white pb-20 md:pb-0">
         <div className="pt-4">
           {/* Header Section */}
           <div className="border-b border-white/10 pb-4">
@@ -296,7 +294,7 @@ export default function AdminFinance() {
             </div>
           </div>
         </div>
-      </main>
-    </>
+      </div>
+    </AdminLayout>
   );
 }
