@@ -196,38 +196,38 @@ export default function AdminSettings() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-white/80 mb-2">
                         Time Zone
                       </label>
                       <select
                         name="timeZone"
                         value={settings.timeZone}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
                       >
-                        <option>UTC</option>
-                        <option>EST</option>
-                        <option>CST</option>
-                        <option>MST</option>
-                        <option>PST</option>
+                        <option className="bg-black">UTC</option>
+                        <option className="bg-black">EST</option>
+                        <option className="bg-black">CST</option>
+                        <option className="bg-black">MST</option>
+                        <option className="bg-black">PST</option>
                       </select>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-white/80 mb-2">
                         Currency
                       </label>
                       <select
                         name="currency"
                         value={settings.currency}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
                       >
-                        <option>USD</option>
-                        <option>EUR</option>
-                        <option>GBP</option>
-                        <option>CAD</option>
-                        <option>AUD</option>
+                        <option className="bg-black">USD</option>
+                        <option className="bg-black">EUR</option>
+                        <option className="bg-black">GBP</option>
+                        <option className="bg-black">CAD</option>
+                        <option className="bg-black">AUD</option>
                       </select>
                     </div>
                   </div>
