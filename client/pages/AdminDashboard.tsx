@@ -128,10 +128,8 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <>
-      <Header />
-      <AdminNavbar />
-      <main className="min-h-screen bg-black text-white">
+    <AdminLayout>
+      <div className="w-full">
         {/* Header Section */}
         <div className="border-b border-white/10 bg-black">
           <div className="px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
@@ -545,7 +543,7 @@ export default function AdminDashboard() {
             </div>
           )}
         </div>
-      </main>
-    </>
+      </div>
+    </AdminLayout>
   );
 }
