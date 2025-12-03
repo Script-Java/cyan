@@ -335,14 +335,14 @@ export default function Products() {
           )}
 
           {/* CTA Section */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-12 text-center text-white">
+          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-lg p-12 text-center text-white">
             <h2 className="text-3xl font-bold mb-4">
               Can't find what you're looking for?
             </h2>
-            <p className="text-xl mb-8 opacity-90">
+            <p className="text-xl mb-8 text-white/80">
               Contact our team for custom bulk orders and special requests.
             </p>
-            <button className="px-8 py-3 bg-white text-blue-600 rounded-lg font-bold hover:bg-blue-50 transition-all">
+            <button className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-all">
               Get a Quote
             </button>
           </div>
