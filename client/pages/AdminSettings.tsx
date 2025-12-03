@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
-import AdminSidebar from "@/components/AdminSidebar";
-import MobileAdminPanel from "@/components/MobileAdminPanel";
+import AdminLayout from "@/components/AdminLayout";
+import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import { Settings, Save, AlertCircle } from "lucide-react";
 
 export default function AdminSettings() {
@@ -63,51 +62,44 @@ export default function AdminSettings() {
 
   if (isLoading) {
     return (
-      <>
-        <Header />
-        <div className="flex">
-          <div className="hidden md:block">
-            <AdminSidebar />
-          </div>
-          <main className="flex-1 md:ml-64 min-h-screen bg-gray-50 flex items-center justify-center pb-20 md:pb-0">
-            <div className="text-gray-600">Loading settings...</div>
-          </main>
-
-          {/* Mobile Admin Panel */}
-          <MobileAdminPanel />
+      <AdminLayout>
+        <div className="w-full min-h-screen bg-gray-50 flex items-center justify-center pb-20 md:pb-0">
+          <div className="text-gray-600">Loading settings...</div>
         </div>
-      </>
+      </AdminLayout>
     );
   }
 
   return (
-    <>
-      <Header />
-      <div className="flex">
-        <div className="hidden md:block">
-          <AdminSidebar />
-        </div>
-        <main className="flex-1 md:ml-64 min-h-screen bg-gray-50 pb-20 md:pb-0">
-          <div className="pt-6">
-            {/* Header Section */}
-            <div className="bg-white border-b border-gray-200">
-              <div className="px-6 lg:px-8 py-8">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                      <Settings className="w-8 h-8 text-blue-600" />
-                      Store Settings
-                    </h1>
-                    <p className="text-gray-600 mt-2">
-                      Configure your store details and preferences
-                    </p>
-                  </div>
-                </div>
+    <AdminLayout>
+      <div className="w-full min-h-screen bg-gray-50 pb-20 md:pb-0">
+        {/* Header Section */}
+        <div className="bg-white border-b border-gray-200">
+          <div className="px-6 lg:px-8 py-8">
+            <div className="flex items-start justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                  <Settings className="w-8 h-8 text-blue-600" />
+                  Store Settings
+                </h1>
+                <p className="text-gray-600 mt-2">
+                  Configure your store details and preferences
+                </p>
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Main Content */}
-            <div className="px-6 lg:px-8 py-8">
+        {/* Navigation Grid - Desktop/Tablet Only */}
+        <div className="hidden md:block border-b border-gray-200 bg-white/50 backdrop-blur-sm">
+          <div className="px-6 lg:px-8 py-6 sm:py-8">
+            <h2 className="text-sm font-semibold text-gray-600 mb-4">Quick Navigation</h2>
+            <AdminNavigationGrid />
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <main className="px-6 lg:px-8 py-8">
               <div className="space-y-6">
                 {/* Success Message */}
                 {saveSuccess && (
@@ -305,14 +297,9 @@ export default function AdminSettings() {
                     {isSaving ? "Saving..." : "Save Settings"}
                   </button>
                 </div>
-              </div>
-            </div>
           </div>
         </main>
-
-        {/* Mobile Admin Panel */}
-        <MobileAdminPanel />
       </div>
-    </>
+    </AdminLayout>
   );
 }
