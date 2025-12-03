@@ -9,6 +9,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
+import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
