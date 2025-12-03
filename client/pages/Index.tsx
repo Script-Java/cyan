@@ -74,25 +74,39 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Features Section */}
+        {/* Benefits Section */}
         <section className="py-16 sm:py-24 bg-black border-t border-white/10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Why Choose StickerHub?
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {features.map((feature, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-4xl mb-4">{feature.icon}</div>
-                  <h3 className="text-xl font-bold text-white mb-2">
-                    {feature.title}
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                <div className="flex items-center gap-4">
+                  <div className="text-4xl flex-shrink-0">📦</div>
+                  <h3 className="font-semibold text-white">
+                    <span className="block">Free ground shipping</span>
+                    <span className="block text-white/60">on all orders</span>
                   </h3>
-                  <p className="text-white/60">{feature.description}</p>
                 </div>
-              ))}
+              </div>
+
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                <div className="flex items-center gap-4">
+                  <div className="text-4xl flex-shrink-0 animate-spin" style={{ animationDuration: '4s' }}>🌍</div>
+                  <h3 className="font-semibold text-white">
+                    <span className="block">Out for this world quality</span>
+                    <span className="block text-white/60">, made in the US</span>
+                  </h3>
+                </div>
+              </div>
+
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                <div className="flex items-center gap-4">
+                  <div className="text-4xl flex-shrink-0">🖼️</div>
+                  <h3 className="font-semibold text-white">
+                    <span className="block">Free Online Proof</span>
+                    <span className="block text-white/60">with all orders</span>
+                  </h3>
+                </div>
+              </div>
             </div>
           </div>
         </section>
