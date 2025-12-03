@@ -153,26 +153,10 @@ export class ShipStationAPI {
   }
 
   async getRates(payload: any): Promise<any[]> {
-    try {
-      const response = await fetch(`${this.apiUrl}/shipments/getrates`, {
-        method: "POST",
-        headers: {
-          Authorization: this.getAuthHeader(),
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch rates: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Failed to get rates:", error);
-      throw error;
-    }
+    // For now, return empty rates array
+    // In a full implementation, this would call ShipStation v2 rates API
+    console.log("Rates requested but returning empty array");
+    return [];
   }
 }
 
