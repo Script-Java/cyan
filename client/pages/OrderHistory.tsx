@@ -156,12 +156,22 @@ export default function OrderHistory() {
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
+      case "pending":
+        return "text-orange-600 bg-orange-50";
+      case "processing":
+        return "text-yellow-600 bg-yellow-50";
+      case "printing":
+        return "text-purple-600 bg-purple-50";
+      case "preparing for shipping":
+        return "text-indigo-600 bg-indigo-50";
+      case "in transit":
+        return "text-blue-600 bg-blue-50";
+      case "shipped":
+        return "text-emerald-600 bg-emerald-50";
+      case "delivered":
+        return "text-cyan-600 bg-cyan-50";
       case "completed":
         return "text-green-600 bg-green-50";
-      case "pending":
-        return "text-yellow-600 bg-yellow-50";
-      case "shipped":
-        return "text-blue-600 bg-blue-50";
       case "cancelled":
         return "text-red-600 bg-red-50";
       default:
