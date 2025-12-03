@@ -94,9 +94,10 @@ export default function ShippingAddressEditor({
         },
       );
 
+      const responseData = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to update shipping address");
+        throw new Error(responseData.error || "Failed to update shipping address");
       }
 
       setSuccess(true);
