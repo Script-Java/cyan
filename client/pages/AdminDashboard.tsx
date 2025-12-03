@@ -207,8 +207,8 @@ export default function AdminDashboard() {
                       </thead>
                       <tbody>
                         {pendingOrders.map((order) => (
-                          <div key={order.id}>
-                            <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                          <>
+                            <tr key={order.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                               <td className="px-2 sm:px-3 py-2 font-semibold text-white whitespace-nowrap">
                                 #{order.id}
                               </td>
@@ -373,7 +373,7 @@ export default function AdminDashboard() {
                                 </td>
                               </tr>
                             )}
-                          </div>
+                          </>
                         ))}
                       </tbody>
                     </table>
