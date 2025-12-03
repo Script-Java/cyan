@@ -866,7 +866,7 @@ export default function AdminProofs() {
                                 <td className="px-2 sm:px-4 py-3 sm:py-4">
                                   <button
                                     onClick={() => handleSelectOrder(order)}
-                                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-600/20 text-green-300 hover:bg-green-600/30 transition-colors font-medium text-xs border border-green-600/30"
+                                    className="inline-flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-green-600/20 text-green-300 hover:bg-green-600/30 transition-colors font-medium text-xs border border-green-600/30 whitespace-nowrap"
                                   >
                                     Select
                                   </button>
