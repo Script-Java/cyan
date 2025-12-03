@@ -507,6 +507,30 @@ export default function AdminOrders() {
           )}
         </div>
       </main>
+
+      {/* Order Status Editor Modal */}
+      {editingOrderId !== null && (
+        <OrderStatusEditor
+          orderId={editingOrderId}
+          currentStatus={
+            pendingOrders.find((o) => o.id === editingOrderId)?.status || ""
+          }
+          currentTrackingNumber={
+            pendingOrders.find((o) => o.id === editingOrderId)?.tracking_number
+          }
+          currentTrackingCarrier={
+            pendingOrders.find((o) => o.id === editingOrderId)?.tracking_carrier
+          }
+          currentTrackingUrl={
+            pendingOrders.find((o) => o.id === editingOrderId)?.tracking_url
+          }
+          onClose={() => setEditingOrderId(null)}
+          onSuccess={() => {
+            setEditingOrderId(null);
+            fetchOrders();
+          }}
+        />
+      )}
     </AdminLayout>
   );
 }
