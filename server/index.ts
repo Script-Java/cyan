@@ -113,6 +113,12 @@ import {
   handleDeleteAdminProduct,
   handleGetPublicProduct,
 } from "./routes/admin-products";
+import {
+  handleCreateLabel,
+  handleGetRates,
+  handleGetCarriers,
+  handleGetServices,
+} from "./routes/shipping";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
