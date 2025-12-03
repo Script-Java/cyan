@@ -97,7 +97,7 @@ export default function Index() {
 
         {/* CTA Section */}
         <section className="py-16 sm:py-24 bg-black">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative" style={{ boxShadow: "0 0 60px rgba(0, 0, 0, 0.5)" }}>
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative rounded-3xl border border-white/10" style={{ boxShadow: "0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 1px rgba(255, 255, 255, 0.1)" }}>
             <div className="absolute inset-0 bg-white/5 rounded-2xl" style={{ opacity: 0.2 }}>
               <div style={{ position: "absolute", top: "24px", left: "32px", fontSize: "18px" }}>⭐</div>
               <div style={{ position: "absolute", top: "16px", left: "25%", fontSize: "14px", color: "rgba(255, 255, 255, 0.8)" }}>✨</div>
