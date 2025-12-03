@@ -54,6 +54,7 @@ export default function AdminOrders() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
   const [editingOrderId, setEditingOrderId] = useState<number | null>(null);
+  const [shippingLabelOrderId, setShippingLabelOrderId] = useState<number | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
