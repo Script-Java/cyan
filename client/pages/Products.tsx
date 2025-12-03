@@ -214,6 +214,58 @@ export default function Products() {
     return `$${(product.price || 0).toFixed(2)}`;
   };
 
+  const filteredProducts = useMemo(() => {
+    if (!selectedCategory) {
+      return products;
+    }
+    return products.filter((product) => {
+      const categoryMap: Record<string, string[]> = {
+        vinyl: ["vinyl", "vinyl-stickers"],
+        holographic: ["holographic", "holographic-stickers"],
+        glitter: ["glitter", "glitter-stickers"],
+        chrome: ["chrome", "chrome-stickers"],
+        clear: ["clear", "clear-stickers"],
+        sheets: ["sheet", "sticker-sheets"],
+      };
+      const categoryIds = categoryMap[selectedCategory] || [];
+      return (
+        categoryIds.some(
+          (cat) =>
+            product.id?.toString().toLowerCase().includes(cat) ||
+            product.name?.toLowerCase().includes(selectedCategory) ||
+            product.category?.toLowerCase().includes(selectedCategory)
+        ) ||
+        (selectedCategory === "vinyl" &&
+          product.id?.toString().includes("vinyl")) ||
+        (selectedCategory === "holographic" &&
+          product.id?.toString().includes("holographic")) ||
+        (selectedCategory === "glitter" && product.id?.toString().includes("glitter")) ||
+        (selectedCategory === "chrome" && product.id?.toString().includes("chrome")) ||
+        (selectedCategory === "clear" && product.id?.toString().includes("clear")) ||
+        (selectedCategory === "sheets" && product.id?.toString().includes("sheet"))
+      );
+    });
+  }, [products, selectedCategory]);
+
+  const getCategoryItemCount = (categoryId: string): number => {
+    const categoryMap: Record<string, string[]> = {
+      vinyl: ["vinyl", "vinyl-stickers"],
+      holographic: ["holographic", "holographic-stickers"],
+      glitter: ["glitter", "glitter-stickers"],
+      chrome: ["chrome", "chrome-stickers"],
+      clear: ["clear", "clear-stickers"],
+      sheets: ["sheet", "sticker-sheets"],
+    };
+    const categoryIds = categoryMap[categoryId] || [];
+    return products.filter((product) =>
+      categoryIds.some(
+        (cat) =>
+          product.id?.toString().toLowerCase().includes(cat) ||
+          product.name?.toLowerCase().includes(categoryId)
+      )
+    ).length;
+  };
+
   return (
     <>
       <Header />
