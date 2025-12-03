@@ -97,7 +97,7 @@ import {
   handleGetAdminProofs,
   handleAddAdminProofComment,
 } from "./routes/proofs";
-import { handleGetAdminPendingOrders, handleUpdateOrderStatus } from "./routes/admin-orders";
+import { handleGetAdminPendingOrders, handleUpdateOrderStatus, handleGetAllAdminOrders } from "./routes/admin-orders";
 import {
   handleGetAllCustomers,
   handleGetCustomerDetails,
