@@ -51,6 +51,7 @@ export default function AdminDashboard() {
   const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
