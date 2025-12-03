@@ -384,29 +384,29 @@ export default function Products() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     {product.badge && (
-                      <div className="absolute top-3 right-3 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                      <div className="absolute top-2 right-2 bg-blue-600 text-white px-2 py-0.5 rounded-full text-xs font-bold">
                         {product.badge}
                       </div>
                     )}
                   </div>
 
                   {/* Product Info */}
-                  <div className="p-4 flex flex-col flex-grow">
-                    <h3 className="font-bold text-white text-lg mb-2 group-hover:text-blue-400 transition-colors line-clamp-2">
+                  <div className="p-3 flex flex-col flex-grow">
+                    <h3 className="font-bold text-white text-sm mb-1 group-hover:text-blue-400 transition-colors line-clamp-2">
                       {product.name}
                     </h3>
 
-                    <p className="text-sm text-white/60 mb-4 flex-grow line-clamp-2">
+                    <p className="text-xs text-white/60 mb-2 flex-grow line-clamp-2">
                       {product.description}
                     </p>
 
                     {/* Rating */}
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="flex gap-1">
+                    <div className="flex items-center gap-1 mb-2">
+                      <div className="flex gap-0.5">
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`w-3.5 h-3.5 ${
+                            className={`w-3 h-3 ${
                               i < Math.floor(product.rating || 0)
                                 ? "fill-yellow-400 text-yellow-400"
                                 : "text-white/20"
@@ -420,9 +420,9 @@ export default function Products() {
                     </div>
 
                     {/* Price */}
-                    <div className="mb-4">
-                      <span className="text-sm text-white/60">from</span>
-                      <p className="text-2xl font-bold text-white">
+                    <div className="mb-2">
+                      <span className="text-xs text-white/60">from</span>
+                      <p className="text-lg font-bold text-white">
                         {getPriceDisplay(product)}
                       </p>
                     </div>
@@ -435,11 +435,11 @@ export default function Products() {
                             expandedProduct === product.id ? null : product.id,
                           )
                         }
-                        className="mb-4 flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors"
+                        className="mb-2 flex items-center gap-1 text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors"
                       >
                         View {product.variations.length} Options
                         <ChevronDown
-                          className={`w-4 h-4 transition-transform ${
+                          className={`w-3 h-3 transition-transform ${
                             expandedProduct === product.id ? "rotate-180" : ""
                           }`}
                         />
@@ -450,9 +450,9 @@ export default function Products() {
                   {/* CTA Button */}
                   <Link
                     to={`/product/${product.id}`}
-                    className="mx-4 mb-4 py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-300 text-center flex items-center justify-center gap-2"
+                    className="mx-3 mb-3 py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-300 text-center flex items-center justify-center gap-1 text-xs"
                   >
-                    <ShoppingCart className="w-4 h-4" />
+                    <ShoppingCart className="w-3 h-3" />
                     Add to Cart
                   </Link>
 
