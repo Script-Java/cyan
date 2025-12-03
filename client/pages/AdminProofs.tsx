@@ -423,6 +423,14 @@ export default function AdminProofs() {
             </div>
           </div>
 
+          {/* Navigation Grid - Desktop/Tablet Only */}
+          <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
+            <div className="px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
+              <h2 className="text-sm font-semibold text-white/80 mb-4">Quick Navigation</h2>
+              <AdminNavigationGrid />
+            </div>
+          </div>
+
           {/* Pending Orders Section */}
           {pendingOrders.length > 0 && !showSendForm && (
             <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg sm:rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
