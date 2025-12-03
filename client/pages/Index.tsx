@@ -52,7 +52,7 @@ export default function Index() {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-16 sm:py-24 bg-black border-t border-white/10">
+        <section className="py-16 sm:py-24 bg-black">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
@@ -89,7 +89,7 @@ export default function Index() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 sm:py-24 bg-black border-t border-white/10">
+        <section className="py-16 sm:py-24 bg-black">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
               Ready to Create?
@@ -108,7 +108,7 @@ export default function Index() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-black text-white/60 py-12 border-t border-white/10">
+        <footer className="bg-black text-white/60 py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
               <div>
@@ -212,7 +212,7 @@ export default function Index() {
                 </ul>
               </div>
             </div>
-            <div className="border-t border-white/10 pt-8 text-center text-sm">
+            <div className="pt-8 text-center text-sm">
               <p>&copy; 2024 StickerHub. All rights reserved.</p>
             </div>
           </div>
