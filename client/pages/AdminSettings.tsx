@@ -273,7 +273,7 @@ export default function AdminSettings() {
                         onChange={handleInputChange}
                         step="0.01"
                         min="0"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
                         placeholder="5.00"
                       />
                     </div>
@@ -281,17 +281,17 @@ export default function AdminSettings() {
                 </div>
 
                 {/* Save Button */}
-                <div className="flex justify-end gap-3">
+                <div className="flex justify-end gap-3 pt-4">
                   <button
                     onClick={() => navigate("/admin")}
-                    className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                    className="px-6 py-2 border border-white/20 text-white/80 hover:text-white hover:border-white/40 rounded-lg transition-colors font-medium"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSaveSettings}
                     disabled={isSaving}
-                    className="inline-flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg transition-colors font-medium"
+                    className="inline-flex items-center gap-2 px-6 py-2 bg-green-600 hover:bg-green-700 disabled:bg-white/10 text-white rounded-lg transition-colors font-medium"
                   >
                     <Save className="w-4 h-4" />
                     {isSaving ? "Saving..." : "Save Settings"}
