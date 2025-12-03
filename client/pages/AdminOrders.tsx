@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import AdminSidebar from "@/components/AdminSidebar";
@@ -226,9 +226,8 @@ export default function AdminOrders() {
                           </thead>
                           <tbody>
                             {filteredOrders.map((order) => (
-                              <>
+                              <Fragment key={order.id}>
                                 <tr
-                                  key={order.id}
                                   className="border-b border-white/10 hover:bg-white/5 transition-colors"
                                 >
                                   <td className="px-4 sm:px-6 py-4 font-semibold text-white whitespace-nowrap">
@@ -457,7 +456,7 @@ export default function AdminOrders() {
                                     </td>
                                   </tr>
                                 )}
-                              </>
+                              </Fragment>
                             ))}
                           </tbody>
                         </table>
