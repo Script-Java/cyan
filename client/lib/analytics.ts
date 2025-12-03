@@ -51,9 +51,7 @@ function getCountry(): string | undefined {
 }
 
 // Main tracking function
-export async function trackEvent(
-  event: TrackEventPayload,
-): Promise<void> {
+export async function trackEvent(event: TrackEventPayload): Promise<void> {
   try {
     const payload: TrackEventPayload = {
       ...event,
@@ -96,7 +94,10 @@ export function trackPageView(): void {
 }
 
 // Track click event
-export function trackClick(elementName: string, metadata?: Record<string, any>): void {
+export function trackClick(
+  elementName: string,
+  metadata?: Record<string, any>,
+): void {
   trackEvent({
     event_type: "click",
     event_name: `Clicked ${elementName}`,
@@ -139,10 +140,7 @@ export function trackCartAction(
 }
 
 // Track design action
-export function trackDesignAction(
-  action: string,
-  designId?: number,
-): void {
+export function trackDesignAction(action: string, designId?: number): void {
   trackEvent({
     event_type: "design_action",
     event_name: `Design ${action}`,

@@ -37,7 +37,12 @@ interface AnalyticsData {
     other: number;
   };
   topPages: Array<{ path: string; views: number }>;
-  topProducts: Array<{ id: number; name: string; sales: number; revenue: number }>;
+  topProducts: Array<{
+    id: number;
+    name: string;
+    sales: number;
+    revenue: number;
+  }>;
   topDesigns: Array<{ id: number; name: string; uses: number }>;
   revenueByDay: Array<{ date: string; revenue: number; orders: number }>;
   customerMetrics: {
@@ -61,7 +66,13 @@ export default function AdminAnalytics() {
     conversionRate: 0,
     avgOrderValue: 0,
     devices: { mobile: 0, desktop: 0, tablet: 0 },
-    trafficSources: { direct: 0, google: 0, facebook: 0, instagram: 0, other: 0 },
+    trafficSources: {
+      direct: 0,
+      google: 0,
+      facebook: 0,
+      instagram: 0,
+      other: 0,
+    },
     topPages: [],
     topProducts: [],
     topDesigns: [],
@@ -227,7 +238,9 @@ export default function AdminAnalytics() {
                   </p>
                   <div className="flex items-center gap-1 mt-2 text-blue-400 text-xs font-semibold">
                     <ArrowUpRight className="w-3 h-3" />
-                    {analytics.avgOrderValue > 0 ? `Avg $${analytics.avgOrderValue.toFixed(2)}` : "N/A"}
+                    {analytics.avgOrderValue > 0
+                      ? `Avg $${analytics.avgOrderValue.toFixed(2)}`
+                      : "N/A"}
                   </div>
                 </div>
                 <div className="p-2 bg-blue-500/20 rounded-lg">
@@ -269,7 +282,8 @@ export default function AdminAnalytics() {
                   </p>
                   <div className="flex items-center gap-1 mt-2 text-orange-400 text-xs font-semibold">
                     <ArrowUpRight className="w-3 h-3" />
-                    {analytics.customerMetrics.newCustomersThisMonth} new this month
+                    {analytics.customerMetrics.newCustomersThisMonth} new this
+                    month
                   </div>
                 </div>
                 <div className="p-2 bg-orange-500/20 rounded-lg">
@@ -300,7 +314,9 @@ export default function AdminAnalytics() {
                     <div
                       className="bg-green-500 h-full"
                       style={{
-                        width: Math.min((analytics.activeUsers / 100) * 100, 100) + "%",
+                        width:
+                          Math.min((analytics.activeUsers / 100) * 100, 100) +
+                          "%",
                       }}
                     />
                   </div>
@@ -318,7 +334,11 @@ export default function AdminAnalytics() {
                     <div
                       className="bg-blue-500 h-full"
                       style={{
-                        width: Math.min((analytics.totalPageViews / 5000) * 100, 100) + "%",
+                        width:
+                          Math.min(
+                            (analytics.totalPageViews / 5000) * 100,
+                            100,
+                          ) + "%",
                       }}
                     />
                   </div>
@@ -333,7 +353,9 @@ export default function AdminAnalytics() {
               </h2>
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-2 bg-white/5 rounded">
-                  <span className="text-white/80 text-xs">Repeat Customers</span>
+                  <span className="text-white/80 text-xs">
+                    Repeat Customers
+                  </span>
                   <span className="text-white font-bold">
                     {analytics.customerMetrics.repeatCustomers}
                   </span>
@@ -343,7 +365,10 @@ export default function AdminAnalytics() {
                     Avg Lifetime Value
                   </span>
                   <span className="text-white font-bold">
-                    ${analytics.customerMetrics.avgCustomerLifetimeValue.toFixed(2)}
+                    $
+                    {analytics.customerMetrics.avgCustomerLifetimeValue.toFixed(
+                      2,
+                    )}
                   </span>
                 </div>
               </div>
@@ -386,7 +411,10 @@ export default function AdminAnalytics() {
                 const percentage =
                   totalDevices > 0 ? (device.value / totalDevices) * 100 : 0;
                 return (
-                  <div key={idx} className="bg-white/5 border border-white/10 rounded p-3">
+                  <div
+                    key={idx}
+                    className="bg-white/5 border border-white/10 rounded p-3"
+                  >
                     <div className="flex items-center justify-between mb-2">
                       <div>
                         <p className="text-white/60 text-xs">{device.name}</p>
@@ -421,7 +449,10 @@ export default function AdminAnalytics() {
                 const percentage =
                   totalTraffic > 0 ? (source.value / totalTraffic) * 100 : 0;
                 return (
-                  <div key={idx} className="bg-white/5 rounded border border-white/10 p-3">
+                  <div
+                    key={idx}
+                    className="bg-white/5 rounded border border-white/10 p-3"
+                  >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <span className="text-lg">{source.icon}</span>
@@ -484,10 +515,15 @@ export default function AdminAnalytics() {
           {/* Top Pages */}
           {analytics.topPages.length > 0 && (
             <div className="bg-white/5 border border-white/10 rounded-lg p-4">
-              <h2 className="text-sm font-semibold text-white mb-4">Top Pages</h2>
+              <h2 className="text-sm font-semibold text-white mb-4">
+                Top Pages
+              </h2>
               <div className="space-y-2">
                 {analytics.topPages.map((page, idx) => (
-                  <div key={idx} className="bg-white/5 rounded p-3 flex items-center justify-between">
+                  <div
+                    key={idx}
+                    className="bg-white/5 rounded p-3 flex items-center justify-between"
+                  >
                     <p className="text-white text-sm">{page.path}</p>
                     <p className="text-white/60 text-xs font-medium">
                       {page.views} views

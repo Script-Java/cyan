@@ -26,7 +26,12 @@ interface AnalyticsData {
     other: number;
   };
   topPages: Array<{ path: string; views: number }>;
-  topProducts: Array<{ id: number; name: string; sales: number; revenue: number }>;
+  topProducts: Array<{
+    id: number;
+    name: string;
+    sales: number;
+    revenue: number;
+  }>;
   topDesigns: Array<{ id: number; name: string; uses: number }>;
   revenueByDay: Array<{ date: string; revenue: number; orders: number }>;
   customerMetrics: {
@@ -48,14 +53,18 @@ export const handleGetAnalytics: RequestHandler = async (req, res) => {
     // Fetch page view events
     const { data: pageViewEvents } = await supabase
       .from("analytics_events")
-      .select("page_path, device_type, referrer, created_at", { count: "exact" })
+      .select("page_path, device_type, referrer, created_at", {
+        count: "exact",
+      })
       .eq("event_type", "page_view")
       .gte("created_at", thirtyDaysAgo.toISOString());
 
     // Fetch orders data
     const { data: orders } = await supabase
       .from("orders")
-      .select("id, total, customer_id, created_at, order_items(product_name, quantity)")
+      .select(
+        "id, total, customer_id, created_at, order_items(product_name, quantity)",
+      )
       .gte("created_at", thirtyDaysAgo.toISOString());
 
     // Fetch customers
@@ -65,34 +74,57 @@ export const handleGetAnalytics: RequestHandler = async (req, res) => {
 
     // Calculate metrics
     const totalPageViews = pageViewEvents?.length || 0;
-    const uniqueUsers = new Set(pageViewEvents?.map((e) => e.page_path) || []).size;
+    const uniqueUsers = new Set(pageViewEvents?.map((e) => e.page_path) || [])
+      .size;
 
-    const totalRevenue = orders?.reduce((sum, order) => sum + (order.total || 0), 0) || 0;
+    const totalRevenue =
+      orders?.reduce((sum, order) => sum + (order.total || 0), 0) || 0;
     const totalOrders = orders?.length || 0;
     const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
-    const conversionRate = totalPageViews > 0 ? (totalOrders / uniqueUsers) * 100 : 0;
+    const conversionRate =
+      totalPageViews > 0 ? (totalOrders / uniqueUsers) * 100 : 0;
 
     // Device breakdown
     const devices = {
-      mobile: pageViewEvents?.filter((e) => e.device_type === "mobile").length || 0,
-      desktop: pageViewEvents?.filter((e) => e.device_type === "desktop").length || 0,
-      tablet: pageViewEvents?.filter((e) => e.device_type === "tablet").length || 0,
+      mobile:
+        pageViewEvents?.filter((e) => e.device_type === "mobile").length || 0,
+      desktop:
+        pageViewEvents?.filter((e) => e.device_type === "desktop").length || 0,
+      tablet:
+        pageViewEvents?.filter((e) => e.device_type === "tablet").length || 0,
     };
 
     // Traffic sources (from referrer)
     const trafficSources = {
       direct:
-        pageViewEvents?.filter((e) => !e.referrer || e.referrer === "direct").length || 0,
-      google: pageViewEvents?.filter((e) => e.referrer?.includes("google")).length || 0,
-      facebook: pageViewEvents?.filter((e) => e.referrer?.includes("facebook")).length || 0,
-      instagram: pageViewEvents?.filter((e) => e.referrer?.includes("instagram")).length || 0,
-      other: pageViewEvents?.filter((e) => e.referrer && !["google", "facebook", "instagram"].some((s) => e.referrer?.includes(s))).length || 0,
+        pageViewEvents?.filter((e) => !e.referrer || e.referrer === "direct")
+          .length || 0,
+      google:
+        pageViewEvents?.filter((e) => e.referrer?.includes("google")).length ||
+        0,
+      facebook:
+        pageViewEvents?.filter((e) => e.referrer?.includes("facebook"))
+          .length || 0,
+      instagram:
+        pageViewEvents?.filter((e) => e.referrer?.includes("instagram"))
+          .length || 0,
+      other:
+        pageViewEvents?.filter(
+          (e) =>
+            e.referrer &&
+            !["google", "facebook", "instagram"].some((s) =>
+              e.referrer?.includes(s),
+            ),
+        ).length || 0,
     };
 
     // Top pages
     const pagePathCounts = new Map<string, number>();
     pageViewEvents?.forEach((event) => {
-      pagePathCounts.set(event.page_path, (pagePathCounts.get(event.page_path) || 0) + 1);
+      pagePathCounts.set(
+        event.page_path,
+        (pagePathCounts.get(event.page_path) || 0) + 1,
+      );
     });
     const topPages = Array.from(pagePathCounts.entries())
       .map(([path, views]) => ({ path, views }))
@@ -100,7 +132,10 @@ export const handleGetAnalytics: RequestHandler = async (req, res) => {
       .slice(0, 5);
 
     // Product sales (from order_items)
-    const productSales = new Map<string, { quantity: number; revenue: number }>();
+    const productSales = new Map<
+      string,
+      { quantity: number; revenue: number }
+    >();
     orders?.forEach((order) => {
       order.order_items?.forEach((item: any) => {
         const key = item.product_name;
@@ -139,12 +174,14 @@ export const handleGetAnalytics: RequestHandler = async (req, res) => {
 
     // Customer metrics
     const newCustomersThisMonth =
-      customers?.filter((c) => new Date(c.created_at) > thirtyDaysAgo).length || 0;
+      customers?.filter((c) => new Date(c.created_at) > thirtyDaysAgo).length ||
+      0;
     const repeatCustomers = new Set(
       orders?.filter((o) => o.customer_id).map((o) => o.customer_id),
     ).size;
     const totalCustomers = customers?.length || 0;
-    const avgCustomerLifetimeValue = totalCustomers > 0 ? totalRevenue / totalCustomers : 0;
+    const avgCustomerLifetimeValue =
+      totalCustomers > 0 ? totalRevenue / totalCustomers : 0;
 
     const analyticsData: AnalyticsData = {
       activeUsers: uniqueUsers,
@@ -163,7 +200,9 @@ export const handleGetAnalytics: RequestHandler = async (req, res) => {
         totalCustomers,
         newCustomersThisMonth,
         repeatCustomers,
-        avgCustomerLifetimeValue: parseFloat(avgCustomerLifetimeValue.toFixed(2)),
+        avgCustomerLifetimeValue: parseFloat(
+          avgCustomerLifetimeValue.toFixed(2),
+        ),
       },
     };
 
@@ -181,7 +220,17 @@ export const handleGetAnalytics: RequestHandler = async (req, res) => {
  */
 export const handleTrackEvent: RequestHandler = async (req, res) => {
   try {
-    const { event_type, event_name, session_id, page_path, referrer, device_type, browser, country, data } = req.body;
+    const {
+      event_type,
+      event_name,
+      session_id,
+      page_path,
+      referrer,
+      device_type,
+      browser,
+      country,
+      data,
+    } = req.body;
     const token = req.headers.authorization?.split("Bearer ")[1];
 
     if (!event_type || !event_name) {
