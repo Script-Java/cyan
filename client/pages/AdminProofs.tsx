@@ -516,9 +516,9 @@ export default function AdminProofs() {
             {/* Send Proof Form */}
             {showSendForm && (
               <div className="backdrop-blur-xl bg-white/5 border border-green-500/30 rounded-lg sm:rounded-2xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
-                <div className="flex justify-between items-start gap-2 mb-6">
-                  <div>
-                    <h3 className="text-lg font-semibold text-white">
+                <div className="flex justify-between items-start gap-3 mb-4 sm:mb-6">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base sm:text-lg font-semibold text-white">
                       Send Proof to Customer
                     </h3>
                     <p className="text-xs text-white/50 mt-1">
@@ -532,7 +532,7 @@ export default function AdminProofs() {
                     <X className="w-5 h-5" />
                   </button>
                 </div>
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-purple-300 mb-2 uppercase tracking-wider">
                       Order ID * {orderId && `(#${orderId})`}
