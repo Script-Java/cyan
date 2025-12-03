@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
-import AdminNavbar from "@/components/AdminNavbar";
+import AdminLayout from "@/components/AdminLayout";
 import {
   Package,
   Calendar,
@@ -122,10 +121,8 @@ export default function AdminOrders() {
   };
 
   return (
-    <>
-      <Header />
-      <AdminNavbar />
-      <main className="min-h-screen bg-black text-white pb-20 md:pb-0">
+    <AdminLayout>
+      <div className="w-full pb-20 md:pb-0">
         {/* Header Section */}
         <div className="border-b border-white/10">
           <div className="px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
@@ -486,7 +483,7 @@ export default function AdminOrders() {
             </div>
           )}
         </div>
-      </main>
-    </>
+      </div>
+    </AdminLayout>
   );
 }
