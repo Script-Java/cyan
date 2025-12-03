@@ -271,6 +271,14 @@ export default function AdminOrders() {
                         {/* Order Details */}
                         {expandedOrderId === order.id && (
                           <div className="px-6 py-4 bg-white/5 border-t border-white/10 space-y-4">
+                            {/* Edit Button */}
+                            <button
+                              onClick={() => setEditingOrderId(order.id)}
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 rounded-lg text-green-300 hover:text-green-200 transition-colors text-sm font-medium"
+                            >
+                              <Edit className="w-4 h-4" />
+                              Edit Status & Tracking
+                            </button>
                             {/* Price Breakdown */}
                             <div>
                               <h4 className="text-sm font-semibold text-white mb-3">
