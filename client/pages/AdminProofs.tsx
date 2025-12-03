@@ -438,7 +438,7 @@ export default function AdminProofs() {
 
             {/* Pending Orders Section */}
             {pendingOrders.length > 0 && !showSendForm && (
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-8">
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg sm:rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
                 <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-3">
                   <Package className="w-5 h-5 text-green-400" />
                   Pending Orders Ready for Proofs
