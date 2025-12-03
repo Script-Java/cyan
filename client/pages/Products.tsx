@@ -354,9 +354,9 @@ export default function Products() {
           )}
 
           {/* Products Grid */}
-          {!isLoading && products.length > 0 && (
+          {!isLoading && filteredProducts.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-              {products.map((product) => (
+              {filteredProducts.map((product) => (
                 <div
                   key={product.id}
                   className="group rounded-lg overflow-hidden bg-white/5 border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all duration-300 flex flex-col"
