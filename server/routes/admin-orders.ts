@@ -132,7 +132,7 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
       status: order.status,
       total: order.total || 0,
       dateCreated: order.created_at || new Date().toISOString(),
-      shipping_addresses: order.shipping_addresses || [],
+      shipping_addresses: order.shipping_address ? [order.shipping_address] : [],
       source: "supabase" as const,
       orderItems: (order.order_items || []).map((item: any) => ({
         id: item.id,
