@@ -127,7 +127,7 @@ export default function AdminNavigationGrid({
   return (
     <div
       className={cn(
-        "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4",
+        "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-2.5",
         className,
       )}
     >
@@ -136,7 +136,7 @@ export default function AdminNavigationGrid({
           key={item.label}
           onClick={() => handleNavigation(item)}
           className={cn(
-            "flex flex-col items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-lg border backdrop-blur-sm transition-all duration-200",
+            "flex flex-col items-center justify-center gap-1.5 sm:gap-2 p-2 sm:p-3 rounded-lg border backdrop-blur-sm transition-all duration-200",
             "hover:scale-105 active:scale-95",
             item.color,
           )}
