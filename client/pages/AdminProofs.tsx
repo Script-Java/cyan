@@ -444,7 +444,8 @@ export default function AdminProofs() {
                   Pending Orders Ready for Proofs
                 </h3>
                 <p className="text-sm text-white/60 mb-6">
-                  Click on any order below to quickly send a proof to that customer
+                  Click on any order below to quickly send a proof to that
+                  customer
                 </p>
                 <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
                   <table className="w-full text-left text-xs sm:text-sm">
@@ -618,9 +619,7 @@ export default function AdminProofs() {
                   {uploadedFile && (
                     <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4">
                       <div className="flex items-start justify-between mb-4">
-                        <h4 className="font-medium text-white">
-                          File Preview
-                        </h4>
+                        <h4 className="font-medium text-white">File Preview</h4>
                         <button
                           onClick={handleRemoveFile}
                           className="text-white/40 hover:text-white/60 transition-colors"
@@ -806,7 +805,9 @@ export default function AdminProofs() {
                   <div className="p-4 sm:p-6">
                     {ordersLoading ? (
                       <div className="flex justify-center items-center h-32">
-                        <div className="text-white/60 text-xs sm:text-sm">Loading orders...</div>
+                        <div className="text-white/60 text-xs sm:text-sm">
+                          Loading orders...
+                        </div>
                       </div>
                     ) : pendingOrders.length === 0 ? (
                       <div className="text-center py-8">
@@ -915,7 +916,9 @@ export default function AdminProofs() {
                 <div className="mb-4">
                   <h2 className="text-base sm:text-lg font-semibold text-white flex items-center gap-2">
                     <Clock className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                    <span>Awaiting Customer Review ({pendingProofs.length})</span>
+                    <span>
+                      Awaiting Customer Review ({pendingProofs.length})
+                    </span>
                   </h2>
                 </div>
                 <div className="space-y-3 sm:space-y-4">
@@ -1125,7 +1128,10 @@ export default function AdminProofs() {
                               </p>
                               <div
                                 className="rounded-lg border border-white/10 overflow-hidden bg-white/5 flex items-center justify-center mb-3"
-                                style={{ maxHeight: "200px", minHeight: "100px" }}
+                                style={{
+                                  maxHeight: "200px",
+                                  minHeight: "100px",
+                                }}
                               >
                                 {proof.file_url.match(
                                   /\.(jpg|jpeg|png|gif|webp|svg)$/i,
