@@ -276,7 +276,7 @@ export default function Products() {
             <div className="mb-12">
               <h2 className="text-2xl font-bold text-white mb-1 text-center">
                 CHOOSE{" "}
-                <span className="inline-block bg-lime-400 text-black px-2 py-0.5 rounded font-bold text-lg">
+                <span className="inline-block text-black px-2 py-0.5 rounded font-bold text-lg" style={{ backgroundColor: "#FFD713" }}>
                   STICKER
                 </span>
               </h2>
