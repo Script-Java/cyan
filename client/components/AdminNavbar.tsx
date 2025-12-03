@@ -167,7 +167,7 @@ export default function AdminNavbar() {
               }
             }}
             className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm font-medium",
+              "flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-all duration-200 text-sm font-medium",
               "text-white/60 hover:text-white hover:bg-white/5",
             )}
           >
@@ -203,7 +203,7 @@ export default function AdminNavbar() {
                     }
                   }}
                   className={cn(
-                    "w-full flex items-center gap-2 px-4 py-2 text-sm transition-all",
+                    "w-full flex items-center gap-2 px-3 py-1.5 text-sm transition-all",
                     isActive(child.path)
                       ? "bg-white/10 text-[#FFD713]"
                       : "text-white/60 hover:text-white hover:bg-white/5",
@@ -265,7 +265,7 @@ export default function AdminNavbar() {
             <button
               onClick={() => navigate("/admin/settings")}
               className={cn(
-                "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm font-medium",
+                "flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-all duration-200 text-sm font-medium",
                 isActive("/admin/settings")
                   ? "bg-white/10 text-[#FFD713]"
                   : "text-white/60 hover:text-white hover:bg-white/5",
@@ -276,7 +276,7 @@ export default function AdminNavbar() {
             </button>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white/60 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm font-medium text-white/60 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
             >
               <LogOut className="w-4 h-4" />
               <span>Logout</span>
@@ -286,14 +286,14 @@ export default function AdminNavbar() {
 
         {/* Mobile Navigation */}
         <div className="md:hidden">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-2 flex-1 overflow-x-auto">
+          <div className="flex h-14 items-center justify-between">
+            <div className="flex items-center gap-1.5 flex-1 overflow-x-auto">
               {mainNavItems.slice(0, 3).map((item) => (
                 <button
                   key={item.label}
                   onClick={() => handleNavItemClick(item.path)}
                   className={cn(
-                    "flex items-center gap-1 px-2 py-1.5 rounded text-xs font-medium whitespace-nowrap",
+                    "flex items-center gap-1 px-1.5 py-1 rounded text-xs font-medium whitespace-nowrap",
                     isActive(item.path)
                       ? "bg-white/10 text-[#FFD713]"
                       : "text-white/60 hover:text-white hover:bg-white/5",
@@ -320,42 +320,42 @@ export default function AdminNavbar() {
           {/* Mobile Menu Dropdown */}
           {mobileMenuOpen && (
             <div className="border-t border-white/10 bg-black/50 backdrop-blur-sm max-h-96 overflow-y-auto">
-              <div className="p-3 space-y-1">
+              <div className="p-2 space-y-0.5">
                 {mainNavItems.map((item) => (
                   <button
                     key={item.label}
-                    onClick={() => handleNavItemClick(item.path)}
-                    className={cn(
-                      "w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm",
-                      isActive(item.path)
-                        ? "bg-white/10 text-[#FFD713] font-semibold"
-                        : "text-white/60 hover:text-white hover:bg-white/5",
-                    )}
-                  >
-                    {item.icon}
-                    <span>{item.label}</span>
-                    {item.badge ? (
-                      <span className="ml-auto bg-[#FFD713] text-black text-xs font-bold rounded-full px-1.5 py-0.5">
-                        {item.badge}
-                      </span>
-                    ) : null}
-                  </button>
+                  onClick={() => handleNavItemClick(item.path)}
+                  className={cn(
+                    "w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-all text-sm",
+                    isActive(item.path)
+                      ? "bg-white/10 text-[#FFD713] font-semibold"
+                      : "text-white/60 hover:text-white hover:bg-white/5",
+                  )}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                  {item.badge ? (
+                    <span className="ml-auto bg-[#FFD713] text-black text-xs font-bold rounded-full px-1.5 py-0.5">
+                      {item.badge}
+                    </span>
+                  ) : null}
+                </button>
                 ))}
 
-                <div className="border-t border-white/10 my-2 pt-2">
+                <div className="border-t border-white/10 my-1.5 pt-1.5">
                   {secondaryNavItems.map((item) => (
                     <NavItem key={item.label} item={item} isMobile={true} />
                   ))}
                 </div>
 
-                <div className="border-t border-white/10 my-2 pt-2 space-y-1">
+                <div className="border-t border-white/10 my-1.5 pt-1.5 space-y-0.5">
                   <button
                     onClick={() => {
                       navigate("/admin/settings");
                       setMobileMenuOpen(false);
                     }}
                     className={cn(
-                      "w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm",
+                      "w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-all text-sm",
                       isActive("/admin/settings")
                         ? "bg-white/10 text-[#FFD713] font-semibold"
                         : "text-white/60 hover:text-white hover:bg-white/5",
@@ -366,7 +366,7 @@ export default function AdminNavbar() {
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white/60 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm text-white/60 hover:text-red-400 hover:bg-red-500/10 transition-all"
                   >
                     <LogOut className="w-4 h-4" />
                     <span>Logout</span>
