@@ -23,6 +23,79 @@ interface OrderWithCustomer {
 }
 
 /**
+ * Get all orders from Supabase (admin only)
+ * Fetches all orders regardless of status
+ * Returns orders with customer details and tracking info
+ */
+export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
+  try {
+    // Fetch all orders
+    const { data: allOrders, error } = await supabase
+      .from("orders")
+      .select("*, customers(*), order_items(*)")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching all orders:", error);
+      return res.status(500).json({ error: "Failed to fetch orders" });
+    }
+
+    if (!allOrders || allOrders.length === 0) {
+      return res.json({
+        success: true,
+        orders: [],
+        count: 0,
+      });
+    }
+
+    // Format orders with customer details and order items
+    const formattedOrders = allOrders.map((order: any) => ({
+      id: order.id,
+      customerId: order.customer_id,
+      customerName:
+        order.customers && Array.isArray(order.customers)
+          ? `${order.customers[0]?.first_name || ""} ${order.customers[0]?.last_name || ""}`.trim()
+          : order.customers
+            ? `${order.customers.first_name || ""} ${order.customers.last_name || ""}`.trim()
+            : "Guest",
+      customerEmail:
+        order.customers && Array.isArray(order.customers)
+          ? order.customers[0]?.email || "N/A"
+          : order.customers?.email || "N/A",
+      status: order.status,
+      total: order.total || 0,
+      subtotal: order.subtotal || 0,
+      tax: order.tax || 0,
+      shipping: order.shipping || 0,
+      dateCreated: order.created_at || new Date().toISOString(),
+      tracking_number: order.tracking_number,
+      tracking_carrier: order.tracking_carrier,
+      tracking_url: order.tracking_url,
+      shipped_date: order.shipped_date,
+      source: "supabase" as const,
+      orderItems: (order.order_items || []).map((item: any) => ({
+        id: item.id,
+        quantity: item.quantity,
+        product_name: item.product_name,
+        options: item.options,
+        design_file_url: item.design_file_url,
+      })),
+    }));
+
+    res.json({
+      success: true,
+      orders: formattedOrders,
+      count: formattedOrders.length,
+    });
+  } catch (error) {
+    console.error("Get all admin orders error:", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to fetch orders";
+    res.status(500).json({ error: message });
+  }
+};
+
+/**
  * Get all active orders from Supabase only (admin only)
  * Fetches orders with statuses: pending, processing, printing, in transit
  * Returns orders with customer details
