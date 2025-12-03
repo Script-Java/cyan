@@ -803,10 +803,10 @@ export default function AdminProofs() {
                     </button>
                   </div>
 
-                  <div className="p-6">
+                  <div className="p-4 sm:p-6">
                     {ordersLoading ? (
                       <div className="flex justify-center items-center h-32">
-                        <div className="text-white/60 text-sm">Loading orders...</div>
+                        <div className="text-white/60 text-xs sm:text-sm">Loading orders...</div>
                       </div>
                     ) : pendingOrders.length === 0 ? (
                       <div className="text-center py-8">
