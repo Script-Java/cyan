@@ -51,7 +51,10 @@ export default function ShippingLabelModal({
 
   // Fetch carriers on mount
   useEffect(() => {
-    fetchCarriers();
+    const loadCarriers = async () => {
+      await fetchCarriers();
+    };
+    loadCarriers();
   }, []);
 
   // Fetch services when carrier changes
@@ -59,7 +62,7 @@ export default function ShippingLabelModal({
     if (selectedCarrier) {
       fetchServices(selectedCarrier);
     }
-  }, [selectedCarrier]);
+  }, [selectedCarrier]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchCarriers = async () => {
     try {
