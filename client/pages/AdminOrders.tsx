@@ -664,6 +664,22 @@ export default function AdminOrders() {
           }}
         />
       )}
+
+      {/* Shipping Address Editor Modal */}
+      {editingShippingAddressOrderId !== null && (
+        <ShippingAddressEditor
+          orderId={editingShippingAddressOrderId}
+          currentAddress={
+            pendingOrders.find((o) => o.id === editingShippingAddressOrderId)
+              ?.shipping_addresses?.[0]
+          }
+          onClose={() => setEditingShippingAddressOrderId(null)}
+          onSuccess={() => {
+            setEditingShippingAddressOrderId(null);
+            fetchOrders();
+          }}
+        />
+      )}
     </AdminLayout>
   );
 }
