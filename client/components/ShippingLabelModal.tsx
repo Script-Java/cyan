@@ -64,50 +64,106 @@ export default function ShippingLabelModal({
   const fetchCarriers = async () => {
     try {
       const token = localStorage.getItem("authToken");
+      if (!token) {
+        console.warn("No auth token found, using default carriers");
+        setCarriers([
+          { name: "USPS", code: "usps" },
+          { name: "UPS", code: "ups" },
+          { name: "FedEx", code: "fedex" },
+        ]);
+        return;
+      }
+
       const response = await fetch("/api/shipping/carriers", {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       });
 
-      if (!response.ok) throw new Error("Failed to fetch carriers");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error("API error:", errorData);
+        throw new Error(errorData.error || "Failed to fetch carriers");
+      }
 
       const data = await response.json();
-      setCarriers(data.carriers || []);
+      const carrierList = Array.isArray(data) ? data : data.carriers || [];
 
-      if (data.carriers && data.carriers.length > 0) {
-        setSelectedCarrier(data.carriers[0].code);
+      if (carrierList.length === 0) {
+        throw new Error("No carriers returned");
       }
+
+      setCarriers(carrierList);
+      setSelectedCarrier(carrierList[0].code);
     } catch (err) {
       console.error("Failed to fetch carriers:", err);
-      // Default to USPS if fetch fails
-      setCarriers([{ name: "USPS", code: "usps" }]);
+      // Use default carriers as fallback
+      const defaultCarriers = [
+        { name: "USPS", code: "usps" },
+        { name: "UPS", code: "ups" },
+        { name: "FedEx", code: "fedex" },
+        { name: "DHL Express", code: "dhl_express" },
+        { name: "OnTrac", code: "ontrac" },
+      ];
+      setCarriers(defaultCarriers);
+      setSelectedCarrier("usps");
     }
   };
 
   const fetchServices = async (carrierCode: string) => {
     try {
       const token = localStorage.getItem("authToken");
+      if (!token) {
+        console.warn("No auth token found, using default services");
+        setServices([]);
+        return;
+      }
+
       const response = await fetch(
         `/api/shipping/services?carrierCode=${carrierCode}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );
 
-      if (!response.ok) throw new Error("Failed to fetch services");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error("API error:", errorData);
+        throw new Error(errorData.error || "Failed to fetch services");
+      }
 
       const data = await response.json();
-      setServices(data.services || []);
+      const serviceList = Array.isArray(data) ? data : data.services || [];
 
-      if (data.services && data.services.length > 0) {
-        setSelectedService(data.services[0].code);
+      setServices(serviceList);
+      if (serviceList.length > 0) {
+        setSelectedService(serviceList[0].code);
       }
     } catch (err) {
       console.error("Failed to fetch services:", err);
-      setServices([]);
+      // Use default services based on carrier
+      const defaultServices: Record<string, any[]> = {
+        usps: [
+          { name: "USPS Priority Mail", code: "usps_priority_mail" },
+          { name: "USPS Priority Mail Express", code: "usps_priority_mail_express" },
+          { name: "USPS First Class Mail", code: "usps_first_class_mail" },
+        ],
+        ups: [
+          { name: "UPS Ground", code: "ups_ground" },
+          { name: "UPS 2nd Day Air", code: "ups_2nd_day_air" },
+          { name: "UPS Next Day Air", code: "ups_next_day_air" },
+        ],
+        fedex: [
+          { name: "FedEx Ground", code: "fedex_ground" },
+          { name: "FedEx 2Day", code: "fedex_2day" },
+          { name: "FedEx Overnight", code: "fedex_overnight" },
+        ],
+      };
+      setServices(defaultServices[carrierCode] || []);
     }
   };
 
