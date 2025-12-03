@@ -29,23 +29,23 @@ export default function ProductCategoryCard({
         </div>
 
         {/* Category Info */}
-        <div className="p-6 flex flex-col flex-grow justify-end">
-          <h3 className="font-bold text-white text-xl mb-2 group-hover:text-blue-400 transition-colors">
+        <div className="p-4 flex flex-col flex-grow justify-end">
+          <h3 className="font-bold text-white text-base mb-1 group-hover:text-blue-400 transition-colors">
             {name}
           </h3>
           {description && (
-            <p className="text-sm text-white/60 mb-4 group-hover:text-white/80 transition-colors">
+            <p className="text-xs text-white/60 mb-2 group-hover:text-white/80 transition-colors line-clamp-2">
               {description}
             </p>
           )}
           {itemCount !== undefined && (
-            <p className="text-xs text-white/40 group-hover:text-white/60 transition-colors">
+            <p className="text-xs text-white/40 group-hover:text-white/60 transition-colors mb-2">
               {itemCount} {itemCount === 1 ? "product" : "products"}
             </p>
           )}
-          <div className="mt-4 flex items-center text-blue-400 group-hover:text-blue-300 transition-colors">
-            <span className="text-sm font-semibold">Shop Now</span>
-            <span className="ml-2">→</span>
+          <div className="flex items-center text-blue-400 group-hover:text-blue-300 transition-colors">
+            <span className="text-xs font-semibold">Shop Now</span>
+            <span className="ml-1">→</span>
           </div>
         </div>
       </div>
