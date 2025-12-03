@@ -911,18 +911,18 @@ export default function AdminProofs() {
 
             {/* Pending Proofs Section */}
             {pendingProofs.length > 0 && (
-              <div className="mb-8">
+              <div className="mb-6 sm:mb-8">
                 <div className="mb-4">
-                  <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-blue-400" />
-                    Awaiting Customer Review ({pendingProofs.length})
+                  <h2 className="text-base sm:text-lg font-semibold text-white flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                    <span>Awaiting Customer Review ({pendingProofs.length})</span>
                   </h2>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {pendingProofs.map((proof) => (
                     <div
                       key={proof.id}
-                      className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 transition-colors"
+                      className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg sm:rounded-2xl overflow-hidden hover:bg-white/10 transition-colors"
                     >
                       {/* Proof Header */}
                       <button
@@ -931,28 +931,28 @@ export default function AdminProofs() {
                             expandedProofId === proof.id ? null : proof.id,
                           )
                         }
-                        className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors"
+                        className="w-full px-3 sm:px-6 py-3 sm:py-4 flex items-start sm:items-center justify-between hover:bg-white/5 transition-colors gap-3"
                       >
-                        <div className="flex items-center gap-4 flex-1 text-left">
-                          <div className="bg-blue-500/20 border border-blue-500/30 p-3 rounded-lg flex-shrink-0">
+                        <div className="flex items-start sm:items-center gap-2 sm:gap-4 flex-1 text-left min-w-0">
+                          <div className="bg-blue-500/20 border border-blue-500/30 p-2 sm:p-3 rounded-lg flex-shrink-0">
                             {getStatusIcon(proof.status)}
                           </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-2">
-                              <h3 className="text-lg font-semibold text-white">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1 sm:mb-2 flex-wrap">
+                              <h3 className="text-base sm:text-lg font-semibold text-white">
                                 Order #{proof.order_id}
                               </h3>
                               <span
-                                className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(proof.status)}`}
+                                className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium flex-shrink-0 ${getStatusColor(proof.status)}`}
                               >
                                 {getStatusLabel(proof.status)}
                               </span>
                             </div>
-                            <p className="text-sm text-white/60">
+                            <p className="text-xs sm:text-sm text-white/60 truncate">
                               Customer: {proof.customers?.first_name}{" "}
-                              {proof.customers?.last_name} ({proof.customers?.email})
+                              {proof.customers?.last_name}
                             </p>
-                            <p className="text-sm text-white/60 mt-1">
+                            <p className="text-xs sm:text-sm text-white/60 mt-1 line-clamp-2">
                               {proof.description}
                             </p>
                             <p className="text-xs text-white/40 mt-1">
