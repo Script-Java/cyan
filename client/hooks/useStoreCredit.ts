@@ -1,10 +1,11 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
+
+let fetchInProgress = false;
 
 export const useStoreCredit = () => {
   const [storeCredit, setStoreCredit] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const fetchInProgressRef = useRef(false);
 
   const fetchStoreCredit = useCallback(async () => {
     try {
@@ -16,11 +17,11 @@ export const useStoreCredit = () => {
       }
 
       // Guard against concurrent requests
-      if (fetchInProgressRef.current) {
+      if (fetchInProgress) {
         return;
       }
 
-      fetchInProgressRef.current = true;
+      fetchInProgress = true;
       setIsLoading(true);
       setError(null);
 
@@ -67,7 +68,7 @@ export const useStoreCredit = () => {
       setStoreCredit(0);
       console.warn("Store credit fetch error:", error);
     } finally {
-      fetchInProgressRef.current = false;
+      fetchInProgress = false;
       setIsLoading(false);
     }
   }, []);
