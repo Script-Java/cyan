@@ -235,3 +235,86 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
     res.status(500).json({ error: message });
   }
 };
+
+/**
+ * Update shipping address for an order
+ * Allows admins to edit shipping address details
+ */
+export const handleUpdateShippingAddress: RequestHandler = async (
+  req,
+  res,
+) => {
+  try {
+    const { orderId } = req.params;
+    const {
+      first_name,
+      last_name,
+      street_1,
+      street_2,
+      city,
+      state_or_province,
+      postal_code,
+      country_iso2,
+      phone,
+    } = req.body;
+
+    if (!orderId) {
+      return res.status(400).json({ error: "Order ID is required" });
+    }
+
+    // Validate required fields
+    if (
+      !first_name ||
+      !last_name ||
+      !street_1 ||
+      !city ||
+      !state_or_province ||
+      !postal_code ||
+      !country_iso2
+    ) {
+      return res.status(400).json({
+        error:
+          "Missing required fields: first_name, last_name, street_1, city, state_or_province, postal_code, country_iso2",
+      });
+    }
+
+    const shippingAddress = {
+      first_name,
+      last_name,
+      street_1,
+      street_2: street_2 || undefined,
+      city,
+      state_or_province,
+      postal_code,
+      country_iso2,
+      phone: phone || undefined,
+    };
+
+    // Update the order in Supabase
+    const { data, error } = await supabase
+      .from("orders")
+      .update({
+        shipping_addresses: [shippingAddress],
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", orderId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error updating shipping address:", error);
+      return res.status(500).json({ error: "Failed to update shipping address" });
+    }
+
+    res.json({
+      success: true,
+      message: "Shipping address updated successfully",
+      order: data,
+    });
+  } catch (error) {
+    console.error("Update shipping address error:", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to update shipping address";
+    res.status(500).json({ error: message });
+  }
+};
