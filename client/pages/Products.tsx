@@ -270,19 +270,19 @@ export default function Products() {
     <>
       <Header />
       <main className="pt-20 min-h-screen bg-black text-white">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4 py-4">
           {/* Category Section */}
           {!selectedCategory && (
-            <div className="mb-12">
-              <h2 className="text-2xl font-bold text-white mb-1 text-center">
+            <div className="mb-8">
+              <h2 className="text-xl font-bold text-white mb-0.5 text-center">
                 CHOOSE{" "}
-                <span className="inline-block text-black px-2 py-0.5 rounded font-bold text-lg" style={{ backgroundColor: "#FFD713" }}>
+                <span className="inline-block text-black px-1.5 py-0.25 rounded font-bold text-base" style={{ backgroundColor: "#FFD713" }}>
                   STICKER
                 </span>
               </h2>
-              <p className="text-center text-white/60 mb-8 text-sm">TYPE:</p>
+              <p className="text-center text-white/60 mb-4 text-xs">TYPE:</p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2.5 mb-8">
                 {categories.map((category) => (
                   <ProductCategoryCard
                     key={category.id}
@@ -299,7 +299,7 @@ export default function Products() {
 
           {/* Category Filter Indicator */}
           {selectedCategory && (
-            <div className="mb-6 flex items-center justify-between gap-4">
+            <div className="mb-4 flex items-center justify-between gap-4">
               <div>
                 <h2 className="text-xl font-bold text-white">
                   {categories.find((c) => c.id === selectedCategory)?.name ||
@@ -359,7 +359,7 @@ export default function Products() {
 
           {/* Products Grid */}
           {!isLoading && filteredProducts.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2.5 mb-8">
               {filteredProducts.map((product) => (
                 <div
                   key={product.id}
@@ -380,7 +380,7 @@ export default function Products() {
                   </div>
 
                   {/* Product Info */}
-                  <div className="p-3 flex flex-col flex-grow">
+                  <div className="p-2 flex flex-col flex-grow">
                     <h3 className="font-bold text-white text-sm mb-1 group-hover:text-blue-400 transition-colors line-clamp-2">
                       {product.name}
                     </h3>
@@ -490,7 +490,7 @@ export default function Products() {
           )}
 
           {/* CTA Section */}
-          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg p-6 text-center">
+          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg p-4 text-center">
             <h2 className="text-xl font-bold text-white mb-2">
               Can't find what you're looking for?
             </h2>
