@@ -45,6 +45,16 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+function PageTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackPageView();
+  }, [location.pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -52,6 +62,7 @@ export default function App() {
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <PageTracker />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
