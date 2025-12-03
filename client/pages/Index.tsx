@@ -67,10 +67,17 @@ export default function Index() {
 
               <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
                 <div className="flex items-center gap-4">
-                  <div className="text-4xl flex-shrink-0 animate-spin" style={{ animationDuration: '4s' }}>🌍</div>
+                  <div
+                    className="text-4xl flex-shrink-0 animate-spin"
+                    style={{ animationDuration: "4s" }}
+                  >
+                    🌍
+                  </div>
                   <h3 className="font-semibold text-white">
                     <span className="block">Out for this world quality</span>
-                    <span className="block text-white/60">, made in the US</span>
+                    <span className="block text-white/60">
+                      , made in the US
+                    </span>
                   </h3>
                 </div>
               </div>

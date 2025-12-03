@@ -60,37 +60,44 @@ export default function Products() {
       id: "vinyl",
       name: "Vinyl Stickers",
       description: "Durable vinyl stickers perfect for laptops and outdoor use",
-      image: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593599/Alien_Rocket_mkwlag.png",
+      image:
+        "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593599/Alien_Rocket_mkwlag.png",
     },
     {
       id: "holographic",
       name: "Holographic Stickers",
-      description: "Eye-catching holographic stickers that shimmer in the light",
-      image: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593621/PurpleAlien_StickerShuttle_HolographicIcon_ukdotq.png",
+      description:
+        "Eye-catching holographic stickers that shimmer in the light",
+      image:
+        "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593621/PurpleAlien_StickerShuttle_HolographicIcon_ukdotq.png",
     },
     {
       id: "glitter",
       name: "Glitter Stickers",
       description: "Add sparkle with vibrant glitter stickers",
-      image: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593602/BlueAlien_StickerShuttle_GlitterIcon_rocwpi.png",
+      image:
+        "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593602/BlueAlien_StickerShuttle_GlitterIcon_rocwpi.png",
     },
     {
       id: "chrome",
       name: "Chrome Stickers",
       description: "Metallic chrome stickers for a premium look",
-      image: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593680/yELLOWAlien_StickerShuttle_ChromeIcon_nut4el.png",
+      image:
+        "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593680/yELLOWAlien_StickerShuttle_ChromeIcon_nut4el.png",
     },
     {
       id: "clear",
       name: "Clear Stickers",
       description: "Transparent stickers with vibrant full-color printing",
-      image: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749849590/StickerShuttle_ClearIcon_zxjnqc.svg",
+      image:
+        "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749849590/StickerShuttle_ClearIcon_zxjnqc.svg",
     },
     {
       id: "sheets",
       name: "Sticker Sheets",
       description: "Get multiple stickers in one convenient sheet",
-      image: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749847809/StickerShuttle_StickerSheetsIcon_2_g61dty.svg",
+      image:
+        "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749847809/StickerShuttle_StickerSheetsIcon_2_g61dty.svg",
     },
   ];
 
@@ -233,16 +240,20 @@ export default function Products() {
           (cat) =>
             product.id?.toString().toLowerCase().includes(cat) ||
             product.name?.toLowerCase().includes(selectedCategory) ||
-            product.category?.toLowerCase().includes(selectedCategory)
+            product.category?.toLowerCase().includes(selectedCategory),
         ) ||
         (selectedCategory === "vinyl" &&
           product.id?.toString().includes("vinyl")) ||
         (selectedCategory === "holographic" &&
           product.id?.toString().includes("holographic")) ||
-        (selectedCategory === "glitter" && product.id?.toString().includes("glitter")) ||
-        (selectedCategory === "chrome" && product.id?.toString().includes("chrome")) ||
-        (selectedCategory === "clear" && product.id?.toString().includes("clear")) ||
-        (selectedCategory === "sheets" && product.id?.toString().includes("sheet"))
+        (selectedCategory === "glitter" &&
+          product.id?.toString().includes("glitter")) ||
+        (selectedCategory === "chrome" &&
+          product.id?.toString().includes("chrome")) ||
+        (selectedCategory === "clear" &&
+          product.id?.toString().includes("clear")) ||
+        (selectedCategory === "sheets" &&
+          product.id?.toString().includes("sheet"))
       );
     });
   }, [products, selectedCategory]);
@@ -261,8 +272,8 @@ export default function Products() {
       categoryIds.some(
         (cat) =>
           product.id?.toString().toLowerCase().includes(cat) ||
-          product.name?.toLowerCase().includes(categoryId)
-      )
+          product.name?.toLowerCase().includes(categoryId),
+      ),
     ).length;
   };
 
@@ -276,7 +287,10 @@ export default function Products() {
             <div className="mb-8">
               <h2 className="text-xl font-bold text-white mb-0.5 text-center">
                 CHOOSE{" "}
-                <span className="inline-block text-black px-1.5 py-0.25 rounded font-bold text-base" style={{ backgroundColor: "#FFD713" }}>
+                <span
+                  className="inline-block text-black px-1.5 py-0.25 rounded font-bold text-base"
+                  style={{ backgroundColor: "#FFD713" }}
+                >
                   STICKER
                 </span>
               </h2>
