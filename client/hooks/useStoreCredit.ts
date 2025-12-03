@@ -36,6 +36,10 @@ export const useStoreCredit = () => {
             typeof data.storeCredit === "number" ? data.storeCredit : 0;
           setStoreCredit(credit);
           setError(null);
+        } else if (response.status === 401) {
+          // Unauthorized - token may be invalid
+          setStoreCredit(0);
+          localStorage.removeItem("authToken");
         } else {
           setStoreCredit(0);
           console.warn("Failed to fetch store credit:", response.status);
@@ -44,6 +48,9 @@ export const useStoreCredit = () => {
         clearTimeout(timeoutId);
         if (fetchError instanceof Error && fetchError.name === "AbortError") {
           console.warn("Store credit fetch timeout");
+        } else if (fetchError instanceof TypeError) {
+          // Network error or CORS issue - silently handle
+          console.warn("Network error fetching store credit - retrying later");
         } else {
           console.warn("Error fetching store credit:", fetchError);
         }
