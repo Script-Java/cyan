@@ -17,7 +17,7 @@ export default function ProductCategoryCard({
 }: CategoryCardProps) {
   return (
     <Link to={`/products?category=${id}`}>
-      <div className="group rounded-lg overflow-hidden bg-white/5 border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all duration-500 flex flex-col h-full cursor-pointer">
+      <div className="group rounded-lg overflow-hidden bg-white/5 hover:bg-white/10 transition-all duration-500 flex flex-col h-full cursor-pointer">
         {/* Category Image */}
         <div className="relative bg-white/10 aspect-square overflow-hidden flex items-center justify-center">
           <img
