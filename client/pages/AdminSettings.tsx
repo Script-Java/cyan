@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
 import AdminNavigationGrid from "@/components/AdminNavigationGrid";
-import { Settings, Save, AlertCircle } from "lucide-react";
+import { Settings, Save } from "lucide-react";
 
 export default function AdminSettings() {
   const navigate = useNavigate();
@@ -49,7 +49,6 @@ export default function AdminSettings() {
   const handleSaveSettings = async () => {
     setIsSaving(true);
     try {
-      // Simulate saving settings
       await new Promise((resolve) => setTimeout(resolve, 500));
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
@@ -63,7 +62,7 @@ export default function AdminSettings() {
   if (isLoading) {
     return (
       <AdminLayout>
-        <div className="w-full min-h-screen bg-black flex items-center justify-center pb-20 md:pb-0">
+        <div className="w-full min-h-screen bg-black flex items-center justify-center">
           <div className="text-white/60">Loading settings...</div>
         </div>
       </AdminLayout>
@@ -72,61 +71,44 @@ export default function AdminSettings() {
 
   return (
     <AdminLayout>
-      <div className="w-full min-h-screen bg-black text-white pb-20 md:pb-0">
-        {/* Header Section */}
-        <div className="bg-black border-b border-white/10">
-          <div className="px-6 lg:px-8 py-8">
-            <div className="flex items-start justify-between">
-              <div>
-                <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-                  <Settings className="w-8 h-8 text-[#FFD713]" />
-                  Store Settings
-                </h1>
-                <p className="text-white/60 mt-2">
-                  Configure your store details and preferences
-                </p>
-              </div>
-            </div>
+      <main className="min-h-screen bg-black py-6">
+        <div className="max-w-6xl mx-auto px-4">
+          {/* Header */}
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-white">Store Settings</h1>
+            <p className="text-white/60 mt-1">
+              Configure your store details and preferences
+            </p>
           </div>
-        </div>
 
-        {/* Navigation Grid - Desktop/Tablet Only */}
-        <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
-          <div className="px-6 lg:px-8 py-6 sm:py-8">
-            <h2 className="text-sm font-semibold text-white/80 mb-4">
+          {/* Quick Navigation */}
+          <div className="mb-6">
+            <h2 className="text-sm font-semibold text-white/80 mb-3">
               Quick Navigation
             </h2>
             <AdminNavigationGrid />
           </div>
-        </div>
 
-        {/* Main Content */}
-        <main className="px-6 lg:px-8 py-8">
-          <div className="space-y-6">
-            {/* Success Message */}
-            {saveSuccess && (
-              <div className="backdrop-blur-xl bg-green-500/10 border border-green-500/30 rounded-lg p-4 flex items-center gap-3">
-                <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0"></div>
-                <p className="text-green-400 text-sm font-medium">
-                  Settings saved successfully!
-                </p>
-              </div>
-            )}
+          {/* Success Message */}
+          {saveSuccess && (
+            <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-3 mb-4 flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0"></div>
+              <p className="text-green-400 text-sm font-medium">
+                Settings saved successfully!
+              </p>
+            </div>
+          )}
 
+          <div className="space-y-4">
             {/* Store Information */}
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8">
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-white mb-2">
-                  Store Information
-                </h2>
-                <p className="text-white/60 text-sm">
-                  Basic details about your store
-                </p>
-              </div>
+            <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+              <h2 className="text-sm font-semibold text-white mb-3">
+                Store Information
+              </h2>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
+                  <label className="block text-xs font-medium text-white/80 mb-1.5">
                     Store Name
                   </label>
                   <input
@@ -134,14 +116,14 @@ export default function AdminSettings() {
                     name="storeName"
                     value={settings.storeName}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
                     placeholder="Enter store name"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-xs font-medium text-white/80 mb-1.5">
                       Store Email
                     </label>
                     <input
@@ -149,13 +131,13 @@ export default function AdminSettings() {
                       name="storeEmail"
                       value={settings.storeEmail}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                      className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
                       placeholder="support@example.com"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-xs font-medium text-white/80 mb-1.5">
                       Store Phone
                     </label>
                     <input
@@ -163,22 +145,22 @@ export default function AdminSettings() {
                       name="storePhone"
                       value={settings.storePhone}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                      className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
                       placeholder="+1 (555) 123-4567"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
+                  <label className="block text-xs font-medium text-white/80 mb-1.5">
                     Store Address
                   </label>
                   <textarea
                     name="storeAddress"
                     value={settings.storeAddress}
                     onChange={handleInputChange}
-                    rows={3}
-                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                    rows={2}
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
                     placeholder="Enter your store address"
                   ></textarea>
                 </div>
@@ -186,26 +168,21 @@ export default function AdminSettings() {
             </div>
 
             {/* Regional Settings */}
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8">
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-white mb-2">
-                  Regional Settings
-                </h2>
-                <p className="text-white/60 text-sm">
-                  Configure timezone and currency preferences
-                </p>
-              </div>
+            <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+              <h2 className="text-sm font-semibold text-white mb-3">
+                Regional Settings
+              </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
+                  <label className="block text-xs font-medium text-white/80 mb-1.5">
                     Time Zone
                   </label>
                   <select
                     name="timeZone"
                     value={settings.timeZone}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
                   >
                     <option className="bg-black">UTC</option>
                     <option className="bg-black">EST</option>
@@ -216,14 +193,14 @@ export default function AdminSettings() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
+                  <label className="block text-xs font-medium text-white/80 mb-1.5">
                     Currency
                   </label>
                   <select
                     name="currency"
                     value={settings.currency}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
                   >
                     <option className="bg-black">USD</option>
                     <option className="bg-black">EUR</option>
@@ -236,19 +213,14 @@ export default function AdminSettings() {
             </div>
 
             {/* Tax & Shipping */}
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8">
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-white mb-2">
-                  Tax & Shipping
-                </h2>
-                <p className="text-white/60 text-sm">
-                  Set default tax and shipping rates
-                </p>
-              </div>
+            <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+              <h2 className="text-sm font-semibold text-white mb-3">
+                Tax & Shipping
+              </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
+                  <label className="block text-xs font-medium text-white/80 mb-1.5">
                     Tax Rate (%)
                   </label>
                   <input
@@ -259,13 +231,13 @@ export default function AdminSettings() {
                     step="0.01"
                     min="0"
                     max="100"
-                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
                     placeholder="8.5"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
+                  <label className="block text-xs font-medium text-white/80 mb-1.5">
                     Standard Shipping Cost ($)
                   </label>
                   <input
@@ -275,7 +247,7 @@ export default function AdminSettings() {
                     onChange={handleInputChange}
                     step="0.01"
                     min="0"
-                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
                     placeholder="5.00"
                   />
                 </div>
@@ -283,25 +255,25 @@ export default function AdminSettings() {
             </div>
 
             {/* Save Button */}
-            <div className="flex justify-end gap-3 pt-4">
+            <div className="flex justify-end gap-2 pt-2">
               <button
                 onClick={() => navigate("/admin")}
-                className="px-6 py-2 border border-white/20 text-white/80 hover:text-white hover:border-white/40 rounded-lg transition-colors font-medium"
+                className="px-4 py-2 border border-white/20 text-white/80 hover:text-white hover:border-white/40 rounded text-sm transition-colors font-medium"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveSettings}
                 disabled={isSaving}
-                className="inline-flex items-center gap-2 px-6 py-2 bg-green-600 hover:bg-green-700 disabled:bg-white/10 text-white rounded-lg transition-colors font-medium"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-white/10 text-white rounded text-sm transition-colors font-medium"
               >
                 <Save className="w-4 h-4" />
-                {isSaving ? "Saving..." : "Save Settings"}
+                {isSaving ? "Saving..." : "Save"}
               </button>
             </div>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </AdminLayout>
   );
 }
