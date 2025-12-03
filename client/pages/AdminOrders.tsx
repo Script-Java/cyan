@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
 import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import OrderStatusEditor from "@/components/OrderStatusEditor";
+import ShippingLabelModal from "@/components/ShippingLabelModal";
 import {
   Package,
   Calendar,
@@ -13,6 +14,7 @@ import {
   Image as ImageIcon,
   ArrowRight,
   Edit,
+  Truck,
 } from "lucide-react";
 
 interface OrderItem {
