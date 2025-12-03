@@ -52,8 +52,8 @@ export default function Index() {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-16 sm:py-24 bg-black">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-black" style={{ margin: "-5px 0 -3px", padding: "20px 0 28px" }}>
+          <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: "1964px" }}>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
                 <div className="flex items-center gap-4">
