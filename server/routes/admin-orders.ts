@@ -294,7 +294,7 @@ export const handleUpdateShippingAddress: RequestHandler = async (
     const { data, error } = await supabase
       .from("orders")
       .update({
-        shipping_addresses: [shippingAddress],
+        shipping_address: shippingAddress,
         updated_at: new Date().toISOString(),
       })
       .eq("id", orderId)
