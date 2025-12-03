@@ -381,25 +381,21 @@ export default function AdminProofs() {
 
   if (isLoading) {
     return (
-      <>
-        <Header />
-        <AdminNavbar />
-        <main className="min-h-screen bg-black py-6 md:py-8 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
+      <AdminLayout>
+        <div className="w-full pb-20 md:pb-0 py-6 md:py-8 px-3 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="flex justify-center items-center h-48 sm:h-64">
               <div className="text-white/60 text-sm">Loading proofs...</div>
             </div>
           </div>
-        </main>
-      </>
+        </div>
+      </AdminLayout>
     );
   }
 
   return (
-    <>
-      <Header />
-      <AdminNavbar />
-      <main className="min-h-screen bg-black text-white pt-20 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
+    <AdminLayout>
+      <div className="w-full bg-black text-white pb-20 md:pb-0 px-3 sm:px-6 lg:px-8 pt-6 md:pt-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="mb-6 sm:mb-8 border-b border-white/10 pb-6 sm:pb-8">
@@ -1192,7 +1188,7 @@ export default function AdminProofs() {
             </div>
           )}
         </div>
-      </main>
-    </>
+      </div>
+    </AdminLayout>
   );
 }
