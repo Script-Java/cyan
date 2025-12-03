@@ -789,10 +789,10 @@ export default function AdminProofs() {
 
             {/* Order Selection Modal */}
             {showOrderModal && (
-              <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-                <div className="bg-black border border-white/10 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-auto">
-                  <div className="sticky top-0 bg-black border-b border-white/10 p-6 flex justify-between items-center gap-3">
-                    <h2 className="text-xl font-semibold text-white">
+              <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4">
+                <div className="bg-black border border-white/10 rounded-lg sm:rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-auto">
+                  <div className="sticky top-0 bg-black border-b border-white/10 p-4 sm:p-6 flex justify-between items-center gap-3">
+                    <h2 className="text-lg sm:text-xl font-semibold text-white">
                       Select Order to Send Proof
                     </h2>
                     <button
