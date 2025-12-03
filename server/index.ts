@@ -108,7 +108,7 @@ import {
   handleGetCustomerDetails,
   handleSearchCustomers,
 } from "./routes/admin-customers";
-import { handleGetAnalytics } from "./routes/admin-analytics";
+import { handleGetAnalytics, handleTrackEvent } from "./routes/admin-analytics";
 import { handleGetFinance } from "./routes/admin-finance";
 import {
   handleCreateProduct,
