@@ -224,54 +224,231 @@ export default function AdminOrders() {
                           </thead>
                           <tbody>
                             {filteredOrders.map((order) => (
-                              <tr
-                                key={order.id}
-                                className="border-b border-white/10 hover:bg-white/5 transition-colors"
-                              >
-                                <td className="px-4 sm:px-6 py-4 font-semibold text-white whitespace-nowrap">
-                                  #{order.id}
-                                </td>
-                                <td className="px-4 sm:px-6 py-4 text-white/80 whitespace-nowrap hidden sm:table-cell truncate max-w-xs">
-                                  {order.customerName || "Guest"}
-                                </td>
-                                <td className="px-4 sm:px-6 py-4 text-white/60 hidden md:table-cell">
-                                  <div className="flex items-center gap-2 truncate max-w-xs">
-                                    <Mail className="w-4 h-4 flex-shrink-0" />
-                                    <span className="truncate text-xs sm:text-sm">
-                                      {order.customerEmail}
+                              <>
+                                <tr
+                                  key={order.id}
+                                  className="border-b border-white/10 hover:bg-white/5 transition-colors"
+                                >
+                                  <td className="px-4 sm:px-6 py-4 font-semibold text-white whitespace-nowrap">
+                                    #{order.id}
+                                  </td>
+                                  <td className="px-4 sm:px-6 py-4 text-white/80 whitespace-nowrap hidden sm:table-cell truncate max-w-xs">
+                                    {order.customerName || "Guest"}
+                                  </td>
+                                  <td className="px-4 sm:px-6 py-4 text-white/60 hidden md:table-cell">
+                                    <div className="flex items-center gap-2 truncate max-w-xs">
+                                      <Mail className="w-4 h-4 flex-shrink-0" />
+                                      <span className="truncate text-xs sm:text-sm">
+                                        {order.customerEmail}
+                                      </span>
+                                    </div>
+                                  </td>
+                                  <td className="px-4 sm:px-6 py-4 text-white/60 hidden lg:table-cell whitespace-nowrap">
+                                    <div className="flex items-center gap-2">
+                                      <Calendar className="w-4 h-4" />
+                                      <span className="text-xs sm:text-sm">
+                                        {new Date(
+                                          order.dateCreated,
+                                        ).toLocaleDateString()}
+                                      </span>
+                                    </div>
+                                  </td>
+                                  <td className="px-4 sm:px-6 py-4">
+                                    <span
+                                      className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold ${getStatusColor(
+                                        order.status,
+                                      )}`}
+                                    >
+                                      {order.status.charAt(0).toUpperCase() +
+                                        order.status.slice(1)}
                                     </span>
-                                  </div>
-                                </td>
-                                <td className="px-4 sm:px-6 py-4 text-white/60 hidden lg:table-cell whitespace-nowrap">
-                                  <div className="flex items-center gap-2">
-                                    <Calendar className="w-4 h-4" />
-                                    <span className="text-xs sm:text-sm">
-                                      {new Date(
-                                        order.dateCreated,
-                                      ).toLocaleDateString()}
-                                    </span>
-                                  </div>
-                                </td>
-                                <td className="px-4 sm:px-6 py-4">
-                                  <span
-                                    className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold ${getStatusColor(
-                                      order.status,
-                                    )}`}
-                                  >
-                                    {order.status.charAt(0).toUpperCase() +
-                                      order.status.slice(1)}
-                                  </span>
-                                </td>
-                                <td className="px-4 sm:px-6 py-4 font-semibold text-green-300 text-right whitespace-nowrap text-xs sm:text-sm">
-                                  ${order.total.toFixed(2)}
-                                </td>
-                                <td className="px-4 sm:px-6 py-4 text-right">
-                                  <button className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-green-600/20 text-green-300 hover:bg-green-600/30 transition-colors font-medium text-xs whitespace-nowrap border border-green-600/30">
-                                    View
-                                    <ChevronRight className="w-4 h-4 hidden sm:inline" />
-                                  </button>
-                                </td>
-                              </tr>
+                                  </td>
+                                  <td className="px-4 sm:px-6 py-4 font-semibold text-green-300 text-right whitespace-nowrap text-xs sm:text-sm">
+                                    ${order.total.toFixed(2)}
+                                  </td>
+                                  <td className="px-4 sm:px-6 py-4 text-right">
+                                    <button
+                                      onClick={() =>
+                                        setExpandedOrderId(
+                                          expandedOrderId === order.id
+                                            ? null
+                                            : order.id,
+                                        )
+                                      }
+                                      className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-green-600/20 text-green-300 hover:bg-green-600/30 transition-colors font-medium text-xs whitespace-nowrap border border-green-600/30"
+                                    >
+                                      <span>
+                                        {expandedOrderId === order.id
+                                          ? "Hide"
+                                          : "View"}
+                                      </span>
+                                      <ChevronDown
+                                        className={`w-4 h-4 hidden sm:inline transition-transform ${
+                                          expandedOrderId === order.id
+                                            ? "rotate-180"
+                                            : ""
+                                        }`}
+                                      />
+                                    </button>
+                                  </td>
+                                </tr>
+                                {expandedOrderId === order.id && (
+                                  <tr className="border-b border-white/10 bg-white/5">
+                                    <td colSpan={7} className="px-4 sm:px-6 py-6">
+                                      <div className="space-y-6">
+                                        <div>
+                                          <h3 className="text-lg font-semibold text-white mb-4">
+                                            Order Details
+                                          </h3>
+                                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                                            <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
+                                              <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
+                                                Subtotal
+                                              </p>
+                                              <p className="text-lg font-semibold text-white">
+                                                $
+                                                {(
+                                                  order.subtotal ||
+                                                  order.total * 0.8
+                                                ).toFixed(2)}
+                                              </p>
+                                            </div>
+                                            <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
+                                              <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
+                                                Tax
+                                              </p>
+                                              <p className="text-lg font-semibold text-white">
+                                                $
+                                                {(
+                                                  order.tax ||
+                                                  order.total * 0.1
+                                                ).toFixed(2)}
+                                              </p>
+                                            </div>
+                                            <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
+                                              <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
+                                                Shipping
+                                              </p>
+                                              <p className="text-lg font-semibold text-white">
+                                                $
+                                                {(order.shipping || 0).toFixed(
+                                                  2,
+                                                )}
+                                              </p>
+                                            </div>
+                                            <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
+                                              <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
+                                                Total
+                                              </p>
+                                              <p className="text-lg font-semibold text-green-300">
+                                                ${order.total.toFixed(2)}
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        {order.orderItems &&
+                                          order.orderItems.length > 0 && (
+                                            <div>
+                                              <h3 className="text-lg font-semibold text-white mb-4">
+                                                Items
+                                              </h3>
+                                              <div className="space-y-4">
+                                                {order.orderItems.map(
+                                                  (item, idx) => (
+                                                    <div
+                                                      key={idx}
+                                                      className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4"
+                                                    >
+                                                      <div className="flex gap-4">
+                                                        <div className="flex-1">
+                                                          <p className="text-white font-medium">
+                                                            {item.product_name ||
+                                                              "Product"}
+                                                          </p>
+                                                          <p className="text-white/60 text-sm mt-1">
+                                                            Quantity:{" "}
+                                                            {item.quantity || 1}
+                                                          </p>
+                                                          {item.options &&
+                                                            Object.keys(
+                                                              item.options,
+                                                            ).length > 0 && (
+                                                              <div className="mt-2 text-sm text-white/60">
+                                                                <p className="font-medium text-white/80">
+                                                                  Options:
+                                                                </p>
+                                                                <ul className="mt-1 space-y-1">
+                                                                  {Object.entries(
+                                                                    item.options,
+                                                                  ).map(
+                                                                    ([key, val]) => (
+                                                                      <li
+                                                                        key={key}
+                                                                      >
+                                                                        {key}:{" "}
+                                                                        {String(
+                                                                          val,
+                                                                        )}
+                                                                      </li>
+                                                                    ),
+                                                                  )}
+                                                                </ul>
+                                                              </div>
+                                                            )}
+                                                        </div>
+                                                        {item.design_file_url && (
+                                                          <div className="flex-shrink-0">
+                                                            <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
+                                                              Design File
+                                                            </p>
+                                                            <div className="w-24 h-24 bg-white/5 border border-white/10 rounded-lg overflow-hidden flex items-center justify-center">
+                                                              {item.design_file_url.match(
+                                                                /\.(jpg|jpeg|png|gif|webp)$/i,
+                                                              ) ? (
+                                                                <img
+                                                                  src={
+                                                                    item.design_file_url
+                                                                  }
+                                                                  alt="Design"
+                                                                  className="w-full h-full object-cover"
+                                                                  onError={(
+                                                                    e,
+                                                                  ) => {
+                                                                    e.currentTarget.style.display =
+                                                                      "none";
+                                                                  }}
+                                                                />
+                                                              ) : (
+                                                                <a
+                                                                  href={
+                                                                    item.design_file_url
+                                                                  }
+                                                                  target="_blank"
+                                                                  rel="noopener noreferrer"
+                                                                  className="flex flex-col items-center gap-1 p-2 hover:text-green-300 transition-colors"
+                                                                >
+                                                                  <ImageIcon className="w-6 h-6 text-white/60" />
+                                                                  <span className="text-xs text-white/60 text-center">
+                                                                    View File
+                                                                  </span>
+                                                                </a>
+                                                              )}
+                                                            </div>
+                                                          </div>
+                                                        )}
+                                                      </div>
+                                                    </div>
+                                                  ),
+                                                )}
+                                              </div>
+                                            </div>
+                                          )}
+                                      </div>
+                                    </td>
+                                  </tr>
+                                )}
+                              </>
                             ))}
                           </tbody>
                         </table>
