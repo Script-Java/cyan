@@ -517,9 +517,22 @@ export default function AdminOrders() {
                             {order.shipping_addresses &&
                               order.shipping_addresses.length > 0 && (
                                 <div className="bg-white/5 rounded border border-white/10 p-3">
-                                  <h4 className="text-sm font-semibold text-white mb-2">
-                                    Shipping Address
-                                  </h4>
+                                  <div className="flex items-center justify-between mb-3">
+                                    <h4 className="text-sm font-semibold text-white">
+                                      Shipping Address
+                                    </h4>
+                                    <button
+                                      onClick={() =>
+                                        setEditingShippingAddressOrderId(
+                                          order.id,
+                                        )
+                                      }
+                                      className="inline-flex items-center gap-1 px-2 py-1 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 rounded text-blue-300 hover:text-blue-200 transition-colors text-xs font-medium"
+                                    >
+                                      <Edit className="w-3 h-3" />
+                                      Edit
+                                    </button>
+                                  </div>
                                   {order.shipping_addresses.map(
                                     (address, idx) => (
                                       <div key={idx} className="text-sm">
