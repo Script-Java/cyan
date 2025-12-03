@@ -1,0 +1,174 @@
+const SHIPSTATION_API_URL = "https://ssapi.shipstation.com";
+
+interface ShipmentDetails {
+  carrierCode: string;
+  serviceCode: string;
+  packageCode: string;
+  weight: {
+    value: number;
+    units: "ounces" | "pounds";
+  };
+  dimensions?: {
+    length: number;
+    width: number;
+    height: number;
+    units: "inches" | "centimeters";
+  };
+  insuranceOptions?: {
+    insured: boolean;
+    insureAmount?: number;
+  };
+  internationalOptions?: {
+    contents?: string;
+    nonDelivery?: string;
+  };
+}
+
+interface ShippingAddress {
+  name: string;
+  street1: string;
+  street2?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  phone?: string;
+}
+
+interface CreateLabelPayload {
+  orderId: number;
+  shipmentDetails: ShipmentDetails;
+  toAddress: ShippingAddress;
+  testLabel?: boolean;
+}
+
+interface LabelResponse {
+  labelDownload?: {
+    href: string;
+  };
+  labelId?: number;
+  tracking?: string;
+  error?: string;
+}
+
+export class ShipStationAPI {
+  private apiKey: string;
+  private apiUrl: string;
+
+  constructor() {
+    this.apiKey = process.env.SHIPSTATION_API_KEY || "";
+    this.apiUrl = SHIPSTATION_API_URL;
+
+    if (!this.apiKey) {
+      throw new Error("SHIPSTATION_API_KEY environment variable is not set");
+    }
+  }
+
+  private getAuthHeader(): string {
+    const encodedKey = Buffer.from(`${this.apiKey}:api_partner`).toString(
+      "base64"
+    );
+    return `Basic ${encodedKey}`;
+  }
+
+  async createShippingLabel(
+    payload: CreateLabelPayload
+  ): Promise<LabelResponse> {
+    try {
+      const response = await fetch(`${this.apiUrl}/orders/createlabel`, {
+        method: "POST",
+        headers: {
+          Authorization: this.getAuthHeader(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        console.error("ShipStation API error:", error);
+        throw new Error(
+          error.message || `Failed to create shipping label: ${response.status}`
+        );
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("ShipStation API request failed:", error);
+      throw error;
+    }
+  }
+
+  async getCarriers(): Promise<any[]> {
+    try {
+      const response = await fetch(`${this.apiUrl}/carriers`, {
+        method: "GET",
+        headers: {
+          Authorization: this.getAuthHeader(),
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch carriers: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Failed to get carriers:", error);
+      throw error;
+    }
+  }
+
+  async getServices(carrierCode: string): Promise<any[]> {
+    try {
+      const response = await fetch(
+        `${this.apiUrl}/carriers/getavailableservices?carrierCode=${carrierCode}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: this.getAuthHeader(),
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch services: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Failed to get services:", error);
+      throw error;
+    }
+  }
+
+  async getRates(payload: any): Promise<any[]> {
+    try {
+      const response = await fetch(`${this.apiUrl}/shipments/getrates`, {
+        method: "POST",
+        headers: {
+          Authorization: this.getAuthHeader(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch rates: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Failed to get rates:", error);
+      throw error;
+    }
+  }
+}
+
+export const shipstationAPI = new ShipStationAPI();
