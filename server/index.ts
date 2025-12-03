@@ -101,6 +101,7 @@ import {
   handleGetAdminPendingOrders,
   handleUpdateOrderStatus,
   handleGetAllAdminOrders,
+  handleUpdateShippingAddress,
 } from "./routes/admin-orders";
 import {
   handleGetAllCustomers,
