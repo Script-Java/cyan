@@ -515,7 +515,7 @@ export default function AdminProofs() {
 
             {/* Send Proof Form */}
             {showSendForm && (
-              <div className="backdrop-blur-xl bg-white/5 border border-green-500/30 rounded-2xl p-6 sm:p-8 mb-8">
+              <div className="backdrop-blur-xl bg-white/5 border border-green-500/30 rounded-lg sm:rounded-2xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
                 <div className="flex justify-between items-start gap-2 mb-6">
                   <div>
                     <h3 className="text-lg font-semibold text-white">
