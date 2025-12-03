@@ -247,7 +247,7 @@ export default function AdminSidebar({
         )}
       >
         {/* Main Navigation */}
-        <div className="flex-1 overflow-y-auto mt-5">
+        <div className="flex-1 overflow-y-auto mt-5 md:mt-0">
           <nav className="p-3 space-y-0.5">
             {mainNavItems.map((item) => (
               <NavLink key={item.label} item={item} />
