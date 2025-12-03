@@ -1,7 +1,8 @@
 import Header from "@/components/Header";
 import { Star, ShoppingCart, ChevronDown } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import ProductCategoryCard from "@/components/ProductCategoryCard";
 
 interface Variation {
   id: string;
@@ -31,17 +32,67 @@ interface Product {
   description?: string;
   badge?: string;
   sku?: string;
+  category?: string;
   variations?: Variation[];
   options?: Option[];
 }
 
+interface Category {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+}
+
 export default function Products() {
+  const [searchParams] = useSearchParams();
+  const selectedCategory = searchParams.get("category");
+
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedProduct, setExpandedProduct] = useState<
     string | number | null
   >(null);
+
+  const categories: Category[] = [
+    {
+      id: "vinyl",
+      name: "Vinyl Stickers",
+      description: "Durable vinyl stickers perfect for laptops and outdoor use",
+      image: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593599/Alien_Rocket_mkwlag.png",
+    },
+    {
+      id: "holographic",
+      name: "Holographic Stickers",
+      description: "Eye-catching holographic stickers that shimmer in the light",
+      image: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593621/PurpleAlien_StickerShuttle_HolographicIcon_ukdotq.png",
+    },
+    {
+      id: "glitter",
+      name: "Glitter Stickers",
+      description: "Add sparkle with vibrant glitter stickers",
+      image: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593602/BlueAlien_StickerShuttle_GlitterIcon_rocwpi.png",
+    },
+    {
+      id: "chrome",
+      name: "Chrome Stickers",
+      description: "Metallic chrome stickers for a premium look",
+      image: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749593680/yELLOWAlien_StickerShuttle_ChromeIcon_nut4el.png",
+    },
+    {
+      id: "clear",
+      name: "Clear Stickers",
+      description: "Transparent stickers with vibrant full-color printing",
+      image: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749849590/StickerShuttle_ClearIcon_zxjnqc.svg",
+    },
+    {
+      id: "sheets",
+      name: "Sticker Sheets",
+      description: "Get multiple stickers in one convenient sheet",
+      image: "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1749847809/StickerShuttle_StickerSheetsIcon_2_g61dty.svg",
+    },
+  ];
 
   useEffect(() => {
     fetchProducts();
