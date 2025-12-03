@@ -29,7 +29,7 @@ export default function ProductCategoryCard({
         </div>
 
         {/* Category Info */}
-        <div className="p-3 flex flex-col flex-grow justify-end">
+        <div className="p-2 flex flex-col flex-grow justify-end">
           <h3 className="font-bold text-white text-sm mb-0.5 group-hover:text-blue-400 transition-colors">
             {name}
           </h3>
