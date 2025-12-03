@@ -147,6 +147,14 @@ export default function AdminOrders() {
             </p>
           </div>
 
+          {/* Quick Navigation */}
+          <div className="mb-6">
+            <h2 className="text-sm font-semibold text-white/80 mb-3">
+              Quick Navigation
+            </h2>
+            <AdminNavigationGrid />
+          </div>
+
           {isLoading ? (
             <div className="flex justify-center items-center h-96">
               <div className="text-white/60">Loading orders...</div>
