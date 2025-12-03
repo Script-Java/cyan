@@ -8,8 +8,10 @@ import {
   Calendar,
   Mail,
   ChevronRight,
+  ChevronDown,
   Search,
   Filter,
+  Image as ImageIcon,
 } from "lucide-react";
 
 interface OrderItem {
