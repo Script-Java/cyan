@@ -56,25 +56,12 @@ export default function Index() {
   return (
     <>
       <Header />
-      <main className="pt-20">
+      <main className="pt-20 bg-black text-white min-h-screen">
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-b from-[#030140] via-[#1a0d5e] to-[#0f0a3a] text-white overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-32">
-          <div
-            className="absolute opacity-20"
-            style={{
-              left: "24534px",
-              top: "6294px",
-              right: "0px",
-              bottom: "0px",
-            }}
-          >
-            <div className="absolute top-10 right-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
-            <div className="absolute bottom-0 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
-          </div>
-
+        <section className="relative bg-black text-white overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-32">
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
             <div className="text-center max-w-3xl mx-auto mb-12">
-              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-4 py-2 mb-6">
+              <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur border border-white/10 rounded-full px-4 py-2 mb-6">
                 <Sparkles className="w-4 h-4 text-[#FFD713]" />
                 <span className="text-sm font-medium">
                   Premium Custom Stickers
@@ -88,7 +75,7 @@ export default function Index() {
                 </span>
               </h1>
 
-              <p className="text-lg sm:text-xl text-white/80 mb-8 leading-relaxed">
+              <p className="text-lg sm:text-xl text-white/70 mb-8 leading-relaxed">
                 Express yourself with high-quality, custom stickers. Perfect for
                 laptops, water bottles, walls, and more. Fast shipping, amazing
                 designs.
@@ -97,14 +84,14 @@ export default function Index() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/products"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#FFD713] text-[#030140] rounded-lg font-bold hover:bg-[#FFD713]/90 transition-all shadow-xl shadow-[#FFD713]/30 hover:shadow-2xl hover:shadow-[#FFD713]/50"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/50"
                 >
                   Start Creating
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   to="/ecwid-store"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700 transition-all shadow-xl shadow-purple-600/30 hover:shadow-2xl hover:shadow-purple-600/50"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 border border-white/20 text-white rounded-lg font-bold hover:bg-white/20 transition-all"
                 >
                   Shop Now
                   <ArrowRight className="w-5 h-5" />
@@ -121,13 +108,13 @@ export default function Index() {
         </section>
 
         {/* Sticker Types Section */}
-        <section id="sticker-types" className="py-16 sm:py-24 bg-white">
+        <section id="sticker-types" className="py-16 sm:py-24 bg-black border-t border-white/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#030140] mb-4">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
                 Our Sticker Collections
               </h2>
-              <p className="text-lg text-gray-600">
+              <p className="text-lg text-white/60">
                 Choose from our premium sticker finishes
               </p>
             </div>
@@ -136,17 +123,17 @@ export default function Index() {
               {stickerTypes.map((type, index) => (
                 <div
                   key={index}
-                  className="group bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+                  className="group backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 hover:-translate-y-2"
                 >
                   <div
                     className={`w-16 h-16 rounded-lg bg-gradient-to-br ${type.color} flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform`}
                   >
                     {type.emoji}
                   </div>
-                  <h3 className="text-lg font-bold text-[#030140] mb-2">
+                  <h3 className="text-lg font-bold text-white mb-2">
                     {type.name}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-4">
+                  <p className="text-white/60 text-sm mb-4">
                     {type.description}
                   </p>
                   <Link
@@ -163,10 +150,10 @@ export default function Index() {
         </section>
 
         {/* Features Section */}
-        <section className="py-16 sm:py-24 bg-gradient-to-b from-gray-50 to-white">
+        <section className="py-16 sm:py-24 bg-black border-t border-white/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#030140] mb-4">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
                 Why Choose StickerHub?
               </h2>
             </div>
@@ -175,10 +162,10 @@ export default function Index() {
               {features.map((feature, index) => (
                 <div key={index} className="text-center">
                   <div className="text-4xl mb-4">{feature.icon}</div>
-                  <h3 className="text-xl font-bold text-[#030140] mb-2">
+                  <h3 className="text-xl font-bold text-white mb-2">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <p className="text-white/60">{feature.description}</p>
                 </div>
               ))}
             </div>
@@ -186,17 +173,17 @@ export default function Index() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 sm:py-24 bg-[#030140]">
+        <section className="py-16 sm:py-24 bg-black border-t border-white/10">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
               Ready to Create?
             </h2>
-            <p className="text-xl text-white/80 mb-8">
+            <p className="text-xl text-white/70 mb-8">
               Join thousands of customers who've created amazing custom stickers
             </p>
             <Link
               to="/signup"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#FFD713] text-[#030140] rounded-lg font-bold hover:bg-[#FFD713]/90 transition-all shadow-xl shadow-[#FFD713]/30 hover:shadow-2xl hover:shadow-[#FFD713]/50"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/50"
             >
               Get Started Now
               <ArrowRight className="w-5 h-5" />
@@ -205,7 +192,7 @@ export default function Index() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-[#000a1a] text-white/70 py-12 border-t border-white/10">
+        <footer className="bg-black text-white/60 py-12 border-t border-white/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
               <div>
