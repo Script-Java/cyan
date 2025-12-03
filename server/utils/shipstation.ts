@@ -1,4 +1,4 @@
-const SHIPSTATION_API_URL = "https://ssapi.shipstation.com";
+const SHIPSTATION_API_V2_URL = "https://api.shipstation.com";
 
 interface ShipmentDetails {
   carrierCode: string;
@@ -57,7 +57,7 @@ export class ShipStationAPI {
 
   constructor() {
     this.apiKey = process.env.SHIPSTATION_API_KEY || "";
-    this.apiUrl = SHIPSTATION_API_URL;
+    this.apiUrl = SHIPSTATION_API_V2_URL;
 
     if (!this.apiKey) {
       throw new Error("SHIPSTATION_API_KEY environment variable is not set");
@@ -65,10 +65,8 @@ export class ShipStationAPI {
   }
 
   private getAuthHeader(): string {
-    // ShipStation uses API key with empty password in Basic Auth
-    const credentials = `${this.apiKey}:`;
-    const encodedKey = Buffer.from(credentials).toString("base64");
-    return `Basic ${encodedKey}`;
+    // ShipStation v2 API uses Bearer token authentication
+    return `Bearer ${this.apiKey}`;
   }
 
   async createShippingLabel(
