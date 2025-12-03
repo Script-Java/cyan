@@ -4,6 +4,7 @@ import AdminLayout from "@/components/AdminLayout";
 import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import OrderStatusEditor from "@/components/OrderStatusEditor";
 import ShippingLabelModal from "@/components/ShippingLabelModal";
+import ShippingAddressEditor from "@/components/ShippingAddressEditor";
 import {
   Package,
   Calendar,
