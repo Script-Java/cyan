@@ -91,9 +91,9 @@ export default function AdminSettings() {
         </div>
 
         {/* Navigation Grid - Desktop/Tablet Only */}
-        <div className="hidden md:block border-b border-gray-200 bg-white/50 backdrop-blur-sm">
+        <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
           <div className="px-6 lg:px-8 py-6 sm:py-8">
-            <h2 className="text-sm font-semibold text-gray-600 mb-4">Quick Navigation</h2>
+            <h2 className="text-sm font-semibold text-white/80 mb-4">Quick Navigation</h2>
             <AdminNavigationGrid />
           </div>
         </div>
