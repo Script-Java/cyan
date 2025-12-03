@@ -270,7 +270,10 @@ export default function AdminDashboard() {
                                 </tr>
                                 {expandedOrderId === order.id && (
                                   <tr className="border-b border-white/5 bg-white/5">
-                                    <td colSpan={6} className="px-2 sm:px-3 py-4">
+                                    <td
+                                      colSpan={6}
+                                      className="px-2 sm:px-3 py-4"
+                                    >
                                       <div className="space-y-4">
                                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                           <div className="bg-white/10 rounded p-3">
@@ -292,8 +295,7 @@ export default function AdminDashboard() {
                                             <p className="text-sm font-semibold text-white">
                                               $
                                               {(
-                                                order.tax ||
-                                                order.total * 0.1
+                                                order.tax || order.total * 0.1
                                               ).toFixed(2)}
                                             </p>
                                           </div>
@@ -303,9 +305,7 @@ export default function AdminDashboard() {
                                             </p>
                                             <p className="text-sm font-semibold text-white">
                                               $
-                                              {(order.shipping || 0).toFixed(
-                                                2,
-                                              )}
+                                              {(order.shipping || 0).toFixed(2)}
                                             </p>
                                           </div>
                                           <div className="bg-blue-600/20 rounded p-3 border border-blue-500/30">
@@ -337,7 +337,8 @@ export default function AdminDashboard() {
                                                             "Product"}
                                                         </p>
                                                         <p className="text-white/60 text-xs mt-1">
-                                                          Qty: {item.quantity || 1}
+                                                          Qty:{" "}
+                                                          {item.quantity || 1}
                                                         </p>
                                                         {item.options &&
                                                           Object.keys(
@@ -347,7 +348,10 @@ export default function AdminDashboard() {
                                                               {Object.entries(
                                                                 item.options,
                                                               ).map(
-                                                                ([key, val]) => (
+                                                                ([
+                                                                  key,
+                                                                  val,
+                                                                ]) => (
                                                                   <div
                                                                     key={key}
                                                                   >

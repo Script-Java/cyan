@@ -294,7 +294,10 @@ export default function AdminOrders() {
                                 </tr>
                                 {expandedOrderId === order.id && (
                                   <tr className="border-b border-white/10 bg-white/5">
-                                    <td colSpan={7} className="px-4 sm:px-6 py-6">
+                                    <td
+                                      colSpan={7}
+                                      className="px-4 sm:px-6 py-6"
+                                    >
                                       <div className="space-y-6">
                                         <div>
                                           <h3 className="text-lg font-semibold text-white mb-4">
@@ -320,8 +323,7 @@ export default function AdminOrders() {
                                               <p className="text-lg font-semibold text-white">
                                                 $
                                                 {(
-                                                  order.tax ||
-                                                  order.total * 0.1
+                                                  order.tax || order.total * 0.1
                                                 ).toFixed(2)}
                                               </p>
                                             </div>
@@ -382,9 +384,14 @@ export default function AdminOrders() {
                                                                   {Object.entries(
                                                                     item.options,
                                                                   ).map(
-                                                                    ([key, val]) => (
+                                                                    ([
+                                                                      key,
+                                                                      val,
+                                                                    ]) => (
                                                                       <li
-                                                                        key={key}
+                                                                        key={
+                                                                          key
+                                                                        }
                                                                       >
                                                                         {key}:{" "}
                                                                         {String(
