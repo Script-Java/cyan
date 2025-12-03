@@ -386,7 +386,9 @@ export default function AdminProofs() {
       <>
         <Header />
         <div className="flex">
-          <AdminSidebar />
+          <div className="hidden md:block">
+            <AdminSidebar />
+          </div>
           <main className="flex-1 md:ml-64 min-h-screen bg-black py-6 md:py-8 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
             <div className="max-w-6xl mx-auto">
               <div className="flex justify-center items-center h-48 sm:h-64">

@@ -141,7 +141,9 @@ export default function AdminProducts() {
     <>
       <Header />
       <div className="flex">
-        <AdminSidebar />
+        <div className="hidden md:block">
+          <AdminSidebar />
+        </div>
         <main className="flex-1 md:ml-64 min-h-screen bg-black text-white pb-20 md:pb-0">
           <div className="pt-6">
             {/* Header Section */}
