@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import AdminSidebar from "@/components/AdminSidebar";
-import MobileAdminPanel from "@/components/MobileAdminPanel";
+import AdminNavbar from "@/components/AdminNavbar";
 import ProofNotificationAlert from "@/components/dashboard/ProofNotificationAlert";
 import {
   BarChart3,
@@ -50,7 +49,6 @@ export default function AdminDashboard() {
   const [pendingOrders, setPendingOrders] = useState<PendingOrder[]>([]);
   const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
 
   useEffect(() => {
