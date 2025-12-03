@@ -762,11 +762,11 @@ export default function AdminProofs() {
                       </div>
                     )}
 
-                  <div className="flex gap-3 pt-4">
+                  <div className="flex gap-2 sm:gap-3 pt-4 sm:pt-6">
                     <button
                       onClick={handleSendProof}
                       disabled={sendingProof}
-                      className="flex-1 px-4 py-3 bg-green-600 hover:bg-green-700 disabled:bg-green-600/50 text-white font-medium rounded-xl transition-colors"
+                      className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-green-600 hover:bg-green-700 disabled:bg-green-600/50 text-white font-medium text-sm sm:text-base rounded-lg sm:rounded-xl transition-colors"
                     >
                       {sendingProof ? "Sending..." : "Send Proof"}
                     </button>
@@ -778,7 +778,7 @@ export default function AdminProofs() {
                         setCustomerEmail("");
                         setSelectedOrder(null);
                       }}
-                      className="flex-1 px-4 py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-xl transition-colors border border-white/10"
+                      className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-white/10 hover:bg-white/20 text-white font-medium text-sm sm:text-base rounded-lg sm:rounded-xl transition-colors border border-white/10"
                     >
                       Cancel
                     </button>
