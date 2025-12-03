@@ -370,6 +370,12 @@ export function createServer() {
   app.get("/api/admin/all-orders", verifyToken, handleGetAllAdminOrders);
   app.put("/api/admin/orders/:orderId/status", verifyToken, handleUpdateOrderStatus);
 
+  // ===== Shipping Routes (Protected - admin only) =====
+  app.post("/api/shipping/label", verifyToken, handleCreateLabel);
+  app.post("/api/shipping/rates", verifyToken, handleGetRates);
+  app.get("/api/shipping/carriers", verifyToken, handleGetCarriers);
+  app.get("/api/shipping/services", verifyToken, handleGetServices);
+
   // ===== Webhook Routes =====
   app.post("/api/webhooks/ecwid", handleEcwidOrderWebhook);
   app.get("/api/webhooks/health", handleWebhookHealth);
