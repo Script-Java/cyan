@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
-import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import {
   BarChart3,
-  Users,
   Smartphone,
   Monitor,
   Tablet,
@@ -32,57 +30,6 @@ interface AnalyticsData {
   };
   topPages: Array<{ path: string; views: number }>;
 }
-
-const StatCard = ({
-  icon: Icon,
-  title,
-  value,
-  trend,
-  color,
-  isLive = false,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  value: string | number;
-  trend?: number;
-  color: string;
-  isLive?: boolean;
-}) => (
-  <div className="group backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 hover:border-white/20 rounded-xl p-4 transition-all duration-300 hover:shadow-lg hover:shadow-white/5">
-    <div className="flex items-start justify-between mb-4">
-      <div>
-        <p className="text-white/60 text-xs uppercase tracking-widest font-medium mb-0.5">
-          {title}
-        </p>
-        <p className="text-3xl font-bold text-white tracking-tight">{value}</p>
-      </div>
-      <div
-        className={`p-2 rounded-lg backdrop-blur-xl transition-all duration-300 group-hover:scale-110 ${
-          isLive ? `${color} animate-pulse` : `bg-gradient-to-br ${color}`
-        }`}
-      >
-        {Icon}
-      </div>
-    </div>
-    {trend !== undefined && (
-      <div className="flex items-center gap-1.5">
-        <div
-          className={`flex items-center gap-0.5 text-xs font-semibold ${
-            trend >= 0 ? "text-green-400" : "text-red-400"
-          }`}
-        >
-          {trend >= 0 ? (
-            <ArrowUpRight className="w-3 h-3" />
-          ) : (
-            <ArrowDownRight className="w-3 h-3" />
-          )}
-          {Math.abs(trend)}%
-        </div>
-        <span className="text-white/40 text-xs">vs yesterday</span>
-      </div>
-    )}
-  </div>
-);
 
 export default function AdminAnalytics() {
   const navigate = useNavigate();
@@ -167,7 +114,7 @@ export default function AdminAnalytics() {
       icon: "🔗",
       color: "from-green-500/40 to-green-600/20",
       borderColor: "border-green-500/50",
-      barColor: "bg-gradient-to-r from-green-500 to-green-400",
+      barColor: "bg-green-500",
     },
     {
       name: "Google",
@@ -175,7 +122,7 @@ export default function AdminAnalytics() {
       icon: "🔍",
       color: "from-blue-500/40 to-blue-600/20",
       borderColor: "border-blue-500/50",
-      barColor: "bg-gradient-to-r from-blue-500 to-blue-400",
+      barColor: "bg-blue-500",
     },
     {
       name: "Facebook",
@@ -183,7 +130,7 @@ export default function AdminAnalytics() {
       icon: "👍",
       color: "from-cyan-500/40 to-cyan-600/20",
       borderColor: "border-cyan-500/50",
-      barColor: "bg-gradient-to-r from-cyan-500 to-cyan-400",
+      barColor: "bg-cyan-500",
     },
     {
       name: "Instagram",
@@ -191,7 +138,7 @@ export default function AdminAnalytics() {
       icon: "📸",
       color: "from-pink-500/40 to-pink-600/20",
       borderColor: "border-pink-500/50",
-      barColor: "bg-gradient-to-r from-pink-500 to-pink-400",
+      barColor: "bg-pink-500",
     },
     {
       name: "Other",
@@ -199,209 +146,187 @@ export default function AdminAnalytics() {
       icon: "🌐",
       color: "from-purple-500/40 to-purple-600/20",
       borderColor: "border-purple-500/50",
-      barColor: "bg-gradient-to-r from-purple-500 to-purple-400",
+      barColor: "bg-purple-500",
     },
   ];
 
   return (
     <AdminLayout>
-      <div className="w-full bg-black text-white pb-20 md:pb-0">
-        <div className="border-b border-white/10 pb-4">
-          <div className="px-6 lg:px-8 py-5">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="p-1.5 bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-lg">
-                    <BarChart3 className="w-4 h-4 text-green-400" />
+      <main className="min-h-screen bg-black py-6">
+        <div className="max-w-6xl mx-auto px-4">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-3xl font-bold text-white">Analytics</h1>
+              <p className="text-white/60 mt-1">
+                Real-time customer activity and traffic insights
+              </p>
+            </div>
+            <button
+              onClick={fetchAnalyticsData}
+              disabled={isRefreshing}
+              className="px-3 py-2 bg-green-600 hover:bg-green-700 disabled:bg-green-600/50 text-white rounded-lg font-medium transition-all text-sm flex items-center gap-1.5 whitespace-nowrap"
+            >
+              <RefreshCw
+                className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`}
+              />
+              Refresh
+            </button>
+          </div>
+
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+            <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:border-white/20 transition-colors">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-white/60 text-xs uppercase tracking-wide font-medium">
+                    Active Users Now
+                  </p>
+                  <p className="text-2xl font-bold text-white mt-1">
+                    {analytics.activeUsers}
+                  </p>
+                  <div className="flex items-center gap-1 mt-2 text-green-400 text-xs font-semibold">
+                    <ArrowUpRight className="w-3 h-3" />
+                    12% vs yesterday
                   </div>
-                  <h1 className="text-2xl font-bold text-white">Analytics</h1>
                 </div>
-                <p className="text-white/50 text-xs mt-1">
-                  Real-time customer activity and traffic insights
-                </p>
+                <div className="p-2 bg-green-500/20 rounded-lg">
+                  <Activity className="w-5 h-5 text-green-400" />
+                </div>
               </div>
-              <button
-                onClick={fetchAnalyticsData}
-                disabled={isRefreshing}
-                className="px-3 py-1.5 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 disabled:from-green-600/50 disabled:to-green-500/50 text-white rounded-lg font-medium transition-all duration-300 text-xs flex items-center gap-1.5 whitespace-nowrap"
-              >
-                <RefreshCw
-                  className={`w-3 h-3 ${isRefreshing ? "animate-spin" : ""}`}
-                />
-                Refresh
-              </button>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:border-white/20 transition-colors">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-white/60 text-xs uppercase tracking-wide font-medium">
+                    Page Views Today
+                  </p>
+                  <p className="text-2xl font-bold text-white mt-1">
+                    {analytics.totalPageViews}
+                  </p>
+                  <div className="flex items-center gap-1 mt-2 text-blue-400 text-xs font-semibold">
+                    <ArrowUpRight className="w-3 h-3" />
+                    8% vs yesterday
+                  </div>
+                </div>
+                <div className="p-2 bg-blue-500/20 rounded-lg">
+                  <TrendingUp className="w-5 h-5 text-blue-400" />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
-          <div className="px-6 lg:px-8 py-6 sm:py-8">
-            <h2 className="text-sm font-semibold text-white/80 mb-4">
-              Quick Navigation
+          {/* Device Distribution */}
+          <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-6">
+            <h2 className="text-sm font-semibold text-white mb-3">
+              Device Distribution
             </h2>
-            <AdminNavigationGrid />
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                {
+                  name: "Mobile",
+                  icon: Smartphone,
+                  value: analytics.devices.mobile,
+                  color: "bg-pink-500/20",
+                  iconColor: "text-pink-400",
+                  barColor: "bg-pink-500",
+                },
+                {
+                  name: "Desktop",
+                  icon: Monitor,
+                  value: analytics.devices.desktop,
+                  color: "bg-blue-500/20",
+                  iconColor: "text-blue-400",
+                  barColor: "bg-blue-500",
+                },
+                {
+                  name: "Tablet",
+                  icon: Tablet,
+                  value: analytics.devices.tablet,
+                  color: "bg-emerald-500/20",
+                  iconColor: "text-emerald-400",
+                  barColor: "bg-emerald-500",
+                },
+              ].map((device, idx) => {
+                const Icon = device.icon;
+                const percentage =
+                  totalDevices > 0 ? (device.value / totalDevices) * 100 : 0;
+                return (
+                  <div
+                    key={idx}
+                    className="bg-white/5 border border-white/10 rounded p-3"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div>
+                        <p className="text-white/60 text-xs">
+                          {device.name}
+                        </p>
+                        <p className="text-lg font-bold text-white">
+                          {device.value}
+                        </p>
+                      </div>
+                      <Icon className={`w-4 h-4 ${device.iconColor}`} />
+                    </div>
+                    <div className="bg-white/10 h-1.5 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ${device.barColor} transition-all`}
+                        style={{
+                          width: `${percentage}%`,
+                        }}
+                      />
+                    </div>
+                    <p className="text-white/40 text-xs mt-1">
+                      {percentage.toFixed(0)}%
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Traffic Sources */}
+          <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+            <h2 className="text-sm font-semibold text-white mb-3">
+              Traffic Sources
+            </h2>
+            <div className="space-y-2">
+              {trafficData.map((source, idx) => {
+                const percentage =
+                  totalTraffic > 0 ? (source.value / totalTraffic) * 100 : 0;
+                return (
+                  <div key={idx} className="bg-white/5 rounded border border-white/10 p-2.5">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-sm">{source.icon}</span>
+                        <div className="min-w-0">
+                          <p className="text-white font-medium text-xs">
+                            {source.name}
+                          </p>
+                          <p className="text-white/60 text-xs">
+                            {source.value} visitors
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-white font-bold text-xs whitespace-nowrap ml-2">
+                        {percentage.toFixed(0)}%
+                      </p>
+                    </div>
+                    <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ${source.barColor} transition-all`}
+                        style={{
+                          width: `${percentage}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
-
-        <main className="min-h-screen bg-black text-white">
-          <div className="px-6 lg:px-8 py-5">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-              <StatCard
-                icon={<Activity className="w-4 h-4 text-green-400" />}
-                title="Active Users Now"
-                value={analytics.activeUsers}
-                trend={12}
-                color="from-green-500/20 to-green-600/10"
-                isLive
-              />
-              <StatCard
-                icon={<TrendingUp className="w-4 h-4 text-blue-400" />}
-                title="Page Views Today"
-                value={analytics.totalPageViews}
-                trend={8}
-                color="from-blue-500/20 to-blue-600/10"
-              />
-            </div>
-
-            <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-5 mb-5">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="p-1.5 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg">
-                  <Smartphone className="w-4 h-4 text-purple-400" />
-                </div>
-                <div>
-                  <h2 className="text-sm font-bold text-white">
-                    Device Distribution
-                  </h2>
-                  <p className="text-white/40 text-xs">
-                    Traffic by device type
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-3">
-                {[
-                  {
-                    name: "Mobile",
-                    icon: Smartphone,
-                    value: analytics.devices.mobile,
-                    color: "from-pink-500 to-rose-400",
-                    iconColor: "text-pink-400",
-                  },
-                  {
-                    name: "Desktop",
-                    icon: Monitor,
-                    value: analytics.devices.desktop,
-                    color: "from-blue-500 to-cyan-400",
-                    iconColor: "text-blue-400",
-                  },
-                  {
-                    name: "Tablet",
-                    icon: Tablet,
-                    value: analytics.devices.tablet,
-                    color: "from-emerald-500 to-teal-400",
-                    iconColor: "text-emerald-400",
-                  },
-                ].map((device, idx) => {
-                  const Icon = device.icon;
-                  const percentage =
-                    totalDevices > 0 ? (device.value / totalDevices) * 100 : 0;
-                  return (
-                    <div
-                      key={idx}
-                      className="backdrop-blur-xl bg-white/5 border border-white/10 hover:border-white/20 rounded-lg p-3 transition-all duration-300"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <div>
-                          <p className="text-white/60 text-xs uppercase tracking-wide font-medium">
-                            {device.name}
-                          </p>
-                          <p className="text-lg font-bold text-white">
-                            {device.value}
-                          </p>
-                        </div>
-                        <div
-                          className={`p-2 rounded-lg bg-gradient-to-br ${device.color}`}
-                        >
-                          <Icon className={`w-4 h-4 ${device.iconColor}`} />
-                        </div>
-                      </div>
-
-                      <div className="space-y-1">
-                        <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
-                          <div
-                            className={`h-full bg-gradient-to-r ${device.color} transition-all duration-500`}
-                            style={{
-                              width: `${percentage}%`,
-                            }}
-                          />
-                        </div>
-                        <p className="text-white/40 text-xs">
-                          {percentage.toFixed(1)}%
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-5">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="p-1.5 bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-lg">
-                  <BarChart3 className="w-4 h-4 text-blue-400" />
-                </div>
-                <div>
-                  <h2 className="text-sm font-bold text-white">
-                    Traffic Sources
-                  </h2>
-                  <p className="text-white/40 text-xs">
-                    Where visitors come from
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                {trafficData.map((source, idx) => {
-                  const percentage =
-                    totalTraffic > 0 ? (source.value / totalTraffic) * 100 : 0;
-                  return (
-                    <div
-                      key={idx}
-                      className={`backdrop-blur-xl bg-gradient-to-r ${source.color} border ${source.borderColor} rounded-lg p-3 transition-all duration-300 hover:border-white/30`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">{source.icon}</span>
-                          <div>
-                            <p className="text-white font-semibold text-sm">
-                              {source.name}
-                            </p>
-                            <p className="text-white/60 text-xs">
-                              {source.value} visitors
-                            </p>
-                          </div>
-                        </div>
-                        <p className="text-white font-bold text-sm">
-                          {percentage.toFixed(1)}%
-                        </p>
-                      </div>
-
-                      <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full ${source.barColor} transition-all duration-500`}
-                          style={{
-                            width: `${percentage}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </main>
-      </div>
+      </main>
     </AdminLayout>
   );
 }
