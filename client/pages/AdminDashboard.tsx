@@ -12,11 +12,21 @@ import {
   DollarSign,
   Settings,
   ChevronRight,
+  ChevronDown,
   Package,
   Calendar,
   Mail,
   Upload,
+  Image as ImageIcon,
 } from "lucide-react";
+
+interface OrderItem {
+  id?: number;
+  quantity?: number;
+  product_name?: string;
+  options?: Record<string, any>;
+  design_file_url?: string;
+}
 
 interface PendingOrder {
   id: number;
@@ -25,11 +35,12 @@ interface PendingOrder {
   customerEmail: string;
   status: string;
   total: number;
-  subtotal: number;
-  tax: number;
-  shipping: number;
+  subtotal?: number;
+  tax?: number;
+  shipping?: number;
   dateCreated: string;
-  itemCount: number;
+  itemCount?: number;
+  orderItems?: OrderItem[];
 }
 
 export default function AdminDashboard() {
