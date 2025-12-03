@@ -64,11 +64,14 @@ export class ShipStationAPI {
     }
   }
 
-  private getAuthHeader(): string {
-    const encodedKey = Buffer.from(`${this.apiKey}:`).toString(
-      "base64"
-    );
-    return `Basic ${encodedKey}`;
+  private getAuthHeader(): { [key: string]: string } {
+    // ShipStation uses API key with empty password in Basic Auth
+    const credentials = `${this.apiKey}:`;
+    const encodedKey = Buffer.from(credentials).toString("base64");
+    return {
+      Authorization: `Basic ${encodedKey}`,
+      "X-Partner-Id": "Builder.io",
+    };
   }
 
   async createShippingLabel(
