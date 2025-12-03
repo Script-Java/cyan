@@ -146,6 +146,14 @@ export default function OrderConfirmation() {
     }
   }, [authToken, orderId]);
 
+  // Track purchase when order is loaded
+  useEffect(() => {
+    if (order && order.id && order.total > 0 && !isLoading) {
+      const itemCount = order.products?.length || 0;
+      trackPurchase(order.id, order.total, itemCount);
+    }
+  }, [order, isLoading]);
+
   if (isLoading) {
     return (
       <>
