@@ -378,6 +378,11 @@ export function createServer() {
     verifyToken,
     handleUpdateOrderStatus,
   );
+  app.put(
+    "/api/admin/orders/:orderId/shipping-address",
+    verifyToken,
+    handleUpdateShippingAddress,
+  );
 
   // ===== Shipping Routes (Protected - admin only) =====
   app.post("/api/shipping/label", verifyToken, handleCreateLabel);
