@@ -102,16 +102,33 @@ export class ShipStationAPI {
 
   async getCarriers(): Promise<any[]> {
     try {
+      const authHeader = this.getAuthHeader();
+      console.log("ShipStation Request:", {
+        url: `${this.apiUrl}/carriers`,
+        hasApiKey: !!this.apiKey,
+        apiKeyLength: this.apiKey.length,
+        authHeaderPrefix: authHeader.substring(0, 20),
+      });
+
       const response = await fetch(`${this.apiUrl}/carriers`, {
         method: "GET",
         headers: {
-          Authorization: this.getAuthHeader(),
+          Authorization: authHeader,
           "Content-Type": "application/json",
         },
       });
 
+      console.log("ShipStation Response:", {
+        status: response.status,
+        statusText: response.statusText,
+      });
+
       if (!response.ok) {
-        throw new Error(`Failed to fetch carriers: ${response.status}`);
+        const errorText = await response.text();
+        console.error("ShipStation Error Response:", errorText);
+        throw new Error(
+          `Failed to fetch carriers: ${response.status} - ${errorText}`
+        );
       }
 
       const data = await response.json();
