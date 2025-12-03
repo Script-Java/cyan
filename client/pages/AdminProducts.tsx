@@ -8,8 +8,7 @@ import {
   Trash2,
   AlertCircle,
 } from "lucide-react";
-import Header from "@/components/Header";
-import AdminNavbar from "@/components/AdminNavbar";
+import AdminLayout from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
