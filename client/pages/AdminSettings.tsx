@@ -63,8 +63,8 @@ export default function AdminSettings() {
   if (isLoading) {
     return (
       <AdminLayout>
-        <div className="w-full min-h-screen bg-gray-50 flex items-center justify-center pb-20 md:pb-0">
-          <div className="text-gray-600">Loading settings...</div>
+        <div className="w-full min-h-screen bg-black flex items-center justify-center pb-20 md:pb-0">
+          <div className="text-white/60">Loading settings...</div>
         </div>
       </AdminLayout>
     );
