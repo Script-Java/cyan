@@ -199,8 +199,20 @@ export default function AdminOrders() {
                     <option value="printing" className="bg-gray-900">
                       Printing
                     </option>
+                    <option value="preparing for shipping" className="bg-gray-900">
+                      Preparing for Shipping
+                    </option>
                     <option value="in transit" className="bg-gray-900">
                       In Transit
+                    </option>
+                    <option value="shipped" className="bg-gray-900">
+                      Shipped
+                    </option>
+                    <option value="delivered" className="bg-gray-900">
+                      Delivered
+                    </option>
+                    <option value="cancelled" className="bg-gray-900">
+                      Cancelled
                     </option>
                   </select>
                 </div>
