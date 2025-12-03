@@ -3,29 +3,6 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles, Zap } from "lucide-react";
 
 export default function Index() {
-  const features = [
-    {
-      icon: "🎨",
-      title: "Custom Design",
-      description: "Upload your own designs or work with our creators",
-    },
-    {
-      icon: "⚡",
-      title: "Fast Delivery",
-      description: "Get your stickers shipped in 3-5 business days",
-    },
-    {
-      icon: "💰",
-      title: "Best Prices",
-      description: "Competitive pricing with bulk discounts available",
-    },
-    {
-      icon: "🛡️",
-      title: "Quality Guaranteed",
-      description: "Premium materials and expert printing",
-    },
-  ];
-
   return (
     <>
       <Header />
