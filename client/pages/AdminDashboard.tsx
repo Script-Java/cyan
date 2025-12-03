@@ -133,13 +133,13 @@ export default function AdminDashboard() {
       <div className="w-full">
         {/* Header Section */}
         <div className="border-b border-white/10 bg-black">
-          <div className="px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
+          <div className="px-3 sm:px-6 lg:px-8 py-1 sm:py-2">
             <div className="flex items-start justify-between">
               <div>
                 <h1 className="text-lg sm:text-2xl font-bold text-white">
                   Dashboard
                 </h1>
-                <p className="text-white/60 mt-1 text-xs sm:text-sm">
+                <p className="text-white/60 mt-0.5 text-xs sm:text-sm">
                   Welcome back! Here's what's happening with your store today.
                 </p>
               </div>
@@ -149,8 +149,8 @@ export default function AdminDashboard() {
 
         {/* Navigation Grid - Desktop/Tablet Only */}
         <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
-          <div className="px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
-            <h2 className="text-sm font-semibold text-white/80 mb-4">
+          <div className="px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
+            <h2 className="text-sm font-semibold text-white/80 mb-2">
               Quick Navigation
             </h2>
             <AdminNavigationGrid />
@@ -158,20 +158,20 @@ export default function AdminDashboard() {
         </div>
 
         {/* Main Content */}
-        <div className="px-3 sm:px-6 lg:px-8 py-3 sm:py-6">
+        <div className="px-3 sm:px-6 lg:px-8 py-2 sm:py-3">
           {isLoading ? (
             <div className="flex justify-center items-center h-96">
               <div className="text-white/60">Loading dashboard...</div>
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-3">
               {/* Proof Notifications */}
               <ProofNotificationAlert />
 
               {/* Pending Orders Section */}
               {pendingOrdersCount > 0 && (
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
-                  <div className="mb-3 sm:mb-4">
+                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-2 sm:p-4">
+                  <div className="mb-2 sm:mb-3">
                     <h2 className="text-sm sm:text-lg font-bold text-white flex items-center gap-2">
                       <Package className="w-4 sm:w-5 h-4 sm:h-5 text-[#FFD713]" />
                       Pending Orders
@@ -401,7 +401,7 @@ export default function AdminDashboard() {
               )}
 
               {/* Quick Access Links */}
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-1.5 sm:gap-2">
                 {adminLinks.map((link, index) => (
                   <button
                     key={index}
@@ -426,8 +426,8 @@ export default function AdminDashboard() {
               </div>
 
               {/* Traffic Section */}
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
-                <div className="mb-3 sm:mb-4">
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-2 sm:p-4">
+                <div className="mb-2 sm:mb-3">
                   <h2 className="text-sm sm:text-lg font-bold text-white flex items-center gap-2">
                     <BarChart3 className="w-4 sm:w-5 h-4 sm:h-5 text-purple-400" />
                     Traffic Section
@@ -448,7 +448,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Traffic Stats */}
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-1.5 sm:gap-2">
                   <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
                     <p className="text-white/60 text-xs mb-1">Views</p>
                     <p className="text-lg sm:text-xl font-bold text-white">
@@ -493,8 +493,8 @@ export default function AdminDashboard() {
               </div>
 
               {/* Live Visitors Section */}
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
-                <div className="mb-3 sm:mb-4">
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-2 sm:p-4">
+                <div className="mb-2 sm:mb-3">
                   <h2 className="text-sm sm:text-lg font-bold text-white flex items-center gap-2">
                     <Eye className="w-4 sm:w-5 h-4 sm:h-5 text-green-400" />
                     Live Visitors
@@ -505,7 +505,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Live Visitors Counter */}
-                <div className="bg-white/5 rounded-lg border border-white/10 p-3 sm:p-4 mb-4">
+                <div className="bg-white/5 rounded-lg border border-white/10 p-2 sm:p-3 mb-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-white/60 font-medium mb-1 text-xs">
@@ -528,7 +528,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Live Visitors Placeholder */}
-                <div className="flex items-center justify-center h-20 sm:h-32 bg-white/5 rounded-lg border-2 border-dashed border-white/10 mb-4">
+                <div className="flex items-center justify-center h-20 sm:h-32 bg-white/5 rounded-lg border-2 border-dashed border-white/10 mb-3">
                   <div className="text-center">
                     <Eye className="w-6 sm:w-8 h-6 sm:h-8 text-white/40 mx-auto mb-2" />
                     <p className="text-white/60 font-medium text-xs">
@@ -538,7 +538,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Live Visitors Stats */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2">
                   <div className="p-2 sm:p-3 bg-white/5 rounded-lg">
                     <p className="text-white/60 text-xs mb-1">Peak</p>
                     <p className="text-base sm:text-lg font-bold text-white">
