@@ -107,48 +107,6 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Sticker Types Section */}
-        <section id="sticker-types" className="py-16 sm:py-24 bg-black border-t border-white/10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Our Sticker Collections
-              </h2>
-              <p className="text-lg text-white/60">
-                Choose from our premium sticker finishes
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {stickerTypes.map((type, index) => (
-                <div
-                  key={index}
-                  className="group backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 hover:-translate-y-2"
-                >
-                  <div
-                    className={`w-16 h-16 rounded-lg bg-gradient-to-br ${type.color} flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform`}
-                  >
-                    {type.emoji}
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-2">
-                    {type.name}
-                  </h3>
-                  <p className="text-white/60 text-sm mb-4">
-                    {type.description}
-                  </p>
-                  <Link
-                    to={`/products?type=${type.name.toLowerCase()}`}
-                    className="text-[#FFD713] font-semibold text-sm hover:text-[#FFA500] transition-colors flex items-center gap-2"
-                  >
-                    View Collection
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Features Section */}
         <section className="py-16 sm:py-24 bg-black border-t border-white/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
