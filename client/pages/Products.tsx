@@ -332,21 +332,21 @@ export default function Products() {
 
           {/* Loading State */}
           {isLoading && (
-            <div className="flex justify-center items-center py-16">
+            <div className="flex justify-center items-center py-12">
               <div className="text-center">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
-                <p className="text-white/60">Loading products...</p>
+                <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-3"></div>
+                <p className="text-white/60 text-sm">Loading products...</p>
               </div>
             </div>
           )}
 
           {/* Error State */}
           {error && products.length === 0 && !isLoading && (
-            <div className="bg-red-600/20 border border-red-500/30 rounded-lg p-6 mb-8">
-              <p className="text-red-200">Error: {error}</p>
+            <div className="bg-red-600/20 border border-red-500/30 rounded-lg p-4 mb-6">
+              <p className="text-red-200 text-sm">Error: {error}</p>
               <button
                 onClick={fetchProducts}
-                className="mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                className="mt-2 px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-xs"
               >
                 Try Again
               </button>
@@ -355,13 +355,13 @@ export default function Products() {
 
           {/* No Products Found */}
           {!isLoading && selectedCategory && filteredProducts.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-white/60 text-lg mb-6">
+            <div className="text-center py-12">
+              <p className="text-white/60 text-sm mb-4">
                 No products found in this category.
               </p>
               <Link
                 to="/products"
-                className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors"
+                className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors text-sm"
               >
                 View All Categories
               </Link>
@@ -370,7 +370,7 @@ export default function Products() {
 
           {/* Products Grid */}
           {!isLoading && filteredProducts.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
               {filteredProducts.map((product) => (
                 <div
                   key={product.id}
