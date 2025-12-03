@@ -271,17 +271,6 @@ export default function Products() {
       <Header />
       <main className="pt-20 min-h-screen bg-black text-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-8">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
-              Our Products
-            </h1>
-            <p className="text-sm sm:text-base text-white/60 max-w-2xl mx-auto">
-              Choose from our premium selection of stickers and customize them
-              to your needs.
-            </p>
-          </div>
-
           {/* Category Section */}
           {!selectedCategory && (
             <div className="mb-12">
