@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { AlertCircle, Loader2, Package, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
@@ -49,31 +49,19 @@ export default function ShippingLabelModal({
   const [isTestLabel, setIsTestLabel] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch carriers on mount
-  useEffect(() => {
-    const loadCarriers = async () => {
-      await fetchCarriers();
-    };
-    loadCarriers();
-  }, []);
-
-  // Fetch services when carrier changes
-  useEffect(() => {
-    if (selectedCarrier) {
-      fetchServices(selectedCarrier);
-    }
-  }, [selectedCarrier]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const fetchCarriers = async () => {
+  // Define fetchCarriers with useCallback
+  const fetchCarriers = useCallback(async () => {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
         console.warn("No auth token found, using default carriers");
-        setCarriers([
+        const defaultCarriers = [
           { name: "USPS", code: "usps" },
           { name: "UPS", code: "ups" },
           { name: "FedEx", code: "fedex" },
-        ]);
+        ];
+        setCarriers(defaultCarriers);
+        setSelectedCarrier("usps");
         return;
       }
 
@@ -112,9 +100,10 @@ export default function ShippingLabelModal({
       setCarriers(defaultCarriers);
       setSelectedCarrier("usps");
     }
-  };
+  }, []);
 
-  const fetchServices = async (carrierCode: string) => {
+  // Define fetchServices with useCallback
+  const fetchServices = useCallback(async (carrierCode: string) => {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
@@ -168,7 +157,19 @@ export default function ShippingLabelModal({
       };
       setServices(defaultServices[carrierCode] || []);
     }
-  };
+  }, []);
+
+  // Fetch carriers on mount
+  useEffect(() => {
+    fetchCarriers();
+  }, [fetchCarriers]);
+
+  // Fetch services when carrier changes
+  useEffect(() => {
+    if (selectedCarrier) {
+      fetchServices(selectedCarrier);
+    }
+  }, [selectedCarrier, fetchServices]);
 
   const handleCreateLabel = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -289,7 +290,7 @@ export default function ShippingLabelModal({
             <select
               value={selectedCarrier}
               onChange={(e) => setSelectedCarrier(e.target.value)}
-              disabled={isLoading}
+              disabled={isLoading || carriers.length === 0}
               className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 disabled:opacity-50"
             >
               {carriers.map((carrier) => (
@@ -312,7 +313,7 @@ export default function ShippingLabelModal({
               className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 disabled:opacity-50"
             >
               <option value="" className="bg-gray-900">
-                Select a service...
+                {services.length === 0 ? "Loading services..." : "Select a service..."}
               </option>
               {services.map((service) => (
                 <option key={service.code} value={service.code} className="bg-gray-900">
