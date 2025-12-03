@@ -112,12 +112,12 @@ export default function AdminSettings() {
                 )}
 
                 {/* Store Information */}
-                <div className="bg-white rounded-lg border border-gray-200 p-8">
+                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8">
                   <div className="mb-6">
-                    <h2 className="text-xl font-bold text-gray-900 mb-2">
+                    <h2 className="text-xl font-bold text-white mb-2">
                       Store Information
                     </h2>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-white/60 text-sm">
                       Basic details about your store
                     </p>
                   </div>
