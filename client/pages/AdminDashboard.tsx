@@ -230,7 +230,10 @@ export default function AdminDashboard() {
                                   ${order.total.toFixed(2)}
                                 </td>
                                 <td className="px-2 sm:px-3 py-2">
-                                  <button className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs sm:text-sm bg-blue-600/30 text-blue-300 hover:bg-blue-600/50 transition-colors font-medium whitespace-nowrap">
+                                  <button
+                                    onClick={() => navigate("/admin/orders")}
+                                    className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs sm:text-sm bg-blue-600/30 text-blue-300 hover:bg-blue-600/50 transition-colors font-medium whitespace-nowrap"
+                                  >
                                     View
                                     <ChevronRight className="w-3 h-3 hidden sm:inline" />
                                   </button>
