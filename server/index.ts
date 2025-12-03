@@ -299,6 +299,7 @@ export function createServer() {
     handleGetCustomerDetails,
   );
   app.get("/api/admin/analytics", verifyToken, handleGetAnalytics);
+  app.post("/api/analytics/track", handleTrackEvent);
   app.get("/api/admin/finance", verifyToken, handleGetFinance);
 
   // ===== Admin Products Routes (Protected) =====
