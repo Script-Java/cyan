@@ -828,13 +828,13 @@ export default function AdminProofs() {
                               <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-purple-300">
                                 Email
                               </th>
-                              <th className="px-4 py-3 font-semibold text-purple-300">
+                              <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-purple-300">
                                 Status
                               </th>
-                              <th className="px-4 py-3 font-semibold text-purple-300 text-right">
+                              <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-purple-300 text-right">
                                 Total
                               </th>
-                              <th className="px-4 py-3 font-semibold text-purple-300">
+                              <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-purple-300">
                                 Action
                               </th>
                             </tr>
@@ -845,25 +845,25 @@ export default function AdminProofs() {
                                 key={order.id}
                                 className="border-b border-white/10 hover:bg-white/5 transition-colors"
                               >
-                                <td className="px-4 py-4 font-semibold text-white">
+                                <td className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-white text-xs sm:text-sm">
                                   #{order.id}
                                 </td>
-                                <td className="px-4 py-4 text-white/80">
+                                <td className="px-2 sm:px-4 py-3 sm:py-4 text-white/80 text-xs sm:text-sm truncate">
                                   {order.customerName}
                                 </td>
-                                <td className="px-4 py-4 text-white/60">
+                                <td className="px-2 sm:px-4 py-3 sm:py-4 text-white/60 text-xs sm:text-sm truncate">
                                   {order.customerEmail}
                                 </td>
-                                <td className="px-4 py-4">
-                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-orange-500/20 text-orange-300 border border-orange-500/30">
+                                <td className="px-2 sm:px-4 py-3 sm:py-4">
+                                  <span className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium bg-orange-500/20 text-orange-300 border border-orange-500/30 inline-block">
                                     {order.status.charAt(0).toUpperCase() +
                                       order.status.slice(1)}
                                   </span>
                                 </td>
-                                <td className="px-4 py-4 font-semibold text-green-300 text-right">
+                                <td className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-green-300 text-right text-xs sm:text-sm">
                                   ${order.total.toFixed(2)}
                                 </td>
-                                <td className="px-4 py-4">
+                                <td className="px-2 sm:px-4 py-3 sm:py-4">
                                   <button
                                     onClick={() => handleSelectOrder(order)}
                                     className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-600/20 text-green-300 hover:bg-green-600/30 transition-colors font-medium text-xs border border-green-600/30"
