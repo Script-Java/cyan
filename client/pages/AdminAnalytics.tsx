@@ -204,17 +204,11 @@ export default function AdminAnalytics() {
   ];
 
   return (
-    <>
-      <Header />
-      <div className="flex">
-        <div className="hidden md:block">
-          <AdminSidebar />
-        </div>
-        <main className="flex-1 md:ml-64 min-h-screen bg-black text-white pb-20 md:pb-0">
-          <div className="pt-4">
-            {/* Header Section */}
-            <div className="border-b border-white/10 pb-4">
-              <div className="px-6 lg:px-8 py-5">
+    <AdminLayout>
+      <div className="w-full bg-black text-white pb-20 md:pb-0">
+        {/* Header Section */}
+        <div className="border-b border-white/10 pb-4">
+          <div className="px-6 lg:px-8 py-5">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
@@ -242,11 +236,20 @@ export default function AdminAnalytics() {
                     Refresh
                   </button>
                 </div>
-              </div>
-            </div>
+          </div>
+        </div>
 
-            {/* Main Content */}
-            <div className="px-6 lg:px-8 py-5">
+        {/* Navigation Grid - Desktop/Tablet Only */}
+        <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
+          <div className="px-6 lg:px-8 py-6 sm:py-8">
+            <h2 className="text-sm font-semibold text-white/80 mb-4">Quick Navigation</h2>
+            <AdminNavigationGrid />
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <main className="min-h-screen bg-black text-white">
+          <div className="px-6 lg:px-8 py-5">
               {/* Key Metrics Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                 <StatCard
@@ -409,12 +412,8 @@ export default function AdminAnalytics() {
                 </div>
               </div>
             </div>
-          </div>
-        </main>
-
-        {/* Mobile Admin Panel */}
-        <MobileAdminPanel />
+          </main>
       </div>
-    </>
+    </AdminLayout>
   );
 }
