@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
+import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import {
   BarChart3,
   Smartphone,
@@ -155,7 +156,7 @@ export default function AdminAnalytics() {
       <main className="min-h-screen bg-black py-6">
         <div className="max-w-6xl mx-auto px-4">
           {/* Header */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-3xl font-bold text-white">Analytics</h1>
               <p className="text-white/60 mt-1">
@@ -172,6 +173,14 @@ export default function AdminAnalytics() {
               />
               Refresh
             </button>
+          </div>
+
+          {/* Quick Navigation */}
+          <div className="mb-6">
+            <h2 className="text-sm font-semibold text-white/80 mb-3">
+              Quick Navigation
+            </h2>
+            <AdminNavigationGrid />
           </div>
 
           {/* Stats Cards */}
