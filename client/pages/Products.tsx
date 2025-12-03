@@ -312,18 +312,18 @@ export default function Products() {
                                     .join(" • ")}
                                 </div>
                               ) : (
-                                <span className="text-gray-700">
+                                <span className="text-white/60">
                                   {variation.id}
                                 </span>
                               )}
                             </div>
-                            <span className="font-semibold text-gray-900">
+                            <span className="font-semibold text-white">
                               ${variation.price.toFixed(2)}
                             </span>
                           </div>
                         ))}
                         {product.variations.length > 8 && (
-                          <p className="text-xs text-gray-600 text-center pt-2">
+                          <p className="text-xs text-white/40 text-center pt-2">
                             + {product.variations.length - 8} more options
                           </p>
                         )}
