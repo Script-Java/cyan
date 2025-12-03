@@ -103,35 +103,42 @@ export class ShipStationAPI {
   async getCarriers(): Promise<any[]> {
     try {
       const authHeader = this.getAuthHeader();
-      console.log("ShipStation Request:", {
-        url: `${this.apiUrl}/carriers`,
-        hasApiKey: !!this.apiKey,
-        apiKeyLength: this.apiKey.length,
-        authHeaderPrefix: authHeader.substring(0, 20),
-      });
+      console.log("ShipStation Request - getCarriers");
 
-      const response = await fetch(`${this.apiUrl}/carriers`, {
+      // Try with Authorization header
+      let response = await fetch(`${this.apiUrl}/carriers`, {
         method: "GET",
         headers: {
           Authorization: authHeader,
           "Content-Type": "application/json",
+          "User-Agent": "Builder.io ShipStation Integration",
         },
       });
 
-      console.log("ShipStation Response:", {
+      console.log("ShipStation Carriers Response:", {
         status: response.status,
         statusText: response.statusText,
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("ShipStation Error Response:", errorText);
+        console.error("ShipStation Error Response:", {
+          status: response.status,
+          body: errorText.substring(0, 500),
+        });
+
+        // If 401, the API key might be invalid
+        if (response.status === 401) {
+          throw new Error(`Unauthorized: Invalid ShipStation API key. Check your credentials.`);
+        }
+
         throw new Error(
-          `Failed to fetch carriers: ${response.status} - ${errorText}`
+          `Failed to fetch carriers: ${response.status}`
         );
       }
 
       const data = await response.json();
+      console.log("Carriers fetched successfully:", data?.length || 0);
       return data;
     } catch (error) {
       console.error("Failed to get carriers:", error);
