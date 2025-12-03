@@ -270,13 +270,13 @@ export default function Products() {
     <>
       <Header />
       <main className="pt-20 min-h-screen bg-black text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-8">
           {/* Header */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
               Our Products
             </h1>
-            <p className="text-xl text-white/60 mb-8 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-white/60 max-w-2xl mx-auto">
               Choose from our premium selection of stickers and customize them
               to your needs.
             </p>
@@ -284,16 +284,16 @@ export default function Products() {
 
           {/* Category Section */}
           {!selectedCategory && (
-            <div className="mb-20">
-              <h2 className="text-3xl font-bold text-white mb-2 text-center">
+            <div className="mb-12">
+              <h2 className="text-2xl font-bold text-white mb-1 text-center">
                 CHOOSE{" "}
-                <span className="inline-block bg-lime-400 text-black px-3 py-1 rounded font-bold">
+                <span className="inline-block bg-lime-400 text-black px-2 py-0.5 rounded font-bold text-lg">
                   STICKER
                 </span>
               </h2>
-              <p className="text-center text-white/60 mb-12">TYPE:</p>
+              <p className="text-center text-white/60 mb-8 text-sm">TYPE:</p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
                 {categories.map((category) => (
                   <ProductCategoryCard
                     key={category.id}
