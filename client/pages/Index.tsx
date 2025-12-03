@@ -97,20 +97,38 @@ export default function Index() {
 
         {/* CTA Section */}
         <section className="py-16 sm:py-24 bg-black">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-              Ready to Create?
-            </h2>
-            <p className="text-xl text-white/70 mb-8">
-              Join thousands of customers who've created amazing custom stickers
-            </p>
-            <Link
-              to="/signup"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/50"
-            >
-              Get Started Now
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative" style={{ boxShadow: "0 0 60px rgba(0, 0, 0, 0.5)" }}>
+            <div className="absolute inset-0 bg-white/5 rounded-2xl" style={{ opacity: 0.2 }}>
+              <div style={{ position: "absolute", top: "24px", left: "32px", fontSize: "18px" }}>⭐</div>
+              <div style={{ position: "absolute", top: "16px", left: "25%", fontSize: "14px", color: "rgba(255, 255, 255, 0.8)" }}>✨</div>
+              <div style={{ position: "absolute", top: "32px", right: "25%", color: "rgba(100, 150, 200, 0.7)" }}>⭐</div>
+              <div style={{ position: "absolute", top: "24px", right: "32px", fontSize: "14px", color: "rgba(150, 100, 200, 0.7)" }}>✨</div>
+              <div style={{ position: "absolute", top: "50%", left: "24px", fontSize: "14px", color: "rgba(200, 150, 100, 0.7)" }}>⭐</div>
+              <div style={{ position: "absolute", top: "50%", right: "24px", color: "rgba(150, 100, 150, 0.7)" }}>✨</div>
+              <div style={{ position: "absolute", top: "33.3333%", left: "48px", fontSize: "12px", color: "rgba(180, 120, 60, 0.7)" }}>⭐</div>
+              <div style={{ position: "absolute", top: "66.6667%", right: "48px", fontSize: "14px", color: "rgba(120, 180, 200, 0.7)" }}>✨</div>
+              <div style={{ position: "absolute", bottom: "24px", left: "33.3333%", fontSize: "14px", color: "rgba(200, 180, 60, 0.8)" }}>✨</div>
+              <div style={{ position: "absolute", bottom: "32px", left: "64px", fontSize: "12px", color: "rgba(100, 150, 200, 0.7)" }}>⭐</div>
+              <div style={{ position: "absolute", bottom: "16px", right: "33.3333%", color: "rgba(255, 255, 255, 0.7)" }}>⭐</div>
+              <div style={{ position: "absolute", bottom: "24px", right: "64px", fontSize: "14px", color: "rgba(150, 100, 200, 0.7)" }}>✨</div>
+              <div style={{ position: "absolute", top: "48px", left: "50%", fontSize: "12px", color: "rgba(200, 150, 100, 0.7)" }}>⭐</div>
+              <div style={{ position: "absolute", bottom: "48px", left: "50%", fontSize: "14px", color: "rgba(150, 100, 150, 0.7)" }}>✨</div>
+            </div>
+            <div className="relative z-10">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+                Ready to Create?
+              </h2>
+              <p className="text-xl text-white/70 mb-8">
+                Join thousands of customers who've created amazing custom stickers
+              </p>
+              <Link
+                to="/signup"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/50"
+              >
+                Get Started Now
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
           </div>
         </section>
 
