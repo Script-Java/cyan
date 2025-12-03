@@ -138,8 +138,8 @@ export default function AdminDashboard() {
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
         />
-        <main className="flex-1 md:ml-64 min-h-screen bg-black text-white">
-          <div className="pt-16">
+        <main className="flex-1 min-h-screen bg-black text-white">
+          <div className="pt-16 md:pt-4">
             {/* Header Section */}
             <div className="border-b border-white/10 bg-black">
               <div className="px-3 sm:px-6 lg:px-8 py-2 sm:py-4">
