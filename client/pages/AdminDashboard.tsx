@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
-import AdminNavbar from "@/components/AdminNavbar";
+import AdminLayout from "@/components/AdminLayout";
 import ProofNotificationAlert from "@/components/dashboard/ProofNotificationAlert";
 import {
   BarChart3,
