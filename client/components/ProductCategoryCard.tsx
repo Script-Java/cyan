@@ -29,17 +29,17 @@ export default function ProductCategoryCard({
         </div>
 
         {/* Category Info */}
-        <div className="p-4 flex flex-col flex-grow justify-end">
-          <h3 className="font-bold text-white text-base mb-1 group-hover:text-blue-400 transition-colors">
+        <div className="p-3 flex flex-col flex-grow justify-end">
+          <h3 className="font-bold text-white text-sm mb-0.5 group-hover:text-blue-400 transition-colors">
             {name}
           </h3>
           {description && (
-            <p className="text-xs text-white/60 mb-2 group-hover:text-white/80 transition-colors line-clamp-2">
+            <p className="text-xs text-white/60 mb-1 group-hover:text-white/80 transition-colors line-clamp-1">
               {description}
             </p>
           )}
           {itemCount !== undefined && (
-            <p className="text-xs text-white/40 group-hover:text-white/60 transition-colors mb-2">
+            <p className="text-xs text-white/40 group-hover:text-white/60 transition-colors mb-1">
               {itemCount} {itemCount === 1 ? "product" : "products"}
             </p>
           )}
