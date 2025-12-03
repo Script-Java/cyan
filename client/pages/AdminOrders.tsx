@@ -70,7 +70,7 @@ export default function AdminOrders() {
       const token = localStorage.getItem("authToken");
       if (!token) return;
 
-      const response = await fetch("/api/admin/orders/pending", {
+      const response = await fetch("/api/admin/all-orders", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -81,7 +81,7 @@ export default function AdminOrders() {
         setPendingOrders(data.orders || []);
         setFilteredOrders(data.orders || []);
       } else {
-        console.error("Failed to fetch pending orders:", response.status);
+        console.error("Failed to fetch orders:", response.status);
       }
     } catch (error) {
       console.error("Error fetching orders:", error);
