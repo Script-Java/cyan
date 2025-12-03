@@ -815,17 +815,17 @@ export default function AdminProofs() {
                         </p>
                       </div>
                     ) : (
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-left text-sm">
+                      <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+                        <table className="w-full text-left text-xs sm:text-sm">
                           <thead>
                             <tr className="border-b border-white/10 bg-white/5">
-                              <th className="px-4 py-3 font-semibold text-purple-300">
+                              <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-purple-300">
                                 Order #
                               </th>
-                              <th className="px-4 py-3 font-semibold text-purple-300">
+                              <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-purple-300">
                                 Customer
                               </th>
-                              <th className="px-4 py-3 font-semibold text-purple-300">
+                              <th className="px-2 sm:px-4 py-2 sm:py-3 font-semibold text-purple-300">
                                 Email
                               </th>
                               <th className="px-4 py-3 font-semibold text-purple-300">
