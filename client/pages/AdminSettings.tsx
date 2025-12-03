@@ -72,17 +72,17 @@ export default function AdminSettings() {
 
   return (
     <AdminLayout>
-      <div className="w-full min-h-screen bg-gray-50 pb-20 md:pb-0">
+      <div className="w-full min-h-screen bg-black text-white pb-20 md:pb-0">
         {/* Header Section */}
-        <div className="bg-white border-b border-gray-200">
+        <div className="bg-black border-b border-white/10">
           <div className="px-6 lg:px-8 py-8">
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                  <Settings className="w-8 h-8 text-blue-600" />
+                <h1 className="text-3xl font-bold text-white flex items-center gap-3">
+                  <Settings className="w-8 h-8 text-[#FFD713]" />
                   Store Settings
                 </h1>
-                <p className="text-gray-600 mt-2">
+                <p className="text-white/60 mt-2">
                   Configure your store details and preferences
                 </p>
               </div>
