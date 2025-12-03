@@ -13,6 +13,7 @@ import { CheckCircle, Loader2, Home } from "lucide-react";
 import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useStoreCredit } from "@/hooks/useStoreCredit";
+import { trackPurchase } from "@/lib/analytics";
 
 interface OrderDetails {
   id: number;
