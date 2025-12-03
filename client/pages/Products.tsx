@@ -353,6 +353,21 @@ export default function Products() {
             </div>
           )}
 
+          {/* No Products Found */}
+          {!isLoading && selectedCategory && filteredProducts.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-white/60 text-lg mb-6">
+                No products found in this category.
+              </p>
+              <Link
+                to="/products"
+                className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors"
+              >
+                View All Categories
+              </Link>
+            </div>
+          )}
+
           {/* Products Grid */}
           {!isLoading && filteredProducts.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
