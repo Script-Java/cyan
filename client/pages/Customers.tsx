@@ -14,9 +14,8 @@ import {
   TrendingUp,
   ArrowUpDown,
 } from "lucide-react";
-import Header from "@/components/Header";
-import AdminSidebar from "@/components/AdminSidebar";
-import MobileAdminPanel from "@/components/MobileAdminPanel";
+import AdminLayout from "@/components/AdminLayout";
+import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import { Button } from "@/components/ui/button";
 
 interface Customer {
@@ -231,21 +230,33 @@ export default function Customers() {
   );
 
   return (
-    <>
-      <Header />
-      <div className="flex">
-        <div className="hidden lg:block">
-          <AdminSidebar />
-        </div>
-        <main className="flex-1 lg:ml-64 min-h-screen bg-black text-white px-4 sm:px-10 py-12 pb-20 lg:pb-0">
-          <div className="max-w-7xl mx-auto">
-            {/* Header Section */}
-            <div className="mb-12">
+    <AdminLayout>
+      <div className="w-full">
+        {/* Header Section */}
+        <div className="border-b border-white/10 bg-black">
+          <div className="px-4 sm:px-10 py-8">
+            <div className="max-w-7xl mx-auto">
               <h1 className="text-3xl sm:text-4xl font-bold mb-2">Customers</h1>
               <p className="text-white/60">
                 Manage and analyze all customer information
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Navigation Grid - Desktop/Tablet Only */}
+        <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
+          <div className="px-4 sm:px-10 py-8">
+            <div className="max-w-7xl mx-auto">
+              <h2 className="text-sm font-semibold text-white/80 mb-4">Quick Navigation</h2>
+              <AdminNavigationGrid />
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <main className="min-h-screen bg-black text-white px-4 sm:px-10 py-12 pb-20 lg:pb-0">
+          <div className="max-w-7xl mx-auto">
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
@@ -704,10 +715,7 @@ export default function Customers() {
             )}
           </div>
         </main>
-
-        {/* Mobile Admin Panel */}
-        <MobileAdminPanel />
       </div>
-    </>
+    </AdminLayout>
   );
 }
