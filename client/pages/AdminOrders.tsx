@@ -559,6 +559,23 @@ export default function AdminOrders() {
           }}
         />
       )}
+
+      {/* Shipping Label Modal */}
+      {shippingLabelOrderId !== null && (
+        <ShippingLabelModal
+          orderId={shippingLabelOrderId}
+          orderNumber={shippingLabelOrderId.toString()}
+          shippingAddress={
+            pendingOrders.find((o) => o.id === shippingLabelOrderId)
+              ?.shipping_addresses?.[0]
+          }
+          onClose={() => setShippingLabelOrderId(null)}
+          onSuccess={() => {
+            setShippingLabelOrderId(null);
+            fetchOrders();
+          }}
+        />
+      )}
     </AdminLayout>
   );
 }
