@@ -136,10 +136,8 @@ export default function AdminProducts() {
   }
 
   return (
-    <>
-      <Header />
-      <AdminNavbar />
-      <main className="min-h-screen bg-black text-white pb-20 md:pb-0">
+    <AdminLayout>
+      <div className="w-full pb-20 md:pb-0">
         <div className="pt-6">
           {/* Header Section */}
           <div className="border-b border-white/10">
@@ -296,7 +294,7 @@ export default function AdminProducts() {
             )}
           </div>
         </div>
-      </main>
-    </>
+      </div>
+    </AdminLayout>
   );
 }
