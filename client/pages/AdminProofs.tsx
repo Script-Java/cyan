@@ -406,7 +406,9 @@ export default function AdminProofs() {
     <>
       <Header />
       <div className="flex">
-        <AdminSidebar />
+        <div className="hidden md:block">
+          <AdminSidebar />
+        </div>
         <main className="flex-1 md:ml-64 min-h-screen bg-black text-white pt-[72px] px-6 sm:px-8 pb-0">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
