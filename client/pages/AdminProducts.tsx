@@ -139,174 +139,165 @@ export default function AdminProducts() {
   return (
     <>
       <Header />
-      <div className="flex">
-        <div className="hidden md:block">
-          <AdminSidebar />
-        </div>
-        <main className="flex-1 md:ml-64 min-h-screen bg-black text-white pb-20 md:pb-0">
-          <div className="pt-6">
-            {/* Header Section */}
-            <div className="border-b border-white/10">
-              <div className="px-6 lg:px-8 py-8">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h1 className="text-4xl font-bold text-white flex items-center gap-3">
-                      <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                        <Package className="w-8 h-8 text-green-400" />
-                      </div>
-                      Products
-                    </h1>
-                    <p className="text-white/60 mt-2">
-                      Manage your product catalog and inventory
-                    </p>
-                  </div>
-                  <Button
-                    onClick={() => navigate("/admin/products/new")}
-                    className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-4 py-2"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Add Product
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Main Content */}
+      <AdminNavbar />
+      <main className="min-h-screen bg-black text-white pb-20 md:pb-0">
+        <div className="pt-6">
+          {/* Header Section */}
+          <div className="border-b border-white/10">
             <div className="px-6 lg:px-8 py-8">
-              {/* Search Section */}
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-8">
-                <div className="flex gap-4">
-                  <div className="flex-1 relative">
-                    <Search className="absolute left-4 top-3.5 w-5 h-5 text-white/40" />
-                    <input
-                      type="text"
-                      placeholder="Search products by name or SKU..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
-                    />
-                  </div>
+              <div className="flex items-start justify-between">
+                <div>
+                  <h1 className="text-4xl font-bold text-white flex items-center gap-3">
+                    <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                      <Package className="w-8 h-8 text-green-400" />
+                    </div>
+                    Products
+                  </h1>
+                  <p className="text-white/60 mt-2">
+                    Manage your product catalog and inventory
+                  </p>
                 </div>
+                <Button
+                  onClick={() => navigate("/admin/products/new")}
+                  className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-4 py-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Product
+                </Button>
               </div>
-
-              {/* Products List */}
-              {isLoading ? (
-                <div className="flex justify-center items-center h-96 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl">
-                  <div className="text-center">
-                    <p className="text-white/60">Loading products...</p>
-                  </div>
-                </div>
-              ) : filteredProducts.length === 0 ? (
-                <div className="flex justify-center items-center h-96 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl">
-                  <div className="text-center">
-                    <Package className="w-16 h-16 text-white/20 mx-auto mb-6" />
-                    <p className="text-white font-medium mb-2">
-                      {searchQuery ? "No products found" : "No products yet"}
-                    </p>
-                    <p className="text-white/60 text-sm mb-6">
-                      {searchQuery
-                        ? "Try a different search query"
-                        : 'Click the "Add Product" button to get started'}
-                    </p>
-                    {!searchQuery && (
-                      <Button
-                        onClick={() => navigate("/admin/products/new")}
-                        className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-6 py-2"
-                      >
-                        <Plus className="w-4 h-4" />
-                        Add Your First Product
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-white/10">
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
-                          Product Name
-                        </th>
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
-                          SKU
-                        </th>
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
-                          Price
-                        </th>
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
-                          Status
-                        </th>
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
-                          Created
-                        </th>
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredProducts.map((product) => (
-                        <tr
-                          key={product.id}
-                          className="border-b border-white/5 hover:bg-white/5 transition"
-                        >
-                          <td className="px-6 py-4 text-sm text-white">
-                            {product.name}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-white/60">
-                            {product.sku || "-"}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-white">
-                            {formatPrice(product.base_price)}
-                          </td>
-                          <td className="px-6 py-4 text-sm">
-                            <span
-                              className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                                product.availability
-                                  ? "bg-green-500/20 text-green-400"
-                                  : "bg-red-500/20 text-red-400"
-                              }`}
-                            >
-                              {product.availability
-                                ? "Available"
-                                : "Unavailable"}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 text-sm text-white/60">
-                            {formatDate(product.created_at)}
-                          </td>
-                          <td className="px-6 py-4 text-sm">
-                            <div className="flex gap-3">
-                              <button
-                                onClick={() =>
-                                  navigate(`/admin/products/${product.id}/edit`)
-                                }
-                                className="text-blue-400 hover:text-blue-300 transition"
-                              >
-                                <Edit2 className="w-4 h-4" />
-                              </button>
-                              <button
-                                onClick={() => handleDeleteProduct(product.id)}
-                                disabled={isDeleting === product.id}
-                                className="text-red-400 hover:text-red-300 transition disabled:opacity-50"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
             </div>
           </div>
-        </main>
 
-        {/* Mobile Admin Panel */}
-        <MobileAdminPanel />
-      </div>
+          {/* Main Content */}
+          <div className="px-6 lg:px-8 py-8">
+            {/* Search Section */}
+            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-8">
+              <div className="flex gap-4">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-4 top-3.5 w-5 h-5 text-white/40" />
+                  <input
+                    type="text"
+                    placeholder="Search products by name or SKU..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Products List */}
+            {isLoading ? (
+              <div className="flex justify-center items-center h-96 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl">
+                <div className="text-center">
+                  <p className="text-white/60">Loading products...</p>
+                </div>
+              </div>
+            ) : filteredProducts.length === 0 ? (
+              <div className="flex justify-center items-center h-96 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl">
+                <div className="text-center">
+                  <Package className="w-16 h-16 text-white/20 mx-auto mb-6" />
+                  <p className="text-white font-medium mb-2">
+                    {searchQuery ? "No products found" : "No products yet"}
+                  </p>
+                  <p className="text-white/60 text-sm mb-6">
+                    {searchQuery
+                      ? "Try a different search query"
+                      : 'Click the "Add Product" button to get started'}
+                  </p>
+                  {!searchQuery && (
+                    <Button
+                      onClick={() => navigate("/admin/products/new")}
+                      className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-6 py-2"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Add Your First Product
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-white/10">
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
+                        Product Name
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
+                        SKU
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
+                        Price
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
+                        Status
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
+                        Created
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredProducts.map((product) => (
+                      <tr
+                        key={product.id}
+                        className="border-b border-white/5 hover:bg-white/5 transition"
+                      >
+                        <td className="px-6 py-4 text-sm text-white">
+                          {product.name}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-white/60">
+                          {product.sku || "-"}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-white">
+                          {formatPrice(product.base_price)}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <span
+                            className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                              product.availability
+                                ? "bg-green-500/20 text-green-400"
+                                : "bg-red-500/20 text-red-400"
+                            }`}
+                          >
+                            {product.availability ? "Available" : "Unavailable"}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-white/60">
+                          {formatDate(product.created_at)}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <div className="flex gap-3">
+                            <button
+                              onClick={() =>
+                                navigate(`/admin/products/${product.id}/edit`)
+                              }
+                              className="text-blue-400 hover:text-blue-300 transition"
+                            >
+                              <Edit2 className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteProduct(product.id)}
+                              disabled={isDeleting === product.id}
+                              className="text-red-400 hover:text-red-300 transition disabled:opacity-50"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
     </>
   );
 }
