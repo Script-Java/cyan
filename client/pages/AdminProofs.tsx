@@ -884,7 +884,7 @@ export default function AdminProofs() {
 
             {/* Error Message */}
             {error && (
-              <div className="mb-8 backdrop-blur-xl bg-red-500/20 border border-red-500/30 rounded-2xl p-4 flex gap-3">
+              <div className="mb-6 sm:mb-8 backdrop-blur-xl bg-red-500/20 border border-red-500/30 rounded-lg sm:rounded-2xl p-4 flex gap-3">
                 <AlertCircle className="w-5 h-5 text-red-300 flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-red-200">{error}</p>
               </div>
@@ -969,7 +969,7 @@ export default function AdminProofs() {
 
                       {/* Proof Details - Expanded */}
                       {expandedProofId === proof.id && (
-                        <div className="border-t border-white/10 px-6 py-6 bg-white/5">
+                        <div className="border-t border-white/10 px-3 sm:px-6 py-4 sm:py-6 bg-white/5">
                           {/* Comments Section */}
                           {proof.comments && proof.comments.length > 0 && (
                             <div className="mb-6">
@@ -1094,7 +1094,7 @@ export default function AdminProofs() {
 
                       {/* Proof Details - Expanded */}
                       {expandedProofId === proof.id && (
-                        <div className="border-t border-white/10 px-6 py-6 bg-white/5">
+                        <div className="border-t border-white/10 px-3 sm:px-6 py-4 sm:py-6 bg-white/5">
                           {/* Status Info */}
                           <div className="mb-6 p-4 bg-white/5 rounded-lg border border-white/10">
                             <p className="text-sm font-medium text-white mb-2">
