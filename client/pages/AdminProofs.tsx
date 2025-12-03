@@ -446,26 +446,26 @@ export default function AdminProofs() {
                 <p className="text-sm text-white/60 mb-6">
                   Click on any order below to quickly send a proof to that customer
                 </p>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-sm">
+                <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+                  <table className="w-full text-left text-xs sm:text-sm">
                     <thead>
                       <tr className="border-b border-white/10 bg-white/5">
-                        <th className="px-4 py-4 font-semibold text-purple-300 whitespace-nowrap">
+                        <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-purple-300 whitespace-nowrap">
                           Order #
                         </th>
-                        <th className="px-4 py-4 font-semibold text-purple-300 whitespace-nowrap hidden sm:table-cell">
+                        <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-purple-300 whitespace-nowrap hidden sm:table-cell">
                           Customer
                         </th>
-                        <th className="px-4 py-4 font-semibold text-purple-300 whitespace-nowrap hidden md:table-cell">
+                        <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-purple-300 whitespace-nowrap hidden md:table-cell">
                           Email
                         </th>
-                        <th className="px-4 py-4 font-semibold text-purple-300 whitespace-nowrap">
+                        <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-purple-300 whitespace-nowrap">
                           Status
                         </th>
-                        <th className="px-4 py-4 font-semibold text-purple-300 text-right whitespace-nowrap">
+                        <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-purple-300 text-right whitespace-nowrap">
                           Total
                         </th>
-                        <th className="px-4 py-4 font-semibold text-purple-300 whitespace-nowrap">
+                        <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-purple-300 whitespace-nowrap text-right">
                           Action
                         </th>
                       </tr>
@@ -476,32 +476,33 @@ export default function AdminProofs() {
                           key={order.id}
                           className="border-b border-white/10 hover:bg-white/5 transition-colors cursor-pointer"
                         >
-                          <td className="px-4 py-4 font-semibold text-white whitespace-nowrap">
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-white whitespace-nowrap text-xs sm:text-sm">
                             #{order.id}
                           </td>
-                          <td className="px-4 py-4 text-white/80 whitespace-nowrap hidden sm:table-cell truncate max-w-xs">
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 text-white/80 whitespace-nowrap hidden sm:table-cell truncate max-w-xs text-xs sm:text-sm">
                             {order.customerName}
                           </td>
-                          <td className="px-4 py-4 text-white/60 hidden md:table-cell">
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 text-white/60 hidden md:table-cell text-xs sm:text-sm">
                             <div className="flex items-center gap-1 truncate max-w-xs">
                               {order.customerEmail}
                             </div>
                           </td>
-                          <td className="px-4 py-4">
-                            <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-orange-500/20 text-orange-300 border border-orange-500/30 whitespace-nowrap">
+                          <td className="px-2 sm:px-4 py-3 sm:py-4">
+                            <span className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-medium bg-orange-500/20 text-orange-300 border border-orange-500/30 whitespace-nowrap inline-block">
                               {order.status.charAt(0).toUpperCase() +
                                 order.status.slice(1)}
                             </span>
                           </td>
-                          <td className="px-4 py-4 font-semibold text-green-300 text-right whitespace-nowrap text-sm">
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-green-300 text-right whitespace-nowrap text-xs sm:text-sm">
                             ${order.total.toFixed(2)}
                           </td>
-                          <td className="px-4 py-4">
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 text-right">
                             <button
                               onClick={() => handleSelectOrder(order)}
-                              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-green-600/20 text-green-300 hover:bg-green-600/30 transition-colors font-medium text-xs whitespace-nowrap border border-green-600/30"
+                              className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-2 rounded-lg bg-green-600/20 text-green-300 hover:bg-green-600/30 transition-colors font-medium text-xs whitespace-nowrap border border-green-600/30"
                             >
-                              Send Proof
+                              <span>Send</span>
+                              <span className="hidden sm:inline">Proof</span>
                             </button>
                           </td>
                         </tr>
