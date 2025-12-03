@@ -892,17 +892,17 @@ export default function AdminProofs() {
 
             {/* Empty State */}
             {proofs.length === 0 && !error && (
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-12 text-center">
-                <Clock className="w-16 h-16 text-white/20 mx-auto mb-6" />
-                <h2 className="text-xl font-semibold text-white mb-2">
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg sm:rounded-2xl p-6 sm:p-12 text-center">
+                <Clock className="w-12 sm:w-16 h-12 sm:h-16 text-white/20 mx-auto mb-4 sm:mb-6" />
+                <h2 className="text-lg sm:text-xl font-semibold text-white mb-2">
                   No Proofs Yet
                 </h2>
-                <p className="text-base text-white/60 mb-8">
+                <p className="text-sm sm:text-base text-white/60 mb-6 sm:mb-8">
                   Start by sending a proof to a customer.
                 </p>
                 <button
                   onClick={() => setShowSendForm(true)}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-green-600 hover:bg-green-700 text-white font-medium text-sm sm:text-base rounded-lg transition-colors"
                 >
                   Send Your First Proof
                 </button>
