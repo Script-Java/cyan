@@ -312,7 +312,7 @@ export default function Products() {
               </div>
               <Link
                 to="/products"
-                className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg transition-colors text-xs font-medium whitespace-nowrap"
+                className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-xs font-medium whitespace-nowrap"
               >
                 View All
               </Link>
