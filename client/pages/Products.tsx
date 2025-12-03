@@ -166,14 +166,14 @@ export default function Products() {
   return (
     <>
       <Header />
-      <main className="pt-20 min-h-screen bg-white">
+      <main className="pt-20 min-h-screen bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           {/* Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl sm:text-5xl font-bold text-[#030140] mb-4">
+            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
               Our Products
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-white/60 mb-8 max-w-2xl mx-auto">
               Choose from our premium selection of stickers and customize them
               to your needs.
             </p>
@@ -183,19 +183,19 @@ export default function Products() {
           {isLoading && (
             <div className="flex justify-center items-center py-16">
               <div className="text-center">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-                <p className="text-gray-600">Loading products...</p>
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+                <p className="text-white/60">Loading products...</p>
               </div>
             </div>
           )}
 
           {/* Error State */}
           {error && products.length === 0 && !isLoading && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
-              <p className="text-red-800">Error: {error}</p>
+            <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-6 mb-8">
+              <p className="text-red-300">Error: {error}</p>
               <button
                 onClick={fetchProducts}
-                className="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                className="mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
               >
                 Try Again
               </button>
@@ -208,10 +208,10 @@ export default function Products() {
               {products.map((product) => (
                 <div
                   key={product.id}
-                  className="group rounded-lg overflow-hidden bg-white border border-gray-200 hover:shadow-xl transition-all duration-300 flex flex-col"
+                  className="group rounded-lg overflow-hidden bg-white/5 border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all duration-300 flex flex-col"
                 >
                   {/* Product Image */}
-                  <div className="relative bg-gray-100 aspect-square overflow-hidden flex items-center justify-center">
+                  <div className="relative bg-white/10 aspect-square overflow-hidden flex items-center justify-center">
                     <img
                       src={product.image}
                       alt={product.name}
@@ -226,11 +226,11 @@ export default function Products() {
 
                   {/* Product Info */}
                   <div className="p-4 flex flex-col flex-grow">
-                    <h3 className="font-bold text-gray-900 text-lg mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
+                    <h3 className="font-bold text-white text-lg mb-2 group-hover:text-blue-400 transition-colors line-clamp-2">
                       {product.name}
                     </h3>
 
-                    <p className="text-sm text-gray-600 mb-4 flex-grow line-clamp-2">
+                    <p className="text-sm text-white/60 mb-4 flex-grow line-clamp-2">
                       {product.description}
                     </p>
 
@@ -243,20 +243,20 @@ export default function Products() {
                             className={`w-3.5 h-3.5 ${
                               i < Math.floor(product.rating || 0)
                                 ? "fill-yellow-400 text-yellow-400"
-                                : "text-gray-300"
+                                : "text-white/20"
                             }`}
                           />
                         ))}
                       </div>
-                      <span className="text-xs text-gray-600">
+                      <span className="text-xs text-white/60">
                         {product.rating || 0} ({product.reviews || 0})
                       </span>
                     </div>
 
                     {/* Price */}
                     <div className="mb-4">
-                      <span className="text-sm text-gray-600">from</span>
-                      <p className="text-2xl font-bold text-gray-900">
+                      <span className="text-sm text-white/60">from</span>
+                      <p className="text-2xl font-bold text-white">
                         {getPriceDisplay(product)}
                       </p>
                     </div>
@@ -269,7 +269,7 @@ export default function Products() {
                             expandedProduct === product.id ? null : product.id,
                           )
                         }
-                        className="mb-4 flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                        className="mb-4 flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors"
                       >
                         View {product.variations.length} Options
                         <ChevronDown
@@ -284,7 +284,7 @@ export default function Products() {
                   {/* CTA Button */}
                   <Link
                     to={`/product/${product.id}`}
-                    className="mx-4 mb-4 py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 text-center flex items-center justify-center gap-2"
+                    className="mx-4 mb-4 py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-300 text-center flex items-center justify-center gap-2"
                   >
                     <ShoppingCart className="w-4 h-4" />
                     Add to Cart
@@ -294,19 +294,19 @@ export default function Products() {
                   {expandedProduct === product.id &&
                     product.variations &&
                     product.variations.length > 0 && (
-                      <div className="border-t border-gray-200 p-4 bg-gray-50 space-y-2">
-                        <h4 className="font-semibold text-sm text-gray-900 mb-3">
+                      <div className="border-t border-white/10 p-4 bg-white/5 space-y-2">
+                        <h4 className="font-semibold text-sm text-white mb-3">
                           Available Options:
                         </h4>
                         {product.variations.slice(0, 8).map((variation) => (
                           <div
                             key={variation.id}
-                            className="flex items-center justify-between text-sm bg-white rounded p-2 border border-gray-200"
+                            className="flex items-center justify-between text-sm bg-white/10 rounded p-2 border border-white/10"
                           >
                             <div>
                               {variation.attributes &&
                               Object.keys(variation.attributes).length > 0 ? (
-                                <div className="text-gray-700">
+                                <div className="text-white/80">
                                   {Object.entries(variation.attributes)
                                     .map(([key, val]) => `${val}`)
                                     .join(" • ")}
