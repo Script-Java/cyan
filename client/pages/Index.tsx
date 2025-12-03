@@ -69,12 +69,6 @@ export default function Index() {
                   Shop Now
                   <ArrowRight className="w-5 h-5" />
                 </Link>
-                <a
-                  href="#sticker-types"
-                  className="inline-flex items-center justify-center px-8 py-4 border border-white/30 text-white rounded-lg font-semibold hover:bg-white/10 transition-all"
-                >
-                  Explore Stickers
-                </a>
               </div>
             </div>
           </div>
