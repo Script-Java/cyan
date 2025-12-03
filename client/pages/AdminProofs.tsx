@@ -426,7 +426,9 @@ export default function AdminProofs() {
           {/* Navigation Grid - Desktop/Tablet Only */}
           <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
             <div className="px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
-              <h2 className="text-sm font-semibold text-white/80 mb-4">Quick Navigation</h2>
+              <h2 className="text-sm font-semibold text-white/80 mb-4">
+                Quick Navigation
+              </h2>
               <AdminNavigationGrid />
             </div>
           </div>
@@ -439,7 +441,8 @@ export default function AdminProofs() {
                 Pending Orders Ready for Proofs
               </h3>
               <p className="text-sm text-white/60 mb-6">
-                Click on any order below to quickly send a proof to that customer
+                Click on any order below to quickly send a proof to that
+                customer
               </p>
               <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
                 <table className="w-full text-left text-xs sm:text-sm">
@@ -741,8 +744,9 @@ export default function AdminProofs() {
                                     alt="Design thumbnail"
                                     className="max-w-full max-h-full object-contain"
                                     onError={(e) => {
-                                      (e.currentTarget as HTMLImageElement).style.display =
-                                        "none";
+                                      (
+                                        e.currentTarget as HTMLImageElement
+                                      ).style.display = "none";
                                     }}
                                   />
                                 </div>
@@ -909,9 +913,7 @@ export default function AdminProofs() {
               <div className="mb-4">
                 <h2 className="text-base sm:text-lg font-semibold text-white flex items-center gap-2">
                   <Clock className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                  <span>
-                    Awaiting Customer Review ({pendingProofs.length})
-                  </span>
+                  <span>Awaiting Customer Review ({pendingProofs.length})</span>
                 </h2>
               </div>
               <div className="space-y-3 sm:space-y-4">
@@ -982,7 +984,9 @@ export default function AdminProofs() {
                                   <div className="flex items-start justify-between mb-2">
                                     <div className="flex-1">
                                       <p className="text-sm font-medium text-white">
-                                        {comment.admin_email ? "Admin" : "Customer"}
+                                        {comment.admin_email
+                                          ? "Admin"
+                                          : "Customer"}
                                       </p>
                                       <p className="text-xs text-white/40">
                                         {formatDate(comment.created_at)}
@@ -1132,8 +1136,9 @@ export default function AdminProofs() {
                                   alt={proof.file_name || "Approved design"}
                                   className="max-w-full max-h-full object-contain"
                                   onError={(e) => {
-                                    (e.currentTarget as HTMLImageElement).style.display =
-                                      "none";
+                                    (
+                                      e.currentTarget as HTMLImageElement
+                                    ).style.display = "none";
                                   }}
                                 />
                               ) : (
@@ -1174,7 +1179,9 @@ export default function AdminProofs() {
                                   <div className="flex items-start justify-between mb-2">
                                     <div className="flex-1">
                                       <p className="text-sm font-medium text-white">
-                                        {comment.admin_email ? "Admin" : "Customer"}
+                                        {comment.admin_email
+                                          ? "Admin"
+                                          : "Customer"}
                                       </p>
                                       <p className="text-xs text-white/40">
                                         {formatDate(comment.created_at)}

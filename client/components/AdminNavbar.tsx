@@ -136,7 +136,13 @@ export default function AdminNavbar() {
     }
   };
 
-  const NavItem = ({ item, isMobile = false }: { item: NavItem; isMobile?: boolean }) => {
+  const NavItem = ({
+    item,
+    isMobile = false,
+  }: {
+    item: NavItem;
+    isMobile?: boolean;
+  }) => {
     const hasChildren = item.children && item.children.length > 0;
     const active = isActive(item.path);
     const isDropdownOpen = expandedDropdown === item.label;
@@ -170,19 +176,22 @@ export default function AdminNavbar() {
             <ChevronDown
               className={cn(
                 "w-4 h-4 transition-transform",
-                (isMobile ? isDropdownOpen : expandedDropdown === item.label) && "rotate-180",
+                (isMobile ? isDropdownOpen : expandedDropdown === item.label) &&
+                  "rotate-180",
               )}
             />
           </button>
 
           {/* Dropdown menu */}
           {(isMobile ? isDropdownOpen : expandedDropdown === item.label) && (
-            <div className={cn(
-              "rounded-lg bg-black border border-white/10 shadow-lg overflow-hidden z-50",
-              isMobile
-                ? "mt-2 w-full"
-                : "absolute left-0 top-full mt-1 min-w-[200px] group-hover:block hidden",
-            )}>
+            <div
+              className={cn(
+                "rounded-lg bg-black border border-white/10 shadow-lg overflow-hidden z-50",
+                isMobile
+                  ? "mt-2 w-full"
+                  : "absolute left-0 top-full mt-1 min-w-[200px] group-hover:block hidden",
+              )}
+            >
               {item.children!.map((child) => (
                 <button
                   key={child.label}

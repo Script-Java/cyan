@@ -36,7 +36,8 @@ export default function AdminNavigationGrid({
       description: "Dashboard overview",
       icon: <Home className="w-6 h-6 sm:w-8 sm:h-8" />,
       path: "/admin",
-      color: "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
+      color:
+        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
       iconColor: "text-emerald-400",
     },
     {
@@ -44,7 +45,8 @@ export default function AdminNavigationGrid({
       description: "View order history",
       icon: <ShoppingCart className="w-6 h-6 sm:w-8 sm:h-8" />,
       path: "/admin/orders",
-      color: "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
+      color:
+        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
       iconColor: "text-emerald-400",
     },
     {
@@ -52,7 +54,8 @@ export default function AdminNavigationGrid({
       description: "Review designs",
       icon: <Eye className="w-6 h-6 sm:w-8 sm:h-8" />,
       path: "/admin/proofs",
-      color: "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
+      color:
+        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
       iconColor: "text-orange-400",
     },
     {
@@ -60,7 +63,8 @@ export default function AdminNavigationGrid({
       description: "Manage products",
       icon: <Package className="w-6 h-6 sm:w-8 sm:h-8" />,
       path: "/admin/products",
-      color: "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
+      color:
+        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
       iconColor: "text-pink-400",
     },
     {
@@ -68,7 +72,8 @@ export default function AdminNavigationGrid({
       description: "Manage customers",
       icon: <Users className="w-6 h-6 sm:w-8 sm:h-8" />,
       path: "/admin/customers",
-      color: "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
+      color:
+        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
       iconColor: "text-gray-400",
     },
     {
@@ -76,7 +81,8 @@ export default function AdminNavigationGrid({
       description: "View spending",
       icon: <DollarSign className="w-6 h-6 sm:w-8 sm:h-8" />,
       path: "/admin/finance",
-      color: "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
+      color:
+        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
       iconColor: "text-blue-400",
     },
     {
@@ -84,7 +90,8 @@ export default function AdminNavigationGrid({
       description: "View analytics",
       icon: <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8" />,
       path: "/admin/analytics",
-      color: "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
+      color:
+        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
       iconColor: "text-blue-400",
     },
     {
@@ -92,7 +99,8 @@ export default function AdminNavigationGrid({
       description: "Manage account",
       icon: <Settings className="w-6 h-6 sm:w-8 sm:h-8" />,
       path: "/admin/settings",
-      color: "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
+      color:
+        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
       iconColor: "text-gray-400",
     },
     {
@@ -100,7 +108,8 @@ export default function AdminNavigationGrid({
       description: "End session",
       icon: <LogOut className="w-6 h-6 sm:w-8 sm:h-8" />,
       path: "#logout",
-      color: "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20 opacity-85",
+      color:
+        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20 opacity-85",
       iconColor: "text-gray-400",
     },
   ];
@@ -133,10 +142,7 @@ export default function AdminNavigationGrid({
           )}
         >
           <div
-            className={cn(
-              "flex-shrink-0 transition-colors",
-              item.iconColor,
-            )}
+            className={cn("flex-shrink-0 transition-colors", item.iconColor)}
           >
             {item.icon}
           </div>

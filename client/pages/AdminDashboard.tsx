@@ -150,7 +150,9 @@ export default function AdminDashboard() {
         {/* Navigation Grid - Desktop/Tablet Only */}
         <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
           <div className="px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
-            <h2 className="text-sm font-semibold text-white/80 mb-4">Quick Navigation</h2>
+            <h2 className="text-sm font-semibold text-white/80 mb-4">
+              Quick Navigation
+            </h2>
             <AdminNavigationGrid />
           </div>
         </div>
@@ -240,17 +242,23 @@ export default function AdminDashboard() {
                                 <button
                                   onClick={() =>
                                     setExpandedOrderId(
-                                      expandedOrderId === order.id ? null : order.id,
+                                      expandedOrderId === order.id
+                                        ? null
+                                        : order.id,
                                     )
                                   }
                                   className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs sm:text-sm bg-blue-600/30 text-blue-300 hover:bg-blue-600/50 transition-colors font-medium whitespace-nowrap"
                                 >
                                   <span>
-                                    {expandedOrderId === order.id ? "Hide" : "View"}
+                                    {expandedOrderId === order.id
+                                      ? "Hide"
+                                      : "View"}
                                   </span>
                                   <ChevronDown
                                     className={`w-3 h-3 transition-transform ${
-                                      expandedOrderId === order.id ? "rotate-180" : ""
+                                      expandedOrderId === order.id
+                                        ? "rotate-180"
+                                        : ""
                                     }`}
                                   />
                                 </button>
@@ -266,7 +274,10 @@ export default function AdminDashboard() {
                                           Subtotal
                                         </p>
                                         <p className="text-sm font-semibold text-white">
-                                          ${(order.subtotal || order.total * 0.8).toFixed(2)}
+                                          $
+                                          {(
+                                            order.subtotal || order.total * 0.8
+                                          ).toFixed(2)}
                                         </p>
                                       </div>
                                       <div className="bg-white/10 rounded p-3">
@@ -274,7 +285,10 @@ export default function AdminDashboard() {
                                           Tax
                                         </p>
                                         <p className="text-sm font-semibold text-white">
-                                          ${(order.tax || order.total * 0.1).toFixed(2)}
+                                          $
+                                          {(
+                                            order.tax || order.total * 0.1
+                                          ).toFixed(2)}
                                         </p>
                                       </div>
                                       <div className="bg-white/10 rounded p-3">
@@ -302,70 +316,75 @@ export default function AdminDashboard() {
                                             Items
                                           </p>
                                           <div className="space-y-3">
-                                            {order.orderItems.map((item, idx) => (
-                                              <div
-                                                key={idx}
-                                                className="bg-white/5 rounded p-3 flex gap-3"
-                                              >
-                                                <div className="flex-1">
-                                                  <p className="text-white text-sm font-medium">
-                                                    {item.product_name || "Product"}
-                                                  </p>
-                                                  <p className="text-white/60 text-xs mt-1">
-                                                    Qty: {item.quantity || 1}
-                                                  </p>
-                                                  {item.options &&
-                                                    Object.keys(item.options)
-                                                      .length > 0 && (
-                                                      <div className="mt-2 text-xs text-white/60">
-                                                        {Object.entries(
-                                                          item.options,
-                                                        ).map(([key, val]) => (
-                                                          <div key={key}>
-                                                            {key}:{" "}
-                                                            {String(val)}
-                                                          </div>
-                                                        ))}
-                                                      </div>
-                                                    )}
-                                                </div>
-                                                {item.design_file_url && (
-                                                  <div className="flex-shrink-0">
-                                                    <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
-                                                      Design
+                                            {order.orderItems.map(
+                                              (item, idx) => (
+                                                <div
+                                                  key={idx}
+                                                  className="bg-white/5 rounded p-3 flex gap-3"
+                                                >
+                                                  <div className="flex-1">
+                                                    <p className="text-white text-sm font-medium">
+                                                      {item.product_name ||
+                                                        "Product"}
                                                     </p>
-                                                    <div className="w-16 h-16 bg-white/5 border border-white/10 rounded overflow-hidden flex items-center justify-center">
-                                                      {item.design_file_url.match(
-                                                        /\.(jpg|jpeg|png|gif|webp)$/i,
-                                                      ) ? (
-                                                        <img
-                                                          src={
-                                                            item.design_file_url
-                                                          }
-                                                          alt="Design"
-                                                          className="w-full h-full object-cover"
-                                                          onError={(e) => {
-                                                            e.currentTarget.style.display =
-                                                              "none";
-                                                          }}
-                                                        />
-                                                      ) : (
-                                                        <a
-                                                          href={
-                                                            item.design_file_url
-                                                          }
-                                                          target="_blank"
-                                                          rel="noopener noreferrer"
-                                                          className="flex flex-col items-center gap-1 p-2 hover:text-blue-300 transition-colors"
-                                                        >
-                                                          <ImageIcon className="w-5 h-5 text-white/60" />
-                                                        </a>
+                                                    <p className="text-white/60 text-xs mt-1">
+                                                      Qty: {item.quantity || 1}
+                                                    </p>
+                                                    {item.options &&
+                                                      Object.keys(item.options)
+                                                        .length > 0 && (
+                                                        <div className="mt-2 text-xs text-white/60">
+                                                          {Object.entries(
+                                                            item.options,
+                                                          ).map(
+                                                            ([key, val]) => (
+                                                              <div key={key}>
+                                                                {key}:{" "}
+                                                                {String(val)}
+                                                              </div>
+                                                            ),
+                                                          )}
+                                                        </div>
                                                       )}
-                                                    </div>
                                                   </div>
-                                                )}
-                                              </div>
-                                            ))}
+                                                  {item.design_file_url && (
+                                                    <div className="flex-shrink-0">
+                                                      <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
+                                                        Design
+                                                      </p>
+                                                      <div className="w-16 h-16 bg-white/5 border border-white/10 rounded overflow-hidden flex items-center justify-center">
+                                                        {item.design_file_url.match(
+                                                          /\.(jpg|jpeg|png|gif|webp)$/i,
+                                                        ) ? (
+                                                          <img
+                                                            src={
+                                                              item.design_file_url
+                                                            }
+                                                            alt="Design"
+                                                            className="w-full h-full object-cover"
+                                                            onError={(e) => {
+                                                              e.currentTarget.style.display =
+                                                                "none";
+                                                            }}
+                                                          />
+                                                        ) : (
+                                                          <a
+                                                            href={
+                                                              item.design_file_url
+                                                            }
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="flex flex-col items-center gap-1 p-2 hover:text-blue-300 transition-colors"
+                                                          >
+                                                            <ImageIcon className="w-5 h-5 text-white/60" />
+                                                          </a>
+                                                        )}
+                                                      </div>
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              ),
+                                            )}
                                           </div>
                                         </div>
                                       )}

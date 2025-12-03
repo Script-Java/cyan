@@ -144,7 +144,9 @@ export default function AdminOrders() {
         {/* Navigation Grid - Desktop/Tablet Only */}
         <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
           <div className="px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
-            <h2 className="text-sm font-semibold text-white/80 mb-4">Quick Navigation</h2>
+            <h2 className="text-sm font-semibold text-white/80 mb-4">
+              Quick Navigation
+            </h2>
             <AdminNavigationGrid />
           </div>
         </div>
@@ -270,13 +272,17 @@ export default function AdminOrders() {
                                 <button
                                   onClick={() =>
                                     setExpandedOrderId(
-                                      expandedOrderId === order.id ? null : order.id,
+                                      expandedOrderId === order.id
+                                        ? null
+                                        : order.id,
                                     )
                                   }
                                   className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-green-600/20 text-green-300 hover:bg-green-600/30 transition-colors font-medium text-xs whitespace-nowrap border border-green-600/30"
                                 >
                                   <span>
-                                    {expandedOrderId === order.id ? "Hide" : "View"}
+                                    {expandedOrderId === order.id
+                                      ? "Hide"
+                                      : "View"}
                                   </span>
                                   <ChevronDown
                                     className={`w-4 h-4 hidden sm:inline transition-transform ${
@@ -304,7 +310,8 @@ export default function AdminOrders() {
                                           <p className="text-lg font-semibold text-white">
                                             $
                                             {(
-                                              order.subtotal || order.total * 0.8
+                                              order.subtotal ||
+                                              order.total * 0.8
                                             ).toFixed(2)}
                                           </p>
                                         </div>
@@ -324,8 +331,7 @@ export default function AdminOrders() {
                                             Shipping
                                           </p>
                                           <p className="text-lg font-semibold text-white">
-                                            $
-                                            {(order.shipping || 0).toFixed(2)}
+                                            ${(order.shipping || 0).toFixed(2)}
                                           </p>
                                         </div>
                                         <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
@@ -346,84 +352,92 @@ export default function AdminOrders() {
                                             Items
                                           </h3>
                                           <div className="space-y-4">
-                                            {order.orderItems.map((item, idx) => (
-                                              <div
-                                                key={idx}
-                                                className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4"
-                                              >
-                                                <div className="flex gap-4">
-                                                  <div className="flex-1">
-                                                    <p className="text-white font-medium">
-                                                      {item.product_name ||
-                                                        "Product"}
-                                                    </p>
-                                                    <p className="text-white/60 text-sm mt-1">
-                                                      Quantity:{" "}
-                                                      {item.quantity || 1}
-                                                    </p>
-                                                    {item.options &&
-                                                      Object.keys(item.options)
-                                                        .length > 0 && (
-                                                        <div className="mt-2 text-sm text-white/60">
-                                                          <p className="font-medium text-white/80">
-                                                            Options:
-                                                          </p>
-                                                          <ul className="mt-1 space-y-1">
-                                                            {Object.entries(
-                                                              item.options,
-                                                            ).map(
-                                                              ([key, val]) => (
-                                                                <li key={key}>
-                                                                  {key}:{" "}
-                                                                  {String(val)}
-                                                                </li>
-                                                              ),
-                                                            )}
-                                                          </ul>
-                                                        </div>
-                                                      )}
-                                                  </div>
-                                                  {item.design_file_url && (
-                                                    <div className="flex-shrink-0">
-                                                      <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
-                                                        Design File
+                                            {order.orderItems.map(
+                                              (item, idx) => (
+                                                <div
+                                                  key={idx}
+                                                  className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4"
+                                                >
+                                                  <div className="flex gap-4">
+                                                    <div className="flex-1">
+                                                      <p className="text-white font-medium">
+                                                        {item.product_name ||
+                                                          "Product"}
                                                       </p>
-                                                      <div className="w-24 h-24 bg-white/5 border border-white/10 rounded-lg overflow-hidden flex items-center justify-center">
-                                                        {item.design_file_url.match(
-                                                          /\.(jpg|jpeg|png|gif|webp)$/i,
-                                                        ) ? (
-                                                          <img
-                                                            src={
-                                                              item.design_file_url
-                                                            }
-                                                            alt="Design"
-                                                            className="w-full h-full object-cover"
-                                                            onError={(e) => {
-                                                              e.currentTarget.style.display =
-                                                                "none";
-                                                            }}
-                                                          />
-                                                        ) : (
-                                                          <a
-                                                            href={
-                                                              item.design_file_url
-                                                            }
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="flex flex-col items-center gap-1 p-2 hover:text-green-300 transition-colors"
-                                                          >
-                                                            <ImageIcon className="w-6 h-6 text-white/60" />
-                                                            <span className="text-xs text-white/60 text-center">
-                                                              View File
-                                                            </span>
-                                                          </a>
+                                                      <p className="text-white/60 text-sm mt-1">
+                                                        Quantity:{" "}
+                                                        {item.quantity || 1}
+                                                      </p>
+                                                      {item.options &&
+                                                        Object.keys(
+                                                          item.options,
+                                                        ).length > 0 && (
+                                                          <div className="mt-2 text-sm text-white/60">
+                                                            <p className="font-medium text-white/80">
+                                                              Options:
+                                                            </p>
+                                                            <ul className="mt-1 space-y-1">
+                                                              {Object.entries(
+                                                                item.options,
+                                                              ).map(
+                                                                ([
+                                                                  key,
+                                                                  val,
+                                                                ]) => (
+                                                                  <li key={key}>
+                                                                    {key}:{" "}
+                                                                    {String(
+                                                                      val,
+                                                                    )}
+                                                                  </li>
+                                                                ),
+                                                              )}
+                                                            </ul>
+                                                          </div>
                                                         )}
-                                                      </div>
                                                     </div>
-                                                  )}
+                                                    {item.design_file_url && (
+                                                      <div className="flex-shrink-0">
+                                                        <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
+                                                          Design File
+                                                        </p>
+                                                        <div className="w-24 h-24 bg-white/5 border border-white/10 rounded-lg overflow-hidden flex items-center justify-center">
+                                                          {item.design_file_url.match(
+                                                            /\.(jpg|jpeg|png|gif|webp)$/i,
+                                                          ) ? (
+                                                            <img
+                                                              src={
+                                                                item.design_file_url
+                                                              }
+                                                              alt="Design"
+                                                              className="w-full h-full object-cover"
+                                                              onError={(e) => {
+                                                                e.currentTarget.style.display =
+                                                                  "none";
+                                                              }}
+                                                            />
+                                                          ) : (
+                                                            <a
+                                                              href={
+                                                                item.design_file_url
+                                                              }
+                                                              target="_blank"
+                                                              rel="noopener noreferrer"
+                                                              className="flex flex-col items-center gap-1 p-2 hover:text-green-300 transition-colors"
+                                                            >
+                                                              <ImageIcon className="w-6 h-6 text-white/60" />
+                                                              <span className="text-xs text-white/60 text-center">
+                                                                View File
+                                                              </span>
+                                                            </a>
+                                                          )}
+                                                        </div>
+                                                      </div>
+                                                    )}
+                                                  </div>
                                                 </div>
-                                              </div>
-                                            ))}
+                                              ),
+                                            )}
                                           </div>
                                         </div>
                                       )}

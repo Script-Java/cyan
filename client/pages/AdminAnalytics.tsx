@@ -272,7 +272,9 @@ export default function AdminAnalytics() {
                   <h2 className="text-sm font-bold text-white">
                     Device Distribution
                   </h2>
-                  <p className="text-white/40 text-xs">Traffic by device type</p>
+                  <p className="text-white/40 text-xs">
+                    Traffic by device type
+                  </p>
                 </div>
               </div>
 
@@ -352,7 +354,9 @@ export default function AdminAnalytics() {
                   <h2 className="text-sm font-bold text-white">
                     Traffic Sources
                   </h2>
-                  <p className="text-white/40 text-xs">Where visitors come from</p>
+                  <p className="text-white/40 text-xs">
+                    Where visitors come from
+                  </p>
                 </div>
               </div>
 

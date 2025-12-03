@@ -3,6 +3,7 @@
 ## Overview
 
 A new `AdminLayout` component has been created that provides:
+
 - Consistent header (Header component)
 - Consistent navigation bar (AdminNavbar component)
 - **Desktop**: Sidebar with navigation grid (visible at 1024px+)
@@ -11,6 +12,7 @@ A new `AdminLayout` component has been created that provides:
 ## Pages Already Updated
 
 The following pages have been successfully updated to use `AdminLayout`:
+
 - ✅ `AdminDashboard.tsx`
 - ✅ `AdminOrders.tsx`
 - ✅ `AdminProducts.tsx`
@@ -22,6 +24,7 @@ The following pages have been successfully updated to use `AdminLayout`:
 ### For Pages Using Simple Header + AdminNavbar Pattern:
 
 **Before:**
+
 ```tsx
 import Header from "@/components/Header";
 import AdminNavbar from "@/components/AdminNavbar";
@@ -40,6 +43,7 @@ export default function AdminPage() {
 ```
 
 **After:**
+
 ```tsx
 import AdminLayout from "@/components/AdminLayout";
 
@@ -81,7 +85,9 @@ export default function AdminPage() {
 ## New Navigation Components
 
 ### AdminLayout
+
 Wrapper component that provides:
+
 - Header + AdminNavbar at the top
 - Desktop sidebar navigation (on lg screens)
 - Mobile floating menu button
@@ -89,14 +95,14 @@ Wrapper component that provides:
 
 ```tsx
 <AdminLayout>
-  <div className="w-full">
-    {/* Your page content */}
-  </div>
+  <div className="w-full">{/* Your page content */}</div>
 </AdminLayout>
 ```
 
 ### AdminNavigationGrid
+
 Grid-based navigation component with 9 items:
+
 - Home, Orders, Proofs, Products
 - Customers, Finance, Analytics
 - Settings, Logout
@@ -106,6 +112,7 @@ Can be used standalone for custom layouts.
 ## Navigation Items Available
 
 The navigation grid includes:
+
 - 🏠 **Home** - `/admin`
 - 📦 **Orders** - `/admin/orders`
 - ✅ **Proofs** - `/admin/proofs`
@@ -126,17 +133,18 @@ The navigation grid includes:
 
 ## Key Differences from Old Layout
 
-| Feature | Old | New |
-|---------|-----|-----|
-| Header | Separate import | Built into AdminLayout |
-| Navigation | Horizontal AdminNavbar | Navbar + Sidebar grid |
-| Mobile Nav | MobileAdminPanel | Built-in floating menu |
-| Consistency | Manual in each page | Automatic via AdminLayout |
-| Code Duplication | High | Low |
+| Feature          | Old                    | New                       |
+| ---------------- | ---------------------- | ------------------------- |
+| Header           | Separate import        | Built into AdminLayout    |
+| Navigation       | Horizontal AdminNavbar | Navbar + Sidebar grid     |
+| Mobile Nav       | MobileAdminPanel       | Built-in floating menu    |
+| Consistency      | Manual in each page    | Automatic via AdminLayout |
+| Code Duplication | High                   | Low                       |
 
 ## Testing
 
 After updating a page:
+
 1. Navigate to the page
 2. Check desktop view - sidebar should be visible on lg+ screens
 3. Check mobile view - floating menu button should appear
@@ -146,6 +154,7 @@ After updating a page:
 ## Rollback
 
 If you need to revert a page to the old layout:
+
 1. Replace `AdminLayout` wrapper with `Header` and `AdminNavbar`
 2. Add back `<main>` and `</>` tags
 3. Remove `<div className="w-full">` wrapper

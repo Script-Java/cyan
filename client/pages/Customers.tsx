@@ -248,7 +248,9 @@ export default function Customers() {
         <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
           <div className="px-4 sm:px-10 py-8">
             <div className="max-w-7xl mx-auto">
-              <h2 className="text-sm font-semibold text-white/80 mb-4">Quick Navigation</h2>
+              <h2 className="text-sm font-semibold text-white/80 mb-4">
+                Quick Navigation
+              </h2>
               <AdminNavigationGrid />
             </div>
           </div>
@@ -257,7 +259,6 @@ export default function Customers() {
         {/* Main Content */}
         <main className="min-h-screen bg-black text-white px-4 sm:px-10 py-12 pb-20 lg:pb-0">
           <div className="max-w-7xl mx-auto">
-
             {/* Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
               <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-colors">

@@ -93,210 +93,212 @@ export default function AdminSettings() {
         {/* Navigation Grid - Desktop/Tablet Only */}
         <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
           <div className="px-6 lg:px-8 py-6 sm:py-8">
-            <h2 className="text-sm font-semibold text-white/80 mb-4">Quick Navigation</h2>
+            <h2 className="text-sm font-semibold text-white/80 mb-4">
+              Quick Navigation
+            </h2>
             <AdminNavigationGrid />
           </div>
         </div>
 
         {/* Main Content */}
         <main className="px-6 lg:px-8 py-8">
-              <div className="space-y-6">
-                {/* Success Message */}
-                {saveSuccess && (
-                  <div className="backdrop-blur-xl bg-green-500/10 border border-green-500/30 rounded-lg p-4 flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0"></div>
-                    <p className="text-green-400 text-sm font-medium">
-                      Settings saved successfully!
-                    </p>
+          <div className="space-y-6">
+            {/* Success Message */}
+            {saveSuccess && (
+              <div className="backdrop-blur-xl bg-green-500/10 border border-green-500/30 rounded-lg p-4 flex items-center gap-3">
+                <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0"></div>
+                <p className="text-green-400 text-sm font-medium">
+                  Settings saved successfully!
+                </p>
+              </div>
+            )}
+
+            {/* Store Information */}
+            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8">
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-white mb-2">
+                  Store Information
+                </h2>
+                <p className="text-white/60 text-sm">
+                  Basic details about your store
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-white/80 mb-2">
+                    Store Name
+                  </label>
+                  <input
+                    type="text"
+                    name="storeName"
+                    value={settings.storeName}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                    placeholder="Enter store name"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-white/80 mb-2">
+                      Store Email
+                    </label>
+                    <input
+                      type="email"
+                      name="storeEmail"
+                      value={settings.storeEmail}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                      placeholder="support@example.com"
+                    />
                   </div>
-                )}
 
-                {/* Store Information */}
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8">
-                  <div className="mb-6">
-                    <h2 className="text-xl font-bold text-white mb-2">
-                      Store Information
-                    </h2>
-                    <p className="text-white/60 text-sm">
-                      Basic details about your store
-                    </p>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-white/80 mb-2">
-                        Store Name
-                      </label>
-                      <input
-                        type="text"
-                        name="storeName"
-                        value={settings.storeName}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
-                        placeholder="Enter store name"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-white/80 mb-2">
-                          Store Email
-                        </label>
-                        <input
-                          type="email"
-                          name="storeEmail"
-                          value={settings.storeEmail}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
-                          placeholder="support@example.com"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-white/80 mb-2">
-                          Store Phone
-                        </label>
-                        <input
-                          type="tel"
-                          name="storePhone"
-                          value={settings.storePhone}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
-                          placeholder="+1 (555) 123-4567"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-white/80 mb-2">
-                        Store Address
-                      </label>
-                      <textarea
-                        name="storeAddress"
-                        value={settings.storeAddress}
-                        onChange={handleInputChange}
-                        rows={3}
-                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
-                        placeholder="Enter your store address"
-                      ></textarea>
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-white/80 mb-2">
+                      Store Phone
+                    </label>
+                    <input
+                      type="tel"
+                      name="storePhone"
+                      value={settings.storePhone}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                      placeholder="+1 (555) 123-4567"
+                    />
                   </div>
                 </div>
 
-                {/* Regional Settings */}
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8">
-                  <div className="mb-6">
-                    <h2 className="text-xl font-bold text-white mb-2">
-                      Regional Settings
-                    </h2>
-                    <p className="text-white/60 text-sm">
-                      Configure timezone and currency preferences
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-white/80 mb-2">
-                        Time Zone
-                      </label>
-                      <select
-                        name="timeZone"
-                        value={settings.timeZone}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
-                      >
-                        <option className="bg-black">UTC</option>
-                        <option className="bg-black">EST</option>
-                        <option className="bg-black">CST</option>
-                        <option className="bg-black">MST</option>
-                        <option className="bg-black">PST</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-white/80 mb-2">
-                        Currency
-                      </label>
-                      <select
-                        name="currency"
-                        value={settings.currency}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
-                      >
-                        <option className="bg-black">USD</option>
-                        <option className="bg-black">EUR</option>
-                        <option className="bg-black">GBP</option>
-                        <option className="bg-black">CAD</option>
-                        <option className="bg-black">AUD</option>
-                      </select>
-                    </div>
-                  </div>
+                <div>
+                  <label className="block text-sm font-medium text-white/80 mb-2">
+                    Store Address
+                  </label>
+                  <textarea
+                    name="storeAddress"
+                    value={settings.storeAddress}
+                    onChange={handleInputChange}
+                    rows={3}
+                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                    placeholder="Enter your store address"
+                  ></textarea>
                 </div>
+              </div>
+            </div>
 
-                {/* Tax & Shipping */}
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8">
-                  <div className="mb-6">
-                    <h2 className="text-xl font-bold text-white mb-2">
-                      Tax & Shipping
-                    </h2>
-                    <p className="text-white/60 text-sm">
-                      Set default tax and shipping rates
-                    </p>
-                  </div>
+            {/* Regional Settings */}
+            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8">
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-white mb-2">
+                  Regional Settings
+                </h2>
+                <p className="text-white/60 text-sm">
+                  Configure timezone and currency preferences
+                </p>
+              </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-white/80 mb-2">
-                        Tax Rate (%)
-                      </label>
-                      <input
-                        type="number"
-                        name="taxRate"
-                        value={settings.taxRate}
-                        onChange={handleInputChange}
-                        step="0.01"
-                        min="0"
-                        max="100"
-                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
-                        placeholder="8.5"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-white/80 mb-2">
-                        Standard Shipping Cost ($)
-                      </label>
-                      <input
-                        type="number"
-                        name="shippingCost"
-                        value={settings.shippingCost}
-                        onChange={handleInputChange}
-                        step="0.01"
-                        min="0"
-                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
-                        placeholder="5.00"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Save Button */}
-                <div className="flex justify-end gap-3 pt-4">
-                  <button
-                    onClick={() => navigate("/admin")}
-                    className="px-6 py-2 border border-white/20 text-white/80 hover:text-white hover:border-white/40 rounded-lg transition-colors font-medium"
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-white/80 mb-2">
+                    Time Zone
+                  </label>
+                  <select
+                    name="timeZone"
+                    value={settings.timeZone}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
                   >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleSaveSettings}
-                    disabled={isSaving}
-                    className="inline-flex items-center gap-2 px-6 py-2 bg-green-600 hover:bg-green-700 disabled:bg-white/10 text-white rounded-lg transition-colors font-medium"
-                  >
-                    <Save className="w-4 h-4" />
-                    {isSaving ? "Saving..." : "Save Settings"}
-                  </button>
+                    <option className="bg-black">UTC</option>
+                    <option className="bg-black">EST</option>
+                    <option className="bg-black">CST</option>
+                    <option className="bg-black">MST</option>
+                    <option className="bg-black">PST</option>
+                  </select>
                 </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-white/80 mb-2">
+                    Currency
+                  </label>
+                  <select
+                    name="currency"
+                    value={settings.currency}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                  >
+                    <option className="bg-black">USD</option>
+                    <option className="bg-black">EUR</option>
+                    <option className="bg-black">GBP</option>
+                    <option className="bg-black">CAD</option>
+                    <option className="bg-black">AUD</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Tax & Shipping */}
+            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8">
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-white mb-2">
+                  Tax & Shipping
+                </h2>
+                <p className="text-white/60 text-sm">
+                  Set default tax and shipping rates
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-white/80 mb-2">
+                    Tax Rate (%)
+                  </label>
+                  <input
+                    type="number"
+                    name="taxRate"
+                    value={settings.taxRate}
+                    onChange={handleInputChange}
+                    step="0.01"
+                    min="0"
+                    max="100"
+                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                    placeholder="8.5"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-white/80 mb-2">
+                    Standard Shipping Cost ($)
+                  </label>
+                  <input
+                    type="number"
+                    name="shippingCost"
+                    value={settings.shippingCost}
+                    onChange={handleInputChange}
+                    step="0.01"
+                    min="0"
+                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#FFD713]/50"
+                    placeholder="5.00"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Save Button */}
+            <div className="flex justify-end gap-3 pt-4">
+              <button
+                onClick={() => navigate("/admin")}
+                className="px-6 py-2 border border-white/20 text-white/80 hover:text-white hover:border-white/40 rounded-lg transition-colors font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveSettings}
+                disabled={isSaving}
+                className="inline-flex items-center gap-2 px-6 py-2 bg-green-600 hover:bg-green-700 disabled:bg-white/10 text-white rounded-lg transition-colors font-medium"
+              >
+                <Save className="w-4 h-4" />
+                {isSaving ? "Saving..." : "Save Settings"}
+              </button>
+            </div>
           </div>
         </main>
       </div>
