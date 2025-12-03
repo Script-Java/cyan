@@ -282,6 +282,54 @@ export default function Products() {
             </p>
           </div>
 
+          {/* Category Section */}
+          {!selectedCategory && (
+            <div className="mb-20">
+              <h2 className="text-3xl font-bold text-white mb-2 text-center">
+                CHOOSE{" "}
+                <span className="inline-block bg-lime-400 text-black px-3 py-1 rounded font-bold">
+                  STICKER
+                </span>
+              </h2>
+              <p className="text-center text-white/60 mb-12">TYPE:</p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                {categories.map((category) => (
+                  <ProductCategoryCard
+                    key={category.id}
+                    id={category.id}
+                    name={category.name}
+                    description={category.description}
+                    image={category.image}
+                    itemCount={getCategoryItemCount(category.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Category Filter Indicator */}
+          {selectedCategory && (
+            <div className="mb-8 flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-white">
+                  {categories.find((c) => c.id === selectedCategory)?.name ||
+                    "Products"}
+                </h2>
+                <p className="text-white/60 mt-1">
+                  {filteredProducts.length} product
+                  {filteredProducts.length !== 1 ? "s" : ""} available
+                </p>
+              </div>
+              <Link
+                to="/products"
+                className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg transition-colors text-sm font-medium"
+              >
+                View All Categories
+              </Link>
+            </div>
+          )}
+
           {/* Loading State */}
           {isLoading && (
             <div className="flex justify-center items-center py-16">
