@@ -210,47 +210,205 @@ export default function AdminDashboard() {
                           </thead>
                           <tbody>
                             {pendingOrders.map((order) => (
-                              <tr
-                                key={order.id}
-                                className="border-b border-white/5 hover:bg-white/5 transition-colors"
-                              >
-                                <td className="px-2 sm:px-3 py-2 font-semibold text-white whitespace-nowrap">
-                                  #{order.id}
-                                </td>
-                                <td className="px-2 sm:px-3 py-2 text-white/80 whitespace-nowrap hidden sm:table-cell truncate max-w-xs">
-                                  {order.customerName || "Guest"}
-                                </td>
-                                <td className="px-2 sm:px-3 py-2 text-white/60 hidden md:table-cell">
-                                  <div className="flex items-center gap-1 truncate max-w-xs">
-                                    <Mail className="w-3 h-3 flex-shrink-0" />
-                                    <span className="truncate text-xs sm:text-sm">
-                                      {order.customerEmail}
-                                    </span>
-                                  </div>
-                                </td>
-                                <td className="px-2 sm:px-3 py-2 text-white/60 hidden lg:table-cell whitespace-nowrap">
-                                  <div className="flex items-center gap-1">
-                                    <Calendar className="w-3 h-3" />
-                                    <span className="text-xs sm:text-sm">
-                                      {new Date(
-                                        order.dateCreated,
-                                      ).toLocaleDateString()}
-                                    </span>
-                                  </div>
-                                </td>
-                                <td className="px-2 sm:px-3 py-2 font-semibold text-white text-right whitespace-nowrap">
-                                  ${order.total.toFixed(2)}
-                                </td>
-                                <td className="px-2 sm:px-3 py-2">
-                                  <button
-                                    onClick={() => navigate("/admin/orders")}
-                                    className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs sm:text-sm bg-blue-600/30 text-blue-300 hover:bg-blue-600/50 transition-colors font-medium whitespace-nowrap"
-                                  >
-                                    View
-                                    <ChevronRight className="w-3 h-3 hidden sm:inline" />
-                                  </button>
-                                </td>
-                              </tr>
+                              <>
+                                <tr
+                                  key={order.id}
+                                  className="border-b border-white/5 hover:bg-white/5 transition-colors"
+                                >
+                                  <td className="px-2 sm:px-3 py-2 font-semibold text-white whitespace-nowrap">
+                                    #{order.id}
+                                  </td>
+                                  <td className="px-2 sm:px-3 py-2 text-white/80 whitespace-nowrap hidden sm:table-cell truncate max-w-xs">
+                                    {order.customerName || "Guest"}
+                                  </td>
+                                  <td className="px-2 sm:px-3 py-2 text-white/60 hidden md:table-cell">
+                                    <div className="flex items-center gap-1 truncate max-w-xs">
+                                      <Mail className="w-3 h-3 flex-shrink-0" />
+                                      <span className="truncate text-xs sm:text-sm">
+                                        {order.customerEmail}
+                                      </span>
+                                    </div>
+                                  </td>
+                                  <td className="px-2 sm:px-3 py-2 text-white/60 hidden lg:table-cell whitespace-nowrap">
+                                    <div className="flex items-center gap-1">
+                                      <Calendar className="w-3 h-3" />
+                                      <span className="text-xs sm:text-sm">
+                                        {new Date(
+                                          order.dateCreated,
+                                        ).toLocaleDateString()}
+                                      </span>
+                                    </div>
+                                  </td>
+                                  <td className="px-2 sm:px-3 py-2 font-semibold text-white text-right whitespace-nowrap">
+                                    ${order.total.toFixed(2)}
+                                  </td>
+                                  <td className="px-2 sm:px-3 py-2">
+                                    <button
+                                      onClick={() =>
+                                        setExpandedOrderId(
+                                          expandedOrderId === order.id
+                                            ? null
+                                            : order.id,
+                                        )
+                                      }
+                                      className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs sm:text-sm bg-blue-600/30 text-blue-300 hover:bg-blue-600/50 transition-colors font-medium whitespace-nowrap"
+                                    >
+                                      <span>
+                                        {expandedOrderId === order.id
+                                          ? "Hide"
+                                          : "View"}
+                                      </span>
+                                      <ChevronDown
+                                        className={`w-3 h-3 transition-transform ${
+                                          expandedOrderId === order.id
+                                            ? "rotate-180"
+                                            : ""
+                                        }`}
+                                      />
+                                    </button>
+                                  </td>
+                                </tr>
+                                {expandedOrderId === order.id && (
+                                  <tr className="border-b border-white/5 bg-white/5">
+                                    <td colSpan={6} className="px-2 sm:px-3 py-4">
+                                      <div className="space-y-4">
+                                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                          <div className="bg-white/10 rounded p-3">
+                                            <p className="text-white/60 text-xs uppercase tracking-wide mb-1">
+                                              Subtotal
+                                            </p>
+                                            <p className="text-sm font-semibold text-white">
+                                              $
+                                              {(
+                                                order.subtotal ||
+                                                order.total * 0.8
+                                              ).toFixed(2)}
+                                            </p>
+                                          </div>
+                                          <div className="bg-white/10 rounded p-3">
+                                            <p className="text-white/60 text-xs uppercase tracking-wide mb-1">
+                                              Tax
+                                            </p>
+                                            <p className="text-sm font-semibold text-white">
+                                              $
+                                              {(
+                                                order.tax ||
+                                                order.total * 0.1
+                                              ).toFixed(2)}
+                                            </p>
+                                          </div>
+                                          <div className="bg-white/10 rounded p-3">
+                                            <p className="text-white/60 text-xs uppercase tracking-wide mb-1">
+                                              Shipping
+                                            </p>
+                                            <p className="text-sm font-semibold text-white">
+                                              $
+                                              {(order.shipping || 0).toFixed(
+                                                2,
+                                              )}
+                                            </p>
+                                          </div>
+                                          <div className="bg-blue-600/20 rounded p-3 border border-blue-500/30">
+                                            <p className="text-blue-300/60 text-xs uppercase tracking-wide mb-1">
+                                              Total
+                                            </p>
+                                            <p className="text-sm font-semibold text-blue-300">
+                                              ${order.total.toFixed(2)}
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        {order.orderItems &&
+                                          order.orderItems.length > 0 && (
+                                            <div>
+                                              <p className="text-white font-semibold text-sm mb-3">
+                                                Items
+                                              </p>
+                                              <div className="space-y-3">
+                                                {order.orderItems.map(
+                                                  (item, idx) => (
+                                                    <div
+                                                      key={idx}
+                                                      className="bg-white/5 rounded p-3 flex gap-3"
+                                                    >
+                                                      <div className="flex-1">
+                                                        <p className="text-white text-sm font-medium">
+                                                          {item.product_name ||
+                                                            "Product"}
+                                                        </p>
+                                                        <p className="text-white/60 text-xs mt-1">
+                                                          Qty: {item.quantity || 1}
+                                                        </p>
+                                                        {item.options &&
+                                                          Object.keys(
+                                                            item.options,
+                                                          ).length > 0 && (
+                                                            <div className="mt-2 text-xs text-white/60">
+                                                              {Object.entries(
+                                                                item.options,
+                                                              ).map(
+                                                                ([key, val]) => (
+                                                                  <div
+                                                                    key={key}
+                                                                  >
+                                                                    {key}:{" "}
+                                                                    {String(
+                                                                      val,
+                                                                    )}
+                                                                  </div>
+                                                                ),
+                                                              )}
+                                                            </div>
+                                                          )}
+                                                      </div>
+                                                      {item.design_file_url && (
+                                                        <div className="flex-shrink-0">
+                                                          <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
+                                                            Design
+                                                          </p>
+                                                          <div className="w-16 h-16 bg-white/5 border border-white/10 rounded overflow-hidden flex items-center justify-center">
+                                                            {item.design_file_url.match(
+                                                              /\.(jpg|jpeg|png|gif|webp)$/i,
+                                                            ) ? (
+                                                              <img
+                                                                src={
+                                                                  item.design_file_url
+                                                                }
+                                                                alt="Design"
+                                                                className="w-full h-full object-cover"
+                                                                onError={(
+                                                                  e,
+                                                                ) => {
+                                                                  e.currentTarget.style.display =
+                                                                    "none";
+                                                                }}
+                                                              />
+                                                            ) : (
+                                                              <a
+                                                                href={
+                                                                  item.design_file_url
+                                                                }
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="flex flex-col items-center gap-1 p-2 hover:text-blue-300 transition-colors"
+                                                              >
+                                                                <ImageIcon className="w-5 h-5 text-white/60" />
+                                                              </a>
+                                                            )}
+                                                          </div>
+                                                        </div>
+                                                      )}
+                                                    </div>
+                                                  ),
+                                                )}
+                                              </div>
+                                            </div>
+                                          )}
+                                      </div>
+                                    </td>
+                                  </tr>
+                                )}
+                              </>
                             ))}
                           </tbody>
                         </table>
