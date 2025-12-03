@@ -36,6 +36,10 @@ interface PendingOrder {
   dateCreated: string;
   itemCount?: number;
   orderItems?: OrderItem[];
+  tracking_number?: string;
+  tracking_carrier?: string;
+  tracking_url?: string;
+  shipped_date?: string;
 }
 
 export default function AdminOrders() {
