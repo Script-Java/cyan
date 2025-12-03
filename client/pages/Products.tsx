@@ -460,14 +460,14 @@ export default function Products() {
                   {expandedProduct === product.id &&
                     product.variations &&
                     product.variations.length > 0 && (
-                      <div className="border-t border-white/10 p-4 bg-white/5 space-y-2">
-                        <h4 className="font-semibold text-sm text-white mb-3">
-                          Available Options:
+                      <div className="border-t border-white/10 p-2 bg-white/5 space-y-1">
+                        <h4 className="font-semibold text-xs text-white mb-2">
+                          Options:
                         </h4>
                         {product.variations.slice(0, 8).map((variation) => (
                           <div
                             key={variation.id}
-                            className="flex items-center justify-between text-sm bg-white/10 rounded p-2 border border-white/10"
+                            className="flex items-center justify-between text-xs bg-white/10 rounded p-1.5 border border-white/10"
                           >
                             <div>
                               {variation.attributes &&
@@ -489,8 +489,8 @@ export default function Products() {
                           </div>
                         ))}
                         {product.variations.length > 8 && (
-                          <p className="text-xs text-white/40 text-center pt-2">
-                            + {product.variations.length - 8} more options
+                          <p className="text-xs text-white/40 text-center pt-1">
+                            +{product.variations.length - 8} more
                           </p>
                         )}
                       </div>
