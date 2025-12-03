@@ -65,7 +65,7 @@ export class ShipStationAPI {
   }
 
   private getAuthHeader(): string {
-    const encodedKey = Buffer.from(`${this.apiKey}:api_partner`).toString(
+    const encodedKey = Buffer.from(`${this.apiKey}:`).toString(
       "base64"
     );
     return `Basic ${encodedKey}`;
