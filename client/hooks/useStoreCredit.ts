@@ -1,9 +1,10 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 
 export const useStoreCredit = () => {
   const [storeCredit, setStoreCredit] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const fetchInProgressRef = useRef(false);
 
   const fetchStoreCredit = useCallback(async () => {
     try {
@@ -14,6 +15,12 @@ export const useStoreCredit = () => {
         return;
       }
 
+      // Guard against concurrent requests
+      if (fetchInProgressRef.current) {
+        return;
+      }
+
+      fetchInProgressRef.current = true;
       setIsLoading(true);
       setError(null);
 
