@@ -117,12 +117,16 @@ export default function AdminOrders() {
         return "text-yellow-300 bg-yellow-500/20 border border-yellow-500/30";
       case "printing":
         return "text-purple-300 bg-purple-500/20 border border-purple-500/30";
+      case "preparing for shipping":
+        return "text-indigo-300 bg-indigo-500/20 border border-indigo-500/30";
       case "in transit":
         return "text-blue-300 bg-blue-500/20 border border-blue-500/30";
       case "shipped":
         return "text-green-300 bg-green-500/20 border border-green-500/30";
       case "delivered":
         return "text-cyan-300 bg-cyan-500/20 border border-cyan-500/30";
+      case "cancelled":
+        return "text-red-300 bg-red-500/20 border border-red-500/30";
       default:
         return "text-white/60 bg-white/10 border border-white/10";
     }
