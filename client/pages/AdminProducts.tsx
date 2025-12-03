@@ -6,7 +6,6 @@ import {
   Plus,
   Edit2,
   Trash2,
-  AlertCircle,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 import AdminNavigationGrid from "@/components/AdminNavigationGrid";
@@ -138,135 +137,128 @@ export default function AdminProducts() {
 
   return (
     <AdminLayout>
-      <div className="w-full pb-20 md:pb-0">
-        <div className="pt-6">
-          {/* Header Section */}
-          <div className="border-b border-white/10">
-            <div className="px-6 lg:px-8 py-8">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h1 className="text-4xl font-bold text-white flex items-center gap-3">
-                    <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                      <Package className="w-8 h-8 text-green-400" />
-                    </div>
-                    Products
-                  </h1>
-                  <p className="text-white/60 mt-2">
-                    Manage your product catalog and inventory
-                  </p>
-                </div>
+      <main className="min-h-screen bg-black py-6">
+        <div className="max-w-6xl mx-auto px-4">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-3xl font-bold text-white">Products</h1>
+              <p className="text-white/60 mt-1">
+                Manage your product catalog and inventory
+              </p>
+            </div>
+            <Button
+              onClick={() => navigate("/admin/products/new")}
+              className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-3 py-2 text-sm"
+            >
+              <Plus className="w-4 h-4" />
+              Add Product
+            </Button>
+          </div>
+
+          {/* Quick Navigation */}
+          <div className="mb-6">
+            <h2 className="text-sm font-semibold text-white/80 mb-3">
+              Quick Navigation
+            </h2>
+            <AdminNavigationGrid />
+          </div>
+
+          {/* Search */}
+          <div className="mb-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-white/40" />
+              <input
+                type="text"
+                placeholder="Search products by name or SKU..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-green-500/50"
+              />
+            </div>
+          </div>
+
+          {/* Products List */}
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64 bg-white/5 border border-white/10 rounded-lg">
+              <div className="text-white/60">Loading products...</div>
+            </div>
+          ) : filteredProducts.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-64 bg-white/5 border border-white/10 rounded-lg">
+              <Package className="w-10 h-10 text-white/20 mb-3" />
+              <p className="text-white font-medium mb-1">
+                {searchQuery ? "No products found" : "No products yet"}
+              </p>
+              <p className="text-white/60 text-sm mb-3">
+                {searchQuery
+                  ? "Try a different search query"
+                  : "Click the Add Product button to get started"}
+              </p>
+              {!searchQuery && (
                 <Button
                   onClick={() => navigate("/admin/products/new")}
-                  className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-4 py-2"
+                  className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded text-sm px-3 py-1.5"
                 >
                   <Plus className="w-4 h-4" />
-                  Add Product
+                  Add Your First Product
                 </Button>
-              </div>
+              )}
             </div>
-          </div>
-
-          {/* Navigation Grid - Desktop/Tablet Only */}
-          <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
-            <div className="px-6 lg:px-8 py-6 sm:py-8">
-              <h2 className="text-sm font-semibold text-white/80 mb-4">
-                Quick Navigation
-              </h2>
-              <AdminNavigationGrid />
-            </div>
-          </div>
-
-          {/* Main Content */}
-          <div className="px-6 lg:px-8 py-8">
-            {/* Search Section */}
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-8">
-              <div className="flex gap-4">
-                <div className="flex-1 relative">
-                  <Search className="absolute left-4 top-3.5 w-5 h-5 text-white/40" />
-                  <input
-                    type="text"
-                    placeholder="Search products by name or SKU..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
-                  />
-                </div>
+          ) : (
+            <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
+              {/* Header */}
+              <div className="px-4 py-3 border-b border-white/10 bg-white/5">
+                <p className="text-sm font-semibold text-white">
+                  Products
+                  <span className="ml-2 text-xs font-normal text-white/60">
+                    {filteredProducts.length} {filteredProducts.length === 1 ? "item" : "items"}
+                  </span>
+                </p>
               </div>
-            </div>
 
-            {/* Products List */}
-            {isLoading ? (
-              <div className="flex justify-center items-center h-96 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl">
-                <div className="text-center">
-                  <p className="text-white/60">Loading products...</p>
-                </div>
-              </div>
-            ) : filteredProducts.length === 0 ? (
-              <div className="flex justify-center items-center h-96 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl">
-                <div className="text-center">
-                  <Package className="w-16 h-16 text-white/20 mx-auto mb-6" />
-                  <p className="text-white font-medium mb-2">
-                    {searchQuery ? "No products found" : "No products yet"}
-                  </p>
-                  <p className="text-white/60 text-sm mb-6">
-                    {searchQuery
-                      ? "Try a different search query"
-                      : 'Click the "Add Product" button to get started'}
-                  </p>
-                  {!searchQuery && (
-                    <Button
-                      onClick={() => navigate("/admin/products/new")}
-                      className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-6 py-2"
-                    >
-                      <Plus className="w-4 h-4" />
-                      Add Your First Product
-                    </Button>
-                  )}
-                </div>
-              </div>
-            ) : (
+              {/* Table */}
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-white/10">
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
+                    <tr className="border-b border-white/10 bg-white/5">
+                      <th className="px-4 py-2 text-left font-semibold text-white/80 text-xs">
                         Product Name
                       </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
+                      <th className="px-4 py-2 text-left font-semibold text-white/80 text-xs hidden sm:table-cell">
                         SKU
                       </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
+                      <th className="px-4 py-2 text-left font-semibold text-white/80 text-xs">
                         Price
                       </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
+                      <th className="px-4 py-2 text-left font-semibold text-white/80 text-xs hidden md:table-cell">
                         Status
                       </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
+                      <th className="px-4 py-2 text-left font-semibold text-white/80 text-xs hidden lg:table-cell">
                         Created
                       </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-white/80">
+                      <th className="px-4 py-2 text-left font-semibold text-white/80 text-xs">
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-white/10">
                     {filteredProducts.map((product) => (
                       <tr
                         key={product.id}
-                        className="border-b border-white/5 hover:bg-white/5 transition"
+                        className="hover:bg-white/5 transition-colors"
                       >
-                        <td className="px-6 py-4 text-sm text-white">
+                        <td className="px-4 py-2.5 text-white text-sm">
                           {product.name}
                         </td>
-                        <td className="px-6 py-4 text-sm text-white/60">
+                        <td className="px-4 py-2.5 text-white/60 text-sm hidden sm:table-cell">
                           {product.sku || "-"}
                         </td>
-                        <td className="px-6 py-4 text-sm text-white">
+                        <td className="px-4 py-2.5 text-white text-sm font-medium">
                           {formatPrice(product.base_price)}
                         </td>
-                        <td className="px-6 py-4 text-sm">
+                        <td className="px-4 py-2.5 text-sm hidden md:table-cell">
                           <span
-                            className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                            className={`inline-block px-2 py-1 rounded text-xs font-medium ${
                               product.availability
                                 ? "bg-green-500/20 text-green-400"
                                 : "bg-red-500/20 text-red-400"
@@ -275,23 +267,25 @@ export default function AdminProducts() {
                             {product.availability ? "Available" : "Unavailable"}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-white/60">
+                        <td className="px-4 py-2.5 text-white/60 text-xs hidden lg:table-cell">
                           {formatDate(product.created_at)}
                         </td>
-                        <td className="px-6 py-4 text-sm">
-                          <div className="flex gap-3">
+                        <td className="px-4 py-2.5 text-sm">
+                          <div className="flex gap-2">
                             <button
                               onClick={() =>
                                 navigate(`/admin/products/${product.id}/edit`)
                               }
-                              className="text-blue-400 hover:text-blue-300 transition"
+                              className="text-blue-400 hover:text-blue-300 transition p-1"
+                              title="Edit product"
                             >
                               <Edit2 className="w-4 h-4" />
                             </button>
                             <button
                               onClick={() => handleDeleteProduct(product.id)}
                               disabled={isDeleting === product.id}
-                              className="text-red-400 hover:text-red-300 transition disabled:opacity-50"
+                              className="text-red-400 hover:text-red-300 transition disabled:opacity-50 p-1"
+                              title="Delete product"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -302,10 +296,10 @@ export default function AdminProducts() {
                   </tbody>
                 </table>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
-      </div>
+      </main>
     </AdminLayout>
   );
 }
