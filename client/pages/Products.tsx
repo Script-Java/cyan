@@ -449,7 +449,7 @@ export default function Products() {
                   {expandedProduct === product.id &&
                     product.variations &&
                     product.variations.length > 0 && (
-                      <div className="border-t border-white/10 p-2 bg-white/5 space-y-1">
+                      <div className="p-2 bg-white/5 space-y-1">
                         <h4 className="font-semibold text-xs text-white mb-2">
                           Options:
                         </h4>
