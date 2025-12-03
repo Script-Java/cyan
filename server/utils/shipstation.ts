@@ -146,22 +146,41 @@ export class ShipStationAPI {
 
   async getServices(carrierCode: string): Promise<any[]> {
     try {
+      console.log("Fetching services for carrier:", carrierCode);
+
       const response = await fetch(
-        `${this.apiUrl}/carriers/getavailableservices?carrierCode=${carrierCode}`,
+        `${this.apiUrl}/carriers/${carrierCode}/services`,
         {
           method: "GET",
           headers: {
             Authorization: this.getAuthHeader(),
             "Content-Type": "application/json",
+            "User-Agent": "Builder.io ShipStation Integration",
           },
         }
       );
 
+      console.log("Services Response:", {
+        status: response.status,
+        statusText: response.statusText,
+      });
+
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error("ShipStation Error:", {
+          status: response.status,
+          body: errorText.substring(0, 500),
+        });
+
+        if (response.status === 401) {
+          throw new Error(`Unauthorized: Invalid ShipStation API key.`);
+        }
+
         throw new Error(`Failed to fetch services: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log("Services fetched successfully:", data?.length || 0);
       return data;
     } catch (error) {
       console.error("Failed to get services:", error);
