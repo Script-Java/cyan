@@ -490,7 +490,7 @@ export default function Products() {
           )}
 
           {/* CTA Section */}
-          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-lg p-6 text-center">
+          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg p-6 text-center">
             <h2 className="text-xl font-bold text-white mb-2">
               Can't find what you're looking for?
             </h2>
