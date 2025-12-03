@@ -388,6 +388,55 @@ export default function AdminOrders() {
                               </div>
                             )}
 
+                            {/* Tracking Information */}
+                            <div className="bg-white/5 rounded border border-white/10 p-3">
+                              <h4 className="text-sm font-semibold text-white mb-2">
+                                Tracking Information
+                              </h4>
+                              {order.tracking_number ? (
+                                <div className="space-y-2">
+                                  <div>
+                                    <p className="text-xs text-white/60">Tracking Number</p>
+                                    <p className="text-sm font-mono text-white">
+                                      {order.tracking_number}
+                                    </p>
+                                  </div>
+                                  {order.tracking_carrier && (
+                                    <div>
+                                      <p className="text-xs text-white/60">Carrier</p>
+                                      <p className="text-sm text-white">
+                                        {order.tracking_carrier}
+                                      </p>
+                                    </div>
+                                  )}
+                                  {order.tracking_url && (
+                                    <div>
+                                      <a
+                                        href={order.tracking_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-sm text-blue-300 hover:text-blue-200 transition-colors break-all"
+                                      >
+                                        Track Package →
+                                      </a>
+                                    </div>
+                                  )}
+                                  {order.shipped_date && (
+                                    <div>
+                                      <p className="text-xs text-white/60">Shipped</p>
+                                      <p className="text-sm text-white">
+                                        {formatDate(order.shipped_date)}
+                                      </p>
+                                    </div>
+                                  )}
+                                </div>
+                              ) : (
+                                <p className="text-sm text-white/60">
+                                  No tracking information yet
+                                </p>
+                              )}
+                            </div>
+
                             {/* Customer Info */}
                             <div className="bg-white/5 rounded border border-white/10 p-3">
                               <h4 className="text-sm font-semibold text-white mb-2">
