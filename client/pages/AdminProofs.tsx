@@ -412,14 +412,14 @@ export default function AdminProofs() {
         <main className="flex-1 md:ml-64 min-h-screen bg-black text-white pt-16 md:pt-20 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
-            <div className="mb-8 border-b border-white/10 pb-8">
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-                <div>
-                  <h1 className="text-3xl sm:text-4xl font-bold text-white flex items-center gap-3">
-                    <Package className="w-8 sm:w-10 h-8 sm:h-10 text-green-400" />
-                    Proofs
+            <div className="mb-6 sm:mb-8 border-b border-white/10 pb-6 sm:pb-8">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-4">
+                <div className="flex-1">
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white flex items-center gap-2 sm:gap-3">
+                    <Package className="w-6 sm:w-8 lg:w-10 h-6 sm:h-8 lg:h-10 text-green-400 flex-shrink-0" />
+                    <span>Proofs</span>
                   </h1>
-                  <p className="text-white/60 mt-2 text-sm">
+                  <p className="text-white/60 mt-2 text-xs sm:text-sm">
                     Manage design proofs for customers
                   </p>
                 </div>
@@ -428,10 +428,10 @@ export default function AdminProofs() {
                     setShowSendForm(!showSendForm);
                     setShowOrderModal(false);
                   }}
-                  className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium text-sm whitespace-nowrap px-4 py-2 rounded-lg"
+                  className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg flex-shrink-0 w-full sm:w-auto"
                 >
                   <Plus className="w-4 h-4" />
-                  Send New Proof
+                  <span>Send New Proof</span>
                 </Button>
               </div>
             </div>
