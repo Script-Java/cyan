@@ -456,7 +456,7 @@ export default function Products() {
                         {product.variations.slice(0, 8).map((variation) => (
                           <div
                             key={variation.id}
-                            className="flex items-center justify-between text-xs bg-white/10 rounded p-1.5 border border-white/10"
+                            className="flex items-center justify-between text-xs bg-white/10 rounded p-1.5"
                           >
                             <div>
                               {variation.attributes &&
