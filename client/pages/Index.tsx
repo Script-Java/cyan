@@ -115,7 +115,7 @@ export default function Index() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-black text-white/60 py-12">
+        <footer className="bg-black text-white/60" style={{ marginBottom: "-4px", padding: "48px 0 200px" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
               <div>
