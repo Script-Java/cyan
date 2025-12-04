@@ -239,9 +239,10 @@ export default function AdminSupport() {
       <>
         <Header />
         <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 md:py-12 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
-            <div className="max-w-4xl mx-auto">
-              {/* Back button */}
-              <button
+          <div className="max-w-4xl mx-auto">
+            <AdminNavigationGrid className="mb-8" />
+            {/* Back button */}
+            <button
                 onClick={handleCloseTicket}
                 className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 sm:mb-6 transition-colors text-sm"
               >
