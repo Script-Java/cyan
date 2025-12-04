@@ -10,7 +10,7 @@ import {
   GripVertical,
 } from "lucide-react";
 import Header from "@/components/Header";
-import AdminSidebar from "@/components/AdminSidebar";
+import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import MobileAdminPanel from "@/components/MobileAdminPanel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
