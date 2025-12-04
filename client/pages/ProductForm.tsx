@@ -1474,11 +1474,11 @@ export default function ProductForm() {
                         type="number"
                         min="1"
                         max="100"
-                        value={formData.customerUploadConfig.maxFileSize}
+                        value={formData.customerUploadConfig.maxFileSize || ""}
                         onChange={(e) =>
                           updateCustomerUploadConfig(
                             "maxFileSize",
-                            parseInt(e.target.value),
+                            e.target.value ? parseInt(e.target.value) : 5,
                           )
                         }
                         className="bg-white/5 border-white/10 text-white placeholder-white/40"
@@ -1759,7 +1759,7 @@ export default function ProductForm() {
                           step="0.01"
                           min="0"
                           max="100"
-                          value={tax.rate}
+                          value={tax.rate || ""}
                           onChange={(e) =>
                             updateTaxConfig(
                               tax.id,
