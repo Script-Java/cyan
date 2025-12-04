@@ -295,19 +295,6 @@ export default function Products() {
                 </span>
               </h2>
               <p className="text-center text-white/60 mb-4 text-xs">TYPE:</p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2.5 mb-8">
-                {categories.map((category) => (
-                  <ProductCategoryCard
-                    key={category.id}
-                    id={category.id}
-                    name={category.name}
-                    description={category.description}
-                    image={category.image}
-                    itemCount={getCategoryItemCount(category.id)}
-                  />
-                ))}
-              </div>
             </div>
           )}
 
