@@ -133,8 +133,8 @@ export default function Index() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  borderColor: "rgba(255, 255, 255, 0.2)",
+                  backgroundColor: "#FFD713",
+                  borderColor: "#FFD713",
                   borderRadius: "8px",
                   borderWidth: "1px",
                   fontWeight: "700",
@@ -144,6 +144,7 @@ export default function Index() {
                   transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
                   marginRight: "-1px",
                   padding: "16px 147px 18px 128px",
+                  color: "#000000",
                 }}
               >
                 <a href="/login" style={{ textDecoration: "none", color: "inherit" }}>
