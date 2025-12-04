@@ -216,11 +216,15 @@ export const handleUploadBlogImage: RequestHandler = async (req, res) => {
     const result = await cloudinary.uploader.upload(dataURI, {
       folder: "sticky-shuttle/blog",
       resource_type: "auto",
+      quality: "auto",
+      fetch_format: "auto",
+      width: 1200,
+      crop: "limit",
     });
 
     res.json({ imageUrl: result.secure_url });
   } catch (err) {
     console.error("Error uploading image:", err);
-    res.status(500).json({ error: "Failed to upload image" });
+    res.status(500).json({ error: "Failed to upload image - file may be too large. Please use an image under 5MB." });
   }
 };
