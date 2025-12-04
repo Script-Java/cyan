@@ -196,14 +196,30 @@ export const handleUpdateBlog: RequestHandler = async (req, res) => {
   }
 };
 
-// Upload image (admin only) - placeholder for now
+// Upload image (admin only) - using Cloudinary
 export const handleUploadBlogImage: RequestHandler = async (req, res) => {
   try {
-    // This is a placeholder. In production, you would upload to a storage service
-    // For now, we'll just return a dummy URL
-    const imageUrl = `https://via.placeholder.com/400x300?text=Blog+Image`;
+    const { v2: cloudinary } = require('cloudinary');
 
-    res.json({ imageUrl });
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+
+    if (!req.file) {
+      return res.status(400).json({ error: "No file provided" });
+    }
+
+    const b64 = Buffer.from(req.file.buffer).toString("base64");
+    const dataURI = `data:${req.file.mimetype};base64,${b64}`;
+
+    const result = await cloudinary.uploader.upload(dataURI, {
+      folder: "sticky-shuttle/blog",
+      resource_type: "auto",
+    });
+
+    res.json({ imageUrl: result.secure_url });
   } catch (err) {
     console.error("Error uploading image:", err);
     res.status(500).json({ error: "Failed to upload image" });
