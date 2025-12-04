@@ -152,10 +152,7 @@ export const handleDeleteBlog: RequestHandler = async (req, res) => {
   try {
     const { blogId } = req.params;
 
-    const { error } = await supabase
-      .from("blogs")
-      .delete()
-      .eq("id", blogId);
+    const { error } = await supabase.from("blogs").delete().eq("id", blogId);
 
     if (error) throw error;
 

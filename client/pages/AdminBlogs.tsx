@@ -97,7 +97,7 @@ export default function AdminBlogs() {
   const filteredBlogs = blogs.filter(
     (blog) =>
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.author.toLowerCase().includes(searchTerm.toLowerCase())
+      blog.author.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   if (!isAuthenticated) {
@@ -209,7 +209,9 @@ export default function AdminBlogs() {
                               : "bg-gray-500/20 text-gray-400"
                           }`}
                         >
-                          {blog.visibility === "visible" ? "Published" : "Draft"}
+                          {blog.visibility === "visible"
+                            ? "Published"
+                            : "Draft"}
                         </span>
                       </div>
                     </div>
@@ -224,9 +226,7 @@ export default function AdminBlogs() {
                         <Eye className="w-4 h-4" />
                       </button>
                       <button
-                        onClick={() =>
-                          navigate(`/admin/edit-blog/${blog.id}`)
-                        }
+                        onClick={() => navigate(`/admin/edit-blog/${blog.id}`)}
                         className="p-2 hover:bg-white/10 rounded-lg text-white/60 hover:text-blue-400 transition-colors"
                         title="Edit blog"
                       >

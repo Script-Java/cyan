@@ -288,8 +288,11 @@ export default function CreateBlog() {
                   </button>
                 </div>
               ) : (
-                <div className="border-2 border-dashed border-white/20 rounded-lg p-8 text-center hover:border-white/40 transition-colors cursor-pointer"
-                  onClick={() => document.getElementById("image-input")?.click()}
+                <div
+                  className="border-2 border-dashed border-white/20 rounded-lg p-8 text-center hover:border-white/40 transition-colors cursor-pointer"
+                  onClick={() =>
+                    document.getElementById("image-input")?.click()
+                  }
                 >
                   <ImageIcon className="w-8 h-8 text-white/40 mx-auto mb-2" />
                   <p className="text-white/60 text-sm">

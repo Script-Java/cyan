@@ -44,8 +44,8 @@ export default function Blogs() {
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.tags.some((tag) =>
-        tag.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+        tag.toLowerCase().includes(searchTerm.toLowerCase()),
+      ),
   );
 
   return (
@@ -123,7 +123,7 @@ export default function Blogs() {
                               year: "numeric",
                               month: "long",
                               day: "numeric",
-                            }
+                            },
                           )}
                         </span>
                       </div>
@@ -151,7 +151,7 @@ export default function Blogs() {
                               year: "numeric",
                               month: "short",
                               day: "numeric",
-                            }
+                            },
                           )}
                         </span>
                         <div className="flex items-center gap-1">

@@ -225,9 +225,7 @@ export default function EditBlog() {
               Back to Blogs
             </button>
             <h1 className="text-3xl font-bold text-white">Edit Blog</h1>
-            <p className="text-white/60 mt-1">
-              Update your blog post
-            </p>
+            <p className="text-white/60 mt-1">Update your blog post</p>
           </div>
 
           {/* Messages */}

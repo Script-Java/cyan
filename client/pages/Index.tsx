@@ -52,8 +52,14 @@ export default function Index() {
         </section>
 
         {/* Benefits Section */}
-        <section className="bg-black" style={{ margin: "-5px 0 -3px", padding: "20px 0 28px" }}>
-          <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: "1964px" }}>
+        <section
+          className="bg-black"
+          style={{ margin: "-5px 0 -3px", padding: "20px 0 28px" }}
+        >
+          <div
+            className="mx-auto px-4 sm:px-6 lg:px-8"
+            style={{ maxWidth: "1964px" }}
+          >
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
                 <div className="flex items-center gap-4">
@@ -97,28 +103,177 @@ export default function Index() {
 
         {/* CTA Section */}
         <section className="py-16 sm:py-24 bg-black">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 text-center relative rounded-3xl border border-white/10" style={{ maxWidth: "1156px", padding: "0 32px 28px", boxShadow: "0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 1px rgba(255, 255, 255, 0.1)" }}>
-            <div className="absolute bg-white/5 rounded-2xl" style={{ opacity: 0.2, left: "-209px", top: "511px", width: "887px", bottom: "0px", right: "0px" }}>
-              <div style={{ position: "absolute", top: "24px", left: "32px", fontSize: "18px" }}>⭐</div>
-              <div style={{ position: "absolute", top: "16px", left: "25%", fontSize: "14px", color: "rgba(255, 255, 255, 0.8)" }}>✨</div>
-              <div style={{ position: "absolute", top: "24px", right: "32px", fontSize: "14px", color: "rgba(150, 100, 200, 0.7)" }}>✨</div>
-              <div style={{ position: "absolute", top: "50%", left: "24px", fontSize: "14px", color: "rgba(200, 150, 100, 0.7)" }}>⭐</div>
-              <div style={{ position: "absolute", top: "50%", right: "24px", color: "rgba(150, 100, 150, 0.7)" }}>✨</div>
-              <div style={{ position: "absolute", top: "33.3333%", left: "48px", fontSize: "12px", color: "rgba(180, 120, 60, 0.7)" }}>⭐</div>
-              <div style={{ position: "absolute", top: "66.6667%", right: "48px", fontSize: "14px", color: "rgba(120, 180, 200, 0.7)" }}>✨</div>
-              <div style={{ position: "absolute", bottom: "24px", left: "33.3333%", fontSize: "14px", color: "rgba(200, 180, 60, 0.8)" }}>✨</div>
-              <div style={{ position: "absolute", bottom: "32px", left: "64px", fontSize: "12px", color: "rgba(100, 150, 200, 0.7)" }}>⭐</div>
-              <div style={{ position: "absolute", bottom: "16px", right: "33.3333%", color: "rgba(255, 255, 255, 0.7)" }}>⭐</div>
-              <div style={{ position: "absolute", bottom: "24px", right: "64px", fontSize: "14px", color: "rgba(150, 100, 200, 0.7)" }}>✨</div>
-              <div style={{ position: "absolute", top: "48px", left: "50%", fontSize: "12px", color: "rgba(200, 150, 100, 0.7)" }}>⭐</div>
-              <div style={{ position: "absolute", bottom: "48px", left: "50%", fontSize: "14px", color: "rgba(150, 100, 150, 0.7)" }}>✨</div>
+          <div
+            className="mx-auto px-4 sm:px-6 lg:px-8 text-center relative rounded-3xl border border-white/10"
+            style={{
+              maxWidth: "1156px",
+              padding: "0 32px 28px",
+              boxShadow:
+                "0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 1px rgba(255, 255, 255, 0.1)",
+            }}
+          >
+            <div
+              className="absolute bg-white/5 rounded-2xl"
+              style={{
+                opacity: 0.2,
+                left: "-209px",
+                top: "511px",
+                width: "887px",
+                bottom: "0px",
+                right: "0px",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: "24px",
+                  left: "32px",
+                  fontSize: "18px",
+                }}
+              >
+                ⭐
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "16px",
+                  left: "25%",
+                  fontSize: "14px",
+                  color: "rgba(255, 255, 255, 0.8)",
+                }}
+              >
+                ✨
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "24px",
+                  right: "32px",
+                  fontSize: "14px",
+                  color: "rgba(150, 100, 200, 0.7)",
+                }}
+              >
+                ✨
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "24px",
+                  fontSize: "14px",
+                  color: "rgba(200, 150, 100, 0.7)",
+                }}
+              >
+                ⭐
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "24px",
+                  color: "rgba(150, 100, 150, 0.7)",
+                }}
+              >
+                ✨
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "33.3333%",
+                  left: "48px",
+                  fontSize: "12px",
+                  color: "rgba(180, 120, 60, 0.7)",
+                }}
+              >
+                ⭐
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "66.6667%",
+                  right: "48px",
+                  fontSize: "14px",
+                  color: "rgba(120, 180, 200, 0.7)",
+                }}
+              >
+                ✨
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "24px",
+                  left: "33.3333%",
+                  fontSize: "14px",
+                  color: "rgba(200, 180, 60, 0.8)",
+                }}
+              >
+                ✨
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "32px",
+                  left: "64px",
+                  fontSize: "12px",
+                  color: "rgba(100, 150, 200, 0.7)",
+                }}
+              >
+                ⭐
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "16px",
+                  right: "33.3333%",
+                  color: "rgba(255, 255, 255, 0.7)",
+                }}
+              >
+                ⭐
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "24px",
+                  right: "64px",
+                  fontSize: "14px",
+                  color: "rgba(150, 100, 200, 0.7)",
+                }}
+              >
+                ✨
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "48px",
+                  left: "50%",
+                  fontSize: "12px",
+                  color: "rgba(200, 150, 100, 0.7)",
+                }}
+              >
+                ⭐
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "48px",
+                  left: "50%",
+                  fontSize: "14px",
+                  color: "rgba(150, 100, 150, 0.7)",
+                }}
+              >
+                ✨
+              </div>
             </div>
-            <div className="relative z-10" style={{ marginBottom: "22px", paddingTop: "34px" }}>
+            <div
+              className="relative z-10"
+              style={{ marginBottom: "22px", paddingTop: "34px" }}
+            >
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
                 Ready to Create?
               </h2>
               <p className="text-xl text-white/70 mb-8">
-                Join thousands of customers who've created amazing custom stickers
+                Join thousands of customers who've created amazing custom
+                stickers
               </p>
             </div>
             <div className="flex gap-4 justify-center items-center flex-wrap">
@@ -147,7 +302,10 @@ export default function Index() {
                   color: "#000000",
                 }}
               >
-                <a href="/blogs" style={{ textDecoration: "none", color: "inherit" }}>
+                <a
+                  href="/blogs"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
                   Login
                 </a>
               </div>
@@ -156,8 +314,14 @@ export default function Index() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-black text-white/60" style={{ marginBottom: "-4px", padding: "48px 0 200px" }}>
-          <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: "2026px" }}>
+        <footer
+          className="bg-black text-white/60"
+          style={{ marginBottom: "-4px", padding: "48px 0 200px" }}
+        >
+          <div
+            className="mx-auto px-4 sm:px-6 lg:px-8"
+            style={{ maxWidth: "2026px" }}
+          >
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
               <div>
                 <h4 className="font-bold text-white mb-4">Shop</h4>
@@ -193,12 +357,18 @@ export default function Index() {
                     </a>
                   </li>
                   <li>
-                    <a href="/blogs" className="hover:text-white transition-colors">
+                    <a
+                      href="/blogs"
+                      className="hover:text-white transition-colors"
+                    >
                       Blog
                     </a>
                   </li>
                   <li>
-                    <a href="/support" className="hover:text-white transition-colors">
+                    <a
+                      href="/support"
+                      className="hover:text-white transition-colors"
+                    >
                       Contact
                     </a>
                   </li>
@@ -257,7 +427,16 @@ export default function Index() {
             </div>
           </div>
         </footer>
-        <div style={{ fontWeight: "400", textAlign: "left", paddingBottom: "20px", paddingLeft: "32px", fontSize: "12px", color: "rgba(255, 255, 255, 0.5)" }}>
+        <div
+          style={{
+            fontWeight: "400",
+            textAlign: "left",
+            paddingBottom: "20px",
+            paddingLeft: "32px",
+            fontSize: "12px",
+            color: "rgba(255, 255, 255, 0.5)",
+          }}
+        >
           Built with ❤️ by © Sticky Slap LLC
         </div>
       </main>

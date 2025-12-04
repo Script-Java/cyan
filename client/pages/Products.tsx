@@ -281,7 +281,10 @@ export default function Products() {
     <>
       <Header />
       <main className="pt-20 min-h-screen bg-black text-white">
-        <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4" style={{ padding: "16px 16px 200px" }}>
+        <div
+          className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4"
+          style={{ padding: "16px 16px 200px" }}
+        >
           {/* Category Section */}
           {!selectedCategory && (
             <div className="mb-8">
@@ -360,7 +363,10 @@ export default function Products() {
 
           {/* Products Grid */}
           {!isLoading && filteredProducts.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2.5" style={{ margin: "0 -1px 32px 0" }}>
+            <div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2.5"
+              style={{ margin: "0 -1px 32px 0" }}
+            >
               {filteredProducts.map((product) => (
                 <div
                   key={product.id}
@@ -491,7 +497,10 @@ export default function Products() {
           )}
 
           {/* CTA Section */}
-          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg text-center" style={{ margin: "26px 0 4px", padding: "14px 16px 10px" }}>
+          <div
+            className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg text-center"
+            style={{ margin: "26px 0 4px", padding: "14px 16px 10px" }}
+          >
             <h2 className="text-xl font-bold text-white mb-2">
               Can't find what you're looking for?
             </h2>
@@ -504,7 +513,16 @@ export default function Products() {
           </div>
 
           {/* Footer */}
-          <div style={{ fontWeight: "400", textAlign: "left", paddingTop: "40px", paddingLeft: "0px", fontSize: "12px", color: "rgba(255, 255, 255, 0.5)" }}>
+          <div
+            style={{
+              fontWeight: "400",
+              textAlign: "left",
+              paddingTop: "40px",
+              paddingLeft: "0px",
+              fontSize: "12px",
+              color: "rgba(255, 255, 255, 0.5)",
+            }}
+          >
             Built with ❤️ by © Sticky Slap LLC
           </div>
         </div>
