@@ -121,6 +121,30 @@ export const handleGetAllBlogs: RequestHandler = async (req, res) => {
   }
 };
 
+// Get single blog by ID (admin only - can see any status)
+export const handleGetAdminBlogById: RequestHandler = async (req, res) => {
+  try {
+    const { blogId } = req.params;
+
+    const { data, error } = await supabase
+      .from("blogs")
+      .select("*")
+      .eq("id", blogId)
+      .single();
+
+    if (error) throw error;
+
+    if (!data) {
+      return res.status(404).json({ error: "Blog not found" });
+    }
+
+    res.json(data);
+  } catch (err) {
+    console.error("Error fetching blog:", err);
+    res.status(500).json({ error: "Failed to fetch blog" });
+  }
+};
+
 // Delete blog (admin only)
 export const handleDeleteBlog: RequestHandler = async (req, res) => {
   try {
