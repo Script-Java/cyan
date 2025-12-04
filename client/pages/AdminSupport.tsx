@@ -238,11 +238,7 @@ export default function AdminSupport() {
     return (
       <>
         <Header />
-        <div className="flex">
-          <div className="hidden md:block">
-            <AdminSidebar />
-          </div>
-          <main className="flex-1 md:ml-64 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 md:py-12 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
+        <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 md:py-12 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
             <div className="max-w-4xl mx-auto">
               {/* Back button */}
               <button
@@ -414,9 +410,8 @@ export default function AdminSupport() {
                 </div>
               </div>
             </div>
-          </main>
-          <MobileAdminPanel />
-        </div>
+        </main>
+        <MobileAdminPanel />
       </>
     );
   }
@@ -424,11 +419,7 @@ export default function AdminSupport() {
   return (
     <>
       <Header />
-      <div className="flex">
-        <div className="hidden md:block">
-          <AdminSidebar />
-        </div>
-        <main className="flex-1 md:ml-64 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 md:py-12 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
+      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 md:py-12 px-3 sm:px-6 lg:px-8 pb-20 md:pb-0">
           <div className="max-w-7xl mx-auto">
             {/* Header */}
             <div className="mb-6 sm:mb-8">
@@ -564,10 +555,9 @@ export default function AdminSupport() {
                 ))}
               </div>
             )}
-          </div>
-        </main>
-        <MobileAdminPanel />
-      </div>
-    </>
-  );
+        </div>
+    </main>
+    <MobileAdminPanel />
+  </>
+);
 }
