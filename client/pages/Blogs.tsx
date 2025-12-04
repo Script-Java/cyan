@@ -55,7 +55,7 @@ export default function Blogs() {
         <div className="max-w-6xl mx-auto px-4 py-8">
           {/* Header */}
           <div className="mb-12">
-            <h1 className="text-3xl sm:text-4xl font-black text-gray-900 mb-4">
+            <h1 className="text-3xl sm:text-4xl font-black text-gray-900 mb-4 pt-10">
               Recent articles
             </h1>
           </div>
