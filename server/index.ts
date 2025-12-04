@@ -404,6 +404,18 @@ export function createServer() {
   app.post("/api/webhooks/ecwid", handleEcwidOrderWebhook);
   app.get("/api/webhooks/health", handleWebhookHealth);
 
+  // ===== Blogs Routes =====
+  // Public routes
+  app.get("/api/blogs", handleGetPublishedBlogs);
+  app.get("/api/blogs/:blogId", handleGetBlogById);
+
+  // Admin routes (Protected)
+  app.post("/api/admin/blogs", verifyToken, handleCreateBlog);
+  app.get("/api/admin/blogs", verifyToken, handleGetAllBlogs);
+  app.put("/api/admin/blogs/:blogId", verifyToken, handleUpdateBlog);
+  app.delete("/api/admin/blogs/:blogId", verifyToken, handleDeleteBlog);
+  app.post("/api/admin/upload-image", verifyToken, handleUploadBlogImage);
+
   // Global error handler - must be last
   app.use((err: any, _req: any, res: any, _next: any) => {
     console.error("Global error handler:", err);
