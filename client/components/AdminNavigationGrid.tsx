@@ -34,7 +34,7 @@ export default function AdminNavigationGrid({
     {
       label: "Home",
       description: "Dashboard overview",
-      icon: <Home className="w-6 h-6 sm:w-8 sm:h-8" />,
+      icon: <Home className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin",
       color:
         "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
@@ -43,7 +43,7 @@ export default function AdminNavigationGrid({
     {
       label: "Orders",
       description: "View order history",
-      icon: <ShoppingCart className="w-6 h-6 sm:w-8 sm:h-8" />,
+      icon: <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/orders",
       color:
         "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
@@ -52,7 +52,7 @@ export default function AdminNavigationGrid({
     {
       label: "Proofs",
       description: "Review designs",
-      icon: <Eye className="w-6 h-6 sm:w-8 sm:h-8" />,
+      icon: <Eye className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/proofs",
       color:
         "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
@@ -61,7 +61,7 @@ export default function AdminNavigationGrid({
     {
       label: "Products",
       description: "Manage products",
-      icon: <Package className="w-6 h-6 sm:w-8 sm:h-8" />,
+      icon: <Package className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/products",
       color:
         "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
@@ -70,7 +70,7 @@ export default function AdminNavigationGrid({
     {
       label: "Customers",
       description: "Manage customers",
-      icon: <Users className="w-6 h-6 sm:w-8 sm:h-8" />,
+      icon: <Users className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/customers",
       color:
         "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
@@ -79,7 +79,7 @@ export default function AdminNavigationGrid({
     {
       label: "Finance",
       description: "View spending",
-      icon: <DollarSign className="w-6 h-6 sm:w-8 sm:h-8" />,
+      icon: <DollarSign className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/finance",
       color:
         "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
@@ -88,7 +88,7 @@ export default function AdminNavigationGrid({
     {
       label: "Analytics",
       description: "View analytics",
-      icon: <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8" />,
+      icon: <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/analytics",
       color:
         "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
@@ -97,7 +97,7 @@ export default function AdminNavigationGrid({
     {
       label: "Settings",
       description: "Manage account",
-      icon: <Settings className="w-6 h-6 sm:w-8 sm:h-8" />,
+      icon: <Settings className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/settings",
       color:
         "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
@@ -106,7 +106,7 @@ export default function AdminNavigationGrid({
     {
       label: "Logout",
       description: "End session",
-      icon: <LogOut className="w-6 h-6 sm:w-8 sm:h-8" />,
+      icon: <LogOut className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "#logout",
       color:
         "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20 opacity-85",
