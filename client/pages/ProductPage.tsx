@@ -189,7 +189,10 @@ export default function ProductPage() {
 
       for (const selection of sharedVariant.optionSelections) {
         const selectedValueId = selectedOptions[selection.optionId];
-        if (!selectedValueId || !selection.selectedValueIds.includes(selectedValueId)) {
+        if (
+          !selectedValueId ||
+          !selection.selectedValueIds.includes(selectedValueId)
+        ) {
           isMatch = false;
           break;
         }

@@ -829,7 +829,10 @@ export default function ProductForm() {
                     min="0"
                     value={formData.weight || ""}
                     onChange={(e) =>
-                      handleInputChange("weight", e.target.value ? parseFloat(e.target.value) : 0)
+                      handleInputChange(
+                        "weight",
+                        e.target.value ? parseFloat(e.target.value) : 0,
+                      )
                     }
                     placeholder="0.00"
                     className="bg-white/5 border-white/10 text-white placeholder-white/40"
@@ -1106,7 +1109,9 @@ export default function ProductForm() {
                                               option.id,
                                               value.id,
                                               "priceModifier",
-                                              e.target.value ? parseFloat(e.target.value) : 0,
+                                              e.target.value
+                                                ? parseFloat(e.target.value)
+                                                : 0,
                                             )
                                           }
                                           placeholder="0.00"
@@ -1369,7 +1374,10 @@ export default function ProductForm() {
                                           ),
                                       )
                                       .map((option) => (
-                                        <option key={option.id} value={option.id}>
+                                        <option
+                                          key={option.id}
+                                          value={option.id}
+                                        >
                                           {option.name || "Unnamed Option"}
                                         </option>
                                       ))}
@@ -1392,14 +1400,17 @@ export default function ProductForm() {
                                 updateSharedVariant(
                                   sharedVariant.id,
                                   "price",
-                                  e.target.value ? parseFloat(e.target.value) : 0,
+                                  e.target.value
+                                    ? parseFloat(e.target.value)
+                                    : 0,
                                 )
                               }
                               placeholder="0.00"
                               className="bg-white/10 border-white/10 text-white placeholder-white/40"
                             />
                             <p className="text-white/40 text-sm mt-1">
-                              This price will be applied to the combined option group
+                              This price will be applied to the combined option
+                              group
                             </p>
                           </div>
 
