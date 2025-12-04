@@ -1100,13 +1100,13 @@ export default function ProductForm() {
                                         <Input
                                           type="number"
                                           step="0.01"
-                                          value={value.priceModifier}
+                                          value={value.priceModifier || ""}
                                           onChange={(e) =>
                                             updateVariantValue(
                                               option.id,
                                               value.id,
                                               "priceModifier",
-                                              parseFloat(e.target.value),
+                                              e.target.value ? parseFloat(e.target.value) : 0,
                                             )
                                           }
                                           placeholder="0.00"
