@@ -267,6 +267,9 @@ export default function ProductPage() {
         title: "Success",
         description: "Product added to cart",
       });
+      setTimeout(() => {
+        window.location.href = "/checkout-new";
+      }, 500);
     } catch (error) {
       console.error("Error adding to cart:", error);
       toast({
