@@ -34,7 +34,7 @@ interface TicketReply {
 export default function AdminSupport() {
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(
-    null
+    null,
   );
   const [ticketReplies, setTicketReplies] = useState<TicketReply[]>([]);
   const [replyMessage, setReplyMessage] = useState("");
@@ -78,7 +78,7 @@ export default function AdminSupport() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (response.ok) {
@@ -117,15 +117,15 @@ export default function AdminSupport() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ status: newStatus }),
-        }
+        },
       );
 
       if (response.ok) {
         setSelectedTicket({ ...selectedTicket, status: newStatus as any });
         setTickets(
           tickets.map((t) =>
-            t.id === selectedTicket.id ? { ...t, status: newStatus as any } : t
-          )
+            t.id === selectedTicket.id ? { ...t, status: newStatus as any } : t,
+          ),
         );
       }
     } catch (error) {
@@ -154,7 +154,7 @@ export default function AdminSupport() {
             sender_name: "Admin",
             sender_type: "admin",
           }),
-        }
+        },
       );
 
       if (response.ok) {

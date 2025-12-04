@@ -646,12 +646,20 @@ export default function ProductForm() {
         {/* Navigation Grid - Desktop/Tablet Only */}
         <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
           <div className="px-6 lg:px-8 py-6">
-            <h2 className="text-sm font-semibold text-white/80 mb-4">Quick Navigation</h2>
+            <h2 className="text-sm font-semibold text-white/80 mb-4">
+              Quick Navigation
+            </h2>
             <AdminNavigationGrid />
           </div>
         </div>
 
-        <div className="py-8" style={{ margin: "51px 200px 0 500px", padding: "32px 26px 32px 199px" }}>
+        <div
+          className="py-8"
+          style={{
+            margin: "51px 200px 0 500px",
+            padding: "32px 26px 32px 199px",
+          }}
+        >
           <div className="max-w-4xl">
             {/* Basic Information Section */}
             <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
