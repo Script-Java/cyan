@@ -794,11 +794,11 @@ export default function ProductForm() {
                       type="number"
                       step="0.01"
                       min="0"
-                      value={formData.basePrice}
+                      value={formData.basePrice || ""}
                       onChange={(e) =>
                         handleInputChange(
                           "basePrice",
-                          parseFloat(e.target.value),
+                          e.target.value ? parseFloat(e.target.value) : 0,
                         )
                       }
                       placeholder="0.00"
