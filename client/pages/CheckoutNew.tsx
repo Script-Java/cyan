@@ -96,6 +96,57 @@ export default function CheckoutNew() {
     const loadCart = async () => {
       try {
         const id = cartId || localStorage.getItem("cart_id");
+        const localStorageCart = localStorage.getItem("cart");
+
+        if (localStorageCart) {
+          const customItems = JSON.parse(localStorageCart);
+          const items = [];
+          for (const item of customItems) {
+            const response = await fetch(`/api/public/products/${item.productId}`);
+            if (response.ok) {
+              const productData = await response.json();
+              const product = productData.product;
+              const selectedOption = Object.keys(item.selectedOptions).find(optionId => {
+                const option = product.options?.find((o: any) => o.id === optionId);
+                const sharedVariant = product.shared_variants?.find((sv: any) =>
+                  sv.optionSelections.some((os: any) =>
+                    os.optionId === optionId &&
+                    os.selectedValueIds.includes(item.selectedOptions[optionId])
+                  )
+                );
+                return sharedVariant;
+              });
+              let price = product.base_price || 0;
+              if (selectedOption) {
+                const sharedVariant = product.shared_variants?.find((sv: any) =>
+                  sv.optionSelections.some((os: any) =>
+                    os.optionId === selectedOption &&
+                    os.selectedValueIds.includes(item.selectedOptions[selectedOption])
+                  )
+                );
+                if (sharedVariant) {
+                  price += sharedVariant.price;
+                }
+              }
+              items.push({
+                product_id: item.productId,
+                product_name: product.name,
+                quantity: item.quantity,
+                price: parseFloat(price),
+                image: product.images?.[0]?.url,
+              });
+            }
+          }
+          setCartItems(items);
+          const subtotal = items.reduce((sum: number, item: any) => sum + (item.price || 0) * item.quantity, 0);
+          setOrderData((prev) => ({
+            ...prev,
+            subtotal,
+            total: subtotal,
+          }));
+          setIsLoading(false);
+          return;
+        }
 
         if (!id) {
           console.log("No cart ID found, skipping cart load");
