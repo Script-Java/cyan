@@ -919,7 +919,7 @@ export const handleCreatePayment: RequestHandler = async (req, res) => {
 
     let payment;
     try {
-      const paymentsApi = getPaymentsApi();
+      const paymentsApi = await getPaymentsApi();
       const response = await paymentsApi.createPayment(paymentBody);
 
       if (!response.result) {
