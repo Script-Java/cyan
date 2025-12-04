@@ -147,7 +147,7 @@ export default function Index() {
                   color: "#000000",
                 }}
               >
-                <a href="/login" style={{ textDecoration: "none", color: "inherit" }}>
+                <a href="/blogs" style={{ textDecoration: "none", color: "inherit" }}>
                   Login
                 </a>
               </div>
