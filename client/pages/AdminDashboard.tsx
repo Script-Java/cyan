@@ -133,6 +133,14 @@ export default function AdminDashboard() {
       color: "bg-cyan-500/20 hover:bg-cyan-500/30",
       textColor: "text-cyan-400",
     },
+    {
+      title: "Blogs",
+      description: "Manage blogs",
+      icon: <BookOpen className="w-5 h-5" />,
+      path: "/admin/blogs",
+      color: "bg-indigo-500/20 hover:bg-indigo-500/30",
+      textColor: "text-indigo-400",
+    },
   ];
 
   if (!isAuthenticated) {
