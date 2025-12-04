@@ -130,12 +130,27 @@ export default function Index() {
                 Get Started Now
                 <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link
-                to="/login"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 border border-white/20 text-white rounded-lg font-bold hover:bg-white/20 transition-all"
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  borderColor: "rgba(255, 255, 255, 0.2)",
+                  borderRadius: "8px",
+                  borderWidth: "1px",
+                  fontWeight: "700",
+                  gap: "8px",
+                  justifyContent: "center",
+                  transitionDuration: "0.15s",
+                  transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+                  marginRight: "-1px",
+                  padding: "16px 147px 18px 128px",
+                }}
               >
-                Login
-              </Link>
+                <a href="/login" style={{ textDecoration: "none", color: "inherit" }}>
+                  Login
+                </a>
+              </div>
             </div>
           </div>
         </section>
