@@ -118,7 +118,8 @@ export async function processSquarePayment(paymentData: {
       "cents",
     );
 
-    const response = await getPaymentsApi().createPayment(paymentBody);
+    const paymentsApi = await getPaymentsApi();
+    const response = await paymentsApi.createPayment(paymentBody);
 
     if (response.result) {
       console.log("Square payment processed successfully:", response.result.id);
