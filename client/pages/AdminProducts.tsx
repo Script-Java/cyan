@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Package, Search, Plus, Edit2, Trash2 } from "lucide-react";
+import { Package, Search, Plus, Edit2, Trash2, Eye } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import { Button } from "@/components/ui/button";
