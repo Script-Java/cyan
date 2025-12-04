@@ -198,12 +198,7 @@ export default function Index() {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-white transition-colors">
-                      Careers
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-white transition-colors">
+                    <a href="/support" className="hover:text-white transition-colors">
                       Contact
                     </a>
                   </li>
