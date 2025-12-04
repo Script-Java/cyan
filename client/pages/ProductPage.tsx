@@ -210,10 +210,13 @@ export default function ProductPage() {
     if (!product) return 0;
 
     const matchedSharedVariant = checkSharedVariantMatch();
+    // RULE: Shared variant prices override base price completely
+    // If a shared variant matches the selected options, use only the shared variant price
     if (matchedSharedVariant) {
       return matchedSharedVariant.price.toFixed(2);
     }
 
+    // Otherwise, apply individual option value price modifiers to the base price
     let totalModifier = 0;
     Object.entries(selectedOptions).forEach(([optionId, valueId]) => {
       const option = product.options.find((o) => o.id === optionId);
