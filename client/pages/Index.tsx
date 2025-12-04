@@ -193,7 +193,7 @@ export default function Index() {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-white transition-colors">
+                    <a href="/blogs" className="hover:text-white transition-colors">
                       Blog
                     </a>
                   </li>
