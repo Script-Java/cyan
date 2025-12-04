@@ -1764,7 +1764,7 @@ export default function ProductForm() {
                             updateTaxConfig(
                               tax.id,
                               "rate",
-                              parseFloat(e.target.value),
+                              e.target.value ? parseFloat(e.target.value) : 0,
                             )
                           }
                           placeholder="0.00"
