@@ -37,6 +37,20 @@ interface ProductOption {
   displayOrder: number;
 }
 
+interface OptionSelection {
+  optionId: string;
+  optionName: string;
+  selectedValueIds: string[];
+}
+
+interface SharedVariant {
+  id: string;
+  name: string;
+  description: string;
+  optionSelections: OptionSelection[];
+  price: number;
+}
+
 interface CustomerUploadConfig {
   enabled: boolean;
   maxFileSize: number;
@@ -51,6 +65,7 @@ interface Product {
   description: string;
   images: ProductImage[];
   options: ProductOption[];
+  shared_variants?: SharedVariant[];
   customer_upload_config: CustomerUploadConfig;
   optional_fields: { name: string; type: string }[];
   availability: boolean;
