@@ -124,6 +124,15 @@ import {
   handleGetCarriers,
   handleGetServices,
 } from "./routes/shipping";
+import {
+  handleGetPublishedBlogs,
+  handleGetBlogById,
+  handleCreateBlog,
+  handleGetAllBlogs,
+  handleDeleteBlog,
+  handleUpdateBlog,
+  handleUploadBlogImage,
+} from "./routes/blogs";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
