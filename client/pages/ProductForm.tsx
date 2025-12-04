@@ -827,9 +827,9 @@ export default function ProductForm() {
                     type="number"
                     step="0.01"
                     min="0"
-                    value={formData.weight}
+                    value={formData.weight || ""}
                     onChange={(e) =>
-                      handleInputChange("weight", parseFloat(e.target.value))
+                      handleInputChange("weight", e.target.value ? parseFloat(e.target.value) : 0)
                     }
                     placeholder="0.00"
                     className="bg-white/5 border-white/10 text-white placeholder-white/40"
