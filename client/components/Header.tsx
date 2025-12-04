@@ -13,6 +13,7 @@ import {
   UserPlus,
   Shield,
   LogOut,
+  BookOpen,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStoreCredit } from "@/hooks/useStoreCredit";
