@@ -129,6 +129,7 @@ import {
   handleGetBlogById,
   handleCreateBlog,
   handleGetAllBlogs,
+  handleGetAdminBlogById,
   handleDeleteBlog,
   handleUpdateBlog,
   handleUploadBlogImage,
