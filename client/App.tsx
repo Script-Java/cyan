@@ -40,6 +40,7 @@ import ProductPage from "./pages/ProductPage";
 import AdminFinance from "./pages/AdminFinance";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminBlogs from "./pages/AdminBlogs";
+import CreateBlog from "./pages/CreateBlog";
 import Customers from "./pages/Customers";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
