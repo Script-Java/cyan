@@ -39,6 +39,7 @@ interface SharedVariant {
   name: string;
   description: string;
   optionIds: string[];
+  price: number;
 }
 
 interface PricingRule {
