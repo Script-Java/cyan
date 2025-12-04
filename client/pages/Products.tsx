@@ -360,7 +360,7 @@ export default function Products() {
 
           {/* Products Grid */}
           {!isLoading && filteredProducts.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2.5 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2.5" style={{ margin: "0 -1px 32px 0" }}>
               {filteredProducts.map((product) => (
                 <div
                   key={product.id}
