@@ -269,6 +269,15 @@ export default function AdminProducts() {
                           <div className="flex gap-2">
                             <button
                               onClick={() =>
+                                window.open(`/product/${product.id}`, "_blank")
+                              }
+                              className="text-green-400 hover:text-green-300 transition p-1"
+                              title="Preview product page"
+                            >
+                              <Eye className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() =>
                                 navigate(`/admin/products/${product.id}/edit`)
                               }
                               className="text-blue-400 hover:text-blue-300 transition p-1"
