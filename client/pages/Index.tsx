@@ -261,7 +261,7 @@ export default function Index() {
             </div>
           </div>
         </footer>
-        <div style={{ fontWeight: "400", textAlign: "center", paddingBottom: "40px" }}>
+        <div style={{ fontWeight: "400", textAlign: "left", paddingBottom: "20px", paddingLeft: "32px", fontSize: "12px", color: "rgba(255, 255, 255, 0.5)" }}>
           Built with ❤️ by © Sticky Slap LLC
         </div>
       </main>
