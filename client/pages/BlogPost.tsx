@@ -92,6 +92,24 @@ export default function BlogPost() {
   return (
     <>
       <Header />
+
+      {/* Featured Image Hero Banner */}
+      {blog.featured_image_url && (
+        <section className="relative w-full h-96 overflow-hidden bg-gray-900">
+          <img
+            src={blog.featured_image_url}
+            alt={blog.title}
+            className="w-full h-full object-cover"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: "linear-gradient(to top, rgba(255, 255, 255, 1) 0px, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%)",
+            }}
+          />
+        </section>
+      )}
+
       <main className="bg-white min-h-screen">
         {/* Hero Section */}
         <section className="bg-white pt-12 pb-8">
