@@ -281,7 +281,7 @@ export default function Products() {
     <>
       <Header />
       <main className="pt-20 min-h-screen bg-black text-white">
-        <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4 py-4">
+        <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4" style={{ padding: "16px 16px 200px" }}>
           {/* Category Section */}
           {!selectedCategory && (
             <div className="mb-8">
