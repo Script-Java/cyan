@@ -414,7 +414,7 @@ export default function ProductForm() {
       id: Math.random().toString(36),
       name: "",
       description: "",
-      optionIds: [],
+      optionSelections: [],
       price: 0,
     };
     setFormData((prev) => ({
@@ -443,7 +443,34 @@ export default function ProductForm() {
     }));
   };
 
-  const toggleSharedVariantOption = (
+  const addOptionToSharedVariant = (
+    sharedVariantId: string,
+    optionId: string,
+  ) => {
+    const option = formData.options.find((o) => o.id === optionId);
+    if (!option) return;
+
+    setFormData((prev) => ({
+      ...prev,
+      sharedVariants: prev.sharedVariants.map((sv) =>
+        sv.id === sharedVariantId
+          ? {
+              ...sv,
+              optionSelections: [
+                ...sv.optionSelections,
+                {
+                  optionId,
+                  optionName: option.name,
+                  selectedValueIds: [],
+                },
+              ],
+            }
+          : sv,
+      ),
+    }));
+  };
+
+  const removeOptionFromSharedVariant = (
     sharedVariantId: string,
     optionId: string,
   ) => {
@@ -453,9 +480,36 @@ export default function ProductForm() {
         sv.id === sharedVariantId
           ? {
               ...sv,
-              optionIds: sv.optionIds.includes(optionId)
-                ? sv.optionIds.filter((id) => id !== optionId)
-                : [...sv.optionIds, optionId],
+              optionSelections: sv.optionSelections.filter(
+                (os) => os.optionId !== optionId,
+              ),
+            }
+          : sv,
+      ),
+    }));
+  };
+
+  const toggleValueInSharedVariant = (
+    sharedVariantId: string,
+    optionId: string,
+    valueId: string,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      sharedVariants: prev.sharedVariants.map((sv) =>
+        sv.id === sharedVariantId
+          ? {
+              ...sv,
+              optionSelections: sv.optionSelections.map((os) =>
+                os.optionId === optionId
+                  ? {
+                      ...os,
+                      selectedValueIds: os.selectedValueIds.includes(valueId)
+                        ? os.selectedValueIds.filter((id) => id !== valueId)
+                        : [...os.selectedValueIds, valueId],
+                    }
+                  : os,
+              ),
             }
           : sv,
       ),
@@ -1173,49 +1227,117 @@ export default function ProductForm() {
                           </div>
 
                           {/* Option Selection */}
-                          {formData.options.length > 0 ? (
-                            <div>
-                              <Label className="text-white/80 mb-3 block">
-                                Select Options to Include
-                              </Label>
-                              <div className="bg-white/10 rounded-lg p-4 space-y-2">
-                                {formData.options.map((option) => (
-                                  <label
-                                    key={option.id}
-                                    className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-2 rounded transition"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      checked={sharedVariant.optionIds.includes(
-                                        option.id,
+                          <div>
+                            <Label className="text-white/80 mb-3 block">
+                              Group Options & Values
+                            </Label>
+                            {formData.options.length === 0 ? (
+                              <p className="text-white/40 text-sm">
+                                Add options above to include them in this shared
+                                variant group.
+                              </p>
+                            ) : (
+                              <div className="space-y-4">
+                                {/* Selected Options Display */}
+                                {sharedVariant.optionSelections.length > 0 && (
+                                  <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                                    <div className="grid grid-cols-2 gap-4">
+                                      {sharedVariant.optionSelections.map(
+                                        (selection) => {
+                                          const option = formData.options.find(
+                                            (o) => o.id === selection.optionId,
+                                          );
+                                          return (
+                                            <div
+                                              key={selection.optionId}
+                                              className="border-l-2 border-purple-500 pl-3"
+                                            >
+                                              <div className="flex justify-between items-start mb-2">
+                                                <span className="text-white font-medium">
+                                                  {selection.optionName}
+                                                </span>
+                                                <button
+                                                  type="button"
+                                                  onClick={() =>
+                                                    removeOptionFromSharedVariant(
+                                                      sharedVariant.id,
+                                                      selection.optionId,
+                                                    )
+                                                  }
+                                                  className="text-red-400 hover:text-red-300 text-sm"
+                                                >
+                                                  Remove
+                                                </button>
+                                              </div>
+                                              <div className="space-y-1">
+                                                {option?.values.map((value) => (
+                                                  <label
+                                                    key={value.id}
+                                                    className="flex items-center gap-2 text-white/70 text-sm cursor-pointer hover:text-white"
+                                                  >
+                                                    <input
+                                                      type="checkbox"
+                                                      checked={selection.selectedValueIds.includes(
+                                                        value.id,
+                                                      )}
+                                                      onChange={() =>
+                                                        toggleValueInSharedVariant(
+                                                          sharedVariant.id,
+                                                          selection.optionId,
+                                                          value.id,
+                                                        )
+                                                      }
+                                                      className="w-3 h-3"
+                                                    />
+                                                    {value.name}
+                                                  </label>
+                                                ))}
+                                              </div>
+                                            </div>
+                                          );
+                                        },
                                       )}
-                                      onChange={() =>
-                                        toggleSharedVariantOption(
-                                          sharedVariant.id,
-                                          option.id,
-                                        )
-                                      }
-                                      className="w-4 h-4 cursor-pointer"
-                                    />
-                                    <div className="flex-1">
-                                      <span className="text-white">
-                                        {option.name || "Unnamed Option"}
-                                      </span>
-                                      <p className="text-white/40 text-sm">
-                                        Type: {option.type} • Values:{" "}
-                                        {option.values.length}
-                                      </p>
                                     </div>
-                                  </label>
-                                ))}
+                                  </div>
+                                )}
+
+                                {/* Add Option Dropdown */}
+                                <div>
+                                  <Label className="text-white/80 mb-2 block">
+                                    Add Option to Group
+                                  </Label>
+                                  <select
+                                    onChange={(e) => {
+                                      if (e.target.value) {
+                                        addOptionToSharedVariant(
+                                          sharedVariant.id,
+                                          e.target.value,
+                                        );
+                                        e.target.value = "";
+                                      }
+                                    }}
+                                    className="w-full bg-white/10 border border-white/10 rounded-lg text-white p-2 cursor-pointer"
+                                  >
+                                    <option value="">
+                                      Select an option...
+                                    </option>
+                                    {formData.options
+                                      .filter(
+                                        (option) =>
+                                          !sharedVariant.optionSelections.some(
+                                            (os) => os.optionId === option.id,
+                                          ),
+                                      )
+                                      .map((option) => (
+                                        <option key={option.id} value={option.id}>
+                                          {option.name || "Unnamed Option"}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
                               </div>
-                            </div>
-                          ) : (
-                            <p className="text-white/40 text-sm">
-                              Add options above to include them in this shared
-                              variant group.
-                            </p>
-                          )}
+                            )}
+                          </div>
 
                           <div>
                             <Label className="text-white/80 mb-2 block">
