@@ -430,7 +430,7 @@ export function createServer() {
   app.get("/api/admin/blogs/:blogId", verifyToken, handleGetAdminBlogById);
   app.put("/api/admin/blogs/:blogId", verifyToken, handleUpdateBlog);
   app.delete("/api/admin/blogs/:blogId", verifyToken, handleDeleteBlog);
-  app.post("/api/admin/upload-image", verifyToken, handleUploadBlogImage);
+  app.post("/api/admin/upload-image", verifyToken, upload.single("file"), handleUploadBlogImage);
 
   // Global error handler - must be last
   app.use((err: any, _req: any, res: any, _next: any) => {
