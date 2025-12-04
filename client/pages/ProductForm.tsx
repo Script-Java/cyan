@@ -66,6 +66,7 @@ interface SharedVariant {
   name: string;
   description: string;
   optionIds: string[];
+  price: number;
 }
 
 interface CustomerUploadConfig {
@@ -408,6 +409,7 @@ export default function ProductForm() {
       name: "",
       description: "",
       optionIds: [],
+      price: 0,
     };
     setFormData((prev) => ({
       ...prev,
@@ -1208,6 +1210,30 @@ export default function ProductForm() {
                               variant group.
                             </p>
                           )}
+
+                          <div>
+                            <Label className="text-white/80 mb-2 block">
+                              Group Price (USD)
+                            </Label>
+                            <Input
+                              type="number"
+                              min="0"
+                              step="0.01"
+                              value={sharedVariant.price}
+                              onChange={(e) =>
+                                updateSharedVariant(
+                                  sharedVariant.id,
+                                  "price",
+                                  parseFloat(e.target.value) || 0,
+                                )
+                              }
+                              placeholder="0.00"
+                              className="bg-white/10 border-white/10 text-white placeholder-white/40"
+                            />
+                            <p className="text-white/40 text-sm mt-1">
+                              This price will be applied to the combined option group
+                            </p>
+                          </div>
 
                           <div className="flex justify-end">
                             <button
