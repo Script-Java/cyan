@@ -17,6 +17,7 @@ import {
   Upload,
   Image as ImageIcon,
   ArrowRight,
+  BookOpen,
 } from "lucide-react";
 
 interface OrderItem {
