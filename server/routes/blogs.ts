@@ -200,8 +200,6 @@ export const handleUpdateBlog: RequestHandler = async (req, res) => {
 // Upload image (admin only) - using Cloudinary
 export const handleUploadBlogImage: RequestHandler = async (req, res) => {
   try {
-    const { v2: cloudinary } = require('cloudinary');
-
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
       api_key: process.env.CLOUDINARY_API_KEY,
