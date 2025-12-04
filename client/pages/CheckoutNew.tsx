@@ -138,7 +138,7 @@ export default function CheckoutNew() {
                   ),
                 );
                 if (sharedVariant) {
-                  price += sharedVariant.price;
+                  price = sharedVariant.price;
                 }
               }
               items.push({
