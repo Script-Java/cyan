@@ -156,18 +156,6 @@ export default function BlogPost() {
           </div>
         </section>
 
-        {/* Featured Image */}
-        {blog.featured_image_url && (
-          <section className="py-8 bg-white">
-            <div className="max-w-3xl mx-auto px-4">
-              <img
-                src={blog.featured_image_url}
-                alt={blog.title}
-                className="w-full h-96 object-cover rounded-lg"
-              />
-            </div>
-          </section>
-        )}
 
         {/* Content */}
         <section className="py-12 bg-white">
