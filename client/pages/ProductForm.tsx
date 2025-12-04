@@ -1387,12 +1387,12 @@ export default function ProductForm() {
                               type="number"
                               min="0"
                               step="0.01"
-                              value={sharedVariant.price}
+                              value={sharedVariant.price || ""}
                               onChange={(e) =>
                                 updateSharedVariant(
                                   sharedVariant.id,
                                   "price",
-                                  parseFloat(e.target.value) || 0,
+                                  e.target.value ? parseFloat(e.target.value) : 0,
                                 )
                               }
                               placeholder="0.00"
