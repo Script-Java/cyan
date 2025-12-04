@@ -211,7 +211,7 @@ export default function ProductPage() {
 
     const matchedSharedVariant = checkSharedVariantMatch();
     if (matchedSharedVariant) {
-      return (product.base_price + matchedSharedVariant.price).toFixed(2);
+      return matchedSharedVariant.price.toFixed(2);
     }
 
     let totalModifier = 0;
