@@ -502,6 +502,11 @@ export default function Products() {
               Get a Quote
             </button>
           </div>
+
+          {/* Footer */}
+          <div style={{ fontWeight: "400", textAlign: "center", paddingTop: "40px", color: "rgba(255, 255, 255, 0.6)" }}>
+            Built with ❤️ by © Sticky Slap LLC
+          </div>
         </div>
       </main>
     </>
