@@ -114,21 +114,21 @@ export default function Index() {
               <div style={{ position: "absolute", top: "48px", left: "50%", fontSize: "12px", color: "rgba(200, 150, 100, 0.7)" }}>⭐</div>
               <div style={{ position: "absolute", bottom: "48px", left: "50%", fontSize: "14px", color: "rgba(150, 100, 150, 0.7)" }}>✨</div>
             </div>
-            <div className="relative z-10">
+            <div className="relative z-10" style={{ marginBottom: "22px", paddingTop: "34px" }}>
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
                 Ready to Create?
               </h2>
               <p className="text-xl text-white/70 mb-8">
                 Join thousands of customers who've created amazing custom stickers
               </p>
-              <Link
-                to="/signup"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/50"
-              >
-                Get Started Now
-                <ArrowRight className="w-5 h-5" />
-              </Link>
             </div>
+            <Link
+              to="/signup"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/50"
+            >
+              Get Started Now
+              <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
         </section>
 
