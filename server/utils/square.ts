@@ -1,9 +1,6 @@
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-
 let squareClient: any = null;
 
-export function getSquareClient() {
+export async function getSquareClient() {
   if (!squareClient) {
     try {
       console.log("Initializing Square SDK...");
@@ -16,8 +13,9 @@ export function getSquareClient() {
 
       console.log("Access token found, length:", accessToken.length);
 
-      // Import Square SDK with correct destructuring for v43+
-      const { Client } = require("square");
+      // Dynamic import for ES modules
+      const squareModule = await import("square");
+      const { Client } = squareModule;
 
       if (!Client) {
         throw new Error("Square Client not found in package exports");
