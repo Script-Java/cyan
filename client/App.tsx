@@ -103,6 +103,7 @@ export default function App() {
             <Route path="/admin/finance" element={<AdminFinance />} />
             <Route path="/admin/analytics" element={<AdminAnalytics />} />
             <Route path="/admin/blogs" element={<AdminBlogs />} />
+            <Route path="/admin/create-blog" element={<CreateBlog />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="/admin/support" element={<AdminSupport />} />
             <Route
