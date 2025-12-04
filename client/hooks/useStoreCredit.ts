@@ -25,35 +25,43 @@ export const useStoreCredit = () => {
       setError(null);
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+      }, 5000);
 
-      const response = await fetch("/api/customers/me/store-credit", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        signal: controller.signal,
-      });
+      try {
+        const response = await fetch("/api/customers/me/store-credit", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
+        });
 
-      clearTimeout(timeoutId);
+        clearTimeout(timeoutId);
 
-      if (response.ok) {
-        const data = await response.json();
-        const credit =
-          typeof data.storeCredit === "number" ? data.storeCredit : 0;
-        setStoreCredit(credit);
-        setError(null);
-      } else if (response.status === 401) {
-        setStoreCredit(0);
-        localStorage.removeItem("authToken");
-      } else {
-        setStoreCredit(0);
-        console.warn("Failed to fetch store credit:", response.status);
+        if (response.ok) {
+          const data = await response.json();
+          const credit =
+            typeof data.storeCredit === "number" ? data.storeCredit : 0;
+          setStoreCredit(credit);
+          setError(null);
+        } else if (response.status === 401) {
+          setStoreCredit(0);
+          localStorage.removeItem("authToken");
+        } else {
+          setStoreCredit(0);
+        }
+      } catch (fetchError) {
+        clearTimeout(timeoutId);
+        if (fetchError instanceof Error && fetchError.name === "AbortError") {
+          // Fetch was aborted (likely due to timeout)
+        } else {
+          throw fetchError;
+        }
       }
     } catch (fetchError) {
-      if (fetchError instanceof Error && fetchError.name === "AbortError") {
-        console.warn("Store credit fetch timeout");
-      } else if (fetchError instanceof TypeError) {
-        console.warn("Network error fetching store credit - retrying later");
+      if (fetchError instanceof TypeError) {
+        // Network error
       } else {
         console.warn("Error fetching store credit:", fetchError);
       }
