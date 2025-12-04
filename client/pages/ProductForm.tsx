@@ -648,6 +648,7 @@ export default function ProductForm() {
           </div>
 
           <div className="px-6 lg:px-8 py-8">
+            <AdminNavigationGrid className="mb-8" />
             <div className="max-w-4xl">
               {/* Basic Information Section */}
               <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
