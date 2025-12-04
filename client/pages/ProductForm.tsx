@@ -651,7 +651,7 @@ export default function ProductForm() {
           </div>
         </div>
 
-        <div className="py-8" style={{ margin: "0 47px 0 100px", padding: "32px 39px 32px 20px" }}>
+        <div className="py-8" style={{ margin: "51px 200px 0 500px", padding: "32px 26px 32px 199px" }}>
           <div className="max-w-4xl">
             {/* Basic Information Section */}
             <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
