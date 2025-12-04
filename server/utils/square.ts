@@ -51,32 +51,32 @@ export async function getSquareClient() {
   return squareClient;
 }
 
-export function getPaymentsApi() {
-  const client = getSquareClient();
+export async function getPaymentsApi() {
+  const client = await getSquareClient();
   if (!client.paymentsApi) {
     throw new Error("Square paymentsApi is not available");
   }
   return client.paymentsApi;
 }
 
-export function getLocationsApi() {
-  const client = getSquareClient();
+export async function getLocationsApi() {
+  const client = await getSquareClient();
   if (!client.locationsApi) {
     throw new Error("Square locationsApi is not available");
   }
   return client.locationsApi;
 }
 
-export function getOrdersApi() {
-  const client = getSquareClient();
+export async function getOrdersApi() {
+  const client = await getSquareClient();
   if (!client.ordersApi) {
     throw new Error("Square ordersApi is not available");
   }
   return client.ordersApi;
 }
 
-export function getCheckoutApi() {
-  const client = getSquareClient();
+export async function getCheckoutApi() {
+  const client = await getSquareClient();
   if (!client.checkoutApi) {
     throw new Error("Square checkoutApi is not available");
   }
