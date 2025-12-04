@@ -43,6 +43,7 @@ import AdminBlogs from "./pages/AdminBlogs";
 import CreateBlog from "./pages/CreateBlog";
 import BlogPost from "./pages/BlogPost";
 import Blogs from "./pages/Blogs";
+import EditBlog from "./pages/EditBlog";
 import Customers from "./pages/Customers";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
