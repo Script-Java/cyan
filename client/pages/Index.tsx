@@ -122,13 +122,21 @@ export default function Index() {
                 Join thousands of customers who've created amazing custom stickers
               </p>
             </div>
-            <Link
-              to="/signup"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/50"
-            >
-              Get Started Now
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            <div className="flex gap-4 justify-center items-center flex-wrap">
+              <Link
+                to="/signup"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/50"
+              >
+                Get Started Now
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 border border-white/20 text-white rounded-lg font-bold hover:bg-white/20 transition-all"
+              >
+                Login
+              </Link>
+            </div>
           </div>
         </section>
 
