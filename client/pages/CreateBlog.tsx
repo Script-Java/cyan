@@ -33,7 +33,7 @@ export default function CreateBlog() {
     excerpt: "",
     author: "Arlington Teheran",
     tags: [],
-    visibility: "hidden",
+    visibility: "visible",
   });
   const [currentTag, setCurrentTag] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
