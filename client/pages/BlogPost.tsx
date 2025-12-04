@@ -94,21 +94,30 @@ export default function BlogPost() {
       <Header />
 
       {/* Featured Image Hero Banner */}
-      {blog.featured_image_url && (
-        <section className="relative w-full h-96 overflow-hidden bg-gray-900">
-          <img
-            src={blog.featured_image_url}
-            alt={blog.title}
-            className="w-full h-full object-cover"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: "linear-gradient(to top, rgba(255, 255, 255, 1) 0px, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%)",
-            }}
-          />
-        </section>
-      )}
+      <section className="relative w-full h-96 overflow-hidden bg-gradient-to-r from-gray-200 to-gray-300">
+        {blog.featured_image_url ? (
+          <>
+            <img
+              src={blog.featured_image_url}
+              alt={blog.title}
+              className="w-full h-full object-cover"
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: "linear-gradient(to top, rgba(255, 255, 255, 1) 0px, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%)",
+              }}
+            />
+          </>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-gray-200 to-gray-300">
+            <div className="text-center">
+              <div className="text-gray-400 text-6xl mb-2">🖼️</div>
+              <p className="text-gray-500">No image available</p>
+            </div>
+          </div>
+        )}
+      </section>
 
       <main className="bg-white min-h-screen">
         {/* Hero Section */}
