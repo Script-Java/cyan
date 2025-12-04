@@ -182,6 +182,41 @@ export default function ProductForm() {
     }
   }, [navigate, productId]);
 
+  const migrateSharedVariants = (sharedVariants: any[], options: any[]) => {
+    return sharedVariants.map((sv: any) => {
+      if (sv.optionSelections) {
+        return {
+          ...sv,
+          price: Number(sv.price) || 0,
+        };
+      }
+      if (sv.optionIds && Array.isArray(sv.optionIds)) {
+        const optionSelections = sv.optionIds.map((optionId: string) => {
+          const option = options.find((o) => o.id === optionId);
+          return {
+            optionId,
+            optionName: option?.name || "Unnamed",
+            selectedValueIds: [],
+          };
+        });
+        return {
+          id: sv.id,
+          name: sv.name || "",
+          description: sv.description || "",
+          optionSelections,
+          price: Number(sv.price) || 0,
+        };
+      }
+      return {
+        id: sv.id,
+        name: sv.name || "",
+        description: sv.description || "",
+        optionSelections: [],
+        price: Number(sv.price) || 0,
+      };
+    });
+  };
+
   const fetchProduct = async (token: string, id: string) => {
     try {
       setIsLoading(true);
@@ -197,6 +232,11 @@ export default function ProductForm() {
 
       const data = await response.json();
       const product = data.product;
+      const options = product.options || [];
+      const sharedVariants = migrateSharedVariants(
+        product.shared_variants || [],
+        options,
+      );
 
       setFormData({
         name: product.name || "",
@@ -205,9 +245,9 @@ export default function ProductForm() {
         sku: product.sku || "",
         weight: product.weight || 0,
         images: product.images || [],
-        options: product.options || [],
+        options,
         pricingRules: product.pricing_rules || [],
-        sharedVariants: product.shared_variants || [],
+        sharedVariants,
         customerUploadConfig: product.customer_upload_config || {
           enabled: false,
           maxFileSize: 5,
