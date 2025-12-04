@@ -504,7 +504,7 @@ export default function Products() {
           </div>
 
           {/* Footer */}
-          <div style={{ fontWeight: "400", textAlign: "center", paddingTop: "40px", color: "rgba(255, 255, 255, 0.6)" }}>
+          <div style={{ fontWeight: "400", textAlign: "left", paddingTop: "40px", paddingLeft: "0px", fontSize: "12px", color: "rgba(255, 255, 255, 0.5)" }}>
             Built with ❤️ by © Sticky Slap LLC
           </div>
         </div>
