@@ -181,8 +181,35 @@ export default function ProductPage() {
     setDesignPreview(null);
   };
 
+  const checkSharedVariantMatch = (): SharedVariant | null => {
+    if (!product?.shared_variants) return null;
+
+    for (const sharedVariant of product.shared_variants) {
+      let isMatch = true;
+
+      for (const selection of sharedVariant.optionSelections) {
+        const selectedValueId = selectedOptions[selection.optionId];
+        if (!selectedValueId || !selection.selectedValueIds.includes(selectedValueId)) {
+          isMatch = false;
+          break;
+        }
+      }
+
+      if (isMatch) {
+        return sharedVariant;
+      }
+    }
+
+    return null;
+  };
+
   const calculatePrice = () => {
     if (!product) return 0;
+
+    const matchedSharedVariant = checkSharedVariantMatch();
+    if (matchedSharedVariant) {
+      return (product.base_price + matchedSharedVariant.price).toFixed(2);
+    }
 
     let totalModifier = 0;
     Object.entries(selectedOptions).forEach(([optionId, valueId]) => {
