@@ -492,7 +492,7 @@ export const handleTestSquareConfig: RequestHandler = async (req, res) => {
 
     // Try to initialize the client
     try {
-      const paymentsApi = getPaymentsApi();
+      const paymentsApi = await getPaymentsApi();
       res.json({
         success: true,
         message: "Square configuration is valid",
