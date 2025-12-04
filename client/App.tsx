@@ -92,6 +92,7 @@ export default function App() {
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/support" element={<Support />} />
             <Route path="/my-tickets" element={<MyTickets />} />
+            <Route path="/blogs" element={<Blogs />} />
             <Route path="/blog/:blogId" element={<BlogPost />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/orders" element={<AdminOrders />} />
