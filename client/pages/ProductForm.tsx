@@ -628,1112 +628,1104 @@ export default function ProductForm() {
     <>
       <Header />
       <main className="min-h-screen bg-black text-white pb-20 md:pb-0">
-          <div className="border-b border-white/10">
-            <div className="px-6 lg:px-8 py-6">
-              <button
-                onClick={() => navigate("/admin/products")}
-                className="flex items-center gap-2 text-white/60 hover:text-white transition mb-4"
-              >
-                <ChevronLeft className="w-4 h-4" />
-                Back to Products
-              </button>
-              <h1 className="text-4xl font-bold text-white">
-                {productId ? "Edit Product" : "Create New Product"}
-              </h1>
-            </div>
+        <div className="border-b border-white/10">
+          <div className="px-6 lg:px-8 py-6">
+            <button
+              onClick={() => navigate("/admin/products")}
+              className="flex items-center gap-2 text-white/60 hover:text-white transition mb-4"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Back to Products
+            </button>
+            <h1 className="text-4xl font-bold text-white">
+              {productId ? "Edit Product" : "Create New Product"}
+            </h1>
           </div>
+        </div>
 
-          <div className="px-6 lg:px-8 py-8">
-            <AdminNavigationGrid className="mb-8" />
-            <div className="max-w-4xl">
-              {/* Basic Information Section */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                    <ImageIcon className="w-5 h-5 text-green-400" />
-                  </div>
-                  Basic Information
-                </h2>
+        <div className="px-6 lg:px-8 py-8">
+          <AdminNavigationGrid className="mb-8" />
+          <div className="max-w-4xl">
+            {/* Basic Information Section */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                  <ImageIcon className="w-5 h-5 text-green-400" />
+                </div>
+                Basic Information
+              </h2>
 
-                <div className="space-y-4">
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-white/80 mb-2 block">
+                    Product Name *
+                  </Label>
+                  <Input
+                    value={formData.name}
+                    onChange={(e) => handleInputChange("name", e.target.value)}
+                    placeholder="Enter product name"
+                    className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label className="text-white/80 mb-2 block">
-                      Product Name *
-                    </Label>
-                    <Input
-                      value={formData.name}
-                      onChange={(e) =>
-                        handleInputChange("name", e.target.value)
-                      }
-                      placeholder="Enter product name"
-                      className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label className="text-white/80 mb-2 block">
-                        Base Price (USD) *
-                      </Label>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        value={formData.basePrice}
-                        onChange={(e) =>
-                          handleInputChange(
-                            "basePrice",
-                            parseFloat(e.target.value),
-                          )
-                        }
-                        placeholder="0.00"
-                        className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                      />
-                      <p className="text-white/40 text-sm mt-1">
-                        Variant prices adjust from this base price
-                      </p>
-                    </div>
-                    <div>
-                      <Label className="text-white/80 mb-2 block">SKU</Label>
-                      <Input
-                        value={formData.sku}
-                        onChange={(e) =>
-                          handleInputChange("sku", e.target.value)
-                        }
-                        placeholder="e.g., SKU-001"
-                        className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-white/80 mb-2 block">
-                      Weight (lb)
+                      Base Price (USD) *
                     </Label>
                     <Input
                       type="number"
                       step="0.01"
                       min="0"
-                      value={formData.weight}
+                      value={formData.basePrice}
                       onChange={(e) =>
-                        handleInputChange("weight", parseFloat(e.target.value))
+                        handleInputChange(
+                          "basePrice",
+                          parseFloat(e.target.value),
+                        )
                       }
                       placeholder="0.00"
                       className="bg-white/5 border-white/10 text-white placeholder-white/40"
                     />
+                    <p className="text-white/40 text-sm mt-1">
+                      Variant prices adjust from this base price
+                    </p>
                   </div>
-
                   <div>
-                    <Label className="text-white/80 mb-2 block">
-                      Description
-                    </Label>
-                    <Textarea
-                      value={formData.description}
-                      onChange={(e) =>
-                        handleInputChange("description", e.target.value)
-                      }
-                      placeholder="Enter product description"
-                      className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-32"
+                    <Label className="text-white/80 mb-2 block">SKU</Label>
+                    <Input
+                      value={formData.sku}
+                      onChange={(e) => handleInputChange("sku", e.target.value)}
+                      placeholder="e.g., SKU-001"
+                      className="bg-white/5 border-white/10 text-white placeholder-white/40"
                     />
                   </div>
                 </div>
-              </section>
 
-              {/* Product Gallery Section */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                    <ImageIcon className="w-5 h-5 text-green-400" />
-                  </div>
-                  Product Gallery
-                </h2>
+                <div>
+                  <Label className="text-white/80 mb-2 block">
+                    Weight (lb)
+                  </Label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={formData.weight}
+                    onChange={(e) =>
+                      handleInputChange("weight", parseFloat(e.target.value))
+                    }
+                    placeholder="0.00"
+                    className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                  />
+                </div>
 
-                <div className="space-y-4">
-                  <div className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center cursor-pointer hover:border-green-500/50 transition">
-                    <label className="cursor-pointer">
-                      <Upload className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                      <p className="text-white/80 font-medium">
-                        Click to upload images or drag and drop
-                      </p>
-                      <p className="text-white/40 text-sm mt-1">
-                        PNG, JPG, GIF up to 10MB
-                      </p>
-                      <input
-                        type="file"
-                        multiple
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="hidden"
-                      />
-                    </label>
-                  </div>
+                <div>
+                  <Label className="text-white/80 mb-2 block">
+                    Description
+                  </Label>
+                  <Textarea
+                    value={formData.description}
+                    onChange={(e) =>
+                      handleInputChange("description", e.target.value)
+                    }
+                    placeholder="Enter product description"
+                    className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-32"
+                  />
+                </div>
+              </div>
+            </section>
 
-                  {formData.images.length > 0 && (
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {formData.images.map((image) => (
-                        <div
-                          key={image.id}
-                          className="relative group bg-white/5 border border-white/10 rounded-lg overflow-hidden"
+            {/* Product Gallery Section */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                  <ImageIcon className="w-5 h-5 text-green-400" />
+                </div>
+                Product Gallery
+              </h2>
+
+              <div className="space-y-4">
+                <div className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center cursor-pointer hover:border-green-500/50 transition">
+                  <label className="cursor-pointer">
+                    <Upload className="w-8 h-8 text-green-400 mx-auto mb-2" />
+                    <p className="text-white/80 font-medium">
+                      Click to upload images or drag and drop
+                    </p>
+                    <p className="text-white/40 text-sm mt-1">
+                      PNG, JPG, GIF up to 10MB
+                    </p>
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+
+                {formData.images.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {formData.images.map((image) => (
+                      <div
+                        key={image.id}
+                        className="relative group bg-white/5 border border-white/10 rounded-lg overflow-hidden"
+                      >
+                        <img
+                          src={image.preview}
+                          alt={image.name}
+                          className="w-full h-32 object-cover"
+                        />
+                        <button
+                          onClick={() => removeImage(image.id)}
+                          className="absolute top-2 right-2 bg-red-600/80 hover:bg-red-700 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition"
                         >
-                          <img
-                            src={image.preview}
-                            alt={image.name}
-                            className="w-full h-32 object-cover"
-                          />
-                          <button
-                            onClick={() => removeImage(image.id)}
-                            className="absolute top-2 right-2 bg-red-600/80 hover:bg-red-700 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </section>
-
-              {/* Product Options Section */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold flex items-center gap-2">
-                    <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                      <Plus className="w-5 h-5 text-green-400" />
-                    </div>
-                    Product Options & Variants
-                  </h2>
-                  <Button
-                    onClick={addOption}
-                    className="bg-green-600 hover:bg-green-700 text-white gap-2"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Add Option
-                  </Button>
-                </div>
-
-                <div className="space-y-6">
-                  {formData.options.length === 0 ? (
-                    <p className="text-white/60 text-center py-8">
-                      No options added yet. Click "Add Option" to get started
-                      with variants.
-                    </p>
-                  ) : (
-                    formData.options.map((option, index) => (
-                      <div
-                        key={option.id}
-                        draggable
-                        onDragStart={() => setDraggedOption(option.id)}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDrop={() => {
-                          if (draggedOption && draggedOption !== option.id) {
-                            const draggedIndex = formData.options.findIndex(
-                              (o) => o.id === draggedOption,
-                            );
-                            moveOption(draggedIndex, index);
-                          }
-                        }}
-                        className={`bg-white/5 border border-white/10 rounded-lg p-4 space-y-4 transition ${
-                          draggedOption === option.id ? "opacity-50" : ""
-                        }`}
-                      >
-                        <div className="flex items-start gap-3">
-                          <GripVertical className="w-5 h-5 text-white/40 mt-1 flex-shrink-0" />
-                          <div className="flex-1">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                              <div>
-                                <Label className="text-white/80 mb-2 block">
-                                  Option Name
-                                </Label>
-                                <Input
-                                  value={option.name}
-                                  onChange={(e) =>
-                                    updateOption(
-                                      option.id,
-                                      "name",
-                                      e.target.value,
-                                    )
-                                  }
-                                  placeholder="e.g., Finish, Size, Color"
-                                  className="bg-white/10 border-white/10 text-white placeholder-white/40"
-                                />
-                              </div>
-                              <div>
-                                <Label className="text-white/80 mb-2 block">
-                                  Type
-                                </Label>
-                                <Select
-                                  value={option.type}
-                                  onValueChange={(value) =>
-                                    updateOption(
-                                      option.id,
-                                      "type",
-                                      value as ProductOption["type"],
-                                    )
-                                  }
-                                >
-                                  <SelectTrigger className="bg-white/10 border-white/10 text-white">
-                                    <SelectValue />
-                                  </SelectTrigger>
-                                  <SelectContent className="bg-gray-900 border-white/10">
-                                    <SelectItem value="dropdown">
-                                      Dropdown
-                                    </SelectItem>
-                                    <SelectItem value="radio">Radio</SelectItem>
-                                    <SelectItem value="swatch">
-                                      Swatch
-                                    </SelectItem>
-                                    <SelectItem value="text">
-                                      Text Input
-                                    </SelectItem>
-                                  </SelectContent>
-                                </Select>
-                              </div>
-                              <div>
-                                <Label className="text-white/80 mb-2 block">
-                                  Default Value
-                                </Label>
-                                <Select
-                                  value={option.defaultValueId || ""}
-                                  onValueChange={(value) =>
-                                    updateOption(
-                                      option.id,
-                                      "defaultValueId",
-                                      value || undefined,
-                                    )
-                                  }
-                                >
-                                  <SelectTrigger className="bg-white/10 border-white/10 text-white">
-                                    <SelectValue placeholder="Select default" />
-                                  </SelectTrigger>
-                                  <SelectContent className="bg-gray-900 border-white/10">
-                                    {option.values.map((val) => (
-                                      <SelectItem key={val.id} value={val.id}>
-                                        {val.name}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                              </div>
-                            </div>
-
-                            <div className="flex items-center gap-4 mb-4">
-                              <div className="flex items-center gap-2">
-                                <Switch
-                                  checked={option.required}
-                                  onCheckedChange={(checked) =>
-                                    updateOption(option.id, "required", checked)
-                                  }
-                                />
-                                <Label className="text-white/80 font-normal cursor-pointer">
-                                  Required
-                                </Label>
-                              </div>
-                              <button
-                                onClick={() => removeOption(option.id)}
-                                className="ml-auto text-red-400 hover:text-red-300 transition"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            </div>
-
-                            {/* Variant Values */}
-                            <div className="bg-white/10 rounded-lg p-4 space-y-3">
-                              <div className="flex items-center justify-between">
-                                <h4 className="text-white font-semibold">
-                                  Option Values
-                                </h4>
-                                <Button
-                                  onClick={() => addVariantValue(option.id)}
-                                  size="sm"
-                                  className="bg-blue-600 hover:bg-blue-700 text-white gap-1"
-                                >
-                                  <Plus className="w-3 h-3" />
-                                  Add Value
-                                </Button>
-                              </div>
-
-                              {option.values.length === 0 ? (
-                                <p className="text-white/40 text-sm">
-                                  Add values for this option
-                                </p>
-                              ) : (
-                                <div className="space-y-3">
-                                  {option.values.map((value) => (
-                                    <div
-                                      key={value.id}
-                                      className="bg-black/40 rounded-lg p-3 space-y-3"
-                                    >
-                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        <div>
-                                          <Label className="text-white/70 text-sm mb-1 block">
-                                            Value Name
-                                          </Label>
-                                          <Input
-                                            value={value.name}
-                                            onChange={(e) =>
-                                              updateVariantValue(
-                                                option.id,
-                                                value.id,
-                                                "name",
-                                                e.target.value,
-                                              )
-                                            }
-                                            placeholder="e.g., Satin, 5 inches"
-                                            className="bg-white/5 border-white/10 text-white placeholder-white/40 text-sm"
-                                          />
-                                        </div>
-                                        <div>
-                                          <Label className="text-white/70 text-sm mb-1 block">
-                                            Price Modifier ($)
-                                          </Label>
-                                          <Input
-                                            type="number"
-                                            step="0.01"
-                                            value={value.priceModifier}
-                                            onChange={(e) =>
-                                              updateVariantValue(
-                                                option.id,
-                                                value.id,
-                                                "priceModifier",
-                                                parseFloat(e.target.value),
-                                              )
-                                            }
-                                            placeholder="0.00"
-                                            className="bg-white/5 border-white/10 text-white placeholder-white/40 text-sm"
-                                          />
-                                          <p className="text-white/40 text-xs mt-1">
-                                            Add to base price
-                                          </p>
-                                        </div>
-                                      </div>
-
-                                      {(option.type === "swatch" ||
-                                        option.type === "radio") && (
-                                        <div className="space-y-2">
-                                          <Label className="text-white/70 text-sm block">
-                                            Swatch Image (Optional)
-                                          </Label>
-                                          {value.image ? (
-                                            <div className="flex items-center gap-2">
-                                              <img
-                                                src={value.image.preview}
-                                                alt={value.image.name}
-                                                className="w-12 h-12 rounded object-cover"
-                                              />
-                                              <button
-                                                onClick={() =>
-                                                  removeVariantImage(
-                                                    option.id,
-                                                    value.id,
-                                                  )
-                                                }
-                                                className="text-red-400 hover:text-red-300 text-sm"
-                                              >
-                                                Remove
-                                              </button>
-                                            </div>
-                                          ) : (
-                                            <label className="flex items-center justify-center gap-2 border border-dashed border-white/20 rounded p-2 cursor-pointer hover:border-white/40 transition">
-                                              <Upload className="w-4 h-4 text-white/60" />
-                                              <span className="text-white/60 text-sm">
-                                                Upload swatch
-                                              </span>
-                                              <input
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={(e) =>
-                                                  uploadVariantImage(
-                                                    option.id,
-                                                    value.id,
-                                                    e,
-                                                  )
-                                                }
-                                                className="hidden"
-                                              />
-                                            </label>
-                                          )}
-                                        </div>
-                                      )}
-
-                                      <div className="flex justify-end">
-                                        <button
-                                          onClick={() =>
-                                            removeVariantValue(
-                                              option.id,
-                                              value.id,
-                                            )
-                                          }
-                                          className="text-red-400 hover:text-red-300 text-sm flex items-center gap-1"
-                                        >
-                                          <X className="w-3 h-3" />
-                                          Remove Value
-                                        </button>
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
+                          <X className="w-4 h-4" />
+                        </button>
                       </div>
-                    ))
-                  )}
-                </div>
-              </section>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
 
-              {/* Shared Variants Section */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold flex items-center gap-2">
-                    <div className="p-2 bg-purple-600/20 border border-purple-500/30 rounded-lg">
-                      <Plus className="w-5 h-5 text-purple-400" />
-                    </div>
-                    Shared Variants
-                  </h2>
-                  <Button
-                    onClick={addSharedVariant}
-                    className="bg-purple-600 hover:bg-purple-700 text-white gap-2"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Add Shared Variant
-                  </Button>
-                </div>
+            {/* Product Options Section */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold flex items-center gap-2">
+                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                    <Plus className="w-5 h-5 text-green-400" />
+                  </div>
+                  Product Options & Variants
+                </h2>
+                <Button
+                  onClick={addOption}
+                  className="bg-green-600 hover:bg-green-700 text-white gap-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Option
+                </Button>
+              </div>
 
-                <p className="text-white/60 text-sm mb-6">
-                  Create shared variant groups that apply the same set of
-                  options across multiple products.
-                </p>
-
-                <div className="space-y-6">
-                  {formData.sharedVariants.length === 0 ? (
-                    <p className="text-white/60 text-center py-8">
-                      No shared variants added yet. Click "Add Shared Variant"
-                      to create a reusable variant group.
-                    </p>
-                  ) : (
-                    formData.sharedVariants.map((sharedVariant) => (
-                      <div
-                        key={sharedVariant.id}
-                        className="bg-white/5 border border-white/10 rounded-lg p-4 space-y-4"
-                      >
-                        <div className="flex items-start gap-3">
-                          <div className="flex-1 space-y-4 w-full">
+              <div className="space-y-6">
+                {formData.options.length === 0 ? (
+                  <p className="text-white/60 text-center py-8">
+                    No options added yet. Click "Add Option" to get started with
+                    variants.
+                  </p>
+                ) : (
+                  formData.options.map((option, index) => (
+                    <div
+                      key={option.id}
+                      draggable
+                      onDragStart={() => setDraggedOption(option.id)}
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={() => {
+                        if (draggedOption && draggedOption !== option.id) {
+                          const draggedIndex = formData.options.findIndex(
+                            (o) => o.id === draggedOption,
+                          );
+                          moveOption(draggedIndex, index);
+                        }
+                      }}
+                      className={`bg-white/5 border border-white/10 rounded-lg p-4 space-y-4 transition ${
+                        draggedOption === option.id ? "opacity-50" : ""
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <GripVertical className="w-5 h-5 text-white/40 mt-1 flex-shrink-0" />
+                        <div className="flex-1">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                             <div>
                               <Label className="text-white/80 mb-2 block">
-                                Shared Variant Name
+                                Option Name
                               </Label>
                               <Input
-                                value={sharedVariant.name}
+                                value={option.name}
                                 onChange={(e) =>
-                                  updateSharedVariant(
-                                    sharedVariant.id,
+                                  updateOption(
+                                    option.id,
                                     "name",
                                     e.target.value,
                                   )
                                 }
-                                placeholder="e.g., Size & Color Combo"
+                                placeholder="e.g., Finish, Size, Color"
                                 className="bg-white/10 border-white/10 text-white placeholder-white/40"
                               />
                             </div>
-
                             <div>
                               <Label className="text-white/80 mb-2 block">
-                                Description
+                                Type
                               </Label>
-                              <Textarea
-                                value={sharedVariant.description}
-                                onChange={(e) =>
-                                  updateSharedVariant(
-                                    sharedVariant.id,
-                                    "description",
-                                    e.target.value,
+                              <Select
+                                value={option.type}
+                                onValueChange={(value) =>
+                                  updateOption(
+                                    option.id,
+                                    "type",
+                                    value as ProductOption["type"],
                                   )
                                 }
-                                placeholder="Describe this shared variant group..."
-                                className="bg-white/10 border-white/10 text-white placeholder-white/40 min-h-24"
+                              >
+                                <SelectTrigger className="bg-white/10 border-white/10 text-white">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="bg-gray-900 border-white/10">
+                                  <SelectItem value="dropdown">
+                                    Dropdown
+                                  </SelectItem>
+                                  <SelectItem value="radio">Radio</SelectItem>
+                                  <SelectItem value="swatch">Swatch</SelectItem>
+                                  <SelectItem value="text">
+                                    Text Input
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Label className="text-white/80 mb-2 block">
+                                Default Value
+                              </Label>
+                              <Select
+                                value={option.defaultValueId || ""}
+                                onValueChange={(value) =>
+                                  updateOption(
+                                    option.id,
+                                    "defaultValueId",
+                                    value || undefined,
+                                  )
+                                }
+                              >
+                                <SelectTrigger className="bg-white/10 border-white/10 text-white">
+                                  <SelectValue placeholder="Select default" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-gray-900 border-white/10">
+                                  {option.values.map((val) => (
+                                    <SelectItem key={val.id} value={val.id}>
+                                      {val.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-4 mb-4">
+                            <div className="flex items-center gap-2">
+                              <Switch
+                                checked={option.required}
+                                onCheckedChange={(checked) =>
+                                  updateOption(option.id, "required", checked)
+                                }
                               />
+                              <Label className="text-white/80 font-normal cursor-pointer">
+                                Required
+                              </Label>
+                            </div>
+                            <button
+                              onClick={() => removeOption(option.id)}
+                              className="ml-auto text-red-400 hover:text-red-300 transition"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+
+                          {/* Variant Values */}
+                          <div className="bg-white/10 rounded-lg p-4 space-y-3">
+                            <div className="flex items-center justify-between">
+                              <h4 className="text-white font-semibold">
+                                Option Values
+                              </h4>
+                              <Button
+                                onClick={() => addVariantValue(option.id)}
+                                size="sm"
+                                className="bg-blue-600 hover:bg-blue-700 text-white gap-1"
+                              >
+                                <Plus className="w-3 h-3" />
+                                Add Value
+                              </Button>
                             </div>
 
-                            {/* Option Selection */}
-                            {formData.options.length > 0 ? (
-                              <div>
-                                <Label className="text-white/80 mb-3 block">
-                                  Select Options to Include
-                                </Label>
-                                <div className="bg-white/10 rounded-lg p-4 space-y-2">
-                                  {formData.options.map((option) => (
-                                    <label
-                                      key={option.id}
-                                      className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-2 rounded transition"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        checked={sharedVariant.optionIds.includes(
-                                          option.id,
-                                        )}
-                                        onChange={() =>
-                                          toggleSharedVariantOption(
-                                            sharedVariant.id,
-                                            option.id,
-                                          )
-                                        }
-                                        className="w-4 h-4 cursor-pointer"
-                                      />
-                                      <div className="flex-1">
-                                        <span className="text-white">
-                                          {option.name || "Unnamed Option"}
-                                        </span>
-                                        <p className="text-white/40 text-sm">
-                                          Type: {option.type} • Values:{" "}
-                                          {option.values.length}
+                            {option.values.length === 0 ? (
+                              <p className="text-white/40 text-sm">
+                                Add values for this option
+                              </p>
+                            ) : (
+                              <div className="space-y-3">
+                                {option.values.map((value) => (
+                                  <div
+                                    key={value.id}
+                                    className="bg-black/40 rounded-lg p-3 space-y-3"
+                                  >
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                      <div>
+                                        <Label className="text-white/70 text-sm mb-1 block">
+                                          Value Name
+                                        </Label>
+                                        <Input
+                                          value={value.name}
+                                          onChange={(e) =>
+                                            updateVariantValue(
+                                              option.id,
+                                              value.id,
+                                              "name",
+                                              e.target.value,
+                                            )
+                                          }
+                                          placeholder="e.g., Satin, 5 inches"
+                                          className="bg-white/5 border-white/10 text-white placeholder-white/40 text-sm"
+                                        />
+                                      </div>
+                                      <div>
+                                        <Label className="text-white/70 text-sm mb-1 block">
+                                          Price Modifier ($)
+                                        </Label>
+                                        <Input
+                                          type="number"
+                                          step="0.01"
+                                          value={value.priceModifier}
+                                          onChange={(e) =>
+                                            updateVariantValue(
+                                              option.id,
+                                              value.id,
+                                              "priceModifier",
+                                              parseFloat(e.target.value),
+                                            )
+                                          }
+                                          placeholder="0.00"
+                                          className="bg-white/5 border-white/10 text-white placeholder-white/40 text-sm"
+                                        />
+                                        <p className="text-white/40 text-xs mt-1">
+                                          Add to base price
                                         </p>
                                       </div>
-                                    </label>
-                                  ))}
-                                </div>
-                              </div>
-                            ) : (
-                              <p className="text-white/40 text-sm">
-                                Add options above to include them in this shared
-                                variant group.
-                              </p>
-                            )}
+                                    </div>
 
-                            <div className="flex justify-end">
-                              <button
-                                onClick={() =>
-                                  removeSharedVariant(sharedVariant.id)
-                                }
-                                className="text-red-400 hover:text-red-300 transition flex items-center gap-1"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                                Remove
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </section>
-
-              {/* Customer Design Upload Configuration */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <div className="p-2 bg-blue-600/20 border border-blue-500/30 rounded-lg">
-                    <Upload className="w-5 h-5 text-blue-400" />
-                  </div>
-                  Customer Design Upload
-                </h2>
-
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <Switch
-                      checked={formData.customerUploadConfig.enabled}
-                      onCheckedChange={(checked) =>
-                        updateCustomerUploadConfig("enabled", checked)
-                      }
-                    />
-                    <Label className="text-white/80 font-normal cursor-pointer">
-                      Enable customer design uploads
-                    </Label>
-                  </div>
-
-                  {formData.customerUploadConfig.enabled && (
-                    <>
-                      <div>
-                        <Label className="text-white/80 mb-2 block">
-                          Upload Description
-                        </Label>
-                        <Input
-                          value={formData.customerUploadConfig.description}
-                          onChange={(e) =>
-                            updateCustomerUploadConfig(
-                              "description",
-                              e.target.value,
-                            )
-                          }
-                          placeholder="e.g., Upload your custom sticker design"
-                          className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                        />
-                        <p className="text-white/40 text-sm mt-1">
-                          This text will appear on the product page
-                        </p>
-                      </div>
-
-                      <div>
-                        <Label className="text-white/80 mb-2 block">
-                          Max File Size (MB)
-                        </Label>
-                        <Input
-                          type="number"
-                          min="1"
-                          max="100"
-                          value={formData.customerUploadConfig.maxFileSize}
-                          onChange={(e) =>
-                            updateCustomerUploadConfig(
-                              "maxFileSize",
-                              parseInt(e.target.value),
-                            )
-                          }
-                          className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                        />
-                      </div>
-
-                      <div>
-                        <Label className="text-white/80 mb-2 block">
-                          Allowed File Formats
-                        </Label>
-                        <div className="bg-white/5 border border-white/10 rounded-lg p-4">
-                          <div className="space-y-2">
-                            {["png", "jpg", "jpeg", "gif", "svg"].map(
-                              (format) => (
-                                <label
-                                  key={format}
-                                  className="flex items-center gap-2 cursor-pointer"
-                                >
-                                  <input
-                                    type="checkbox"
-                                    checked={formData.customerUploadConfig.allowedFormats.includes(
-                                      format,
+                                    {(option.type === "swatch" ||
+                                      option.type === "radio") && (
+                                      <div className="space-y-2">
+                                        <Label className="text-white/70 text-sm block">
+                                          Swatch Image (Optional)
+                                        </Label>
+                                        {value.image ? (
+                                          <div className="flex items-center gap-2">
+                                            <img
+                                              src={value.image.preview}
+                                              alt={value.image.name}
+                                              className="w-12 h-12 rounded object-cover"
+                                            />
+                                            <button
+                                              onClick={() =>
+                                                removeVariantImage(
+                                                  option.id,
+                                                  value.id,
+                                                )
+                                              }
+                                              className="text-red-400 hover:text-red-300 text-sm"
+                                            >
+                                              Remove
+                                            </button>
+                                          </div>
+                                        ) : (
+                                          <label className="flex items-center justify-center gap-2 border border-dashed border-white/20 rounded p-2 cursor-pointer hover:border-white/40 transition">
+                                            <Upload className="w-4 h-4 text-white/60" />
+                                            <span className="text-white/60 text-sm">
+                                              Upload swatch
+                                            </span>
+                                            <input
+                                              type="file"
+                                              accept="image/*"
+                                              onChange={(e) =>
+                                                uploadVariantImage(
+                                                  option.id,
+                                                  value.id,
+                                                  e,
+                                                )
+                                              }
+                                              className="hidden"
+                                            />
+                                          </label>
+                                        )}
+                                      </div>
                                     )}
-                                    onChange={(e) => {
-                                      const formats =
-                                        formData.customerUploadConfig
-                                          .allowedFormats;
-                                      if (e.target.checked) {
-                                        updateCustomerUploadConfig(
-                                          "allowedFormats",
-                                          [...formats, format],
-                                        );
-                                      } else {
-                                        updateCustomerUploadConfig(
-                                          "allowedFormats",
-                                          formats.filter((f) => f !== format),
-                                        );
-                                      }
-                                    }}
-                                    className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
-                                  />
-                                  <span className="text-white/80 uppercase text-sm">
-                                    {format}
-                                  </span>
-                                </label>
-                              ),
+
+                                    <div className="flex justify-end">
+                                      <button
+                                        onClick={() =>
+                                          removeVariantValue(
+                                            option.id,
+                                            value.id,
+                                          )
+                                        }
+                                        className="text-red-400 hover:text-red-300 text-sm flex items-center gap-1"
+                                      >
+                                        <X className="w-3 h-3" />
+                                        Remove Value
+                                      </button>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
                             )}
                           </div>
                         </div>
                       </div>
-                    </>
-                  )}
-                </div>
-              </section>
-
-              {/* Optional Fields Section */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold flex items-center gap-2">
-                    <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                      <Plus className="w-5 h-5 text-green-400" />
                     </div>
-                    Optional Input Fields
-                  </h2>
-                  <Button
-                    onClick={addOptionalField}
-                    className="bg-green-600 hover:bg-green-700 text-white gap-2"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Add Field
-                  </Button>
+                  ))
+                )}
+              </div>
+            </section>
+
+            {/* Shared Variants Section */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold flex items-center gap-2">
+                  <div className="p-2 bg-purple-600/20 border border-purple-500/30 rounded-lg">
+                    <Plus className="w-5 h-5 text-purple-400" />
+                  </div>
+                  Shared Variants
+                </h2>
+                <Button
+                  onClick={addSharedVariant}
+                  className="bg-purple-600 hover:bg-purple-700 text-white gap-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Shared Variant
+                </Button>
+              </div>
+
+              <p className="text-white/60 text-sm mb-6">
+                Create shared variant groups that apply the same set of options
+                across multiple products.
+              </p>
+
+              <div className="space-y-6">
+                {formData.sharedVariants.length === 0 ? (
+                  <p className="text-white/60 text-center py-8">
+                    No shared variants added yet. Click "Add Shared Variant" to
+                    create a reusable variant group.
+                  </p>
+                ) : (
+                  formData.sharedVariants.map((sharedVariant) => (
+                    <div
+                      key={sharedVariant.id}
+                      className="bg-white/5 border border-white/10 rounded-lg p-4 space-y-4"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="flex-1 space-y-4 w-full">
+                          <div>
+                            <Label className="text-white/80 mb-2 block">
+                              Shared Variant Name
+                            </Label>
+                            <Input
+                              value={sharedVariant.name}
+                              onChange={(e) =>
+                                updateSharedVariant(
+                                  sharedVariant.id,
+                                  "name",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="e.g., Size & Color Combo"
+                              className="bg-white/10 border-white/10 text-white placeholder-white/40"
+                            />
+                          </div>
+
+                          <div>
+                            <Label className="text-white/80 mb-2 block">
+                              Description
+                            </Label>
+                            <Textarea
+                              value={sharedVariant.description}
+                              onChange={(e) =>
+                                updateSharedVariant(
+                                  sharedVariant.id,
+                                  "description",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="Describe this shared variant group..."
+                              className="bg-white/10 border-white/10 text-white placeholder-white/40 min-h-24"
+                            />
+                          </div>
+
+                          {/* Option Selection */}
+                          {formData.options.length > 0 ? (
+                            <div>
+                              <Label className="text-white/80 mb-3 block">
+                                Select Options to Include
+                              </Label>
+                              <div className="bg-white/10 rounded-lg p-4 space-y-2">
+                                {formData.options.map((option) => (
+                                  <label
+                                    key={option.id}
+                                    className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-2 rounded transition"
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      checked={sharedVariant.optionIds.includes(
+                                        option.id,
+                                      )}
+                                      onChange={() =>
+                                        toggleSharedVariantOption(
+                                          sharedVariant.id,
+                                          option.id,
+                                        )
+                                      }
+                                      className="w-4 h-4 cursor-pointer"
+                                    />
+                                    <div className="flex-1">
+                                      <span className="text-white">
+                                        {option.name || "Unnamed Option"}
+                                      </span>
+                                      <p className="text-white/40 text-sm">
+                                        Type: {option.type} • Values:{" "}
+                                        {option.values.length}
+                                      </p>
+                                    </div>
+                                  </label>
+                                ))}
+                              </div>
+                            </div>
+                          ) : (
+                            <p className="text-white/40 text-sm">
+                              Add options above to include them in this shared
+                              variant group.
+                            </p>
+                          )}
+
+                          <div className="flex justify-end">
+                            <button
+                              onClick={() =>
+                                removeSharedVariant(sharedVariant.id)
+                              }
+                              className="text-red-400 hover:text-red-300 transition flex items-center gap-1"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </section>
+
+            {/* Customer Design Upload Configuration */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <div className="p-2 bg-blue-600/20 border border-blue-500/30 rounded-lg">
+                  <Upload className="w-5 h-5 text-blue-400" />
+                </div>
+                Customer Design Upload
+              </h2>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <Switch
+                    checked={formData.customerUploadConfig.enabled}
+                    onCheckedChange={(checked) =>
+                      updateCustomerUploadConfig("enabled", checked)
+                    }
+                  />
+                  <Label className="text-white/80 font-normal cursor-pointer">
+                    Enable customer design uploads
+                  </Label>
                 </div>
 
-                <div className="space-y-4">
-                  {formData.optionalFields.map((field, index) => (
-                    <div
-                      key={index}
-                      className="bg-white/5 border border-white/10 rounded-lg p-4 flex gap-4 items-end"
+                {formData.customerUploadConfig.enabled && (
+                  <>
+                    <div>
+                      <Label className="text-white/80 mb-2 block">
+                        Upload Description
+                      </Label>
+                      <Input
+                        value={formData.customerUploadConfig.description}
+                        onChange={(e) =>
+                          updateCustomerUploadConfig(
+                            "description",
+                            e.target.value,
+                          )
+                        }
+                        placeholder="e.g., Upload your custom sticker design"
+                        className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                      />
+                      <p className="text-white/40 text-sm mt-1">
+                        This text will appear on the product page
+                      </p>
+                    </div>
+
+                    <div>
+                      <Label className="text-white/80 mb-2 block">
+                        Max File Size (MB)
+                      </Label>
+                      <Input
+                        type="number"
+                        min="1"
+                        max="100"
+                        value={formData.customerUploadConfig.maxFileSize}
+                        onChange={(e) =>
+                          updateCustomerUploadConfig(
+                            "maxFileSize",
+                            parseInt(e.target.value),
+                          )
+                        }
+                        className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                      />
+                    </div>
+
+                    <div>
+                      <Label className="text-white/80 mb-2 block">
+                        Allowed File Formats
+                      </Label>
+                      <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                        <div className="space-y-2">
+                          {["png", "jpg", "jpeg", "gif", "svg"].map(
+                            (format) => (
+                              <label
+                                key={format}
+                                className="flex items-center gap-2 cursor-pointer"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={formData.customerUploadConfig.allowedFormats.includes(
+                                    format,
+                                  )}
+                                  onChange={(e) => {
+                                    const formats =
+                                      formData.customerUploadConfig
+                                        .allowedFormats;
+                                    if (e.target.checked) {
+                                      updateCustomerUploadConfig(
+                                        "allowedFormats",
+                                        [...formats, format],
+                                      );
+                                    } else {
+                                      updateCustomerUploadConfig(
+                                        "allowedFormats",
+                                        formats.filter((f) => f !== format),
+                                      );
+                                    }
+                                  }}
+                                  className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
+                                />
+                                <span className="text-white/80 uppercase text-sm">
+                                  {format}
+                                </span>
+                              </label>
+                            ),
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </section>
+
+            {/* Optional Fields Section */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold flex items-center gap-2">
+                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                    <Plus className="w-5 h-5 text-green-400" />
+                  </div>
+                  Optional Input Fields
+                </h2>
+                <Button
+                  onClick={addOptionalField}
+                  className="bg-green-600 hover:bg-green-700 text-white gap-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Field
+                </Button>
+              </div>
+
+              <div className="space-y-4">
+                {formData.optionalFields.map((field, index) => (
+                  <div
+                    key={index}
+                    className="bg-white/5 border border-white/10 rounded-lg p-4 flex gap-4 items-end"
+                  >
+                    <div className="flex-1">
+                      <Label className="text-white/80 mb-2 block">
+                        Field Name
+                      </Label>
+                      <Input
+                        value={field.name}
+                        onChange={(e) =>
+                          updateOptionalField(index, "name", e.target.value)
+                        }
+                        placeholder="e.g., Gift Message"
+                        className="bg-white/10 border-white/10 text-white placeholder-white/40"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <Label className="text-white/80 mb-2 block">Type</Label>
+                      <Select
+                        value={field.type}
+                        onValueChange={(value) =>
+                          updateOptionalField(index, "type", value)
+                        }
+                      >
+                        <SelectTrigger className="bg-white/10 border-white/10 text-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-900 border-white/10">
+                          <SelectItem value="text">Text</SelectItem>
+                          <SelectItem value="textarea">Textarea</SelectItem>
+                          <SelectItem value="date">Date</SelectItem>
+                          <SelectItem value="number">Number</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <button
+                      onClick={() => removeOptionalField(index)}
+                      className="text-red-400 hover:text-red-300 transition"
                     >
-                      <div className="flex-1">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Additional Information Section */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                  <ImageIcon className="w-5 h-5 text-green-400" />
+                </div>
+                Additional Information
+              </h2>
+
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-white/80 mb-2 block">
+                    Additional Details
+                  </Label>
+                  <Textarea
+                    value={formData.textArea}
+                    onChange={(e) =>
+                      handleInputChange("textArea", e.target.value)
+                    }
+                    placeholder="Enter any additional product information"
+                    className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-32"
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* File Upload Section */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                  <Upload className="w-5 h-5 text-green-400" />
+                </div>
+                Upload Additional Files
+              </h2>
+
+              <div className="space-y-4">
+                <div className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center cursor-pointer hover:border-green-500/50 transition">
+                  <label className="cursor-pointer">
+                    <Upload className="w-8 h-8 text-green-400 mx-auto mb-2" />
+                    <p className="text-white/80 font-medium">
+                      Click to upload files or drag and drop
+                    </p>
+                    <p className="text-white/40 text-sm mt-1">
+                      Any file type up to 50MB
+                    </p>
+                    <input
+                      type="file"
+                      multiple
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+
+                {formData.uploadedFiles.length > 0 && (
+                  <div className="space-y-2">
+                    {formData.uploadedFiles.map((file) => (
+                      <div
+                        key={file.name}
+                        className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg p-3"
+                      >
+                        <span className="text-white/80">{file.name}</span>
+                        <button
+                          onClick={() => removeFile(file.name)}
+                          className="text-red-400 hover:text-red-300 transition"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
+
+            {/* Condition Logic Section */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                  <Plus className="w-5 h-5 text-green-400" />
+                </div>
+                Condition Logic
+              </h2>
+
+              <div>
+                <Label className="text-white/80 mb-2 block">Logic Type</Label>
+                <Select
+                  value={formData.conditionLogic}
+                  onValueChange={(value) =>
+                    handleInputChange("conditionLogic", value)
+                  }
+                >
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-900 border-white/10">
+                    <SelectItem value="all">
+                      All conditions must be met
+                    </SelectItem>
+                    <SelectItem value="any">
+                      Any condition must be met
+                    </SelectItem>
+                    <SelectItem value="none">No conditions</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-white/60 text-sm mt-2">
+                  Define how conditions interact with this product's options
+                </p>
+              </div>
+            </section>
+
+            {/* Tax Configuration Section */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold flex items-center gap-2">
+                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                    <Plus className="w-5 h-5 text-green-400" />
+                  </div>
+                  Tax Configuration
+                </h2>
+                <Button
+                  onClick={addTaxConfig}
+                  className="bg-green-600 hover:bg-green-700 text-white gap-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Tax
+                </Button>
+              </div>
+
+              <div className="space-y-4">
+                {formData.taxes.map((tax) => (
+                  <div
+                    key={tax.id}
+                    className="bg-white/5 border border-white/10 rounded-lg p-4 space-y-4"
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
                         <Label className="text-white/80 mb-2 block">
-                          Field Name
+                          Tax Name
                         </Label>
                         <Input
-                          value={field.name}
+                          value={tax.name}
                           onChange={(e) =>
-                            updateOptionalField(index, "name", e.target.value)
+                            updateTaxConfig(tax.id, "name", e.target.value)
                           }
-                          placeholder="e.g., Gift Message"
+                          placeholder="e.g., Sales Tax, VAT"
                           className="bg-white/10 border-white/10 text-white placeholder-white/40"
                         />
                       </div>
-                      <div className="flex-1">
-                        <Label className="text-white/80 mb-2 block">Type</Label>
-                        <Select
-                          value={field.type}
-                          onValueChange={(value) =>
-                            updateOptionalField(index, "type", value)
+                      <div>
+                        <Label className="text-white/80 mb-2 block">
+                          Rate (%)
+                        </Label>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          max="100"
+                          value={tax.rate}
+                          onChange={(e) =>
+                            updateTaxConfig(
+                              tax.id,
+                              "rate",
+                              parseFloat(e.target.value),
+                            )
                           }
-                        >
-                          <SelectTrigger className="bg-white/10 border-white/10 text-white">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="bg-gray-900 border-white/10">
-                            <SelectItem value="text">Text</SelectItem>
-                            <SelectItem value="textarea">Textarea</SelectItem>
-                            <SelectItem value="date">Date</SelectItem>
-                            <SelectItem value="number">Number</SelectItem>
-                          </SelectContent>
-                        </Select>
+                          placeholder="0.00"
+                          className="bg-white/10 border-white/10 text-white placeholder-white/40"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          checked={tax.enabled}
+                          onCheckedChange={(checked) =>
+                            updateTaxConfig(tax.id, "enabled", checked)
+                          }
+                        />
+                        <Label className="text-white/80 font-normal cursor-pointer">
+                          Enabled
+                        </Label>
                       </div>
                       <button
-                        onClick={() => removeOptionalField(index)}
+                        onClick={() => removeTaxConfig(tax.id)}
                         className="text-red-400 hover:text-red-300 transition"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
-                  ))}
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* SEO Section */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                  <ImageIcon className="w-5 h-5 text-green-400" />
                 </div>
-              </section>
+                SEO Settings
+              </h2>
 
-              {/* Additional Information Section */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                    <ImageIcon className="w-5 h-5 text-green-400" />
-                  </div>
-                  Additional Information
-                </h2>
-
-                <div className="space-y-4">
-                  <div>
-                    <Label className="text-white/80 mb-2 block">
-                      Additional Details
-                    </Label>
-                    <Textarea
-                      value={formData.textArea}
-                      onChange={(e) =>
-                        handleInputChange("textArea", e.target.value)
-                      }
-                      placeholder="Enter any additional product information"
-                      className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-32"
-                    />
-                  </div>
-                </div>
-              </section>
-
-              {/* File Upload Section */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                    <Upload className="w-5 h-5 text-green-400" />
-                  </div>
-                  Upload Additional Files
-                </h2>
-
-                <div className="space-y-4">
-                  <div className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center cursor-pointer hover:border-green-500/50 transition">
-                    <label className="cursor-pointer">
-                      <Upload className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                      <p className="text-white/80 font-medium">
-                        Click to upload files or drag and drop
-                      </p>
-                      <p className="text-white/40 text-sm mt-1">
-                        Any file type up to 50MB
-                      </p>
-                      <input
-                        type="file"
-                        multiple
-                        onChange={handleFileUpload}
-                        className="hidden"
-                      />
-                    </label>
-                  </div>
-
-                  {formData.uploadedFiles.length > 0 && (
-                    <div className="space-y-2">
-                      {formData.uploadedFiles.map((file) => (
-                        <div
-                          key={file.name}
-                          className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg p-3"
-                        >
-                          <span className="text-white/80">{file.name}</span>
-                          <button
-                            onClick={() => removeFile(file.name)}
-                            className="text-red-400 hover:text-red-300 transition"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </section>
-
-              {/* Condition Logic Section */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                    <Plus className="w-5 h-5 text-green-400" />
-                  </div>
-                  Condition Logic
-                </h2>
-
+              <div className="space-y-4">
                 <div>
-                  <Label className="text-white/80 mb-2 block">Logic Type</Label>
-                  <Select
-                    value={formData.conditionLogic}
-                    onValueChange={(value) =>
-                      handleInputChange("conditionLogic", value)
+                  <Label className="text-white/80 mb-2 block">
+                    Product URL
+                  </Label>
+                  <Input
+                    value={formData.seo.productUrl}
+                    onChange={(e) =>
+                      handleSEOChange("productUrl", e.target.value)
                     }
-                  >
-                    <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-gray-900 border-white/10">
-                      <SelectItem value="all">
-                        All conditions must be met
-                      </SelectItem>
-                      <SelectItem value="any">
-                        Any condition must be met
-                      </SelectItem>
-                      <SelectItem value="none">No conditions</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <p className="text-white/60 text-sm mt-2">
-                    Define how conditions interact with this product's options
+                    placeholder="product-name"
+                    className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                  />
+                  <p className="text-white/40 text-sm mt-1">
+                    Use hyphens to separate words
                   </p>
                 </div>
-              </section>
 
-              {/* Tax Configuration Section */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold flex items-center gap-2">
-                    <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                      <Plus className="w-5 h-5 text-green-400" />
-                    </div>
-                    Tax Configuration
-                  </h2>
-                  <Button
-                    onClick={addTaxConfig}
-                    className="bg-green-600 hover:bg-green-700 text-white gap-2"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Add Tax
-                  </Button>
-                </div>
-
-                <div className="space-y-4">
-                  {formData.taxes.map((tax) => (
-                    <div
-                      key={tax.id}
-                      className="bg-white/5 border border-white/10 rounded-lg p-4 space-y-4"
-                    >
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <Label className="text-white/80 mb-2 block">
-                            Tax Name
-                          </Label>
-                          <Input
-                            value={tax.name}
-                            onChange={(e) =>
-                              updateTaxConfig(tax.id, "name", e.target.value)
-                            }
-                            placeholder="e.g., Sales Tax, VAT"
-                            className="bg-white/10 border-white/10 text-white placeholder-white/40"
-                          />
-                        </div>
-                        <div>
-                          <Label className="text-white/80 mb-2 block">
-                            Rate (%)
-                          </Label>
-                          <Input
-                            type="number"
-                            step="0.01"
-                            min="0"
-                            max="100"
-                            value={tax.rate}
-                            onChange={(e) =>
-                              updateTaxConfig(
-                                tax.id,
-                                "rate",
-                                parseFloat(e.target.value),
-                              )
-                            }
-                            placeholder="0.00"
-                            className="bg-white/10 border-white/10 text-white placeholder-white/40"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Switch
-                            checked={tax.enabled}
-                            onCheckedChange={(checked) =>
-                              updateTaxConfig(tax.id, "enabled", checked)
-                            }
-                          />
-                          <Label className="text-white/80 font-normal cursor-pointer">
-                            Enabled
-                          </Label>
-                        </div>
-                        <button
-                          onClick={() => removeTaxConfig(tax.id)}
-                          className="text-red-400 hover:text-red-300 transition"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* SEO Section */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                    <ImageIcon className="w-5 h-5 text-green-400" />
-                  </div>
-                  SEO Settings
-                </h2>
-
-                <div className="space-y-4">
-                  <div>
-                    <Label className="text-white/80 mb-2 block">
-                      Product URL
-                    </Label>
-                    <Input
-                      value={formData.seo.productUrl}
-                      onChange={(e) =>
-                        handleSEOChange("productUrl", e.target.value)
-                      }
-                      placeholder="product-name"
-                      className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                    />
-                    <p className="text-white/40 text-sm mt-1">
-                      Use hyphens to separate words
-                    </p>
-                  </div>
-
-                  <div>
-                    <Label className="text-white/80 mb-2 block">
-                      Page Title
-                    </Label>
-                    <Input
-                      value={formData.seo.pageTitle}
-                      onChange={(e) =>
-                        handleSEOChange("pageTitle", e.target.value)
-                      }
-                      placeholder="Product Name - Your Store"
-                      className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                    />
-                    <p className="text-white/40 text-sm mt-1">
-                      Recommended length: 50-60 characters
-                    </p>
-                  </div>
-
-                  <div>
-                    <Label className="text-white/80 mb-2 block">
-                      Meta Description
-                    </Label>
-                    <Textarea
-                      value={formData.seo.metaDescription}
-                      onChange={(e) =>
-                        handleSEOChange("metaDescription", e.target.value)
-                      }
-                      placeholder="Brief description of the product for search engines"
-                      className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-20"
-                    />
-                    <p className="text-white/40 text-sm mt-1">
-                      Recommended length: 150-160 characters
-                    </p>
-                  </div>
-                </div>
-              </section>
-
-              {/* Categories Section */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                    <Plus className="w-5 h-5 text-green-400" />
-                  </div>
-                  Categories
-                </h2>
-
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {allCategories.map((category) => (
-                    <label
-                      key={category}
-                      className="flex items-center gap-3 cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.categories.includes(category)}
-                        onChange={() => toggleCategory(category)}
-                        className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
-                      />
-                      <span className="text-white/80">{category}</span>
-                    </label>
-                  ))}
-                </div>
-              </section>
-
-              {/* Product Availability Section */}
-              <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                    <Plus className="w-5 h-5 text-green-400" />
-                  </div>
-                  Product Availability
-                </h2>
-
-                <div className="flex items-center gap-4">
-                  <Switch
-                    checked={formData.availability}
-                    onCheckedChange={(checked) =>
-                      handleInputChange("availability", checked)
+                <div>
+                  <Label className="text-white/80 mb-2 block">Page Title</Label>
+                  <Input
+                    value={formData.seo.pageTitle}
+                    onChange={(e) =>
+                      handleSEOChange("pageTitle", e.target.value)
                     }
+                    placeholder="Product Name - Your Store"
+                    className="bg-white/5 border-white/10 text-white placeholder-white/40"
                   />
-                  <div>
-                    <Label className="text-white/80 font-normal cursor-pointer block">
-                      {formData.availability
-                        ? "Product is Available"
-                        : "Product is Unavailable"}
-                    </Label>
-                    <p className="text-white/40 text-sm mt-1">
-                      {formData.availability
-                        ? "This product is visible to customers"
-                        : "This product is hidden from customers"}
-                    </p>
-                  </div>
+                  <p className="text-white/40 text-sm mt-1">
+                    Recommended length: 50-60 characters
+                  </p>
                 </div>
-              </section>
 
-              {/* Action Buttons */}
-              <div className="flex gap-4 mb-8">
-                <Button
-                  onClick={handleSave}
-                  disabled={isSaving}
-                  className="bg-green-600 hover:bg-green-700 text-white gap-2 flex-1"
-                >
-                  {isSaving ? "Saving..." : "Save Product"}
-                </Button>
-                <Button
-                  onClick={() => navigate("/admin/products")}
-                  variant="outline"
-                  className="flex-1"
-                >
-                  Cancel
-                </Button>
+                <div>
+                  <Label className="text-white/80 mb-2 block">
+                    Meta Description
+                  </Label>
+                  <Textarea
+                    value={formData.seo.metaDescription}
+                    onChange={(e) =>
+                      handleSEOChange("metaDescription", e.target.value)
+                    }
+                    placeholder="Brief description of the product for search engines"
+                    className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-20"
+                  />
+                  <p className="text-white/40 text-sm mt-1">
+                    Recommended length: 150-160 characters
+                  </p>
+                </div>
               </div>
+            </section>
+
+            {/* Categories Section */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                  <Plus className="w-5 h-5 text-green-400" />
+                </div>
+                Categories
+              </h2>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {allCategories.map((category) => (
+                  <label
+                    key={category}
+                    className="flex items-center gap-3 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.categories.includes(category)}
+                      onChange={() => toggleCategory(category)}
+                      className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
+                    />
+                    <span className="text-white/80">{category}</span>
+                  </label>
+                ))}
+              </div>
+            </section>
+
+            {/* Product Availability Section */}
+            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                  <Plus className="w-5 h-5 text-green-400" />
+                </div>
+                Product Availability
+              </h2>
+
+              <div className="flex items-center gap-4">
+                <Switch
+                  checked={formData.availability}
+                  onCheckedChange={(checked) =>
+                    handleInputChange("availability", checked)
+                  }
+                />
+                <div>
+                  <Label className="text-white/80 font-normal cursor-pointer block">
+                    {formData.availability
+                      ? "Product is Available"
+                      : "Product is Unavailable"}
+                  </Label>
+                  <p className="text-white/40 text-sm mt-1">
+                    {formData.availability
+                      ? "This product is visible to customers"
+                      : "This product is hidden from customers"}
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* Action Buttons */}
+            <div className="flex gap-4 mb-8">
+              <Button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="bg-green-600 hover:bg-green-700 text-white gap-2 flex-1"
+              >
+                {isSaving ? "Saving..." : "Save Product"}
+              </Button>
+              <Button
+                onClick={() => navigate("/admin/products")}
+                variant="outline"
+                className="flex-1"
+              >
+                Cancel
+              </Button>
             </div>
           </div>
+        </div>
       </main>
 
       <MobileAdminPanel />
