@@ -101,7 +101,6 @@ export default function Index() {
             <div className="absolute bg-white/5 rounded-2xl" style={{ opacity: 0.2, left: "-209px", top: "511px", width: "887px", bottom: "0px", right: "0px" }}>
               <div style={{ position: "absolute", top: "24px", left: "32px", fontSize: "18px" }}>⭐</div>
               <div style={{ position: "absolute", top: "16px", left: "25%", fontSize: "14px", color: "rgba(255, 255, 255, 0.8)" }}>✨</div>
-              <div style={{ position: "absolute", top: "32px", right: "25%", color: "rgba(100, 150, 200, 0.7)" }}>⭐</div>
               <div style={{ position: "absolute", top: "24px", right: "32px", fontSize: "14px", color: "rgba(150, 100, 200, 0.7)" }}>✨</div>
               <div style={{ position: "absolute", top: "50%", left: "24px", fontSize: "14px", color: "rgba(200, 150, 100, 0.7)" }}>⭐</div>
               <div style={{ position: "absolute", top: "50%", right: "24px", color: "rgba(150, 100, 150, 0.7)" }}>✨</div>
@@ -157,7 +156,7 @@ export default function Index() {
 
         {/* Footer */}
         <footer className="bg-black text-white/60" style={{ marginBottom: "-4px", padding: "48px 0 200px" }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: "2026px" }}>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
               <div>
                 <h4 className="font-bold text-white mb-4">Shop</h4>
@@ -260,11 +259,11 @@ export default function Index() {
                 </ul>
               </div>
             </div>
-            <div className="pt-8 text-center text-sm">
-              <p>&copy; 2024 StickerHub. All rights reserved.</p>
-            </div>
           </div>
         </footer>
+        <div style={{ fontWeight: "400" }}>
+          © 2024 StickerHub. All rights reserved.
+        </div>
       </main>
     </>
   );
