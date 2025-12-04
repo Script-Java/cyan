@@ -47,9 +47,9 @@ export default function BlogPost() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-black py-12">
+        <main className="min-h-screen bg-white py-12">
           <div className="flex justify-center items-center h-96">
-            <div className="text-white/60">Loading blog...</div>
+            <div className="text-gray-600">Loading blog...</div>
           </div>
         </main>
       </>
@@ -60,20 +60,20 @@ export default function BlogPost() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-black py-12">
+        <main className="min-h-screen bg-white py-12">
           <div className="max-w-4xl mx-auto px-4">
             <button
               onClick={() => navigate("/")}
-              className="flex items-center gap-2 text-blue-400 hover:text-blue-300 mb-8"
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-8"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Home
             </button>
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-white mb-4">
+              <h1 className="text-2xl font-bold text-gray-900 mb-4">
                 Blog Post Not Found
               </h1>
-              <p className="text-white/60">{error || "The blog post you are looking for does not exist."}</p>
+              <p className="text-gray-600">{error || "The blog post you are looking for does not exist."}</p>
             </div>
           </div>
         </main>
@@ -92,51 +92,46 @@ export default function BlogPost() {
   return (
     <>
       <Header />
-      <main className="bg-gradient-to-b from-black via-blue-950/10 to-black">
+      <main className="bg-white min-h-screen">
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-blue-950/30 to-black pt-12 pb-16">
-          <div className="max-w-4xl mx-auto px-4">
-            <button
-              onClick={() => navigate("/")}
-              className="flex items-center gap-2 text-blue-400 hover:text-blue-300 mb-6"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Home
-            </button>
-
+        <section className="bg-white pt-12 pb-8">
+          <div className="max-w-3xl mx-auto px-4">
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-sm text-white/60 mb-6">
-              <a href="/" className="hover:text-white transition-colors">
+            <nav className="flex items-center gap-2 text-sm text-gray-600 mb-8">
+              <a href="/" className="hover:text-gray-900 transition-colors">
                 Home
               </a>
               <span>/</span>
-              <a href="/" className="hover:text-white transition-colors">
+              <a href="/blogs" className="hover:text-gray-900 transition-colors">
                 Blog
               </a>
               <span>/</span>
-              <span className="text-white">{blog.title}</span>
+              <span className="text-gray-900">{blog.title}</span>
             </nav>
 
             {/* Title */}
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
               {blog.title}
             </h1>
 
             {/* Meta Information */}
-            <div className="flex flex-wrap items-center gap-6 text-sm text-white/70 border-b border-white/10 pb-6">
+            <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600">
               <div className="flex items-center gap-2">
                 <User className="w-4 h-4" />
                 <span>{blog.author}</span>
               </div>
+              <span>•</span>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 <span>{formattedDate}</span>
               </div>
+              <span>•</span>
               <div className="flex items-center gap-2">
                 <Eye className="w-4 h-4" />
                 <span>{blog.views} views</span>
               </div>
-              <div className="text-white/60">
+              <span>•</span>
+              <div className="text-gray-600">
                 <span>{readTime} min read</span>
               </div>
             </div>
@@ -145,22 +140,22 @@ export default function BlogPost() {
 
         {/* Featured Image */}
         {blog.featured_image_url && (
-          <section className="py-8">
-            <div className="max-w-4xl mx-auto px-4">
+          <section className="py-8 bg-white">
+            <div className="max-w-3xl mx-auto px-4">
               <img
                 src={blog.featured_image_url}
                 alt={blog.title}
-                className="w-full h-96 object-cover rounded-lg border border-white/10"
+                className="w-full h-96 object-cover rounded-lg"
               />
             </div>
           </section>
         )}
 
         {/* Content */}
-        <section className="py-12">
-          <div className="max-w-4xl mx-auto px-4">
-            <article className="prose prose-invert max-w-none">
-              <div className="text-white/90 leading-relaxed space-y-6">
+        <section className="py-12 bg-white">
+          <div className="max-w-3xl mx-auto px-4">
+            <article>
+              <div className="text-gray-900 leading-relaxed space-y-6">
                 {blog.content.split("\n\n").map((paragraph, index) => (
                   <p key={index} className="text-lg">
                     {paragraph}
@@ -171,13 +166,13 @@ export default function BlogPost() {
 
             {/* Tags */}
             {blog.tags && blog.tags.length > 0 && (
-              <div className="mt-12 pt-8 border-t border-white/10">
+              <div className="mt-12 pt-8 border-t border-gray-200">
                 <div className="flex flex-wrap gap-2">
                   {blog.tags.map((tag) => (
                     <a
                       key={tag}
                       href={`/?tag=${encodeURIComponent(tag)}`}
-                      className="px-3 py-1 bg-blue-500/20 border border-blue-500/50 rounded-full text-sm text-blue-400 hover:bg-blue-500/30 transition-colors"
+                      className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm text-gray-700 hover:bg-gray-200 transition-colors"
                     >
                       #{tag}
                     </a>
@@ -187,16 +182,16 @@ export default function BlogPost() {
             )}
 
             {/* Author Info */}
-            <div className="mt-12 pt-8 border-t border-white/10 bg-white/5 border border-white/10 rounded-lg p-6">
+            <div className="mt-12 pt-8 border-t border-gray-200 bg-gray-50 border border-gray-200 rounded-lg p-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
                   <span className="text-white font-bold">
                     {blog.author.charAt(0)}
                   </span>
                 </div>
                 <div>
-                  <h3 className="text-white font-semibold">{blog.author}</h3>
-                  <p className="text-white/60 text-sm">
+                  <h3 className="text-gray-900 font-semibold">{blog.author}</h3>
+                  <p className="text-gray-600 text-sm">
                     Content creator and storyteller
                   </p>
                 </div>
@@ -204,35 +199,115 @@ export default function BlogPost() {
             </div>
           </div>
         </section>
+      </main>
 
-        {/* Related Articles */}
-        <section className="py-12 border-t border-white/10">
-          <div className="max-w-4xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-white mb-8">More Articles</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              {[1, 2].map((i) => (
-                <article
-                  key={i}
-                  className="group cursor-pointer"
-                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                >
-                  <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden hover:border-white/20 transition-all">
-                    <div className="h-48 bg-gradient-to-r from-blue-600 to-purple-600"></div>
-                    <div className="p-6">
-                      <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors">
-                        Explore More Articles
-                      </h3>
-                      <p className="text-white/60 text-sm mt-2">
-                        Discover more insights and stories from our blog
-                      </p>
-                    </div>
-                  </div>
-                </article>
-              ))}
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-200 text-gray-600">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16" style={{ maxWidth: "2026px" }}>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
+            <div>
+              <h4 className="font-bold text-gray-900 mb-4">Shop</h4>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    Vinyl Stickers
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    Holographic
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    Chrome
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    Glitter
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-4">Company</h4>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a href="/blogs" className="hover:text-gray-900 transition-colors">
+                    Blog
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    Contact
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    Privacy
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    Terms
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    Shipping
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    Returns
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-4">Follow</h4>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    Instagram
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    Twitter
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    TikTok
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    YouTube
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
-        </section>
-      </main>
+          <div className="text-center pt-8 border-t border-gray-200">
+            <p style={{ fontWeight: "400", fontSize: "12px", color: "rgba(0, 0, 0, 0.5)" }}>
+              Built with ❤️ by © Sticky Slap LLC
+            </p>
+          </div>
+        </div>
+      </footer>
     </>
   );
 }
