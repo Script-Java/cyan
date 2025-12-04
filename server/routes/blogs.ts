@@ -211,21 +211,26 @@ export const handleUploadBlogImage: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "No file provided" });
     }
 
-    const b64 = Buffer.from(req.file.buffer).toString("base64");
-    const dataURI = `data:${req.file.mimetype};base64,${b64}`;
+    // Compress image using sharp
+    const compressedBuffer = await sharp(req.file.buffer)
+      .resize(1200, 800, {
+        fit: "inside",
+        withoutEnlargement: true,
+      })
+      .jpeg({ quality: 80, progressive: true })
+      .toBuffer();
+
+    const b64 = compressedBuffer.toString("base64");
+    const dataURI = `data:image/jpeg;base64,${b64}`;
 
     const result = await cloudinary.uploader.upload(dataURI, {
       folder: "sticky-shuttle/blog",
       resource_type: "auto",
-      quality: "auto",
-      fetch_format: "auto",
-      width: 1200,
-      crop: "limit",
     });
 
     res.json({ imageUrl: result.secure_url });
   } catch (err) {
     console.error("Error uploading image:", err);
-    res.status(500).json({ error: "Failed to upload image - file may be too large. Please use an image under 5MB." });
+    res.status(500).json({ error: "Failed to upload image" });
   }
 };
