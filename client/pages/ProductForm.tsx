@@ -61,11 +61,17 @@ interface ProductOption {
   displayOrder: number;
 }
 
+interface OptionSelection {
+  optionId: string;
+  optionName: string;
+  selectedValueIds: string[];
+}
+
 interface SharedVariant {
   id: string;
   name: string;
   description: string;
-  optionIds: string[];
+  optionSelections: OptionSelection[];
   price: number;
 }
 
