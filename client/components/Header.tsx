@@ -144,6 +144,13 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
               >
                 <Bookmark className="w-7 h-7 text-[#10B981]" />
               </Link>
+              <Link
+                to="/blogs"
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                title="Blog"
+              >
+                <BookOpen className="w-7 h-7 text-[#3B82F6]" />
+              </Link>
               {isAuthenticated && (
                 <div
                   className="flex items-center rounded-lg border"
