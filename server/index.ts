@@ -413,6 +413,7 @@ export function createServer() {
   // Admin routes (Protected)
   app.post("/api/admin/blogs", verifyToken, handleCreateBlog);
   app.get("/api/admin/blogs", verifyToken, handleGetAllBlogs);
+  app.get("/api/admin/blogs/:blogId", verifyToken, handleGetAdminBlogById);
   app.put("/api/admin/blogs/:blogId", verifyToken, handleUpdateBlog);
   app.delete("/api/admin/blogs/:blogId", verifyToken, handleDeleteBlog);
   app.post("/api/admin/upload-image", verifyToken, handleUploadBlogImage);
