@@ -240,10 +240,10 @@ export default function ProductForm() {
 
       setFormData({
         name: product.name || "",
-        basePrice: product.base_price || 0,
+        basePrice: Number(product.base_price) || 0,
         description: product.description || "",
         sku: product.sku || "",
-        weight: product.weight || 0,
+        weight: Number(product.weight) || 0,
         images: product.images || [],
         options,
         pricingRules: product.pricing_rules || [],
