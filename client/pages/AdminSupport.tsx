@@ -11,7 +11,7 @@ import {
   X,
 } from "lucide-react";
 import Header from "@/components/Header";
-import AdminSidebar from "@/components/AdminSidebar";
+import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import MobileAdminPanel from "@/components/MobileAdminPanel";
 import { toast } from "sonner";
 
