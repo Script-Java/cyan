@@ -261,8 +261,8 @@ export default function Index() {
             </div>
           </div>
         </footer>
-        <div style={{ fontWeight: "400" }}>
-          © 2024 StickerHub. All rights reserved.
+        <div style={{ fontWeight: "400", textAlign: "center", paddingBottom: "40px" }}>
+          Built with ❤️ by © Sticky Slap LLC
         </div>
       </main>
     </>
