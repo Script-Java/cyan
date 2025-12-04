@@ -21,7 +21,7 @@ export const processSquarePayment: RequestHandler = async (req, res) => {
     const amountInCents = Math.round(amount * 100);
 
     // Create payment with Square
-    const paymentsApi = getPaymentsApi();
+    const paymentsApi = await getPaymentsApi();
     const paymentResult = await paymentsApi.createPayment({
       sourceId: token,
       amountMoney: {
