@@ -587,7 +587,7 @@ export default function ProductPage() {
                   lineHeight: "28px",
                 }}
               >
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ width: "20px", height: "20px", stroke: "oklch(0.707 0.165 254.624)" }}>
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ width: "20px", height: "20px", stroke: "rgb(0, 0, 0)" }}>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
                 </svg>
                 Select a quantity
