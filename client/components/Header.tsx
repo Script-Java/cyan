@@ -151,45 +151,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
               >
                 <BookOpen className="w-7 h-7 text-[#3B82F6]" />
               </Link>
-              {isAuthenticated && (
-                <div
-                  className="flex items-center rounded-lg border"
-                  title="Store credit from your BigCommerce account"
-                  style={{
-                    alignItems: "center",
-                    backgroundImage:
-                      "linear-gradient(to right bottom, rgba(234, 179, 8, 0.3), rgba(202, 138, 4, 0.1))",
-                    borderColor: "rgba(234, 179, 8, 0.4)",
-                    borderRadius: "8px",
-                    borderWidth: "1.11111px",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    gap: "8px",
-                    lineHeight: "20px",
-                    padding: "8px 16px",
-                  }}
-                >
-                  <img
-                    src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1753923671/StickerShuttle_CoinIcon_aperue.png"
-                    alt="Credits"
-                    style={{
-                      display: "block",
-                      fontWeight: "500",
-                      height: "20px",
-                      width: "20px",
-                    }}
-                  />
-                  <span
-                    style={{
-                      display: "block",
-                      color: "rgb(253, 224, 71)",
-                      fontWeight: "500",
-                    }}
-                  >
-                    $ {storeCredit.toFixed(2)}
-                  </span>
-                </div>
-              )}
+              {/* Store credit display disabled temporarily */}
 
               {/* Auth Icons */}
               {!isAuthenticated && (
