@@ -303,8 +303,22 @@ export default function ProductPage() {
 
     setIsAddingToCart(true);
     try {
-      const pricePerUnit = parseFloat(calculatePrice());
+      const basePrice = parseFloat(calculatePrice());
       const totalPrice = parseFloat(calculateTotalPrice());
+      const pricePerUnit = totalPrice / quantity;
+
+      // Find save percentage for current quantity
+      const quantityTiers = [
+        { qty: 50, discountPercent: 0 },
+        { qty: 100, discountPercent: 35 },
+        { qty: 200, discountPercent: 54 },
+        { qty: 300, discountPercent: 61 },
+        { qty: 500, discountPercent: 68 },
+        { qty: 1000, discountPercent: 74 },
+        { qty: 2500, discountPercent: 81 },
+      ];
+      const tierInfo = quantityTiers.find((t) => t.qty === quantity);
+      const savePercentage = tierInfo?.discountPercent || 0;
 
       const cartItem: CartItem = {
         productId: productId!,
@@ -314,6 +328,8 @@ export default function ProductPage() {
         quantity,
         pricePerUnit,
         totalPrice,
+        basePrice,
+        savePercentage,
       };
 
       const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
