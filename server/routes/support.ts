@@ -148,10 +148,18 @@ export const handleGetTicketDetails: RequestHandler = async (req, res) => {
       return;
     }
 
+    const id = parseInt(ticketId, 10);
+    if (isNaN(id)) {
+      res.status(400).json({
+        error: "Invalid ticket ID format",
+      });
+      return;
+    }
+
     const { data: ticket, error: ticketError } = await supabase
       .from("support_tickets")
       .select("*")
-      .eq("id", ticketId)
+      .eq("id", id)
       .single();
 
     if (ticketError || !ticket) {
@@ -174,7 +182,7 @@ export const handleGetTicketDetails: RequestHandler = async (req, res) => {
     const { data: replies, error: repliesError } = await supabase
       .from("ticket_replies")
       .select("*")
-      .eq("ticket_id", ticketId)
+      .eq("ticket_id", id)
       .order("created_at", { ascending: true });
 
     if (repliesError) {
@@ -244,11 +252,19 @@ export const handleAdminReplyToTicket: RequestHandler = async (req, res) => {
       return;
     }
 
+    const id = parseInt(ticketId, 10);
+    if (isNaN(id)) {
+      res.status(400).json({
+        error: "Invalid ticket ID format",
+      });
+      return;
+    }
+
     // Get ticket details for customer email
     const { data: ticket, error: ticketError } = await supabase
       .from("support_tickets")
       .select("customer_email, customer_name")
-      .eq("id", ticketId)
+      .eq("id", id)
       .single();
 
     if (ticketError || !ticket) {
@@ -262,7 +278,7 @@ export const handleAdminReplyToTicket: RequestHandler = async (req, res) => {
     const { data: reply, error: replyError } = await supabase
       .from("ticket_replies")
       .insert({
-        ticket_id: ticketId,
+        ticket_id: id,
         sender_type: "admin",
         sender_name: adminName,
         sender_email: "support@stickyslap.com",
@@ -283,7 +299,7 @@ export const handleAdminReplyToTicket: RequestHandler = async (req, res) => {
     const { data: updatedTicket } = await supabase
       .from("support_tickets")
       .update({ status: "in-progress", updated_at: new Date().toISOString() })
-      .eq("id", ticketId)
+      .eq("id", id)
       .select("subject")
       .single();
 
@@ -329,11 +345,19 @@ export const handleCustomerReplyToTicket: RequestHandler = async (req, res) => {
       return;
     }
 
+    const id = parseInt(ticketId, 10);
+    if (isNaN(id)) {
+      res.status(400).json({
+        error: "Invalid ticket ID format",
+      });
+      return;
+    }
+
     // Get ticket details to verify ownership
     const { data: ticket, error: ticketError } = await supabase
       .from("support_tickets")
       .select("customer_id, customer_name, customer_email")
-      .eq("id", ticketId)
+      .eq("id", id)
       .single();
 
     if (ticketError || !ticket) {
