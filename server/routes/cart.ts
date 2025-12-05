@@ -393,6 +393,10 @@ export const handleClearCart: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Cart ID is required" });
     }
 
+    if (!isValidUUID(cartId)) {
+      return res.status(400).json({ error: "Invalid cart ID format" });
+    }
+
     const { data: cart, error: fetchError } = await supabase
       .from("carts")
       .select("*")
