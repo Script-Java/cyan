@@ -301,12 +301,17 @@ export default function ProductPage() {
 
     setIsAddingToCart(true);
     try {
+      const pricePerUnit = parseFloat(calculatePrice());
+      const totalPrice = parseFloat(calculateTotalPrice());
+
       const cartItem: CartItem = {
         productId: productId!,
         selectedOptions,
         designFile,
         optionalFields,
         quantity,
+        pricePerUnit,
+        totalPrice,
       };
 
       const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
