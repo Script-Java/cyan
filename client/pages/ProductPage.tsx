@@ -371,30 +371,91 @@ export default function ProductPage() {
 
           {/* Hero Section with Image and Description */}
           <div className="mb-12">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8" style={{ paddingTop: "27px" }}>
-              {/* Product Info */}
+            <div style={{ display: "flex", gap: "20px", marginBottom: "32px" }}>
               <div
-                className="flex flex-col justify-center"
-                style={{ paddingBottom: "200px" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  lineHeight: "normal",
+                  width: "50%",
+                  marginLeft: "0px",
+                }}
               >
-                <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-                  {product.name}
-                </h1>
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  {product.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm">
-                    💧 Waterproof
-                  </span>
-                  <span className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm">
-                    ✨ Premium Quality
-                  </span>
-                  <span className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm">
-                    🚀 Fast Shipping
-                  </span>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    position: "relative",
+                    marginTop: "20px",
+                    width: "100%",
+                    minHeight: "282px",
+                    minWidth: "20px",
+                    overflow: "hidden",
+                    maxWidth: "1026px",
+                  }}
+                >
+                  <img
+                    loading="lazy"
+                    srcSet="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=100 100w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=200 200w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=400 400w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=800 800w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=1200 1200w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=1600 1600w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=2000 2000w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a"
+                    style={{
+                      position: "absolute",
+                      inset: "0",
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "cover",
+                      objectPosition: "center",
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "relative",
+                      display: "grid",
+                      fontWeight: "400",
+                      gap: "24px",
+                      gridTemplate: "none / repeat(3, minmax(0px, 1fr))",
+                      margin: "0 200px 32px 0",
+                      padding: "27px 200px 0 0",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        fontWeight: "400",
+                        justifyContent: "center",
+                        padding: "15px 0 200px",
+                      }}
+                    >
+                      <h1 className="text-3xl sm:text-4xl font-bold mb-3">
+                        {product.name}
+                      </h1>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        {product.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm">
+                          💧 Waterproof
+                        </span>
+                        <span className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm">
+                          ✨ Premium Quality
+                        </span>
+                        <span className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm">
+                          🚀 Fast Shipping
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  lineHeight: "normal",
+                  width: "50%",
+                  marginLeft: "20px",
+                }}
+              />
             </div>
           </div>
 
