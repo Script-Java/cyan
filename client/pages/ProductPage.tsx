@@ -303,9 +303,9 @@ export default function ProductPage() {
     return (
       <>
         <Header />
-        <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="min-h-screen bg-white text-black flex items-center justify-center">
           <div className="text-center">
-            <p className="text-white/60">Loading product...</p>
+            <p className="text-gray-600">Loading product...</p>
           </div>
         </div>
       </>
@@ -316,9 +316,9 @@ export default function ProductPage() {
     return (
       <>
         <Header />
-        <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="min-h-screen bg-white text-black flex items-center justify-center">
           <div className="text-center">
-            <p className="text-white/60">Product not found</p>
+            <p className="text-gray-600">Product not found</p>
           </div>
         </div>
       </>
@@ -328,7 +328,7 @@ export default function ProductPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black text-white">
+      <main className="min-h-screen bg-white text-black">
         <div
           style={{
             maxWidth: "1824px",
@@ -340,7 +340,7 @@ export default function ProductPage() {
           {/* Back Navigation */}
           <button
             onClick={() => navigate("/products")}
-            className="flex items-center gap-2 text-blue-300 hover:text-blue-400 transition mb-8"
+            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition mb-8"
           >
             <ChevronLeft className="w-5 h-5" />
             <span className="font-medium">Back to Sticker Types</span>
@@ -357,17 +357,17 @@ export default function ProductPage() {
                 <h1 className="text-3xl sm:text-4xl font-bold mb-3">
                   {product.name}
                 </h1>
-                <p className="text-white/70 mb-6 leading-relaxed">
+                <p className="text-gray-600 mb-6 leading-relaxed">
                   {product.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-sm">
+                  <span className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm">
                     💧 Waterproof
                   </span>
-                  <span className="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-sm">
+                  <span className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm">
                     ✨ Premium Quality
                   </span>
-                  <span className="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-sm">
+                  <span className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm">
                     🚀 Fast Shipping
                   </span>
                 </div>
@@ -381,7 +381,7 @@ export default function ProductPage() {
             {product.options.map((option) => (
               <div
                 key={option.id}
-                className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
+                className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6"
               >
                 <h2 className="text-sm font-bold mb-4 flex items-center gap-2">
                   {option.name === "Shape" && (
@@ -421,8 +421,8 @@ export default function ProductPage() {
                         }
                         className={`relative flex flex-col items-center justify-center border-2 rounded-xl p-4 transition text-center ${
                           selectedOptions[option.id] === value.id
-                            ? "border-purple-500 bg-purple-500/20 shadow-lg shadow-purple-500/30"
-                            : "border-white/10 hover:border-white/20 bg-white/5"
+                            ? "border-purple-500 bg-purple-100 shadow-lg shadow-purple-200/50"
+                            : "border-gray-200 hover:border-gray-300 bg-gray-50"
                         }`}
                       >
                         {value.image && (
@@ -432,16 +432,16 @@ export default function ProductPage() {
                             className="w-16 h-16 object-contain mb-2"
                           />
                         )}
-                        <p className="font-medium text-xs text-white">
+                        <p className="font-medium text-xs text-black">
                           {value.name}
                         </p>
                         {value.priceModifier !== 0 && (
-                          <p className="text-xs text-white/60 mt-1">
+                          <p className="text-xs text-gray-600 mt-1">
                             +${value.priceModifier.toFixed(2)}
                           </p>
                         )}
                         {index === 0 && (
-                          <span className="absolute top-2 right-2 text-xs font-bold text-purple-400">
+                          <span className="absolute top-2 right-2 text-xs font-bold text-purple-600">
                             Popular
                           </span>
                         )}
@@ -463,8 +463,8 @@ export default function ProductPage() {
                         }
                         className={`border-2 rounded-lg p-2 transition text-center text-xs ${
                           selectedOptions[option.id] === value.id
-                            ? "border-purple-500 bg-purple-500/10"
-                            : "border-white/10 hover:border-white/20 bg-white/5"
+                            ? "border-purple-500 bg-purple-100"
+                            : "border-gray-200 hover:border-gray-300 bg-gray-50"
                         }`}
                       >
                         {value.image && (
@@ -474,9 +474,9 @@ export default function ProductPage() {
                             className="w-10 h-10 object-cover mx-auto mb-1 rounded"
                           />
                         )}
-                        <p className="font-medium text-xs">{value.name}</p>
+                        <p className="font-medium text-xs text-black">{value.name}</p>
                         {value.priceModifier !== 0 && (
-                          <p className="text-xs text-white/60 mt-0.5">
+                          <p className="text-xs text-gray-600 mt-0.5">
                             +${value.priceModifier.toFixed(2)}
                           </p>
                         )}
@@ -499,7 +499,7 @@ export default function ProductPage() {
                         className={`relative border-2 rounded-lg overflow-hidden transition ${
                           selectedOptions[option.id] === value.id
                             ? "border-purple-500"
-                            : "border-white/10 hover:border-white/20"
+                            : "border-gray-200 hover:border-gray-300"
                         }`}
                       >
                         {value.image ? (
@@ -509,8 +509,8 @@ export default function ProductPage() {
                             className="w-full h-14 object-cover"
                           />
                         ) : (
-                          <div className="w-full h-14 bg-white/10 flex items-center justify-center">
-                            <span className="text-white/40 text-xs text-center px-1">
+                          <div className="w-full h-14 bg-gray-100 flex items-center justify-center">
+                            <span className="text-gray-600 text-xs text-center px-1">
                               {value.name}
                             </span>
                           </div>
@@ -531,7 +531,7 @@ export default function ProductPage() {
                       }))
                     }
                     placeholder={`Enter ${option.name}`}
-                    className="bg-white/5 border-white/10 text-white placeholder-white/40 text-xs"
+                    className="bg-gray-50 border-gray-200 text-black placeholder-gray-500 text-xs"
                   />
                 )}
               </div>
@@ -539,7 +539,7 @@ export default function ProductPage() {
 
             {/* Quantity Selection Column */}
             <div
-              className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl"
+              className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl"
               style={{ margin: "0 -2px 3px 0", padding: "24px 24px 27px" }}
             >
               <h2 className="text-sm font-bold mb-3">📊 Select a quantity</h2>
@@ -562,17 +562,17 @@ export default function ProductPage() {
                     }}
                     className={`w-full flex items-center justify-between p-2 rounded-lg border-2 transition text-xs ${
                       activeQuantityOption === option.qty
-                        ? "border-green-500 bg-green-500/10"
-                        : "border-white/10 hover:border-white/20 bg-white/5"
+                        ? "border-green-500 bg-green-100"
+                        : "border-gray-200 hover:border-gray-300 bg-gray-50"
                     }`}
                   >
                     <span className="font-semibold">{option.qty}</span>
                     <div className="text-right">
-                      <p className="font-bold text-green-400">
+                      <p className="font-bold text-green-600">
                         ${option.price.toFixed(2)}
                       </p>
                       {option.save && (
-                        <p className="text-xs text-green-300">
+                        <p className="text-xs text-green-600">
                           Save {option.save}%
                         </p>
                       )}
@@ -580,26 +580,26 @@ export default function ProductPage() {
                   </button>
                 ))}
 
-                <button className="w-full flex items-center justify-between p-2 rounded-lg border-2 border-white/10 hover:border-white/20 bg-white/5 transition text-xs">
+                <button className="w-full flex items-center justify-between p-2 rounded-lg border-2 border-gray-200 hover:border-gray-300 bg-gray-50 transition text-xs">
                   <span className="font-semibold">Custom</span>
                 </button>
               </div>
 
               {/* Price Summary in Quantity Card */}
-              <div className="mt-4 space-y-2 pt-4 border-t border-white/10">
+              <div className="mt-4 space-y-2 pt-4 border-t border-gray-200">
                 <div className="flex justify-between items-center">
-                  <span className="text-white/80 text-xs">Total:</span>
+                  <span className="text-gray-700 text-xs">Total:</span>
                   <div className="text-right">
-                    <p className="text-lg font-bold text-green-400">
+                    <p className="text-lg font-bold text-green-600">
                       ${calculateTotalPrice()}
                     </p>
-                    <p className="text-xs text-white/60">
+                    <p className="text-xs text-gray-600">
                       ${calculatePricePerUnit()}/ea.
                     </p>
                   </div>
                 </div>
-                <div className="rounded-lg bg-yellow-500/10 border border-yellow-500/30 p-2 text-xs">
-                  <span className="flex items-center gap-1 text-yellow-300">
+                <div className="rounded-lg bg-yellow-100 border border-yellow-300 p-2 text-xs">
+                  <span className="flex items-center gap-1 text-yellow-700">
                     <img
                       src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1753923671/StickerShuttle_CoinIcon_aperue.png"
                       alt="Credits"
@@ -618,14 +618,14 @@ export default function ProductPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* Additional Fields */}
             {product.optional_fields.length > 0 && (
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+              <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6">
                 <h2 className="text-sm font-bold mb-4">
                   ✏️ Additional Instructions (optional)
                 </h2>
                 <div className="space-y-4">
                   {product.optional_fields.map((field) => (
                     <div key={field.name}>
-                      <Label className="text-white/80 text-xs mb-2 block">
+                      <Label className="text-gray-700 text-xs mb-2 block">
                         {field.name}
                       </Label>
                       {field.type === "textarea" ? (
@@ -638,7 +638,7 @@ export default function ProductPage() {
                             }))
                           }
                           placeholder={`Enter any special requests or instructions here...`}
-                          className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-20 text-xs"
+                          className="bg-gray-50 border-gray-200 text-black placeholder-gray-500 min-h-20 text-xs"
                         />
                       ) : field.type === "date" ? (
                         <Input
@@ -650,7 +650,7 @@ export default function ProductPage() {
                               [field.name]: e.target.value,
                             }))
                           }
-                          className="bg-white/5 border-white/10 text-white placeholder-white/40 text-xs"
+                          className="bg-gray-50 border-gray-200 text-black placeholder-gray-500 text-xs"
                         />
                       ) : field.type === "number" ? (
                         <Input
@@ -663,7 +663,7 @@ export default function ProductPage() {
                             }))
                           }
                           placeholder={`Enter ${field.name}`}
-                          className="bg-white/5 border-white/10 text-white placeholder-white/40 text-xs"
+                          className="bg-gray-50 border-gray-200 text-black placeholder-gray-500 text-xs"
                         />
                       ) : (
                         <Input
@@ -676,7 +676,7 @@ export default function ProductPage() {
                             }))
                           }
                           placeholder={`Enter ${field.name}`}
-                          className="bg-white/5 border-white/10 text-white placeholder-white/40 text-xs"
+                          className="bg-gray-50 border-gray-200 text-black placeholder-gray-500 text-xs"
                         />
                       )}
                     </div>
@@ -687,15 +687,15 @@ export default function ProductPage() {
 
             {/* Custom Design Upload */}
             {product.customer_upload_config.enabled && (
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+              <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6">
                 <h2 className="text-sm font-bold mb-2">Upload your artwork</h2>
-                <p className="text-white/60 text-xs mb-4">
+                <p className="text-gray-600 text-xs mb-4">
                   {product.customer_upload_config.description}
                 </p>
 
                 {designPreview ? (
                   <div className="space-y-3">
-                    <div className="relative bg-white/5 border border-white/10 rounded-lg overflow-hidden">
+                    <div className="relative bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
                       <img
                         src={designPreview}
                         alt="Design preview"
@@ -708,23 +708,23 @@ export default function ProductPage() {
                         <X className="w-4 h-4" />
                       </button>
                     </div>
-                    <p className="text-white/60 text-xs">
+                    <p className="text-gray-600 text-xs">
                       {designFile?.name} (
                       {((designFile?.size || 0) / 1024 / 1024).toFixed(2)} MB)
                     </p>
                   </div>
                 ) : (
-                  <label className="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-white/30 rounded-lg p-8 cursor-pointer hover:border-white/50 transition">
+                  <label className="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-gray-300 rounded-lg p-8 cursor-pointer hover:border-gray-400 transition">
                     <img
                       src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1763150114/StickerShuttle_UploadIcon_m5qbvw.png"
                       alt="Upload"
                       className="w-16 h-16"
                     />
                     <div className="text-center">
-                      <p className="text-white font-medium text-sm">
+                      <p className="text-black font-medium text-sm">
                         Drag or click to upload your file
                       </p>
-                      <p className="text-white/60 text-xs mt-1">
+                      <p className="text-gray-600 text-xs mt-1">
                         All formats supported. Max file size:{" "}
                         {product.customer_upload_config.maxFileSize}MB | 1 file
                         per order
@@ -745,11 +745,11 @@ export default function ProductPage() {
           </div>
 
           {/* Add to Cart Button - Full Width */}
-          <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+          <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6">
             <Button
               onClick={handleAddToCart}
               disabled={isAddingToCart || !product.availability || !designFile}
-              className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white py-4 text-lg font-semibold gap-2 rounded-xl"
+              className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-4 text-lg font-semibold gap-2 rounded-xl"
             >
               <Upload className="w-5 h-5" />
               {isAddingToCart
@@ -761,7 +761,7 @@ export default function ProductPage() {
                     : "Add to Cart"}
             </Button>
 
-            <p className="text-center text-white/60 text-xs mt-3">
+            <p className="text-center text-gray-600 text-xs mt-3">
               Items will be added to your cart for review before checkout
             </p>
           </div>
