@@ -42,10 +42,15 @@ export const handleGetBlogById: RequestHandler = async (req, res) => {
   try {
     const { blogId } = req.params;
 
+    const id = parseInt(blogId, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid blog ID format" });
+    }
+
     const { data, error } = await supabase
       .from("blogs")
       .select("*")
-      .eq("id", blogId)
+      .eq("id", id)
       .single();
 
     if (error) throw error;
@@ -58,7 +63,7 @@ export const handleGetBlogById: RequestHandler = async (req, res) => {
     await supabase
       .from("blogs")
       .update({ views: (data.views || 0) + 1 })
-      .eq("id", blogId);
+      .eq("id", id);
 
     res.json(data);
   } catch (err) {
@@ -128,10 +133,15 @@ export const handleGetAdminBlogById: RequestHandler = async (req, res) => {
   try {
     const { blogId } = req.params;
 
+    const id = parseInt(blogId, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid blog ID format" });
+    }
+
     const { data, error } = await supabase
       .from("blogs")
       .select("*")
-      .eq("id", blogId)
+      .eq("id", id)
       .single();
 
     if (error) throw error;
@@ -152,7 +162,12 @@ export const handleDeleteBlog: RequestHandler = async (req, res) => {
   try {
     const { blogId } = req.params;
 
-    const { error } = await supabase.from("blogs").delete().eq("id", blogId);
+    const id = parseInt(blogId, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid blog ID format" });
+    }
+
+    const { error } = await supabase.from("blogs").delete().eq("id", id);
 
     if (error) throw error;
 
@@ -169,6 +184,11 @@ export const handleUpdateBlog: RequestHandler = async (req, res) => {
     const { blogId } = req.params;
     const formData: Partial<BlogFormData> = req.body;
 
+    const id = parseInt(blogId, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid blog ID format" });
+    }
+
     const { data, error } = await supabase
       .from("blogs")
       .update({
@@ -182,7 +202,7 @@ export const handleUpdateBlog: RequestHandler = async (req, res) => {
         ...(formData.tags && { tags: formData.tags }),
         ...(formData.visibility && { visibility: formData.visibility }),
       })
-      .eq("id", blogId)
+      .eq("id", id)
       .select()
       .single();
 
