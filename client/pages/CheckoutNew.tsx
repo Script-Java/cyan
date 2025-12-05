@@ -549,12 +549,34 @@ export default function CheckoutNew() {
                               {item.product_name ||
                                 `Product #${item.product_id}`}
                             </h3>
-                            <p className="text-white/60">
-                              $
-                              {((item.price || 0.25) * item.quantity).toFixed(
-                                2,
+                            <div className="text-sm space-y-1">
+                              {item.basePrice && item.savePercentage && item.savePercentage > 0 ? (
+                                <>
+                                  <p className="text-white/60">
+                                    Regular: ${(item.basePrice * item.quantity).toFixed(2)}
+                                  </p>
+                                  <p className="text-white/60">
+                                    Quantity: {item.quantity}
+                                  </p>
+                                  <p className="text-green-400 font-semibold">
+                                    Save {item.savePercentage}%
+                                  </p>
+                                  <p className="text-green-400">
+                                    Amount Saved: ${((item.basePrice * item.savePercentage / 100) * item.quantity).toFixed(2)}
+                                  </p>
+                                  <p className="text-white font-bold border-t border-white/20 pt-1">
+                                    Total: ${((item.price || 0.25) * item.quantity).toFixed(2)}
+                                  </p>
+                                </>
+                              ) : (
+                                <p className="text-white/60">
+                                  $
+                                  {((item.price || 0.25) * item.quantity).toFixed(
+                                    2,
+                                  )}
+                                </p>
                               )}
-                            </p>
+                            </div>
                           </div>
                           <button
                             type="button"
