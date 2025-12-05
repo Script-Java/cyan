@@ -21,6 +21,8 @@ interface CartItem {
   quantity: number;
   price?: number;
   image?: string;
+  basePrice?: number;
+  savePercentage?: number;
 }
 
 interface OrderData {
