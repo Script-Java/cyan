@@ -242,6 +242,30 @@ export default function ProductPage() {
     return (totalPrice / quantity).toFixed(2);
   };
 
+  const getQuantityTierPricing = () => {
+    const basePricePerUnit = parseFloat(calculatePrice());
+    const quantityTiers = [
+      { qty: 50, discountPercent: 0 },
+      { qty: 100, discountPercent: 35 },
+      { qty: 200, discountPercent: 54 },
+      { qty: 300, discountPercent: 61 },
+      { qty: 500, discountPercent: 68 },
+      { qty: 1000, discountPercent: 74 },
+      { qty: 2500, discountPercent: 81 },
+    ];
+
+    return quantityTiers.map((tier) => {
+      const discountedPrice =
+        basePricePerUnit * (1 - tier.discountPercent / 100);
+      const totalPrice = discountedPrice * tier.qty;
+      return {
+        qty: tier.qty,
+        price: totalPrice,
+        save: tier.discountPercent > 0 ? tier.discountPercent : null,
+      };
+    });
+  };
+
   const handleAddToCart = async () => {
     const requiredOptions = product?.options.filter((o) => o.required) || [];
     const missingOptions = requiredOptions.filter(
