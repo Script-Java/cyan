@@ -380,61 +380,7 @@ export default function ProductPage() {
                   width: "50%",
                   marginLeft: "0px",
                 }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    position: "relative",
-                    marginTop: "20px",
-                    width: "100%",
-                    minHeight: "282px",
-                    minWidth: "20px",
-                    overflow: "hidden",
-                    maxWidth: "1026px",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "relative",
-                      display: "grid",
-                      fontWeight: "400",
-                      gap: "24px",
-                      gridTemplate: "none / repeat(3, minmax(0px, 1fr))",
-                      margin: "0 200px 32px 0",
-                      padding: "27px 200px 0 0",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        fontWeight: "400",
-                        justifyContent: "center",
-                        padding: "15px 0 200px",
-                      }}
-                    >
-                      <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-                        {product.name}
-                      </h1>
-                      <p className="text-gray-600 mb-6 leading-relaxed">
-                        {product.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        <span className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm">
-                          💧 Waterproof
-                        </span>
-                        <span className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm">
-                          ✨ Premium Quality
-                        </span>
-                        <span className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-sm">
-                          🚀 Fast Shipping
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              />
               <div
                 style={{
                   display: "flex",
