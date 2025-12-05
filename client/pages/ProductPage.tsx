@@ -716,7 +716,7 @@ export default function ProductPage() {
                 ) : (
                   <label className="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-gray-300 rounded-lg p-8 cursor-pointer hover:border-gray-400 transition">
                     <img
-                      src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1763150114/StickerShuttle_UploadIcon_m5qbvw.png"
+                      src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Fcee606b598864f7a983db9ee1358acf5?format=webp&width=800"
                       alt="Upload"
                       className="w-16 h-16"
                     />
