@@ -1,0 +1,8 @@
+// Add this helper at the top of square.ts after imports:
+function parseOrderId(idValue: any): number {
+  const id = parseInt(idValue, 10);
+  if (isNaN(id)) {
+    throw new Error('Invalid order ID format');
+  }
+  return id;
+}
