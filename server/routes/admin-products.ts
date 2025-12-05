@@ -319,10 +319,16 @@ export const handleGetAdminProduct: RequestHandler = async (req, res) => {
       if (error.code === "PGRST116") {
         return res.status(404).json({ error: "Product not found" });
       }
-      console.error("Database error:", error);
+      console.error("Database error fetching admin product:", {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+        productId: id,
+      });
       return res
         .status(500)
-        .json({ error: "Failed to fetch product", details: error.message });
+        .json({ error: "Failed to fetch product", details: error.message, code: error.code });
     }
 
     res.json({ product: data });
@@ -396,10 +402,16 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
       if (error.code === "PGRST116") {
         return res.status(404).json({ error: "Product not found" });
       }
-      console.error("Database error:", error);
+      console.error("Database error fetching public product:", {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+        productId: id,
+      });
       return res
         .status(500)
-        .json({ error: "Failed to fetch product", details: error.message });
+        .json({ error: "Failed to fetch product", details: error.message, code: error.code });
     }
 
     res.json({ product: data });
