@@ -156,6 +156,10 @@ export const handleAddToCart: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Cart ID is required" });
     }
 
+    if (!isValidUUID(cartId)) {
+      return res.status(400).json({ error: "Invalid cart ID format" });
+    }
+
     if (!line_items || !Array.isArray(line_items)) {
       return res.status(400).json({ error: "line_items is required" });
     }
