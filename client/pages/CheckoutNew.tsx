@@ -708,7 +708,7 @@ export default function CheckoutNew() {
                     </div>
                   </div>
 
-{/* Store credit section disabled temporarily */}
+                  {/* Store credit section disabled temporarily */}
 
                   {showPaymentForm && createdOrderId ? (
                     <div className="mb-3">
