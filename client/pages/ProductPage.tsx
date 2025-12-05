@@ -327,7 +327,7 @@ export default function ProductPage() {
     <>
       <Header />
       <main className="min-h-screen bg-black text-white">
-        <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-8">
+        <div style={{ maxWidth: "1824px", margin: "0 auto 3px", padding: "32px 32px 200px" }} className="px-4 sm:px-6 lg:px-8">
           {/* Back Navigation */}
           <button
             onClick={() => navigate("/products")}
@@ -340,78 +340,8 @@ export default function ProductPage() {
           {/* Hero Section with Image and Description */}
           <div className="mb-12">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              {/* Product Image */}
-              <div className="lg:col-span-2">
-                <div className="relative bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-3xl overflow-hidden aspect-square">
-                  {product.images.length > 0 ? (
-                    <>
-                      <img
-                        src={
-                          product.images[currentImageIndex].preview ||
-                          product.images[currentImageIndex].url
-                        }
-                        alt={product.name}
-                        className="w-full h-full object-cover"
-                      />
-                      {product.images.length > 1 && (
-                        <>
-                          <button
-                            onClick={() =>
-                              setCurrentImageIndex(
-                                (prev) =>
-                                  (prev - 1 + product.images.length) %
-                                  product.images.length,
-                              )
-                            }
-                            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
-                          >
-                            <ChevronLeft className="w-5 h-5" />
-                          </button>
-                          <button
-                            onClick={() =>
-                              setCurrentImageIndex(
-                                (prev) => (prev + 1) % product.images.length,
-                              )
-                            }
-                            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
-                          >
-                            <ChevronRight className="w-5 h-5" />
-                          </button>
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <div className="flex items-center justify-center h-full">
-                      <p className="text-white/40">No images available</p>
-                    </div>
-                  )}
-                </div>
-
-                {product.images.length > 1 && (
-                  <div className="grid grid-cols-4 gap-2 mt-4">
-                    {product.images.map((image, index) => (
-                      <button
-                        key={image.id}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className={`border-2 rounded-lg overflow-hidden transition ${
-                          currentImageIndex === index
-                            ? "border-purple-500"
-                            : "border-white/10 hover:border-white/20"
-                        }`}
-                      >
-                        <img
-                          src={image.preview || image.url}
-                          alt={image.name}
-                          className="w-full h-20 object-cover"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
               {/* Product Info */}
-              <div className="flex flex-col justify-center">
+              <div className="flex flex-col justify-center" style={{ paddingBottom: "200px" }}>
                 <h1 className="text-3xl sm:text-4xl font-bold mb-3">
                   {product.name}
                 </h1>
@@ -555,7 +485,7 @@ export default function ProductPage() {
             ))}
 
             {/* Quantity Selection Column */}
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6" style={{ margin: "0 -2px 200px 0" }}>
               <h2 className="text-sm font-bold mb-3">📊 Select a quantity</h2>
 
               <div className="space-y-2 max-h-80 overflow-y-auto">
