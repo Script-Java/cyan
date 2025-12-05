@@ -77,6 +77,8 @@ interface CartItem {
   designFile?: File;
   optionalFields: { [fieldName: string]: string };
   quantity: number;
+  pricePerUnit: number;
+  totalPrice: number;
 }
 
 export default function ProductPage() {
