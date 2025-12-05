@@ -549,12 +549,28 @@ export default function CheckoutNew() {
                               {item.product_name ||
                                 `Product #${item.product_id}`}
                             </h3>
-                            <p className="text-white/60">
-                              $
-                              {((item.price || 0.25) * item.quantity).toFixed(
-                                2,
+                            <div className="text-sm space-y-1">
+                              {item.basePrice && item.savePercentage ? (
+                                <>
+                                  <p className="text-white/60 line-through">
+                                    Base: ${(item.basePrice * item.quantity).toFixed(2)}
+                                  </p>
+                                  <p className="text-green-400">
+                                    Save {item.savePercentage}%: -${((item.basePrice * item.savePercentage / 100) * item.quantity).toFixed(2)}
+                                  </p>
+                                  <p className="text-white font-bold">
+                                    Final: ${((item.price || 0.25) * item.quantity).toFixed(2)}
+                                  </p>
+                                </>
+                              ) : (
+                                <p className="text-white/60">
+                                  $
+                                  {((item.price || 0.25) * item.quantity).toFixed(
+                                    2,
+                                  )}
+                                </p>
                               )}
-                            </p>
+                            </div>
                           </div>
                           <button
                             type="button"
