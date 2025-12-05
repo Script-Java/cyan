@@ -414,7 +414,14 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
       });
     }
 
-    console.log("Confirming checkout for order:", orderId);
+    const id = parseInt(orderId, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({
+        error: "Invalid order ID format",
+      });
+    }
+
+    console.log("Confirming checkout for order:", id);
 
     // Import Supabase
     const { supabase } = await import("../utils/supabase");
@@ -423,7 +430,7 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
     const { data, error: supabaseError } = await supabase
       .from("orders")
       .select("*")
-      .eq("id", orderId)
+      .eq("id", id)
       .single();
 
     if (supabaseError || !data) {
@@ -436,7 +443,7 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
     const { error: updateError } = await supabase
       .from("orders")
       .update({ status: "completed" })
-      .eq("id", orderId);
+      .eq("id", id);
 
     if (updateError) {
       console.error("Failed to update order status:", updateError);
@@ -448,7 +455,7 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
     res.json({
       success: true,
       order: {
-        id: orderId,
+        id: id,
         status: "completed",
         total: data.total,
       },
