@@ -61,16 +61,32 @@ CREATE TABLE IF NOT EXISTS order_items (
 CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
 
 -- 5. ADMIN_PRODUCTS TABLE - Uses auto-increment integer IDs
+-- Includes all product management fields required by server/routes/admin-products.ts
 CREATE TABLE IF NOT EXISTS admin_products (
   id BIGSERIAL PRIMARY KEY,
-  name VARCHAR(255),
+  name VARCHAR(255) NOT NULL,
   sku VARCHAR(100),
-  price NUMERIC(10, 2),
-  description TEXT,
+  base_price NUMERIC(10, 2) NOT NULL,
+  description TEXT DEFAULT '',
+  weight NUMERIC DEFAULT 0,
+  images JSONB DEFAULT '[]'::jsonb,
+  options JSONB DEFAULT '[]'::jsonb,
+  pricing_rules JSONB DEFAULT '[]'::jsonb,
   shared_variants JSONB DEFAULT '[]'::jsonb,
+  customer_upload_config JSONB DEFAULT '{"enabled": false, "maxFileSize": 5, "allowedFormats": ["png", "jpg", "jpeg", "gif"], "description": ""}'::jsonb,
+  optional_fields JSONB DEFAULT '[]'::jsonb,
+  text_area TEXT DEFAULT '',
+  condition_logic VARCHAR(50) DEFAULT 'all',
+  taxes JSONB DEFAULT '[]'::jsonb,
+  seo JSONB DEFAULT '{"productUrl": "", "pageTitle": "", "metaDescription": ""}'::jsonb,
+  categories JSONB DEFAULT '[]'::jsonb,
+  availability BOOLEAN DEFAULT true,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Create indexes for common query patterns
 CREATE INDEX IF NOT EXISTS idx_admin_products_sku ON admin_products(sku);
+CREATE INDEX IF NOT EXISTS idx_admin_products_availability ON admin_products(availability);
+CREATE INDEX IF NOT EXISTS idx_admin_products_created_at ON admin_products(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_admin_products_shared_variants ON admin_products USING gin(shared_variants);
