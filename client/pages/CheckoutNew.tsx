@@ -126,26 +126,11 @@ export default function CheckoutNew() {
                   return sharedVariant;
                 },
               );
-              let price = product.base_price || 0;
-              if (selectedOption) {
-                const sharedVariant = product.shared_variants?.find((sv: any) =>
-                  sv.optionSelections.some(
-                    (os: any) =>
-                      os.optionId === selectedOption &&
-                      os.selectedValueIds.includes(
-                        item.selectedOptions[selectedOption],
-                      ),
-                  ),
-                );
-                if (sharedVariant) {
-                  price = sharedVariant.price;
-                }
-              }
               items.push({
                 product_id: item.productId,
                 product_name: product.name,
                 quantity: item.quantity,
-                price: parseFloat(price),
+                price: item.pricePerUnit || product.base_price || 0,
                 image: product.images?.[0]?.url,
               });
             }
