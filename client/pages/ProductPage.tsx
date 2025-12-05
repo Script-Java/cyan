@@ -644,15 +644,15 @@ export default function ProductPage() {
                     borderRadius: "12px",
                     border: "1px solid rgba(34, 197, 94, 0.5)",
                     backdropFilter: "blur(12px)",
-                    backgroundColor: "oklab(0.723 -0.18885 0.110891 / 0.2)",
-                    color: "oklch(0.925 0.084 155.995)",
+                    backgroundColor: "rgba(34, 197, 94, 0.2)",
+                    color: "rgb(0, 0, 0)",
                     cursor: "pointer",
                     transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
                     fontFamily: "Inter, sans-serif",
                     fontWeight: "500",
                   }}
                 >
-                  <span style={{ fontFamily: "Rubik, sans-serif", fontSize: "18px", fontWeight: "500", color: "oklch(0.925 0.084 155.995)", lineHeight: "28px" }}>
+                  <span style={{ fontFamily: "Rubik, sans-serif", fontSize: "18px", fontWeight: "500", color: "rgb(0, 0, 0)", lineHeight: "28px" }}>
                     Custom
                   </span>
                 </button>
