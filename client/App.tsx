@@ -47,6 +47,7 @@ import EditBlog from "./pages/EditBlog";
 import AdminLegalPages from "./pages/AdminLegalPages";
 import CreateLegalPage from "./pages/CreateLegalPage";
 import EditLegalPage from "./pages/EditLegalPage";
+import LegalPage from "./pages/LegalPage";
 import Customers from "./pages/Customers";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
@@ -75,6 +76,7 @@ export default function App() {
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/:pageType" element={<LegalPage />} />
             <Route path="/products" element={<Products />} />
             <Route path="/product/:productId" element={<Product />} />
             <Route path="/product-page/:productId" element={<ProductPage />} />
