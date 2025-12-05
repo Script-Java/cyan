@@ -405,7 +405,8 @@ export default function ProductPage() {
             {product.options.map((option) => (
               <div
                 key={option.id}
-                className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6"
+                className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl"
+                style={{ marginRight: "15px", padding: "24px 20px 24px 18px" }}
               >
                 <h2 className="text-sm font-bold mb-4 flex items-center gap-2">
                   {option.name === "Shape" && (
