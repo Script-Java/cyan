@@ -371,30 +371,69 @@ export default function ProductPage() {
                 key={option.id}
                 className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
               >
-                <h2 className="text-sm font-bold mb-4">
-                  {option.name === "Shape" && "🎯"} Select a {option.name}
+                <h2 className="text-sm font-bold mb-4 flex items-center gap-2">
+                  {option.name === "Shape" && (
+                    <img
+                      src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1763135086/StickerShuttle_DieCutIcon_r0vire.png"
+                      alt={option.name}
+                      className="w-6 h-6"
+                    />
+                  )}
+                  {option.name === "Material" && (
+                    <img
+                      src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1763228661/StickerShuttle_KissCutIcon_pynbqq.png"
+                      alt={option.name}
+                      className="w-6 h-6"
+                    />
+                  )}
+                  {option.name === "Size" && (
+                    <img
+                      src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1763135086/StickerShuttle_CircleIcon_igib6i.png"
+                      alt={option.name}
+                      className="w-6 h-6"
+                    />
+                  )}
+                  Select a {option.name}
                 </h2>
 
                 {option.type === "dropdown" && (
-                  <select
-                    value={selectedOptions[option.id] || ""}
-                    onChange={(e) =>
-                      setSelectedOptions((prev) => ({
-                        ...prev,
-                        [option.id]: e.target.value,
-                      }))
-                    }
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-white/40 focus:border-purple-500 focus:outline-none transition"
-                  >
-                    <option value="">Select {option.name}</option>
-                    {option.values.map((value) => (
-                      <option key={value.id} value={value.id}>
-                        {value.name}
-                        {value.priceModifier !== 0 &&
-                          ` (+$${value.priceModifier.toFixed(2)})`}
-                      </option>
+                  <div className="grid grid-cols-2 gap-3">
+                    {option.values.map((value, index) => (
+                      <button
+                        key={value.id}
+                        onClick={() =>
+                          setSelectedOptions((prev) => ({
+                            ...prev,
+                            [option.id]: value.id,
+                          }))
+                        }
+                        className={`relative flex flex-col items-center justify-center border-2 rounded-xl p-4 transition text-center ${
+                          selectedOptions[option.id] === value.id
+                            ? "border-purple-500 bg-purple-500/20 shadow-lg shadow-purple-500/30"
+                            : "border-white/10 hover:border-white/20 bg-white/5"
+                        }`}
+                      >
+                        {value.image && (
+                          <img
+                            src={value.image.preview || value.image.url}
+                            alt={value.name}
+                            className="w-16 h-16 object-contain mb-2"
+                          />
+                        )}
+                        <p className="font-medium text-xs text-white">{value.name}</p>
+                        {value.priceModifier !== 0 && (
+                          <p className="text-xs text-white/60 mt-1">
+                            +${value.priceModifier.toFixed(2)}
+                          </p>
+                        )}
+                        {index === 0 && (
+                          <span className="absolute top-2 right-2 text-xs font-bold text-purple-400">
+                            Popular
+                          </span>
+                        )}
+                      </button>
                     ))}
-                  </select>
+                  </div>
                 )}
 
                 {option.type === "radio" && (
@@ -488,7 +527,7 @@ export default function ProductPage() {
             <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6" style={{ margin: "0 -2px 200px 0" }}>
               <h2 className="text-sm font-bold mb-3">📊 Select a quantity</h2>
 
-              <div className="space-y-2 max-h-80 overflow-y-auto">
+              <div className="space-y-2">
                 {[
                   { qty: 50, price: 67.5, save: null },
                   { qty: 100, price: 87.75, save: 35 },
