@@ -510,19 +510,20 @@ export default function ProductPage() {
                             : "border-gray-200 hover:border-gray-300 bg-gray-50"
                         }`}
                       >
-                        {value.image && (
-                          <img
-                            src={value.image.preview || value.image.url}
-                            alt={value.name}
-                            className="w-16 h-16 object-contain mb-2"
-                          />
-                        )}
-                        {option.name === "Material" && value.name === "Satin" && (
+                        {option.name === "Material" && value.name?.toLowerCase() === "satin" ? (
                           <img
                             src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F1b04ce3e2b7342ff891113ccedd6beda?format=webp&width=800"
                             alt="Satin"
                             className="w-16 h-16 object-contain mb-2"
                           />
+                        ) : (
+                          value.image && (
+                            <img
+                              src={value.image.preview || value.image.url}
+                              alt={value.name}
+                              className="w-16 h-16 object-contain mb-2"
+                            />
+                          )
                         )}
                         <p className="font-medium text-xs text-black">
                           {value.name}
