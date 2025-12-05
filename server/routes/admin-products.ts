@@ -237,10 +237,20 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
       .select();
 
     if (error) {
-      console.error("Database error:", error);
+      console.error("Database error updating product:", {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+        productId: id,
+      });
       return res
         .status(500)
-        .json({ error: "Failed to update product", details: error.message });
+        .json({
+          error: "Failed to update product",
+          details: error.message,
+          code: error.code
+        });
     }
 
     if (!data || data.length === 0) {
