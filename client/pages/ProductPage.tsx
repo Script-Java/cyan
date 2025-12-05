@@ -218,18 +218,25 @@ export default function ProductPage() {
       return matchedSharedVariant.price.toFixed(2);
     }
 
-    let totalModifier = 0;
+    let totalPrice = 0;
+    let hasOptionPrice = false;
+
     Object.entries(selectedOptions).forEach(([optionId, valueId]) => {
       const option = product.options.find((o) => o.id === optionId);
       if (option) {
         const value = option.values.find((v) => v.id === valueId);
-        if (value) {
-          totalModifier += value.priceModifier;
+        if (value && value.priceModifier !== 0) {
+          hasOptionPrice = true;
+          totalPrice += value.priceModifier;
         }
       }
     });
 
-    return (product.base_price + totalModifier).toFixed(2);
+    if (hasOptionPrice) {
+      return totalPrice.toFixed(2);
+    }
+
+    return product.base_price.toFixed(2);
   };
 
   const calculateTotalPrice = () => {
