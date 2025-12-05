@@ -566,43 +566,115 @@ export default function ProductPage() {
 
             {/* Quantity Selection Column */}
             <div
-              className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl"
-              style={{ margin: "0 -5px 3px 0", padding: "24px 20px 27px 26px" }}
+              className="rounded-2xl border transition"
+              style={{
+                margin: "0 -5px 3px 0",
+                padding: "24px",
+                backdropFilter: "blur(12px)",
+                backgroundColor: "rgba(255, 255, 255, 0.05)",
+                borderColor: "rgba(255, 255, 255, 0.1)",
+                borderWidth: "1px",
+                boxShadow: "rgba(0, 0, 0, 0.3) 0px 8px 32px 0px, rgba(255, 255, 255, 0.1) 0px 1px 0px 0px inset",
+              }}
             >
-              <h2 className="text-sm font-bold mb-3">📊 Select a quantity</h2>
+              <h2
+                className="font-bold mb-4 flex items-center gap-2"
+                style={{
+                  fontFamily: "Rubik, sans-serif",
+                  fontSize: "18px",
+                  fontWeight: "700",
+                  color: "rgb(255, 255, 255)",
+                  lineHeight: "28px",
+                }}
+              >
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ width: "20px", height: "20px", stroke: "oklch(0.707 0.165 254.624)" }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                </svg>
+                Select a quantity
+              </h2>
 
-              <div className="space-y-2">
-                {getQuantityTierPricing().map((option) => (
+              <div style={{ position: "relative" }}>
+                {getQuantityTierPricing().map((option, index) => (
                   <button
                     key={option.qty}
                     onClick={() => {
                       setQuantity(option.qty);
                       setActiveQuantityOption(option.qty);
                     }}
-                    className={`w-full flex items-center justify-between p-2 rounded-lg border-2 transition text-xs ${
-                      activeQuantityOption === option.qty
-                        ? "border-green-500 bg-green-100"
-                        : "border-gray-200 hover:border-gray-300 bg-gray-50"
-                    }`}
+                    style={{
+                      marginBottom: "8px",
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "12px 16px",
+                      borderRadius: "12px",
+                      border: "1px solid oklab(0.714 0.117894 -0.165257 / 0.2)",
+                      backdropFilter: "blur(12px)",
+                      backgroundColor: "rgba(0, 0, 0, 0)",
+                      color: "rgb(255, 255, 255)",
+                      cursor: "pointer",
+                      transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+                      opacity: "0.85",
+                    }}
                   >
-                    <span className="font-semibold">{option.qty}</span>
-                    <div className="text-right">
-                      <p className="font-bold text-green-600">
+                    <span style={{ fontFamily: "Rubik, sans-serif", fontSize: "18px", fontWeight: "500", color: "rgb(255, 255, 255)", lineHeight: "28px" }}>
+                      {option.qty.toLocaleString()}
+                    </span>
+                    <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+                      <span style={{ fontFamily: "Rubik, sans-serif", fontWeight: "600", color: "oklab(0.999994 0.0000455677 0.0000200868 / 0.8)" }}>
                         ${option.price.toFixed(2)}
-                      </p>
+                      </span>
                       {option.save && (
-                        <p className="text-xs text-green-600">
+                        <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: "500", color: "oklch(0.871 0.15 154.449)" }}>
                           Save {option.save}%
-                        </p>
+                        </span>
                       )}
                     </div>
                   </button>
                 ))}
 
-                <button className="w-full flex items-center justify-between p-2 rounded-lg border-2 border-gray-200 hover:border-gray-300 bg-gray-50 transition text-xs">
-                  <span className="font-semibold">Custom</span>
+                <button
+                  style={{
+                    marginTop: "8px",
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "12px 16px",
+                    borderRadius: "12px",
+                    border: "1px solid rgba(34, 197, 94, 0.5)",
+                    backdropFilter: "blur(12px)",
+                    backgroundColor: "oklab(0.723 -0.18885 0.110891 / 0.2)",
+                    color: "oklch(0.925 0.084 155.995)",
+                    cursor: "pointer",
+                    transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+                    fontFamily: "Inter, sans-serif",
+                    fontWeight: "500",
+                  }}
+                >
+                  <span style={{ fontFamily: "Rubik, sans-serif", fontSize: "18px", fontWeight: "500", color: "oklch(0.925 0.084 155.995)", lineHeight: "28px" }}>
+                    Custom
+                  </span>
                 </button>
               </div>
+
+              <input
+                type="number"
+                placeholder="Enter custom quantity (min 15)"
+                style={{
+                  marginTop: "12px",
+                  width: "100%",
+                  padding: "8px 12px",
+                  borderRadius: "8px",
+                  border: "1px solid oklab(0.999994 0.0000455678 0.0000200868 / 0.2)",
+                  backdropFilter: "blur(12px)",
+                  backgroundColor: "oklab(0.999994 0.0000455678 0.0000200868 / 0.1)",
+                  color: "rgb(255, 255, 255)",
+                  fontFamily: "Inter, sans-serif",
+                  transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+                }}
+              />
 
               {/* Price Summary in Quantity Card */}
               <div className="mt-4 space-y-2 pt-4 border-t border-gray-200">
