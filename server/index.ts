@@ -135,6 +135,14 @@ import {
   handleUpdateBlog,
   handleUploadBlogImage,
 } from "./routes/blogs";
+import {
+  handleGetAllLegalPages,
+  handleGetLegalPageByType,
+  handleGetAdminLegalPageById,
+  handleCreateLegalPage,
+  handleUpdateLegalPage,
+  handleDeleteLegalPage,
+} from "./routes/legal-pages";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
@@ -436,6 +444,17 @@ export function createServer() {
     upload.single("file"),
     handleUploadBlogImage,
   );
+
+  // ===== Legal Pages Routes =====
+  // Public routes
+  app.get("/api/legal/:pageType", handleGetLegalPageByType);
+
+  // Admin routes (Protected)
+  app.post("/api/admin/legal-pages", verifyToken, handleCreateLegalPage);
+  app.get("/api/admin/legal-pages", verifyToken, handleGetAllLegalPages);
+  app.get("/api/admin/legal-pages/:pageId", verifyToken, handleGetAdminLegalPageById);
+  app.put("/api/admin/legal-pages/:pageId", verifyToken, handleUpdateLegalPage);
+  app.delete("/api/admin/legal-pages/:pageId", verifyToken, handleDeleteLegalPage);
 
   // Global error handler - must be last
   app.use((err: any, _req: any, res: any, _next: any) => {
