@@ -104,11 +104,9 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
     const hasSharedVariants =
       productData.sharedVariants && productData.sharedVariants.length > 0;
     if (productData.basePrice <= 0 && !hasSharedVariants) {
-      return res
-        .status(400)
-        .json({
-          error: "Base price must be greater than 0 (or add shared variants)",
-        });
+      return res.status(400).json({
+        error: "Base price must be greater than 0 (or add shared variants)",
+      });
     }
 
     const dbProduct = {
@@ -183,11 +181,9 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
     const hasSharedVariants =
       productData.sharedVariants && productData.sharedVariants.length > 0;
     if (productData.basePrice <= 0 && !hasSharedVariants) {
-      return res
-        .status(400)
-        .json({
-          error: "Base price must be greater than 0 (or add shared variants)",
-        });
+      return res.status(400).json({
+        error: "Base price must be greater than 0 (or add shared variants)",
+      });
     }
 
     const dbProduct = {
