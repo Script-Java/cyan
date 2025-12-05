@@ -18,6 +18,7 @@ import {
   Image as ImageIcon,
   ArrowRight,
   BookOpen,
+  FileText,
 } from "lucide-react";
 
 interface OrderItem {
@@ -140,6 +141,14 @@ export default function AdminDashboard() {
       path: "/admin/blogs",
       color: "bg-indigo-500/20 hover:bg-indigo-500/30",
       textColor: "text-indigo-400",
+    },
+    {
+      title: "Legal Pages",
+      description: "Manage legal content",
+      icon: <FileText className="w-5 h-5" />,
+      path: "/admin/legal-pages",
+      color: "bg-amber-500/20 hover:bg-amber-500/30",
+      textColor: "text-amber-400",
     },
   ];
 
