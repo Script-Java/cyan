@@ -466,8 +466,8 @@ export default function CheckoutNew() {
   };
 
   const handlePaymentSuccess = (token: string) => {
-    // Refresh store credit after successful payment
-    fetchStoreCredit();
+    // Store credit fetch disabled temporarily
+    // fetchStoreCredit();
 
     // Redirect to order confirmation page
     if (createdOrderId) {
