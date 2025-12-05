@@ -145,10 +145,19 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
       .select();
 
     if (error) {
-      console.error("Database error:", error);
+      console.error("Database error creating product:", {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      });
       return res
         .status(500)
-        .json({ error: "Failed to create product", details: error.message });
+        .json({
+          error: "Failed to create product",
+          details: error.message,
+          code: error.code
+        });
     }
 
     res.json({
