@@ -367,7 +367,6 @@ export default function ProductPage() {
             className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition mb-8"
           >
             <ChevronLeft className="w-5 h-5" />
-            <span className="font-medium">Back to Sticker Types</span>
           </button>
 
           {/* Hero Section with Image and Description */}
