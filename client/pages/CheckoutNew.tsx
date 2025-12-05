@@ -550,36 +550,33 @@ export default function CheckoutNew() {
                                 `Product #${item.product_id}`}
                             </h3>
                             <div className="text-sm space-y-1">
-                              {item.basePrice &&
-                              item.savePercentage &&
-                              item.savePercentage > 0 ? (
+                              {item.savePercentage && item.savePercentage > 0 ? (
                                 <>
-                                  <p className="text-white/60">
-                                    Regular: $
-                                    {(item.basePrice * item.quantity).toFixed(
-                                      2,
-                                    )}
-                                  </p>
-                                  <p className="text-white/60">
-                                    Quantity: {item.quantity}
-                                  </p>
-                                  <p className="text-green-400 font-semibold">
-                                    Save {item.savePercentage}%
-                                  </p>
-                                  <p className="text-green-400">
-                                    Amount Saved: $
-                                    {(
-                                      ((item.basePrice * item.savePercentage) /
-                                        100) *
-                                      item.quantity
-                                    ).toFixed(2)}
-                                  </p>
-                                  <p className="text-white font-bold border-t border-white/20 pt-1">
-                                    Total: $
-                                    {(
-                                      (item.price || 0.25) * item.quantity
-                                    ).toFixed(2)}
-                                  </p>
+                                  {(() => {
+                                    const basePrice = item.basePrice || (item.price / (1 - item.savePercentage / 100));
+                                    const regularTotal = basePrice * item.quantity;
+                                    const amountSaved = (basePrice * item.savePercentage / 100) * item.quantity;
+                                    const total = (item.price || 0.25) * item.quantity;
+                                    return (
+                                      <>
+                                        <p className="text-white/60">
+                                          Regular: ${regularTotal.toFixed(2)}
+                                        </p>
+                                        <p className="text-white/60">
+                                          Quantity: {item.quantity}
+                                        </p>
+                                        <p className="text-green-400 font-semibold">
+                                          Save {item.savePercentage}%
+                                        </p>
+                                        <p className="text-green-400">
+                                          Amount Saved: ${amountSaved.toFixed(2)}
+                                        </p>
+                                        <p className="text-white font-bold border-t border-white/20 pt-1">
+                                          Total: ${total.toFixed(2)}
+                                        </p>
+                                      </>
+                                    );
+                                  })()}
                                 </>
                               ) : (
                                 <p className="text-white/60">
