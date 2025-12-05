@@ -188,6 +188,10 @@ export const handleGetCheckoutDetails: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Cart ID is required" });
     }
 
+    if (!isValidUUID(cartId)) {
+      return res.status(400).json({ error: "Invalid cart ID format" });
+    }
+
     // This would typically fetch cart details and shipping estimates
     // For now, return placeholder data
     res.json({
