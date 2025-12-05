@@ -67,7 +67,7 @@ export default function AdminSupport() {
     }
   };
 
-  const fetchTicketReplies = async (ticketId: string) => {
+  const fetchTicketReplies = async (ticketId: number) => {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) return;
