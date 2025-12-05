@@ -676,32 +676,6 @@ export default function ProductPage() {
                 }}
               />
 
-              {/* Price Summary in Quantity Card */}
-              <div className="mt-4 space-y-2 pt-4 border-t border-gray-200">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-700 text-xs">Total:</span>
-                  <div className="text-right">
-                    <p className="text-lg font-bold text-green-600">
-                      ${calculateTotalPrice()}
-                    </p>
-                    <p className="text-xs text-gray-600">
-                      ${calculatePricePerUnit()}/ea.
-                    </p>
-                  </div>
-                </div>
-                <div className="rounded-lg bg-yellow-100 border border-yellow-300 p-2 text-xs">
-                  <span className="flex items-center gap-1 text-yellow-700">
-                    <img
-                      src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1753923671/StickerShuttle_CoinIcon_aperue.png"
-                      alt="Credits"
-                      className="w-4 h-4"
-                    />
-                    You'll earn $
-                    {(parseFloat(calculateTotalPrice()) * 0.02).toFixed(2)} in
-                    store credit!
-                  </span>
-                </div>
-              </div>
             </div>
           </div>
 
