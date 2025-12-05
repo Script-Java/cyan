@@ -569,15 +569,7 @@ export default function ProductPage() {
               <h2 className="text-sm font-bold mb-3">📊 Select a quantity</h2>
 
               <div className="space-y-2">
-                {[
-                  { qty: 50, price: 67.5, save: null },
-                  { qty: 100, price: 87.75, save: 35 },
-                  { qty: 200, price: 124.2, save: 54 },
-                  { qty: 300, price: 157.95, save: 61 },
-                  { qty: 500, price: 216, save: 68 },
-                  { qty: 1000, price: 351, save: 74 },
-                  { qty: 2500, price: 641.25, save: 81 },
-                ].map((option) => (
+                {getQuantityTierPricing().map((option) => (
                   <button
                     key={option.qty}
                     onClick={() => {
