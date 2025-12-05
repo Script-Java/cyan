@@ -11,7 +11,7 @@ import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import MobileAdminPanel from "@/components/MobileAdminPanel";
 
 interface SupportTicket {
-  id: string;
+  id: number;
   subject: string;
   customer_name: string;
   customer_email: string;
@@ -24,7 +24,7 @@ interface SupportTicket {
 }
 
 interface TicketReply {
-  id: string;
+  id: number;
   message: string;
   sender_name: string;
   sender_type: "admin" | "customer";
