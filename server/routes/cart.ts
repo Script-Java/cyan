@@ -89,6 +89,11 @@ export const handleGetCart: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Cart ID is required" });
     }
 
+    if (!isValidUUID(cartId)) {
+      console.error("Invalid cart ID format:", cartId);
+      return res.status(400).json({ error: "Invalid cart ID format" });
+    }
+
     console.log("Fetching cart:", cartId);
 
     const { data, error } = await supabase
