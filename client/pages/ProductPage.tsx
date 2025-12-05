@@ -611,18 +611,17 @@ export default function ProductPage() {
                       borderRadius: "12px",
                       border: "1px solid oklab(0.714 0.117894 -0.165257 / 0.2)",
                       backdropFilter: "blur(12px)",
-                      backgroundColor: "rgba(0, 0, 0, 0)",
-                      color: "rgb(255, 255, 255)",
+                      backgroundColor: "rgba(255, 255, 255, 0.1)",
+                      color: "rgb(0, 0, 0)",
                       cursor: "pointer",
                       transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                      opacity: "0.85",
                     }}
                   >
-                    <span style={{ fontFamily: "Rubik, sans-serif", fontSize: "18px", fontWeight: "500", color: "rgb(255, 255, 255)", lineHeight: "28px" }}>
+                    <span style={{ fontFamily: "Rubik, sans-serif", fontSize: "18px", fontWeight: "500", color: "rgb(0, 0, 0)", lineHeight: "28px" }}>
                       {option.qty.toLocaleString()}
                     </span>
                     <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-                      <span style={{ fontFamily: "Rubik, sans-serif", fontWeight: "600", color: "oklab(0.999994 0.0000455677 0.0000200868 / 0.8)" }}>
+                      <span style={{ fontFamily: "Rubik, sans-serif", fontWeight: "600", color: "rgb(0, 0, 0)" }}>
                         ${option.price.toFixed(2)}
                       </span>
                       {option.save && (
