@@ -74,7 +74,7 @@ export default function MyTickets() {
     }
   };
 
-  const fetchTicketDetails = async (ticketId: string) => {
+  const fetchTicketDetails = async (ticketId: number) => {
     try {
       const token = localStorage.getItem("authToken");
       const customerId = localStorage.getItem("customerId");
