@@ -79,6 +79,8 @@ interface CartItem {
   quantity: number;
   pricePerUnit: number;
   totalPrice: number;
+  basePrice: number;
+  savePercentage: number;
 }
 
 export default function ProductPage() {
