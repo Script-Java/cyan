@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Upload, X, ChevronLeft, ChevronRight } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -81,6 +81,7 @@ interface CartItem {
 
 export default function ProductPage() {
   const { productId } = useParams<{ productId: string }>();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -93,8 +94,9 @@ export default function ProductPage() {
   const [optionalFields, setOptionalFields] = useState<{
     [fieldName: string]: string;
   }>({});
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(100);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [activeQuantityOption, setActiveQuantityOption] = useState<number | null>(100);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -210,13 +212,10 @@ export default function ProductPage() {
     if (!product) return 0;
 
     const matchedSharedVariant = checkSharedVariantMatch();
-    // RULE: Shared variant prices override base price completely
-    // If a shared variant matches the selected options, use only the shared variant price
     if (matchedSharedVariant) {
       return matchedSharedVariant.price.toFixed(2);
     }
 
-    // Otherwise, apply individual option value price modifiers to the base price
     let totalModifier = 0;
     Object.entries(selectedOptions).forEach(([optionId, valueId]) => {
       const option = product.options.find((o) => o.id === optionId);
@@ -229,6 +228,16 @@ export default function ProductPage() {
     });
 
     return (product.base_price + totalModifier).toFixed(2);
+  };
+
+  const calculateTotalPrice = () => {
+    const pricePerUnit = parseFloat(calculatePrice());
+    return (pricePerUnit * quantity).toFixed(2);
+  };
+
+  const calculatePricePerUnit = () => {
+    const totalPrice = parseFloat(calculateTotalPrice());
+    return (totalPrice / quantity).toFixed(2);
   };
 
   const handleAddToCart = async () => {
@@ -274,7 +283,7 @@ export default function ProductPage() {
         description: "Product added to cart",
       });
       setTimeout(() => {
-        window.location.href = "/checkout-new";
+        navigate("/checkout-new");
       }, 500);
     } catch (error) {
       console.error("Error adding to cart:", error);
@@ -317,217 +326,395 @@ export default function ProductPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black text-white py-8">
-        <div className="px-6 lg:px-8 max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-[57px]">
-            {/* Product Images */}
-            <div className="space-y-4">
-              <div className="relative bg-white/5 border border-white/10 rounded-lg overflow-hidden aspect-square">
-                {product.images.length > 0 ? (
-                  <>
-                    <img
-                      src={
-                        product.images[currentImageIndex].preview ||
-                        product.images[currentImageIndex].url
-                      }
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                    />
-                    {product.images.length > 1 && (
-                      <>
-                        <button
-                          onClick={() =>
-                            setCurrentImageIndex(
-                              (prev) =>
-                                (prev - 1 + product.images.length) %
-                                product.images.length,
-                            )
-                          }
-                          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
-                        >
-                          <ChevronLeft className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={() =>
-                            setCurrentImageIndex(
-                              (prev) => (prev + 1) % product.images.length,
-                            )
-                          }
-                          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
-                        >
-                          <ChevronRight className="w-5 h-5" />
-                        </button>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <div className="flex items-center justify-center h-full">
-                    <p className="text-white/40">No images available</p>
+      <main className="min-h-screen bg-black text-white">
+        <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-8">
+          {/* Back Navigation */}
+          <button
+            onClick={() => navigate("/products")}
+            className="flex items-center gap-2 text-blue-300 hover:text-blue-400 transition mb-8"
+          >
+            <ChevronLeft className="w-5 h-5" />
+            <span className="font-medium">Back to Sticker Types</span>
+          </button>
+
+          {/* Hero Section with Image and Description */}
+          <div className="mb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              {/* Product Image */}
+              <div className="lg:col-span-2">
+                <div className="relative bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-3xl overflow-hidden aspect-square">
+                  {product.images.length > 0 ? (
+                    <>
+                      <img
+                        src={
+                          product.images[currentImageIndex].preview ||
+                          product.images[currentImageIndex].url
+                        }
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                      />
+                      {product.images.length > 1 && (
+                        <>
+                          <button
+                            onClick={() =>
+                              setCurrentImageIndex(
+                                (prev) =>
+                                  (prev - 1 + product.images.length) %
+                                  product.images.length,
+                              )
+                            }
+                            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
+                          >
+                            <ChevronLeft className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={() =>
+                              setCurrentImageIndex(
+                                (prev) => (prev + 1) % product.images.length,
+                              )
+                            }
+                            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
+                          >
+                            <ChevronRight className="w-5 h-5" />
+                          </button>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <div className="flex items-center justify-center h-full">
+                      <p className="text-white/40">No images available</p>
+                    </div>
+                  )}
+                </div>
+
+                {product.images.length > 1 && (
+                  <div className="grid grid-cols-4 gap-2 mt-4">
+                    {product.images.map((image, index) => (
+                      <button
+                        key={image.id}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className={`border-2 rounded-lg overflow-hidden transition ${
+                          currentImageIndex === index
+                            ? "border-purple-500"
+                            : "border-white/10 hover:border-white/20"
+                        }`}
+                      >
+                        <img
+                          src={image.preview || image.url}
+                          alt={image.name}
+                          className="w-full h-20 object-cover"
+                        />
+                      </button>
+                    ))}
                   </div>
                 )}
               </div>
 
-              {product.images.length > 1 && (
-                <div className="grid grid-cols-4 gap-2">
-                  {product.images.map((image, index) => (
+              {/* Product Info */}
+              <div className="flex flex-col justify-center">
+                <h1 className="text-3xl sm:text-4xl font-bold mb-3">
+                  {product.name}
+                </h1>
+                <p className="text-white/70 mb-6 leading-relaxed">
+                  {product.description}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-sm">
+                    💧 Waterproof
+                  </span>
+                  <span className="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-sm">
+                    ✨ Premium Quality
+                  </span>
+                  <span className="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-sm">
+                    🚀 Fast Shipping
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column - Options */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Product Options */}
+              {product.options.map((option) => (
+                <div
+                  key={option.id}
+                  className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
+                >
+                  <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
+                    {option.name === "Shape" && "🎯"}
+                    {option.name === "Material" && "🎨"}
+                    {option.name === "Size" && "📏"}
+                    {option.name}
+                  </h2>
+
+                  {option.type === "dropdown" && (
+                    <select
+                      value={selectedOptions[option.id] || ""}
+                      onChange={(e) =>
+                        setSelectedOptions((prev) => ({
+                          ...prev,
+                          [option.id]: e.target.value,
+                        }))
+                      }
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/40 focus:border-purple-500 focus:outline-none transition"
+                    >
+                      <option value="">Select {option.name}</option>
+                      {option.values.map((value) => (
+                        <option key={value.id} value={value.id}>
+                          {value.name}
+                          {value.priceModifier !== 0 &&
+                            ` (+$${value.priceModifier.toFixed(2)})`}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+
+                  {option.type === "radio" && (
+                    <div className="grid grid-cols-2 gap-3">
+                      {option.values.map((value) => (
+                        <button
+                          key={value.id}
+                          onClick={() =>
+                            setSelectedOptions((prev) => ({
+                              ...prev,
+                              [option.id]: value.id,
+                            }))
+                          }
+                          className={`border-2 rounded-xl p-4 transition text-center ${
+                            selectedOptions[option.id] === value.id
+                              ? "border-purple-500 bg-purple-500/10"
+                              : "border-white/10 hover:border-white/20 bg-white/5"
+                          }`}
+                        >
+                          {value.image && (
+                            <img
+                              src={value.image.preview || value.image.url}
+                              alt={value.name}
+                              className="w-16 h-16 object-cover mx-auto mb-2 rounded"
+                            />
+                          )}
+                          <p className="font-medium text-sm">{value.name}</p>
+                          {value.priceModifier !== 0 && (
+                            <p className="text-xs text-white/60 mt-1">
+                              +${value.priceModifier.toFixed(2)}
+                            </p>
+                          )}
+                          {option.values.length === 2 &&
+                            option.values[0].id === value.id && (
+                              <p className="text-xs text-green-400 mt-2">
+                                Popular
+                              </p>
+                            )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {option.type === "swatch" && (
+                    <div className="grid grid-cols-4 gap-3">
+                      {option.values.map((value) => (
+                        <button
+                          key={value.id}
+                          onClick={() =>
+                            setSelectedOptions((prev) => ({
+                              ...prev,
+                              [option.id]: value.id,
+                            }))
+                          }
+                          className={`relative border-2 rounded-lg overflow-hidden transition ${
+                            selectedOptions[option.id] === value.id
+                              ? "border-purple-500"
+                              : "border-white/10 hover:border-white/20"
+                          }`}
+                        >
+                          {value.image ? (
+                            <img
+                              src={value.image.preview || value.image.url}
+                              alt={value.name}
+                              className="w-full h-20 object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-20 bg-white/10 flex items-center justify-center">
+                              <span className="text-white/40 text-xs text-center px-1">
+                                {value.name}
+                              </span>
+                            </div>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {option.type === "text" && (
+                    <Input
+                      type="text"
+                      value={selectedOptions[option.id] || ""}
+                      onChange={(e) =>
+                        setSelectedOptions((prev) => ({
+                          ...prev,
+                          [option.id]: e.target.value,
+                        }))
+                      }
+                      placeholder={`Enter ${option.name}`}
+                      className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                    />
+                  )}
+                </div>
+              ))}
+
+              {/* Quantity Selection */}
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
+                  📊 Select a quantity
+                </h2>
+
+                <div className="space-y-2">
+                  {[
+                    { qty: 50, price: 67.5, save: null },
+                    { qty: 100, price: 87.75, save: 35 },
+                    { qty: 200, price: 124.2, save: 54 },
+                    { qty: 300, price: 157.95, save: 61 },
+                    { qty: 500, price: 216, save: 68 },
+                    { qty: 1000, price: 351, save: 74 },
+                    { qty: 2500, price: 641.25, save: 81 },
+                  ].map((option) => (
                     <button
-                      key={image.id}
-                      onClick={() => setCurrentImageIndex(index)}
-                      className={`border-2 rounded-lg overflow-hidden transition ${
-                        currentImageIndex === index
-                          ? "border-green-500"
-                          : "border-white/10 hover:border-white/20"
+                      key={option.qty}
+                      onClick={() => {
+                        setQuantity(option.qty);
+                        setActiveQuantityOption(option.qty);
+                      }}
+                      className={`w-full flex items-center justify-between p-4 rounded-lg border-2 transition ${
+                        activeQuantityOption === option.qty
+                          ? "border-green-500 bg-green-500/10"
+                          : "border-white/10 hover:border-white/20 bg-white/5"
                       }`}
                     >
-                      <img
-                        src={image.preview || image.url}
-                        alt={image.name}
-                        className="w-full h-20 object-cover"
-                      />
+                      <span className="font-semibold">{option.qty}</span>
+                      <div className="text-right">
+                        <p className="font-bold text-green-400">
+                          ${option.price.toFixed(2)}
+                        </p>
+                        {option.save && (
+                          <p className="text-xs text-green-300">
+                            Save {option.save}%
+                          </p>
+                        )}
+                      </div>
                     </button>
                   ))}
+
+                  <button className="w-full flex items-center justify-between p-4 rounded-lg border-2 border-white/10 hover:border-white/20 bg-white/5 transition">
+                    <span className="font-semibold">Custom</span>
+                  </button>
                 </div>
-              )}
-            </div>
 
-            {/* Product Details */}
-            <div className="space-y-8">
-              <div>
-                <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
-                <p className="text-white/60">{product.description}</p>
+                {/* Price Summary */}
+                <div className="mt-6 space-y-2 pt-6 border-t border-white/10">
+                  <div className="flex justify-between items-center">
+                    <span className="text-white/80">Total:</span>
+                    <div className="text-right">
+                      <p className="text-2xl font-bold text-green-400">
+                        ${calculateTotalPrice()}
+                      </p>
+                      <p className="text-sm text-white/60">
+                        ${calculatePricePerUnit()}/ea.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="rounded-lg bg-yellow-500/10 border border-yellow-500/30 p-3 text-sm">
+                    <span className="flex items-center gap-2 text-yellow-300">
+                      <img
+                        src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1753923671/StickerShuttle_CoinIcon_aperue.png"
+                        alt="Credits"
+                        className="w-5 h-5"
+                      />
+                      You'll earn ${(parseFloat(calculateTotalPrice()) * 0.02).toFixed(2)} in store
+                      credit on this order!
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              {/* Price */}
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                <p className="text-white/60 text-sm mb-2">Price</p>
-                <p className="text-4xl font-bold text-green-400">
-                  ${calculatePrice()}
-                </p>
-              </div>
-
-              {/* Product Options */}
-              <div className="space-y-6">
-                {product.options.map((option) => (
-                  <div key={option.id}>
-                    <Label className="text-white text-lg mb-4 block">
-                      {option.name}
-                      {option.required && (
-                        <span className="text-red-400">*</span>
-                      )}
-                    </Label>
-
-                    {option.type === "dropdown" && (
-                      <select
-                        value={selectedOptions[option.id] || ""}
-                        onChange={(e) =>
-                          setSelectedOptions((prev) => ({
-                            ...prev,
-                            [option.id]: e.target.value,
-                          }))
-                        }
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/40 focus:border-green-500 focus:outline-none transition"
-                      >
-                        <option value="">Select {option.name}</option>
-                        {option.values.map((value) => (
-                          <option key={value.id} value={value.id}>
-                            {value.name}
-                            {value.priceModifier !== 0 &&
-                              ` (+$${value.priceModifier.toFixed(2)})`}
-                          </option>
-                        ))}
-                      </select>
-                    )}
-
-                    {option.type === "radio" && (
-                      <div className="space-y-2">
-                        {option.values.map((value) => (
-                          <label
-                            key={value.id}
-                            className="flex items-center gap-3 cursor-pointer p-3 rounded-lg border border-white/10 hover:border-white/20 transition"
-                          >
-                            <input
-                              type="radio"
-                              name={option.id}
-                              value={value.id}
-                              checked={selectedOptions[option.id] === value.id}
-                              onChange={() =>
-                                setSelectedOptions((prev) => ({
-                                  ...prev,
-                                  [option.id]: value.id,
-                                }))
-                              }
-                              className="w-4 h-4"
-                            />
-                            <span className="text-white">
-                              {value.name}
-                              {value.priceModifier !== 0 &&
-                                ` (+$${value.priceModifier.toFixed(2)})`}
-                            </span>
-                          </label>
-                        ))}
-                      </div>
-                    )}
-
-                    {option.type === "swatch" && (
-                      <div className="grid grid-cols-4 gap-3">
-                        {option.values.map((value) => (
-                          <button
-                            key={value.id}
-                            onClick={() =>
-                              setSelectedOptions((prev) => ({
+              {/* Additional Fields */}
+              {product.optional_fields.length > 0 && (
+                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                  <h2 className="text-lg font-bold mb-4">
+                    ✏️ Additional Instructions (optional)
+                  </h2>
+                  <div className="space-y-4">
+                    {product.optional_fields.map((field) => (
+                      <div key={field.name}>
+                        <Label className="text-white/80 mb-2 block">
+                          {field.name}
+                        </Label>
+                        {field.type === "textarea" ? (
+                          <Textarea
+                            value={optionalFields[field.name] || ""}
+                            onChange={(e) =>
+                              setOptionalFields((prev) => ({
                                 ...prev,
-                                [option.id]: value.id,
+                                [field.name]: e.target.value,
                               }))
                             }
-                            className={`relative border-2 rounded-lg overflow-hidden transition ${
-                              selectedOptions[option.id] === value.id
-                                ? "border-green-500"
-                                : "border-white/10 hover:border-white/20"
-                            }`}
-                          >
-                            {value.image ? (
-                              <img
-                                src={value.image.preview || value.image.url}
-                                alt={value.name}
-                                className="w-full h-20 object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-20 bg-white/10 flex items-center justify-center">
-                                <span className="text-white/40 text-xs text-center px-1">
-                                  {value.name}
-                                </span>
-                              </div>
-                            )}
-                          </button>
-                        ))}
+                            placeholder={`Enter any special requests or instructions here...`}
+                            className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-24"
+                          />
+                        ) : field.type === "date" ? (
+                          <Input
+                            type="date"
+                            value={optionalFields[field.name] || ""}
+                            onChange={(e) =>
+                              setOptionalFields((prev) => ({
+                                ...prev,
+                                [field.name]: e.target.value,
+                              }))
+                            }
+                            className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                          />
+                        ) : field.type === "number" ? (
+                          <Input
+                            type="number"
+                            value={optionalFields[field.name] || ""}
+                            onChange={(e) =>
+                              setOptionalFields((prev) => ({
+                                ...prev,
+                                [field.name]: e.target.value,
+                              }))
+                            }
+                            placeholder={`Enter ${field.name}`}
+                            className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                          />
+                        ) : (
+                          <Input
+                            type="text"
+                            value={optionalFields[field.name] || ""}
+                            onChange={(e) =>
+                              setOptionalFields((prev) => ({
+                                ...prev,
+                                [field.name]: e.target.value,
+                              }))
+                            }
+                            placeholder={`Enter ${field.name}`}
+                            className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                          />
+                        )}
                       </div>
-                    )}
-
-                    {option.type === "text" && (
-                      <Input
-                        type="text"
-                        value={selectedOptions[option.id] || ""}
-                        onChange={(e) =>
-                          setSelectedOptions((prev) => ({
-                            ...prev,
-                            [option.id]: e.target.value,
-                          }))
-                        }
-                        placeholder={`Enter ${option.name}`}
-                        className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                      />
-                    )}
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
 
-              {/* Customer Design Upload */}
+              {/* Custom Design Upload */}
               {product.customer_upload_config.enabled && (
-                <div className="backdrop-blur-xl bg-blue-600/10 border border-blue-500/30 rounded-2xl p-6">
-                  <h3 className="text-lg font-semibold mb-2 text-blue-400">
-                    Custom Design Upload
-                  </h3>
-                  <p className="text-white/60 mb-4">
+                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                  <h2 className="text-lg font-bold mb-2">
+                    Upload your artwork
+                  </h2>
+                  <p className="text-white/60 text-sm mb-4">
                     {product.customer_upload_config.description}
                   </p>
 
@@ -552,17 +739,20 @@ export default function ProductPage() {
                       </p>
                     </div>
                   ) : (
-                    <label className="flex items-center justify-center gap-2 border-2 border-dashed border-blue-500/50 rounded-lg p-6 cursor-pointer hover:border-blue-500 transition">
-                      <Upload className="w-5 h-5 text-blue-400" />
+                    <label className="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-white/30 rounded-lg p-8 cursor-pointer hover:border-white/50 transition">
+                      <img
+                        src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1763150114/StickerShuttle_UploadIcon_m5qbvw.png"
+                        alt="Upload"
+                        className="w-16 h-16"
+                      />
                       <div className="text-center">
                         <p className="text-white font-medium">
-                          Click to upload
+                          Drag or click to upload your file
                         </p>
-                        <p className="text-white/60 text-sm">
-                          Max {product.customer_upload_config.maxFileSize}MB -{" "}
-                          {product.customer_upload_config.allowedFormats.join(
-                            ", ",
-                          )}
+                        <p className="text-white/60 text-sm mt-1">
+                          All formats supported. Max file size:{" "}
+                          {product.customer_upload_config.maxFileSize}MB | 1 file
+                          per order
                         </p>
                       </div>
                       <input
@@ -577,108 +767,52 @@ export default function ProductPage() {
                   )}
                 </div>
               )}
+            </div>
 
-              {/* Optional Fields */}
-              {product.optional_fields.length > 0 && (
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">
-                    Additional Information
-                  </h3>
-                  {product.optional_fields.map((field) => (
-                    <div key={field.name}>
-                      <Label className="text-white/80 mb-2 block">
-                        {field.name}
-                      </Label>
-                      {field.type === "textarea" ? (
-                        <Textarea
-                          value={optionalFields[field.name] || ""}
-                          onChange={(e) =>
-                            setOptionalFields((prev) => ({
-                              ...prev,
-                              [field.name]: e.target.value,
-                            }))
-                          }
-                          placeholder={`Enter ${field.name}`}
-                          className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-24"
-                        />
-                      ) : field.type === "date" ? (
-                        <Input
-                          type="date"
-                          value={optionalFields[field.name] || ""}
-                          onChange={(e) =>
-                            setOptionalFields((prev) => ({
-                              ...prev,
-                              [field.name]: e.target.value,
-                            }))
-                          }
-                          className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                        />
-                      ) : field.type === "number" ? (
-                        <Input
-                          type="number"
-                          value={optionalFields[field.name] || ""}
-                          onChange={(e) =>
-                            setOptionalFields((prev) => ({
-                              ...prev,
-                              [field.name]: e.target.value,
-                            }))
-                          }
-                          placeholder={`Enter ${field.name}`}
-                          className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                        />
-                      ) : (
-                        <Input
-                          type="text"
-                          value={optionalFields[field.name] || ""}
-                          onChange={(e) =>
-                            setOptionalFields((prev) => ({
-                              ...prev,
-                              [field.name]: e.target.value,
-                            }))
-                          }
-                          placeholder={`Enter ${field.name}`}
-                          className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                        />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Quantity and Add to Cart */}
-              <div className="space-y-4">
-                <div>
-                  <Label className="text-white/80 mb-2 block">Quantity</Label>
-                  <div className="flex items-center gap-4">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-4 py-2 rounded-lg transition"
-                    >
-                      -
-                    </button>
-                    <span className="text-white text-lg font-semibold w-12 text-center">
-                      {quantity}
-                    </span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-4 py-2 rounded-lg transition"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
+            {/* Right Column - CTA */}
+            <div className="space-y-6">
+              {/* Price Display */}
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 sticky top-24">
+                <p className="text-white/60 text-sm mb-2">Price per unit</p>
+                <p className="text-4xl font-bold text-green-400 mb-6">
+                  ${calculatePrice()}
+                </p>
 
                 <Button
                   onClick={handleAddToCart}
-                  disabled={isAddingToCart || !product.availability}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-4 text-lg font-semibold gap-2"
+                  disabled={
+                    isAddingToCart || !product.availability || !designFile
+                  }
+                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white py-4 text-lg font-semibold gap-2 rounded-xl"
                 >
+                  <Upload className="w-5 h-5" />
                   {isAddingToCart
                     ? "Adding to Cart..."
-                    : !product.availability
-                      ? "Out of Stock"
-                      : "Add to Cart"}
+                    : !designFile
+                      ? "Upload Artwork to Continue"
+                      : !product.availability
+                        ? "Out of Stock"
+                        : "Add to Cart"}
                 </Button>
+
+                <p className="text-center text-white/60 text-xs mt-3">
+                  Items will be added to your cart for review before checkout
+                </p>
+              </div>
+
+              {/* FAQ */}
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                <div className="space-y-3">
+                  <div className="cursor-pointer">
+                    <p className="font-semibold text-sm mb-2">
+                      What's the best size for laptop stickers?
+                    </p>
+                    <p className="text-white/60 text-xs leading-relaxed">
+                      3" (Medium) is our most popular size for laptops - it's
+                      visible but not overwhelming!
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
