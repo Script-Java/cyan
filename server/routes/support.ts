@@ -434,6 +434,14 @@ export const handleUpdateTicketStatus: RequestHandler = async (req, res) => {
       return;
     }
 
+    const id = parseInt(ticketId, 10);
+    if (isNaN(id)) {
+      res.status(400).json({
+        error: "Invalid ticket ID format",
+      });
+      return;
+    }
+
     const validStatuses = ["open", "in-progress", "resolved", "closed"];
     if (!validStatuses.includes(status)) {
       res.status(400).json({
@@ -445,7 +453,7 @@ export const handleUpdateTicketStatus: RequestHandler = async (req, res) => {
     const { error } = await supabase
       .from("support_tickets")
       .update({ status, updated_at: new Date().toISOString() })
-      .eq("id", ticketId);
+      .eq("id", id);
 
     if (error) {
       console.error("Error updating ticket:", error);
