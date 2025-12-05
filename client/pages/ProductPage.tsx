@@ -766,6 +766,126 @@ export default function ProductPage() {
             </p>
           </div>
         </div>
+
+        {/* Footer */}
+        <footer className="bg-white border-t border-gray-200 text-gray-600">
+          <div
+            className="mx-auto px-4 sm:px-6 lg:px-8 py-16"
+            style={{ maxWidth: "1824px" }}
+          >
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
+              <div>
+                <h4 className="font-bold text-gray-900 mb-4">Shop</h4>
+                <ul className="space-y-2 text-sm">
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      Vinyl Stickers
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      Holographic
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      Chrome
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      Glitter
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-4">Company</h4>
+                <ul className="space-y-2 text-sm">
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/blogs"
+                      className="hover:text-gray-900 transition-colors"
+                    >
+                      Blog
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      Contact
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-4">Legal</h4>
+                <ul className="space-y-2 text-sm">
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      Privacy
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      Terms
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      Shipping
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      Returns
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 mb-4">Follow</h4>
+                <ul className="space-y-2 text-sm">
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      Instagram
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      Twitter
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      TikTok
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-gray-900 transition-colors">
+                      YouTube
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="text-center pt-8 border-t border-gray-200">
+              <p
+                style={{
+                  fontWeight: "400",
+                  fontSize: "12px",
+                  color: "rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                Built with ❤️ by © Sticky Slap LLC
+              </p>
+            </div>
+          </div>
+        </footer>
       </main>
     </>
   );
