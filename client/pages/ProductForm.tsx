@@ -670,11 +670,13 @@ export default function ProductForm() {
       return;
     }
 
-    const hasSharedVariants = formData.sharedVariants && formData.sharedVariants.length > 0;
+    const hasSharedVariants =
+      formData.sharedVariants && formData.sharedVariants.length > 0;
     if (formData.basePrice <= 0 && !hasSharedVariants) {
       toast({
         title: "Validation Error",
-        description: "Base price must be greater than 0 (or add shared variants to override)",
+        description:
+          "Base price must be greater than 0 (or add shared variants to override)",
         variant: "destructive",
       });
       return;

@@ -96,7 +96,9 @@ export default function ProductPage() {
   }>({});
   const [quantity, setQuantity] = useState(100);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
-  const [activeQuantityOption, setActiveQuantityOption] = useState<number | null>(100);
+  const [activeQuantityOption, setActiveQuantityOption] = useState<
+    number | null
+  >(100);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -327,7 +329,14 @@ export default function ProductPage() {
     <>
       <Header />
       <main className="min-h-screen bg-black text-white">
-        <div style={{ maxWidth: "1824px", margin: "0 auto 3px", padding: "32px 32px 200px" }} className="px-4 sm:px-6 lg:px-8">
+        <div
+          style={{
+            maxWidth: "1824px",
+            margin: "0 auto 3px",
+            padding: "32px 32px 200px",
+          }}
+          className="px-4 sm:px-6 lg:px-8"
+        >
           {/* Back Navigation */}
           <button
             onClick={() => navigate("/products")}
@@ -341,7 +350,10 @@ export default function ProductPage() {
           <div className="mb-12">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
               {/* Product Info */}
-              <div className="flex flex-col justify-center" style={{ paddingBottom: "200px" }}>
+              <div
+                className="flex flex-col justify-center"
+                style={{ paddingBottom: "200px" }}
+              >
                 <h1 className="text-3xl sm:text-4xl font-bold mb-3">
                   {product.name}
                 </h1>
@@ -420,7 +432,9 @@ export default function ProductPage() {
                             className="w-16 h-16 object-contain mb-2"
                           />
                         )}
-                        <p className="font-medium text-xs text-white">{value.name}</p>
+                        <p className="font-medium text-xs text-white">
+                          {value.name}
+                        </p>
                         {value.priceModifier !== 0 && (
                           <p className="text-xs text-white/60 mt-1">
                             +${value.priceModifier.toFixed(2)}
@@ -524,7 +538,10 @@ export default function ProductPage() {
             ))}
 
             {/* Quantity Selection Column */}
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6" style={{ margin: "0 -2px 200px 0" }}>
+            <div
+              className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
+              style={{ margin: "0 -2px 200px 0" }}
+            >
               <h2 className="text-sm font-bold mb-3">📊 Select a quantity</h2>
 
               <div className="space-y-2">
@@ -588,7 +605,9 @@ export default function ProductPage() {
                       alt="Credits"
                       className="w-4 h-4"
                     />
-                    You'll earn ${(parseFloat(calculateTotalPrice()) * 0.02).toFixed(2)} in store credit!
+                    You'll earn $
+                    {(parseFloat(calculateTotalPrice()) * 0.02).toFixed(2)} in
+                    store credit!
                   </span>
                 </div>
               </div>
@@ -669,9 +688,7 @@ export default function ProductPage() {
             {/* Custom Design Upload */}
             {product.customer_upload_config.enabled && (
               <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                <h2 className="text-sm font-bold mb-2">
-                  Upload your artwork
-                </h2>
+                <h2 className="text-sm font-bold mb-2">Upload your artwork</h2>
                 <p className="text-white/60 text-xs mb-4">
                   {product.customer_upload_config.description}
                 </p>
@@ -731,9 +748,7 @@ export default function ProductPage() {
           <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
             <Button
               onClick={handleAddToCart}
-              disabled={
-                isAddingToCart || !product.availability || !designFile
-              }
+              disabled={isAddingToCart || !product.availability || !designFile}
               className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white py-4 text-lg font-semibold gap-2 rounded-xl"
             >
               <Upload className="w-5 h-5" />
