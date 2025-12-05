@@ -633,47 +633,7 @@ export default function ProductPage() {
                   </button>
                 ))}
 
-                <button
-                  style={{
-                    marginTop: "8px",
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "12px 16px",
-                    borderRadius: "12px",
-                    border: "1px solid rgba(34, 197, 94, 0.5)",
-                    backdropFilter: "blur(12px)",
-                    backgroundColor: "rgba(34, 197, 94, 0.2)",
-                    color: "rgb(0, 0, 0)",
-                    cursor: "pointer",
-                    transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                    fontFamily: "Inter, sans-serif",
-                    fontWeight: "500",
-                  }}
-                >
-                  <span style={{ fontFamily: "Rubik, sans-serif", fontSize: "18px", fontWeight: "500", color: "rgb(0, 0, 0)", lineHeight: "28px" }}>
-                    Custom
-                  </span>
-                </button>
               </div>
-
-              <input
-                type="number"
-                placeholder="Enter custom quantity (min 15)"
-                style={{
-                  marginTop: "12px",
-                  width: "100%",
-                  padding: "8px 12px",
-                  borderRadius: "8px",
-                  border: "1px solid oklab(0.999994 0.0000455678 0.0000200868 / 0.2)",
-                  backdropFilter: "blur(12px)",
-                  backgroundColor: "oklab(0.999994 0.0000455678 0.0000200868 / 0.1)",
-                  color: "rgb(255, 255, 255)",
-                  fontFamily: "Inter, sans-serif",
-                  transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                }}
-              />
 
             </div>
           </div>
