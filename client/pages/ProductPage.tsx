@@ -319,7 +319,7 @@ export default function ProductPage() {
       <Header />
       <main className="min-h-screen bg-black text-white py-8">
         <div className="px-6 lg:px-8 max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-[57px]">
             {/* Product Images */}
             <div className="space-y-4">
               <div className="relative bg-white/5 border border-white/10 rounded-lg overflow-hidden aspect-square">
