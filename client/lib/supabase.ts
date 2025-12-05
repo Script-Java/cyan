@@ -12,7 +12,7 @@ export type Database = {
     Tables: {
       support_tickets: {
         Row: {
-          id: string;
+          id: number;
           customer_id: number;
           customer_email: string;
           customer_name: string;
@@ -27,8 +27,8 @@ export type Database = {
       };
       ticket_replies: {
         Row: {
-          id: string;
-          ticket_id: string;
+          id: number;
+          ticket_id: number;
           sender_type: string;
           sender_name: string;
           sender_email: string;
