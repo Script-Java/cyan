@@ -134,6 +134,8 @@ export default function CheckoutNew() {
                 quantity: item.quantity,
                 price: item.pricePerUnit || product.base_price || 0,
                 image: product.images?.[0]?.url,
+                basePrice: item.basePrice,
+                savePercentage: item.savePercentage,
               });
             }
           }
