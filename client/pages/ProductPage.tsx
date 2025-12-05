@@ -583,7 +583,7 @@ export default function ProductPage() {
                   fontFamily: "Rubik, sans-serif",
                   fontSize: "18px",
                   fontWeight: "700",
-                  color: "rgb(255, 255, 255)",
+                  color: "rgb(0, 0, 0)",
                   lineHeight: "28px",
                 }}
               >
