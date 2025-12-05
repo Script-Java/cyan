@@ -898,7 +898,13 @@ export const handleCreatePayment: RequestHandler = async (req, res) => {
     }
 
     const amountInCents = Math.round(paymentRequest.amount * 100);
-    const orderId = paymentRequest.orderId;
+    let orderId: number | null = null;
+    if (paymentRequest.orderId) {
+      orderId = parseInt(paymentRequest.orderId, 10);
+      if (isNaN(orderId)) {
+        orderId = null;
+      }
+    }
 
     console.log("Creating Square payment:", {
       orderId,
@@ -1067,11 +1073,22 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
     }
 
     const paymentId = payment.id;
-    const orderId = payment.order_id;
+    const orderIdRaw = payment.order_id;
     const paymentStatus = payment.status;
     const amountMoney = payment.amount_money || {};
     const cardDetails = payment.card_details || {};
     const card = cardDetails.card || {};
+
+    if (!orderIdRaw) {
+      console.warn("No order ID associated with payment:", paymentId);
+      return;
+    }
+
+    const orderId = parseInt(orderIdRaw, 10);
+    if (isNaN(orderId)) {
+      console.warn("Invalid order ID format:", orderIdRaw);
+      return;
+    }
 
     console.log("Processing Square payment update:", {
       paymentId,
@@ -1087,11 +1104,6 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
       cardDetails.status !== "CAPTURED"
     ) {
       console.log(`Payment status is ${paymentStatus}, skipping order update`);
-      return;
-    }
-
-    if (!orderId) {
-      console.warn("No order ID associated with payment:", paymentId);
       return;
     }
 
