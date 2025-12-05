@@ -539,8 +539,8 @@ export default function ProductPage() {
 
             {/* Quantity Selection Column */}
             <div
-              className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
-              style={{ margin: "0 -2px 200px 0" }}
+              className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl"
+              style={{ margin: "0 -2px 3px 0", padding: "24px 24px 27px" }}
             >
               <h2 className="text-sm font-bold mb-3">📊 Select a quantity</h2>
 
