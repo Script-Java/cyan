@@ -15,7 +15,7 @@ import Header from "@/components/Header";
 import { toast } from "sonner";
 
 interface Ticket {
-  id: string;
+  id: number;
   subject: string;
   category: string;
   priority: string;
