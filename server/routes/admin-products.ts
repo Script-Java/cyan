@@ -174,6 +174,11 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Product ID is required" });
     }
 
+    const id = parseInt(productId, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid product ID format" });
+    }
+
     if (!productData.name?.trim()) {
       return res.status(400).json({ error: "Product name is required" });
     }
@@ -219,7 +224,7 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
     const { data, error } = await supabase
       .from("admin_products")
       .update(dbProduct)
-      .eq("id", productId)
+      .eq("id", id)
       .select();
 
     if (error) {
@@ -280,10 +285,15 @@ export const handleGetAdminProduct: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Product ID is required" });
     }
 
+    const id = parseInt(productId, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid product ID format" });
+    }
+
     const { data, error } = await supabase
       .from("admin_products")
       .select("*")
-      .eq("id", productId)
+      .eq("id", id)
       .single();
 
     if (error) {
@@ -315,10 +325,15 @@ export const handleDeleteAdminProduct: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Product ID is required" });
     }
 
+    const id = parseInt(productId, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid product ID format" });
+    }
+
     const { error } = await supabase
       .from("admin_products")
       .delete()
-      .eq("id", productId);
+      .eq("id", id);
 
     if (error) {
       console.error("Database error:", error);
@@ -346,10 +361,15 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Product ID is required" });
     }
 
+    const id = parseInt(productId, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid product ID format" });
+    }
+
     const { data, error } = await supabase
       .from("admin_products")
       .select("*")
-      .eq("id", productId)
+      .eq("id", id)
       .eq("availability", true)
       .single();
 
