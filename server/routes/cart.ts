@@ -2,6 +2,15 @@ import { RequestHandler } from "express";
 import { randomUUID } from "crypto";
 import { supabase } from "../utils/supabase";
 
+/**
+ * Validate UUID format (v4 and general UUID)
+ * Matches format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+ */
+function isValidUUID(uuid: string): boolean {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(uuid);
+}
+
 interface CartItem {
   product_id: number;
   quantity: number;
