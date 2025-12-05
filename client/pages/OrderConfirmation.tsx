@@ -80,13 +80,13 @@ export default function OrderConfirmation() {
     // Allow guest users to view their order confirmation without auth
   }, []);
 
-  useEffect(() => {
-    // Refresh store credit when order confirmation loads
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      fetchStoreCredit();
-    }
-  }, [fetchStoreCredit]);
+  // useEffect(() => {
+  //   // Store credit fetch disabled temporarily
+  //   // const token = localStorage.getItem("authToken");
+  //   // if (token) {
+  //   //   fetchStoreCredit();
+  //   // }
+  // }, [fetchStoreCredit]);
 
   useEffect(() => {
     const fetchOrder = async () => {
