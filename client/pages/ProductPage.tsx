@@ -444,7 +444,8 @@ export default function ProductPage() {
                             : "border-gray-200 hover:border-gray-300 bg-gray-50"
                         }`}
                       >
-                        {option.name === "Material" && value.name?.toLowerCase() === "satin" ? (
+                        {option.name === "Material" &&
+                        value.name?.toLowerCase() === "satin" ? (
                           <img
                             src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F1b04ce3e2b7342ff891113ccedd6beda?format=webp&width=800"
                             alt="Satin"
@@ -501,7 +502,9 @@ export default function ProductPage() {
                             className="w-10 h-10 object-cover mx-auto mb-1 rounded"
                           />
                         )}
-                        <p className="font-medium text-xs text-black">{value.name}</p>
+                        <p className="font-medium text-xs text-black">
+                          {value.name}
+                        </p>
                         {value.priceModifier !== 0 && (
                           <p className="text-xs text-gray-600 mt-0.5">
                             +${value.priceModifier.toFixed(2)}
@@ -574,7 +577,8 @@ export default function ProductPage() {
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
                 borderColor: "rgba(255, 255, 255, 0.1)",
                 borderWidth: "1px",
-                boxShadow: "rgba(0, 0, 0, 0.3) 0px 8px 32px 0px, rgba(255, 255, 255, 0.1) 0px 1px 0px 0px inset",
+                boxShadow:
+                  "rgba(0, 0, 0, 0.3) 0px 8px 32px 0px, rgba(255, 255, 255, 0.1) 0px 1px 0px 0px inset",
               }}
             >
               <h2
@@ -587,8 +591,22 @@ export default function ProductPage() {
                   lineHeight: "28px",
                 }}
               >
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ width: "20px", height: "20px", stroke: "rgb(0, 0, 0)" }}>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                <svg
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    stroke: "rgb(0, 0, 0)",
+                  }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
+                  />
                 </svg>
                 Select a quantity
               </h2>
@@ -617,24 +635,49 @@ export default function ProductPage() {
                       transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
                     }}
                   >
-                    <span style={{ fontFamily: "Rubik, sans-serif", fontSize: "18px", fontWeight: "500", color: "rgb(0, 0, 0)", lineHeight: "28px" }}>
+                    <span
+                      style={{
+                        fontFamily: "Rubik, sans-serif",
+                        fontSize: "18px",
+                        fontWeight: "500",
+                        color: "rgb(0, 0, 0)",
+                        lineHeight: "28px",
+                      }}
+                    >
                       {option.qty.toLocaleString()}
                     </span>
-                    <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-                      <span style={{ fontFamily: "Rubik, sans-serif", fontWeight: "600", color: "rgb(0, 0, 0)" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "12px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontFamily: "Rubik, sans-serif",
+                          fontWeight: "600",
+                          color: "rgb(0, 0, 0)",
+                        }}
+                      >
                         ${option.price.toFixed(2)}
                       </span>
                       {option.save && (
-                        <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", fontWeight: "500", color: "rgb(34, 197, 94)" }}>
+                        <span
+                          style={{
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "14px",
+                            fontWeight: "500",
+                            color: "rgb(34, 197, 94)",
+                          }}
+                        >
                           Save {option.save}%
                         </span>
                       )}
                     </div>
                   </button>
                 ))}
-
               </div>
-
             </div>
           </div>
 
@@ -802,22 +845,34 @@ export default function ProductPage() {
                 <h4 className="font-bold text-gray-900 mb-4">Shop</h4>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       Vinyl Stickers
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       Holographic
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       Chrome
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       Glitter
                     </a>
                   </li>
@@ -827,7 +882,10 @@ export default function ProductPage() {
                 <h4 className="font-bold text-gray-900 mb-4">Company</h4>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       About
                     </a>
                   </li>
@@ -840,7 +898,10 @@ export default function ProductPage() {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       Contact
                     </a>
                   </li>
@@ -850,22 +911,34 @@ export default function ProductPage() {
                 <h4 className="font-bold text-gray-900 mb-4">Legal</h4>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       Privacy
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       Terms
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       Shipping
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       Returns
                     </a>
                   </li>
@@ -875,22 +948,34 @@ export default function ProductPage() {
                 <h4 className="font-bold text-gray-900 mb-4">Follow</h4>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       Instagram
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       Twitter
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       TikTok
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
+                    <a
+                      href="#"
+                      className="hover:text-gray-900 transition-colors"
+                    >
                       YouTube
                     </a>
                   </li>
