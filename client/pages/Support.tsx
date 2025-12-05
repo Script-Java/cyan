@@ -84,7 +84,7 @@ export default function Support() {
 
       const data = await response.json();
       toast.success(
-        `Support request submitted successfully! Ticket ID: ${data.ticketId?.slice(0, 8)}...`,
+        `Support request submitted successfully! Ticket ID: #${data.ticketId}`,
       );
 
       setFormData({
