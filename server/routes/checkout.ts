@@ -1,6 +1,15 @@
 import { RequestHandler } from "express";
 import { createSupabaseOrder, createOrderItems } from "../utils/supabase";
 
+/**
+ * Validate UUID format (v4 and general UUID)
+ * Matches format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+ */
+function isValidUUID(uuid: string): boolean {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(uuid);
+}
+
 interface CheckoutRequest {
   customer_id: number;
   billing_address: {
