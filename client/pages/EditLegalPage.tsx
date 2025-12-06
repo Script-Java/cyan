@@ -117,7 +117,9 @@ export default function EditLegalPage() {
         navigate("/admin/legal-pages");
       }, 1500);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update legal page");
+      setError(
+        err instanceof Error ? err.message : "Failed to update legal page",
+      );
     } finally {
       setIsSaving(false);
     }

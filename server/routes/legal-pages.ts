@@ -62,10 +62,7 @@ export const handleGetLegalPageByType: RequestHandler = async (req, res) => {
 };
 
 // Get legal page by ID (admin only)
-export const handleGetAdminLegalPageById: RequestHandler = async (
-  req,
-  res,
-) => {
+export const handleGetAdminLegalPageById: RequestHandler = async (req, res) => {
   try {
     const { pageId } = req.params;
 

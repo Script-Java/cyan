@@ -378,22 +378,34 @@ export default function Index() {
                 <h4 className="font-bold text-white mb-4">Legal</h4>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="/privacy" className="hover:text-white transition-colors">
+                    <a
+                      href="/privacy"
+                      className="hover:text-white transition-colors"
+                    >
                       Privacy
                     </a>
                   </li>
                   <li>
-                    <a href="/terms" className="hover:text-white transition-colors">
+                    <a
+                      href="/terms"
+                      className="hover:text-white transition-colors"
+                    >
                       Terms
                     </a>
                   </li>
                   <li>
-                    <a href="/shipping" className="hover:text-white transition-colors">
+                    <a
+                      href="/shipping"
+                      className="hover:text-white transition-colors"
+                    >
                       Shipping
                     </a>
                   </li>
                   <li>
-                    <a href="/returns" className="hover:text-white transition-colors">
+                    <a
+                      href="/returns"
+                      className="hover:text-white transition-colors"
+                    >
                       Returns
                     </a>
                   </li>

@@ -64,7 +64,9 @@ export default function LegalPage() {
       setPage(data);
     } catch (err) {
       console.error("Error fetching legal page:", err);
-      setError(err instanceof Error ? err.message : "Failed to fetch legal page");
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch legal page",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -76,7 +78,9 @@ export default function LegalPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <div className={`bg-gradient-to-br ${pageType && pageTypeColors[pageType] ? pageTypeColors[pageType] : "from-gray-600 to-gray-800"} py-12 md:py-16`}>
+        <div
+          className={`bg-gradient-to-br ${pageType && pageTypeColors[pageType] ? pageTypeColors[pageType] : "from-gray-600 to-gray-800"} py-12 md:py-16`}
+        >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <button
               onClick={() => navigate("/")}
@@ -95,7 +99,8 @@ export default function LegalPage() {
 
             {page && (
               <p className="text-white/80 text-sm">
-                Last updated: {new Date(page.updated_at).toLocaleDateString("en-US", {
+                Last updated:{" "}
+                {new Date(page.updated_at).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",

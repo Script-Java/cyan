@@ -452,9 +452,17 @@ export function createServer() {
   // Admin routes (Protected)
   app.post("/api/admin/legal-pages", verifyToken, handleCreateLegalPage);
   app.get("/api/admin/legal-pages", verifyToken, handleGetAllLegalPages);
-  app.get("/api/admin/legal-pages/:pageId", verifyToken, handleGetAdminLegalPageById);
+  app.get(
+    "/api/admin/legal-pages/:pageId",
+    verifyToken,
+    handleGetAdminLegalPageById,
+  );
   app.put("/api/admin/legal-pages/:pageId", verifyToken, handleUpdateLegalPage);
-  app.delete("/api/admin/legal-pages/:pageId", verifyToken, handleDeleteLegalPage);
+  app.delete(
+    "/api/admin/legal-pages/:pageId",
+    verifyToken,
+    handleDeleteLegalPage,
+  );
 
   // Global error handler - must be last
   app.use((err: any, _req: any, res: any, _next: any) => {

@@ -18,11 +18,31 @@ const pageTypeOptions: Array<{
   label: string;
   description: string;
 }> = [
-  { value: "privacy", label: "Privacy Policy", description: "Your privacy and data handling policies" },
-  { value: "terms", label: "Terms of Service", description: "Terms and conditions of use" },
-  { value: "shipping", label: "Shipping Policy", description: "Shipping rates and delivery information" },
-  { value: "returns", label: "Returns Policy", description: "Return and refund policies" },
-  { value: "legal", label: "Legal Notice", description: "General legal disclosures and notices" },
+  {
+    value: "privacy",
+    label: "Privacy Policy",
+    description: "Your privacy and data handling policies",
+  },
+  {
+    value: "terms",
+    label: "Terms of Service",
+    description: "Terms and conditions of use",
+  },
+  {
+    value: "shipping",
+    label: "Shipping Policy",
+    description: "Shipping rates and delivery information",
+  },
+  {
+    value: "returns",
+    label: "Returns Policy",
+    description: "Return and refund policies",
+  },
+  {
+    value: "legal",
+    label: "Legal Notice",
+    description: "General legal disclosures and notices",
+  },
 ];
 
 export default function CreateLegalPage() {
@@ -100,7 +120,9 @@ export default function CreateLegalPage() {
         navigate("/admin/legal-pages");
       }, 1500);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create legal page");
+      setError(
+        err instanceof Error ? err.message : "Failed to create legal page",
+      );
     } finally {
       setIsSaving(false);
     }
@@ -172,14 +194,17 @@ export default function CreateLegalPage() {
                       onChange={(e) =>
                         setFormData({
                           ...formData,
-                          page_type: e.target.value as LegalPageFormData["page_type"],
+                          page_type: e.target
+                            .value as LegalPageFormData["page_type"],
                         })
                       }
                       className="w-4 h-4 mt-0.5"
                     />
                     <div>
                       <p className="text-white font-medium">{option.label}</p>
-                      <p className="text-white/50 text-sm">{option.description}</p>
+                      <p className="text-white/50 text-sm">
+                        {option.description}
+                      </p>
                     </div>
                   </label>
                 ))}

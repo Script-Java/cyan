@@ -116,8 +116,14 @@ export default function App() {
             <Route path="/admin/create-blog" element={<CreateBlog />} />
             <Route path="/admin/edit-blog/:blogId" element={<EditBlog />} />
             <Route path="/admin/legal-pages" element={<AdminLegalPages />} />
-            <Route path="/admin/create-legal-page" element={<CreateLegalPage />} />
-            <Route path="/admin/edit-legal-page/:pageId" element={<EditLegalPage />} />
+            <Route
+              path="/admin/create-legal-page"
+              element={<CreateLegalPage />}
+            />
+            <Route
+              path="/admin/edit-legal-page/:pageId"
+              element={<EditLegalPage />}
+            />
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="/admin/support" element={<AdminSupport />} />
             <Route

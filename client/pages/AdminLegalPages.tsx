@@ -81,7 +81,11 @@ export default function AdminLegalPages() {
   };
 
   const handleDeletePage = async (pageId: string, pageType: string) => {
-    if (!confirm(`Are you sure you want to delete the ${pageTypeLabels[pageType]} page?`)) {
+    if (
+      !confirm(
+        `Are you sure you want to delete the ${pageTypeLabels[pageType]} page?`,
+      )
+    ) {
       return;
     }
 
@@ -117,9 +121,9 @@ export default function AdminLegalPages() {
         .includes(searchTerm.toLowerCase()),
   );
 
-  const availablePageTypes = (["privacy", "terms", "shipping", "returns", "legal"] as const).filter(
-    (type) => !pages.some((p) => p.page_type === type),
-  );
+  const availablePageTypes = (
+    ["privacy", "terms", "shipping", "returns", "legal"] as const
+  ).filter((type) => !pages.some((p) => p.page_type === type));
 
   if (!isAuthenticated) {
     return null;
@@ -266,7 +270,9 @@ export default function AdminLegalPages() {
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
-                        onClick={() => handleDeletePage(page.id, page.page_type)}
+                        onClick={() =>
+                          handleDeletePage(page.id, page.page_type)
+                        }
                         disabled={isDeleting === page.id}
                         className="p-2 hover:bg-white/10 rounded-lg text-white/60 hover:text-red-400 transition-colors disabled:opacity-50"
                         title="Delete page"
