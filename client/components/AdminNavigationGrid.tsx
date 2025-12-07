@@ -96,6 +96,15 @@ export default function AdminNavigationGrid({
       iconColor: "text-blue-400",
     },
     {
+      label: "Shipping",
+      description: "Shipping options",
+      icon: <Truck className="w-5 h-5 sm:w-6 sm:h-6" />,
+      path: "/admin/shipping",
+      color:
+        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
+      iconColor: "text-teal-400",
+    },
+    {
       label: "Settings",
       description: "Manage account",
       icon: <Settings className="w-5 h-5 sm:w-6 sm:h-6" />,
