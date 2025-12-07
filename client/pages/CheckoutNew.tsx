@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import CheckoutForm from "@/components/CheckoutForm";
+import ShippingOptionsSelector from "@/components/ShippingOptionsSelector";
 import SquarePaymentForm from "@/components/SquarePaymentForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
