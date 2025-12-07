@@ -88,14 +88,14 @@ export default function ShippingOptionsSelector({
 
   if (error) {
     return (
-      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-        <h4 className="text-white font-bold mb-4 flex items-center gap-2">
-          <Truck className="w-5 h-5" />
-          Shipping Options
+      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg p-4">
+        <h4 className="text-white font-bold mb-2 text-sm flex items-center gap-2">
+          <Truck className="w-4 h-4" />
+          Shipping
         </h4>
-        <div className="flex items-start gap-3 bg-red-500/20 border border-red-500/50 rounded p-4">
-          <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-          <p className="text-red-400 text-sm">{error}</p>
+        <div className="flex items-start gap-2 bg-red-500/20 border border-red-500/50 rounded p-3">
+          <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+          <p className="text-red-400 text-xs">{error}</p>
         </div>
       </div>
     );
@@ -103,13 +103,13 @@ export default function ShippingOptionsSelector({
 
   if (shippingOptions.length === 0) {
     return (
-      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-        <h4 className="text-white font-bold mb-4 flex items-center gap-2">
-          <Truck className="w-5 h-5" />
-          Shipping Options
+      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg p-4">
+        <h4 className="text-white font-bold mb-2 text-sm flex items-center gap-2">
+          <Truck className="w-4 h-4" />
+          Shipping
         </h4>
-        <p className="text-white/60 text-sm">
-          No shipping options available at this time. Shipping cost will be determined during order processing.
+        <p className="text-white/60 text-xs">
+          No options available. Costs will be calculated at checkout.
         </p>
       </div>
     );
