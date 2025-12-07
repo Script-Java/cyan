@@ -137,6 +137,7 @@ export default function CheckoutNew() {
                 image: product.images?.[0]?.url,
                 basePrice: item.basePrice,
                 savePercentage: item.savePercentage,
+                design_file_url: item.design_file_url,
               });
             }
           }
