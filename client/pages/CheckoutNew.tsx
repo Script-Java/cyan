@@ -248,9 +248,9 @@ export default function CheckoutNew() {
     subtotal: number,
     discount: number,
     creditAmount: number = appliedStoreCredit,
+    shipping: number = shippingCost,
   ) => {
     const tax = subtotal * 0.08;
-    const shipping = 0;
     const blindShipmentFee = blindShipmentEnabled ? 5 : 0;
     const additionalPayment =
       (subtotal + tax + shipping + blindShipmentFee - discount) *
