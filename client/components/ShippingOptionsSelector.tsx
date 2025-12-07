@@ -29,6 +29,7 @@ export default function ShippingOptionsSelector({
   const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [expandedOptionId, setExpandedOptionId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchShippingOptions = async () => {
