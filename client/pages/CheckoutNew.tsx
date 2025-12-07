@@ -114,10 +114,16 @@ export default function CheckoutNew() {
           const customItems = JSON.parse(localStorageCart);
           const items = [];
           for (const item of customItems) {
-            const response = await fetch(
-              `/api/public/products/${item.productId}`,
-            );
-            if (response.ok) {
+            try {
+              const response = await fetch(
+                `/api/public/products/${item.productId}`,
+              );
+              if (!response.ok) {
+                console.warn(
+                  `Failed to fetch product ${item.productId}: HTTP ${response.status}`,
+                );
+                continue;
+              }
               const productData = await response.json();
               const product = productData.product;
               const selectedOption = Object.keys(item.selectedOptions).find(
@@ -148,6 +154,11 @@ export default function CheckoutNew() {
                 savePercentage: item.savePercentage,
                 design_file_url: item.design_file_url,
               });
+            } catch (err) {
+              console.warn(
+                `Failed to load product ${item.productId}:`,
+                err instanceof Error ? err.message : err,
+              );
             }
           }
           setCartItems(items);
