@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { supabase } from "../utils/supabase";
-import { v4 as uuidv4 } from "crypto";
+import { randomUUID } from "crypto";
 
 interface UploadRequest {
   fileName: string;
@@ -22,7 +22,7 @@ export const handleUploadCustomerDesign: RequestHandler = async (
       });
     }
 
-    const fileId = uuidv4();
+    const fileId = randomUUID();
     const fileExtension = fileName.split(".").pop() || "bin";
     const storagePath = `customer-designs/${customerId || "guest"}/${fileId}.${fileExtension}`;
 
