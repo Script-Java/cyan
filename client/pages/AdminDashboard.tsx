@@ -151,6 +151,14 @@ export default function AdminDashboard() {
       color: "bg-amber-500/20 hover:bg-amber-500/30",
       textColor: "text-amber-400",
     },
+    {
+      title: "Shipping",
+      description: "Manage shipping options",
+      icon: <Truck className="w-5 h-5" />,
+      path: "/admin/shipping",
+      color: "bg-teal-500/20 hover:bg-teal-500/30",
+      textColor: "text-teal-400",
+    },
   ];
 
   if (!isAuthenticated) {
