@@ -362,6 +362,18 @@ export default function ProductForm() {
     }));
   };
 
+  const toggleOptionValues = (optionId: string) => {
+    setExpandedOptionValues((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(optionId)) {
+        newSet.delete(optionId);
+      } else {
+        newSet.add(optionId);
+      }
+      return newSet;
+    });
+  };
+
   const addVariantValue = (optionId: string) => {
     setFormData((prev) => ({
       ...prev,
