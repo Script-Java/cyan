@@ -894,17 +894,19 @@ export default function ProductPage() {
           <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6">
             <Button
               onClick={handleAddToCart}
-              disabled={isAddingToCart || !product.availability || !designFile}
+              disabled={isAddingToCart || isUploadingDesign || !product.availability || !designFileUrl}
               className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-4 text-lg font-semibold gap-2 rounded-xl"
             >
               <Upload className="w-5 h-5" />
-              {isAddingToCart
-                ? "Adding to Cart..."
-                : !designFile
-                  ? "Upload Artwork to Continue"
-                  : !product.availability
-                    ? "Out of Stock"
-                    : "Add to Cart"}
+              {isUploadingDesign
+                ? "Uploading Design..."
+                : isAddingToCart
+                  ? "Adding to Cart..."
+                  : !designFileUrl
+                    ? "Upload Artwork to Continue"
+                    : !product.availability
+                      ? "Out of Stock"
+                      : "Add to Cart"}
             </Button>
 
             <p className="text-center text-gray-600 text-xs mt-3">
