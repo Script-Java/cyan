@@ -151,6 +151,11 @@ import {
   handleUpdateLegalPage,
   handleDeleteLegalPage,
 } from "./routes/legal-pages";
+import {
+  handleUploadCustomerDesign,
+  handleGetUploadedFile,
+  handleDeleteUploadedFile,
+} from "./routes/file-upload";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
@@ -397,6 +402,11 @@ export function createServer() {
   app.post("/api/orders/:orderId/files", verifyToken, handleUploadDigitalFile);
   app.get("/api/orders/:orderId/files", verifyToken, handleGetOrderFiles);
   app.delete("/api/files/:fileId", verifyToken, handleDeleteDigitalFile);
+
+  // ===== Customer Design Upload Routes =====
+  app.post("/api/designs/upload", handleUploadCustomerDesign);
+  app.get("/api/designs/:fileId", handleGetUploadedFile);
+  app.delete("/api/designs/:fileId", handleDeleteUploadedFile);
 
   // ===== Proofs Routes (Protected) =====
   app.get("/api/proofs", verifyToken, handleGetProofs);
