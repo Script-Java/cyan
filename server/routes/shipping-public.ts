@@ -15,7 +15,9 @@ export const handleGetPublicShippingOptions: RequestHandler = async (
 
     const { data: options, error } = await supabase
       .from("shipping_options")
-      .select("id, name, description, cost, processing_time_days, estimated_delivery_days_min, estimated_delivery_days_max")
+      .select(
+        "id, name, description, cost, processing_time_days, estimated_delivery_days_min, estimated_delivery_days_max",
+      )
       .eq("is_active", true)
       .order("display_order", { ascending: true })
       .order("created_at", { ascending: true });
@@ -34,7 +36,9 @@ export const handleGetPublicShippingOptions: RequestHandler = async (
   } catch (error) {
     console.error("Failed to fetch public shipping options:", error);
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to fetch shipping options";
+      error instanceof Error
+        ? error.message
+        : "Failed to fetch shipping options";
     res.status(500).json({ success: false, error: errorMessage });
   }
 };

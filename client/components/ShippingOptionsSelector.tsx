@@ -15,7 +15,11 @@ interface ShippingOption {
 
 interface ShippingOptionsSelectorProps {
   selectedOptionId: number | null;
-  onSelectionChange: (optionId: number, cost: number, estimatedDeliveryDate: string) => void;
+  onSelectionChange: (
+    optionId: number,
+    cost: number,
+    estimatedDeliveryDate: string,
+  ) => void;
 }
 
 export default function ShippingOptionsSelector({
@@ -46,12 +50,18 @@ export default function ShippingOptionsSelector({
         if (options.length > 0 && !selectedOptionId) {
           const defaultOption = options[0];
           const estimatedDate = calculateEstimatedDeliveryDate(defaultOption);
-          onSelectionChange(defaultOption.id, defaultOption.cost, estimatedDate);
+          onSelectionChange(
+            defaultOption.id,
+            defaultOption.cost,
+            estimatedDate,
+          );
         }
       } catch (err) {
         console.error("Error fetching shipping options:", err);
         setError(
-          err instanceof Error ? err.message : "Failed to load shipping options",
+          err instanceof Error
+            ? err.message
+            : "Failed to load shipping options",
         );
       } finally {
         setIsLoading(false);
@@ -63,7 +73,8 @@ export default function ShippingOptionsSelector({
 
   const calculateEstimatedDeliveryDate = (option: ShippingOption): string => {
     // Use MAX delivery days for conservative estimate (worst-case scenario)
-    const totalDays = option.processing_time_days + option.estimated_delivery_days_max;
+    const totalDays =
+      option.processing_time_days + option.estimated_delivery_days_max;
     const deliveryDate = new Date();
     deliveryDate.setDate(deliveryDate.getDate() + totalDays);
     return deliveryDate.toISOString().split("T")[0];
@@ -147,7 +158,8 @@ export default function ShippingOptionsSelector({
 
       <div className="space-y-2">
         {shippingOptions.map((option) => {
-          const { min: minDate, max: maxDate } = calculateDeliveryDateRange(option);
+          const { min: minDate, max: maxDate } =
+            calculateDeliveryDateRange(option);
 
           const minDateObj = new Date(minDate);
           const maxDateObj = new Date(maxDate);
@@ -184,13 +196,18 @@ export default function ShippingOptionsSelector({
 
               <div className="flex-1 text-left min-w-0">
                 <div className="flex items-baseline justify-between gap-2">
-                  <p className="text-white font-semibold truncate">{option.name}</p>
+                  <p className="text-white font-semibold truncate">
+                    {option.name}
+                  </p>
                   <span className="text-white font-bold flex-shrink-0 whitespace-nowrap">
                     ${option.cost.toFixed(2)}
                   </span>
                 </div>
                 <p className="text-xs text-white/60 line-clamp-1">
-                  {option.processing_time_days}d + {option.estimated_delivery_days_min}-{option.estimated_delivery_days_max}d = {formattedMinDate} to {formattedMaxDate}
+                  {option.processing_time_days}d +{" "}
+                  {option.estimated_delivery_days_min}-
+                  {option.estimated_delivery_days_max}d = {formattedMinDate} to{" "}
+                  {formattedMaxDate}
                 </p>
               </div>
             </button>

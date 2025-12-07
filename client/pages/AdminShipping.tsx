@@ -216,7 +216,9 @@ export default function AdminShipping() {
         },
         body: JSON.stringify({
           name: formData.name.trim(),
-          ...(formData.description && { description: formData.description.trim() }),
+          ...(formData.description && {
+            description: formData.description.trim(),
+          }),
           cost: Number(formData.cost),
           processing_time_days: Number(formData.processing_time_days),
           estimated_delivery_days_min: Number(
