@@ -768,96 +768,95 @@ export default function ProductForm() {
         >
           <div className="max-w-4xl">
             {/* Basic Information Section */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            <CollapsibleSection
+              title="Basic Information"
+              icon={
                 <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
                   <ImageIcon className="w-5 h-5 text-green-400" />
                 </div>
-                Basic Information
-              </h2>
+              }
+              defaultOpen={true}
+            >
+              <div>
+                <Label className="text-white/80 mb-2 block">
+                  Product Name *
+                </Label>
+                <Input
+                  value={formData.name}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
+                  placeholder="Enter product name"
+                  className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                />
+              </div>
 
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label className="text-white/80 mb-2 block">
-                    Product Name *
-                  </Label>
-                  <Input
-                    value={formData.name}
-                    onChange={(e) => handleInputChange("name", e.target.value)}
-                    placeholder="Enter product name"
-                    className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-white/80 mb-2 block">
-                      Base Price (USD) *
-                    </Label>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      value={formData.basePrice || ""}
-                      onChange={(e) =>
-                        handleInputChange(
-                          "basePrice",
-                          e.target.value ? parseFloat(e.target.value) : 0,
-                        )
-                      }
-                      placeholder="0.00"
-                      className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                    />
-                    <p className="text-white/40 text-sm mt-1">
-                      Variant prices adjust from this base price
-                    </p>
-                  </div>
-                  <div>
-                    <Label className="text-white/80 mb-2 block">SKU</Label>
-                    <Input
-                      value={formData.sku}
-                      onChange={(e) => handleInputChange("sku", e.target.value)}
-                      placeholder="e.g., SKU-001"
-                      className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label className="text-white/80 mb-2 block">
-                    Weight (lb)
+                    Base Price (USD) *
                   </Label>
                   <Input
                     type="number"
                     step="0.01"
                     min="0"
-                    value={formData.weight || ""}
+                    value={formData.basePrice || ""}
                     onChange={(e) =>
                       handleInputChange(
-                        "weight",
+                        "basePrice",
                         e.target.value ? parseFloat(e.target.value) : 0,
                       )
                     }
                     placeholder="0.00"
                     className="bg-white/5 border-white/10 text-white placeholder-white/40"
                   />
+                  <p className="text-white/40 text-sm mt-1">
+                    Variant prices adjust from this base price
+                  </p>
                 </div>
-
                 <div>
-                  <Label className="text-white/80 mb-2 block">
-                    Description
-                  </Label>
-                  <Textarea
-                    value={formData.description}
-                    onChange={(e) =>
-                      handleInputChange("description", e.target.value)
-                    }
-                    placeholder="Enter product description"
-                    className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-32"
+                  <Label className="text-white/80 mb-2 block">SKU</Label>
+                  <Input
+                    value={formData.sku}
+                    onChange={(e) => handleInputChange("sku", e.target.value)}
+                    placeholder="e.g., SKU-001"
+                    className="bg-white/5 border-white/10 text-white placeholder-white/40"
                   />
                 </div>
               </div>
-            </section>
+
+              <div>
+                <Label className="text-white/80 mb-2 block">
+                  Weight (lb)
+                </Label>
+                <Input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={formData.weight || ""}
+                  onChange={(e) =>
+                    handleInputChange(
+                      "weight",
+                      e.target.value ? parseFloat(e.target.value) : 0,
+                    )
+                  }
+                  placeholder="0.00"
+                  className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                />
+              </div>
+
+              <div>
+                <Label className="text-white/80 mb-2 block">
+                  Description
+                </Label>
+                <Textarea
+                  value={formData.description}
+                  onChange={(e) =>
+                    handleInputChange("description", e.target.value)
+                  }
+                  placeholder="Enter product description"
+                  className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-32"
+                />
+              </div>
+            </CollapsibleSection>
 
             {/* Product Gallery Section */}
             <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
