@@ -125,6 +125,7 @@ import {
   handleGetCarriers,
   handleGetServices,
 } from "./routes/shipping";
+import { handleGetPublicShippingOptions } from "./routes/shipping-public";
 import {
   handleGetShippingOptions,
   handleGetShippingOption,
