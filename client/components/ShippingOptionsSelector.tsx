@@ -116,13 +116,13 @@ export default function ShippingOptionsSelector({
   }
 
   return (
-    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-      <h4 className="text-white font-bold mb-4 flex items-center gap-2">
-        <Truck className="w-5 h-5" />
-        Shipping Options
+    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg p-4">
+      <h4 className="text-white font-bold mb-2 text-sm flex items-center gap-2">
+        <Truck className="w-4 h-4" />
+        Shipping
       </h4>
 
-      <div className="space-y-3">
+      <div className="space-y-2">
         {shippingOptions.map((option) => {
           const estimatedDeliveryDate = calculateEstimatedDeliveryDate(option);
           const deliveryDateObj = new Date(estimatedDeliveryDate);
