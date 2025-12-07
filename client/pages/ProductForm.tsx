@@ -862,7 +862,7 @@ export default function ProductForm() {
                   <ImageIcon className="w-5 h-5 text-green-400" />
                 </div>
               }
-              defaultOpen={true}
+              defaultOpen={false}
             >
               <div className="border-2 border-dashed border-white/20 rounded-lg p-4 text-center cursor-pointer hover:border-green-500/50 transition">
                 <label className="cursor-pointer">
