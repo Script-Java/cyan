@@ -1917,7 +1917,7 @@ export default function ProductForm() {
             </section>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 mb-8">
+            <div className="flex gap-3 mb-4">
               <Button
                 onClick={handleSave}
                 disabled={isSaving}
