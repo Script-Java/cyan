@@ -123,6 +123,7 @@ export default function ProductForm() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [draggedOption, setDraggedOption] = useState<string | null>(null);
+  const [expandedOptionValues, setExpandedOptionValues] = useState<Set<string>>(new Set());
 
   const [formData, setFormData] = useState<ProductFormData>({
     name: "",
