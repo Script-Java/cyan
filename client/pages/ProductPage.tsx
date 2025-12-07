@@ -322,10 +322,22 @@ export default function ProductPage() {
       const discountedPricePerUnit = basePrice * (1 - savePercentage / 100);
       const totalPrice = discountedPricePerUnit * quantity;
 
-      const cartItem: CartItem = {
+      // Convert design file to base64 data URL if present
+      let design_file_url: string | undefined;
+      if (designFile) {
+        const reader = new FileReader();
+        design_file_url = await new Promise((resolve) => {
+          reader.onload = (event) => {
+            resolve(event.target?.result as string);
+          };
+          reader.readAsDataURL(designFile);
+        });
+      }
+
+      const cartItem = {
         productId: productId!,
         selectedOptions,
-        designFile,
+        design_file_url,
         optionalFields,
         quantity,
         pricePerUnit: discountedPricePerUnit,
