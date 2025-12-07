@@ -304,8 +304,6 @@ export default function ProductPage() {
     setIsAddingToCart(true);
     try {
       const basePrice = parseFloat(calculatePrice());
-      const totalPrice = parseFloat(calculateTotalPrice());
-      const pricePerUnit = totalPrice / quantity;
 
       // Find save percentage for current quantity
       const quantityTiers = [
@@ -320,13 +318,18 @@ export default function ProductPage() {
       const tierInfo = quantityTiers.find((t) => t.qty === quantity);
       const savePercentage = tierInfo?.discountPercent || 0;
 
+      // Calculate discounted price based on quantity tier
+      const discountedPricePerUnit =
+        basePrice * (1 - savePercentage / 100);
+      const totalPrice = discountedPricePerUnit * quantity;
+
       const cartItem: CartItem = {
         productId: productId!,
         selectedOptions,
         designFile,
         optionalFields,
         quantity,
-        pricePerUnit,
+        pricePerUnit: discountedPricePerUnit,
         totalPrice,
         basePrice,
         savePercentage,
