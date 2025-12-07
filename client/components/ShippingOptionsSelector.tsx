@@ -73,10 +73,10 @@ export default function ShippingOptionsSelector({
 
   if (isLoading) {
     return (
-      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-        <h4 className="text-white font-bold mb-4 flex items-center gap-2">
-          <Truck className="w-5 h-5" />
-          Shipping Options
+      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg p-4">
+        <h4 className="text-white font-bold mb-2 text-sm flex items-center gap-2">
+          <Truck className="w-4 h-4" />
+          Shipping
         </h4>
         <div className="flex items-center justify-center py-8">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white" />
