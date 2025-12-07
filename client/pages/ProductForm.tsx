@@ -864,13 +864,13 @@ export default function ProductForm() {
               }
               defaultOpen={true}
             >
-              <div className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center cursor-pointer hover:border-green-500/50 transition">
+              <div className="border-2 border-dashed border-white/20 rounded-lg p-4 text-center cursor-pointer hover:border-green-500/50 transition">
                 <label className="cursor-pointer">
-                  <Upload className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                  <p className="text-white/80 font-medium">
-                    Click to upload images or drag and drop
+                  <Upload className="w-6 h-6 text-green-400 mx-auto mb-1" />
+                  <p className="text-white/80 font-medium text-sm">
+                    Click to upload or drag and drop
                   </p>
-                  <p className="text-white/40 text-sm mt-1">
+                  <p className="text-white/40 text-xs mt-0.5">
                     PNG, JPG, GIF up to 10MB
                   </p>
                   <input
@@ -925,9 +925,9 @@ export default function ProductForm() {
                 </Button>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-3">
                 {formData.options.length === 0 ? (
-                  <p className="text-white/60 text-center py-8">
+                  <p className="text-white/60 text-center py-4 text-sm">
                     No options added yet. Click "Add Option" to get started with
                     variants.
                   </p>
@@ -946,7 +946,7 @@ export default function ProductForm() {
                           moveOption(draggedIndex, index);
                         }
                       }}
-                      className={`bg-white/5 border border-white/10 rounded-lg p-4 space-y-4 transition ${
+                      className={`bg-white/5 border border-white/10 rounded-lg p-3 space-y-3 transition ${
                         draggedOption === option.id ? "opacity-50" : ""
                       }`}
                     >
@@ -1849,8 +1849,8 @@ export default function ProductForm() {
                   onChange={(e) =>
                     handleSEOChange("metaDescription", e.target.value)
                   }
-                  placeholder="Brief description of the product for search engines"
-                  className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-20"
+                  placeholder="Brief description for search engines"
+                  className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-16"
                 />
                 <p className="text-white/40 text-sm mt-1">
                   Recommended length: 150-160 characters
