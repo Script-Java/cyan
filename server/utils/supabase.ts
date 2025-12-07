@@ -177,6 +177,7 @@ export async function createSupabaseOrder(
         shipping_address: orderData.shipping_address,
         items: orderData.items || [],
         bigcommerce_order_id: orderData.bigcommerce_order_id,
+        estimated_delivery_date: orderData.estimated_delivery_date || null,
       })
       .select("id")
       .single();
