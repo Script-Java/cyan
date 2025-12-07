@@ -233,6 +233,18 @@ export default function AdminShipping() {
 
       if (!response.ok) {
         const errorData = await response.json();
+
+        // Format detailed validation errors if available
+        if (errorData.details && Array.isArray(errorData.details)) {
+          const detailMessages = errorData.details
+            .map((err: any) => {
+              const fieldPath = err.path?.join(".") || "field";
+              return `${fieldPath}: ${err.message}`;
+            })
+            .join(", ");
+          throw new Error(detailMessages);
+        }
+
         throw new Error(errorData.error || "Failed to save shipping option");
       }
 
