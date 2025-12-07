@@ -766,7 +766,7 @@ export default function ProductForm() {
             padding: "32px 26px",
           }}
         >
-          <div className="max-w-4xl">
+          <div className="w-full max-w-3xl mx-auto">
             {/* Basic Information Section */}
             <CollapsibleSection
               title="Basic Information"
