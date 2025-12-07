@@ -716,10 +716,20 @@ export default function CheckoutNew() {
                           per sticker
                         </span>
                       </div>
-                      <div className="flex justify-between text-green-400">
-                        <span>Shipping</span>
-                        <span className="font-bold">FREE</span>
-                      </div>
+                      {shippingCost > 0 && (
+                        <div className="flex justify-between text-blue-400">
+                          <span>Shipping</span>
+                          <span className="font-bold">
+                            ${shippingCost.toFixed(2)}
+                          </span>
+                        </div>
+                      )}
+                      {shippingCost === 0 && (
+                        <div className="flex justify-between text-green-400">
+                          <span>Shipping</span>
+                          <span className="font-bold">FREE</span>
+                        </div>
+                      )}
                       {appliedDiscount > 0 && (
                         <div className="flex justify-between text-green-400">
                           <span>Deal Savings</span>
