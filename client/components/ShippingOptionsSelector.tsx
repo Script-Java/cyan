@@ -29,21 +29,20 @@ export default function ShippingOptionsSelector({
   useEffect(() => {
     const fetchShippingOptions = async () => {
       try {
-        const response = await fetch("/api/admin/shipping-options");
+        const response = await fetch("/api/shipping-options");
 
         if (!response.ok) {
-          throw new Error("Failed to fetch shipping options");
+          throw new Error(`Failed to fetch shipping options: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
-        const activeOptions = (data.data || []).filter(
-          (option: ShippingOption) => option.is_active,
-        );
-        setShippingOptions(activeOptions);
+        const options = data.data || [];
+
+        setShippingOptions(options);
         setError(null);
 
-        if (activeOptions.length > 0 && !selectedOptionId) {
-          const defaultOption = activeOptions[0];
+        if (options.length > 0 && !selectedOptionId) {
+          const defaultOption = options[0];
           const estimatedDate = calculateEstimatedDeliveryDate(defaultOption);
           onSelectionChange(defaultOption.id, defaultOption.cost, estimatedDate);
         }
@@ -58,7 +57,7 @@ export default function ShippingOptionsSelector({
     };
 
     fetchShippingOptions();
-  }, []);
+  }, [selectedOptionId, onSelectionChange]);
 
   const calculateEstimatedDeliveryDate = (option: ShippingOption): string => {
     const totalDays = option.processing_time_days + option.estimated_delivery_days_min;
