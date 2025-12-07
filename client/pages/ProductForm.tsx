@@ -1229,14 +1229,16 @@ export default function ProductForm() {
             </CollapsibleSection>
 
             {/* Shared Variants Section */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold flex items-center gap-2">
-                  <div className="p-2 bg-purple-600/20 border border-purple-500/30 rounded-lg">
-                    <Plus className="w-5 h-5 text-purple-400" />
-                  </div>
-                  Shared Variants
-                </h2>
+            <CollapsibleSection
+              title="Shared Variants"
+              icon={
+                <div className="p-2 bg-purple-600/20 border border-purple-500/30 rounded-lg">
+                  <Plus className="w-5 h-5 text-purple-400" />
+                </div>
+              }
+              defaultOpen={false}
+            >
+              <div className="flex justify-end mb-4">
                 <Button
                   onClick={addSharedVariant}
                   className="bg-purple-600 hover:bg-purple-700 text-white gap-2"
@@ -1461,7 +1463,7 @@ export default function ProductForm() {
                   ))
                 )}
               </div>
-            </section>
+            </CollapsibleSection>
 
             {/* Customer Design Upload Configuration */}
             <CollapsibleSection
