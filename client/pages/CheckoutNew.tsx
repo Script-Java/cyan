@@ -704,7 +704,7 @@ export default function CheckoutNew() {
                               0,
                             ) || 1)
                           ).toFixed(2)}{" "}
-                          per item
+                          per sticker
                         </span>
                       </div>
                       <div className="flex justify-between text-green-400">
