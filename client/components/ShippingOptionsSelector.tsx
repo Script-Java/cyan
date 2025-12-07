@@ -62,10 +62,31 @@ export default function ShippingOptionsSelector({
   }, [selectedOptionId, onSelectionChange]);
 
   const calculateEstimatedDeliveryDate = (option: ShippingOption): string => {
-    const totalDays = option.processing_time_days + option.estimated_delivery_days_min;
+    // Use MAX delivery days for conservative estimate (worst-case scenario)
+    const totalDays = option.processing_time_days + option.estimated_delivery_days_max;
     const deliveryDate = new Date();
     deliveryDate.setDate(deliveryDate.getDate() + totalDays);
     return deliveryDate.toISOString().split("T")[0];
+  };
+
+  const calculateDeliveryDateRange = (
+    option: ShippingOption,
+  ): { min: string; max: string } => {
+    const minTotalDays =
+      option.processing_time_days + option.estimated_delivery_days_min;
+    const maxTotalDays =
+      option.processing_time_days + option.estimated_delivery_days_max;
+
+    const minDate = new Date();
+    minDate.setDate(minDate.getDate() + minTotalDays);
+
+    const maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() + maxTotalDays);
+
+    return {
+      min: minDate.toISOString().split("T")[0],
+      max: maxDate.toISOString().split("T")[0],
+    };
   };
 
   const handleSelectOption = (option: ShippingOption) => {
