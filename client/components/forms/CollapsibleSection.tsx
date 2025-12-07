@@ -19,19 +19,19 @@ export default function CollapsibleSection({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl mb-4 overflow-hidden">
+    <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl mb-3 overflow-hidden">
       {/* Header */}
       <button
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
-        className="w-full flex items-center justify-between p-6 hover:bg-white/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-between px-5 py-3 hover:bg-white/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        <h2 className="text-lg font-bold flex items-center gap-3">
-          {icon && <div>{icon}</div>}
+        <h2 className="text-base font-bold flex items-center gap-2">
+          {icon && <div className="scale-75">{icon}</div>}
           <span>{title}</span>
         </h2>
         <ChevronDown
-          className={`w-5 h-5 transition-transform duration-300 ${
+          className={`w-4 h-4 transition-transform duration-300 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -39,8 +39,8 @@ export default function CollapsibleSection({
 
       {/* Content */}
       {isOpen && (
-        <div className="px-6 pb-6 border-t border-white/10 pt-6">
-          <div className="space-y-4">{children}</div>
+        <div className="px-5 pb-4 border-t border-white/10 pt-4">
+          <div className="space-y-3">{children}</div>
         </div>
       )}
     </section>
