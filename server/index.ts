@@ -431,6 +431,9 @@ export function createServer() {
   app.get("/api/shipping/carriers", verifyToken, handleGetCarriers);
   app.get("/api/shipping/services", verifyToken, handleGetServices);
 
+  // ===== Shipping Options Routes (Public - for checkout) =====
+  app.get("/api/shipping-options", handleGetPublicShippingOptions);
+
   // ===== Shipping Options Routes (Protected - admin only) =====
   app.get("/api/admin/shipping-options", verifyToken, handleGetShippingOptions);
   app.get(
