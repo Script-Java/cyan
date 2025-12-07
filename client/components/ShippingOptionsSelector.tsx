@@ -147,9 +147,17 @@ export default function ShippingOptionsSelector({
 
       <div className="space-y-2">
         {shippingOptions.map((option) => {
-          const estimatedDeliveryDate = calculateEstimatedDeliveryDate(option);
-          const deliveryDateObj = new Date(estimatedDeliveryDate);
-          const formattedDate = deliveryDateObj.toLocaleDateString("en-US", {
+          const { min: minDate, max: maxDate } = calculateDeliveryDateRange(option);
+
+          const minDateObj = new Date(minDate);
+          const maxDateObj = new Date(maxDate);
+
+          const formattedMinDate = minDateObj.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+          });
+
+          const formattedMaxDate = maxDateObj.toLocaleDateString("en-US", {
             weekday: "short",
             month: "short",
             day: "numeric",
@@ -182,8 +190,7 @@ export default function ShippingOptionsSelector({
                   </span>
                 </div>
                 <p className="text-xs text-white/60 line-clamp-1">
-                  {option.processing_time_days}d prep + {option.estimated_delivery_days_min}-
-                  {option.estimated_delivery_days_max}d shipping • {formattedDate}
+                  {option.processing_time_days}d + {option.estimated_delivery_days_min}-{option.estimated_delivery_days_max}d = {formattedMinDate} to {formattedMaxDate}
                 </p>
               </div>
             </button>
