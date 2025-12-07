@@ -1436,116 +1436,115 @@ export default function ProductForm() {
             </section>
 
             {/* Customer Design Upload Configuration */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            <CollapsibleSection
+              title="Customer Design Upload"
+              icon={
                 <div className="p-2 bg-blue-600/20 border border-blue-500/30 rounded-lg">
                   <Upload className="w-5 h-5 text-blue-400" />
                 </div>
-                Customer Design Upload
-              </h2>
+              }
+              defaultOpen={false}
+            >
+              <div className="flex items-center gap-4">
+                <Switch
+                  checked={formData.customerUploadConfig.enabled}
+                  onCheckedChange={(checked) =>
+                    updateCustomerUploadConfig("enabled", checked)
+                  }
+                />
+                <Label className="text-white/80 font-normal cursor-pointer">
+                  Enable customer design uploads
+                </Label>
+              </div>
 
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <Switch
-                    checked={formData.customerUploadConfig.enabled}
-                    onCheckedChange={(checked) =>
-                      updateCustomerUploadConfig("enabled", checked)
-                    }
-                  />
-                  <Label className="text-white/80 font-normal cursor-pointer">
-                    Enable customer design uploads
-                  </Label>
-                </div>
+              {formData.customerUploadConfig.enabled && (
+                <>
+                  <div>
+                    <Label className="text-white/80 mb-2 block">
+                      Upload Description
+                    </Label>
+                    <Input
+                      value={formData.customerUploadConfig.description}
+                      onChange={(e) =>
+                        updateCustomerUploadConfig(
+                          "description",
+                          e.target.value,
+                        )
+                      }
+                      placeholder="e.g., Upload your custom sticker design"
+                      className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                    />
+                    <p className="text-white/40 text-sm mt-1">
+                      This text will appear on the product page
+                    </p>
+                  </div>
 
-                {formData.customerUploadConfig.enabled && (
-                  <>
-                    <div>
-                      <Label className="text-white/80 mb-2 block">
-                        Upload Description
-                      </Label>
-                      <Input
-                        value={formData.customerUploadConfig.description}
-                        onChange={(e) =>
-                          updateCustomerUploadConfig(
-                            "description",
-                            e.target.value,
-                          )
-                        }
-                        placeholder="e.g., Upload your custom sticker design"
-                        className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                      />
-                      <p className="text-white/40 text-sm mt-1">
-                        This text will appear on the product page
-                      </p>
-                    </div>
+                  <div>
+                    <Label className="text-white/80 mb-2 block">
+                      Max File Size (MB)
+                    </Label>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="100"
+                      value={formData.customerUploadConfig.maxFileSize || ""}
+                      onChange={(e) =>
+                        updateCustomerUploadConfig(
+                          "maxFileSize",
+                          e.target.value ? parseInt(e.target.value) : 5,
+                        )
+                      }
+                      className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                    />
+                  </div>
 
-                    <div>
-                      <Label className="text-white/80 mb-2 block">
-                        Max File Size (MB)
-                      </Label>
-                      <Input
-                        type="number"
-                        min="1"
-                        max="100"
-                        value={formData.customerUploadConfig.maxFileSize || ""}
-                        onChange={(e) =>
-                          updateCustomerUploadConfig(
-                            "maxFileSize",
-                            e.target.value ? parseInt(e.target.value) : 5,
-                          )
-                        }
-                        className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                      />
-                    </div>
-
-                    <div>
-                      <Label className="text-white/80 mb-2 block">
-                        Allowed File Formats
-                      </Label>
-                      <div className="bg-white/5 border border-white/10 rounded-lg p-4">
-                        <div className="space-y-2">
-                          {["png", "jpg", "jpeg", "gif", "svg"].map(
-                            (format) => (
-                              <label
-                                key={format}
-                                className="flex items-center gap-2 cursor-pointer"
-                              >
-                                <input
-                                  type="checkbox"
-                                  checked={formData.customerUploadConfig.allowedFormats.includes(
-                                    format,
-                                  )}
-                                  onChange={(e) => {
-                                    const formats =
-                                      formData.customerUploadConfig
-                                        .allowedFormats;
-                                    if (e.target.checked) {
-                                      updateCustomerUploadConfig(
-                                        "allowedFormats",
-                                        [...formats, format],
-                                      );
-                                    } else {
-                                      updateCustomerUploadConfig(
-                                        "allowedFormats",
-                                        formats.filter((f) => f !== format),
-                                      );
-                                    }
-                                  }}
-                                  className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
-                                />
-                                <span className="text-white/80 uppercase text-sm">
-                                  {format}
-                                </span>
-                              </label>
-                            ),
-                          )}
-                        </div>
+                  <div>
+                    <Label className="text-white/80 mb-2 block">
+                      Allowed File Formats
+                    </Label>
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                      <div className="space-y-2">
+                        {["png", "jpg", "jpeg", "gif", "svg"].map(
+                          (format) => (
+                            <label
+                              key={format}
+                              className="flex items-center gap-2 cursor-pointer"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={formData.customerUploadConfig.allowedFormats.includes(
+                                  format,
+                                )}
+                                onChange={(e) => {
+                                  const formats =
+                                    formData.customerUploadConfig
+                                      .allowedFormats;
+                                  if (e.target.checked) {
+                                    updateCustomerUploadConfig(
+                                      "allowedFormats",
+                                      [...formats, format],
+                                    );
+                                  } else {
+                                    updateCustomerUploadConfig(
+                                      "allowedFormats",
+                                      formats.filter((f) => f !== format),
+                                    );
+                                  }
+                                }}
+                                className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
+                              />
+                              <span className="text-white/80 uppercase text-sm">
+                                {format}
+                              </span>
+                            </label>
+                          ),
+                        )}
                       </div>
                     </div>
-                  </>
-                )}
-              </div>
-            </section>
+                  </div>
+                </>
+              )}
+            </CollapsibleSection>
 
             {/* Optional Fields Section */}
             <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
