@@ -760,10 +760,10 @@ export default function ProductForm() {
         </div>
 
         <div
-          className="py-8"
+          className="py-6"
           style={{
             margin: "54px auto 0 auto",
-            padding: "32px 26px",
+            padding: "24px 20px",
           }}
         >
           <div className="w-full max-w-3xl mx-auto">
@@ -789,7 +789,7 @@ export default function ProductForm() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
                   <Label className="text-white/80 mb-2 block">
                     Base Price (USD) *
