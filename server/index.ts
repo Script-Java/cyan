@@ -437,7 +437,11 @@ export function createServer() {
     verifyToken,
     handleGetShippingOption,
   );
-  app.post("/api/admin/shipping-options", verifyToken, handleCreateShippingOption);
+  app.post(
+    "/api/admin/shipping-options",
+    verifyToken,
+    handleCreateShippingOption,
+  );
   app.put(
     "/api/admin/shipping-options/:id",
     verifyToken,

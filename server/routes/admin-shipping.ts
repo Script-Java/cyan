@@ -11,9 +11,18 @@ const ShippingOptionSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
   cost: z.number().min(0, "Cost must be positive"),
-  processing_time_days: z.number().int().min(0, "Processing time must be 0 or more"),
-  estimated_delivery_days_min: z.number().int().min(1, "Min delivery days must be at least 1"),
-  estimated_delivery_days_max: z.number().int().min(1, "Max delivery days must be at least 1"),
+  processing_time_days: z
+    .number()
+    .int()
+    .min(0, "Processing time must be 0 or more"),
+  estimated_delivery_days_min: z
+    .number()
+    .int()
+    .min(1, "Min delivery days must be at least 1"),
+  estimated_delivery_days_max: z
+    .number()
+    .int()
+    .min(1, "Max delivery days must be at least 1"),
   is_active: z.boolean().optional(),
   display_order: z.number().int().optional(),
 });
@@ -37,7 +46,9 @@ export const handleGetShippingOptions: RequestHandler = async (_req, res) => {
   } catch (error) {
     console.error("Failed to fetch shipping options:", error);
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to fetch shipping options";
+      error instanceof Error
+        ? error.message
+        : "Failed to fetch shipping options";
     res.status(500).json({ success: false, error: errorMessage });
   }
 };
@@ -48,7 +59,9 @@ export const handleGetShippingOption: RequestHandler = async (req, res) => {
     const parsedId = parseInt(id, 10);
 
     if (isNaN(parsedId)) {
-      return res.status(400).json({ error: "Invalid shipping option ID format" });
+      return res
+        .status(400)
+        .json({ error: "Invalid shipping option ID format" });
     }
 
     const { data: option, error } = await supabase
@@ -68,7 +81,9 @@ export const handleGetShippingOption: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Failed to fetch shipping option:", error);
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to fetch shipping option";
+      error instanceof Error
+        ? error.message
+        : "Failed to fetch shipping option";
     res.status(500).json({ success: false, error: errorMessage });
   }
 };
@@ -87,9 +102,13 @@ export const handleCreateShippingOption: RequestHandler = async (req, res) => {
     const optionData = validationResult.data;
 
     // Validate that max >= min
-    if (optionData.estimated_delivery_days_max < optionData.estimated_delivery_days_min) {
+    if (
+      optionData.estimated_delivery_days_max <
+      optionData.estimated_delivery_days_min
+    ) {
       return res.status(400).json({
-        error: "Max delivery days must be greater than or equal to min delivery days",
+        error:
+          "Max delivery days must be greater than or equal to min delivery days",
       });
     }
 
@@ -108,7 +127,9 @@ export const handleCreateShippingOption: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Failed to create shipping option:", error);
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to create shipping option";
+      error instanceof Error
+        ? error.message
+        : "Failed to create shipping option";
     res.status(500).json({ success: false, error: errorMessage });
   }
 };
@@ -119,7 +140,9 @@ export const handleUpdateShippingOption: RequestHandler = async (req, res) => {
     const parsedId = parseInt(id, 10);
 
     if (isNaN(parsedId)) {
-      return res.status(400).json({ error: "Invalid shipping option ID format" });
+      return res
+        .status(400)
+        .json({ error: "Invalid shipping option ID format" });
     }
 
     const validationResult = ShippingOptionSchema.partial().safeParse(req.body);
@@ -137,10 +160,12 @@ export const handleUpdateShippingOption: RequestHandler = async (req, res) => {
     if (
       updateData.estimated_delivery_days_max &&
       updateData.estimated_delivery_days_min &&
-      updateData.estimated_delivery_days_max < updateData.estimated_delivery_days_min
+      updateData.estimated_delivery_days_max <
+        updateData.estimated_delivery_days_min
     ) {
       return res.status(400).json({
-        error: "Max delivery days must be greater than or equal to min delivery days",
+        error:
+          "Max delivery days must be greater than or equal to min delivery days",
       });
     }
 
@@ -165,7 +190,9 @@ export const handleUpdateShippingOption: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Failed to update shipping option:", error);
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to update shipping option";
+      error instanceof Error
+        ? error.message
+        : "Failed to update shipping option";
     res.status(500).json({ success: false, error: errorMessage });
   }
 };
@@ -176,7 +203,9 @@ export const handleDeleteShippingOption: RequestHandler = async (req, res) => {
     const parsedId = parseInt(id, 10);
 
     if (isNaN(parsedId)) {
-      return res.status(400).json({ error: "Invalid shipping option ID format" });
+      return res
+        .status(400)
+        .json({ error: "Invalid shipping option ID format" });
     }
 
     const { error } = await supabase
@@ -193,7 +222,9 @@ export const handleDeleteShippingOption: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Failed to delete shipping option:", error);
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to delete shipping option";
+      error instanceof Error
+        ? error.message
+        : "Failed to delete shipping option";
     res.status(500).json({ success: false, error: errorMessage });
   }
 };

@@ -185,7 +185,10 @@ export default function AdminShipping() {
       return "Max delivery days is required";
     if (formData.estimated_delivery_days_max < 1)
       return "Max delivery days must be at least 1";
-    if (formData.estimated_delivery_days_max < formData.estimated_delivery_days_min)
+    if (
+      formData.estimated_delivery_days_max <
+      formData.estimated_delivery_days_min
+    )
       return "Max delivery days must be >= min delivery days";
     return null;
   };
@@ -223,15 +226,14 @@ export default function AdminShipping() {
             formData.estimated_delivery_days_max,
           ),
           is_active: formData.is_active,
-          display_order: formData.display_order === "" ? 0 : Number(formData.display_order),
+          display_order:
+            formData.display_order === "" ? 0 : Number(formData.display_order),
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(
-          errorData.error || "Failed to save shipping option",
-        );
+        throw new Error(errorData.error || "Failed to save shipping option");
       }
 
       toast.success(
@@ -244,7 +246,9 @@ export default function AdminShipping() {
     } catch (error) {
       console.error("Error saving shipping option:", error);
       toast.error(
-        error instanceof Error ? error.message : "Failed to save shipping option",
+        error instanceof Error
+          ? error.message
+          : "Failed to save shipping option",
       );
     } finally {
       setIsSaving(false);
@@ -257,10 +261,13 @@ export default function AdminShipping() {
     setIsSaving(true);
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch(`/api/admin/shipping-options/${deletingId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        `/api/admin/shipping-options/${deletingId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
       if (!response.ok) {
         throw new Error("Failed to delete shipping option");
@@ -273,7 +280,9 @@ export default function AdminShipping() {
     } catch (error) {
       console.error("Error deleting shipping option:", error);
       toast.error(
-        error instanceof Error ? error.message : "Failed to delete shipping option",
+        error instanceof Error
+          ? error.message
+          : "Failed to delete shipping option",
       );
     } finally {
       setIsSaving(false);
@@ -321,7 +330,9 @@ export default function AdminShipping() {
             {isLoading ? (
               <div className="p-8 text-center">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400" />
-                <p className="mt-2 text-gray-400">Loading shipping options...</p>
+                <p className="mt-2 text-gray-400">
+                  Loading shipping options...
+                </p>
               </div>
             ) : shippingOptions.length === 0 ? (
               <div className="p-8 text-center">
@@ -474,7 +485,9 @@ export default function AdminShipping() {
                   Shipping Cost <span className="text-red-400">*</span>
                 </Label>
                 <div className="relative">
-                  <span className="absolute left-3 top-2.5 text-gray-400">$</span>
+                  <span className="absolute left-3 top-2.5 text-gray-400">
+                    $
+                  </span>
                   <Input
                     type="number"
                     name="cost"
@@ -566,7 +579,10 @@ export default function AdminShipping() {
                   onChange={handleInputChange}
                   className="w-4 h-4 rounded border-slate-600 bg-slate-700 cursor-pointer"
                 />
-                <Label htmlFor="is_active" className="text-white cursor-pointer">
+                <Label
+                  htmlFor="is_active"
+                  className="text-white cursor-pointer"
+                >
                   Active (available for customers)
                 </Label>
               </div>
@@ -600,8 +616,8 @@ export default function AdminShipping() {
                 Delete Shipping Option
               </AlertDialogTitle>
               <AlertDialogDescription className="text-gray-400">
-                Are you sure you want to delete this shipping option? This action
-                cannot be undone.
+                Are you sure you want to delete this shipping option? This
+                action cannot be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <div className="flex justify-end gap-3">
