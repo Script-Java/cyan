@@ -23,6 +23,7 @@ interface CartItem {
   image?: string;
   basePrice?: number;
   savePercentage?: number;
+  design_file_url?: string;
 }
 
 interface OrderData {
