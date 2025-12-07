@@ -12,6 +12,7 @@ import {
 import Header from "@/components/Header";
 import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import MobileAdminPanel from "@/components/MobileAdminPanel";
+import CollapsibleSection from "@/components/forms/CollapsibleSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
