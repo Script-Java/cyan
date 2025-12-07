@@ -921,14 +921,16 @@ export default function ProductForm() {
             </CollapsibleSection>
 
             {/* Product Options Section */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold flex items-center gap-2">
-                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                    <Plus className="w-5 h-5 text-green-400" />
-                  </div>
-                  Product Options & Variants
-                </h2>
+            <CollapsibleSection
+              title="Product Options & Variants"
+              icon={
+                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
+                  <Plus className="w-5 h-5 text-green-400" />
+                </div>
+              }
+              defaultOpen={false}
+            >
+              <div className="flex justify-end mb-4">
                 <Button
                   onClick={addOption}
                   className="bg-green-600 hover:bg-green-700 text-white gap-2"
@@ -1207,7 +1209,7 @@ export default function ProductForm() {
                   ))
                 )}
               </div>
-            </section>
+            </CollapsibleSection>
 
             {/* Shared Variants Section */}
             <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
