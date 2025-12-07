@@ -859,58 +859,57 @@ export default function ProductForm() {
             </CollapsibleSection>
 
             {/* Product Gallery Section */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            <CollapsibleSection
+              title="Product Gallery"
+              icon={
                 <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
                   <ImageIcon className="w-5 h-5 text-green-400" />
                 </div>
-                Product Gallery
-              </h2>
-
-              <div className="space-y-4">
-                <div className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center cursor-pointer hover:border-green-500/50 transition">
-                  <label className="cursor-pointer">
-                    <Upload className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                    <p className="text-white/80 font-medium">
-                      Click to upload images or drag and drop
-                    </p>
-                    <p className="text-white/40 text-sm mt-1">
-                      PNG, JPG, GIF up to 10MB
-                    </p>
-                    <input
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                    />
-                  </label>
-                </div>
-
-                {formData.images.length > 0 && (
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {formData.images.map((image) => (
-                      <div
-                        key={image.id}
-                        className="relative group bg-white/5 border border-white/10 rounded-lg overflow-hidden"
-                      >
-                        <img
-                          src={image.preview}
-                          alt={image.name}
-                          className="w-full h-32 object-cover"
-                        />
-                        <button
-                          onClick={() => removeImage(image.id)}
-                          className="absolute top-2 right-2 bg-red-600/80 hover:bg-red-700 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
+              }
+              defaultOpen={true}
+            >
+              <div className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center cursor-pointer hover:border-green-500/50 transition">
+                <label className="cursor-pointer">
+                  <Upload className="w-8 h-8 text-green-400 mx-auto mb-2" />
+                  <p className="text-white/80 font-medium">
+                    Click to upload images or drag and drop
+                  </p>
+                  <p className="text-white/40 text-sm mt-1">
+                    PNG, JPG, GIF up to 10MB
+                  </p>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                </label>
               </div>
-            </section>
+
+              {formData.images.length > 0 && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {formData.images.map((image) => (
+                    <div
+                      key={image.id}
+                      className="relative group bg-white/5 border border-white/10 rounded-lg overflow-hidden"
+                    >
+                      <img
+                        src={image.preview}
+                        alt={image.name}
+                        className="w-full h-32 object-cover"
+                      />
+                      <button
+                        onClick={() => removeImage(image.id)}
+                        className="absolute top-2 right-2 bg-red-600/80 hover:bg-red-700 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CollapsibleSection>
 
             {/* Product Options Section */}
             <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
