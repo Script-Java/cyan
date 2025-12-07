@@ -786,6 +786,21 @@ export default function CheckoutNew() {
 
                   {/* Store credit section disabled temporarily */}
 
+                  <ShippingOptionsSelector
+                    selectedOptionId={selectedShippingOptionId}
+                    onSelectionChange={(optionId, cost, deliveryDate) => {
+                      setSelectedShippingOptionId(optionId);
+                      setShippingCost(cost);
+                      setEstimatedDeliveryDate(deliveryDate);
+                      calculateOrderData(
+                        orderData.subtotal,
+                        appliedDiscount,
+                        appliedStoreCredit,
+                        cost,
+                      );
+                    }}
+                  />
+
                   {showPaymentForm && createdOrderId ? (
                     <div className="mb-3">
                       <SquarePaymentForm
