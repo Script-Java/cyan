@@ -331,7 +331,7 @@ export default function ProductPage() {
       return;
     }
 
-    if (product?.customer_upload_config.enabled && !designFile) {
+    if (product?.customer_upload_config.enabled && !designFileUrl) {
       toast({
         title: "Design Required",
         description: "Please upload your design to continue",
@@ -361,22 +361,10 @@ export default function ProductPage() {
       const discountedPricePerUnit = basePrice * (1 - savePercentage / 100);
       const totalPrice = discountedPricePerUnit * quantity;
 
-      // Convert design file to base64 data URL if present
-      let design_file_url: string | undefined;
-      if (designFile) {
-        const reader = new FileReader();
-        design_file_url = await new Promise((resolve) => {
-          reader.onload = (event) => {
-            resolve(event.target?.result as string);
-          };
-          reader.readAsDataURL(designFile);
-        });
-      }
-
       const cartItem = {
         productId: productId!,
         selectedOptions,
-        design_file_url,
+        design_file_url: designFileUrl,
         optionalFields,
         quantity,
         pricePerUnit: discountedPricePerUnit,
