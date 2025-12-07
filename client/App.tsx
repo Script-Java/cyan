@@ -127,6 +127,7 @@ export default function App() {
             />
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="/admin/support" element={<AdminSupport />} />
+            <Route path="/admin/shipping" element={<AdminShipping />} />
             <Route
               path="/admin/import-products"
               element={<AdminProductImport />}
