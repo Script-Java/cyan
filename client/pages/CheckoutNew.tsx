@@ -183,7 +183,14 @@ export default function CheckoutNew() {
 
         console.log("Loading cart with ID:", id);
 
-        const response = await fetch(`/api/cart/${id}`);
+        let response;
+        try {
+          response = await fetch(`/api/cart/${id}`);
+        } catch (fetchError) {
+          console.warn("Network error loading cart:", fetchError);
+          setIsLoading(false);
+          return;
+        }
 
         if (!response.ok) {
           console.error("Failed to load cart - HTTP error:", {
