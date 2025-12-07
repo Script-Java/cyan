@@ -413,6 +413,9 @@ export default function CheckoutNew() {
         customerId: customerId ? parseInt(customerId) : undefined,
         customerEmail: customerInfo.email,
         customerName: `${customerInfo.firstName} ${customerInfo.lastName}`,
+        ...(selectedShippingOptionId && {
+          shipping_option_id: selectedShippingOptionId,
+        }),
       };
 
       console.log("Checkout payload being sent:", {
