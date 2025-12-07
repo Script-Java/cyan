@@ -176,42 +176,110 @@ export default function ShippingOptionsSelector({
             day: "numeric",
           });
 
-          return (
-            <button
-              key={option.id}
-              onClick={() => handleSelectOption(option)}
-              className={`w-full flex items-center gap-2 p-3 rounded-lg border transition-all text-sm ${
-                selectedOptionId === option.id
-                  ? "bg-blue-500/20 border-blue-500/50"
-                  : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
-              }`}
-            >
-              <input
-                type="radio"
-                name="shipping-option"
-                value={option.id}
-                checked={selectedOptionId === option.id}
-                onChange={() => handleSelectOption(option)}
-                className="w-4 h-4 cursor-pointer flex-shrink-0"
-              />
+          const isExpanded = expandedOptionId === option.id;
+          const isSelected = selectedOptionId === option.id;
 
-              <div className="flex-1 text-left min-w-0">
-                <div className="flex items-baseline justify-between gap-2">
-                  <p className="text-white font-semibold truncate">
-                    {option.name}
+          return (
+            <div key={option.id} className="overflow-hidden rounded-lg border border-white/10">
+              <button
+                onClick={() => {
+                  setExpandedOptionId(isExpanded ? null : option.id);
+                  if (!isSelected) {
+                    handleSelectOption(option);
+                  }
+                }}
+                className={`w-full flex items-center gap-2 p-3 transition-all text-sm ${
+                  isSelected
+                    ? "bg-blue-500/20 border-blue-500/50"
+                    : "bg-white/5 hover:bg-white/10"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="shipping-option"
+                  value={option.id}
+                  checked={isSelected}
+                  onChange={() => handleSelectOption(option)}
+                  className="w-4 h-4 cursor-pointer flex-shrink-0"
+                />
+
+                <div className="flex-1 text-left min-w-0">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <p className="text-white font-semibold truncate">
+                      {option.name}
+                    </p>
+                    <span className="text-white font-bold flex-shrink-0 whitespace-nowrap">
+                      ${option.cost.toFixed(2)}
+                    </span>
+                  </div>
+                  <p className="text-xs text-white/60 line-clamp-1">
+                    {option.processing_time_days}d +{" "}
+                    {option.estimated_delivery_days_min}-
+                    {option.estimated_delivery_days_max}d = {formattedMinDate} to{" "}
+                    {formattedMaxDate}
                   </p>
-                  <span className="text-white font-bold flex-shrink-0 whitespace-nowrap">
-                    ${option.cost.toFixed(2)}
-                  </span>
                 </div>
-                <p className="text-xs text-white/60 line-clamp-1">
-                  {option.processing_time_days}d +{" "}
-                  {option.estimated_delivery_days_min}-
-                  {option.estimated_delivery_days_max}d = {formattedMinDate} to{" "}
-                  {formattedMaxDate}
-                </p>
-              </div>
-            </button>
+
+                <ChevronDown
+                  className={`w-4 h-4 text-white/40 flex-shrink-0 transition-transform ${
+                    isExpanded ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {isExpanded && (
+                <div className="border-t border-white/10 bg-white/5 p-3 space-y-3 text-xs text-white/70">
+                  <div className="space-y-2">
+                    <h5 className="font-semibold text-white text-sm">Timing Breakdown</h5>
+                    <div className="space-y-1">
+                      <div className="flex justify-between">
+                        <span>Processing</span>
+                        <span className="text-white font-medium">
+                          {option.processing_time_days} day
+                          {option.processing_time_days !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Shipping</span>
+                        <span className="text-white font-medium">
+                          {option.estimated_delivery_days_min}-{option.estimated_delivery_days_max} days
+                        </span>
+                      </div>
+                      <div className="border-t border-white/10 pt-1 flex justify-between">
+                        <span>Total</span>
+                        <span className="text-white font-medium">
+                          {option.processing_time_days +
+                            option.estimated_delivery_days_min}
+                          -
+                          {option.processing_time_days +
+                            option.estimated_delivery_days_max}{" "}
+                          days
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 border-t border-white/10 pt-2">
+                    <h5 className="font-semibold text-white text-sm">Estimated Delivery</h5>
+                    <div className="flex justify-between">
+                      <span>Earliest</span>
+                      <span className="text-green-400 font-medium">{formattedMinDate}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Latest</span>
+                      <span className="text-green-400 font-medium">{formattedMaxDate}</span>
+                    </div>
+                  </div>
+
+                  {option.description && (
+                    <div className="border-t border-white/10 pt-2">
+                      <h5 className="font-semibold text-white text-sm mb-1">Details</h5>
+                      <p className="text-white/60">{option.description}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           );
         })}
       </div>
