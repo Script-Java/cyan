@@ -157,6 +157,7 @@ interface OrderData {
   shipping_address?: any;
   items?: any[];
   bigcommerce_order_id?: number;
+  estimated_delivery_date?: string;
 }
 
 export async function createSupabaseOrder(
