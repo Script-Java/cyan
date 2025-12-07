@@ -126,6 +126,13 @@ import {
   handleGetServices,
 } from "./routes/shipping";
 import {
+  handleGetShippingOptions,
+  handleGetShippingOption,
+  handleCreateShippingOption,
+  handleUpdateShippingOption,
+  handleDeleteShippingOption,
+} from "./routes/admin-shipping";
+import {
   handleGetPublishedBlogs,
   handleGetBlogById,
   handleCreateBlog,
