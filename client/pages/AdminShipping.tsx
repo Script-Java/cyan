@@ -215,8 +215,8 @@ export default function AdminShipping() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          name: formData.name,
-          description: formData.description || null,
+          name: formData.name.trim(),
+          ...(formData.description && { description: formData.description.trim() }),
           cost: Number(formData.cost),
           processing_time_days: Number(formData.processing_time_days),
           estimated_delivery_days_min: Number(
