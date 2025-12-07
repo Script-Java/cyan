@@ -75,6 +75,7 @@ interface CartItem {
   productId: string;
   selectedOptions: { [optionId: string]: string };
   designFile?: File;
+  design_file_url?: string;
   optionalFields: { [fieldName: string]: string };
   quantity: number;
   pricePerUnit: number;
@@ -94,7 +95,9 @@ export default function ProductPage() {
     [optionId: string]: string;
   }>({});
   const [designFile, setDesignFile] = useState<File | null>(null);
+  const [designFileUrl, setDesignFileUrl] = useState<string | null>(null);
   const [designPreview, setDesignPreview] = useState<string | null>(null);
+  const [isUploadingDesign, setIsUploadingDesign] = useState(false);
   const [optionalFields, setOptionalFields] = useState<{
     [fieldName: string]: string;
   }>({});
@@ -180,12 +183,48 @@ export default function ProductPage() {
     const reader = new FileReader();
     reader.onload = (event) => {
       setDesignPreview(event.target?.result as string);
+      uploadDesignToSupabase(file, event.target?.result as string);
     };
     reader.readAsDataURL(file);
   };
 
+  const uploadDesignToSupabase = async (file: File, base64Data: string) => {
+    setIsUploadingDesign(true);
+    try {
+      const response = await fetch("/api/designs/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fileName: file.name,
+          fileData: base64Data,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload design");
+      }
+
+      const result = await response.json();
+      setDesignFileUrl(result.file.url);
+    } catch (error) {
+      console.error("Error uploading design:", error);
+      toast({
+        title: "Upload Failed",
+        description: "Failed to upload design to server. Please try again.",
+        variant: "destructive",
+      });
+      setDesignFile(null);
+      setDesignPreview(null);
+    } finally {
+      setIsUploadingDesign(false);
+    }
+  };
+
   const removeDesign = () => {
     setDesignFile(null);
+    setDesignFileUrl(null);
     setDesignPreview(null);
   };
 
