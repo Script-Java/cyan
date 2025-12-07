@@ -63,6 +63,7 @@ interface SquareCheckoutRequest {
     product_name?: string;
     quantity: number;
     price?: number;
+    design_file_url?: string;
   }>;
   shippingAddress: {
     firstName: string;
