@@ -19,6 +19,7 @@ import {
   ArrowRight,
   BookOpen,
   FileText,
+  Truck,
 } from "lucide-react";
 
 interface OrderItem {
