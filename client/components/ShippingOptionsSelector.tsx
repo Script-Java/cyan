@@ -136,7 +136,7 @@ export default function ShippingOptionsSelector({
             <button
               key={option.id}
               onClick={() => handleSelectOption(option)}
-              className={`w-full flex items-start gap-4 p-4 rounded-lg border transition-all ${
+              className={`w-full flex items-center gap-2 p-3 rounded-lg border transition-all text-sm ${
                 selectedOptionId === option.id
                   ? "bg-blue-500/20 border-blue-500/50"
                   : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
@@ -148,37 +148,20 @@ export default function ShippingOptionsSelector({
                 value={option.id}
                 checked={selectedOptionId === option.id}
                 onChange={() => handleSelectOption(option)}
-                className="w-4 h-4 mt-1 cursor-pointer flex-shrink-0"
+                className="w-4 h-4 cursor-pointer flex-shrink-0"
               />
 
-              <div className="flex-1 text-left">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white font-semibold">{option.name}</p>
-                    {option.description && (
-                      <p className="text-white/60 text-sm">{option.description}</p>
-                    )}
-                  </div>
-                  <span className="text-white font-bold flex-shrink-0">
+              <div className="flex-1 text-left min-w-0">
+                <div className="flex items-baseline justify-between gap-2">
+                  <p className="text-white font-semibold truncate">{option.name}</p>
+                  <span className="text-white font-bold flex-shrink-0 whitespace-nowrap">
                     ${option.cost.toFixed(2)}
                   </span>
                 </div>
-
-                <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-2 text-xs text-white/60">
-                  <span>
-                    Processing: {option.processing_time_days} day
-                    {option.processing_time_days !== 1 ? "s" : ""}
-                  </span>
-                  <span className="hidden sm:inline">•</span>
-                  <span>
-                    Delivery: {option.estimated_delivery_days_min}-
-                    {option.estimated_delivery_days_max} days
-                  </span>
-                  <span className="hidden sm:inline">•</span>
-                  <span className="text-green-400 font-semibold">
-                    Arrives by {formattedDate}
-                  </span>
-                </div>
+                <p className="text-xs text-white/60 line-clamp-1">
+                  {option.processing_time_days}d prep + {option.estimated_delivery_days_min}-
+                  {option.estimated_delivery_days_max}d shipping • {formattedDate}
+                </p>
               </div>
             </button>
           );
