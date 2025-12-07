@@ -530,16 +530,40 @@ export default function CheckoutNew() {
                     className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
                   >
                     <div className="flex gap-6">
-                      <div className="w-48 h-48 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center flex-shrink-0">
-                        {item.image ? (
-                          <img
-                            src={item.image}
-                            alt={item.product_name}
-                            className="w-full h-full object-cover rounded-xl"
-                          />
-                        ) : (
-                          <div className="text-gray-500 text-center">
-                            <p className="text-sm">No image</p>
+                      <div className="flex flex-col gap-4 flex-shrink-0">
+                        <div className="w-48 h-48 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center">
+                          {item.image ? (
+                            <img
+                              src={item.image}
+                              alt={item.product_name}
+                              className="w-full h-full object-cover rounded-xl"
+                            />
+                          ) : (
+                            <div className="text-gray-500 text-center">
+                              <p className="text-sm">No image</p>
+                            </div>
+                          )}
+                        </div>
+                        {item.design_file_url && (
+                          <div className="w-48 bg-white/5 border border-white/10 rounded-xl overflow-hidden flex items-center justify-center">
+                            {item.design_file_url.match(
+                              /\.(jpg|jpeg|png|gif|webp)$/i,
+                            ) ||
+                            item.design_file_url.startsWith("data:image") ? (
+                              <div className="w-full h-auto p-2">
+                                <img
+                                  src={item.design_file_url}
+                                  alt="Design thumbnail"
+                                  className="w-full h-auto object-contain rounded-lg"
+                                />
+                              </div>
+                            ) : (
+                              <div className="p-4 text-center">
+                                <p className="text-xs text-white/60">
+                                  Design file uploaded
+                                </p>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
