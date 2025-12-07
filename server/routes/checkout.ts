@@ -128,11 +128,36 @@ export const handleCheckout: RequestHandler = async (req, res) => {
     const tax = checkoutData.total_tax || 0;
     const shipping = checkoutData.total_shipping || 0;
 
+    // Calculate estimated delivery date based on shipping option
+    let estimatedDeliveryDate: string | null = null;
+    if (checkoutData.shipping_option_id) {
+      try {
+        const { data: shippingOption } = await supabase
+          .from("shipping_options")
+          .select("processing_time_days, estimated_delivery_days_min")
+          .eq("id", checkoutData.shipping_option_id)
+          .single();
+
+        if (shippingOption) {
+          const processingDays = shippingOption.processing_time_days || 0;
+          const deliveryDays = shippingOption.estimated_delivery_days_min || 1;
+          const totalDays = processingDays + deliveryDays;
+
+          const deliveryDate = new Date();
+          deliveryDate.setDate(deliveryDate.getDate() + totalDays);
+          estimatedDeliveryDate = deliveryDate.toISOString().split("T")[0];
+        }
+      } catch (error) {
+        console.warn("Failed to fetch shipping option for delivery date:", error);
+      }
+    }
+
     // Create order in Supabase (PRIMARY - must succeed)
     console.log("Creating order in Supabase:", {
       customerId,
       total,
       productCount: checkoutData.products.length,
+      estimatedDeliveryDate,
     });
 
     const supabaseOrder = await createSupabaseOrder({
@@ -145,6 +170,7 @@ export const handleCheckout: RequestHandler = async (req, res) => {
       billing_address: billingAddr,
       shipping_address: shippingAddr,
       items: checkoutData.products,
+      estimated_delivery_date: estimatedDeliveryDate,
     });
 
     // Create order items in Supabase
