@@ -32,7 +32,9 @@ export default function ShippingOptionsSelector({
         const response = await fetch("/api/shipping-options");
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch shipping options: ${response.status} ${response.statusText}`);
+          const errorData = await response.json().catch(() => ({}));
+          const errorMsg = errorData.error || `HTTP ${response.status}`;
+          throw new Error(`Failed to fetch shipping options: ${errorMsg}`);
         }
 
         const data = await response.json();
