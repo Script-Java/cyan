@@ -849,7 +849,7 @@ export default function ProductForm() {
                     handleInputChange("description", e.target.value)
                   }
                   placeholder="Enter product description"
-                  className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-32"
+                  className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-20"
                 />
               </div>
             </CollapsibleSection>
@@ -1626,7 +1626,7 @@ export default function ProductForm() {
                       handleInputChange("textArea", e.target.value)
                     }
                     placeholder="Enter any additional product information"
-                    className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-32"
+                    className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-20"
                   />
                 </div>
               </div>
