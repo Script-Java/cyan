@@ -319,8 +319,7 @@ export default function ProductPage() {
       const savePercentage = tierInfo?.discountPercent || 0;
 
       // Calculate discounted price based on quantity tier
-      const discountedPricePerUnit =
-        basePrice * (1 - savePercentage / 100);
+      const discountedPricePerUnit = basePrice * (1 - savePercentage / 100);
       const totalPrice = discountedPricePerUnit * quantity;
 
       const cartItem: CartItem = {

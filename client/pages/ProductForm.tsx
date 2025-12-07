@@ -124,7 +124,9 @@ export default function ProductForm() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [draggedOption, setDraggedOption] = useState<string | null>(null);
-  const [expandedOptionValues, setExpandedOptionValues] = useState<Set<string>>(new Set());
+  const [expandedOptionValues, setExpandedOptionValues] = useState<Set<string>>(
+    new Set(),
+  );
 
   const [formData, setFormData] = useState<ProductFormData>({
     name: "",
@@ -1087,7 +1089,9 @@ export default function ProductForm() {
                                 </Button>
                                 <ChevronDown
                                   className={`w-4 h-4 transition-transform duration-300 ${
-                                    expandedOptionValues.has(option.id) ? "rotate-180" : ""
+                                    expandedOptionValues.has(option.id)
+                                      ? "rotate-180"
+                                      : ""
                                   }`}
                                 />
                               </div>
