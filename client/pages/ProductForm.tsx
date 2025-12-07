@@ -1811,65 +1811,64 @@ export default function ProductForm() {
             </section>
 
             {/* SEO Section */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            <CollapsibleSection
+              title="SEO Settings"
+              icon={
                 <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
                   <ImageIcon className="w-5 h-5 text-green-400" />
                 </div>
-                SEO Settings
-              </h2>
-
-              <div className="space-y-4">
-                <div>
-                  <Label className="text-white/80 mb-2 block">
-                    Product URL
-                  </Label>
-                  <Input
-                    value={formData.seo.productUrl}
-                    onChange={(e) =>
-                      handleSEOChange("productUrl", e.target.value)
-                    }
-                    placeholder="product-name"
-                    className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                  />
-                  <p className="text-white/40 text-sm mt-1">
-                    Use hyphens to separate words
-                  </p>
-                </div>
-
-                <div>
-                  <Label className="text-white/80 mb-2 block">Page Title</Label>
-                  <Input
-                    value={formData.seo.pageTitle}
-                    onChange={(e) =>
-                      handleSEOChange("pageTitle", e.target.value)
-                    }
-                    placeholder="Product Name - Your Store"
-                    className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                  />
-                  <p className="text-white/40 text-sm mt-1">
-                    Recommended length: 50-60 characters
-                  </p>
-                </div>
-
-                <div>
-                  <Label className="text-white/80 mb-2 block">
-                    Meta Description
-                  </Label>
-                  <Textarea
-                    value={formData.seo.metaDescription}
-                    onChange={(e) =>
-                      handleSEOChange("metaDescription", e.target.value)
-                    }
-                    placeholder="Brief description of the product for search engines"
-                    className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-20"
-                  />
-                  <p className="text-white/40 text-sm mt-1">
-                    Recommended length: 150-160 characters
-                  </p>
-                </div>
+              }
+              defaultOpen={false}
+            >
+              <div>
+                <Label className="text-white/80 mb-2 block">
+                  Product URL
+                </Label>
+                <Input
+                  value={formData.seo.productUrl}
+                  onChange={(e) =>
+                    handleSEOChange("productUrl", e.target.value)
+                  }
+                  placeholder="product-name"
+                  className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                />
+                <p className="text-white/40 text-sm mt-1">
+                  Use hyphens to separate words
+                </p>
               </div>
-            </section>
+
+              <div>
+                <Label className="text-white/80 mb-2 block">Page Title</Label>
+                <Input
+                  value={formData.seo.pageTitle}
+                  onChange={(e) =>
+                    handleSEOChange("pageTitle", e.target.value)
+                  }
+                  placeholder="Product Name - Your Store"
+                  className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                />
+                <p className="text-white/40 text-sm mt-1">
+                  Recommended length: 50-60 characters
+                </p>
+              </div>
+
+              <div>
+                <Label className="text-white/80 mb-2 block">
+                  Meta Description
+                </Label>
+                <Textarea
+                  value={formData.seo.metaDescription}
+                  onChange={(e) =>
+                    handleSEOChange("metaDescription", e.target.value)
+                  }
+                  placeholder="Brief description of the product for search engines"
+                  className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-20"
+                />
+                <p className="text-white/40 text-sm mt-1">
+                  Recommended length: 150-160 characters
+                </p>
+              </div>
+            </CollapsibleSection>
 
             {/* Categories Section */}
             <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
