@@ -824,9 +824,7 @@ export default function ProductForm() {
               </div>
 
               <div>
-                <Label className="text-white/80 mb-2 block">
-                  Weight (lb)
-                </Label>
+                <Label className="text-white/80 mb-2 block">Weight (lb)</Label>
                 <Input
                   type="number"
                   step="0.01"
@@ -844,9 +842,7 @@ export default function ProductForm() {
               </div>
 
               <div>
-                <Label className="text-white/80 mb-2 block">
-                  Description
-                </Label>
+                <Label className="text-white/80 mb-2 block">Description</Label>
                 <Textarea
                   value={formData.description}
                   onChange={(e) =>
@@ -1504,41 +1500,38 @@ export default function ProductForm() {
                     </Label>
                     <div className="bg-white/5 border border-white/10 rounded-lg p-4">
                       <div className="space-y-2">
-                        {["png", "jpg", "jpeg", "gif", "svg"].map(
-                          (format) => (
-                            <label
-                              key={format}
-                              className="flex items-center gap-2 cursor-pointer"
-                            >
-                              <input
-                                type="checkbox"
-                                checked={formData.customerUploadConfig.allowedFormats.includes(
-                                  format,
-                                )}
-                                onChange={(e) => {
-                                  const formats =
-                                    formData.customerUploadConfig
-                                      .allowedFormats;
-                                  if (e.target.checked) {
-                                    updateCustomerUploadConfig(
-                                      "allowedFormats",
-                                      [...formats, format],
-                                    );
-                                  } else {
-                                    updateCustomerUploadConfig(
-                                      "allowedFormats",
-                                      formats.filter((f) => f !== format),
-                                    );
-                                  }
-                                }}
-                                className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
-                              />
-                              <span className="text-white/80 uppercase text-sm">
-                                {format}
-                              </span>
-                            </label>
-                          ),
-                        )}
+                        {["png", "jpg", "jpeg", "gif", "svg"].map((format) => (
+                          <label
+                            key={format}
+                            className="flex items-center gap-2 cursor-pointer"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={formData.customerUploadConfig.allowedFormats.includes(
+                                format,
+                              )}
+                              onChange={(e) => {
+                                const formats =
+                                  formData.customerUploadConfig.allowedFormats;
+                                if (e.target.checked) {
+                                  updateCustomerUploadConfig("allowedFormats", [
+                                    ...formats,
+                                    format,
+                                  ]);
+                                } else {
+                                  updateCustomerUploadConfig(
+                                    "allowedFormats",
+                                    formats.filter((f) => f !== format),
+                                  );
+                                }
+                              }}
+                              className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
+                            />
+                            <span className="text-white/80 uppercase text-sm">
+                              {format}
+                            </span>
+                          </label>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -1820,9 +1813,7 @@ export default function ProductForm() {
               defaultOpen={false}
             >
               <div>
-                <Label className="text-white/80 mb-2 block">
-                  Product URL
-                </Label>
+                <Label className="text-white/80 mb-2 block">Product URL</Label>
                 <Input
                   value={formData.seo.productUrl}
                   onChange={(e) =>
@@ -1840,9 +1831,7 @@ export default function ProductForm() {
                 <Label className="text-white/80 mb-2 block">Page Title</Label>
                 <Input
                   value={formData.seo.pageTitle}
-                  onChange={(e) =>
-                    handleSEOChange("pageTitle", e.target.value)
-                  }
+                  onChange={(e) => handleSEOChange("pageTitle", e.target.value)}
                   placeholder="Product Name - Your Store"
                   className="bg-white/5 border-white/10 text-white placeholder-white/40"
                 />
