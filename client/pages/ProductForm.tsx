@@ -1065,142 +1065,159 @@ export default function ProductForm() {
 
                           {/* Variant Values */}
                           <div className="bg-white/10 rounded-lg p-4 space-y-3">
-                            <div className="flex items-center justify-between">
+                            <button
+                              onClick={() => toggleOptionValues(option.id)}
+                              className="w-full flex items-center justify-between hover:bg-white/5 rounded p-2 transition"
+                            >
                               <h4 className="text-white font-semibold">
                                 Option Values
                               </h4>
-                              <Button
-                                onClick={() => addVariantValue(option.id)}
-                                size="sm"
-                                className="bg-blue-600 hover:bg-blue-700 text-white gap-1"
-                              >
-                                <Plus className="w-3 h-3" />
-                                Add Value
-                              </Button>
-                            </div>
-
-                            {option.values.length === 0 ? (
-                              <p className="text-white/40 text-sm">
-                                Add values for this option
-                              </p>
-                            ) : (
-                              <div className="space-y-3">
-                                {option.values.map((value) => (
-                                  <div
-                                    key={value.id}
-                                    className="bg-black/40 rounded-lg p-3 space-y-3"
-                                  >
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                      <div>
-                                        <Label className="text-white/70 text-sm mb-1 block">
-                                          Value Name
-                                        </Label>
-                                        <Input
-                                          value={value.name}
-                                          onChange={(e) =>
-                                            updateVariantValue(
-                                              option.id,
-                                              value.id,
-                                              "name",
-                                              e.target.value,
-                                            )
-                                          }
-                                          placeholder="e.g., Satin, 5 inches"
-                                          className="bg-white/5 border-white/10 text-white placeholder-white/40 text-sm"
-                                        />
-                                      </div>
-                                      <div>
-                                        <Label className="text-white/70 text-sm mb-1 block">
-                                          Price Modifier ($)
-                                        </Label>
-                                        <Input
-                                          type="number"
-                                          step="0.01"
-                                          value={value.priceModifier || ""}
-                                          onChange={(e) =>
-                                            updateVariantValue(
-                                              option.id,
-                                              value.id,
-                                              "priceModifier",
-                                              e.target.value
-                                                ? parseFloat(e.target.value)
-                                                : 0,
-                                            )
-                                          }
-                                          placeholder="0.00"
-                                          className="bg-white/5 border-white/10 text-white placeholder-white/40 text-sm"
-                                        />
-                                        <p className="text-white/40 text-xs mt-1">
-                                          Add to base price
-                                        </p>
-                                      </div>
-                                    </div>
-
-                                    {(option.type === "swatch" ||
-                                      option.type === "radio") && (
-                                      <div className="space-y-2">
-                                        <Label className="text-white/70 text-sm block">
-                                          Swatch Image (Optional)
-                                        </Label>
-                                        {value.image ? (
-                                          <div className="flex items-center gap-2">
-                                            <img
-                                              src={value.image.preview}
-                                              alt={value.image.name}
-                                              className="w-12 h-12 rounded object-cover"
-                                            />
-                                            <button
-                                              onClick={() =>
-                                                removeVariantImage(
-                                                  option.id,
-                                                  value.id,
-                                                )
-                                              }
-                                              className="text-red-400 hover:text-red-300 text-sm"
-                                            >
-                                              Remove
-                                            </button>
-                                          </div>
-                                        ) : (
-                                          <label className="flex items-center justify-center gap-2 border border-dashed border-white/20 rounded p-2 cursor-pointer hover:border-white/40 transition">
-                                            <Upload className="w-4 h-4 text-white/60" />
-                                            <span className="text-white/60 text-sm">
-                                              Upload swatch
-                                            </span>
-                                            <input
-                                              type="file"
-                                              accept="image/*"
-                                              onChange={(e) =>
-                                                uploadVariantImage(
-                                                  option.id,
-                                                  value.id,
-                                                  e,
-                                                )
-                                              }
-                                              className="hidden"
-                                            />
-                                          </label>
-                                        )}
-                                      </div>
-                                    )}
-
-                                    <div className="flex justify-end">
-                                      <button
-                                        onClick={() =>
-                                          removeVariantValue(
-                                            option.id,
-                                            value.id,
-                                          )
-                                        }
-                                        className="text-red-400 hover:text-red-300 text-sm flex items-center gap-1"
-                                      >
-                                        <X className="w-3 h-3" />
-                                        Remove Value
-                                      </button>
-                                    </div>
-                                  </div>
-                                ))}
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    addVariantValue(option.id);
+                                  }}
+                                  size="sm"
+                                  className="bg-blue-600 hover:bg-blue-700 text-white gap-1"
+                                >
+                                  <Plus className="w-3 h-3" />
+                                  Add Value
+                                </Button>
+                                <ChevronDown
+                                  className={`w-4 h-4 transition-transform duration-300 ${
+                                    expandedOptionValues.has(option.id) ? "rotate-180" : ""
+                                  }`}
+                                />
                               </div>
+                            </button>
+
+                            {expandedOptionValues.has(option.id) && (
+                              <>
+                                {option.values.length === 0 ? (
+                                  <p className="text-white/40 text-sm">
+                                    Add values for this option
+                                  </p>
+                                ) : (
+                                  <div className="space-y-3">
+                                    {option.values.map((value) => (
+                                      <div
+                                        key={value.id}
+                                        className="bg-black/40 rounded-lg p-3 space-y-3"
+                                      >
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                          <div>
+                                            <Label className="text-white/70 text-sm mb-1 block">
+                                              Value Name
+                                            </Label>
+                                            <Input
+                                              value={value.name}
+                                              onChange={(e) =>
+                                                updateVariantValue(
+                                                  option.id,
+                                                  value.id,
+                                                  "name",
+                                                  e.target.value,
+                                                )
+                                              }
+                                              placeholder="e.g., Satin, 5 inches"
+                                              className="bg-white/5 border-white/10 text-white placeholder-white/40 text-sm"
+                                            />
+                                          </div>
+                                          <div>
+                                            <Label className="text-white/70 text-sm mb-1 block">
+                                              Price Modifier ($)
+                                            </Label>
+                                            <Input
+                                              type="number"
+                                              step="0.01"
+                                              value={value.priceModifier || ""}
+                                              onChange={(e) =>
+                                                updateVariantValue(
+                                                  option.id,
+                                                  value.id,
+                                                  "priceModifier",
+                                                  e.target.value
+                                                    ? parseFloat(e.target.value)
+                                                    : 0,
+                                                )
+                                              }
+                                              placeholder="0.00"
+                                              className="bg-white/5 border-white/10 text-white placeholder-white/40 text-sm"
+                                            />
+                                            <p className="text-white/40 text-xs mt-1">
+                                              Add to base price
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        {(option.type === "swatch" ||
+                                          option.type === "radio") && (
+                                          <div className="space-y-2">
+                                            <Label className="text-white/70 text-sm block">
+                                              Swatch Image (Optional)
+                                            </Label>
+                                            {value.image ? (
+                                              <div className="flex items-center gap-2">
+                                                <img
+                                                  src={value.image.preview}
+                                                  alt={value.image.name}
+                                                  className="w-12 h-12 rounded object-cover"
+                                                />
+                                                <button
+                                                  onClick={() =>
+                                                    removeVariantImage(
+                                                      option.id,
+                                                      value.id,
+                                                    )
+                                                  }
+                                                  className="text-red-400 hover:text-red-300 text-sm"
+                                                >
+                                                  Remove
+                                                </button>
+                                              </div>
+                                            ) : (
+                                              <label className="flex items-center justify-center gap-2 border border-dashed border-white/20 rounded p-2 cursor-pointer hover:border-white/40 transition">
+                                                <Upload className="w-4 h-4 text-white/60" />
+                                                <span className="text-white/60 text-sm">
+                                                  Upload swatch
+                                                </span>
+                                                <input
+                                                  type="file"
+                                                  accept="image/*"
+                                                  onChange={(e) =>
+                                                    uploadVariantImage(
+                                                      option.id,
+                                                      value.id,
+                                                      e,
+                                                    )
+                                                  }
+                                                  className="hidden"
+                                                />
+                                              </label>
+                                            )}
+                                          </div>
+                                        )}
+
+                                        <div className="flex justify-end">
+                                          <button
+                                            onClick={() =>
+                                              removeVariantValue(
+                                                option.id,
+                                                value.id,
+                                              )
+                                            }
+                                            className="text-red-400 hover:text-red-300 text-sm flex items-center gap-1"
+                                          >
+                                            <X className="w-3 h-3" />
+                                            Remove Value
+                                          </button>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              </>
                             )}
                           </div>
                         </div>
