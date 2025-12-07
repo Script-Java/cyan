@@ -180,7 +180,10 @@ export default function ShippingOptionsSelector({
           const isSelected = selectedOptionId === option.id;
 
           return (
-            <div key={option.id} className="overflow-hidden rounded-lg border border-white/10">
+            <div
+              key={option.id}
+              className="overflow-hidden rounded-lg border border-white/10"
+            >
               <button
                 onClick={() => {
                   setExpandedOptionId(isExpanded ? null : option.id);
@@ -215,8 +218,8 @@ export default function ShippingOptionsSelector({
                   <p className="text-xs text-white/60 line-clamp-1">
                     {option.processing_time_days}d +{" "}
                     {option.estimated_delivery_days_min}-
-                    {option.estimated_delivery_days_max}d = {formattedMinDate} to{" "}
-                    {formattedMaxDate}
+                    {option.estimated_delivery_days_max}d = {formattedMinDate}{" "}
+                    to {formattedMaxDate}
                   </p>
                 </div>
 
@@ -230,7 +233,9 @@ export default function ShippingOptionsSelector({
               {isExpanded && (
                 <div className="border-t border-white/10 bg-white/5 p-3 space-y-3 text-xs text-white/70">
                   <div className="space-y-2">
-                    <h5 className="font-semibold text-white text-sm">Timing Breakdown</h5>
+                    <h5 className="font-semibold text-white text-sm">
+                      Timing Breakdown
+                    </h5>
                     <div className="space-y-1">
                       <div className="flex justify-between">
                         <span>Processing</span>
@@ -242,7 +247,8 @@ export default function ShippingOptionsSelector({
                       <div className="flex justify-between">
                         <span>Shipping</span>
                         <span className="text-white font-medium">
-                          {option.estimated_delivery_days_min}-{option.estimated_delivery_days_max} days
+                          {option.estimated_delivery_days_min}-
+                          {option.estimated_delivery_days_max} days
                         </span>
                       </div>
                       <div className="border-t border-white/10 pt-1 flex justify-between">
@@ -260,20 +266,28 @@ export default function ShippingOptionsSelector({
                   </div>
 
                   <div className="space-y-1 border-t border-white/10 pt-2">
-                    <h5 className="font-semibold text-white text-sm">Estimated Delivery</h5>
+                    <h5 className="font-semibold text-white text-sm">
+                      Estimated Delivery
+                    </h5>
                     <div className="flex justify-between">
                       <span>Earliest</span>
-                      <span className="text-green-400 font-medium">{formattedMinDate}</span>
+                      <span className="text-green-400 font-medium">
+                        {formattedMinDate}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Latest</span>
-                      <span className="text-green-400 font-medium">{formattedMaxDate}</span>
+                      <span className="text-green-400 font-medium">
+                        {formattedMaxDate}
+                      </span>
                     </div>
                   </div>
 
                   {option.description && (
                     <div className="border-t border-white/10 pt-2">
-                      <h5 className="font-semibold text-white text-sm mb-1">Details</h5>
+                      <h5 className="font-semibold text-white text-sm mb-1">
+                        Details
+                      </h5>
                       <p className="text-white/60">{option.description}</p>
                     </div>
                   )}
