@@ -45,6 +45,7 @@ interface CheckoutRequest {
   total_tax?: number;
   total_shipping?: number;
   status_id?: number;
+  shipping_option_id?: number;
 }
 
 /**
