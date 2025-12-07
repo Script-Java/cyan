@@ -56,6 +56,14 @@ export default function CheckoutNew() {
   const { storeCredit: availableStoreCredit, fetchStoreCredit } =
     useStoreCredit();
 
+  const [selectedShippingOptionId, setSelectedShippingOptionId] = useState<
+    number | null
+  >(null);
+  const [shippingCost, setShippingCost] = useState(0);
+  const [estimatedDeliveryDate, setEstimatedDeliveryDate] = useState<
+    string | null
+  >(null);
+
   const [orderData, setOrderData] = useState<OrderData>({
     subtotal: 0,
     tax: 0,
