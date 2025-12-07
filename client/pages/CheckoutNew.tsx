@@ -829,29 +829,30 @@ export default function CheckoutNew() {
                     </Button>
                   )}
 
-                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                    <h4 className="text-white font-bold mb-4 flex items-center gap-2">
-                      📦 Estimated Delivery
-                    </h4>
-                    <div className="space-y-3 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-white/60">Processing</span>
-                        <span>2 days</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-white/60">Shipping</span>
-                        <span>4 days</span>
-                      </div>
-                      <div className="border-t border-white/10 pt-3 flex justify-between font-bold">
+                  {estimatedDeliveryDate && (
+                    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                      <h4 className="text-white font-bold mb-4 flex items-center gap-2">
+                        📦 Estimated Delivery
+                      </h4>
+                      <div className="border-t border-white/10 pt-3 flex justify-between font-bold text-lg">
                         <span>Delivery by</span>
-                        <span>Mon, Dec 8</span>
+                        <span className="text-green-400">
+                          {new Date(estimatedDeliveryDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              weekday: "short",
+                              month: "short",
+                              day: "numeric",
+                            },
+                          )}
+                        </span>
                       </div>
+                      <p className="text-xs text-white/40 mt-3">
+                        * Delivery may not occur on weekends. Dates are
+                        automatically moved to the next business day.
+                      </p>
                     </div>
-                    <p className="text-xs text-white/40 mt-3">
-                      * UPS may not deliver on weekends. Delivery dates are
-                      automatically moved to the next business day.
-                    </p>
-                  </div>
+                  )}
 
                   <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl">
                     <button
