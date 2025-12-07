@@ -9,12 +9,10 @@ interface UploadRequest {
   orderId?: number;
 }
 
-export const handleUploadCustomerDesign: RequestHandler = async (
-  req,
-  res,
-) => {
+export const handleUploadCustomerDesign: RequestHandler = async (req, res) => {
   try {
-    const { fileName, fileData, customerId, orderId } = req.body as UploadRequest;
+    const { fileName, fileData, customerId, orderId } =
+      req.body as UploadRequest;
 
     if (!fileName || !fileData) {
       return res.status(400).json({

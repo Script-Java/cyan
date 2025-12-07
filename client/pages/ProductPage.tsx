@@ -894,7 +894,12 @@ export default function ProductPage() {
           <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6">
             <Button
               onClick={handleAddToCart}
-              disabled={isAddingToCart || isUploadingDesign || !product.availability || !designFileUrl}
+              disabled={
+                isAddingToCart ||
+                isUploadingDesign ||
+                !product.availability ||
+                !designFileUrl
+              }
               className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-4 text-lg font-semibold gap-2 rounded-xl"
             >
               <Upload className="w-5 h-5" />
