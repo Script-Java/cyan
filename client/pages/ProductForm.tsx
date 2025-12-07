@@ -761,8 +761,8 @@ export default function ProductForm() {
         <div
           className="py-8"
           style={{
-            margin: "51px 200px 0 500px",
-            padding: "32px 26px 32px 199px",
+            margin: "54px auto 0 auto",
+            padding: "32px 26px",
           }}
         >
           <div className="max-w-4xl">
