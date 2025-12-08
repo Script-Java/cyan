@@ -68,7 +68,6 @@ export const handleUploadCustomerDesign: RequestHandler = async (req, res) => {
 export const handleGetUploadedFile: RequestHandler = async (req, res) => {
   try {
     const { fileId } = req.params;
-    const customerId = (req as any).customerId;
 
     if (!fileId) {
       return res.status(400).json({
@@ -76,40 +75,26 @@ export const handleGetUploadedFile: RequestHandler = async (req, res) => {
       });
     }
 
-    const { data, error } = await supabase.storage
-      .from("customer-uploads")
-      .list(`customer-designs/${customerId || "guest"}`);
+    try {
+      const resource = await cloudinary.api.resource(fileId);
 
-    if (error) {
-      console.error("Error listing files:", error);
-      return res.status(500).json({
-        error: "Failed to retrieve file",
+      res.json({
+        success: true,
+        file: {
+          id: resource.public_id,
+          fileName: resource.filename || fileId,
+          url: resource.secure_url,
+          uploadedAt: resource.created_at,
+        },
       });
+    } catch (error: any) {
+      if (error.message?.includes("not found")) {
+        return res.status(404).json({
+          error: "File not found",
+        });
+      }
+      throw error;
     }
-
-    const file = data?.find((f) => f.name.includes(fileId));
-
-    if (!file) {
-      return res.status(404).json({
-        error: "File not found",
-      });
-    }
-
-    const {
-      data: { publicUrl },
-    } = supabase.storage
-      .from("customer-uploads")
-      .getPublicUrl(`customer-designs/${customerId || "guest"}/${file.name}`);
-
-    res.json({
-      success: true,
-      file: {
-        id: fileId,
-        fileName: file.name,
-        url: publicUrl,
-        uploadedAt: file.created_at,
-      },
-    });
   } catch (error) {
     console.error("Get file error:", error);
     res.status(500).json({
@@ -120,25 +105,15 @@ export const handleGetUploadedFile: RequestHandler = async (req, res) => {
 
 export const handleDeleteUploadedFile: RequestHandler = async (req, res) => {
   try {
-    const { filePath } = req.body;
-    const customerId = (req as any).customerId;
+    const { fileId } = req.params;
 
-    if (!filePath) {
+    if (!fileId) {
       return res.status(400).json({
-        error: "File path required",
+        error: "File ID required",
       });
     }
 
-    const { error } = await supabase.storage
-      .from("customer-uploads")
-      .remove([filePath]);
-
-    if (error) {
-      console.error("Error deleting file:", error);
-      return res.status(500).json({
-        error: "Failed to delete file",
-      });
-    }
+    await cloudinary.uploader.destroy(fileId);
 
     res.json({
       success: true,
@@ -151,25 +126,3 @@ export const handleDeleteUploadedFile: RequestHandler = async (req, res) => {
     });
   }
 };
-
-function getContentType(extension: string): string {
-  const contentTypes: { [key: string]: string } = {
-    pdf: "application/pdf",
-    jpg: "image/jpeg",
-    jpeg: "image/jpeg",
-    png: "image/png",
-    gif: "image/gif",
-    webp: "image/webp",
-    svg: "image/svg+xml",
-    zip: "application/zip",
-    txt: "text/plain",
-    doc: "application/msword",
-    docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    xls: "application/vnd.ms-excel",
-    xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    ppt: "application/vnd.ms-powerpoint",
-    pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-  };
-
-  return contentTypes[extension.toLowerCase()] || "application/octet-stream";
-}
