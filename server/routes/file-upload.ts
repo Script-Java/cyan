@@ -14,10 +14,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const handleUploadCustomerDesign: RequestHandler = async (
-  req,
-  res,
-) => {
+export const handleUploadCustomerDesign: RequestHandler = async (req, res) => {
   try {
     const { fileName, fileData, customerId, orderId } =
       req.body as UploadRequest;
