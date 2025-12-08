@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
-import { supabase } from "../utils/supabase";
-import { randomUUID } from "crypto";
+import { v2 as cloudinary } from "cloudinary";
 
 interface UploadRequest {
   fileName: string;
@@ -9,7 +8,16 @@ interface UploadRequest {
   orderId?: number;
 }
 
-export const handleUploadCustomerDesign: RequestHandler = async (req, res) => {
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+export const handleUploadCustomerDesign: RequestHandler = async (
+  req,
+  res,
+) => {
   try {
     const { fileName, fileData, customerId, orderId } =
       req.body as UploadRequest;
@@ -20,45 +28,47 @@ export const handleUploadCustomerDesign: RequestHandler = async (req, res) => {
       });
     }
 
-    const fileId = randomUUID();
-    const fileExtension = fileName.split(".").pop() || "bin";
-    const storagePath = `customer-designs/${customerId || "guest"}/${fileId}.${fileExtension}`;
-
     const base64Data = fileData.includes("base64,")
       ? fileData.split("base64,")[1]
       : fileData;
-    const binaryData = Buffer.from(base64Data, "base64");
 
-    const { data, error } = await supabase.storage
-      .from("customer-uploads")
-      .upload(storagePath, binaryData, {
-        contentType: getContentType(fileExtension),
-        upsert: false,
-      });
+    const buffer = Buffer.from(base64Data, "base64");
 
-    if (error) {
-      console.error("Error uploading file to Supabase Storage:", error);
-      return res.status(500).json({
-        error: "Failed to upload file",
-      });
-    }
+    const publicId = `customer-designs/${customerId || "guest"}/${Date.now()}-${fileName.split(".")[0]}`;
 
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("customer-uploads").getPublicUrl(storagePath);
+    const result = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          public_id: publicId,
+          folder: "customer-designs",
+          resource_type: "auto",
+        },
+        (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        },
+      );
+
+      uploadStream.end(buffer);
+    });
+
+    const uploadResult = result as any;
 
     res.json({
       success: true,
       file: {
-        id: fileId,
+        id: uploadResult.public_id,
         fileName,
-        url: publicUrl,
-        path: storagePath,
+        url: uploadResult.secure_url,
+        cloudinaryUrl: uploadResult.url,
         uploadedAt: new Date().toISOString(),
       },
     });
   } catch (error) {
-    console.error("Upload file error:", error);
+    console.error("Upload file to Cloudinary error:", error);
     res.status(500).json({
       error: "Failed to upload file",
     });
