@@ -600,11 +600,16 @@ export default function CheckoutNew() {
 
                       <div className="flex-1">
                         <div className="flex justify-between items-start mb-4">
-                          <div>
-                            <h3 className="text-xl font-bold">
-                              {item.product_name ||
-                                `Product #${item.product_id}`}
-                            </h3>
+                          <div className="flex-1">
+                            <Link
+                              to={`/product/${item.product_id}`}
+                              className="text-xl font-bold hover:text-blue-400 transition"
+                            >
+                              <h3>
+                                {item.product_name ||
+                                  `Product #${item.product_id}`}
+                              </h3>
+                            </Link>
                             <div className="text-sm space-y-1">
                               {item.savePercentage &&
                               item.savePercentage > 0 ? (
