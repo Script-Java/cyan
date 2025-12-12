@@ -329,19 +329,11 @@ export const handleCustomerReplyToTicket: RequestHandler = async (req, res) => {
       return;
     }
 
-    const id = parseInt(ticketId, 10);
-    if (isNaN(id)) {
-      res.status(400).json({
-        error: "Invalid ticket ID format",
-      });
-      return;
-    }
-
     // Get ticket details to verify ownership
     const { data: ticket, error: ticketError } = await supabase
       .from("support_tickets")
       .select("customer_id, customer_name, customer_email")
-      .eq("id", id)
+      .eq("id", ticketId)
       .single();
 
     if (ticketError || !ticket) {
