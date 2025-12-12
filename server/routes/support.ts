@@ -355,7 +355,7 @@ export const handleCustomerReplyToTicket: RequestHandler = async (req, res) => {
     const { data: reply, error: replyError } = await supabase
       .from("ticket_replies")
       .insert({
-        ticket_id: id,
+        ticket_id: ticketId,
         sender_type: "customer",
         sender_name: ticket.customer_name,
         sender_email: ticket.customer_email,
@@ -376,7 +376,7 @@ export const handleCustomerReplyToTicket: RequestHandler = async (req, res) => {
     await supabase
       .from("support_tickets")
       .update({ updated_at: new Date().toISOString() })
-      .eq("id", id);
+      .eq("id", ticketId);
 
     console.log("Customer Reply Created:", {
       ticketId,
