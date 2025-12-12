@@ -222,185 +222,183 @@ export default function AdminSupport() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pb-20 md:pb-0">
+        <main className="min-h-screen bg-black py-6">
           {/* Navigation Grid - Desktop/Tablet Only */}
-          <div className="hidden md:block border-b border-gray-200 bg-gray-50/50 backdrop-blur-sm">
+          <div className="hidden md:block border-b border-white/10">
             <div className="px-6 lg:px-8 py-6 max-w-4xl mx-auto">
-              <h2 className="text-sm font-semibold text-gray-600 mb-4">
+              <h2 className="text-sm font-semibold text-white/60 mb-4 uppercase tracking-wide">
                 Quick Navigation
               </h2>
               <AdminNavigationGrid />
             </div>
           </div>
 
-          <div className="py-8 md:py-12 px-3 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              {/* Back button */}
-              <button
-                onClick={handleCloseTicket}
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 sm:mb-6 transition-colors text-sm"
-              >
-                <ArrowLeft className="w-4 sm:w-5 h-4 sm:h-5" />
-                Back to Tickets
-              </button>
+          <div className="max-w-4xl mx-auto px-4">
+            {/* Back button */}
+            <button
+              onClick={handleCloseTicket}
+              className="flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors text-sm pt-6"
+            >
+              <ArrowLeft className="w-4 h-5" />
+              Back to Tickets
+            </button>
 
-              {/* Ticket Details */}
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 sm:p-8">
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4 sm:mb-6">
-                  <div>
-                    <h1 className="text-xl sm:text-3xl font-bold text-gray-900 mb-2">
-                      {selectedTicket.subject}
-                    </h1>
-                    <p className="text-xs sm:text-sm text-gray-600">
-                      From:{" "}
-                      <span className="font-semibold">
-                        {selectedTicket.customer_name}
-                      </span>{" "}
-                      ({selectedTicket.customer_email})
-                    </p>
-                  </div>
-                  <select
-                    value={selectedTicket.status}
-                    onChange={(e) => handleUpdateStatus(e.target.value)}
-                    className={`px-4 py-2 rounded-lg border font-semibold text-sm outline-none ${getStatusColor(selectedTicket.status)}`}
+            {/* Ticket Details */}
+            <div className="bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm p-8">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+                <div>
+                  <h1 className="text-3xl font-bold text-white mb-2">
+                    {selectedTicket.subject}
+                  </h1>
+                  <p className="text-sm text-white/60">
+                    From:{" "}
+                    <span className="font-semibold text-white">
+                      {selectedTicket.customer_name}
+                    </span>{" "}
+                    ({selectedTicket.customer_email})
+                  </p>
+                </div>
+                <select
+                  value={selectedTicket.status}
+                  onChange={(e) => handleUpdateStatus(e.target.value)}
+                  className={`px-4 py-2 rounded-lg border font-semibold text-sm outline-none bg-black/50 ${getStatusColor(selectedTicket.status)}`}
+                >
+                  <option value="open">Open</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="resolved">Resolved</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </div>
+
+              {/* Ticket Meta Info */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 pb-8 border-b border-white/10">
+                <div>
+                  <p className="text-xs text-white/60 uppercase tracking-wide mb-1">
+                    Priority
+                  </p>
+                  <span
+                    className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${getPriorityBg(selectedTicket.priority)} ${getPriorityColor(selectedTicket.priority)}`}
                   >
-                    <option value="open">Open</option>
-                    <option value="in-progress">In Progress</option>
-                    <option value="resolved">Resolved</option>
-                    <option value="closed">Closed</option>
-                  </select>
+                    {selectedTicket.priority.toUpperCase()}
+                  </span>
                 </div>
-
-                {/* Ticket Meta Info */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 pb-8 border-b border-gray-200">
-                  <div>
-                    <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
-                      Priority
-                    </p>
-                    <span
-                      className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${getPriorityBg(selectedTicket.priority)} ${getPriorityColor(selectedTicket.priority)}`}
-                    >
-                      {selectedTicket.priority.toUpperCase()}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
-                      Category
-                    </p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {selectedTicket.category}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
-                      Created
-                    </p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {formatDate(selectedTicket.created_at)}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
-                      Last Updated
-                    </p>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {formatDate(selectedTicket.updated_at)}
-                    </p>
-                  </div>
+                <div>
+                  <p className="text-xs text-white/60 uppercase tracking-wide mb-1">
+                    Category
+                  </p>
+                  <p className="text-sm font-semibold text-white">
+                    {selectedTicket.category}
+                  </p>
                 </div>
+                <div>
+                  <p className="text-xs text-white/60 uppercase tracking-wide mb-1">
+                    Created
+                  </p>
+                  <p className="text-sm font-semibold text-white">
+                    {formatDate(selectedTicket.created_at)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-white/60 uppercase tracking-wide mb-1">
+                    Last Updated
+                  </p>
+                  <p className="text-sm font-semibold text-white">
+                    {formatDate(selectedTicket.updated_at)}
+                  </p>
+                </div>
+              </div>
 
-                {/* Original Message */}
-                <div className="mb-8">
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">
-                    Customer Message
-                  </h3>
-                  <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-                    <p className="text-gray-700 whitespace-pre-wrap">
-                      {selectedTicket.message}
+              {/* Original Message */}
+              <div className="mb-8">
+                <h3 className="text-lg font-bold text-white mb-3">
+                  Customer Message
+                </h3>
+                <div className="bg-white/5 rounded-lg p-6 border border-white/10">
+                  <p className="text-white/80 whitespace-pre-wrap">
+                    {selectedTicket.message}
+                  </p>
+                </div>
+              </div>
+
+              {/* Conversation */}
+              <div className="mb-8">
+                <h3 className="text-lg font-bold text-white mb-4">
+                  Conversation ({ticketReplies.length})
+                </h3>
+
+                {ticketReplies.length === 0 ? (
+                  <div className="bg-blue-500/10 rounded-lg border border-blue-500/20 p-6 text-center mb-8">
+                    <MessageSquare className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                    <p className="text-blue-300">
+                      No replies yet. Add your response below.
                     </p>
                   </div>
-                </div>
-
-                {/* Conversation */}
-                <div className="mb-8">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">
-                    Conversation ({ticketReplies.length})
-                  </h3>
-
-                  {ticketReplies.length === 0 ? (
-                    <div className="bg-blue-50 rounded-lg border border-blue-200 p-6 text-center mb-8">
-                      <MessageSquare className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                      <p className="text-blue-800">
-                        No replies yet. Add your response below.
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="space-y-4 mb-8">
-                      {ticketReplies.map((reply) => (
-                        <div
-                          key={reply.id}
-                          className={`rounded-lg p-6 border ${
-                            reply.sender_type === "admin"
-                              ? "bg-green-50 border-green-200"
-                              : "bg-gray-50 border-gray-200"
-                          }`}
-                        >
-                          <div className="flex items-start justify-between mb-3">
-                            <div>
-                              <p className="font-semibold text-gray-900">
-                                {reply.sender_name}
-                              </p>
-                              <p className="text-xs text-gray-600">
-                                {reply.sender_type === "admin"
-                                  ? "Admin"
-                                  : "Customer"}
-                              </p>
-                            </div>
-                            <p className="text-xs text-gray-600">
-                              {formatDate(reply.created_at)}
+                ) : (
+                  <div className="space-y-4 mb-8">
+                    {ticketReplies.map((reply) => (
+                      <div
+                        key={reply.id}
+                        className={`rounded-lg p-6 border ${
+                          reply.sender_type === "admin"
+                            ? "bg-green-500/10 border-green-500/20"
+                            : "bg-white/5 border-white/10"
+                        }`}
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <p className={`font-semibold ${reply.sender_type === "admin" ? "text-green-300" : "text-white"}`}>
+                              {reply.sender_name}
+                            </p>
+                            <p className="text-xs text-white/60">
+                              {reply.sender_type === "admin"
+                                ? "Admin"
+                                : "Customer"}
                             </p>
                           </div>
-                          <p className="text-gray-700 whitespace-pre-wrap">
-                            {reply.message}
+                          <p className="text-xs text-white/60">
+                            {formatDate(reply.created_at)}
                           </p>
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                        <p className="text-white/80 whitespace-pre-wrap">
+                          {reply.message}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-                {/* Reply Form */}
-                <div className="border-t border-gray-200 pt-8">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">
-                    Send Reply
-                  </h3>
-                  <div className="space-y-4">
-                    <textarea
-                      value={replyMessage}
-                      onChange={(e) => setReplyMessage(e.target.value)}
-                      placeholder="Type your response here..."
-                      rows={6}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
-                    />
-                    <div className="flex gap-3">
-                      <button
-                        onClick={handleSubmitReply}
-                        disabled={isSubmittingReply || !replyMessage.trim()}
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
-                      >
-                        {isSubmittingReply ? (
-                          <>
-                            <Loader className="w-5 h-5 animate-spin" />
-                            Sending...
-                          </>
-                        ) : (
-                          <>
-                            <Send className="w-5 h-5" />
-                            Send Reply & Notify Customer
-                          </>
-                        )}
-                      </button>
-                    </div>
+              {/* Reply Form */}
+              <div className="border-t border-white/10 pt-8">
+                <h3 className="text-lg font-bold text-white mb-4">
+                  Send Reply
+                </h3>
+                <div className="space-y-4">
+                  <textarea
+                    value={replyMessage}
+                    onChange={(e) => setReplyMessage(e.target.value)}
+                    placeholder="Type your response here..."
+                    rows={6}
+                    className="w-full px-4 py-2 border border-white/20 bg-white/5 text-white placeholder-white/40 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
+                  />
+                  <div className="flex gap-3">
+                    <button
+                      onClick={handleSubmitReply}
+                      disabled={isSubmittingReply || !replyMessage.trim()}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-white/10 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                    >
+                      {isSubmittingReply ? (
+                        <>
+                          <Loader className="w-5 h-5 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-5 h-5" />
+                          Send Reply & Notify Customer
+                        </>
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>
