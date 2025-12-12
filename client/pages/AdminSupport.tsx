@@ -58,7 +58,7 @@ export default function AdminSupport() {
 
       if (response.ok) {
         const data = await response.json();
-        setTickets(data.tickets || []);
+        setTickets(Array.isArray(data) ? data : (data.tickets || []));
       }
     } catch (error) {
       console.error("Error fetching tickets:", error);
