@@ -58,7 +58,7 @@ export default function AdminSupport() {
 
       if (response.ok) {
         const data = await response.json();
-        setTickets(Array.isArray(data) ? data : (data.tickets || []));
+        setTickets(Array.isArray(data) ? data : data.tickets || []);
       }
     } catch (error) {
       console.error("Error fetching tickets:", error);
@@ -72,14 +72,11 @@ export default function AdminSupport() {
       const token = localStorage.getItem("authToken");
       if (!token) return;
 
-      const response = await fetch(
-        `/api/support/tickets/${ticketId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`/api/support/tickets/${ticketId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -346,7 +343,9 @@ export default function AdminSupport() {
                       >
                         <div className="flex items-start justify-between mb-3">
                           <div>
-                            <p className={`font-semibold ${reply.sender_type === "admin" ? "text-green-300" : "text-white"}`}>
+                            <p
+                              className={`font-semibold ${reply.sender_type === "admin" ? "text-green-300" : "text-white"}`}
+                            >
                               {reply.sender_name}
                             </p>
                             <p className="text-xs text-white/60">

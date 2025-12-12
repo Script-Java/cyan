@@ -390,8 +390,16 @@ export function createServer() {
     handleCustomerReplyToTicket,
   );
   app.get("/api/admin/tickets", verifyToken, handleAdminGetAllTickets);
-  app.post("/api/admin/tickets/:ticketId/reply", verifyToken, handleAdminReplyToTicket);
-  app.patch("/api/admin/tickets/:ticketId/status", verifyToken, handleUpdateTicketStatus);
+  app.post(
+    "/api/admin/tickets/:ticketId/reply",
+    verifyToken,
+    handleAdminReplyToTicket,
+  );
+  app.patch(
+    "/api/admin/tickets/:ticketId/status",
+    verifyToken,
+    handleUpdateTicketStatus,
+  );
 
   // ===== Digital Files Routes =====
   app.post("/api/orders/:orderId/files", verifyToken, handleUploadDigitalFile);
