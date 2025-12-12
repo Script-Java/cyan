@@ -303,7 +303,7 @@ export default function Index() {
                 }}
               >
                 <a
-                  href="/blogs"
+                  href="/login"
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   Login
