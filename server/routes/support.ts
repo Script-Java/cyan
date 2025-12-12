@@ -148,18 +148,10 @@ export const handleGetTicketDetails: RequestHandler = async (req, res) => {
       return;
     }
 
-    const id = parseInt(ticketId, 10);
-    if (isNaN(id)) {
-      res.status(400).json({
-        error: "Invalid ticket ID format",
-      });
-      return;
-    }
-
     const { data: ticket, error: ticketError } = await supabase
       .from("support_tickets")
       .select("*")
-      .eq("id", id)
+      .eq("id", ticketId)
       .single();
 
     if (ticketError || !ticket) {
@@ -182,7 +174,7 @@ export const handleGetTicketDetails: RequestHandler = async (req, res) => {
     const { data: replies, error: repliesError } = await supabase
       .from("ticket_replies")
       .select("*")
-      .eq("ticket_id", id)
+      .eq("ticket_id", ticketId)
       .order("created_at", { ascending: true });
 
     if (repliesError) {
