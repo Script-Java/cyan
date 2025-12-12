@@ -231,7 +231,7 @@ export const handleAdminGetAllTickets: RequestHandler = async (req, res) => {
       return;
     }
 
-    res.json({ tickets: data || [] });
+    res.json(data || []);
   } catch (error) {
     console.error("Error in handleAdminGetAllTickets:", error);
     res.status(500).json({
@@ -252,19 +252,11 @@ export const handleAdminReplyToTicket: RequestHandler = async (req, res) => {
       return;
     }
 
-    const id = parseInt(ticketId, 10);
-    if (isNaN(id)) {
-      res.status(400).json({
-        error: "Invalid ticket ID format",
-      });
-      return;
-    }
-
     // Get ticket details for customer email
     const { data: ticket, error: ticketError } = await supabase
       .from("support_tickets")
       .select("customer_email, customer_name")
-      .eq("id", id)
+      .eq("id", ticketId)
       .single();
 
     if (ticketError || !ticket) {
@@ -278,7 +270,7 @@ export const handleAdminReplyToTicket: RequestHandler = async (req, res) => {
     const { data: reply, error: replyError } = await supabase
       .from("ticket_replies")
       .insert({
-        ticket_id: id,
+        ticket_id: ticketId,
         sender_type: "admin",
         sender_name: adminName,
         sender_email: "support@stickyslap.com",
@@ -299,7 +291,7 @@ export const handleAdminReplyToTicket: RequestHandler = async (req, res) => {
     const { data: updatedTicket } = await supabase
       .from("support_tickets")
       .update({ status: "in-progress", updated_at: new Date().toISOString() })
-      .eq("id", id)
+      .eq("id", ticketId)
       .select("subject")
       .single();
 
