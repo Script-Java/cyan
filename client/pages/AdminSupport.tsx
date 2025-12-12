@@ -415,158 +415,156 @@ export default function AdminSupport() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pb-20 md:pb-0">
+      <main className="min-h-screen bg-black py-6">
         {/* Navigation Grid - Desktop/Tablet Only */}
-        <div className="hidden md:block border-b border-gray-200 bg-gray-50/50 backdrop-blur-sm">
+        <div className="hidden md:block border-b border-white/10">
           <div className="px-6 lg:px-8 py-6 max-w-7xl mx-auto">
-            <h2 className="text-sm font-semibold text-gray-600 mb-4">
+            <h2 className="text-sm font-semibold text-white/60 mb-4 uppercase tracking-wide">
               Quick Navigation
             </h2>
             <AdminNavigationGrid />
           </div>
         </div>
 
-        <div className="py-8 md:py-12 px-3 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            {/* Header */}
-            <div className="mb-6 sm:mb-8">
-              <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">
-                Support Admin Panel
-              </h1>
-              <p className="text-gray-600 mt-1 sm:mt-2 text-sm">
-                Manage customer support tickets and respond to inquiries
-              </p>
-            </div>
-
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-              <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
-                      Total Tickets
-                    </p>
-                    <p className="text-2xl sm:text-3xl font-bold text-gray-900">
-                      {tickets.length}
-                    </p>
-                  </div>
-                  <div className="text-3xl">📋</div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
-                      Open
-                    </p>
-                    <p className="text-2xl sm:text-3xl font-bold text-blue-600">
-                      {tickets.filter((t) => t.status === "open").length}
-                    </p>
-                  </div>
-                  <div className="text-3xl">🔵</div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
-                      Resolved
-                    </p>
-                    <p className="text-2xl sm:text-3xl font-bold text-green-600">
-                      {tickets.filter((t) => t.status === "resolved").length}
-                    </p>
-                  </div>
-                  <div className="text-3xl">✅</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Tickets Table */}
-            {loading ? (
-              <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
-                <Loader className="w-8 h-8 animate-spin text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600">Loading tickets...</p>
-              </div>
-            ) : tickets.length === 0 ? (
-              <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
-                <AlertCircle className="w-8 h-8 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600">No support tickets yet.</p>
-              </div>
-            ) : (
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-gray-50 border-b border-gray-200">
-                      <tr>
-                        <th className="px-4 sm:px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">
-                          Subject
-                        </th>
-                        <th className="px-4 sm:px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">
-                          Customer
-                        </th>
-                        <th className="px-4 sm:px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">
-                          Status
-                        </th>
-                        <th className="px-4 sm:px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">
-                          Priority
-                        </th>
-                        <th className="px-4 sm:px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">
-                          Created
-                        </th>
-                        <th className="px-4 sm:px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">
-                          Action
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                      {tickets.map((ticket) => (
-                        <tr
-                          key={ticket.id}
-                          className="hover:bg-gray-50 transition-colors"
-                        >
-                          <td className="px-4 sm:px-6 py-4 text-sm font-medium text-gray-900">
-                            {ticket.subject}
-                          </td>
-                          <td className="px-4 sm:px-6 py-4 text-sm text-gray-600">
-                            {ticket.customer_name}
-                          </td>
-                          <td className="px-4 sm:px-6 py-4 text-sm">
-                            <span
-                              className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(ticket.status)}`}
-                            >
-                              {ticket.status.charAt(0).toUpperCase() +
-                                ticket.status.slice(1)}
-                            </span>
-                          </td>
-                          <td className="px-4 sm:px-6 py-4 text-sm">
-                            <span
-                              className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getPriorityBg(ticket.priority)} ${getPriorityColor(ticket.priority)}`}
-                            >
-                              {ticket.priority.charAt(0).toUpperCase() +
-                                ticket.priority.slice(1)}
-                            </span>
-                          </td>
-                          <td className="px-4 sm:px-6 py-4 text-sm text-gray-600">
-                            {formatDate(ticket.created_at)}
-                          </td>
-                          <td className="px-4 sm:px-6 py-4 text-sm">
-                            <button
-                              onClick={() => handleSelectTicket(ticket)}
-                              className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-                            >
-                              View
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
+        <div className="max-w-7xl mx-auto px-4">
+          {/* Header */}
+          <div className="mb-8 pt-6">
+            <h1 className="text-3xl font-bold text-white mb-2">
+              Support Tickets
+            </h1>
+            <p className="text-white/60">
+              Manage customer support tickets and respond to inquiries
+            </p>
           </div>
+
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div className="bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-white/60 text-sm uppercase tracking-wide mb-1">
+                    Total Tickets
+                  </p>
+                  <p className="text-3xl font-bold text-white">
+                    {tickets.length}
+                  </p>
+                </div>
+                <div className="text-4xl opacity-50">📋</div>
+              </div>
+            </div>
+
+            <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg backdrop-blur-sm p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-blue-300 text-sm uppercase tracking-wide mb-1">
+                    Open
+                  </p>
+                  <p className="text-3xl font-bold text-blue-400">
+                    {tickets.filter((t) => t.status === "open").length}
+                  </p>
+                </div>
+                <div className="text-4xl opacity-50">🔵</div>
+              </div>
+            </div>
+
+            <div className="bg-green-500/10 border border-green-500/20 rounded-lg backdrop-blur-sm p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-green-300 text-sm uppercase tracking-wide mb-1">
+                    Resolved
+                  </p>
+                  <p className="text-3xl font-bold text-green-400">
+                    {tickets.filter((t) => t.status === "resolved").length}
+                  </p>
+                </div>
+                <div className="text-4xl opacity-50">✅</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Tickets Table */}
+          {loading ? (
+            <div className="bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm p-8 text-center">
+              <Loader className="w-8 h-8 animate-spin text-white/40 mx-auto mb-4" />
+              <p className="text-white/60">Loading tickets...</p>
+            </div>
+          ) : tickets.length === 0 ? (
+            <div className="bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm p-8 text-center">
+              <AlertCircle className="w-8 h-8 text-white/40 mx-auto mb-4" />
+              <p className="text-white/60">No support tickets yet.</p>
+            </div>
+          ) : (
+            <div className="bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-white/5 border-b border-white/10">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-white/70 uppercase tracking-wide">
+                        Subject
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-white/70 uppercase tracking-wide">
+                        Customer
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-white/70 uppercase tracking-wide">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-white/70 uppercase tracking-wide">
+                        Priority
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-white/70 uppercase tracking-wide">
+                        Created
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-white/70 uppercase tracking-wide">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/10">
+                    {tickets.map((ticket) => (
+                      <tr
+                        key={ticket.id}
+                        className="hover:bg-white/5 transition-colors cursor-pointer"
+                      >
+                        <td className="px-6 py-4 text-sm font-medium text-white">
+                          {ticket.subject}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-white/60">
+                          {ticket.customer_name}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <span
+                            className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(ticket.status)}`}
+                          >
+                            {ticket.status.charAt(0).toUpperCase() +
+                              ticket.status.slice(1)}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <span
+                            className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getPriorityBg(ticket.priority)} ${getPriorityColor(ticket.priority)}`}
+                          >
+                            {ticket.priority.charAt(0).toUpperCase() +
+                              ticket.priority.slice(1)}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-white/60">
+                          {formatDate(ticket.created_at)}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <button
+                            onClick={() => handleSelectTicket(ticket)}
+                            className="text-blue-400 hover:text-blue-300 font-semibold transition-colors"
+                          >
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       </main>
       <MobileAdminPanel />
