@@ -50,7 +50,7 @@ export default function AdminSupport() {
       const token = localStorage.getItem("authToken");
       if (!token) return;
 
-      const response = await fetch("/api/admin/support-tickets", {
+      const response = await fetch("/api/admin/tickets", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -58,7 +58,7 @@ export default function AdminSupport() {
 
       if (response.ok) {
         const data = await response.json();
-        setTickets(data);
+        setTickets(data.tickets || []);
       }
     } catch (error) {
       console.error("Error fetching tickets:", error);
@@ -73,7 +73,7 @@ export default function AdminSupport() {
       if (!token) return;
 
       const response = await fetch(
-        `/api/admin/support-tickets/${ticketId}/replies`,
+        `/api/support/tickets/${ticketId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -83,7 +83,7 @@ export default function AdminSupport() {
 
       if (response.ok) {
         const data = await response.json();
-        setTicketReplies(data);
+        setTicketReplies(data.replies || []);
       }
     } catch (error) {
       console.error("Error fetching replies:", error);
