@@ -20,6 +20,7 @@ import {
   BookOpen,
   FileText,
   Truck,
+  MessageSquare,
 } from "lucide-react";
 
 interface OrderItem {
@@ -158,6 +159,14 @@ export default function AdminDashboard() {
       path: "/admin/shipping",
       color: "bg-teal-500/20 hover:bg-teal-500/30",
       textColor: "text-teal-400",
+    },
+    {
+      title: "Support",
+      description: "Answer support tickets",
+      icon: <MessageSquare className="w-5 h-5" />,
+      path: "/admin/support",
+      color: "bg-red-500/20 hover:bg-red-500/30",
+      textColor: "text-red-400",
     },
   ];
 
