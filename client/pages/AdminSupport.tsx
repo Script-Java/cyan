@@ -170,41 +170,41 @@ export default function AdminSupport() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "open":
-        return "bg-blue-50 border-blue-200 text-blue-700";
+        return "bg-blue-500/20 border-blue-500/30 text-blue-300";
       case "in-progress":
-        return "bg-yellow-50 border-yellow-200 text-yellow-700";
+        return "bg-yellow-500/20 border-yellow-500/30 text-yellow-300";
       case "resolved":
-        return "bg-green-50 border-green-200 text-green-700";
+        return "bg-green-500/20 border-green-500/30 text-green-300";
       case "closed":
-        return "bg-gray-50 border-gray-200 text-gray-700";
+        return "bg-gray-500/20 border-gray-500/30 text-gray-300";
       default:
-        return "bg-gray-50 border-gray-200 text-gray-700";
+        return "bg-gray-500/20 border-gray-500/30 text-gray-300";
     }
   };
 
   const getPriorityBg = (priority: string) => {
     switch (priority) {
       case "high":
-        return "bg-red-50";
+        return "bg-red-500/20";
       case "medium":
-        return "bg-yellow-50";
+        return "bg-yellow-500/20";
       case "low":
-        return "bg-green-50";
+        return "bg-green-500/20";
       default:
-        return "bg-gray-50";
+        return "bg-gray-500/20";
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
-        return "text-red-700";
+        return "text-red-300";
       case "medium":
-        return "text-yellow-700";
+        return "text-yellow-300";
       case "low":
-        return "text-green-700";
+        return "text-green-300";
       default:
-        return "text-gray-700";
+        return "text-gray-300";
     }
   };
 
