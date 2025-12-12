@@ -109,7 +109,7 @@ export default function AdminSupport() {
       if (!token) return;
 
       const response = await fetch(
-        `/api/admin/support-tickets/${selectedTicket.id}`,
+        `/api/admin/tickets/${selectedTicket.id}/status`,
         {
           method: "PATCH",
           headers: {
@@ -142,7 +142,7 @@ export default function AdminSupport() {
       if (!token) return;
 
       const response = await fetch(
-        `/api/admin/support-tickets/${selectedTicket.id}/replies`,
+        `/api/admin/tickets/${selectedTicket.id}/reply`,
         {
           method: "POST",
           headers: {
@@ -151,8 +151,7 @@ export default function AdminSupport() {
           },
           body: JSON.stringify({
             message: replyMessage,
-            sender_name: "Admin",
-            sender_type: "admin",
+            adminName: "Admin",
           }),
         },
       );
