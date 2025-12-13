@@ -337,6 +337,28 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                     </div>
                   </div>
 
+                  {/* Order Details - if available */}
+                  {formData.orderId && formData.orderDetails && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <h3 className="text-sm font-semibold text-gray-900 mb-3">
+                        📦 Order Details (Pre-filled)
+                      </h3>
+                      <div className="text-xs text-gray-700 space-y-1 font-mono bg-white p-3 rounded border border-blue-100">
+                        {formData.orderDetails
+                          .split("\n")
+                          .map((line, idx) =>
+                            line.trim() ? (
+                              <div key={idx}>{line}</div>
+                            ) : null,
+                          )}
+                      </div>
+                      <p className="text-xs text-blue-700 mt-2">
+                        ✓ Your order information has been pre-filled. Feel free to
+                        edit the message below.
+                      </p>
+                    </div>
+                  )}
+
                   {/* Message */}
                   <div>
                     <label
