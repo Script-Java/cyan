@@ -156,7 +156,12 @@ export default function ShippingOptionsSelector({
         </h4>
         <div className="flex items-start gap-2 bg-red-500/20 border border-red-500/50 rounded p-3">
           <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-          <p className="text-red-400 text-xs">{error}</p>
+          <div className="flex-1">
+            <p className="text-red-400 text-xs font-medium mb-1">{error}</p>
+            <p className="text-red-400/70 text-xs">
+              Shipping costs will be calculated during checkout. You can continue without selecting an option.
+            </p>
+          </div>
         </div>
       </div>
     );
