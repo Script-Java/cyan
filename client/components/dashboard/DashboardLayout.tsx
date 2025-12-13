@@ -24,9 +24,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             }
           }
         `}</style>
-        <div className="dashboard-section space-y-6">
-          {children}
-        </div>
+        <div className="dashboard-section space-y-6">{children}</div>
       </div>
     </div>
   );

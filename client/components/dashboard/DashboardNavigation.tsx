@@ -118,10 +118,12 @@ export default function DashboardNavigation({
                 className="p-3 rounded-xl flex-shrink-0 shadow-md group-hover:shadow-lg transition-all"
                 style={{
                   backgroundColor: item.bgColor,
-                  borderLeft: `3px solid ${item.color.split('-')[1] ? item.color : '#666'}`,
+                  borderLeft: `3px solid ${item.color.split("-")[1] ? item.color : "#666"}`,
                 }}
               >
-                <Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${item.color} font-bold`} />
+                <Icon
+                  className={`w-6 h-6 sm:w-7 sm:h-7 ${item.color} font-bold`}
+                />
               </div>
               <div className="text-center">
                 <h4 className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">

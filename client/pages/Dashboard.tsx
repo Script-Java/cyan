@@ -196,7 +196,6 @@ export default function Dashboard() {
                 o.status === "in transit",
             )}
           />
-
         </DashboardLayout>
       </main>
     </>

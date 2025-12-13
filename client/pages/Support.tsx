@@ -347,14 +347,12 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                         {formData.orderDetails
                           .split("\n")
                           .map((line, idx) =>
-                            line.trim() ? (
-                              <div key={idx}>{line}</div>
-                            ) : null,
+                            line.trim() ? <div key={idx}>{line}</div> : null,
                           )}
                       </div>
                       <p className="text-xs text-blue-700 mt-2">
-                        ✓ Your order information has been pre-filled. Feel free to
-                        edit the message below.
+                        ✓ Your order information has been pre-filled. Feel free
+                        to edit the message below.
                       </p>
                     </div>
                   )}
