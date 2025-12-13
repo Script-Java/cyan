@@ -365,8 +365,33 @@ export async function createSquarePaymentLink(data: {
 
     // Add shipping if present
     if (data.shipping && data.shipping > 0) {
+      let shippingName = "Shipping";
+
+      // Fetch the shipping option name if ID is provided
+      if (data.shippingOptionId) {
+        try {
+          const { createClient } = await import("@supabase/supabase-js");
+          const supabase = createClient(
+            process.env.SUPABASE_URL || "",
+            process.env.SUPABASE_SERVICE_KEY || ""
+          );
+
+          const { data: shippingOption } = await supabase
+            .from("shipping_options")
+            .select("name")
+            .eq("id", data.shippingOptionId)
+            .single();
+
+          if (shippingOption?.name) {
+            shippingName = shippingOption.name;
+          }
+        } catch (err) {
+          console.warn("Failed to fetch shipping option name:", err);
+        }
+      }
+
       orderObject.shipping = {
-        name: "Shipping",
+        name: shippingName,
         charge: {
           money: {
             amount: Math.round(data.shipping * 100),
