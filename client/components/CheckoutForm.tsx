@@ -177,6 +177,41 @@ export default function CheckoutForm({
 
   return (
     <div className="space-y-6">
+      {/* Saved Addresses */}
+      {savedAddresses.length > 0 && (
+        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+          <h3 className="text-xl font-bold mb-6">Saved Addresses</h3>
+          <div className="space-y-2 mb-4">
+            {savedAddresses.map((address) => (
+              <button
+                key={address.id}
+                onClick={() => handleSelectAddress(address.id)}
+                className={`w-full text-left p-4 rounded-lg border-2 transition-colors ${
+                  selectedSavedAddressId === address.id
+                    ? "border-blue-500 bg-blue-500/10"
+                    : "border-white/10 hover:border-white/20 bg-white/5"
+                }`}
+              >
+                <p className="font-semibold text-white">
+                  {address.first_name} {address.last_name}
+                </p>
+                <p className="text-white/70 text-sm">{address.street_1}</p>
+                {address.street_2 && (
+                  <p className="text-white/70 text-sm">{address.street_2}</p>
+                )}
+                <p className="text-white/70 text-sm">
+                  {address.city}, {address.state_or_province}{" "}
+                  {address.postal_code}
+                </p>
+              </button>
+            ))}
+          </div>
+          <p className="text-white/60 text-sm mb-6">
+            Or enter a different address below:
+          </p>
+        </div>
+      )}
+
       {/* Shipping Information */}
       <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
         <h3 className="text-xl font-bold mb-6">Shipping Address</h3>
