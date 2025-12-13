@@ -7,7 +7,6 @@ import {
   Ticket,
   CircleUserRound,
   LogOut,
-  ChevronDown,
 } from "lucide-react";
 
 interface DashboardNavigationProps {
