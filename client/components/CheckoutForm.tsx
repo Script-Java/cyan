@@ -97,12 +97,84 @@ const US_STATES = [
   "WY",
 ];
 
+interface SavedAddress {
+  id: number;
+  first_name: string;
+  last_name: string;
+  street_1: string;
+  street_2?: string;
+  city: string;
+  state_or_province: string;
+  postal_code: string;
+  country_code: string;
+}
+
 export default function CheckoutForm({
   customerInfo,
   billingInfo,
   onCustomerChange,
   onBillingChange,
 }: CheckoutFormProps) {
+  const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
+  const [isLoadingAddresses, setIsLoadingAddresses] = useState(false);
+  const [selectedSavedAddressId, setSelectedSavedAddressId] = useState<
+    number | null
+  >(null);
+
+  useEffect(() => {
+    const loadSavedAddresses = async () => {
+      const token = localStorage.getItem("authToken");
+      if (!token) return;
+
+      try {
+        setIsLoadingAddresses(true);
+        const response = await fetch("/api/customers/me/addresses", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setSavedAddresses(data.addresses || []);
+
+          // Auto-select first address
+          if (data.addresses && data.addresses.length > 0) {
+            const firstAddress = data.addresses[0];
+            setSelectedSavedAddressId(firstAddress.id);
+            onCustomerChange("firstName", firstAddress.first_name);
+            onCustomerChange("lastName", firstAddress.last_name);
+            onCustomerChange("street", firstAddress.street_1);
+            onCustomerChange("street2", firstAddress.street_2 || "");
+            onCustomerChange("city", firstAddress.city);
+            onCustomerChange("state", firstAddress.state_or_province);
+            onCustomerChange("postalCode", firstAddress.postal_code);
+            onCustomerChange("country", firstAddress.country_code);
+          }
+        }
+      } catch (error) {
+        console.error("Error loading saved addresses:", error);
+      } finally {
+        setIsLoadingAddresses(false);
+      }
+    };
+
+    loadSavedAddresses();
+  }, []);
+
+  const handleSelectAddress = (addressId: number) => {
+    const address = savedAddresses.find((a) => a.id === addressId);
+    if (!address) return;
+
+    setSelectedSavedAddressId(addressId);
+    onCustomerChange("firstName", address.first_name);
+    onCustomerChange("lastName", address.last_name);
+    onCustomerChange("street", address.street_1);
+    onCustomerChange("street2", address.street_2 || "");
+    onCustomerChange("city", address.city);
+    onCustomerChange("state", address.state_or_province);
+    onCustomerChange("postalCode", address.postal_code);
+    onCustomerChange("country", address.country_code);
+  };
+
   return (
     <div className="space-y-6">
       {/* Shipping Information */}
