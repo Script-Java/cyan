@@ -276,6 +276,12 @@ export async function createSquarePaymentLink(data: {
     });
 
     // Make direct HTTP call to Square Payment Links API
+    console.log("Square API Details:", {
+      tokenLength: accessToken.length,
+      tokenPrefix: accessToken.substring(0, 10),
+      locationId: locationId,
+    });
+
     const response = await fetch(
       "https://connect.squareup.com/v2/online-checkout/payment-links",
       {
@@ -295,6 +301,7 @@ export async function createSquarePaymentLink(data: {
       console.error("Square Payment Link API error:", {
         status: response.status,
         statusText: response.statusText,
+        tokenLength: accessToken.length,
         error: responseData,
       });
 
