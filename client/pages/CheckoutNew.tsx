@@ -105,6 +105,42 @@ export default function CheckoutNew() {
   const [createdOrderId, setCreatedOrderId] = useState<number | null>(null);
 
   useEffect(() => {
+    const loadCustomerInfo = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+          return;
+        }
+
+        const response = await fetch("/api/customers/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.customer) {
+            const customer = data.customer;
+            const primaryAddress = customer.addresses?.[0];
+
+            setCustomerInfo({
+              email: customer.email || "",
+              firstName: customer.firstName || "",
+              lastName: customer.lastName || "",
+              phone: customer.phone || "",
+              street: primaryAddress?.street_1 || "",
+              street2: primaryAddress?.street_2 || "",
+              city: primaryAddress?.city || "",
+              state: primaryAddress?.state_or_province || "CA",
+              postalCode: primaryAddress?.postal_code || "",
+              country: primaryAddress?.country_code || "US",
+            });
+          }
+        }
+      } catch (err) {
+        console.warn("Failed to load customer info:", err);
+      }
+    };
+
     const loadCart = async () => {
       try {
         const id = cartId || localStorage.getItem("cart_id");
