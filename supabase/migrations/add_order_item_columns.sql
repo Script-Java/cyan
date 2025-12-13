@@ -7,8 +7,6 @@ ADD COLUMN IF NOT EXISTS product_name TEXT,
 ADD COLUMN IF NOT EXISTS design_file_url TEXT,
 ADD COLUMN IF NOT EXISTS options JSONB;
 
--- Fix design_file_url to support long URLs
-ALTER TABLE order_items ALTER COLUMN design_file_url TYPE TEXT;
-
--- Create index on design_file_url for efficient filtering in designs.ts
-CREATE INDEX IF NOT EXISTS idx_order_items_design_file_url ON order_items(design_file_url) WHERE design_file_url IS NOT NULL;
+-- Fix design_file_url to support long URLs (TEXT type allows unlimited length)
+-- Note: We do NOT create an index on design_file_url since TEXT columns with full-text indexes
+-- can exceed PostgreSQL's 8KB index row size limit with very long URLs
