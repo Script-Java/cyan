@@ -163,8 +163,8 @@ export default function ActiveOrdersSummary({
                       <div className="space-y-2 text-sm">
                         {order.shipped_date && (
                           <div className="flex justify-between">
-                            <span className="text-white/60">Shipped Date:</span>
-                            <span className="font-medium text-white">
+                            <span className="text-gray-600">Shipped Date:</span>
+                            <span className="font-semibold text-gray-900">
                               {new Date(
                                 order.shipped_date,
                               ).toLocaleDateString()}
@@ -173,15 +173,15 @@ export default function ActiveOrdersSummary({
                         )}
                         {order.tracking_number && (
                           <div className="flex justify-between items-start">
-                            <span className="text-white/60">
+                            <span className="text-gray-600">
                               Tracking Number:
                             </span>
                             <div className="flex flex-col items-end gap-1">
-                              <span className="font-mono font-medium text-white">
+                              <span className="font-mono font-semibold text-gray-900">
                                 {order.tracking_number}
                               </span>
                               {order.tracking_carrier && (
-                                <span className="text-xs text-white/40">
+                                <span className="text-xs text-gray-500">
                                   {order.tracking_carrier}
                                 </span>
                               )}
@@ -194,7 +194,7 @@ export default function ActiveOrdersSummary({
                               href={order.tracking_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-xs px-3 py-2 rounded bg-blue-600/30 text-blue-300 hover:bg-blue-600/50 border border-blue-500/30 transition-colors font-medium"
+                              className="inline-flex items-center gap-1 text-xs px-3 py-2 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-300 transition-colors font-semibold shadow-sm"
                             >
                               <MapPin className="w-3 h-3" />
                               Track Package
@@ -207,11 +207,11 @@ export default function ActiveOrdersSummary({
 
                   {/* Estimated Delivery */}
                   {order.estimated_delivery_date && (
-                    <div className="bg-white/5 rounded-lg p-4 border border-white/10 backdrop-blur-sm">
-                      <h3 className="font-semibold text-sm text-white mb-2">
+                    <div className="bg-white rounded-lg p-4 border-2 border-emerald-200 shadow-sm">
+                      <h3 className="font-bold text-sm text-gray-900 mb-2">
                         Estimated Delivery
                       </h3>
-                      <p className="text-sm text-white/70">
+                      <p className="text-sm text-emerald-700 font-semibold">
                         {new Date(
                           order.estimated_delivery_date,
                         ).toLocaleDateString()}
@@ -220,26 +220,26 @@ export default function ActiveOrdersSummary({
                   )}
 
                   {/* Order Summary */}
-                  <div className="bg-white/5 rounded-lg p-4 border border-white/10 backdrop-blur-sm">
-                    <h3 className="font-semibold text-sm text-white mb-3">
+                  <div className="bg-white rounded-lg p-4 border-2 border-gray-200 shadow-sm">
+                    <h3 className="font-bold text-sm text-gray-900 mb-3">
                       Order Summary
                     </h3>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-white/60">Items:</span>
-                        <span className="font-medium text-white">
+                        <span className="text-gray-600">Items:</span>
+                        <span className="font-semibold text-gray-900">
                           {order.itemCount}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-white/60">Order Date:</span>
-                        <span className="font-medium text-white">
+                        <span className="text-gray-600">Order Date:</span>
+                        <span className="font-semibold text-gray-900">
                           {new Date(order.dateCreated).toLocaleDateString()}
                         </span>
                       </div>
-                      <div className="pt-2 border-t border-white/10 flex justify-between">
-                        <span className="font-semibold text-white">Total:</span>
-                        <span className="font-semibold text-emerald-400">
+                      <div className="pt-2 border-t border-gray-200 flex justify-between">
+                        <span className="font-bold text-gray-900">Total:</span>
+                        <span className="font-bold text-emerald-600">
                           ${order.total.toFixed(2)}
                         </span>
                       </div>
