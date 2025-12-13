@@ -344,7 +344,6 @@ export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
 /**
  * Delete customer address
  * Requires: customerId in JWT token
- * Note: Address management is being implemented
  */
 export const handleDeleteCustomerAddress: RequestHandler = async (req, res) => {
   try {
@@ -359,9 +358,37 @@ export const handleDeleteCustomerAddress: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Address ID is required" });
     }
 
+    const parsedAddressId = parseInt(addressId, 10);
+    if (isNaN(parsedAddressId)) {
+      return res.status(400).json({ error: "Invalid address ID format" });
+    }
+
+    // Verify address belongs to customer
+    const { data: existingAddress, error: checkError } = await supabase
+      .from("addresses")
+      .select("id")
+      .eq("id", parsedAddressId)
+      .eq("customer_id", customerId)
+      .single();
+
+    if (checkError || !existingAddress) {
+      return res
+        .status(404)
+        .json({ error: "Address not found or unauthorized" });
+    }
+
+    const { error } = await supabase
+      .from("addresses")
+      .delete()
+      .eq("id", parsedAddressId);
+
+    if (error) {
+      return res.status(500).json({ error: "Failed to delete address" });
+    }
+
     res.json({
       success: true,
-      message: "Address management coming soon",
+      message: "Address deleted successfully",
     });
   } catch (error) {
     console.error("Delete address error:", error);
