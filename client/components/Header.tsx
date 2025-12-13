@@ -158,13 +158,13 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
                 <>
                   <Link
                     to="/login"
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm font-semibold"
+                    className="px-4 py-2 backdrop-blur-md bg-white/5 border border-white/10 text-white rounded-lg transition-all duration-200 text-sm font-semibold hover:bg-white/10 hover:shadow-lg"
                   >
                     Login
                   </Link>
                   <Link
                     to="/signup"
-                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-semibold"
+                    className="px-4 py-2 backdrop-blur-md bg-white/5 border border-white/10 text-white rounded-lg transition-all duration-200 text-sm font-semibold hover:bg-white/10 hover:shadow-lg"
                   >
                     Sign Up
                   </Link>
