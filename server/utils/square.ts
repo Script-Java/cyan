@@ -286,8 +286,10 @@ export async function createSquarePaymentLink(data: {
     const lineItems: any[] = [];
 
     if (data.items && data.items.length > 0) {
+      let itemIndex = 0;
       for (const item of data.items) {
         lineItems.push({
+          uid: `item-${itemIndex}`,
           name: item.product_name,
           quantity: item.quantity.toString(),
           base_price_money: {
@@ -295,10 +297,12 @@ export async function createSquarePaymentLink(data: {
             currency: data.currency || "USD",
           },
         });
+        itemIndex++;
       }
     } else {
       // Fallback: create a single line item
       lineItems.push({
+        uid: "item-0",
         name: "Order #" + data.orderId,
         quantity: "1",
         base_price_money: {
