@@ -62,9 +62,9 @@ export default function AdminNavbar() {
 
   const mainNavItems: NavItem[] = [
     {
-      label: "Home",
+      label: "Dashboard",
       icon: <Home className="w-4 h-4" />,
-      path: "/admin",
+      path: "/dashboard",
     },
     {
       label: "Orders",
