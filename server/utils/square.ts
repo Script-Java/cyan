@@ -15,7 +15,7 @@ export async function getSquareClient() {
 
       // Dynamic import for ES modules
       const squareModule = await import("square");
-      const { Client } = squareModule;
+      const Client = squareModule.default || squareModule.Client;
 
       if (!Client) {
         throw new Error("Square Client not found in package exports");
