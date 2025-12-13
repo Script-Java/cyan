@@ -500,14 +500,6 @@ export default function CheckoutNew() {
         throw fetchErr;
       }
 
-      const result = await response.json();
-
-      console.log("Checkout response:", response.status, result);
-
-      if (!response.ok) {
-        throw new Error(result.error || "Checkout failed");
-      }
-
       // Store the order ID
       if (result.order?.id) {
         setCreatedOrderId(result.order.id);
