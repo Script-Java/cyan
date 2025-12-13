@@ -333,53 +333,16 @@ export async function createSquarePaymentLink(data: {
         customerContactInfo;
     }
 
-    // Include order with line items if available
-    if (lineItems.length > 0) {
-      paymentLinkBody.order = {
-        location_id: locationId,
-        line_items: lineItems,
-        taxes: data.tax
-          ? [
-              {
-                uid: "tax",
-                name: "Tax",
-                type: "ADDITIVE",
-                percentage: "0",
-                applied_money: {
-                  amount: Math.round(data.tax * 100),
-                  currency: data.currency || "USD",
-                },
-              },
-            ]
-          : undefined,
-        discounts: [],
-      };
-    } else {
-      // Fallback to quick_pay if no items
-      paymentLinkBody.quick_pay = {
-        location_id: locationId,
-        name: "STICKY SLAP",
-        price_money: {
-          amount: amountInCents,
-          currency: data.currency || "USD",
-        },
-      };
-    }
-
-    // Add shipping if provided
-    if (data.shipping && data.shipping > 0) {
-      if (paymentLinkBody.order) {
-        paymentLinkBody.order.shipping = {
-          name: "Shipping",
-          charge: {
-            money: {
-              amount: Math.round(data.shipping * 100),
-              currency: data.currency || "USD",
-            },
-          },
-        };
-      }
-    }
+    // Use quick_pay for the total amount (simplest and most reliable approach)
+    // This displays the total amount directly without relying on line item calculations
+    paymentLinkBody.quick_pay = {
+      location_id: locationId,
+      name: `Order #${data.orderId}`,
+      price_money: {
+        amount: amountInCents,
+        currency: data.currency || "USD",
+      },
+    };
 
     console.log("Creating Square Payment Link via REST API:", {
       orderId: data.orderId,
