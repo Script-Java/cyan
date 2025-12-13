@@ -10,6 +10,12 @@ import {
   ChevronDown,
   Search,
   X,
+  MapPin,
+  User,
+  Phone,
+  Mail,
+  MessageSquare,
+  Image as ImageIcon,
 } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
