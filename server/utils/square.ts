@@ -38,17 +38,17 @@ export async function getSquareClient() {
 
       console.log("Square SDK client initialized successfully");
 
-      // Verify APIs are accessible (v43.2.1+ uses method names like payments(), orders(), etc)
-      if (typeof squareClient.payments !== "function") {
-        throw new Error("payments() method not accessible on Square client");
+      // Verify APIs are accessible (v43.2.1+ exposes APIs as objects)
+      if (!squareClient.payments) {
+        throw new Error("payments API not accessible on Square client");
       }
 
-      if (typeof squareClient.orders !== "function") {
-        throw new Error("orders() method not accessible on Square client");
+      if (!squareClient.orders) {
+        throw new Error("orders API not accessible on Square client");
       }
 
       console.log(
-        "Square APIs verified - payments() and orders() methods accessible",
+        "Square APIs verified - payments and orders APIs accessible",
       );
     } catch (error) {
       console.error("Failed to initialize Square client:", error);
