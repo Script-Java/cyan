@@ -13,24 +13,25 @@ export async function getSquareClient() {
 
       console.log("Access token found, length:", accessToken.length);
 
-      // Import Square SDK - try multiple approaches for compatibility
-      let Client;
+      // Import Square SDK - the correct export is SquareClient
+      let SquareClientClass;
       try {
-        // First try ES module default export
+        // First try ES module import
         const squareModule = await import("square");
-        Client = squareModule.default || squareModule.Client;
+        SquareClientClass = squareModule.SquareClient || squareModule.default;
       } catch (importError) {
         console.warn("ES module import failed, falling back to require:", importError);
         // Fallback to CommonJS require
-        Client = require("square").Client;
+        const squareModule = require("square");
+        SquareClientClass = squareModule.SquareClient;
       }
 
-      if (!Client) {
-        throw new Error("Square Client not found in package exports");
+      if (!SquareClientClass || typeof SquareClientClass !== "function") {
+        throw new Error(`Square SquareClient not found or not a constructor. Received: ${typeof SquareClientClass}`);
       }
 
       // Initialize with correct environment string
-      squareClient = new Client({
+      squareClient = new SquareClientClass({
         accessToken: accessToken,
         environment: "sandbox",
       });
