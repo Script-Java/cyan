@@ -152,12 +152,12 @@ export default function ActiveOrdersSummary({
 
               {/* Expanded Details Section */}
               {expandedOrderId === order.id && (
-                <div className="bg-black/40 border-t border-white/10 p-4 space-y-4 backdrop-blur-sm">
+                <div className="bg-gray-50 border-t-2 border-gray-200 p-5 space-y-4">
                   {/* Tracking Information */}
                   {(order.tracking_number || order.shipped_date) && (
-                    <div className="bg-white/5 rounded-lg p-4 border border-white/10 backdrop-blur-sm">
-                      <h3 className="font-semibold text-sm text-white mb-3 flex items-center gap-2">
-                        <Truck className="w-4 h-4 text-blue-400" />
+                    <div className="bg-white rounded-lg p-4 border-2 border-blue-200 shadow-sm">
+                      <h3 className="font-bold text-sm text-gray-900 mb-3 flex items-center gap-2">
+                        <Truck className="w-4 h-4 text-blue-600" />
                         Shipping & Tracking
                       </h3>
                       <div className="space-y-2 text-sm">
