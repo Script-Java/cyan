@@ -416,6 +416,12 @@ export async function createSquarePaymentLink(data: {
       sentTotal: data.amount * 100,
     });
 
+    const requestBody = JSON.stringify(paymentLinkBody);
+    console.log("Square Payment Link Request Body:", {
+      bodySize: requestBody.length,
+      body: paymentLinkBody,
+    });
+
     const response = await fetch(
       "https://connect.squareup.com/v2/online-checkout/payment-links",
       {
@@ -425,7 +431,7 @@ export async function createSquarePaymentLink(data: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(paymentLinkBody),
+        body: requestBody,
       },
     );
 
