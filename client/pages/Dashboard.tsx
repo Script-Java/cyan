@@ -183,7 +183,17 @@ export default function Dashboard() {
           <ProofNotificationBadge />
 
           {/* Dashboard Navigation Grid */}
-          <DashboardNavigation onLogout={handleLogout} />
+          <DashboardNavigation
+            onLogout={handleLogout}
+            expandedItem={expandedItem}
+            onItemClick={setExpandedItem}
+          />
+
+          {/* Expanded Navigation Content */}
+          <ExpandedNavigation
+            expandedItem={expandedItem}
+            onClose={() => setExpandedItem(null)}
+          />
 
           {/* Promotional Banner */}
           <PromoBanner />
