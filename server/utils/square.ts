@@ -336,6 +336,7 @@ export async function createSquarePaymentLink(data: {
     // Build order with detailed line items to show Order Summary on Square checkout page
     const orderObject: any = {
       location_id: locationId,
+      reference_id: `order-${data.orderId}`,
       line_items: lineItems,
       discounts: [],
     };
