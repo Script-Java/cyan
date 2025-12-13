@@ -311,11 +311,18 @@ export async function createSquarePaymentLink(data: {
         merchant_support_email: "sticky@stickyslap.com",
         accepted_payment_methods: {},
       },
-      pre_populated_data: {
-        ...(Object.keys(buyerAddress).length > 0 && { buyer_address: buyerAddress }),
-        ...(Object.keys(customerContactInfo).length > 0 && { customer_contact_info: customerContactInfo }),
-      },
+      pre_populated_data: {},
     };
+
+    // Only add buyer_address if it has data
+    if (Object.keys(buyerAddress).length > 0) {
+      paymentLinkBody.pre_populated_data.buyer_address = buyerAddress;
+    }
+
+    // Only add customer_contact_info if it has data
+    if (Object.keys(customerContactInfo).length > 0) {
+      paymentLinkBody.pre_populated_data.customer_contact_info = customerContactInfo;
+    }
 
     // Include order with line items if available
     if (lineItems.length > 0) {
