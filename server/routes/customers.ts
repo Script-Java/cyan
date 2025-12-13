@@ -241,7 +241,6 @@ export const handleCreateCustomerAddress: RequestHandler = async (req, res) => {
 /**
  * Update customer address
  * Requires: customerId in JWT token
- * Note: Address management is being implemented - currently returns placeholder response
  */
 export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
   try {
@@ -256,6 +255,11 @@ export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Address ID is required" });
     }
 
+    const parsedAddressId = parseInt(addressId, 10);
+    if (isNaN(parsedAddressId)) {
+      return res.status(400).json({ error: "Invalid address ID format" });
+    }
+
     const {
       firstName,
       lastName,
@@ -267,20 +271,66 @@ export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
       countryCode,
     } = req.body;
 
-    // Placeholder response - address management will be implemented
-    res.json({
-      success: true,
-      message: "Address management coming soon",
-      address: {
-        id: parseInt(addressId),
+    if (
+      !firstName ||
+      !lastName ||
+      !street1 ||
+      !city ||
+      !stateOrProvince ||
+      !postalCode ||
+      !countryCode
+    ) {
+      return res.status(400).json({ error: "Missing required address fields" });
+    }
+
+    // Verify address belongs to customer
+    const { data: existingAddress, error: checkError } = await supabase
+      .from("addresses")
+      .select("id")
+      .eq("id", parsedAddressId)
+      .eq("customer_id", customerId)
+      .single();
+
+    if (checkError || !existingAddress) {
+      return res
+        .status(404)
+        .json({ error: "Address not found or unauthorized" });
+    }
+
+    const { data: address, error } = await supabase
+      .from("addresses")
+      .update({
         first_name: firstName,
         last_name: lastName,
         street_1: street1,
-        street_2: street2,
+        street_2: street2 || null,
         city,
         state_or_province: stateOrProvince,
         postal_code: postalCode,
         country_code: countryCode,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", parsedAddressId)
+      .select()
+      .single();
+
+    if (error || !address) {
+      return res.status(500).json({ error: "Failed to update address" });
+    }
+
+    res.json({
+      success: true,
+      message: "Address updated successfully",
+      address: {
+        id: address.id,
+        first_name: address.first_name,
+        last_name: address.last_name,
+        street_1: address.street_1,
+        street_2: address.street_2,
+        city: address.city,
+        state_or_province: address.state_or_province,
+        postal_code: address.postal_code,
+        country_code: address.country_code,
       },
     });
   } catch (error) {
