@@ -195,34 +195,105 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
                   <ChevronDown className="w-4 h-4" />
                 </button>
                 {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-[#030140]/95 border border-white/20 rounded-lg backdrop-blur-md shadow-lg z-50">
+                  <div className="absolute right-0 mt-2 w-56 bg-[#030140]/95 border border-white/20 rounded-lg backdrop-blur-md shadow-lg z-50">
                     {isAuthenticated ? (
                       <>
-                        <Link
-                          to="/dashboard"
-                          className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
-                          onClick={() => setIsProfileMenuOpen(false)}
-                        >
-                          Dashboard
-                        </Link>
-                        {isAdmin && (
-                          <Link
-                            to="/admin"
-                            className="flex items-center gap-2 w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
-                            onClick={() => setIsProfileMenuOpen(false)}
-                          >
-                            <BarChart3 className="w-4 h-4" />
-                            Admin
-                          </Link>
+                        {isAdmin ? (
+                          <>
+                            <Link
+                              to="/admin"
+                              className="flex items-center gap-2 w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
+                              onClick={() => setIsProfileMenuOpen(false)}
+                            >
+                              <BarChart3 className="w-4 h-4" />
+                              Admin
+                            </Link>
+                            <Link
+                              to="/admin"
+                              className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
+                              onClick={() => setIsProfileMenuOpen(false)}
+                            >
+                              Dashboard
+                            </Link>
+                            <button
+                              onClick={() => {
+                                handleLogout();
+                                setIsProfileMenuOpen(false);
+                              }}
+                              className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm"
+                            >
+                              Log out
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <Link
+                              to="/dashboard"
+                              className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
+                              onClick={() => setIsProfileMenuOpen(false)}
+                            >
+                              Dashboard
+                            </Link>
+                            <Link
+                              to="/order-history"
+                              className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
+                              onClick={() => setIsProfileMenuOpen(false)}
+                            >
+                              Orders
+                            </Link>
+                            <Link
+                              to="/finances"
+                              className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
+                              onClick={() => setIsProfileMenuOpen(false)}
+                            >
+                              Finances
+                            </Link>
+                            <Link
+                              to="/designs"
+                              className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
+                              onClick={() => setIsProfileMenuOpen(false)}
+                            >
+                              Designs
+                            </Link>
+                            <Link
+                              to="/proofs"
+                              className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
+                              onClick={() => setIsProfileMenuOpen(false)}
+                            >
+                              Proofs
+                            </Link>
+                            <Link
+                              to="/support"
+                              className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
+                              onClick={() => setIsProfileMenuOpen(false)}
+                            >
+                              Support
+                            </Link>
+                            <Link
+                              to="/my-tickets"
+                              className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
+                              onClick={() => setIsProfileMenuOpen(false)}
+                            >
+                              My Tickets
+                            </Link>
+                            <Link
+                              to="/account-settings"
+                              className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
+                              onClick={() => setIsProfileMenuOpen(false)}
+                            >
+                              Account Settings
+                            </Link>
+                            <button
+                              onClick={() => {
+                                handleLogout();
+                                setIsProfileMenuOpen(false);
+                              }}
+                              className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm"
+                            >
+                              Log out
+                            </button>
+                          </>
                         )}
-                        <button
-                          onClick={() => {
-                            handleLogout();
-                          }}
-                          className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm"
-                        >
-                          Log out
-                        </button>
                       </>
                     ) : (
                       <>
