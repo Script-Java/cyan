@@ -13,7 +13,7 @@ import {
 interface DashboardNavigationProps {
   onLogout: () => void;
   expandedItem?: string | null;
-  onItemClick?: (itemId: string) => void;
+  onItemClick?: (itemId: string | null) => void;
 }
 
 export default function DashboardNavigation({
