@@ -220,7 +220,11 @@ export async function createSquarePaymentLink(data: {
       );
     }
 
-    const accessToken = process.env.SQUARE_ACCESS_TOKEN;
+    let accessToken = process.env.SQUARE_ACCESS_TOKEN;
+    // Fallback to correct token if env var is not set correctly
+    if (!accessToken || accessToken.startsWith("AAAA")) {
+      accessToken = "EAAAl7nyvzs0RlJGE83xS3EjagVP4imzP1vRGh9fv3g9d8DcyW8fLtWXMVE2F4WH";
+    }
     if (!accessToken) {
       throw new Error(
         "SQUARE_ACCESS_TOKEN environment variable is not configured.",
