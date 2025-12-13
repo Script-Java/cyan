@@ -208,7 +208,7 @@ export default function SquarePaymentForm({
           disabled={isLoading}
           className="w-full bg-[#FFD713] hover:bg-[#FFD713]/90 text-black font-bold py-3 rounded-lg transition-all disabled:opacity-50"
         >
-          Pay ${(amount / 100).toFixed(2)}
+          Pay ${amount.toFixed(2)}
         </button>
 
         <p className="text-xs text-white/40 text-center mt-4">
