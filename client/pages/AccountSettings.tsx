@@ -447,7 +447,7 @@ export default function AccountSettings() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
         <DashboardLayout>
           <div className="max-w-4xl mx-auto py-8">
             {/* Header */}
@@ -515,9 +515,9 @@ export default function AccountSettings() {
 
             {/* Personal Information Tab */}
             {activeTab === "personal" && customer && (
-              <div className="space-y-8">
+              <div className="space-y-8 animate-fadeIn">
                 {/* Personal Info Form */}
-                <div className="bg-gray-50 rounded-lg p-6">
+                <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                   <h2 className="text-xl font-bold text-gray-900 mb-6">
                     Personal Information
                   </h2>
@@ -629,7 +629,7 @@ export default function AccountSettings() {
                 </div>
 
                 {/* Shipping Address Section */}
-                <div className="bg-gray-50 rounded-lg p-6">
+                <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                   <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                     <MapPin className="w-5 h-5" />
                     Shipping Address
@@ -663,7 +663,7 @@ export default function AccountSettings() {
                             className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                               selectedAddressId === addr.id
                                 ? "border-blue-500 bg-blue-50"
-                                : "border-gray-200 hover:border-gray-300"
+                                : "border-gray-100 hover:border-blue-200 bg-gray-50"
                             }`}
                             onClick={() => {
                               setSelectedAddressId(addr.id);
@@ -883,7 +883,7 @@ export default function AccountSettings() {
 
             {/* Social Media Tab */}
             {activeTab === "social" && (
-              <div className="bg-gray-50 rounded-lg p-6">
+              <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                 <h2 className="text-xl font-bold text-gray-900 mb-6">
                   Social Media Handles
                 </h2>
@@ -1015,19 +1015,19 @@ export default function AccountSettings() {
 
             {/* Delete Account Tab */}
             {activeTab === "delete" && (
-              <div className="bg-red-50 rounded-lg p-6 border border-red-200">
+              <div className="bg-white rounded-xl p-8 shadow-sm border border-red-200 hover:shadow-md transition-shadow">
                 <h2 className="text-xl font-bold text-red-900 mb-4">
                   Delete Account
                 </h2>
 
-                <div className="bg-red-100 border border-red-300 rounded-lg p-4 mb-6">
-                  <p className="text-red-900 font-semibold mb-2">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                  <p className="text-red-800 font-semibold mb-2">
                     ⚠️ This action cannot be undone
                   </p>
-                  <p className="text-red-800 text-sm mb-4">
+                  <p className="text-red-700 text-sm mb-4">
                     Deleting your account will:
                   </p>
-                  <ul className="text-red-800 text-sm space-y-1 ml-4 list-disc">
+                  <ul className="text-red-700 text-sm space-y-1 ml-4 list-disc">
                     <li>Permanently delete your account and all data</li>
                     <li>Remove your access to order history</li>
                     <li>Cancel any active subscriptions</li>
