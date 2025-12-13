@@ -17,7 +17,6 @@ import DashboardNavigation from "@/components/dashboard/DashboardNavigation";
 import ProofNotificationBadge from "@/components/dashboard/ProofNotificationBadge";
 import PromoBanner from "@/components/dashboard/PromoBanner";
 import ActiveOrdersSummary from "@/components/dashboard/ActiveOrdersSummary";
-import QuickOrderSection from "@/components/dashboard/QuickOrderSection";
 
 interface Customer {
   id: number;
