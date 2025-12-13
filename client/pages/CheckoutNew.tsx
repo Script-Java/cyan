@@ -122,6 +122,14 @@ export default function CheckoutNew() {
             const customer = data.customer;
             const primaryAddress = customer.addresses?.[0];
 
+            console.log("Loaded customer info:", {
+              email: customer.email,
+              firstName: customer.firstName,
+              lastName: customer.lastName,
+              phone: customer.phone,
+              addresses: customer.addresses?.length || 0,
+            });
+
             setCustomerInfo({
               email: customer.email || "",
               firstName: customer.firstName || "",
@@ -135,6 +143,8 @@ export default function CheckoutNew() {
               country: primaryAddress?.country_code || "US",
             });
           }
+        } else {
+          console.warn("Failed to load customer info, status:", response.status);
         }
       } catch (err) {
         console.warn("Failed to load customer info:", err);
