@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from "react";
-import { X } from "lucide-react";
+import { X, ExternalLink } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // Lazy load page components
 const OrderHistory = lazy(() => import("@/pages/OrderHistory"));
@@ -32,15 +33,28 @@ const itemPageMap: Record<string, React.LazyExoticComponent<() => JSX.Element>> 
     "account-settings": AccountSettings,
   };
 
+const itemRoutes: Record<string, string> = {
+  orders: "/order-history",
+  finances: "/finances",
+  designs: "/designs",
+  proofs: "/proofs",
+  support: "/support",
+  "my-tickets": "/my-tickets",
+  "account-settings": "/account-settings",
+};
+
 export default function ExpandedNavigation({
   expandedItem,
   onClose,
 }: ExpandedNavigationProps) {
+  const navigate = useNavigate();
+
   if (!expandedItem || !itemPageMap[expandedItem]) {
     return null;
   }
 
   const PageComponent = itemPageMap[expandedItem];
+  const route = itemRoutes[expandedItem];
 
   return (
     <div className="mt-8 animate-in fade-in slide-in-from-top-2 duration-300">
@@ -50,17 +64,27 @@ export default function ExpandedNavigation({
           <h2 className="text-xl font-bold text-gray-900 capitalize">
             {expandedItem.replace("-", " ")}
           </h2>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-            aria-label="Close expanded view"
-          >
-            <X className="w-5 h-5 text-gray-600" />
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => navigate(route)}
+              className="p-2 hover:bg-gray-200 rounded-lg transition-colors text-gray-600 hover:text-gray-900"
+              aria-label="Open in full page"
+              title="Open in full page"
+            >
+              <ExternalLink className="w-5 h-5" />
+            </button>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+              aria-label="Close expanded view"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-6 max-h-96 overflow-y-auto">
           <Suspense fallback={<LoadingSpinner />}>
             <PageComponent />
           </Suspense>
