@@ -67,20 +67,20 @@ export default function ActiveOrdersSummary({
   };
 
   return (
-    <div className="rounded-2xl border p-6 mb-6 overflow-hidden backdrop-blur-xl bg-white/5 border-white/10">
+    <div className="rounded-xl border-2 p-6 mb-6 overflow-hidden bg-white shadow-md border-gray-200">
       <div
         className="border-b pb-4 mb-6"
-        style={{ borderColor: "rgba(255, 255, 255, 0.1)" }}
+        style={{ borderColor: "rgba(0, 0, 0, 0.1)" }}
       >
         <div className="flex items-center justify-between">
-          <h2 className="flex items-center gap-3 text-lg sm:text-xl font-bold text-white">
-            <CheckCircle className="w-5 h-5 text-emerald-400" />
+          <h2 className="flex items-center gap-3 text-lg sm:text-xl font-bold text-gray-900">
+            <CheckCircle className="w-6 h-6 text-emerald-500" />
             Active Orders
             <span
-              className="ml-2 px-2 py-1 rounded-full text-sm font-bold"
+              className="ml-2 px-3 py-1 rounded-full text-sm font-bold shadow-sm"
               style={{
-                backgroundColor: "rgba(5, 150, 105, 0.2)",
-                color: "#86efac",
+                backgroundColor: "rgba(5, 150, 105, 0.15)",
+                color: "#047857",
               }}
             >
               {activeOrders.length}
