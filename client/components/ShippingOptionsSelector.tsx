@@ -34,7 +34,16 @@ export default function ShippingOptionsSelector({
   useEffect(() => {
     const fetchShippingOptions = async () => {
       try {
-        const response = await fetch("/api/shipping-options");
+        console.log("Attempting to fetch shipping options from /api/shipping-options");
+
+        const response = await fetch("/api/shipping-options", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        console.log("Shipping options response status:", response.status);
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
@@ -45,6 +54,7 @@ export default function ShippingOptionsSelector({
         const data = await response.json();
         const options = data.data || [];
 
+        console.log("Shipping options loaded:", options.length);
         setShippingOptions(options);
         setError(null);
 
@@ -59,11 +69,12 @@ export default function ShippingOptionsSelector({
         }
       } catch (err) {
         console.error("Error fetching shipping options:", err);
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Failed to load shipping options",
-        );
+        const errorMsg = err instanceof Error ? err.message : "Failed to load shipping options";
+        console.error("Full error details:", {
+          error: err,
+          message: errorMsg,
+        });
+        setError(errorMsg);
       } finally {
         setIsLoading(false);
       }
