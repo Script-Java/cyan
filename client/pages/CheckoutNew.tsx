@@ -805,27 +805,6 @@ export default function CheckoutNew() {
                     {/* Store credit earned display disabled temporarily */}
                   </div>
 
-                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                    <div className="flex gap-2">
-                      <div className="flex-1 relative">
-                        <Input
-                          placeholder="Discount code"
-                          value={discountCode}
-                          onChange={(e) => setDiscountCode(e.target.value)}
-                          className="bg-white/5 border-white/10 text-white placeholder-white/40"
-                        />
-                      </div>
-                      <Button
-                        type="button"
-                        onClick={handleApplyDiscount}
-                        disabled={!discountCode}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-6"
-                      >
-                        Apply
-                      </Button>
-                    </div>
-                  </div>
-
                   {/* Store credit section disabled temporarily */}
 
                   <ShippingOptionsSelector
