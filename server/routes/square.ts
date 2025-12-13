@@ -262,6 +262,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       subtotal: checkoutData.subtotal,
       tax: checkoutData.tax,
       shipping: checkoutData.shipping,
+      shippingOptionId: (checkoutData as any).shipping_option_id,
       items: checkoutData.items.map((item) => ({
         product_name: item.product_name || `Product #${item.product_id}`,
         quantity: item.quantity,
