@@ -9,7 +9,7 @@ const supabase = createClient(
 );
 
 /**
- * Get current customer profile
+ * Get current customer profile with addresses
  * Requires: customerId in JWT token
  */
 export const handleGetCustomer: RequestHandler = async (req, res) => {
@@ -30,6 +30,13 @@ export const handleGetCustomer: RequestHandler = async (req, res) => {
       return res.status(404).json({ error: "Customer not found" });
     }
 
+    const { data: addresses, error: addressError } = await supabase
+      .from("addresses")
+      .select("*")
+      .eq("customer_id", customerId)
+      .order("is_default", { ascending: false })
+      .order("created_at", { ascending: false });
+
     res.json({
       success: true,
       customer: {
@@ -39,6 +46,7 @@ export const handleGetCustomer: RequestHandler = async (req, res) => {
         lastName: customer.last_name,
         phone: customer.phone,
         companyName: customer.company,
+        addresses: addresses || [],
       },
     });
   } catch (error) {
