@@ -109,19 +109,25 @@ export default function DashboardNavigation({
             <button
               key={item.title}
               onClick={item.isLogout ? onLogout : item.onClick}
-              className="p-3 rounded-2xl border transition-all duration-500 flex flex-col gap-2 items-center text-center hover:bg-white/10 backdrop-blur-xl bg-white/5 border-white/10"
+              className="p-4 rounded-xl border-2 transition-all duration-300 flex flex-col gap-3 items-center text-center hover:shadow-lg hover:scale-105 bg-white shadow-md hover:shadow-xl border-gray-200 group"
               style={{
-                opacity: item.isLogout ? 0.85 : 1,
+                opacity: item.isLogout ? 0.9 : 1,
               }}
             >
-              <div className="p-2 bg-white/10 rounded-lg flex-shrink-0 backdrop-blur-sm">
-                <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${item.color}`} />
+              <div
+                className="p-3 rounded-xl flex-shrink-0 shadow-md group-hover:shadow-lg transition-all"
+                style={{
+                  backgroundColor: item.bgColor,
+                  borderLeft: `3px solid ${item.color.split('-')[1] ? item.color : '#666'}`,
+                }}
+              >
+                <Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${item.color} font-bold`} />
               </div>
               <div className="text-center">
-                <h4 className="text-xs sm:text-sm font-semibold text-white leading-tight">
+                <h4 className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">
                   {item.title}
                 </h4>
-                <p className="text-xs text-white/60 hidden sm:block">
+                <p className="text-xs text-gray-600 hidden sm:block">
                   {item.description}
                 </p>
               </div>
