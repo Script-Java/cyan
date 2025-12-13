@@ -367,7 +367,13 @@ export async function createSquarePaymentLink(data: {
       customerContactInfo,
     });
 
-    console.log("Payment Link Body:", JSON.stringify(paymentLinkBody, null, 2));
+    console.log("Payment Link Body - Quick Pay:", {
+      location_id: paymentLinkBody.quick_pay?.location_id,
+      name: paymentLinkBody.quick_pay?.name,
+      amount: paymentLinkBody.quick_pay?.price_money?.amount,
+      currency: paymentLinkBody.quick_pay?.price_money?.currency,
+      hasPrePopulatedData: Object.keys(paymentLinkBody.pre_populated_data).length > 0,
+    });
 
     const response = await fetch(
       "https://connect.squareup.com/v2/online-checkout/payment-links",
