@@ -261,7 +261,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       paymentLinkUrl: paymentLinkResult.paymentLinkUrl,
     });
 
-    res.status(201).json({
+    const responsePayload = {
       success: true,
       order: {
         id: supabaseOrder.id,
@@ -269,14 +269,28 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
         total: checkoutData.total,
       },
       checkoutUrl: paymentLinkResult.paymentLinkUrl,
+    };
+
+    console.log("Sending checkout response:", {
+      orderId: supabaseOrder.id,
+      hasCheckoutUrl: !!paymentLinkResult.paymentLinkUrl,
     });
+
+    res.status(201).json(responsePayload);
   } catch (error) {
     console.error("Create Checkout session error:", error);
     const errorMessage =
       error instanceof Error
         ? error.message
         : "Failed to create checkout session";
+    console.error("Error details:", {
+      message: errorMessage,
+      errorType: error instanceof Error ? error.constructor.name : typeof error,
+      errorStack:
+        error instanceof Error ? error.stack : "No stack available",
+    });
     res.status(400).json({
+      success: false,
       error: errorMessage,
     });
   }
