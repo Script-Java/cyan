@@ -346,13 +346,14 @@ export async function createSquarePaymentLink(data: {
     };
 
     // Add tax if present
-    // Only use applied_money without percentage to avoid Square recalculating
+    // Square requires either 'percentage' or 'applied_money' (or both)
     if (data.tax && data.tax > 0) {
       orderObject.taxes = [
         {
           uid: `tax-${data.orderId}`,
-          name: "Tax (8%)",
+          name: "Tax",
           type: "ADDITIVE",
+          percentage: "8.0",
           applied_money: {
             amount: Math.round(data.tax * 100),
             currency: data.currency || "USD",
