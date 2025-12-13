@@ -166,11 +166,7 @@ export default function CheckoutNew() {
             (sum: number, item: any) => sum + (item.price || 0) * item.quantity,
             0,
           );
-          setOrderData((prev) => ({
-            ...prev,
-            subtotal,
-            total: subtotal,
-          }));
+          calculateOrderData(subtotal, 0);
           setIsLoading(false);
           return;
         }
