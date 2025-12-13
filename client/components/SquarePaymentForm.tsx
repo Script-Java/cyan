@@ -188,7 +188,7 @@ export default function SquarePaymentForm({
         <div className="mb-6">
           <h3 className="text-lg font-bold text-white mb-2">Payment Details</h3>
           <p className="text-white/60 text-sm">
-            Amount: ${(amount / 100).toFixed(2)}
+            Amount: ${amount.toFixed(2)}
           </p>
         </div>
 
