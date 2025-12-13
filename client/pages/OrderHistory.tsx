@@ -673,6 +673,42 @@ export default function OrderHistory() {
                           </p>
                         </div>
                       )}
+
+                      {/* Support Ticket Button */}
+                      <div className="mt-6 pt-6 border-t border-gray-200">
+                        <button
+                          onClick={() => {
+                            const ticketData = {
+                              orderId: order.id,
+                              orderAmount: order.total,
+                              orderDate: formatDate(order.dateCreated),
+                              orderStatus: order.status,
+                              productTypes: order.items
+                                ?.map((item) => item.product_name)
+                                .join(", "),
+                              trackingNumber: order.tracking_number,
+                              estimatedDelivery: order.estimated_delivery_date
+                                ? formatDate(order.estimated_delivery_date)
+                                : "Not available",
+                            };
+
+                            // Navigate to support page with pre-filled order data
+                            localStorage.setItem(
+                              "prefillOrderData",
+                              JSON.stringify(ticketData),
+                            );
+                            navigate("/support-tickets");
+                          }}
+                          className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+                        >
+                          <MessageSquare className="w-4 h-4" />
+                          Create Support Ticket
+                        </button>
+                        <p className="text-xs text-gray-600 mt-2 text-center">
+                          Need help with this order? Click above to open a
+                          support ticket and we'll pre-fill your order details.
+                        </p>
+                      </div>
                     </div>
                   )}
                 </div>
