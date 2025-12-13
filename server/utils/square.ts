@@ -397,13 +397,23 @@ export async function createSquarePaymentLink(data: {
     console.log("Payment Link Body - Order Details:", {
       location_id: paymentLinkBody.order?.location_id,
       lineItems: paymentLinkBody.order?.line_items?.length,
-      hasTax: !!paymentLinkBody.order?.taxes?.length,
-      hasShipping: !!paymentLinkBody.order?.shipping,
+      lineItemsDetail: paymentLinkBody.order?.line_items?.map((li: any) => ({
+        name: li.name,
+        quantity: li.quantity,
+        amount: li.base_price_money?.amount,
+      })),
+      taxAmount: paymentLinkBody.order?.taxes?.[0]?.applied_money?.amount,
+      shippingAmount: paymentLinkBody.order?.shipping?.charge?.money?.amount,
       hasPrePopulatedData: Object.keys(paymentLinkBody.pre_populated_data).length > 0,
-      subtotal: data.subtotal,
-      tax: data.tax,
-      shipping: data.shipping,
-      total: data.amount,
+      frontendData: {
+        subtotal: data.subtotal,
+        tax: data.tax,
+        shipping: data.shipping,
+        total: data.amount,
+      },
+      expectedTotal:
+        (data.subtotal + data.tax + data.shipping) * 100,
+      sentTotal: data.amount * 100,
     });
 
     const response = await fetch(
