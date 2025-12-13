@@ -53,8 +53,10 @@ export default function LegalPage() {
       if (!response.ok) {
         if (response.status === 404) {
           setError("This legal page is not available yet");
+        } else if (response.status >= 500) {
+          setError("Server error. Please try again later.");
         } else {
-          throw new Error("Failed to fetch legal page");
+          setError(`Unable to load page (Status: ${response.status})`);
         }
         setIsLoading(false);
         return;
@@ -63,10 +65,8 @@ export default function LegalPage() {
       const data = await response.json();
       setPage(data);
     } catch (err) {
-      console.error("Error fetching legal page:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch legal page",
-      );
+      console.warn("Error fetching legal page:", err);
+      setError("Unable to load legal page. Please try again later.");
     } finally {
       setIsLoading(false);
     }
