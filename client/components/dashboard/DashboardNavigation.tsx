@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import {
   ShoppingBag,
   TrendingUp,
@@ -8,16 +7,20 @@ import {
   Ticket,
   CircleUserRound,
   LogOut,
+  ChevronDown,
 } from "lucide-react";
 
 interface DashboardNavigationProps {
   onLogout: () => void;
+  expandedItem?: string | null;
+  onItemClick?: (itemId: string) => void;
 }
 
 export default function DashboardNavigation({
   onLogout,
+  expandedItem,
+  onItemClick,
 }: DashboardNavigationProps) {
-  const navigate = useNavigate();
 
   const actionItems = [
     {
