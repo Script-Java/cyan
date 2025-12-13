@@ -153,22 +153,20 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
               </Link>
               {/* Store credit display disabled temporarily */}
 
-              {/* Auth Icons */}
+              {/* Auth Buttons */}
               {!isAuthenticated && (
                 <>
                   <Link
                     to="/login"
-                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                    title="Login"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm font-semibold"
                   >
-                    <LogIn className="w-6 h-6 text-blue-400" />
+                    Login
                   </Link>
                   <Link
                     to="/signup"
-                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                    title="Sign Up"
+                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-semibold"
                   >
-                    <UserPlus className="w-6 h-6 text-green-400" />
+                    Sign Up
                   </Link>
                 </>
               )}
