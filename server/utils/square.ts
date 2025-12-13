@@ -394,12 +394,16 @@ export async function createSquarePaymentLink(data: {
       customerContactInfo,
     });
 
-    console.log("Payment Link Body - Quick Pay:", {
-      location_id: paymentLinkBody.quick_pay?.location_id,
-      name: paymentLinkBody.quick_pay?.name,
-      amount: paymentLinkBody.quick_pay?.price_money?.amount,
-      currency: paymentLinkBody.quick_pay?.price_money?.currency,
+    console.log("Payment Link Body - Order Details:", {
+      location_id: paymentLinkBody.order?.location_id,
+      lineItems: paymentLinkBody.order?.line_items?.length,
+      hasTax: !!paymentLinkBody.order?.taxes?.length,
+      hasShipping: !!paymentLinkBody.order?.shipping,
       hasPrePopulatedData: Object.keys(paymentLinkBody.pre_populated_data).length > 0,
+      subtotal: data.subtotal,
+      tax: data.tax,
+      shipping: data.shipping,
+      total: data.amount,
     });
 
     const response = await fetch(
