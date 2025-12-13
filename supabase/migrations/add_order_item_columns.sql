@@ -3,7 +3,7 @@
 -- These columns are used by server/utils/supabase.ts and server/routes/designs.ts
 
 ALTER TABLE order_items
-ADD COLUMN IF NOT EXISTS product_name VARCHAR(500),
+ADD COLUMN IF NOT EXISTS product_name TEXT,
 ADD COLUMN IF NOT EXISTS design_file_url TEXT,
 ADD COLUMN IF NOT EXISTS options JSONB;
 
