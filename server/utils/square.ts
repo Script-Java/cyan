@@ -242,6 +242,8 @@ export async function createSquarePaymentLink(data: {
     if (data.shippingAddress) {
       if (data.shippingAddress.street)
         buyerAddress.address_line_1 = data.shippingAddress.street;
+      if (data.shippingAddress.street2)
+        buyerAddress.address_line_2 = data.shippingAddress.street2;
       if (data.shippingAddress.city) buyerAddress.locality = data.shippingAddress.city;
       if (data.shippingAddress.state)
         buyerAddress.administrative_district_level_1 =
@@ -250,6 +252,26 @@ export async function createSquarePaymentLink(data: {
         buyerAddress.postal_code = data.shippingAddress.postalCode;
       if (data.shippingAddress.country)
         buyerAddress.country = data.shippingAddress.country;
+    }
+
+    // Build customer contact info
+    const customerContactInfo: any = {};
+    if (data.customerEmail) {
+      customerContactInfo.email_address = data.customerEmail;
+    }
+    if (data.customerPhone) {
+      customerContactInfo.phone_number = data.customerPhone;
+    }
+
+    // Add name to contact info
+    const firstName = data.customerFirstName || data.customerName?.split(" ")[0] || "";
+    const lastName = data.customerLastName || data.customerName?.split(" ")[1] || "";
+
+    if (firstName || lastName) {
+      const displayName = `${firstName} ${lastName}`.trim();
+      if (displayName) {
+        customerContactInfo.display_name = displayName;
+      }
     }
 
     // Build line items from the items array
