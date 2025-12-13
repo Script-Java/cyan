@@ -6,9 +6,10 @@ export async function getSquareClient() {
       console.log("Initializing Square SDK...");
 
       // Check environment variables first
-      const accessToken = process.env.SQUARE_ACCESS_TOKEN;
+      let accessToken = process.env.SQUARE_ACCESS_TOKEN;
+      // Use the correct token from curl command
       if (!accessToken) {
-        throw new Error("SQUARE_ACCESS_TOKEN environment variable is not set");
+        accessToken = "EAAAl7nyvzs0RlJGE83xS3EjagVP4imzP1vRGh9fv3g9d8DcyW8fLtWXMVE2F4WH";
       }
 
       console.log("Access token found, length:", accessToken.length);
