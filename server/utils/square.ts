@@ -272,6 +272,7 @@ export async function createSquarePaymentLink(data: {
       amount: amountInCents,
       currency: data.currency,
       locationId: locationId,
+      customerEmail: data.customerEmail,
     });
 
     // Make direct HTTP call to Square Payment Links API
