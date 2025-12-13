@@ -34,38 +34,52 @@ export default function ShippingOptionsSelector({
   useEffect(() => {
     const fetchShippingOptions = async () => {
       try {
-        console.log("Attempting to fetch shipping options from /api/shipping-options");
+        const apiUrl = `/api/shipping-options`;
+        console.log("Attempting to fetch shipping options from:", apiUrl);
 
-        const response = await fetch("/api/shipping-options", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-        console.log("Shipping options response status:", response.status);
+        try {
+          const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            signal: controller.signal,
+          });
 
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          const errorMsg = errorData.error || `HTTP ${response.status}`;
-          throw new Error(`Failed to fetch shipping options: ${errorMsg}`);
-        }
+          clearTimeout(timeoutId);
+          console.log("Shipping options response status:", response.status);
 
-        const data = await response.json();
-        const options = data.data || [];
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            const errorMsg = errorData.error || `HTTP ${response.status}`;
+            throw new Error(`Failed to fetch shipping options: ${errorMsg}`);
+          }
 
-        console.log("Shipping options loaded:", options.length);
-        setShippingOptions(options);
-        setError(null);
+          const data = await response.json();
+          const options = data.data || [];
 
-        if (options.length > 0 && !selectedOptionId) {
-          const defaultOption = options[0];
-          const estimatedDate = calculateEstimatedDeliveryDate(defaultOption);
-          onSelectionChange(
-            defaultOption.id,
-            defaultOption.cost,
-            estimatedDate,
-          );
+          console.log("Shipping options loaded:", options.length);
+          setShippingOptions(options);
+          setError(null);
+
+          if (options.length > 0 && !selectedOptionId) {
+            const defaultOption = options[0];
+            const estimatedDate = calculateEstimatedDeliveryDate(defaultOption);
+            onSelectionChange(
+              defaultOption.id,
+              defaultOption.cost,
+              estimatedDate,
+            );
+          }
+        } catch (fetchErr) {
+          clearTimeout(timeoutId);
+          if (fetchErr instanceof Error && fetchErr.name === 'AbortError') {
+            throw new Error("Request timeout: Shipping options are taking too long to load");
+          }
+          throw fetchErr;
         }
       } catch (err) {
         console.error("Error fetching shipping options:", err);
@@ -73,6 +87,7 @@ export default function ShippingOptionsSelector({
         console.error("Full error details:", {
           error: err,
           message: errorMsg,
+          type: err instanceof Error ? err.constructor.name : typeof err,
         });
         setError(errorMsg);
       } finally {
