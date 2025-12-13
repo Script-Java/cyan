@@ -22,16 +22,18 @@ const LoadingSpinner = () => (
   </div>
 );
 
-const itemPageMap: Record<string, React.LazyExoticComponent<() => JSX.Element>> =
-  {
-    orders: OrderHistory,
-    finances: Finances,
-    designs: Designs,
-    proofs: Proofs,
-    support: Support,
-    "my-tickets": MyTickets,
-    "account-settings": AccountSettings,
-  };
+const itemPageMap: Record<
+  string,
+  React.LazyExoticComponent<() => JSX.Element>
+> = {
+  orders: OrderHistory,
+  finances: Finances,
+  designs: Designs,
+  proofs: Proofs,
+  support: Support,
+  "my-tickets": MyTickets,
+  "account-settings": AccountSettings,
+};
 
 const itemRoutes: Record<string, string> = {
   orders: "/order-history",

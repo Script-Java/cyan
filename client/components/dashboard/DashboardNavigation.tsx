@@ -20,7 +20,6 @@ export default function DashboardNavigation({
   expandedItem,
   onItemClick,
 }: DashboardNavigationProps) {
-
   const actionItems = [
     {
       id: "orders",
