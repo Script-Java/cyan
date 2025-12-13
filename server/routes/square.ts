@@ -210,26 +210,18 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     });
 
     if (!paymentLinkResult.success || !paymentLinkResult.paymentLinkUrl) {
-      console.warn(
-        "Square Payment Link failed, falling back to local checkout form:",
+      console.error(
+        "Square Payment Link failed - returning error to client:",
         {
           orderId: supabaseOrder.id,
           error: paymentLinkResult.error,
         },
       );
 
-      // Fallback: use local Web Payments SDK form instead of Square hosted link
-      // Return NO checkoutUrl so the client will show the payment form
-      return res.status(201).json({
-        success: true,
-        order: {
-          id: supabaseOrder.id,
-          status: "pending_payment",
-          total: checkoutData.total,
-        },
-        fallback: true,
-        message:
-          "Order created successfully. Please complete payment using the form below.",
+      // Return error instead of fallback
+      return res.status(400).json({
+        success: false,
+        error: paymentLinkResult.error || "Failed to create payment link",
       });
     }
 
