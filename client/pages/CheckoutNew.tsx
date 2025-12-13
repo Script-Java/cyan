@@ -449,15 +449,56 @@ export default function CheckoutNew() {
         items: checkoutPayload.items?.length,
         customerEmail: checkoutPayload.customerEmail,
         total: checkoutPayload.total,
+        payloadSize: JSON.stringify(checkoutPayload).length,
       });
 
-      const response = await fetch("/api/square/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(checkoutPayload),
-      });
+      // Create abort controller for timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+      try {
+        const response = await fetch("/api/square/checkout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(checkoutPayload),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        console.log("Checkout response status:", response.status);
+
+        // Try to parse response
+        let result;
+        try {
+          result = await response.json();
+        } catch (parseError) {
+          console.error("Failed to parse checkout response:", parseError);
+          throw new Error(
+            `Server error (${response.status}): Could not parse response`
+          );
+        }
+
+        console.log("Checkout response data:", result);
+
+        if (!response.ok) {
+          const errorMsg =
+            result?.error ||
+            result?.message ||
+            `HTTP ${response.status}: Checkout failed`;
+          throw new Error(errorMsg);
+        }
+      } catch (fetchErr) {
+        clearTimeout(timeoutId);
+        if (fetchErr instanceof Error && fetchErr.name === "AbortError") {
+          throw new Error(
+            "Request timeout: Checkout is taking too long. Please try again."
+          );
+        }
+        throw fetchErr;
+      }
 
       const result = await response.json();
 
