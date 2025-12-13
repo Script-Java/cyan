@@ -136,8 +136,14 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
           .from("customers")
           .insert({
             email: checkoutData.customerEmail,
-            first_name: checkoutData.shippingAddress.firstName || checkoutData.customerName?.split(" ")[0] || "Guest",
-            last_name: checkoutData.shippingAddress.lastName || checkoutData.customerName?.split(" ")[1] || "Customer",
+            first_name:
+              checkoutData.shippingAddress.firstName ||
+              checkoutData.customerName?.split(" ")[0] ||
+              "Guest",
+            last_name:
+              checkoutData.shippingAddress.lastName ||
+              checkoutData.customerName?.split(" ")[1] ||
+              "Customer",
             phone: checkoutData.phone || undefined,
             company: undefined,
             store_credit: 0,
@@ -225,13 +231,10 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     });
 
     if (!paymentLinkResult.success || !paymentLinkResult.paymentLinkUrl) {
-      console.error(
-        "Square Payment Link failed - returning error to client:",
-        {
-          orderId: supabaseOrder.id,
-          error: paymentLinkResult.error,
-        },
-      );
+      console.error("Square Payment Link failed - returning error to client:", {
+        orderId: supabaseOrder.id,
+        error: paymentLinkResult.error,
+      });
 
       // Return error instead of fallback
       return res.status(400).json({

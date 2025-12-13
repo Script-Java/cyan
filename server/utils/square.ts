@@ -9,7 +9,8 @@ export async function getSquareClient() {
       let accessToken = process.env.SQUARE_ACCESS_TOKEN;
       // Use the correct token from curl command
       if (!accessToken) {
-        accessToken = "EAAAl7nyvzs0RlJGE83xS3EjagVP4imzP1vRGh9fv3g9d8DcyW8fLtWXMVE2F4WH";
+        accessToken =
+          "EAAAl7nyvzs0RlJGE83xS3EjagVP4imzP1vRGh9fv3g9d8DcyW8fLtWXMVE2F4WH";
       }
 
       console.log("Access token found, length:", accessToken.length);
@@ -21,14 +22,19 @@ export async function getSquareClient() {
         const squareModule = await import("square");
         SquareClientClass = squareModule.SquareClient || squareModule.default;
       } catch (importError) {
-        console.warn("ES module import failed, falling back to require:", importError);
+        console.warn(
+          "ES module import failed, falling back to require:",
+          importError,
+        );
         // Fallback to CommonJS require
         const squareModule = require("square");
         SquareClientClass = squareModule.SquareClient;
       }
 
       if (!SquareClientClass || typeof SquareClientClass !== "function") {
-        throw new Error(`Square SquareClient not found or not a constructor. Received: ${typeof SquareClientClass}`);
+        throw new Error(
+          `Square SquareClient not found or not a constructor. Received: ${typeof SquareClientClass}`,
+        );
       }
 
       // Initialize with correct environment string
@@ -48,9 +54,7 @@ export async function getSquareClient() {
         throw new Error("orders API not accessible on Square client");
       }
 
-      console.log(
-        "Square APIs verified - payments and orders APIs accessible",
-      );
+      console.log("Square APIs verified - payments and orders APIs accessible");
     } catch (error) {
       console.error("Failed to initialize Square client:", error);
       throw new Error(
@@ -235,7 +239,8 @@ export async function createSquarePaymentLink(data: {
       );
     }
 
-    const accessToken = "EAAAl7nyvzs0RlJGE83xS3EjagVP4imzP1vRGh9fv3g9d8DcyW8fLtWXMVE2F4WH";
+    const accessToken =
+      "EAAAl7nyvzs0RlJGE83xS3EjagVP4imzP1vRGh9fv3g9d8DcyW8fLtWXMVE2F4WH";
 
     // Build the pre-populated buyer address from shipping data
     const buyerAddress: any = {};
@@ -244,7 +249,8 @@ export async function createSquarePaymentLink(data: {
         buyerAddress.address_line_1 = data.shippingAddress.street;
       if (data.shippingAddress.street2)
         buyerAddress.address_line_2 = data.shippingAddress.street2;
-      if (data.shippingAddress.city) buyerAddress.locality = data.shippingAddress.city;
+      if (data.shippingAddress.city)
+        buyerAddress.locality = data.shippingAddress.city;
       if (data.shippingAddress.state)
         buyerAddress.administrative_district_level_1 =
           data.shippingAddress.state;
@@ -264,8 +270,10 @@ export async function createSquarePaymentLink(data: {
     }
 
     // Add name to contact info
-    const firstName = data.customerFirstName || data.customerName?.split(" ")[0] || "";
-    const lastName = data.customerLastName || data.customerName?.split(" ")[1] || "";
+    const firstName =
+      data.customerFirstName || data.customerName?.split(" ")[0] || "";
+    const lastName =
+      data.customerLastName || data.customerName?.split(" ")[1] || "";
 
     if (firstName || lastName) {
       const displayName = `${firstName} ${lastName}`.trim();
@@ -321,7 +329,8 @@ export async function createSquarePaymentLink(data: {
 
     // Only add customer_contact_info if it has data
     if (Object.keys(customerContactInfo).length > 0) {
-      paymentLinkBody.pre_populated_data.customer_contact_info = customerContactInfo;
+      paymentLinkBody.pre_populated_data.customer_contact_info =
+        customerContactInfo;
     }
 
     // Include order with line items if available
@@ -329,16 +338,20 @@ export async function createSquarePaymentLink(data: {
       paymentLinkBody.order = {
         location_id: locationId,
         line_items: lineItems,
-        taxes: data.tax ? [{
-          uid: "tax",
-          name: "Tax",
-          type: "ADDITIVE",
-          percentage: "0",
-          applied_money: {
-            amount: Math.round(data.tax * 100),
-            currency: data.currency || "USD",
-          },
-        }] : undefined,
+        taxes: data.tax
+          ? [
+              {
+                uid: "tax",
+                name: "Tax",
+                type: "ADDITIVE",
+                percentage: "0",
+                applied_money: {
+                  amount: Math.round(data.tax * 100),
+                  currency: data.currency || "USD",
+                },
+              },
+            ]
+          : undefined,
         discounts: [],
       };
     } else {
