@@ -62,34 +62,34 @@ export async function getSquareClient() {
 
 export async function getPaymentsApi() {
   const client = await getSquareClient();
-  if (typeof client.payments !== "function") {
-    throw new Error("Square payments() method is not available");
+  if (!client.payments) {
+    throw new Error("Square payments API is not available");
   }
-  return client.payments();
+  return client.payments;
 }
 
 export async function getLocationsApi() {
   const client = await getSquareClient();
-  if (typeof client.locations !== "function") {
-    throw new Error("Square locations() method is not available");
+  if (!client.locations) {
+    throw new Error("Square locations API is not available");
   }
-  return client.locations();
+  return client.locations;
 }
 
 export async function getOrdersApi() {
   const client = await getSquareClient();
-  if (typeof client.orders !== "function") {
-    throw new Error("Square orders() method is not available");
+  if (!client.orders) {
+    throw new Error("Square orders API is not available");
   }
-  return client.orders();
+  return client.orders;
 }
 
 export async function getCheckoutApi() {
   const client = await getSquareClient();
-  if (typeof client.checkout !== "function") {
-    throw new Error("Square checkout() method is not available");
+  if (!client.checkout) {
+    throw new Error("Square checkout API is not available");
   }
-  return client.checkout();
+  return client.checkout;
 }
 
 export async function processSquarePayment(paymentData: {
