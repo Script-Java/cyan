@@ -198,6 +198,14 @@ export async function createSquarePaymentLink(data: {
   customerEmail: string;
   customerName: string;
   redirectUrl: string;
+  subtotal?: number;
+  tax?: number;
+  shipping?: number;
+  items?: Array<{
+    product_name: string;
+    quantity: number;
+    price: number;
+  }>;
   shippingAddress?: {
     street?: string;
     city?: string;
