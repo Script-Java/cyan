@@ -313,6 +313,7 @@ export async function createSquarePaymentLink(data: {
       },
       pre_populated_data: {
         buyer_address: buyerAddress && Object.keys(buyerAddress).length > 0 ? buyerAddress : {},
+        customer_contact_info: customerContactInfo && Object.keys(customerContactInfo).length > 0 ? customerContactInfo : {},
       },
     };
 
