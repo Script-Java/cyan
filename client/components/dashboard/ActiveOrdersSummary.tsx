@@ -90,45 +90,47 @@ export default function ActiveOrdersSummary({
       </div>
 
       {activeOrders.length > 0 ? (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {activeOrders.map((order) => (
             <div
               key={order.id}
-              className="border border-white/10 rounded-lg overflow-hidden bg-white/5"
+              className="border-2 border-gray-200 rounded-lg overflow-hidden bg-white shadow-md hover:shadow-lg hover:border-emerald-300 transition-all group"
             >
               <div
-                className={`p-4 flex items-center justify-between cursor-pointer hover:bg-white/10 transition-colors backdrop-blur-sm`}
+                className={`p-5 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors`}
                 onClick={() => toggleExpanded(order.id)}
               >
                 <div className="flex items-center gap-4 flex-1">
-                  <Package className="w-5 h-5 flex-shrink-0 text-white/70" />
+                  <div className="p-2 bg-emerald-50 rounded-lg flex-shrink-0">
+                    <Package className="w-5 h-5 flex-shrink-0 text-emerald-600" />
+                  </div>
                   <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <p className="font-semibold text-sm text-white">
+                    <div className="flex items-center gap-3">
+                      <p className="font-bold text-sm text-gray-900">
                         Order #{order.id}
                       </p>
                       <span
-                        className={`text-xs font-medium px-2 py-1 rounded border ${getStatusBadgeColor(order.status)}`}
+                        className={`text-xs font-semibold px-3 py-1 rounded-full border-2 ${getStatusBadgeColor(order.status)}`}
                       >
                         {order.status.charAt(0).toUpperCase() +
                           order.status.slice(1)}
                       </span>
                     </div>
-                    <div className="flex items-center gap-4 text-xs text-white/60 mt-1">
+                    <div className="flex items-center gap-4 text-xs text-gray-600 mt-2">
                       <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
+                        <Calendar className="w-4 h-4" />
                         {new Date(order.dateCreated).toLocaleDateString()}
                       </span>
                       <span className="flex items-center gap-1">
-                        <Package className="w-3 h-3" />
+                        <Package className="w-4 h-4" />
                         {order.itemCount}{" "}
                         {order.itemCount === 1 ? "item" : "items"}
                       </span>
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col items-end gap-2 ml-4">
-                  <p className="font-semibold text-sm text-white">
+                <div className="flex flex-col items-end gap-3 ml-4">
+                  <p className="font-bold text-base text-emerald-600">
                     ${order.total.toFixed(2)}
                   </p>
                   <button
@@ -136,13 +138,13 @@ export default function ActiveOrdersSummary({
                       e.stopPropagation();
                       toggleExpanded(order.id);
                     }}
-                    className="text-xs px-3 py-1 rounded bg-emerald-600 text-white hover:bg-emerald-500 transition-colors whitespace-nowrap flex items-center gap-1"
+                    className="text-xs px-4 py-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md transition-all whitespace-nowrap flex items-center gap-2 font-semibold"
                   >
                     {expandedOrderId === order.id ? "Hide" : "Show"} Details
                     {expandedOrderId === order.id ? (
-                      <ChevronUp className="w-3 h-3" />
+                      <ChevronUp className="w-4 h-4" />
                     ) : (
-                      <ChevronDown className="w-3 h-3" />
+                      <ChevronDown className="w-4 h-4" />
                     )}
                   </button>
                 </div>
