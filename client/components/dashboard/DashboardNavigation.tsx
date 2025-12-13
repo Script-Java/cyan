@@ -105,7 +105,7 @@ export default function DashboardNavigation({
 
   const handleItemClick = (itemId: string) => {
     if (expandedItem === itemId) {
-      onItemClick?.(null as any);
+      onItemClick?.(null);
     } else {
       onItemClick?.(itemId);
     }
