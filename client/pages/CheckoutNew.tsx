@@ -456,8 +456,11 @@ export default function CheckoutNew() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
+      let response;
+      let result;
+
       try {
-        const response = await fetch("/api/square/checkout", {
+        response = await fetch("/api/square/checkout", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -467,11 +470,9 @@ export default function CheckoutNew() {
         });
 
         clearTimeout(timeoutId);
-
         console.log("Checkout response status:", response.status);
 
         // Try to parse response
-        let result;
         try {
           result = await response.json();
         } catch (parseError) {
@@ -495,6 +496,16 @@ export default function CheckoutNew() {
         if (fetchErr instanceof Error && fetchErr.name === "AbortError") {
           throw new Error(
             "Request timeout: Checkout is taking too long. Please try again."
+          );
+        }
+        // Network errors
+        if (fetchErr instanceof TypeError) {
+          console.error("Network error details:", {
+            message: fetchErr.message,
+            stack: fetchErr.stack,
+          });
+          throw new Error(
+            `Network error: ${fetchErr.message}. Please check your connection and try again.`
           );
         }
         throw fetchErr;
