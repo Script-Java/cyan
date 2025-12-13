@@ -300,11 +300,20 @@ export default function CheckoutNew() {
     const updatedItems = cartItems.filter((_, i) => i !== index);
     setCartItems(updatedItems);
 
+    // Update localStorage
+    const localStorageCart = localStorage.getItem("cart");
+    if (localStorageCart) {
+      const customItems = JSON.parse(localStorageCart);
+      const updatedCart = customItems.filter((_: any, i: number) => i !== index);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    }
+
     const newSubtotal = updatedItems.reduce((sum, item) => {
       return sum + (item.price || 0.25) * item.quantity;
     }, 0);
 
     calculateOrderData(newSubtotal, appliedDiscount, appliedStoreCredit);
+    toast.success("Item removed from cart");
   };
 
   const handleApplyStoreCredit = (amount: number) => {
