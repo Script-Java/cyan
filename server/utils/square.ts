@@ -333,16 +333,43 @@ export async function createSquarePaymentLink(data: {
         customerContactInfo;
     }
 
-    // Use quick_pay for the total amount (simplest and most reliable approach)
-    // This displays the total amount directly without relying on line item calculations
-    paymentLinkBody.quick_pay = {
+    // Build order with detailed line items to show Order Summary on Square checkout page
+    const orderObject: any = {
       location_id: locationId,
-      name: `Order #${data.orderId}`,
-      price_money: {
-        amount: amountInCents,
-        currency: data.currency || "USD",
-      },
+      line_items: lineItems,
+      discounts: [],
     };
+
+    // Add tax if present
+    if (data.tax && data.tax > 0) {
+      orderObject.taxes = [
+        {
+          uid: "tax-8pct",
+          name: "Tax (8%)",
+          type: "ADDITIVE",
+          percentage: "8",
+          applied_money: {
+            amount: Math.round(data.tax * 100),
+            currency: data.currency || "USD",
+          },
+        },
+      ];
+    }
+
+    // Add shipping if present
+    if (data.shipping && data.shipping > 0) {
+      orderObject.shipping = {
+        name: "Shipping",
+        charge: {
+          money: {
+            amount: Math.round(data.shipping * 100),
+            currency: data.currency || "USD",
+          },
+        },
+      };
+    }
+
+    paymentLinkBody.order = orderObject;
 
     console.log("Creating Square Payment Link via REST API:", {
       orderId: data.orderId,
