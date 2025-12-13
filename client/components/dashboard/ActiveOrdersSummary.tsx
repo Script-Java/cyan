@@ -50,15 +50,15 @@ export default function ActiveOrdersSummary({
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "bg-orange-600/30 text-orange-300 border border-orange-500/30";
+        return "bg-orange-100 text-orange-700 border-2 border-orange-300";
       case "processing":
-        return "bg-yellow-600/30 text-yellow-300 border border-yellow-500/30";
+        return "bg-yellow-100 text-yellow-700 border-2 border-yellow-300";
       case "printing":
-        return "bg-purple-600/30 text-purple-300 border border-purple-500/30";
+        return "bg-purple-100 text-purple-700 border-2 border-purple-300";
       case "in transit":
-        return "bg-blue-600/30 text-blue-300 border border-blue-500/30";
+        return "bg-blue-100 text-blue-700 border-2 border-blue-300";
       default:
-        return "bg-white/10 text-white/60 border border-white/10";
+        return "bg-gray-100 text-gray-600 border-2 border-gray-300";
     }
   };
 
