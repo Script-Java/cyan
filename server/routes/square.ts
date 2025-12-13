@@ -108,6 +108,10 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       itemsCount: checkoutData.items?.length,
       customerEmail: checkoutData.customerEmail,
       hasShippingAddress: !!checkoutData.shippingAddress,
+      subtotal: checkoutData.subtotal,
+      tax: checkoutData.tax,
+      shipping: checkoutData.shipping,
+      total: checkoutData.total,
     });
 
     // Validate required fields
