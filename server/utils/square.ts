@@ -403,6 +403,13 @@ export async function createSquarePaymentLink(data: {
 
     paymentLinkBody.order = orderObject;
 
+    // Add the total amount the payment link should collect
+    // This is the grand total including all line items, taxes, and shipping
+    paymentLinkBody.amount_money = {
+      amount: amountInCents,
+      currency: data.currency || "USD",
+    };
+
     console.log("Creating Square Payment Link via REST API:", {
       orderId: data.orderId,
       amount: amountInCents,
