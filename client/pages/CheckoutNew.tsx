@@ -399,6 +399,7 @@ export default function CheckoutNew() {
         amount: orderData.total,
         currency: "USD",
         items: cartItems,
+        phone: customerInfo.phone,
         shippingAddress: {
           firstName: customerInfo.firstName,
           lastName: customerInfo.lastName,
