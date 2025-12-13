@@ -246,18 +246,35 @@ export async function createSquarePaymentLink(data: {
         buyerAddress.country = data.shippingAddress.country;
     }
 
-    // Build the payment link request body for Square's Payment Links API
-    // Following the structure from the Square Payment Links API documentation
-    const paymentLinkBody = {
-      idempotency_key: `${data.orderId}-${Date.now()}-${Math.random()}`,
-      quick_pay: {
-        location_id: locationId,
-        name: "STICKY SLAP",
-        price_money: {
+    // Build line items from the items array
+    const lineItems: any[] = [];
+
+    if (data.items && data.items.length > 0) {
+      for (const item of data.items) {
+        lineItems.push({
+          name: item.product_name,
+          quantity: item.quantity.toString(),
+          base_price_money: {
+            amount: Math.round(item.price * 100),
+            currency: data.currency || "USD",
+          },
+        });
+      }
+    } else {
+      // Fallback: create a single line item
+      lineItems.push({
+        name: "Order #" + data.orderId,
+        quantity: "1",
+        base_price_money: {
           amount: amountInCents,
           currency: data.currency || "USD",
         },
-      },
+      });
+    }
+
+    // Build the payment link request body with full order details
+    const paymentLinkBody: any = {
+      idempotency_key: `${data.orderId}-${Date.now()}-${Math.random()}`,
       checkout_options: {
         ask_for_shipping_address: true,
         allow_tipping: false,
@@ -267,9 +284,53 @@ export async function createSquarePaymentLink(data: {
         accepted_payment_methods: {},
       },
       pre_populated_data: {
-        buyer_address: {},
+        buyer_address: buyerAddress && Object.keys(buyerAddress).length > 0 ? buyerAddress : {},
       },
     };
+
+    // Include order with line items if available
+    if (lineItems.length > 0) {
+      paymentLinkBody.order = {
+        location_id: locationId,
+        line_items: lineItems,
+        taxes: data.tax ? [{
+          uid: "tax",
+          name: "Tax",
+          type: "ADDITIVE",
+          percentage: "0",
+          applied_money: {
+            amount: Math.round(data.tax * 100),
+            currency: data.currency || "USD",
+          },
+        }] : undefined,
+        discounts: [],
+      };
+    } else {
+      // Fallback to quick_pay if no items
+      paymentLinkBody.quick_pay = {
+        location_id: locationId,
+        name: "STICKY SLAP",
+        price_money: {
+          amount: amountInCents,
+          currency: data.currency || "USD",
+        },
+      };
+    }
+
+    // Add shipping if provided
+    if (data.shipping && data.shipping > 0) {
+      if (paymentLinkBody.order) {
+        paymentLinkBody.order.shipping = {
+          name: "Shipping",
+          charge: {
+            money: {
+              amount: Math.round(data.shipping * 100),
+              currency: data.currency || "USD",
+            },
+          },
+        };
+      }
+    }
 
     console.log("Creating Square Payment Link via REST API:", {
       orderId: data.orderId,
