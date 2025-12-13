@@ -278,6 +278,7 @@ export default function CheckoutNew() {
       }
     };
 
+    loadCustomerInfo();
     loadCart();
     fetchStoreCredit();
 
