@@ -197,8 +197,6 @@ export default function Dashboard() {
             )}
           />
 
-          {/* Quick Order Section */}
-          <QuickOrderSection />
         </DashboardLayout>
       </main>
     </>
