@@ -243,30 +243,27 @@ export async function createSquarePaymentLink(data: {
     }
 
     // Build the payment link request body for Square's Payment Links API
+    // Following the structure from the Square Payment Links API documentation
     const paymentLinkBody = {
       idempotency_key: `${data.orderId}-${Date.now()}-${Math.random()}`,
       quick_pay: {
-        name: "Stickyslap",
         location_id: locationId,
+        name: "STICKY SLAP",
         price_money: {
           amount: amountInCents,
           currency: data.currency || "USD",
         },
       },
       checkout_options: {
-        shipping_fee: {
-          charge: {
-            currency: data.currency || "USD",
-            amount: 1000, // $10.00 in cents
-          },
-          name: "First Class",
-        },
         ask_for_shipping_address: true,
-        redirect_url: data.redirectUrl,
+        allow_tipping: false,
+        enable_coupon: true,
+        enable_loyalty: true,
+        merchant_support_email: "sticky@stickyslap.com",
+        accepted_payment_methods: {},
       },
       pre_populated_data: {
-        buyer_email: data.customerEmail,
-        buyer_address: buyerAddress,
+        buyer_address: {},
       },
     };
 
