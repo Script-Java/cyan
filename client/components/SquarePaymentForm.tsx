@@ -187,9 +187,7 @@ export default function SquarePaymentForm({
       <div className="bg-white/5 border border-white/10 rounded-lg p-6">
         <div className="mb-6">
           <h3 className="text-lg font-bold text-white mb-2">Payment Details</h3>
-          <p className="text-white/60 text-sm">
-            Amount: ${amount.toFixed(2)}
-          </p>
+          <p className="text-white/60 text-sm">Amount: ${amount.toFixed(2)}</p>
         </div>
 
         <div
