@@ -130,20 +130,24 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
-              <Link
-                to="/dashboard"
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                title="Dashboard"
-              >
-                <LayoutGrid className="w-7 h-7 text-[#8B5CF6]" />
-              </Link>
-              <Link
-                to="/order-history"
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                title="Orders"
-              >
-                <Bookmark className="w-7 h-7 text-[#10B981]" />
-              </Link>
+              {isAuthenticated && (
+                <>
+                  <Link
+                    to="/dashboard"
+                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    title="Dashboard"
+                  >
+                    <LayoutGrid className="w-7 h-7 text-[#8B5CF6]" />
+                  </Link>
+                  <Link
+                    to="/order-history"
+                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    title="Orders"
+                  >
+                    <Bookmark className="w-7 h-7 text-[#10B981]" />
+                  </Link>
+                </>
+              )}
               <Link
                 to="/blogs"
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
