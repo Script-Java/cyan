@@ -197,6 +197,9 @@ export async function createSquarePaymentLink(data: {
   description: string;
   customerEmail: string;
   customerName: string;
+  customerPhone?: string;
+  customerFirstName?: string;
+  customerLastName?: string;
   redirectUrl: string;
   subtotal?: number;
   tax?: number;
@@ -207,7 +210,10 @@ export async function createSquarePaymentLink(data: {
     price: number;
   }>;
   shippingAddress?: {
+    firstName?: string;
+    lastName?: string;
     street?: string;
+    street2?: string;
     city?: string;
     state?: string;
     postalCode?: string;
