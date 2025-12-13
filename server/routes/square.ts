@@ -114,22 +114,55 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       total: checkoutData.total,
     });
 
-    // Validate required fields
-    if (
-      checkoutData.amount === undefined ||
-      checkoutData.amount === null ||
-      !checkoutData.items ||
-      !Array.isArray(checkoutData.items) ||
-      checkoutData.items.length === 0 ||
-      !checkoutData.customerEmail
-    ) {
+    // Validate required fields with detailed error messages
+    const missingFields: string[] = [];
+
+    if (checkoutData.amount === undefined || checkoutData.amount === null) {
+      missingFields.push("amount");
+    }
+    if (!checkoutData.items || !Array.isArray(checkoutData.items) || checkoutData.items.length === 0) {
+      missingFields.push("items");
+    }
+    if (!checkoutData.customerEmail) {
+      missingFields.push("customerEmail");
+    }
+    if (!checkoutData.shippingAddress) {
+      missingFields.push("shippingAddress");
+    }
+    if (!checkoutData.billingAddress) {
+      missingFields.push("billingAddress");
+    }
+    if (checkoutData.subtotal === undefined || checkoutData.subtotal === null) {
+      missingFields.push("subtotal");
+    }
+    if (checkoutData.tax === undefined || checkoutData.tax === null) {
+      missingFields.push("tax");
+    }
+    if (checkoutData.shipping === undefined || checkoutData.shipping === null) {
+      missingFields.push("shipping");
+    }
+    if (checkoutData.total === undefined || checkoutData.total === null) {
+      missingFields.push("total");
+    }
+
+    if (missingFields.length > 0) {
       console.error("Missing required fields:", {
-        amount: checkoutData.amount,
-        items: checkoutData.items,
-        customerEmail: checkoutData.customerEmail,
+        missingFields,
+        receivedData: {
+          amount: checkoutData.amount,
+          items: checkoutData.items?.length,
+          customerEmail: checkoutData.customerEmail,
+          shippingAddress: !!checkoutData.shippingAddress,
+          billingAddress: !!checkoutData.billingAddress,
+          subtotal: checkoutData.subtotal,
+          tax: checkoutData.tax,
+          shipping: checkoutData.shipping,
+          total: checkoutData.total,
+        },
       });
       return res.status(400).json({
-        error: "Missing required fields: amount, items, customerEmail",
+        success: false,
+        error: `Missing required fields: ${missingFields.join(", ")}`,
       });
     }
 
