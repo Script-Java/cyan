@@ -345,7 +345,7 @@ export async function createSquarePaymentLink(data: {
     if (data.tax && data.tax > 0) {
       orderObject.taxes = [
         {
-          uid: "tax-8pct",
+          uid: `tax-${data.orderId}`,
           name: "Tax (8%)",
           type: "ADDITIVE",
           applied_money: {
