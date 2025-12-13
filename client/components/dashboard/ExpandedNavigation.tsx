@@ -84,7 +84,7 @@ export default function ExpandedNavigation({
         </div>
 
         {/* Content */}
-        <div className="p-6 max-h-96 overflow-y-auto">
+        <div className="p-6">
           <Suspense fallback={<LoadingSpinner />}>
             <PageComponent />
           </Suspense>
