@@ -127,21 +127,30 @@ export const handleGetCustomerAddresses: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const { data: customer, error } = await supabase
+    const { data: customer, error: customerError } = await supabase
       .from("customers")
       .select("id")
       .eq("id", customerId)
       .single();
 
-    if (error || !customer) {
+    if (customerError || !customer) {
       return res.status(404).json({ error: "Customer not found" });
     }
 
-    // Address management will be implemented in future updates
-    // For now, return empty addresses array
+    const { data: addresses, error } = await supabase
+      .from("addresses")
+      .select("*")
+      .eq("customer_id", customerId)
+      .order("is_default", { ascending: false })
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      return res.status(500).json({ error: "Failed to fetch addresses" });
+    }
+
     res.json({
       success: true,
-      addresses: [],
+      addresses: addresses || [],
     });
   } catch (error) {
     console.error("Get addresses error:", error);
