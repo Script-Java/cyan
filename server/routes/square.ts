@@ -191,7 +191,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
 
     const redirectUrl = `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`;
 
-    // Create Square Payment Link
+    // Create Square Payment Link with full order details
     const paymentLinkResult = await createSquarePaymentLink({
       orderId: supabaseOrder.id,
       amount: checkoutData.total,
@@ -200,6 +200,14 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       customerEmail: checkoutData.customerEmail,
       customerName: checkoutData.customerName || "Customer",
       redirectUrl,
+      subtotal: checkoutData.subtotal,
+      tax: checkoutData.tax,
+      shipping: checkoutData.shipping,
+      items: checkoutData.items.map((item) => ({
+        product_name: item.product_name || `Product #${item.product_id}`,
+        quantity: item.quantity,
+        price: item.price || 0.25,
+      })),
       shippingAddress: {
         street: checkoutData.shippingAddress.street,
         city: checkoutData.shippingAddress.city,
