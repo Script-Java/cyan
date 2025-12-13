@@ -769,6 +769,14 @@ export default function CheckoutNew() {
                           per sticker
                         </span>
                       </div>
+                      {orderData.tax > 0 && (
+                        <div className="flex justify-between text-orange-400">
+                          <span>Tax (8%)</span>
+                          <span className="font-bold">
+                            ${orderData.tax.toFixed(2)}
+                          </span>
+                        </div>
+                      )}
                       {shippingCost > 0 && (
                         <div className="flex justify-between text-blue-400">
                           <span>Shipping</span>
