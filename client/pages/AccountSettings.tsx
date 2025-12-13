@@ -545,7 +545,7 @@ export default function AccountSettings() {
                   >
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-800 mb-2">
                           First Name
                         </label>
                         <input
@@ -557,11 +557,11 @@ export default function AccountSettings() {
                               firstName: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-800 mb-2">
                           Last Name
                         </label>
                         <input
@@ -573,13 +573,13 @@ export default function AccountSettings() {
                               lastName: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-800 mb-2">
                         <Mail className="w-4 h-4 inline mr-2" />
                         Email Address
                       </label>
@@ -592,12 +592,12 @@ export default function AccountSettings() {
                             email: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-800 mb-2">
                         <Phone className="w-4 h-4 inline mr-2" />
                         Phone Number
                       </label>
@@ -610,7 +610,7 @@ export default function AccountSettings() {
                             phone: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="+1 (555) 000-0000"
                       />
                     </div>
@@ -618,7 +618,7 @@ export default function AccountSettings() {
                     <button
                       type="submit"
                       disabled={personalFormLoading}
-                      className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 shadow-sm hover:shadow-md transition-all disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {personalFormLoading && (
                         <Loader className="w-4 h-4 animate-spin" />
@@ -716,7 +716,7 @@ export default function AccountSettings() {
                   <form onSubmit={handleAddressSubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-800 mb-2">
                           First Name
                         </label>
                         <input
@@ -729,11 +729,11 @@ export default function AccountSettings() {
                               firstName: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-800 mb-2">
                           Last Name
                         </label>
                         <input
@@ -746,13 +746,13 @@ export default function AccountSettings() {
                               lastName: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-800 mb-2">
                         Street Address
                       </label>
                       <input
@@ -765,13 +765,13 @@ export default function AccountSettings() {
                             street1: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="123 Main Street"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-800 mb-2">
                         Apartment, Suite, etc. (Optional)
                       </label>
                       <input
@@ -783,14 +783,14 @@ export default function AccountSettings() {
                             street2: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Apartment 4B"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-800 mb-2">
                           City
                         </label>
                         <input
@@ -803,11 +803,11 @@ export default function AccountSettings() {
                               city: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-800 mb-2">
                           State/Province
                         </label>
                         <input
@@ -820,7 +820,7 @@ export default function AccountSettings() {
                               stateOrProvince: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                           placeholder="CA"
                         />
                       </div>
@@ -828,7 +828,7 @@ export default function AccountSettings() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-800 mb-2">
                           Postal Code
                         </label>
                         <input
@@ -841,12 +841,12 @@ export default function AccountSettings() {
                               postalCode: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                           placeholder="90210"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-800 mb-2">
                           Country Code
                         </label>
                         <input
@@ -859,7 +859,7 @@ export default function AccountSettings() {
                               countryCode: e.target.value.toUpperCase(),
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                           placeholder="US"
                           maxLength={2}
                         />
@@ -869,7 +869,7 @@ export default function AccountSettings() {
                     <button
                       type="submit"
                       disabled={addressFormLoading}
-                      className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 shadow-sm hover:shadow-md transition-all disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {addressFormLoading && (
                         <Loader className="w-4 h-4 animate-spin" />
