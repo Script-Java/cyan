@@ -163,7 +163,6 @@ export const handleGetCustomerAddresses: RequestHandler = async (req, res) => {
 /**
  * Create customer address
  * Requires: customerId in JWT token
- * Note: Address management is being implemented - currently returns placeholder response
  */
 export const handleCreateCustomerAddress: RequestHandler = async (req, res) => {
   try {
@@ -196,20 +195,39 @@ export const handleCreateCustomerAddress: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Missing required address fields" });
     }
 
-    // Placeholder response - address management will be implemented
-    res.json({
-      success: true,
-      message: "Address management coming soon",
-      address: {
-        id: 1,
+    const { data: address, error } = await supabase
+      .from("addresses")
+      .insert({
+        customer_id: customerId,
         first_name: firstName,
         last_name: lastName,
         street_1: street1,
-        street_2: street2,
+        street_2: street2 || null,
         city,
         state_or_province: stateOrProvince,
         postal_code: postalCode,
         country_code: countryCode,
+      })
+      .select()
+      .single();
+
+    if (error || !address) {
+      return res.status(500).json({ error: "Failed to create address" });
+    }
+
+    res.json({
+      success: true,
+      message: "Address created successfully",
+      address: {
+        id: address.id,
+        first_name: address.first_name,
+        last_name: address.last_name,
+        street_1: address.street_1,
+        street_2: address.street_2,
+        city: address.city,
+        state_or_province: address.state_or_province,
+        postal_code: address.postal_code,
+        country_code: address.country_code,
       },
     });
   } catch (error) {
