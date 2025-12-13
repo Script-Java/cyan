@@ -944,6 +944,34 @@ export default function CheckoutNew() {
                       </div>
                     )}
                   </div>
+
+                  {showPaymentForm && createdOrderId ? (
+                    <div className="mb-3">
+                      <SquarePaymentForm
+                        amount={orderData.total}
+                        orderId={createdOrderId}
+                        customerEmail={customerInfo.email}
+                        customerName={`${customerInfo.firstName} ${customerInfo.lastName}`}
+                        onPaymentSuccess={handlePaymentSuccess}
+                        isLoading={isSubmitting}
+                      />
+                    </div>
+                  ) : (
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 text-lg font-bold rounded-lg mb-3"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                          Processing...
+                        </>
+                      ) : (
+                        <>💳 Go to Checkout</>
+                      )}
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
