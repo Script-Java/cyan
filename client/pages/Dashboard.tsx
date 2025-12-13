@@ -48,6 +48,7 @@ export default function Dashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
