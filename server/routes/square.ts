@@ -103,6 +103,13 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     const checkoutData = req.body as SquareCheckoutRequest;
     const { supabase } = await import("../utils/supabase");
 
+    console.log("handleCreateCheckoutSession called with data:", {
+      amount: checkoutData.amount,
+      itemsCount: checkoutData.items?.length,
+      customerEmail: checkoutData.customerEmail,
+      hasShippingAddress: !!checkoutData.shippingAddress,
+    });
+
     // Validate required fields
     if (
       checkoutData.amount === undefined ||
@@ -112,6 +119,11 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       checkoutData.items.length === 0 ||
       !checkoutData.customerEmail
     ) {
+      console.error("Missing required fields:", {
+        amount: checkoutData.amount,
+        items: checkoutData.items,
+        customerEmail: checkoutData.customerEmail,
+      });
       return res.status(400).json({
         error: "Missing required fields: amount, items, customerEmail",
       });
