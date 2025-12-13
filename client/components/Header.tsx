@@ -150,10 +150,9 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
               )}
               <Link
                 to="/blogs"
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                title="Blog"
+                className="px-4 py-2 backdrop-blur-md bg-white/5 border border-white/10 text-white rounded-lg transition-all duration-200 text-sm font-semibold hover:bg-white/10 hover:shadow-lg"
               >
-                <BookOpen className="w-7 h-7 text-[#3B82F6]" />
+                News
               </Link>
               {/* Store credit display disabled temporarily */}
 
