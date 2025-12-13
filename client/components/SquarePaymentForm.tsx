@@ -103,7 +103,7 @@ export default function SquarePaymentForm({
                   },
                   body: JSON.stringify({
                     sourceId: result.token,
-                    amount: amount / 100, // Convert from cents to dollars
+                    amount: amount,
                     currency: "USD",
                     orderId: orderId,
                     customerEmail: customerEmail,
