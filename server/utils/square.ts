@@ -13,9 +13,17 @@ export async function getSquareClient() {
 
       console.log("Access token found, length:", accessToken.length);
 
-      // Dynamic import for ES modules
-      const squareModule = await import("square");
-      const Client = squareModule.default || squareModule.Client;
+      // Import Square SDK - try multiple approaches for compatibility
+      let Client;
+      try {
+        // First try ES module default export
+        const squareModule = await import("square");
+        Client = squareModule.default || squareModule.Client;
+      } catch (importError) {
+        console.warn("ES module import failed, falling back to require:", importError);
+        // Fallback to CommonJS require
+        Client = require("square").Client;
+      }
 
       if (!Client) {
         throw new Error("Square Client not found in package exports");
