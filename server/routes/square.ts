@@ -136,9 +136,9 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
           .from("customers")
           .insert({
             email: checkoutData.customerEmail,
-            first_name: checkoutData.customerName?.split(" ")[0] || "Guest",
-            last_name: checkoutData.customerName?.split(" ")[1] || "Customer",
-            phone: undefined,
+            first_name: checkoutData.shippingAddress.firstName || checkoutData.customerName?.split(" ")[0] || "Guest",
+            last_name: checkoutData.shippingAddress.lastName || checkoutData.customerName?.split(" ")[1] || "Customer",
+            phone: checkoutData.phone || undefined,
             company: undefined,
             store_credit: 0,
           })
