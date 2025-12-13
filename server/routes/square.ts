@@ -200,6 +200,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       description: `Order #${supabaseOrder.id} - ${checkoutData.items.length} item(s)`,
       customerEmail: checkoutData.customerEmail,
       customerName: checkoutData.customerName || "Customer",
+      customerPhone: checkoutData.phone,
       customerFirstName: checkoutData.shippingAddress.firstName,
       customerLastName: checkoutData.shippingAddress.lastName,
       redirectUrl,
