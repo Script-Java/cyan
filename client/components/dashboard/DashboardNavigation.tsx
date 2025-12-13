@@ -134,21 +134,16 @@ export default function DashboardNavigation({
               }}
             >
               <div
-                className="p-3 rounded-xl flex-shrink-0 shadow-md group-hover:shadow-lg transition-all relative"
+                className="p-3 rounded-xl flex-shrink-0 shadow-md group-hover:shadow-lg transition-all"
                 style={{
                   backgroundColor: item.bgColor,
                   borderLeft: `3px solid ${item.color.split("-")[1] ? item.color : "#666"}`,
+                  transform: isExpanded ? "scale(1.1)" : "scale(1)",
                 }}
               >
                 <Icon
                   className={`w-6 h-6 sm:w-7 sm:h-7 ${item.color} font-bold`}
                 />
-                {isExpanded && !item.isLogout && (
-                  <ChevronDown
-                    className="absolute -bottom-1 -right-1 w-4 h-4 bg-white rounded-full p-0.5"
-                    style={{ color: item.color }}
-                  />
-                )}
               </div>
               <div className="text-center">
                 <h4 className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">
