@@ -436,11 +436,19 @@ export async function createSquarePaymentLink(data: {
         status: response.status,
         statusText: response.statusText,
         tokenLength: accessToken.length,
-        error: responseData,
+        fullError: responseData,
+        errorDetails:
+          responseData?.errors?.map((e: any) => ({
+            code: e.code,
+            detail: e.detail,
+            field: e.field,
+            category: e.category,
+          })) || [],
       });
 
       const errorMessage =
         responseData?.errors?.[0]?.detail ||
+        responseData?.errors?.[0]?.code ||
         responseData?.message ||
         `API returned ${response.status}`;
 
