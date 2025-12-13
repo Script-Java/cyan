@@ -93,7 +93,20 @@ export const handleUpdateCustomer: RequestHandler = async (req, res) => {
       .single();
 
     if (error || !updatedCustomer) {
-      return res.status(500).json({ error: "Failed to update customer" });
+      console.error("Customer update error details:", {
+        customerId,
+        updateData,
+        error: error ? {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+        } : null,
+        updatedCustomer,
+      });
+      return res.status(500).json({
+        error: "Failed to update customer",
+        details: error?.message || "Unknown error"
+      });
     }
 
     res.json({
