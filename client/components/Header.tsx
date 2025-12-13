@@ -195,7 +195,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
                   <ChevronDown className="w-4 h-4" />
                 </button>
                 {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-[#030140]/95 border border-white/20 rounded-lg backdrop-blur-md shadow-lg z-50">
+                  <div className="absolute right-0 mt-2 w-56 bg-black border border-white/20 rounded-lg backdrop-blur-md shadow-lg z-50">
                     {isAuthenticated ? (
                       <>
                         {isAdmin ? (
