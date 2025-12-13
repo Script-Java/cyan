@@ -60,6 +60,16 @@ interface Order {
   tracking_url?: string;
   shipped_date?: string;
   digital_files?: DigitalFile[];
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
+  shippingAddress?: {
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
 }
 
 interface OrdersResponse {
