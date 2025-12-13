@@ -403,6 +403,112 @@ export default function OrderHistory() {
                   {/* Order Details - Expanded */}
                   {expandedOrderId === order.id && (
                     <div className="border-t border-gray-200 px-4 sm:px-6 py-4 sm:py-6 bg-gray-50">
+                      {/* Customer Information */}
+                      <div className="mb-6 bg-white rounded-lg border border-gray-200 p-4 sm:p-5">
+                        <h4 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                          <User className="w-4 h-4 text-blue-600" />
+                          Customer & Shipping Information
+                        </h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {order.customerName && (
+                            <div>
+                              <p className="text-xs text-gray-600 mb-1">Full Name</p>
+                              <p className="text-sm font-medium text-gray-900">
+                                {order.customerName}
+                              </p>
+                            </div>
+                          )}
+                          {order.customerEmail && (
+                            <div>
+                              <p className="text-xs text-gray-600 mb-1 flex items-center gap-1">
+                                <Mail className="w-3 h-3" />
+                                Email
+                              </p>
+                              <p className="text-sm font-medium text-blue-600 break-all">
+                                {order.customerEmail}
+                              </p>
+                            </div>
+                          )}
+                          {order.customerPhone && (
+                            <div>
+                              <p className="text-xs text-gray-600 mb-1 flex items-center gap-1">
+                                <Phone className="w-3 h-3" />
+                                Phone
+                              </p>
+                              <p className="text-sm font-medium text-gray-900">
+                                {order.customerPhone}
+                              </p>
+                            </div>
+                          )}
+                          {order.estimated_delivery_date && (
+                            <div>
+                              <p className="text-xs text-gray-600 mb-1 flex items-center gap-1">
+                                <Calendar className="w-3 h-3" />
+                                Est. Delivery
+                              </p>
+                              <p className="text-sm font-medium text-blue-600">
+                                {formatDate(order.estimated_delivery_date)}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                        {order.shippingAddress && (
+                          <div className="mt-4 pt-4 border-t border-gray-200">
+                            <p className="text-xs text-gray-600 mb-2 flex items-center gap-1">
+                              <MapPin className="w-3 h-3" />
+                              Shipping Address
+                            </p>
+                            <div className="text-sm text-gray-900 space-y-1">
+                              <p>{order.shippingAddress.street}</p>
+                              <p>
+                                {order.shippingAddress.city},{" "}
+                                {order.shippingAddress.state}{" "}
+                                {order.shippingAddress.postalCode}
+                              </p>
+                              <p>{order.shippingAddress.country}</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Design Thumbnails */}
+                      {order.digital_files && order.digital_files.length > 0 && (
+                        <div className="mb-6">
+                          <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                            <ImageIcon className="w-4 h-4 text-blue-600" />
+                            Design Files
+                          </h4>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                            {order.digital_files.map((file) => (
+                              <a
+                                key={file.id}
+                                href={file.file_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="relative group overflow-hidden rounded-lg border-2 border-gray-200 hover:border-blue-400 transition-colors h-24 sm:h-28"
+                              >
+                                {file.file_type?.includes("image") ? (
+                                  <img
+                                    src={file.file_url}
+                                    alt={file.file_name}
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                    <Package className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
+                                  </div>
+                                )}
+                                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all flex items-end justify-center opacity-0 group-hover:opacity-100">
+                                  <p className="text-white text-xs font-medium mb-2 px-2 text-center truncate">
+                                    {file.file_name}
+                                  </p>
+                                </div>
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
                       {/* Digital Files */}
                       {order.digital_files &&
                         order.digital_files.length > 0 && (
