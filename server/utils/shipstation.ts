@@ -58,7 +58,11 @@ export class ShipStationAPI {
   constructor() {
     this.apiKey = process.env.SHIPSTATION_API_KEY || "";
     this.apiUrl = SHIPSTATION_API_V2_URL;
+    // Don't throw error on initialization - allow lazy initialization
+    // Error will be thrown when API methods are called if key is missing
+  }
 
+  private ensureApiKey(): void {
     if (!this.apiKey) {
       throw new Error("SHIPSTATION_API_KEY environment variable is not set");
     }
@@ -72,6 +76,7 @@ export class ShipStationAPI {
   async createShippingLabel(
     payload: CreateLabelPayload,
   ): Promise<LabelResponse> {
+    this.ensureApiKey();
     try {
       const response = await fetch(`${this.apiUrl}/orders/createlabel`, {
         method: "POST",

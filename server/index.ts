@@ -1,4 +1,11 @@
-import "dotenv/config";
+// Only load dotenv in development (not in production on Fly.io)
+// In production, environment variables should be set via Fly.io secrets
+if (process.env.NODE_ENV !== "production") {
+  // Use dynamic import for dotenv to avoid issues in ES modules
+  import("dotenv/config").catch(() => {
+    // dotenv not available, that's okay - environment variables may be set another way
+  });
+}
 import express from "express";
 import cors from "cors";
 import multer from "multer";
@@ -224,6 +231,11 @@ export function createServer() {
       return next(err);
     }
     next();
+  });
+
+  // Health check endpoint for Fly.io and other platforms
+  app.get("/health", (_req, res) => {
+    res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
   });
 
   // Example API routes
