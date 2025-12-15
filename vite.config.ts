@@ -26,54 +26,61 @@ export default defineConfig(({ mode }) => ({
 
 // Singleton to hold the Express app
 let cachedExpressApp: any = null;
+let expressAppLoading: Promise<any> | null = null;
+
+function getExpressApp() {
+  if (cachedExpressApp) {
+    return Promise.resolve(cachedExpressApp);
+  }
+  if (expressAppLoading) {
+    return expressAppLoading;
+  }
+
+  expressAppLoading = import("./server")
+    .then(({ createServer }) => {
+      cachedExpressApp = createServer();
+      console.log("✅ Express server app loaded");
+      return cachedExpressApp;
+    })
+    .catch((err) => {
+      console.error("❌ Failed to load Express server:", err);
+      expressAppLoading = null;
+      throw err;
+    });
+
+  return expressAppLoading;
+}
 
 function expressPlugin(): Plugin {
   return {
     name: "express-plugin",
     apply: "serve",
-    // Use transformIndexHtml hook to inject a handler that ensures API routes work
-    transformIndexHtml: {
-      order: "pre",
-      async handler(html, ctx) {
-        // Pre-load Express app on first HTML request
-        if (!cachedExpressApp) {
-          try {
-            const { createServer } = await import("./server");
-            cachedExpressApp = createServer();
-            console.log("✅ Express server loaded for API handling");
-          } catch (err) {
-            console.error("❌ Failed to load Express server:", err);
-          }
-        }
-        return html;
-      },
-    },
-    configureServer(server) {
-      // Return a pre-hook to process API requests before Vite's default handlers
-      return () => {
-        // Add this as a PRE middleware by returning it from configureServer
-        server.middlewares.use(async (req, res, next) => {
-          // Only intercept API and health routes
-          if (!req.url.startsWith("/api/") && req.url !== "/health") {
-            // Let Vite handle non-API requests
-            return next();
-          }
+    async configureServer(server) {
+      // Pre-load the Express app
+      await getExpressApp().catch((err) => {
+        console.error("Failed to pre-load Express app:", err);
+      });
 
-          // Handle API and health routes with Express
-          if (!cachedExpressApp) {
-            try {
-              const { createServer } = await import("./server");
-              cachedExpressApp = createServer();
-              console.log("✅ Express app initialized for API request handling");
-            } catch (err) {
-              console.error("❌ Failed to load Express app:", err);
-              res.status(500).json({ error: "Server failed to load" });
-              return;
+      // Return a middleware that runs BEFORE Vite's default handlers
+      // Note: returning middleware here makes it run as a "pre" hook
+      return (middlewares, server) => {
+        middlewares.unshift({
+          // Custom connect middleware for API routes
+          handle: async (req: any, res: any, next: any) => {
+            // Only intercept API and health routes
+            if (!req.url.startsWith("/api/") && req.url !== "/health") {
+              return next();
             }
-          }
 
-          // Pass to Express
-          cachedExpressApp(req, res, next);
+            try {
+              const app = await getExpressApp();
+              return app(req, res, next);
+            } catch (err) {
+              console.error("Error in API handler:", err);
+              res.writeHead(500, { "Content-Type": "application/json" });
+              res.end(JSON.stringify({ error: "Server initialization failed" }));
+            }
+          },
         });
       };
     },
