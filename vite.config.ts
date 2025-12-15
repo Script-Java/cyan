@@ -29,16 +29,24 @@ function expressPlugin(): Plugin {
     name: "express-plugin",
     apply: "serve",
     configureServer(server) {
-      // Load Express app and attach it to middleware
+      // Load Express app and attach it to middleware with better error handling
       // The dynamic import ensures server code is not evaluated during build
       import("./server")
         .then(({ createServer }) => {
-          const app = createServer();
-          server.middlewares.use(app);
-          console.log("✅ Express server loaded and attached to dev server");
+          try {
+            const app = createServer();
+            // Use unshift to add to the beginning of middleware stack for priority
+            server.middlewares.stack.unshift({
+              route: "",
+              handle: app
+            });
+            console.log("✅ Express server loaded and attached to dev server middleware stack");
+          } catch (err) {
+            console.error("❌ Failed to create Express app:", err);
+          }
         })
         .catch((err) => {
-          console.error("❌ Failed to load Express server:", err);
+          console.error("❌ Failed to import server module:", err);
         });
     },
   };
