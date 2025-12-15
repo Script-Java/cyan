@@ -49,24 +49,31 @@ function expressPlugin(): Plugin {
       },
     },
     configureServer(server) {
-      // Return a middleware that handles API requests
+      // Return a pre-hook to process API requests before Vite's default handlers
       return () => {
+        // Add this as a PRE middleware by returning it from configureServer
         server.middlewares.use(async (req, res, next) => {
-          // Only handle API and health routes with Express
-          if (req.url.startsWith("/api/") || req.url === "/health") {
-            if (!cachedExpressApp) {
-              try {
-                const { createServer } = await import("./server");
-                cachedExpressApp = createServer();
-              } catch (err) {
-                console.error("❌ Failed to load Express app:", err);
-                return res.status(500).json({ error: "Server failed to load" });
-              }
-            }
-            return cachedExpressApp(req, res, next);
+          // Only intercept API and health routes
+          if (!req.url.startsWith("/api/") && req.url !== "/health") {
+            // Let Vite handle non-API requests
+            return next();
           }
-          // Let Vite handle other requests
-          next();
+
+          // Handle API and health routes with Express
+          if (!cachedExpressApp) {
+            try {
+              const { createServer } = await import("./server");
+              cachedExpressApp = createServer();
+              console.log("✅ Express app initialized for API request handling");
+            } catch (err) {
+              console.error("❌ Failed to load Express app:", err);
+              res.status(500).json({ error: "Server failed to load" });
+              return;
+            }
+          }
+
+          // Pass to Express
+          cachedExpressApp(req, res, next);
         });
       };
     },
