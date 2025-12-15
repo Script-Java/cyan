@@ -59,10 +59,13 @@ if (existsSync(distPath)) {
 }
 
 // Handle React Router - serve index.html for all non-API routes
-app.get("*", (req, res) => {
-  // Don't serve index.html for API routes
-  if (req.path.startsWith("/api/") || req.path.startsWith("/health")) {
-    return res.status(404).json({ error: "API endpoint not found" });
+// IMPORTANT: This catch-all must come AFTER all API routes are registered
+// The health endpoint is defined in server/index.ts and should be matched first
+app.get("*", (req, res, next) => {
+  // Skip API routes and health check - let Express handle these
+  if (req.path.startsWith("/api/") || req.path === "/health") {
+    // Pass to next handler (should be 404 if route doesn't exist)
+    return next();
   }
 
   const indexPath = path.join(distPath, "index.html");
