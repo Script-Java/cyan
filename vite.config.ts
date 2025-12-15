@@ -28,17 +28,19 @@ function expressPlugin(mode: string): Plugin {
   return {
     name: "express-plugin",
     apply: "serve", // Only apply during development (serve mode)
-    configureServer(server) {
+    async configureServer(server) {
       // Dynamic import to avoid evaluating server code during build
       // This only runs in serve mode, so it's safe to import here
-      import("./server")
-        .then(({ createServer }) => {
-          const app = createServer();
+      try {
+        const { createServer } = await import("./server");
+        const app = createServer();
+        // Return middleware to be applied in the correct order
+        return () => {
           server.middlewares.use(app);
-        })
-        .catch((err) => {
-          console.warn("Failed to load Express server:", err);
-        });
+        };
+      } catch (err) {
+        console.warn("Failed to load Express server:", err);
+      }
     },
   };
 }
