@@ -24,30 +24,43 @@ export default defineConfig(({ mode }) => ({
   },
 }));
 
+// Global to cache Express app instance
+let expressApp: any = null;
+let expressAppLoading: Promise<any> | null = null;
+
 function expressPlugin(): Plugin {
   return {
     name: "express-plugin",
     apply: "serve",
     configureServer(server) {
-      // Load Express app and attach it to middleware with better error handling
-      // The dynamic import ensures server code is not evaluated during build
-      import("./server")
-        .then(({ createServer }) => {
-          try {
-            const app = createServer();
-            // Use unshift to add to the beginning of middleware stack for priority
-            server.middlewares.stack.unshift({
-              route: "",
-              handle: app
-            });
-            console.log("✅ Express server loaded and attached to dev server middleware stack");
-          } catch (err) {
-            console.error("❌ Failed to create Express app:", err);
+      // Pre-load the Express app synchronously
+      if (!expressAppLoading) {
+        expressAppLoading = import("./server")
+          .then(({ createServer }) => {
+            expressApp = createServer();
+            console.log("✅ Express server initialized");
+            return expressApp;
+          })
+          .catch((err) => {
+            console.error("❌ Failed to load Express server:", err);
+            throw err;
+          });
+      }
+
+      // Return a middleware that will use the loaded Express app
+      return () => {
+        server.middlewares.use(async (req, res, next) => {
+          if (!expressApp) {
+            try {
+              await expressAppLoading;
+            } catch (err) {
+              console.error("❌ Express app failed to load:", err);
+              return res.status(500).json({ error: "Server initialization failed" });
+            }
           }
-        })
-        .catch((err) => {
-          console.error("❌ Failed to import server module:", err);
+          expressApp(req, res, next);
         });
+      };
     },
   };
 }
