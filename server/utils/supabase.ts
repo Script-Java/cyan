@@ -10,7 +10,12 @@ if (!supabaseServiceKey) {
   );
 }
 
-export const supabase = createClient(supabaseUrl, supabaseServiceKey);
+// Use a placeholder key during build/initialization if no key is provided
+// This prevents errors during module evaluation
+const buildTimeKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1idWlsZC1wbGFjZWhvbGRlciJ9.dummy";
+const keyToUse = supabaseServiceKey || buildTimeKey;
+
+export const supabase = createClient(supabaseUrl, keyToUse);
 
 interface CustomerData {
   id: number;

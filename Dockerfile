@@ -16,6 +16,12 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build the application
+# Note: VITE_* env vars are replaced at build time, but we provide defaults to prevent errors
+ARG VITE_SUPABASE_URL=""
+ARG VITE_SUPABASE_ANON_KEY=""
+ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+ENV VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
+
 RUN pnpm build
 
 # Production stage
