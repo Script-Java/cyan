@@ -1,4 +1,12 @@
-import "dotenv/config";
+// Only load dotenv in development (not in production on Fly.io)
+// In production, environment variables should be set via Fly.io secrets
+if (process.env.NODE_ENV !== "production") {
+  try {
+    require("dotenv/config");
+  } catch (e) {
+    // dotenv not available, that's okay - environment variables may be set another way
+  }
+}
 import express from "express";
 import cors from "cors";
 import multer from "multer";

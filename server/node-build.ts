@@ -4,8 +4,30 @@ import { existsSync } from "fs";
 import { createServer } from "./index";
 import * as express from "express";
 
-const app = createServer();
+// Handle unhandled promise rejections
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("❌ Unhandled Rejection at:", promise, "reason:", reason);
+  // Don't exit in production, just log
+});
+
+// Handle uncaught exceptions
+process.on("uncaughtException", (error) => {
+  console.error("❌ Uncaught Exception:", error);
+  console.error("Stack:", error.stack);
+  // Don't exit immediately - let the server try to handle it
+});
+
 const port = process.env.PORT || 3000;
+
+let app;
+try {
+  app = createServer();
+  console.log("✅ Server created successfully");
+} catch (error) {
+  console.error("❌ Failed to create server:", error);
+  console.error("Stack:", error instanceof Error ? error.stack : "No stack trace");
+  process.exit(1);
+}
 
 // In production, serve the built SPA files
 // Use fileURLToPath for reliable path resolution in ESM
@@ -51,20 +73,28 @@ app.get("*", (req, res) => {
 });
 
 // Error handling for server startup
-const server = app.listen(port, "0.0.0.0", () => {
-  console.log(`🚀 Fusion Starter server running on port ${port}`);
-  console.log(`📱 Frontend: http://0.0.0.0:${port}`);
-  console.log(`🔧 API: http://0.0.0.0:${port}/api`);
-  console.log(`❤️  Health: http://0.0.0.0:${port}/health`);
-});
+let server;
+try {
+  server = app.listen(port, "0.0.0.0", () => {
+    console.log(`🚀 Fusion Starter server running on port ${port}`);
+    console.log(`📱 Frontend: http://0.0.0.0:${port}`);
+    console.log(`🔧 API: http://0.0.0.0:${port}/api`);
+    console.log(`❤️  Health: http://0.0.0.0:${port}/health`);
+    console.log(`✅ Server started successfully`);
+  });
 
-server.on("error", (err: any) => {
-  console.error("❌ Server error:", err);
-  if (err.code === "EADDRINUSE") {
-    console.error(`Port ${port} is already in use`);
-  }
+  server.on("error", (err: any) => {
+    console.error("❌ Server error:", err);
+    if (err.code === "EADDRINUSE") {
+      console.error(`Port ${port} is already in use`);
+    }
+    process.exit(1);
+  });
+} catch (error) {
+  console.error("❌ Failed to start server:", error);
+  console.error("Stack:", error instanceof Error ? error.stack : "No stack trace");
   process.exit(1);
-});
+}
 
 // Graceful shutdown
 process.on("SIGTERM", () => {
