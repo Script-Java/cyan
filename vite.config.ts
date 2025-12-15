@@ -11,11 +11,12 @@ export default defineConfig(({ mode }) => ({
       allow: ["./client", "./shared"],
       deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "server/**"],
     },
+    middlewareMode: true,
   },
   build: {
     outDir: "dist/spa",
   },
-  plugins: [react(), expressPlugin(mode)],
+  plugins: [react(), expressPlugin()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./client"),
@@ -24,23 +25,27 @@ export default defineConfig(({ mode }) => ({
   },
 }));
 
-function expressPlugin(mode: string): Plugin {
+function expressPlugin(): Plugin {
+  let app: any;
+
   return {
     name: "express-plugin",
-    apply: "serve", // Only apply during development (serve mode)
+    apply: "serve",
     async configureServer(server) {
-      // Dynamic import to avoid evaluating server code during build
-      // This only runs in serve mode, so it's safe to import here
+      // Import and create Express app once
       try {
         const { createServer } = await import("./server");
-        const app = createServer();
-        // Return middleware to be applied in the correct order
-        return () => {
-          server.middlewares.use(app);
-        };
+        app = createServer();
       } catch (err) {
-        console.warn("Failed to load Express server:", err);
+        console.error("Failed to load Express server:", err);
+        throw err;
       }
+
+      // Return middleware handler
+      return () => {
+        // Handle API routes and other Express routes
+        server.middlewares.use(app);
+      };
     },
   };
 }
