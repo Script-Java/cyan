@@ -64,9 +64,12 @@ if (existsSync(distPath)) {
 app.get("*", (req, res, next) => {
   // Skip API routes and health check - let Express handle these
   if (req.path.startsWith("/api/") || req.path === "/health") {
+    console.log(`⚠️  API route ${req.path} not matched by Express, passing to next handler`);
     // Pass to next handler (should be 404 if route doesn't exist)
     return next();
   }
+
+  console.log(`📄 Serving index.html for route: ${req.path}`);
 
   const indexPath = path.join(distPath, "index.html");
   if (!existsSync(indexPath)) {
