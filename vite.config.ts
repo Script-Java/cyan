@@ -24,43 +24,23 @@ export default defineConfig(({ mode }) => ({
   },
 }));
 
-// Global to cache Express app instance
-let expressApp: any = null;
-let expressAppLoading: Promise<any> | null = null;
-
 function expressPlugin(): Plugin {
   return {
     name: "express-plugin",
     apply: "serve",
     configureServer(server) {
-      // Pre-load the Express app synchronously
-      if (!expressAppLoading) {
-        expressAppLoading = import("./server")
-          .then(({ createServer }) => {
-            expressApp = createServer();
-            console.log("✅ Express server initialized");
-            return expressApp;
-          })
-          .catch((err) => {
-            console.error("❌ Failed to load Express server:", err);
-            throw err;
-          });
-      }
-
-      // Return a middleware that will use the loaded Express app
-      return () => {
-        server.middlewares.use(async (req, res, next) => {
-          if (!expressApp) {
-            try {
-              await expressAppLoading;
-            } catch (err) {
-              console.error("❌ Express app failed to load:", err);
-              return res.status(500).json({ error: "Server initialization failed" });
-            }
-          }
-          expressApp(req, res, next);
+      // Load and attach Express app to Vite dev server
+      import("./server")
+        .then(({ createServer }) => {
+          const app = createServer();
+          // Attach to the beginning of middleware stack for API routes to take priority
+          server.middlewares.use(app);
+          console.log("✅ Express server successfully loaded and attached");
+        })
+        .catch((err) => {
+          console.error("❌ Failed to load Express server:", err);
+          process.exit(1);
         });
-      };
     },
   };
 }
