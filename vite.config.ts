@@ -29,30 +29,17 @@ function expressPlugin(): Plugin {
     name: "express-plugin",
     apply: "serve",
     configureServer(server) {
-      // Important: This is a sync function, but we need to handle async import
-      // The server.middlewares.use() is called immediately with a middleware function
-      // that will handle the dynamic import when first called
-      return () => {
-        // This function is called for each request, ensuring Express server is loaded
-        // Load Express app synchronously on first request
-        if (!expressAppInstance) {
-          throw new Error("Express app not yet initialized");
-        }
-        server.middlewares.use(expressAppInstance);
-      };
+      // Load Express app and attach it to middleware
+      // The dynamic import ensures server code is not evaluated during build
+      import("./server")
+        .then(({ createServer }) => {
+          const app = createServer();
+          server.middlewares.use(app);
+          console.log("✅ Express server loaded and attached to dev server");
+        })
+        .catch((err) => {
+          console.error("❌ Failed to load Express server:", err);
+        });
     },
   };
 }
-
-// Global variable to hold the Express app instance
-let expressAppInstance: any;
-
-// Load Express server immediately
-import("./server")
-  .then(({ createServer }) => {
-    expressAppInstance = createServer();
-    console.log("✅ Express server loaded for dev mode");
-  })
-  .catch((err) => {
-    console.error("❌ Failed to load Express server:", err);
-  });
