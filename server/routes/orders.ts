@@ -6,6 +6,7 @@ import {
   getPendingOrders,
 } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
+import { bigCommerceAPI } from "../utils/bigcommerce";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
