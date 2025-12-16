@@ -30,7 +30,7 @@ function GalleryCard({
         className="block rounded-2xl outline-blue-500"
       >
         <div
-          className="relative w-full aspect-4/5 bg-white rounded-2xl overflow-hidden"
+          className="relative w-full aspect-4/5 bg-[#fafafa] rounded-2xl overflow-hidden"
           style={{
             boxShadow: "0 4px 4px 1.6px rgba(4, 4, 4, 0.08)",
           }}
@@ -130,7 +130,7 @@ export function Gallery({
 }: GalleryProps) {
   return (
     <section
-      className="w-full bg-white"
+      className="w-full bg-[#fafafa]"
       style={{ gap: "48px", marginTop: "31px", padding: "0 16px 35px" }}
     >
       <div className="w-full" style={{ marginBottom: "-4px" }}>
