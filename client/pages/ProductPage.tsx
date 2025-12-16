@@ -98,6 +98,7 @@ export default function ProductPage() {
   const [optionalFields, setOptionalFields] = useState<{
     [fieldName: string]: string;
   }>({});
+  const [orderNotes, setOrderNotes] = useState("");
   const [quantity, setQuantity] = useState(100);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [activeQuantityOption, setActiveQuantityOption] = useState<
