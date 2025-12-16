@@ -212,6 +212,28 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
     try {
       order = await ecwidAPI.getOrder(orderIdNum);
       if (order && order.customerId === customerId) {
+        // Fetch digital files for this Ecwid order
+        let digitalFiles = [];
+        try {
+          const { data: digitalFilesData } = await supabase
+            .from("digital_files")
+            .select("*")
+            .eq("order_id", orderIdNum);
+
+          if (digitalFilesData) {
+            digitalFiles = digitalFilesData.map((file: any) => ({
+              id: file.id,
+              file_name: file.file_name,
+              file_url: file.file_url,
+              file_type: file.file_type,
+              file_size: file.file_size,
+              uploaded_at: file.uploaded_at,
+            }));
+          }
+        } catch (filesError) {
+          console.warn("Failed to fetch digital files for Ecwid order:", filesError);
+        }
+
         return res.json({
           success: true,
           source: "ecwid",
@@ -228,6 +250,10 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
             items: order.items || [],
             shippingAddress: order.shippingPerson,
             billingAddress: order.billingPerson,
+            tracking_number: order.shippingTrackingCode,
+            tracking_carrier: order.shippingCarrier,
+            estimated_delivery_date: order.estimatedDeliveryDate,
+            digital_files: digitalFiles,
           },
         });
       }
