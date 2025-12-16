@@ -150,6 +150,11 @@ export default function ProductPage() {
         });
         setSelectedOptions(initialOptions);
 
+        if (savedDefaults.quantity) {
+          setQuantity(savedDefaults.quantity);
+          setActiveQuantityOption(savedDefaults.quantity);
+        }
+
         const initialFields: { [key: string]: string } = {};
         data.product.optional_fields.forEach(
           (field: { name: string; type: string }) => {
