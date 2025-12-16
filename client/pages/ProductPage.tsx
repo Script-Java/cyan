@@ -714,18 +714,6 @@ export default function ProductPage() {
                       >
                         ${option.price.toFixed(2)}
                       </span>
-                      {option.save && (
-                        <span
-                          style={{
-                            fontFamily: "Inter, sans-serif",
-                            fontSize: "14px",
-                            fontWeight: "500",
-                            color: "rgb(34, 197, 94)",
-                          }}
-                        >
-                          Save {option.save}%
-                        </span>
-                      )}
                     </div>
                   </button>
                 ))}
