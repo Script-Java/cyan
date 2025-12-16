@@ -15,7 +15,7 @@ function GalleryCard({
   label,
   handle,
   description,
-  spanClass = "col-span-8",
+  spanClass = "col-span-12 md:col-span-8",
 }: GalleryCardProps) {
   return (
     <div className={spanClass}>
