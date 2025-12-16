@@ -559,12 +559,14 @@ export default function ProductPage() {
                     {option.values.map((value) => (
                       <button
                         key={value.id}
-                        onClick={() =>
-                          setSelectedOptions((prev) => ({
-                            ...prev,
+                        onClick={() => {
+                          const newOptions = {
+                            ...selectedOptions,
                             [option.id]: value.id,
-                          }))
-                        }
+                          };
+                          setSelectedOptions(newOptions);
+                          saveAsDefault(newOptions);
+                        }}
                         className={`border-2 rounded-lg p-2 transition text-center text-xs ${
                           selectedOptions[option.id] === value.id
                             ? "border-purple-500 bg-purple-100"
