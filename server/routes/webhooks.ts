@@ -275,6 +275,21 @@ async function handleCustomerUpdated(data: any): Promise<void> {
 }
 
 /**
+ * Get webhook URL - for easy reference when setting up Ecwid webhooks
+ */
+export const handleGetWebhookUrl: RequestHandler = (req, res) => {
+  const host = req.get("host") || "your-domain.com";
+  const protocol = req.header("x-forwarded-proto") || req.protocol || "https";
+  const webhookUrl = `${protocol}://${host}/api/webhooks/ecwid`;
+
+  res.json({
+    webhookUrl,
+    instructions: "Paste this URL into your Ecwid admin panel under Settings → Integration → Webhooks",
+    events: ["order.completed", "order.updated", "customer.created", "customer.updated"],
+  });
+};
+
+/**
  * Health check for webhooks
  */
 export const handleWebhookHealth: RequestHandler = (req, res) => {
