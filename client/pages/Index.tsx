@@ -7,9 +7,9 @@ export default function Index() {
   return (
     <>
       <Header />
-      <main className="pt-20 bg-white text-gray-900 min-h-screen">
+      <main className="pt-20 bg-[#fafafa] text-gray-900 min-h-screen">
         {/* Hero Section */}
-        <section className="relative bg-white text-gray-900 overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-32">
+        <section className="relative bg-[#fafafa] text-gray-900 overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-32">
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <div className="inline-flex items-center gap-2 bg-blue-50 backdrop-blur border border-blue-200 rounded-full px-4 py-2 mb-6">
@@ -54,7 +54,7 @@ export default function Index() {
 
         {/* Benefits Section */}
         <section
-          className="bg-white"
+          className="bg-[#fafafa]"
           style={{ margin: "-5px 0 14px", padding: "20px 0 28px" }}
         >
           <div
