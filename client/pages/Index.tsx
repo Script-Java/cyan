@@ -102,7 +102,7 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Gallery Section */}
+        {/* Gallery Section 1 */}
         <Gallery
           cards={[
             {
@@ -123,6 +123,41 @@ export default function Index() {
               handle: "@redhalftone",
               description:
                 "Meet Lisa Champ, the artist fueled by bold colors and pop-art.",
+              spanClass: "col-span-1 md:col-span-4",
+            },
+          ]}
+        />
+
+        {/* Gallery Section 2 */}
+        <Gallery
+          cards={[
+            {
+              href: "https://stickerapp.com/blog/artist-interview/broderson-tattoos",
+              imageSrc: "https://stickerapp.com/media/2000x2000/520a88d8f9/tattoo-broderson-side.png/m/1200x0/filters:quality(60)",
+              imageAlt: "Tattoo artist broderson sketching a snake tattoo on back",
+              label: "Artist Interview",
+              handle: "@broderson",
+              description: "Collab made in heaven with tattoo artist Broder.",
+              spanClass: "col-span-1 md:col-span-4",
+            },
+            {
+              href: "https://stickerapp.com/blog/artist-interview/jumbo-press",
+              imageSrc: "https://stickerapp.com/media/1137x1137/0d6d396ab0/jumbo-press-stickerapp-collab.png/m/1200x0/filters:quality(60)",
+              imageAlt: "Jumbo Press collaboration sticker design",
+              label: "Case study",
+              handle: "Jumbo Press",
+              description:
+                "Read about our collab and why Jumbo Press choose custom sticker packs.",
+              spanClass: "col-span-1 md:col-span-4",
+            },
+            {
+              href: "https://stickerapp.com/blog/artist-interview/toto-le-voyou",
+              imageSrc: "https://stickerapp.com/media/1080x1080/b2842af27c/portrait-toto-le-voyou-illustration.jpg/m/1200x0/filters:quality(60)",
+              imageAlt: "Black and white drawing of Toto le voyou with spiky hair and mustache",
+              label: "Artist interview",
+              handle: "@toto_le_voyou",
+              description:
+                "Get to know tattoo artist Toto le voyou and how he use stickers for his customers.",
               spanClass: "col-span-1 md:col-span-4",
             },
           ]}
