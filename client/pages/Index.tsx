@@ -102,7 +102,7 @@ export default function Index() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 sm:py-24 bg-white">
+        <section className="py-16 sm:py-24 bg-white hidden">
           <div
             className="mx-auto px-4 sm:px-6 lg:px-8 text-center relative rounded-3xl border border-gray-200"
             style={{
