@@ -51,7 +51,7 @@ export default function Login() {
       <Header />
       <main className="pt-20 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="max-w-md mx-auto px-4 py-12 sm:py-20">
-          <div className="bg-white rounded-2xl shadow-xl p-8 sm:p-10">
+          <div className="bg-[#fafafa] rounded-2xl shadow-xl p-8 sm:p-10">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-[#030140] mb-2">
                 Welcome Back
