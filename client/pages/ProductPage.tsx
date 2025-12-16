@@ -340,6 +340,7 @@ export default function ProductPage() {
         selectedOptions,
         design_file_url,
         optionalFields,
+        orderNotes,
         quantity,
         pricePerUnit: discountedPricePerUnit,
         totalPrice,
