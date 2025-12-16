@@ -55,7 +55,7 @@ export default function Index() {
         {/* Benefits Section */}
         <section
           className="bg-white"
-          style={{ margin: "-5px 0 -3px", padding: "20px 0 28px" }}
+          style={{ margin: "-5px 0 14px", padding: "20px 0 28px" }}
         >
           <div
             className="mx-auto px-4 sm:px-6 lg:px-8"
