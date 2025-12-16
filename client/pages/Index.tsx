@@ -6,14 +6,14 @@ export default function Index() {
   return (
     <>
       <Header />
-      <main className="pt-20 bg-black text-white min-h-screen">
+      <main className="pt-20 bg-white text-gray-900 min-h-screen">
         {/* Hero Section */}
-        <section className="relative bg-black text-white overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-32">
+        <section className="relative bg-white text-gray-900 overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-32">
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
             <div className="text-center max-w-3xl mx-auto mb-12">
-              <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur border border-white/10 rounded-full px-4 py-2 mb-6">
-                <Sparkles className="w-4 h-4 text-[#FFD713]" />
-                <span className="text-sm font-medium">
+              <div className="inline-flex items-center gap-2 bg-blue-50 backdrop-blur border border-blue-200 rounded-full px-4 py-2 mb-6">
+                <Sparkles className="w-4 h-4 text-blue-600" />
+                <span className="text-sm font-medium text-gray-900">
                   Premium Custom Stickers
                 </span>
               </div>
@@ -25,7 +25,7 @@ export default function Index() {
                 </span>
               </h1>
 
-              <p className="text-lg sm:text-xl text-white/70 mb-8 leading-relaxed">
+              <p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
                 Express yourself with high-quality, custom stickers. Perfect for
                 laptops, water bottles, walls, and more. Fast shipping, amazing
                 designs.
@@ -41,7 +41,7 @@ export default function Index() {
                 </Link>
                 <Link
                   to="/ecwid-store"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 border border-white/20 text-white rounded-lg font-bold hover:bg-white/20 transition-all"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gray-100 border border-gray-300 text-gray-900 rounded-lg font-bold hover:bg-gray-200 transition-all"
                 >
                   Shop Now
                   <ArrowRight className="w-5 h-5" />
@@ -53,7 +53,7 @@ export default function Index() {
 
         {/* Benefits Section */}
         <section
-          className="bg-black"
+          className="bg-white"
           style={{ margin: "-5px 0 -3px", padding: "20px 0 28px" }}
         >
           <div
@@ -61,17 +61,17 @@ export default function Index() {
             style={{ maxWidth: "1964px" }}
           >
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+              <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-2xl p-6">
                 <div className="flex items-center gap-4">
                   <div className="text-4xl flex-shrink-0">📦</div>
-                  <h3 className="font-semibold text-white">
+                  <h3 className="font-semibold text-gray-900">
                     <span className="block">Free ground shipping</span>
-                    <span className="block text-white/60">on all orders</span>
+                    <span className="block text-gray-600">on all orders</span>
                   </h3>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+              <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-2xl p-6">
                 <div className="flex items-center gap-4">
                   <div
                     className="text-4xl flex-shrink-0 animate-spin"
@@ -79,21 +79,21 @@ export default function Index() {
                   >
                     🌍
                   </div>
-                  <h3 className="font-semibold text-white">
+                  <h3 className="font-semibold text-gray-900">
                     <span className="block">Out for this world quality</span>
-                    <span className="block text-white/60">
+                    <span className="block text-gray-600">
                       , made in the US
                     </span>
                   </h3>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+              <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-2xl p-6">
                 <div className="flex items-center gap-4">
                   <div className="text-4xl flex-shrink-0">🖼️</div>
-                  <h3 className="font-semibold text-white">
+                  <h3 className="font-semibold text-gray-900">
                     <span className="block">Free Online Proof</span>
-                    <span className="block text-white/60">with all orders</span>
+                    <span className="block text-gray-600">with all orders</span>
                   </h3>
                 </div>
               </div>
@@ -102,20 +102,20 @@ export default function Index() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 sm:py-24 bg-black">
+        <section className="py-16 sm:py-24 bg-white">
           <div
-            className="mx-auto px-4 sm:px-6 lg:px-8 text-center relative rounded-3xl border border-white/10"
+            className="mx-auto px-4 sm:px-6 lg:px-8 text-center relative rounded-3xl border border-gray-200"
             style={{
               maxWidth: "1156px",
               padding: "0 32px 28px",
               boxShadow:
-                "0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 1px rgba(255, 255, 255, 0.1)",
+                "0 20px 60px rgba(0, 0, 0, 0.08), inset 0 0 1px rgba(0, 0, 0, 0.06)",
             }}
           >
             <div
-              className="absolute bg-white/5 rounded-2xl"
+              className="absolute bg-blue-100 rounded-2xl"
               style={{
-                opacity: 0.2,
+                opacity: 0.1,
                 left: "-209px",
                 top: "511px",
                 width: "887px",
@@ -139,7 +139,7 @@ export default function Index() {
                   top: "16px",
                   left: "25%",
                   fontSize: "14px",
-                  color: "rgba(255, 255, 255, 0.8)",
+                  color: "rgba(59, 130, 246, 0.6)",
                 }}
               >
                 ✨
@@ -150,7 +150,7 @@ export default function Index() {
                   top: "24px",
                   right: "32px",
                   fontSize: "14px",
-                  color: "rgba(150, 100, 200, 0.7)",
+                  color: "rgba(168, 85, 247, 0.5)",
                 }}
               >
                 ✨
@@ -161,7 +161,7 @@ export default function Index() {
                   top: "50%",
                   left: "24px",
                   fontSize: "14px",
-                  color: "rgba(200, 150, 100, 0.7)",
+                  color: "rgba(249, 115, 22, 0.5)",
                 }}
               >
                 ⭐
@@ -171,7 +171,7 @@ export default function Index() {
                   position: "absolute",
                   top: "50%",
                   right: "24px",
-                  color: "rgba(150, 100, 150, 0.7)",
+                  color: "rgba(168, 85, 247, 0.5)",
                 }}
               >
                 ✨
@@ -182,7 +182,7 @@ export default function Index() {
                   top: "33.3333%",
                   left: "48px",
                   fontSize: "12px",
-                  color: "rgba(180, 120, 60, 0.7)",
+                  color: "rgba(249, 115, 22, 0.5)",
                 }}
               >
                 ⭐
@@ -193,7 +193,7 @@ export default function Index() {
                   top: "66.6667%",
                   right: "48px",
                   fontSize: "14px",
-                  color: "rgba(120, 180, 200, 0.7)",
+                  color: "rgba(59, 130, 246, 0.5)",
                 }}
               >
                 ✨
@@ -204,7 +204,7 @@ export default function Index() {
                   bottom: "24px",
                   left: "33.3333%",
                   fontSize: "14px",
-                  color: "rgba(200, 180, 60, 0.8)",
+                  color: "rgba(59, 130, 246, 0.5)",
                 }}
               >
                 ✨
@@ -215,7 +215,7 @@ export default function Index() {
                   bottom: "32px",
                   left: "64px",
                   fontSize: "12px",
-                  color: "rgba(100, 150, 200, 0.7)",
+                  color: "rgba(59, 130, 246, 0.5)",
                 }}
               >
                 ⭐
@@ -225,7 +225,7 @@ export default function Index() {
                   position: "absolute",
                   bottom: "16px",
                   right: "33.3333%",
-                  color: "rgba(255, 255, 255, 0.7)",
+                  color: "rgba(59, 130, 246, 0.5)",
                 }}
               >
                 ⭐
@@ -236,7 +236,7 @@ export default function Index() {
                   bottom: "24px",
                   right: "64px",
                   fontSize: "14px",
-                  color: "rgba(150, 100, 200, 0.7)",
+                  color: "rgba(168, 85, 247, 0.5)",
                 }}
               >
                 ✨
@@ -247,7 +247,7 @@ export default function Index() {
                   top: "48px",
                   left: "50%",
                   fontSize: "12px",
-                  color: "rgba(200, 150, 100, 0.7)",
+                  color: "rgba(249, 115, 22, 0.5)",
                 }}
               >
                 ⭐
@@ -258,7 +258,7 @@ export default function Index() {
                   bottom: "48px",
                   left: "50%",
                   fontSize: "14px",
-                  color: "rgba(150, 100, 150, 0.7)",
+                  color: "rgba(168, 85, 247, 0.5)",
                 }}
               >
                 ✨
@@ -268,10 +268,10 @@ export default function Index() {
               className="relative z-10"
               style={{ marginBottom: "22px", paddingTop: "34px" }}
             >
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
                 Ready to Create?
               </h2>
-              <p className="text-xl text-white/70 mb-8">
+              <p className="text-xl text-gray-600 mb-8">
                 Join thousands of customers who've created amazing custom
                 stickers
               </p>
@@ -315,8 +315,8 @@ export default function Index() {
 
         {/* Footer */}
         <footer
-          className="bg-black text-white/60"
-          style={{ marginBottom: "-4px", padding: "48px 0 200px" }}
+          className="bg-white text-gray-600"
+          style={{ marginBottom: "-4px", padding: "48px 0 200px", borderTop: "1px solid #e5e7eb" }}
         >
           <div
             className="mx-auto px-4 sm:px-6 lg:px-8"
@@ -324,42 +324,42 @@ export default function Index() {
           >
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
               <div>
-                <h4 className="font-bold text-white mb-4">Shop</h4>
+                <h4 className="font-bold text-gray-900 mb-4">Shop</h4>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="#" className="hover:text-white transition-colors">
+                    <a href="#" className="hover:text-gray-900 transition-colors">
                       Vinyl Stickers
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-white transition-colors">
+                    <a href="#" className="hover:text-gray-900 transition-colors">
                       Holographic
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-white transition-colors">
+                    <a href="#" className="hover:text-gray-900 transition-colors">
                       Chrome
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-white transition-colors">
+                    <a href="#" className="hover:text-gray-900 transition-colors">
                       Glitter
                     </a>
                   </li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold text-white mb-4">Company</h4>
+                <h4 className="font-bold text-gray-900 mb-4">Company</h4>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="#" className="hover:text-white transition-colors">
+                    <a href="#" className="hover:text-gray-900 transition-colors">
                       About
                     </a>
                   </li>
                   <li>
                     <a
                       href="/blogs"
-                      className="hover:text-white transition-colors"
+                      className="hover:text-gray-900 transition-colors"
                     >
                       Blog
                     </a>
@@ -367,7 +367,7 @@ export default function Index() {
                   <li>
                     <a
                       href="/support"
-                      className="hover:text-white transition-colors"
+                      className="hover:text-gray-900 transition-colors"
                     >
                       Contact
                     </a>
@@ -375,12 +375,12 @@ export default function Index() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold text-white mb-4">Legal</h4>
+                <h4 className="font-bold text-gray-900 mb-4">Legal</h4>
                 <ul className="space-y-2 text-sm">
                   <li>
                     <a
                       href="/privacy"
-                      className="hover:text-white transition-colors"
+                      className="hover:text-gray-900 transition-colors"
                     >
                       Privacy
                     </a>
@@ -388,7 +388,7 @@ export default function Index() {
                   <li>
                     <a
                       href="/terms"
-                      className="hover:text-white transition-colors"
+                      className="hover:text-gray-900 transition-colors"
                     >
                       Terms
                     </a>
@@ -396,7 +396,7 @@ export default function Index() {
                   <li>
                     <a
                       href="/shipping"
-                      className="hover:text-white transition-colors"
+                      className="hover:text-gray-900 transition-colors"
                     >
                       Shipping
                     </a>
@@ -404,7 +404,7 @@ export default function Index() {
                   <li>
                     <a
                       href="/returns"
-                      className="hover:text-white transition-colors"
+                      className="hover:text-gray-900 transition-colors"
                     >
                       Returns
                     </a>
@@ -412,25 +412,25 @@ export default function Index() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold text-white mb-4">Follow</h4>
+                <h4 className="font-bold text-gray-900 mb-4">Follow</h4>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="#" className="hover:text-white transition-colors">
+                    <a href="#" className="hover:text-gray-900 transition-colors">
                       Instagram
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-white transition-colors">
+                    <a href="#" className="hover:text-gray-900 transition-colors">
                       Twitter
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-white transition-colors">
+                    <a href="#" className="hover:text-gray-900 transition-colors">
                       TikTok
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-white transition-colors">
+                    <a href="#" className="hover:text-gray-900 transition-colors">
                       YouTube
                     </a>
                   </li>
@@ -446,7 +446,7 @@ export default function Index() {
             paddingBottom: "20px",
             paddingLeft: "32px",
             fontSize: "12px",
-            color: "rgba(255, 255, 255, 0.5)",
+            color: "rgba(107, 114, 128, 0.7)",
           }}
         >
           Built with ❤️ by © Sticky Slap LLC
