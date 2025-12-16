@@ -598,12 +598,14 @@ export default function ProductPage() {
                     {option.values.map((value) => (
                       <button
                         key={value.id}
-                        onClick={() =>
-                          setSelectedOptions((prev) => ({
-                            ...prev,
+                        onClick={() => {
+                          const newOptions = {
+                            ...selectedOptions,
                             [option.id]: value.id,
-                          }))
-                        }
+                          };
+                          setSelectedOptions(newOptions);
+                          saveAsDefault(newOptions);
+                        }}
                         className={`relative border-2 rounded-lg overflow-hidden transition ${
                           selectedOptions[option.id] === value.id
                             ? "border-purple-500"
