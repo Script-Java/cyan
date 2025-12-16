@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
+import { ecwidAPI } from "../utils/ecwid";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
@@ -7,12 +8,13 @@ const supabase = createClient(
 );
 
 /**
- * Upload a digital file to an order
+ * Upload a digital file to an order (Supabase or Ecwid)
  * Admin only - requires verifyToken
+ * Supports both Supabase orders and Ecwid orders
  */
 export const handleUploadDigitalFile: RequestHandler = async (req, res) => {
   try {
-    const { orderId, fileName, fileUrl, fileType, fileSize } = req.body;
+    const { orderId, fileName, fileUrl, fileType, fileSize, orderSource } = req.body;
     const adminId = (req as any).customerId;
 
     if (!orderId || !fileName || !fileUrl) {
@@ -21,15 +23,38 @@ export const handleUploadDigitalFile: RequestHandler = async (req, res) => {
       });
     }
 
-    // Verify the order exists
-    const { data: order } = await supabase
-      .from("orders")
-      .select("id")
-      .eq("id", orderId)
-      .single();
+    // Determine order source (default to supabase for backward compatibility)
+    const source = orderSource || "supabase";
 
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
+    // Verify the order exists based on source
+    if (source === "supabase") {
+      const { data: order } = await supabase
+        .from("orders")
+        .select("id")
+        .eq("id", orderId)
+        .single();
+
+      if (!order) {
+        return res.status(404).json({ error: "Supabase order not found" });
+      }
+    } else if (source === "ecwid") {
+      // For Ecwid orders, just verify it's a valid order ID (numeric)
+      const orderIdNum = parseInt(orderId);
+      if (isNaN(orderIdNum)) {
+        return res.status(400).json({ error: "Invalid Ecwid order ID" });
+      }
+      try {
+        const order = await ecwidAPI.getOrder(orderIdNum);
+        if (!order) {
+          return res.status(404).json({ error: "Ecwid order not found" });
+        }
+      } catch (ecwidError) {
+        console.warn("Could not verify Ecwid order:", ecwidError);
+        // Continue anyway - the order might exist but API call failed
+        // The customer will get an error when trying to view the file if it doesn't exist
+      }
+    } else {
+      return res.status(400).json({ error: "Invalid order source. Must be 'supabase' or 'ecwid'" });
     }
 
     // Insert digital file record
@@ -42,6 +67,7 @@ export const handleUploadDigitalFile: RequestHandler = async (req, res) => {
         file_type: fileType,
         file_size: fileSize,
         uploaded_by: adminId,
+        order_source: source,
       })
       .select()
       .single();
