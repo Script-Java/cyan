@@ -67,6 +67,7 @@ import {
 import {
   handleEcwidOrderWebhook,
   handleWebhookHealth,
+  handleGetWebhookUrl,
 } from "./routes/webhooks";
 import {
   handleSquarePayment,
@@ -480,6 +481,7 @@ export function createServer() {
   // ===== Webhook Routes =====
   app.post("/api/webhooks/ecwid", handleEcwidOrderWebhook);
   app.get("/api/webhooks/health", handleWebhookHealth);
+  app.get("/api/webhooks/url", handleGetWebhookUrl);
 
   // ===== Blogs Routes =====
   // Public routes
