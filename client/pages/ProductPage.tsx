@@ -506,12 +506,14 @@ export default function ProductPage() {
                     {option.values.map((value, index) => (
                       <button
                         key={value.id}
-                        onClick={() =>
-                          setSelectedOptions((prev) => ({
-                            ...prev,
+                        onClick={() => {
+                          const newOptions = {
+                            ...selectedOptions,
                             [option.id]: value.id,
-                          }))
-                        }
+                          };
+                          setSelectedOptions(newOptions);
+                          saveAsDefault(newOptions);
+                        }}
                         className={`relative flex flex-col items-center justify-center border-2 rounded-xl p-4 transition text-center ${
                           selectedOptions[option.id] === value.id
                             ? "border-purple-500 bg-purple-100 shadow-lg shadow-purple-200/50"
