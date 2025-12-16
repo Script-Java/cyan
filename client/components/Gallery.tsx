@@ -61,14 +61,14 @@ export function Gallery({ cards }: GalleryProps) {
   return (
     <section className="w-full bg-white py-12 sm:py-20 lg:py-24">
       <div className="px-4 sm:px-6 lg:px-8 w-full">
-        <div className="h-full margin-left-auto margin-right-auto max-w-6xl mx-auto">
+        <div className="h-full mx-auto max-w-6xl">
           <div className="w-full">
-            <div className="grid grid-cols-12 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
               {cards.map((card, index) => (
                 <GalleryCard
                   key={index}
                   {...card}
-                  spanClass={card.spanClass || (index === 0 ? "col-span-8" : "col-span-4")}
+                  spanClass={card.spanClass || (index === 0 ? "col-span-1 md:col-span-8" : "col-span-1 md:col-span-4")}
                 />
               ))}
             </div>
