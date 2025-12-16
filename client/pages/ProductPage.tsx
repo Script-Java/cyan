@@ -105,6 +105,27 @@ export default function ProductPage() {
     number | null
   >(100);
 
+  const getSavedDefaults = (productId: string) => {
+    try {
+      const saved = localStorage.getItem(`product_defaults_${productId}`);
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  };
+
+  const saveAsDefault = (options: { [optionId: string]: string }) => {
+    if (!productId) return;
+    try {
+      localStorage.setItem(
+        `product_defaults_${productId}`,
+        JSON.stringify(options)
+      );
+    } catch (error) {
+      console.error("Failed to save default options:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -118,9 +139,12 @@ export default function ProductPage() {
         const data = await response.json();
         setProduct(data.product);
 
+        const savedDefaults = getSavedDefaults(productId);
         const initialOptions: { [key: string]: string } = {};
         data.product.options.forEach((option: ProductOption) => {
-          if (option.defaultValueId) {
+          if (savedDefaults[option.id]) {
+            initialOptions[option.id] = savedDefaults[option.id];
+          } else if (option.defaultValueId) {
             initialOptions[option.id] = option.defaultValueId;
           }
         });
