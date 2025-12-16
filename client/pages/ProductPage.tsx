@@ -257,12 +257,12 @@ export default function ProductPage() {
     const basePricePerUnit = parseFloat(calculatePrice());
     const quantityTiers = [
       { qty: 50, discountPercent: 0 },
-      { qty: 100, discountPercent: 35 },
-      { qty: 200, discountPercent: 54 },
-      { qty: 300, discountPercent: 61 },
-      { qty: 500, discountPercent: 68 },
-      { qty: 1000, discountPercent: 74 },
-      { qty: 2500, discountPercent: 81 },
+      { qty: 100, discountPercent: 0 },
+      { qty: 200, discountPercent: 0 },
+      { qty: 300, discountPercent: 0 },
+      { qty: 500, discountPercent: 0 },
+      { qty: 1000, discountPercent: 0 },
+      { qty: 2500, discountPercent: 0 },
     ];
 
     return quantityTiers.map((tier) => {
@@ -308,12 +308,12 @@ export default function ProductPage() {
       // Find save percentage for current quantity
       const quantityTiers = [
         { qty: 50, discountPercent: 0 },
-        { qty: 100, discountPercent: 35 },
-        { qty: 200, discountPercent: 54 },
-        { qty: 300, discountPercent: 61 },
-        { qty: 500, discountPercent: 68 },
-        { qty: 1000, discountPercent: 74 },
-        { qty: 2500, discountPercent: 81 },
+        { qty: 100, discountPercent: 0 },
+        { qty: 200, discountPercent: 0 },
+        { qty: 300, discountPercent: 0 },
+        { qty: 500, discountPercent: 0 },
+        { qty: 1000, discountPercent: 0 },
+        { qty: 2500, discountPercent: 0 },
       ];
       const tierInfo = quantityTiers.find((t) => t.qty === quantity);
       const savePercentage = tierInfo?.discountPercent || 0;
