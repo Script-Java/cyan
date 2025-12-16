@@ -271,10 +271,115 @@ export default function Index() {
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
                 Ready to Create?
               </h2>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-xl text-gray-600 mb-12">
                 Join thousands of customers who've created amazing custom
                 stickers
               </p>
+
+              {/* Gallery Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+                {/* Gallery Item 1 */}
+                <div className="relative h-48 sm:h-56 rounded-xl overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400"></div>
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-all"></div>
+                  <div className="absolute inset-0 p-4 sm:p-6 flex flex-col justify-end">
+                    <div className="text-yellow-300 text-xs sm:text-sm font-bold mb-2">
+                      FEATURED PROJECT
+                    </div>
+                    <h3 className="text-white font-bold text-base sm:text-lg mb-1">
+                      Your Design Here
+                    </h3>
+                    <p className="text-gray-100 text-xs sm:text-sm line-clamp-2">
+                      Add your custom sticker design and showcase your work
+                    </p>
+                  </div>
+                </div>
+
+                {/* Gallery Item 2 */}
+                <div className="relative h-48 sm:h-56 rounded-xl overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-300 to-blue-400"></div>
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-all"></div>
+                  <div className="absolute inset-0 p-4 sm:p-6 flex flex-col justify-end">
+                    <div className="text-yellow-300 text-xs sm:text-sm font-bold mb-2">
+                      CUSTOMER CREATION
+                    </div>
+                    <h3 className="text-white font-bold text-base sm:text-lg mb-1">
+                      Creative Expression
+                    </h3>
+                    <p className="text-gray-100 text-xs sm:text-sm line-clamp-2">
+                      Show off your unique sticker designs and style
+                    </p>
+                  </div>
+                </div>
+
+                {/* Gallery Item 3 */}
+                <div className="relative h-48 sm:h-56 rounded-xl overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-300 to-purple-400"></div>
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-all"></div>
+                  <div className="absolute inset-0 p-4 sm:p-6 flex flex-col justify-end">
+                    <div className="text-yellow-300 text-xs sm:text-sm font-bold mb-2">
+                      ARTIST FEATURE
+                    </div>
+                    <h3 className="text-white font-bold text-base sm:text-lg mb-1">
+                      Original Art
+                    </h3>
+                    <p className="text-gray-100 text-xs sm:text-sm line-clamp-2">
+                      Feature your original artwork on high-quality stickers
+                    </p>
+                  </div>
+                </div>
+
+                {/* Gallery Item 4 */}
+                <div className="relative h-48 sm:h-56 rounded-xl overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-pink-300 to-pink-400"></div>
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-all"></div>
+                  <div className="absolute inset-0 p-4 sm:p-6 flex flex-col justify-end">
+                    <div className="text-yellow-300 text-xs sm:text-sm font-bold mb-2">
+                      DESIGN INSPIRATION
+                    </div>
+                    <h3 className="text-white font-bold text-base sm:text-lg mb-1">
+                      Get Inspired
+                    </h3>
+                    <p className="text-gray-100 text-xs sm:text-sm line-clamp-2">
+                      Explore creative sticker designs and ideas
+                    </p>
+                  </div>
+                </div>
+
+                {/* Gallery Item 5 */}
+                <div className="relative h-48 sm:h-56 rounded-xl overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-300 to-green-400"></div>
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-all"></div>
+                  <div className="absolute inset-0 p-4 sm:p-6 flex flex-col justify-end">
+                    <div className="text-yellow-300 text-xs sm:text-sm font-bold mb-2">
+                      SUCCESS STORY
+                    </div>
+                    <h3 className="text-white font-bold text-base sm:text-lg mb-1">
+                      Customer Success
+                    </h3>
+                    <p className="text-gray-100 text-xs sm:text-sm line-clamp-2">
+                      See how our customers brought their visions to life
+                    </p>
+                  </div>
+                </div>
+
+                {/* Gallery Item 6 */}
+                <div className="relative h-48 sm:h-56 rounded-xl overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-300 to-orange-400"></div>
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-all"></div>
+                  <div className="absolute inset-0 p-4 sm:p-6 flex flex-col justify-end">
+                    <div className="text-yellow-300 text-xs sm:text-sm font-bold mb-2">
+                      QUALITY SHOWCASE
+                    </div>
+                    <h3 className="text-white font-bold text-base sm:text-lg mb-1">
+                      Premium Results
+                    </h3>
+                    <p className="text-gray-100 text-xs sm:text-sm line-clamp-2">
+                      Discover the quality and craftsmanship in every sticker
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="flex gap-4 justify-center items-center flex-wrap">
               <Link
