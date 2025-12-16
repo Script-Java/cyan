@@ -53,15 +53,51 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       console.warn("Failed to fetch orders from Supabase:", supabaseError);
     }
 
-    // Format Ecwid orders
+    // Fetch digital files for Ecwid orders from Supabase
+    let ecwidDigitalFilesMap = new Map();
+    if (ecwidOrders.length > 0) {
+      try {
+        const { data: digitalFilesData } = await supabase
+          .from("digital_files")
+          .select("*")
+          .in(
+            "order_id",
+            ecwidOrders.map((o: any) => o.id),
+          );
+
+        if (digitalFilesData) {
+          digitalFilesData.forEach((file: any) => {
+            if (!ecwidDigitalFilesMap.has(file.order_id)) {
+              ecwidDigitalFilesMap.set(file.order_id, []);
+            }
+            ecwidDigitalFilesMap.get(file.order_id).push({
+              id: file.id,
+              file_name: file.file_name,
+              file_url: file.file_url,
+              file_type: file.file_type,
+              file_size: file.file_size,
+              uploaded_at: file.uploaded_at,
+            });
+          });
+        }
+      } catch (filesError) {
+        console.warn("Failed to fetch digital files for Ecwid orders:", filesError);
+      }
+    }
+
+    // Format Ecwid orders with tracking and design file info
     const formattedEcwidOrders = ecwidOrders.map((order: any) => ({
       id: order.id,
       customerId: order.customerId,
-      status: order.status || "processing",
+      status: order.status || order.fulfillmentStatus || order.paymentStatus || "processing",
       total: order.total,
       dateCreated: order.createDate,
       source: "ecwid",
       itemCount: order.items?.length || 0,
+      tracking_number: order.shippingTrackingCode,
+      tracking_carrier: order.shippingCarrier,
+      estimated_delivery_date: order.estimatedDeliveryDate,
+      digital_files: ecwidDigitalFilesMap.get(order.id) || [],
     }));
 
     // Format BigCommerce orders
