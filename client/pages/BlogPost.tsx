@@ -47,7 +47,7 @@ export default function BlogPost() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-white py-12">
+        <main className="min-h-screen bg-[#fafafa] py-12">
           <div className="flex justify-center items-center h-96">
             <div className="text-gray-600">Loading blog...</div>
           </div>
@@ -60,7 +60,7 @@ export default function BlogPost() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-white py-12">
+        <main className="min-h-screen bg-[#fafafa] py-12">
           <div className="max-w-4xl mx-auto px-4">
             <button
               onClick={() => navigate("/")}

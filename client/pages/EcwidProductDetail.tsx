@@ -122,7 +122,7 @@ export default function EcwidProductDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-[#fafafa]">
         <Header />
         <main className="pt-24">
           <div className="max-w-7xl mx-auto px-4 py-12">
@@ -139,7 +139,7 @@ export default function EcwidProductDetail() {
 
   if (error || !product) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-[#fafafa]">
         <Header />
         <main className="pt-24">
           <div className="max-w-7xl mx-auto px-4 py-12">
@@ -163,7 +163,7 @@ export default function EcwidProductDetail() {
     product.images[currentImageIndex] || product.defaultImage;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#fafafa]">
       <Header />
       <main className="pt-24">
         <div className="max-w-7xl mx-auto px-4 py-12">

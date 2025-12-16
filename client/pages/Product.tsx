@@ -140,7 +140,7 @@ export default function Product() {
     return (
       <>
         <Header />
-        <main className="pt-20 min-h-screen bg-white">
+        <main className="pt-20 min-h-screen bg-[#fafafa]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="text-center">
               <div className="inline-block">
@@ -158,7 +158,7 @@ export default function Product() {
     return (
       <>
         <Header />
-        <main className="pt-20 min-h-screen bg-white">
+        <main className="pt-20 min-h-screen bg-[#fafafa]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="text-center">
               <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-4" />
@@ -185,7 +185,7 @@ export default function Product() {
   return (
     <>
       <Header />
-      <main className="pt-20 min-h-screen bg-white">
+      <main className="pt-20 min-h-screen bg-[#fafafa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Breadcrumb */}
           <div className="mb-8 flex items-center gap-2 text-sm text-gray-600">
