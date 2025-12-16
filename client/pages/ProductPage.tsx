@@ -850,6 +850,20 @@ export default function ProductPage() {
                 )}
               </div>
             )}
+
+            {/* Order Notes */}
+            <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6">
+              <h2 className="text-sm font-bold mb-4">📝 Order Notes (optional)</h2>
+              <Textarea
+                value={orderNotes}
+                onChange={(e) => setOrderNotes(e.target.value)}
+                placeholder="Add any special requests, instructions, or notes for your order..."
+                className="bg-white border-gray-300 text-black placeholder-gray-500 min-h-24 text-xs"
+              />
+              <p className="text-gray-600 text-xs mt-2">
+                Let us know about any special requirements or customizations
+              </p>
+            </div>
           </div>
 
           {/* Add to Cart Button - Full Width */}
