@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import { Gallery } from "@/components/Gallery";
 import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles, Zap } from "lucide-react";
 
