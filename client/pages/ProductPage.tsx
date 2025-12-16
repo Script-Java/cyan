@@ -317,6 +317,8 @@ export default function ProductPage() {
       return;
     }
 
+    saveAsDefault(selectedOptions);
+
     if (product?.customer_upload_config.enabled && !designFile) {
       toast({
         title: "Design Required",
