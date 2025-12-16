@@ -102,6 +102,32 @@ export default function Index() {
           </div>
         </section>
 
+        {/* Gallery Section */}
+        <Gallery
+          cards={[
+            {
+              href: "https://example.com/artist-1",
+              imageSrc: "https://stickerapp.com/media/1300x1300/2404cad58e/daniel-harisberger-aka-toastytuesday-thank-you-card-profile-pic.png/m/1200x0/filters:quality(60)",
+              imageAlt: "Artist of the month profile picture",
+              label: "Artist of the month",
+              handle: "@toastytuesday",
+              description:
+                "Say hello to Daniel Harisberger, the multi-talented creative behind mischievous characters, fantastic stories, and pretty much anything that moves on a screen.",
+              spanClass: "col-span-1 md:col-span-8",
+            },
+            {
+              href: "https://example.com/artist-2",
+              imageSrc: "https://stickerapp.com/media/1042x1042/282fd085e2/artist-of-the-month-redhalftone-header-collage.png/m/1200x0/filters:quality(60)",
+              imageAlt: "Artist Interview with vibrant artwork",
+              label: "Artist Interview",
+              handle: "@redhalftone",
+              description:
+                "Meet Lisa Champ, the artist fueled by bold colors and pop-art.",
+              spanClass: "col-span-1 md:col-span-4",
+            },
+          ]}
+        />
+
         {/* CTA Section */}
         <section className="py-16 sm:py-24 bg-white hidden">
           <div
