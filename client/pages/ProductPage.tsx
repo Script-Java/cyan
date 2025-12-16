@@ -698,6 +698,20 @@ export default function ProductPage() {
                     onClick={() => {
                       setQuantity(option.qty);
                       setActiveQuantityOption(option.qty);
+                      if (productId) {
+                        try {
+                          const savedDefaults = getSavedDefaults(productId);
+                          localStorage.setItem(
+                            `product_defaults_${productId}`,
+                            JSON.stringify({
+                              ...savedDefaults,
+                              quantity: option.qty,
+                            })
+                          );
+                        } catch (error) {
+                          console.error("Failed to save default quantity:", error);
+                        }
+                      }
                     }}
                     style={{
                       marginBottom: "8px",
