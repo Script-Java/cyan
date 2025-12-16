@@ -25,7 +25,7 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    console.log("Fetching orders from Ecwid for customer:", customerId);
+    console.log("Fetching orders for customer:", customerId);
 
     // Fetch orders from Ecwid
     let ecwidOrders = [];
@@ -36,7 +36,16 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       // Continue without Ecwid orders if API fails
     }
 
-    // Also fetch from Supabase for local orders
+    // Fetch orders from BigCommerce
+    let bigCommerceOrders = [];
+    try {
+      bigCommerceOrders = await bigCommerceAPI.getCustomerOrders(customerId);
+    } catch (bcError) {
+      console.warn("Failed to fetch orders from BigCommerce:", bcError);
+      // Continue without BigCommerce orders if API fails
+    }
+
+    // Fetch from Supabase for local orders
     let supabaseOrders = [];
     try {
       supabaseOrders = await getCustomerOrders(customerId);
@@ -53,6 +62,20 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       dateCreated: order.createDate,
       source: "ecwid",
       itemCount: order.items?.length || 0,
+    }));
+
+    // Format BigCommerce orders
+    const formattedBigCommerceOrders = bigCommerceOrders.map((order: any) => ({
+      id: order.id,
+      customerId: order.customer_id,
+      status: order.status || "pending",
+      total: order.total,
+      dateCreated: order.date_created,
+      source: "bigcommerce",
+      itemCount: order.line_items?.length || 0,
+      subtotal: order.subtotal_ex_tax,
+      tax: order.total_tax,
+      shipping: order.total_shipping,
     }));
 
     // Fetch digital files for all orders
@@ -101,13 +124,20 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
     // Combine and sort by date
     const allOrders = [
       ...formattedEcwidOrders,
+      ...formattedBigCommerceOrders,
       ...formattedSupabaseOrders,
     ].sort(
       (a, b) =>
         new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime(),
     );
 
-    console.log("Fetched", allOrders.length, "orders (Ecwid + Supabase)");
+    console.log(
+      "Fetched",
+      allOrders.length,
+      "orders (Ecwid +",
+      bigCommerceOrders.length,
+      "BigCommerce + Supabase)",
+    );
 
     res.json({
       success: true,
