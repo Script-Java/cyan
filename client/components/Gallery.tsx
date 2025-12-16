@@ -17,8 +17,14 @@ function GalleryCard({
   description,
   spanClass = "col-span-1 md:col-span-8",
 }: GalleryCardProps) {
+  // Check if this is a smaller card (col-span-4)
+  const isSmallCard = spanClass?.includes("col-span-4");
+
   return (
-    <div className={spanClass}>
+    <div
+      className={spanClass}
+      style={isSmallCard ? { paddingBottom: "200px", marginBottom: "200px" } : {}}
+    >
       <a
         href={href}
         className="block rounded-2xl outline-blue-500"
@@ -109,18 +115,25 @@ function GalleryCard({
 
 interface GalleryProps {
   cards: GalleryCardProps[];
+  showHeaderImage?: boolean;
+  headerImageSrc?: string;
+  showFooterImage?: boolean;
+  footerImageSrc?: string;
 }
 
-export function Gallery({ cards }: GalleryProps) {
+export function Gallery({
+  cards,
+  showHeaderImage = false,
+  headerImageSrc = "https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=1200 1200w",
+  showFooterImage = false,
+  footerImageSrc = "https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=1200 1200w",
+}: GalleryProps) {
   return (
-    <section className="w-full bg-white" style={{ gap: "48px" }}>
-      <div
-        className="px-4 w-full"
-        style={{
-          paddingLeft: "16px",
-          paddingRight: "16px",
-        }}
-      >
+    <section
+      className="w-full bg-white"
+      style={{ gap: "48px", marginTop: "31px", padding: "0 16px 35px" }}
+    >
+      <div className="w-full">
         <div
           className="h-full mx-auto w-full"
           style={{
@@ -135,17 +148,65 @@ export function Gallery({ cards }: GalleryProps) {
                 gap: "32px",
               }}
             >
+              {cards.length > 0 && showHeaderImage && (
+                <div
+                  style={{
+                    gridArea: "auto / span 8 / auto / span 8",
+                  }}
+                >
+                  <a href="#" className="block rounded-2xl">
+                    <img
+                      loading="lazy"
+                      srcSet={headerImageSrc}
+                      alt="Gallery header image"
+                      style={{
+                        aspectRatio: "1.69",
+                        objectFit: "cover",
+                        objectPosition: "center",
+                        width: "100%",
+                        marginTop: "7px",
+                        minHeight: "20px",
+                        minWidth: "20px",
+                        overflow: "hidden",
+                      }}
+                    />
+                  </a>
+                </div>
+              )}
               {cards.map((card, index) => (
                 <GalleryCard
                   key={index}
                   {...card}
-                  spanClass={card.spanClass || (index === 0 ? "col-span-12 md:col-span-8" : "col-span-12 md:col-span-4")}
+                  spanClass={
+                    card.spanClass ||
+                    (index === 0 ? "col-span-12 md:col-span-8" : "col-span-12 md:col-span-4")
+                  }
                 />
               ))}
             </div>
           </div>
         </div>
       </div>
+      {showFooterImage && (
+        <div style={{ maxWidth: "1230px", margin: "0 auto", width: "100%", paddingLeft: "16px", paddingRight: "16px" }}>
+          <img
+            loading="lazy"
+            srcSet={footerImageSrc}
+            alt="Gallery footer image"
+            style={{
+              aspectRatio: "3.3",
+              objectFit: "cover",
+              objectPosition: "center",
+              width: "100%",
+              marginTop: "42px",
+              minHeight: "20px",
+              minWidth: "20px",
+              overflow: "hidden",
+              maxWidth: "1601px",
+            }}
+          />
+        </div>
+      )}
     </section>
   );
 }
