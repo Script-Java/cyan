@@ -31,6 +31,9 @@ interface EcwidOrder {
   paymentStatus?: string;
   items?: any[];
   attributes?: any[];
+  shippingTrackingCode?: string;
+  shippingCarrier?: string;
+  estimatedDeliveryDate?: string;
 }
 
 interface EcwidProduct {
@@ -290,7 +293,15 @@ class EcwidAPI {
         throw new Error("Failed to parse orders data from Ecwid");
       }
 
-      return data?.items || [];
+      // Extract tracking and shipping info from items
+      const orders = (data?.items || []).map((order: any) => ({
+        ...order,
+        shippingTrackingCode: order.shippingTrackingCode,
+        shippingCarrier: this.extractShippingCarrier(order),
+        estimatedDeliveryDate: this.extractEstimatedDeliveryDate(order),
+      }));
+
+      return orders;
     } catch (error) {
       console.error("Get customer orders error:", error);
       throw error;
@@ -298,7 +309,34 @@ class EcwidAPI {
   }
 
   /**
-   * Get order by ID
+   * Extract shipping carrier from order shipping info
+   */
+  private extractShippingCarrier(order: any): string | undefined {
+    if (order.shippingPerson?.company) {
+      return order.shippingPerson.company;
+    }
+    if (order.shippingCarrier) {
+      return order.shippingCarrier;
+    }
+    // Try to infer from tracking code patterns or shipping method
+    return undefined;
+  }
+
+  /**
+   * Extract estimated delivery date from shipping info
+   */
+  private extractEstimatedDeliveryDate(order: any): string | undefined {
+    if (order.deliveryDateFrom) {
+      return order.deliveryDateFrom;
+    }
+    if (order.estimatedDeliveryDate) {
+      return order.estimatedDeliveryDate;
+    }
+    return undefined;
+  }
+
+  /**
+   * Get order by ID with full tracking and shipping details
    */
   async getOrder(orderId: number): Promise<any> {
     const url = this.getAuthUrl(`/orders/${orderId}`);
@@ -332,7 +370,13 @@ class EcwidAPI {
         throw new Error("Failed to parse order data from Ecwid");
       }
 
-      return data;
+      // Extract and enhance order with tracking info
+      return {
+        ...data,
+        shippingTrackingCode: data.shippingTrackingCode,
+        shippingCarrier: this.extractShippingCarrier(data),
+        estimatedDeliveryDate: this.extractEstimatedDeliveryDate(data),
+      };
     } catch (error) {
       console.error("Get order error:", error);
       throw error;
