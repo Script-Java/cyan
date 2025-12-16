@@ -133,60 +133,17 @@ export function Gallery({
       className="w-full bg-white"
       style={{ gap: "48px", marginTop: "31px", padding: "0 16px 35px" }}
     >
-      <div className="w-full">
+      <div className="w-full" style={{ marginBottom: "-4px" }}>
         <div
           className="h-full mx-auto w-full"
           style={{
             maxWidth: "1230px",
           }}
         >
-          <div className="w-full">
-            <div
-              className="grid w-full"
-              style={{
-                gridTemplateColumns: "repeat(12, minmax(0px, 1fr))",
-                gap: "32px",
-              }}
-            >
-              {cards.length > 0 && showHeaderImage && (
-                <div
-                  style={{
-                    gridArea: "auto / span 8 / auto / span 8",
-                  }}
-                >
-                  <a href="#" className="block rounded-2xl">
-                    <img
-                      loading="lazy"
-                      srcSet={headerImageSrc}
-                      alt="Gallery header image"
-                      style={{
-                        aspectRatio: "1.69",
-                        objectFit: "cover",
-                        objectPosition: "center",
-                        width: "100%",
-                        marginTop: "7px",
-                        minHeight: "20px",
-                        minWidth: "20px",
-                        overflow: "hidden",
-                      }}
-                    />
-                  </a>
-                </div>
-              )}
-              {cards.map((card, index) => (
-                <GalleryCard
-                  key={index}
-                  {...card}
-                  spanClass={
-                    card.spanClass ||
-                    (index === 0 ? "col-span-12 md:col-span-8" : "col-span-12 md:col-span-4")
-                  }
-                />
-              ))}
-            </div>
-          </div>
+          <div className="w-full" />
         </div>
       </div>
+
       {showFooterImage && (
         <div style={{ maxWidth: "1230px", margin: "0 auto", width: "100%", paddingLeft: "16px", paddingRight: "16px" }}>
           <img
