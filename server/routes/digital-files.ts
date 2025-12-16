@@ -58,6 +58,8 @@ export const handleUploadDigitalFile: RequestHandler = async (req, res) => {
     }
 
     // Insert digital file record
+    // Note: Both Supabase and Ecwid order IDs are stored in order_id field
+    // The lookup is done by order_id in the orders fetch logic
     const { data: digitalFile, error } = await supabase
       .from("digital_files")
       .insert({
@@ -67,7 +69,6 @@ export const handleUploadDigitalFile: RequestHandler = async (req, res) => {
         file_type: fileType,
         file_size: fileSize,
         uploaded_by: adminId,
-        order_source: source,
       })
       .select()
       .single();
