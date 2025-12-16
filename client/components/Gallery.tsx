@@ -144,26 +144,7 @@ export function Gallery({
         </div>
       </div>
 
-      {showFooterImage && (
-        <div style={{ maxWidth: "1230px", margin: "0 auto", width: "100%", paddingLeft: "16px", paddingRight: "16px" }}>
-          <img
-            loading="lazy"
-            srcSet={footerImageSrc}
-            alt="Gallery footer image"
-            style={{
-              aspectRatio: "3.3",
-              objectFit: "cover",
-              objectPosition: "center",
-              width: "100%",
-              marginTop: "42px",
-              minHeight: "20px",
-              minWidth: "20px",
-              overflow: "hidden",
-              maxWidth: "1601px",
-            }}
-          />
-        </div>
-      )}
+      {showFooterImage && <div style={{ maxWidth: "1316px", margin: "0 auto", width: "100%", paddingLeft: "16px", paddingRight: "16px" }} />}
     </section>
   );
 }
