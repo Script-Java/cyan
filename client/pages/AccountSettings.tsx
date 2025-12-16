@@ -431,7 +431,7 @@ export default function AccountSettings() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-white py-20">
+        <main className="min-h-screen bg-[#fafafa] py-20">
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex justify-center items-center h-64">
               <div className="text-gray-600 text-lg">
@@ -447,7 +447,7 @@ export default function AccountSettings() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-[#fafafa]">
         <DashboardLayout>
           <div className="max-w-4xl mx-auto py-8">
             {/* Header */}

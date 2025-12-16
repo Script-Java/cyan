@@ -373,7 +373,7 @@ export default function ProductPage() {
     return (
       <>
         <Header />
-        <div className="min-h-screen bg-white text-black flex items-center justify-center">
+        <div className="min-h-screen bg-[#fafafa] text-black flex items-center justify-center">
           <div className="text-center">
             <p className="text-gray-600">Loading product...</p>
           </div>
@@ -386,7 +386,7 @@ export default function ProductPage() {
     return (
       <>
         <Header />
-        <div className="min-h-screen bg-white text-black flex items-center justify-center">
+        <div className="min-h-screen bg-[#fafafa] text-black flex items-center justify-center">
           <div className="text-center">
             <p className="text-gray-600">Product not found</p>
           </div>
@@ -398,7 +398,7 @@ export default function ProductPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-white text-black">
+      <main className="min-h-screen bg-[#fafafa] text-black">
         <div
           style={{
             maxWidth: "1824px",
