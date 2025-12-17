@@ -157,17 +157,29 @@ export default function AdminEcwidMigration() {
     try {
       setIsImportingCSV(true);
       const csvText = await csvFile.text();
+      const token = localStorage.getItem("authToken");
+
+      if (!token) {
+        toast({
+          title: "Error",
+          description: "Authentication required. Please log in.",
+          variant: "destructive",
+        });
+        return;
+      }
 
       const response = await fetch("/api/admin/ecwid/import-csv", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ csvData: csvText }),
       });
 
       if (!response.ok) {
-        throw new Error("CSV import failed");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `CSV import failed (${response.status})`);
       }
 
       const data = await response.json();
@@ -184,10 +196,11 @@ export default function AdminEcwidMigration() {
         fetchMigrationStatus();
       }, 1000);
     } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to import CSV";
       console.error("CSV import error:", error);
       toast({
         title: "Error",
-        description: "Failed to import CSV",
+        description: message,
         variant: "destructive",
       });
     } finally {
