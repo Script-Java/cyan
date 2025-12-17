@@ -159,6 +159,10 @@ import {
   handleUpdateLegalPage,
   handleDeleteLegalPage,
 } from "./routes/legal-pages";
+import {
+  handleEcwidMigration,
+  handleGetMigrationStatus,
+} from "./routes/ecwid-migration";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
 export function createServer() {
