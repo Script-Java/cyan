@@ -494,10 +494,18 @@ export default function AdminEcwidMigration() {
               <div>
                 <h4 className="font-bold mb-2">What format should my CSV file have?</h4>
                 <p className="text-gray-700 mb-2">
-                  Your CSV must have a header row with column names. Required: email. Optional: firstName, lastName, phone, company.
+                  Your CSV can use either a simple format or Ecwid's export format.
                 </p>
-                <p className="text-gray-700 text-sm font-mono bg-gray-50 p-2 rounded">
+                <p className="text-gray-700 text-sm mb-2 font-semibold">Simple Format:</p>
+                <p className="text-gray-700 text-sm font-mono bg-gray-50 p-2 rounded mb-2">
                   email,firstName,lastName,phone,company
+                </p>
+                <p className="text-gray-700 text-sm mb-2 font-semibold">Ecwid Export Format (automatically detected):</p>
+                <p className="text-gray-700 text-sm font-mono bg-gray-50 p-2 rounded">
+                  customer_primary_email, customer_full_name, customer_primary_phone_number...
+                </p>
+                <p className="text-gray-600 text-xs mt-2">
+                  Just upload your CSV and the system will automatically map the columns.
                 </p>
               </div>
               <div>
