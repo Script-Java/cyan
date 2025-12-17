@@ -268,19 +268,46 @@ export const handleCSVCustomerImport: RequestHandler = async (req, res) => {
     const headerLine = lines[0].trim();
     const headers = headerLine.split(",").map((h) => h.trim().toLowerCase());
 
-    const emailIndex = headers.indexOf("email");
+    // Find email column - support both "email" and Ecwid's "customer_primary_email"
+    let emailIndex = headers.indexOf("email");
+    if (emailIndex === -1) {
+      emailIndex = headers.indexOf("customer_primary_email");
+    }
+
     if (emailIndex === -1) {
       return res
         .status(400)
         .json({
-          error: "CSV must have an 'email' column. Found columns: " + headerLine
+          error: "CSV must have an 'email' or 'customer_primary_email' column. Found columns: " + headerLine
         });
     }
 
-    const firstNameIndex = headers.indexOf("firstname");
-    const lastNameIndex = headers.indexOf("lastname");
-    const phoneIndex = headers.indexOf("phone");
-    const companyIndex = headers.indexOf("company");
+    // Find name columns - support various formats
+    let firstNameIndex = headers.indexOf("firstname");
+    let lastNameIndex = headers.indexOf("lastname");
+    let fullNameIndex = headers.indexOf("customer_full_name");
+
+    if (firstNameIndex === -1) {
+      firstNameIndex = headers.indexOf("first_name");
+    }
+    if (lastNameIndex === -1) {
+      lastNameIndex = headers.indexOf("last_name");
+    }
+
+    // Find phone column
+    let phoneIndex = headers.indexOf("phone");
+    if (phoneIndex === -1) {
+      phoneIndex = headers.indexOf("customer_primary_phone_number");
+    }
+    if (phoneIndex === -1) {
+      phoneIndex = headers.indexOf("phone_number");
+    }
+
+    // Find company column
+    let companyIndex = headers.indexOf("company");
+    if (companyIndex === -1) {
+      companyIndex = headers.indexOf("customer_group_name");
+    }
 
     // Parse data rows
     const customers: CSVCustomer[] = [];
