@@ -264,15 +264,17 @@ export const handleCSVCustomerImport: RequestHandler = async (req, res) => {
         .json({ error: "CSV must have header row and at least one data row" });
     }
 
-    // Parse header
-    const headerLine = lines[0].toLowerCase();
-    const headers = headerLine.split(",").map((h) => h.trim());
+    // Parse header - split first, then lowercase for matching
+    const headerLine = lines[0].trim();
+    const headers = headerLine.split(",").map((h) => h.trim().toLowerCase());
 
     const emailIndex = headers.indexOf("email");
     if (emailIndex === -1) {
       return res
         .status(400)
-        .json({ error: "CSV must have an 'email' column" });
+        .json({
+          error: "CSV must have an 'email' column. Found columns: " + headerLine
+        });
     }
 
     const firstNameIndex = headers.indexOf("firstname");
