@@ -46,7 +46,18 @@ export default function AdminEcwidMigration() {
   const fetchMigrationStatus = async () => {
     try {
       setIsLoadingStatus(true);
-      const response = await fetch("/api/admin/ecwid/migration-status");
+      const token = localStorage.getItem("authToken");
+
+      if (!token) {
+        throw new Error("Authentication required");
+      }
+
+      const response = await fetch("/api/admin/ecwid/migration-status", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Failed to fetch migration status");
