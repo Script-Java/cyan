@@ -50,6 +50,7 @@ import EditLegalPage from "./pages/EditLegalPage";
 import LegalPage from "./pages/LegalPage";
 import Customers from "./pages/Customers";
 import AdminShipping from "./pages/AdminShipping";
+import AdminEcwidMigration from "./pages/AdminEcwidMigration";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 
