@@ -341,7 +341,7 @@ export default function AdminEcwidMigration() {
               <div className="flex-1">
                 <h3 className="font-bold mb-2">Or Import Customers from CSV</h3>
                 <p className="text-gray-700 mb-4">
-                  Upload a CSV file with customer data. Required column: email. Optional: firstName, lastName, phone, company.
+                  Upload a CSV file with customer data. Supports both simple format and Ecwid export format. Required: email column.
                 </p>
 
                 {csvFile ? (
