@@ -460,6 +460,21 @@ export default function AdminEcwidMigration() {
                   orders that have already been imported.
                 </p>
               </div>
+              <div>
+                <h4 className="font-bold mb-2">What format should my CSV file have?</h4>
+                <p className="text-gray-700 mb-2">
+                  Your CSV must have a header row with column names. Required: email. Optional: firstName, lastName, phone, company.
+                </p>
+                <p className="text-gray-700 text-sm font-mono bg-gray-50 p-2 rounded">
+                  email,firstName,lastName,phone,company
+                </p>
+              </div>
+              <div>
+                <h4 className="font-bold mb-2">What's the CSV file size limit?</h4>
+                <p className="text-gray-700">
+                  Maximum file size is 50MB. For larger datasets, you can upload multiple files.
+                </p>
+              </div>
             </div>
           </div>
         </div>
