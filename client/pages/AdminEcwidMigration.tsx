@@ -35,6 +35,9 @@ export default function AdminEcwidMigration() {
     null,
   );
   const [isLoadingStatus, setIsLoadingStatus] = useState(true);
+  const [isImportingCSV, setIsImportingCSV] = useState(false);
+  const [csvFile, setCSVFile] = useState<File | null>(null);
+  const [csvPreview, setCSVPreview] = useState<string>("");
 
   useEffect(() => {
     fetchMigrationStatus();
