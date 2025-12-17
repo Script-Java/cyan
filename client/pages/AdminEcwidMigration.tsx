@@ -88,10 +88,17 @@ export default function AdminEcwidMigration() {
 
     try {
       setIsMigrating(true);
+      const token = localStorage.getItem("authToken");
+
+      if (!token) {
+        throw new Error("Authentication required");
+      }
+
       const response = await fetch("/api/admin/ecwid/migrate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 
