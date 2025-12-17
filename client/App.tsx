@@ -132,6 +132,10 @@ export default function App() {
               path="/admin/import-products"
               element={<AdminProductImport />}
             />
+            <Route
+              path="/admin/ecwid-migration"
+              element={<AdminEcwidMigration />}
+            />
             <Route path="/store-credit-admin" element={<StoreCreditAdmin />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
