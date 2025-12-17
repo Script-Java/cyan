@@ -162,6 +162,7 @@ import {
 import {
   handleEcwidMigration,
   handleGetMigrationStatus,
+  handleCSVCustomerImport,
 } from "./routes/ecwid-migration";
 import { verifyToken, optionalVerifyToken } from "./middleware/auth";
 
