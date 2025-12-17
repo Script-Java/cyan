@@ -499,6 +499,11 @@ export function createServer() {
     verifyToken,
     handleGetMigrationStatus,
   );
+  app.post(
+    "/api/admin/ecwid/import-csv",
+    verifyToken,
+    handleCSVCustomerImport,
+  );
 
   // ===== Blogs Routes =====
   // Public routes
