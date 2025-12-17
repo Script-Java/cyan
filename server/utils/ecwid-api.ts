@@ -119,6 +119,119 @@ export async function fetchEcwidProducts(
   }
 }
 
+export interface EcwidCustomer {
+  id: number;
+  email: string;
+  billingPerson: {
+    name: string;
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+  };
+  createdDate: string;
+}
+
+export interface EcwidOrder {
+  number: string;
+  id: number;
+  email: string;
+  total: number;
+  subtotal: number;
+  tax: number;
+  shipping: number;
+  status: string;
+  fulfillmentStatus: string;
+  trackingNumber?: string;
+  createdDate: string;
+  updatedDate: string;
+  customerEmail: string;
+}
+
+export async function fetchAllEcwidCustomers(): Promise<EcwidCustomer[]> {
+  try {
+    const customers: EcwidCustomer[] = [];
+    let offset = 0;
+    const limit = 100;
+    let hasMore = true;
+
+    while (hasMore) {
+      const response = await fetch(
+        `${ECWID_API_BASE}/${ECWID_STORE_ID}/customers?limit=${limit}&offset=${offset}&token=${ECWID_API_TOKEN}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (!response.ok) {
+        console.error(
+          "Failed to fetch Ecwid customers:",
+          response.statusText,
+        );
+        break;
+      }
+
+      const data = await response.json();
+      const items = data.items || [];
+
+      if (items.length === 0) {
+        hasMore = false;
+      } else {
+        customers.push(...items);
+        offset += limit;
+      }
+    }
+
+    return customers;
+  } catch (error) {
+    console.error("Error fetching Ecwid customers:", error);
+    return [];
+  }
+}
+
+export async function fetchAllEcwidOrders(): Promise<EcwidOrder[]> {
+  try {
+    const orders: EcwidOrder[] = [];
+    let offset = 0;
+    const limit = 100;
+    let hasMore = true;
+
+    while (hasMore) {
+      const response = await fetch(
+        `${ECWID_API_BASE}/${ECWID_STORE_ID}/orders?limit=${limit}&offset=${offset}&token=${ECWID_API_TOKEN}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (!response.ok) {
+        console.error("Failed to fetch Ecwid orders:", response.statusText);
+        break;
+      }
+
+      const data = await response.json();
+      const items = data.items || [];
+
+      if (items.length === 0) {
+        hasMore = false;
+      } else {
+        orders.push(...items);
+        offset += limit;
+      }
+    }
+
+    return orders;
+  } catch (error) {
+    console.error("Error fetching Ecwid orders:", error);
+    return [];
+  }
+}
+
 function transformEcwidProduct(data: any): EcwidProduct {
   const product: EcwidProduct = {
     id: data.id,
