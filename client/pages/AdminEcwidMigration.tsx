@@ -111,6 +111,95 @@ export default function AdminEcwidMigration() {
     }
   };
 
+  const handleCSVFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.name.endsWith(".csv")) {
+      toast({
+        title: "Invalid File",
+        description: "Please select a CSV file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (file.size > 50 * 1024 * 1024) {
+      toast({
+        title: "File Too Large",
+        description: "File must be smaller than 50MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setCSVFile(file);
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      const preview = text.split("\n").slice(0, 4).join("\n");
+      setCSVPreview(preview);
+    };
+    reader.readAsText(file);
+  };
+
+  const handleImportCSV = async () => {
+    if (!csvFile) {
+      toast({
+        title: "Error",
+        description: "Please select a CSV file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setIsImportingCSV(true);
+      const csvText = await csvFile.text();
+
+      const response = await fetch("/api/admin/ecwid/import-csv", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ csvData: csvText }),
+      });
+
+      if (!response.ok) {
+        throw new Error("CSV import failed");
+      }
+
+      const data = await response.json();
+      setMigrationResult(data.result);
+      setCSVFile(null);
+      setCSVPreview("");
+
+      toast({
+        title: "Success",
+        description: `Imported ${data.result.customersImported} customers`,
+      });
+
+      setTimeout(() => {
+        fetchMigrationStatus();
+      }, 1000);
+    } catch (error) {
+      console.error("CSV import error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to import CSV",
+        variant: "destructive",
+      });
+    } finally {
+      setIsImportingCSV(false);
+    }
+  };
+
+  const clearCSV = () => {
+    setCSVFile(null);
+    setCSVPreview("");
+  };
+
   return (
     <>
       <Header />
