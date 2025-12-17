@@ -38,20 +38,28 @@ export default function AdminNavbar() {
     const fetchPendingOrdersCount = async () => {
       try {
         const token = localStorage.getItem("authToken");
-        if (!token) return;
+        if (!token) {
+          setPendingOrdersCount(0);
+          return;
+        }
 
         const response = await fetch("/api/admin/pending-orders", {
+          method: "GET",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
 
         if (response.ok) {
           const data = await response.json();
-          setPendingOrdersCount(data.count || 0);
+          setPendingOrdersCount(data.count || data.orders?.length || 0);
+        } else if (response.status === 401) {
+          setPendingOrdersCount(0);
         }
       } catch (error) {
         console.error("Error fetching pending orders count:", error);
+        setPendingOrdersCount(0);
       }
     };
 
