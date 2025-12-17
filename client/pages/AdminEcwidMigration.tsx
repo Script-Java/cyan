@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AlertCircle, CheckCircle, Clock, Users, ShoppingCart } from "lucide-react";
+import { AlertCircle, CheckCircle, Clock, Users, ShoppingCart, Upload, X } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
