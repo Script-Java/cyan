@@ -324,10 +324,26 @@ export const handleCSVCustomerImport: RequestHandler = async (req, res) => {
         continue;
       }
 
+      // Handle name - either separate first/last or combined full name
+      let firstName = firstNameIndex >= 0 ? values[firstNameIndex] : undefined;
+      let lastName = lastNameIndex >= 0 ? values[lastNameIndex] : undefined;
+
+      // If we have full name but no first/last, parse it
+      if (fullNameIndex >= 0 && !firstName && !lastName) {
+        const fullName = values[fullNameIndex] || "";
+        const nameParts = fullName.trim().split(/\s+/);
+        if (nameParts.length > 0) {
+          firstName = nameParts[0];
+          if (nameParts.length > 1) {
+            lastName = nameParts.slice(1).join(" ");
+          }
+        }
+      }
+
       customers.push({
         email,
-        firstName: firstNameIndex >= 0 ? values[firstNameIndex] : undefined,
-        lastName: lastNameIndex >= 0 ? values[lastNameIndex] : undefined,
+        firstName: firstName || undefined,
+        lastName: lastName || undefined,
         phone: phoneIndex >= 0 ? values[phoneIndex] : undefined,
         company: companyIndex >= 0 ? values[companyIndex] : undefined,
       });
