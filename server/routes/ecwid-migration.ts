@@ -227,3 +227,139 @@ export const handleGetMigrationStatus: RequestHandler = async (req, res) => {
     });
   }
 };
+
+interface CSVCustomer {
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  company?: string;
+}
+
+/**
+ * Import customers from CSV file
+ * Expected columns: email, firstName, lastName, phone, company
+ */
+export const handleCSVCustomerImport: RequestHandler = async (req, res) => {
+  try {
+    const { csvData } = req.body;
+
+    if (!csvData || typeof csvData !== "string") {
+      return res.status(400).json({ error: "CSV data is required" });
+    }
+
+    const result: MigrationResult = {
+      customersImported: 0,
+      customersSkipped: 0,
+      ordersImported: 0,
+      ordersSkipped: 0,
+      errors: [],
+    };
+
+    // Parse CSV
+    const lines = csvData.trim().split("\n");
+    if (lines.length < 2) {
+      return res
+        .status(400)
+        .json({ error: "CSV must have header row and at least one data row" });
+    }
+
+    // Parse header
+    const headerLine = lines[0].toLowerCase();
+    const headers = headerLine.split(",").map((h) => h.trim());
+
+    const emailIndex = headers.indexOf("email");
+    if (emailIndex === -1) {
+      return res
+        .status(400)
+        .json({ error: "CSV must have an 'email' column" });
+    }
+
+    const firstNameIndex = headers.indexOf("firstname");
+    const lastNameIndex = headers.indexOf("lastname");
+    const phoneIndex = headers.indexOf("phone");
+    const companyIndex = headers.indexOf("company");
+
+    // Parse data rows
+    const customers: CSVCustomer[] = [];
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+
+      const values = line.split(",").map((v) => v.trim());
+
+      const email = values[emailIndex];
+      if (!email) {
+        result.errors.push(`Row ${i + 1}: Missing email`);
+        result.customersSkipped++;
+        continue;
+      }
+
+      customers.push({
+        email,
+        firstName: firstNameIndex >= 0 ? values[firstNameIndex] : undefined,
+        lastName: lastNameIndex >= 0 ? values[lastNameIndex] : undefined,
+        phone: phoneIndex >= 0 ? values[phoneIndex] : undefined,
+        company: companyIndex >= 0 ? values[companyIndex] : undefined,
+      });
+    }
+
+    // Import customers
+    for (const customer of customers) {
+      try {
+        // Check if customer already exists
+        const { data: existingCustomer } = await supabase
+          .from("customers")
+          .select("id")
+          .eq("email", customer.email)
+          .single();
+
+        if (existingCustomer) {
+          result.customersSkipped++;
+          continue;
+        }
+
+        // Insert new customer
+        const { error: insertError } = await supabase
+          .from("customers")
+          .insert({
+            email: customer.email,
+            first_name: customer.firstName || "",
+            last_name: customer.lastName || "",
+            phone: customer.phone,
+            company: customer.company,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          });
+
+        if (insertError) {
+          result.errors.push(
+            `Failed to import customer ${customer.email}: ${insertError.message}`,
+          );
+          result.customersSkipped++;
+        } else {
+          result.customersImported++;
+        }
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Unknown error";
+        result.errors.push(`Error processing customer ${customer.email}: ${message}`);
+        result.customersSkipped++;
+      }
+    }
+
+    res.json({
+      success: true,
+      message: "CSV import completed",
+      result,
+    });
+  } catch (error) {
+    console.error("CSV import error:", error);
+    const message =
+      error instanceof Error ? error.message : "CSV import failed";
+    res.status(500).json({
+      success: false,
+      error: message,
+    });
+  }
+};
