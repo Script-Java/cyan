@@ -37,10 +37,26 @@ export default function ProofNotificationAlert({ onNotificationRead }: Props) {
   const fetchNotifications = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/admin/proofs");
+      const token = localStorage.getItem("authToken");
+
+      if (!token) {
+        setNotifications([]);
+        return;
+      }
+
+      const response = await fetch("/api/admin/proofs", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
-        console.error("Failed to fetch notifications");
+        if (response.status === 401) {
+          setNotifications([]);
+        }
+        console.error("Failed to fetch notifications:", response.status);
         return;
       }
 
@@ -48,6 +64,7 @@ export default function ProofNotificationAlert({ onNotificationRead }: Props) {
       setNotifications(data.proofs || []);
     } catch (error) {
       console.error("Error fetching notifications:", error);
+      setNotifications([]);
     } finally {
       setIsLoading(false);
     }
