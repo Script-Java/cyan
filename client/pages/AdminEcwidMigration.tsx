@@ -303,6 +303,72 @@ export default function AdminEcwidMigration() {
             </div>
           </div>
 
+          {/* CSV Import Section */}
+          <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 mb-8">
+            <div className="flex items-start gap-4">
+              <Upload className="w-6 h-6 text-purple-600 mt-1" />
+              <div className="flex-1">
+                <h3 className="font-bold mb-2">Or Import Customers from CSV</h3>
+                <p className="text-gray-700 mb-4">
+                  Upload a CSV file with customer data. Required column: email. Optional: firstName, lastName, phone, company.
+                </p>
+
+                {csvFile ? (
+                  <div className="space-y-3">
+                    <div className="bg-white border border-purple-200 rounded p-4">
+                      <div className="flex justify-between items-start mb-3">
+                        <div>
+                          <p className="font-medium text-gray-900">{csvFile.name}</p>
+                          <p className="text-sm text-gray-600">
+                            {(csvFile.size / 1024).toFixed(2)} KB
+                          </p>
+                        </div>
+                        <button
+                          onClick={clearCSV}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <X className="w-5 h-5" />
+                        </button>
+                      </div>
+
+                      {csvPreview && (
+                        <div className="mb-3 p-3 bg-gray-50 rounded text-xs font-mono text-gray-700 overflow-x-auto">
+                          <pre>{csvPreview}</pre>
+                        </div>
+                      )}
+
+                      <button
+                        onClick={handleImportCSV}
+                        disabled={isImportingCSV}
+                        className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white px-4 py-2 rounded font-medium"
+                      >
+                        {isImportingCSV ? "Importing..." : "Import CSV"}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <label className="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-purple-300 rounded-lg p-8 cursor-pointer hover:border-purple-400 transition bg-purple-50">
+                    <Upload className="w-8 h-8 text-purple-600" />
+                    <div className="text-center">
+                      <p className="text-gray-900 font-medium">
+                        Drag or click to upload CSV
+                      </p>
+                      <p className="text-gray-600 text-sm mt-1">
+                        Max file size: 50MB
+                      </p>
+                    </div>
+                    <input
+                      type="file"
+                      accept=".csv"
+                      onChange={handleCSVFileChange}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+              </div>
+            </div>
+          </div>
+
           {/* Migration Results */}
           {migrationResult && (
             <div className="space-y-4">
