@@ -487,6 +487,18 @@ export function createServer() {
   app.get("/api/webhooks/health", handleWebhookHealth);
   app.get("/api/webhooks/url", handleGetWebhookUrl);
 
+  // ===== Ecwid Migration Routes (Protected - admin only) =====
+  app.post(
+    "/api/admin/ecwid/migrate",
+    verifyToken,
+    handleEcwidMigration,
+  );
+  app.get(
+    "/api/admin/ecwid/migration-status",
+    verifyToken,
+    handleGetMigrationStatus,
+  );
+
   // ===== Blogs Routes =====
   // Public routes
   app.get("/api/blogs", handleGetPublishedBlogs);
