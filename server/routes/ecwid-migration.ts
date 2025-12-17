@@ -62,7 +62,8 @@ export const handleEcwidMigration: RequestHandler = async (req, res) => {
         const { error: insertError } = await supabase.from("customers").insert(
           {
             email: ecwidCustomer.email,
-            name: fullName || ecwidCustomer.email,
+            first_name: ecwidCustomer.billingPerson?.firstName || "",
+            last_name: ecwidCustomer.billingPerson?.lastName || "",
             phone: ecwidCustomer.billingPerson?.phone,
             created_at: ecwidCustomer.createdDate,
             updated_at: new Date().toISOString(),
