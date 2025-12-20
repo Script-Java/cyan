@@ -69,6 +69,7 @@ import {
   handleWebhookHealth,
   handleGetWebhookUrl,
   handleEcwidDiagnostic,
+  handleTestWebhook,
 } from "./routes/webhooks";
 import {
   handleSquarePayment,
