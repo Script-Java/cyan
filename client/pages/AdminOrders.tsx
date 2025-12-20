@@ -84,7 +84,7 @@ export default function AdminOrders() {
     fetchOrders();
   }, [navigate]);
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (retryCount = 0) => {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
@@ -93,17 +93,31 @@ export default function AdminOrders() {
         return;
       }
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       const response = await fetch("/api/admin/all-orders", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        signal: controller.signal,
       });
 
+      clearTimeout(timeoutId);
+
       if (!response.ok) {
-        const errorData = await response.text();
+        const errorData = await response.text().catch(() => "");
         console.error(`Failed to fetch orders: ${response.status} ${response.statusText}`, errorData);
+
+        // Retry on server errors, but not on auth errors
+        if (response.status >= 500 && retryCount < 2) {
+          console.log(`Retrying orders fetch (attempt ${retryCount + 2})...`);
+          setTimeout(() => fetchOrders(retryCount + 1), 1000 * (retryCount + 1));
+          return;
+        }
+
         setIsLoading(false);
         return;
       }
@@ -112,11 +126,22 @@ export default function AdminOrders() {
       setPendingOrders(data.orders || []);
       setFilteredOrders(data.orders || []);
     } catch (error) {
-      console.error("Error fetching orders:", {
-        error,
-        message: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      });
+      if (error instanceof Error && error.name === "AbortError") {
+        console.error("Orders fetch timeout after 30 seconds");
+      } else {
+        console.error("Error fetching orders:", {
+          error,
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+        });
+      }
+
+      // Retry on network errors
+      if (retryCount < 2) {
+        console.log(`Retrying orders fetch (attempt ${retryCount + 2}) after network error...`);
+        setTimeout(() => fetchOrders(retryCount + 1), 1000 * (retryCount + 1));
+        return;
+      }
     } finally {
       setIsLoading(false);
     }
