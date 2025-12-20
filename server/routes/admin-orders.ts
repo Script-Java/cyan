@@ -51,7 +51,7 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           tracking_url,
           shipped_date,
           shipping_address,
-          customers:customer_id(id,first_name,last_name,email),
+          customers(id,first_name,last_name,email),
           order_items(id,quantity,product_name,options,design_file_url)
           `
         )
