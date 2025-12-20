@@ -67,9 +67,13 @@ export default function AdminEcwidMigration() {
   const [isImportingCSV, setIsImportingCSV] = useState(false);
   const [csvFile, setCSVFile] = useState<File | null>(null);
   const [csvPreview, setCSVPreview] = useState<string>("");
+  const [diagnostic, setDiagnostic] = useState<EcwidDiagnostic | null>(null);
+  const [isLoadingDiagnostic, setIsLoadingDiagnostic] = useState(false);
+  const [webhookUrlCopied, setWebhookUrlCopied] = useState(false);
 
   useEffect(() => {
     fetchMigrationStatus();
+    fetchDiagnostic();
   }, []);
 
   const fetchMigrationStatus = async () => {
