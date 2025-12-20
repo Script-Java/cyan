@@ -151,6 +151,15 @@ export default function AdminOrders() {
   useEffect(() => {
     let filtered = pendingOrders;
 
+    // Hide orders from the past 7 days if toggle is enabled
+    if (hideRecentOrders) {
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      filtered = filtered.filter(
+        (order) => new Date(order.dateCreated) < sevenDaysAgo,
+      );
+    }
+
     if (searchTerm) {
       filtered = filtered.filter(
         (order) =>
@@ -165,7 +174,7 @@ export default function AdminOrders() {
     }
 
     setFilteredOrders(filtered);
-  }, [searchTerm, filterStatus, pendingOrders]);
+  }, [searchTerm, filterStatus, pendingOrders, hideRecentOrders]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
