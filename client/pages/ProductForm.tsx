@@ -1068,9 +1068,9 @@ export default function ProductForm() {
 
                           {/* Variant Values */}
                           <div className="bg-white/10 rounded-lg p-4 space-y-3">
-                            <button
+                            <div
                               onClick={() => toggleOptionValues(option.id)}
-                              className="w-full flex items-center justify-between hover:bg-white/5 rounded p-2 transition"
+                              className="w-full flex items-center justify-between hover:bg-white/5 rounded p-2 transition cursor-pointer"
                             >
                               <h4 className="text-white font-semibold">
                                 Option Values
@@ -1095,7 +1095,7 @@ export default function ProductForm() {
                                   }`}
                                 />
                               </div>
-                            </button>
+                            </div>
 
                             {expandedOptionValues.has(option.id) && (
                               <>
