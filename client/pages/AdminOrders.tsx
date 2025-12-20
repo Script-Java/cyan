@@ -240,55 +240,74 @@ export default function AdminOrders() {
           ) : (
             <div className="space-y-4">
               {/* Search and Filter */}
-              <div className="flex gap-3">
-                <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-3.5 w-4 h-4 text-white/40" />
-                  <input
-                    type="text"
-                    placeholder="Search by order, customer, or email..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-white/40 flex-shrink-0" />
-                  <select
-                    value={filterStatus}
-                    onChange={(e) => setFilterStatus(e.target.value)}
-                    className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
-                  >
-                    <option value="all" className="bg-gray-900">
-                      All Statuses
-                    </option>
-                    <option value="pending" className="bg-gray-900">
-                      Pending
-                    </option>
-                    <option value="processing" className="bg-gray-900">
-                      Processing
-                    </option>
-                    <option value="printing" className="bg-gray-900">
-                      Printing
-                    </option>
-                    <option
-                      value="preparing for shipping"
-                      className="bg-gray-900"
+              <div className="flex flex-col gap-3">
+                <div className="flex gap-3">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-3.5 w-4 h-4 text-white/40" />
+                    <input
+                      type="text"
+                      placeholder="Search by order, customer, or email..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Filter className="w-4 h-4 text-white/40 flex-shrink-0" />
+                    <select
+                      value={filterStatus}
+                      onChange={(e) => setFilterStatus(e.target.value)}
+                      className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
                     >
-                      Preparing for Shipping
-                    </option>
-                    <option value="in transit" className="bg-gray-900">
-                      In Transit
-                    </option>
-                    <option value="shipped" className="bg-gray-900">
-                      Shipped
-                    </option>
-                    <option value="delivered" className="bg-gray-900">
-                      Delivered
-                    </option>
-                    <option value="cancelled" className="bg-gray-900">
-                      Cancelled
-                    </option>
-                  </select>
+                      <option value="all" className="bg-gray-900">
+                        All Statuses
+                      </option>
+                      <option value="pending" className="bg-gray-900">
+                        Pending
+                      </option>
+                      <option value="processing" className="bg-gray-900">
+                        Processing
+                      </option>
+                      <option value="printing" className="bg-gray-900">
+                        Printing
+                      </option>
+                      <option
+                        value="preparing for shipping"
+                        className="bg-gray-900"
+                      >
+                        Preparing for Shipping
+                      </option>
+                      <option value="in transit" className="bg-gray-900">
+                        In Transit
+                      </option>
+                      <option value="shipped" className="bg-gray-900">
+                        Shipped
+                      </option>
+                      <option value="delivered" className="bg-gray-900">
+                        Delivered
+                      </option>
+                      <option value="cancelled" className="bg-gray-900">
+                        Cancelled
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Hide Recent Orders Toggle */}
+                <div className="flex items-center gap-3 px-3 py-2 bg-white/5 border border-white/10 rounded-lg w-fit">
+                  <input
+                    type="checkbox"
+                    id="hideRecentOrders"
+                    checked={hideRecentOrders}
+                    onChange={(e) => setHideRecentOrders(e.target.checked)}
+                    className="w-4 h-4 rounded border border-white/30 bg-white/10 cursor-pointer accent-green-500"
+                  />
+                  <label
+                    htmlFor="hideRecentOrders"
+                    className="text-sm text-white/80 cursor-pointer font-medium"
+                  >
+                    Hide orders from past 7 days
+                  </label>
                 </div>
               </div>
 
