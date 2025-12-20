@@ -245,17 +245,17 @@ export default function ProductPage() {
   };
 
   const calculatePriceForValue = (optionId: string, valueId: string) => {
-    if (!product) return product?.base_price || 0;
+    if (!product) return 0;
 
     const option = product.options.find((o) => o.id === optionId);
     if (option) {
       const value = option.values.find((v) => v.id === valueId);
-      if (value && value.priceModifier !== 0) {
-        return product.base_price + value.priceModifier;
+      if (value) {
+        return value.priceModifier;
       }
     }
 
-    return product.base_price;
+    return 0;
   };
 
   const calculatePrice = () => {
