@@ -24,6 +24,35 @@ interface MigrationResult {
   errors: string[];
 }
 
+interface EcwidDiagnostic {
+  timestamp: string;
+  configStatus: {
+    hasApiToken: boolean;
+    hasStoreId: boolean;
+    storeId: string;
+  };
+  apiConnectivity: {
+    status: "connected" | "error" | "unknown";
+    message: string;
+  };
+  webhookUrl: string;
+  webhookSetupInstructions: {
+    step1: string;
+    step2: string;
+    step3: string;
+    step4: string;
+    step5: string;
+  };
+  supabaseConnection: {
+    status: "connected" | "error" | "unknown";
+    message: string;
+  };
+  recentOrders: {
+    count: number;
+    lastOrder: any;
+  };
+}
+
 export default function AdminEcwidMigration() {
   const navigate = useNavigate();
   const { toast } = useToast();
