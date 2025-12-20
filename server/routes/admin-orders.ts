@@ -34,6 +34,8 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
     let error: any = null;
 
     try {
+      // Fetch orders with a reasonable limit to prevent timeouts
+      // Admin can paginate if needed
       const result = await supabase
         .from("orders")
         .select(
@@ -55,7 +57,8 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           order_items(id,quantity,product_name,options,design_file_url)
           `
         )
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .limit(1000); // Reasonable limit to prevent large response
 
       allOrders = result.data || [];
       error = result.error;
