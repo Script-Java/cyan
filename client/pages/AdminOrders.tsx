@@ -649,7 +649,7 @@ export default function AdminOrders() {
                     No Orders Found
                   </h3>
                   <p className="text-sm text-white/60">
-                    {searchTerm || filterStatus !== "all"
+                    {searchTerm || filterStatus !== "all" || hideRecentOrders
                       ? "No orders match your search or filter criteria."
                       : "There are no orders at this time."}
                   </p>
