@@ -113,6 +113,7 @@ import {
   handleUpdateOrderStatus,
   handleGetAllAdminOrders,
   handleUpdateShippingAddress,
+  handleTestAdminOrders,
 } from "./routes/admin-orders";
 import {
   handleGetAllCustomers,
