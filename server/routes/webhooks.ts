@@ -384,7 +384,6 @@ export const handleEcwidDiagnostic: RequestHandler = async (req, res) => {
       const { data: recentWebhooks, error } = await supabase
         .from("orders")
         .select("id, ecwid_order_id, created_at, status")
-        .eq("ecwid_order_id", true) // Orders that came from Ecwid
         .order("created_at", { ascending: false })
         .limit(5);
 
@@ -408,6 +407,48 @@ export const handleEcwidDiagnostic: RequestHandler = async (req, res) => {
       error: "Failed to run diagnostics",
       message: error instanceof Error ? error.message : "Unknown error",
       timestamp: new Date().toISOString(),
+    });
+  }
+};
+
+/**
+ * Test webhook endpoint - for testing webhook payload handling without requiring Ecwid to send real data
+ * This is useful for development and debugging
+ */
+export const handleTestWebhook: RequestHandler = async (req, res) => {
+  try {
+    const testPayload = req.body;
+
+    // Add test signature for validation (we'll skip verification for test endpoint)
+    console.log("Test webhook payload received:", testPayload);
+
+    // Process based on event type
+    if (testPayload.eventType === "order.completed") {
+      await handleOrderCompleted(testPayload.data);
+      res.json({
+        success: true,
+        message: "Test order webhook processed",
+        eventType: "order.completed",
+      });
+    } else if (testPayload.eventType === "customer.created") {
+      await handleCustomerCreated(testPayload.data);
+      res.json({
+        success: true,
+        message: "Test customer webhook processed",
+        eventType: "customer.created",
+      });
+    } else {
+      res.json({
+        success: true,
+        message: "Test webhook received and logged",
+        eventType: testPayload.eventType || "unknown",
+      });
+    }
+  } catch (error) {
+    console.error("Test webhook error:", error);
+    res.status(500).json({
+      error: "Failed to process test webhook",
+      message: error instanceof Error ? error.message : "Unknown error",
     });
   }
 };
