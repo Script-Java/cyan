@@ -490,6 +490,7 @@ export function createServer() {
   app.get("/api/webhooks/health", handleWebhookHealth);
   app.get("/api/webhooks/url", handleGetWebhookUrl);
   app.get("/api/webhooks/diagnostic", verifyToken, handleEcwidDiagnostic);
+  app.post("/api/webhooks/test", verifyToken, handleTestWebhook);
 
   // ===== Ecwid Migration Routes (Protected - admin only) =====
   app.post(
