@@ -64,6 +64,7 @@ export default function AdminOrders() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
+  const [hideRecentOrders, setHideRecentOrders] = useState(true);
   const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
   const [editingOrderId, setEditingOrderId] = useState<number | null>(null);
   const [shippingLabelOrderId, setShippingLabelOrderId] = useState<
