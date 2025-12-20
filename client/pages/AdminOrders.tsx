@@ -657,19 +657,19 @@ export default function AdminOrders() {
               )}
 
               {/* Summary Stats */}
-              {pendingOrders.length > 0 && (
+              {filteredOrders.length > 0 && (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   <div className="bg-white/5 border border-white/10 rounded-lg p-4">
                     <p className="text-xs text-white/60 mb-1">Total Orders</p>
                     <p className="text-2xl font-bold text-white">
-                      {pendingOrders.length}
+                      {filteredOrders.length}
                     </p>
                   </div>
                   <div className="bg-white/5 border border-white/10 rounded-lg p-4">
                     <p className="text-xs text-white/60 mb-1">Total Revenue</p>
                     <p className="text-2xl font-bold text-green-300">
                       $
-                      {pendingOrders
+                      {filteredOrders
                         .reduce((sum, order) => sum + order.total, 0)
                         .toFixed(2)}
                     </p>
@@ -681,10 +681,10 @@ export default function AdminOrders() {
                     <p className="text-2xl font-bold text-blue-300">
                       $
                       {(
-                        pendingOrders.reduce(
+                        filteredOrders.reduce(
                           (sum, order) => sum + order.total,
                           0,
-                        ) / pendingOrders.length
+                        ) / filteredOrders.length
                       ).toFixed(2)}
                     </p>
                   </div>
