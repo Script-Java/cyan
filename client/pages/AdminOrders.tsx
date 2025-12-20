@@ -87,23 +87,36 @@ export default function AdminOrders() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      if (!token) return;
+      if (!token) {
+        console.error("No authentication token found");
+        setIsLoading(false);
+        return;
+      }
 
       const response = await fetch("/api/admin/all-orders", {
+        method: "GET",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        setPendingOrders(data.orders || []);
-        setFilteredOrders(data.orders || []);
-      } else {
-        console.error("Failed to fetch orders:", response.status);
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error(`Failed to fetch orders: ${response.status} ${response.statusText}`, errorData);
+        setIsLoading(false);
+        return;
       }
+
+      const data = await response.json();
+      setPendingOrders(data.orders || []);
+      setFilteredOrders(data.orders || []);
     } catch (error) {
-      console.error("Error fetching orders:", error);
+      console.error("Error fetching orders:", {
+        error,
+        message: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      });
     } finally {
       setIsLoading(false);
     }
