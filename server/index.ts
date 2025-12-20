@@ -442,6 +442,7 @@ export function createServer() {
   app.get("/api/admin/proofs", handleGetAdminProofs);
   app.post("/api/admin/proofs/:proofId/comments", handleAddAdminProofComment);
   app.get("/api/admin/pending-orders", handleGetAdminPendingOrders);
+  app.get("/api/admin/orders/test", verifyToken, handleTestAdminOrders);
   app.get("/api/admin/all-orders", verifyToken, handleGetAllAdminOrders);
   app.put(
     "/api/admin/orders/:orderId/status",
