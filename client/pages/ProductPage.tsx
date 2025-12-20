@@ -647,6 +647,9 @@ export default function ProductPage() {
                         <span className="text-gray-700 text-xs mt-2 font-medium text-center">
                           {value.name}
                         </span>
+                        <span className="text-purple-600 text-xs font-bold mt-1">
+                          ${calculatePriceForValue(option.id, value.id).toFixed(2)}
+                        </span>
                       </button>
                     ))}
                   </div>
