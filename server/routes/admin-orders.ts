@@ -23,6 +23,21 @@ interface OrderWithCustomer {
 }
 
 /**
+ * Test endpoint to verify admin orders endpoint is working
+ */
+export const handleTestAdminOrders: RequestHandler = async (_req, res) => {
+  try {
+    res.json({
+      status: "ok",
+      timestamp: new Date().toISOString(),
+      message: "Admin orders endpoint is accessible",
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Test failed" });
+  }
+};
+
+/**
  * Get all orders from Supabase (admin only)
  * Fetches all orders regardless of status
  * Returns orders with customer details and tracking info
