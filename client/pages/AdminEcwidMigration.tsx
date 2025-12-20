@@ -315,6 +315,105 @@ export default function AdminEcwidMigration() {
             </p>
           </div>
 
+          {/* Webhook Setup Section */}
+          {diagnostic && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
+              <div className="flex items-start gap-4">
+                <Server className="w-6 h-6 text-green-600 mt-1" />
+                <div className="flex-1">
+                  <h3 className="font-bold mb-4">Live Order Reception (Webhooks)</h3>
+
+                  {/* API Connectivity Status */}
+                  <div className="mb-6 p-4 bg-white rounded border border-green-100">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-semibold">API Connectivity:</span>
+                      <div className="flex items-center gap-2">
+                        {diagnostic.apiConnectivity.status === "connected" ? (
+                          <>
+                            <CheckCircle className="w-5 h-5 text-green-600" />
+                            <span className="text-green-600 font-medium">Connected</span>
+                          </>
+                        ) : diagnostic.apiConnectivity.status === "error" ? (
+                          <>
+                            <AlertCircle className="w-5 h-5 text-red-600" />
+                            <span className="text-red-600 font-medium">Error</span>
+                          </>
+                        ) : (
+                          <span className="text-gray-500">Unknown</span>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600">{diagnostic.apiConnectivity.message}</p>
+                    {diagnostic.recentOrders.count > 0 && (
+                      <p className="text-sm text-gray-600 mt-2">
+                        Total orders in Ecwid: <strong>{diagnostic.recentOrders.count}</strong>
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Webhook URL */}
+                  <div className="mb-6 p-4 bg-white rounded border border-green-100">
+                    <p className="text-sm text-gray-600 mb-2">Your Webhook URL:</p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        readOnly
+                        value={diagnostic.webhookUrl}
+                        className="flex-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded font-mono text-sm"
+                      />
+                      <button
+                        onClick={copyWebhookUrl}
+                        className={`px-4 py-2 rounded font-medium text-white transition ${
+                          webhookUrlCopied
+                            ? "bg-green-600"
+                            : "bg-blue-600 hover:bg-blue-700"
+                        }`}
+                      >
+                        {webhookUrlCopied ? "Copied!" : "Copy"}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Setup Instructions */}
+                  <div className="mb-6">
+                    <p className="text-sm font-semibold text-gray-900 mb-3">Setup Instructions:</p>
+                    <ol className="space-y-2 text-sm text-gray-700">
+                      <li><strong>1.</strong> Log in to your Ecwid admin panel</li>
+                      <li><strong>2.</strong> Go to Settings → Integration → Webhooks (or Settings → API → Webhooks)</li>
+                      <li><strong>3.</strong> Click "Add Webhook" or "Create Integration"</li>
+                      <li><strong>4.</strong> Paste the URL above in the webhook URL field</li>
+                      <li><strong>5.</strong> Select these events to listen for:</li>
+                    </ol>
+                    <div className="ml-6 mt-2 space-y-1 text-sm text-gray-700 bg-gray-50 p-3 rounded">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <span>order.completed</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <span>order.updated</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <span>customer.created</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <span>customer.updated</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded">
+                    <p className="text-sm text-blue-900">
+                      <strong>💡 Tip:</strong> Once configured in Ecwid, new orders and customer updates will be automatically synced to your store in real-time.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Status Overview */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {/* Ecwid Stats */}
