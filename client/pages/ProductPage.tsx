@@ -621,7 +621,7 @@ export default function ProductPage() {
                           <img
                             src={value.image.preview || value.image.url}
                             alt={value.name}
-                            className="w-full h-14 object-cover"
+                            className="w-full h-14 object-contain"
                           />
                         ) : (
                           <div className="w-full h-14 bg-gray-100 flex items-center justify-center">
