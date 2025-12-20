@@ -244,6 +244,20 @@ export default function ProductPage() {
     return null;
   };
 
+  const calculatePriceForValue = (optionId: string, valueId: string) => {
+    if (!product) return product?.base_price || 0;
+
+    const option = product.options.find((o) => o.id === optionId);
+    if (option) {
+      const value = option.values.find((v) => v.id === valueId);
+      if (value && value.priceModifier !== 0) {
+        return product.base_price + value.priceModifier;
+      }
+    }
+
+    return product.base_price;
+  };
+
   const calculatePrice = () => {
     if (!product) return 0;
 
