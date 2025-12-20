@@ -36,7 +36,25 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
     try {
       const result = await supabase
         .from("orders")
-        .select("*, customers(*), order_items(*)")
+        .select(
+          `
+          id,
+          customer_id,
+          status,
+          total,
+          subtotal,
+          tax,
+          shipping,
+          created_at,
+          tracking_number,
+          tracking_carrier,
+          tracking_url,
+          shipped_date,
+          shipping_address,
+          customers:customer_id(id,first_name,last_name,email),
+          order_items(id,quantity,product_name,options,design_file_url)
+          `
+        )
         .order("created_at", { ascending: false });
 
       allOrders = result.data || [];
