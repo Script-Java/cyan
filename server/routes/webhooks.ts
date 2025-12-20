@@ -298,3 +298,116 @@ export const handleWebhookHealth: RequestHandler = (req, res) => {
     timestamp: new Date().toISOString(),
   });
 };
+
+/**
+ * Diagnostic endpoint to verify Ecwid API connectivity and webhook configuration
+ */
+export const handleEcwidDiagnostic: RequestHandler = async (req, res) => {
+  try {
+    const ECWID_API_TOKEN = process.env.ECWID_API_TOKEN || "";
+    const ECWID_STORE_ID = process.env.ECWID_STORE_ID || "";
+
+    const diagnostics: any = {
+      timestamp: new Date().toISOString(),
+      configStatus: {
+        hasApiToken: !!ECWID_API_TOKEN,
+        hasStoreId: !!ECWID_STORE_ID,
+        storeId: ECWID_STORE_ID,
+      },
+      apiConnectivity: {
+        status: "unknown",
+        message: "",
+      },
+      webhookUrl: `${req.header("x-forwarded-proto") || req.protocol || "https"}://${req.get("host") || "your-domain.com"}/api/webhooks/ecwid`,
+      webhookSetupInstructions: {
+        step1: "Log in to your Ecwid admin panel",
+        step2: "Go to Settings → Integration → Webhooks (or Settings → API → Webhooks)",
+        step3: "Add a new webhook with the URL above",
+        step4: "Select events: order.completed, order.updated, customer.created, customer.updated",
+        step5: "Save and test the webhook",
+      },
+      supabaseConnection: {
+        status: "unknown",
+        message: "",
+      },
+      recentOrders: {
+        count: 0,
+        lastOrder: null,
+      },
+    };
+
+    // Check API connectivity
+    if (!ECWID_API_TOKEN || !ECWID_STORE_ID) {
+      diagnostics.apiConnectivity.status = "error";
+      diagnostics.apiConnectivity.message =
+        "Missing ECWID_API_TOKEN or ECWID_STORE_ID environment variables";
+    } else {
+      try {
+        // Try to fetch a single order to verify connectivity
+        const response = await fetch(
+          `https://api.ecwid.com/api/v3/${ECWID_STORE_ID}/orders?limit=1&token=${ECWID_API_TOKEN}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          diagnostics.apiConnectivity.status = "connected";
+          diagnostics.apiConnectivity.message =
+            "Successfully connected to Ecwid API";
+          diagnostics.recentOrders.count = data.total || 0;
+
+          if (data.items && data.items.length > 0) {
+            diagnostics.recentOrders.lastOrder = {
+              id: data.items[0].id,
+              number: data.items[0].number,
+              createdDate: data.items[0].createdDate,
+              status: data.items[0].status,
+            };
+          }
+        } else {
+          diagnostics.apiConnectivity.status = "error";
+          diagnostics.apiConnectivity.message = `Ecwid API returned ${response.status}: ${response.statusText}`;
+        }
+      } catch (error) {
+        diagnostics.apiConnectivity.status = "error";
+        diagnostics.apiConnectivity.message = `Network error: ${error instanceof Error ? error.message : "Unknown error"}`;
+      }
+    }
+
+    // Check Supabase connection and recent webhooks
+    try {
+      const { data: recentWebhooks, error } = await supabase
+        .from("orders")
+        .select("id, ecwid_order_id, created_at, status")
+        .eq("ecwid_order_id", true) // Orders that came from Ecwid
+        .order("created_at", { ascending: false })
+        .limit(5);
+
+      if (!error) {
+        diagnostics.supabaseConnection.status = "connected";
+        diagnostics.supabaseConnection.message =
+          "Successfully connected to Supabase";
+      } else {
+        diagnostics.supabaseConnection.status = "error";
+        diagnostics.supabaseConnection.message = `Supabase error: ${error.message}`;
+      }
+    } catch (error) {
+      diagnostics.supabaseConnection.status = "error";
+      diagnostics.supabaseConnection.message = `Connection error: ${error instanceof Error ? error.message : "Unknown error"}`;
+    }
+
+    res.json(diagnostics);
+  } catch (error) {
+    console.error("Diagnostic error:", error);
+    res.status(500).json({
+      error: "Failed to run diagnostics",
+      message: error instanceof Error ? error.message : "Unknown error",
+      timestamp: new Date().toISOString(),
+    });
+  }
+};
