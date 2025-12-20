@@ -110,6 +110,45 @@ export default function AdminEcwidMigration() {
     }
   };
 
+  const fetchDiagnostic = async () => {
+    try {
+      setIsLoadingDiagnostic(true);
+      const token = localStorage.getItem("authToken");
+
+      if (!token) {
+        return;
+      }
+
+      const response = await fetch("/api/webhooks/diagnostic", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setDiagnostic(data);
+      }
+    } catch (error) {
+      console.error("Error fetching diagnostic:", error);
+    } finally {
+      setIsLoadingDiagnostic(false);
+    }
+  };
+
+  const copyWebhookUrl = () => {
+    if (diagnostic?.webhookUrl) {
+      navigator.clipboard.writeText(diagnostic.webhookUrl);
+      setWebhookUrlCopied(true);
+      setTimeout(() => setWebhookUrlCopied(false), 2000);
+      toast({
+        title: "Copied",
+        description: "Webhook URL copied to clipboard",
+      });
+    }
+  };
+
   const handleStartMigration = async () => {
     if (
       !window.confirm(
