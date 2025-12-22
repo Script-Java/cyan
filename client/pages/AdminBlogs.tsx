@@ -107,24 +107,23 @@ export default function AdminBlogs() {
 
   return (
     <AdminLayout>
-      <main className="min-h-screen bg-black py-6">
-        <div className="max-w-6xl mx-auto px-4">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-3xl font-bold text-white">Blog Posts</h1>
-              <p className="text-white/60 mt-1">
-                Manage your blog posts and content
-              </p>
-            </div>
-            <Button
-              onClick={() => navigate("/admin/create-blog")}
-              className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              New Post
-            </Button>
+      <div className="max-w-6xl mx-auto px-4 py-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Blog Posts</h1>
+            <p className="text-gray-600 mt-1">
+              Manage your blog posts and content
+            </p>
           </div>
+          <Button
+            onClick={() => navigate("/admin/create-blog")}
+            className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            New Post
+          </Button>
+        </div>
 
         {/* Messages */}
         {error && (
@@ -148,142 +147,141 @@ export default function AdminBlogs() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 pl-10 focus:border-blue-500"
           />
+        </div>
+
+        {/* Blog List */}
+        {isLoading ? (
+          <div className="flex justify-center items-center h-96">
+            <div className="text-gray-600">Loading blogs...</div>
           </div>
-
-          {/* Blog List */}
-          {isLoading ? (
-            <div className="flex justify-center items-center h-96">
-              <div className="text-white/60">Loading blogs...</div>
-            </div>
-          ) : filteredBlogs.length === 0 ? (
-            <div className="bg-white/5 border border-white/10 rounded-lg p-12 text-center">
-              <h3 className="text-xl font-semibold text-white mb-2">
-                No blog posts yet
-              </h3>
-              <p className="text-white/60 mb-6">
-                Start creating your first blog post
-              </p>
-              <Button
-                onClick={() => navigate("/admin/create-blog")}
-                className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 mx-auto"
+        ) : filteredBlogs.length === 0 ? (
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-12 text-center">
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              No blog posts yet
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Start creating your first blog post
+            </p>
+            <Button
+              onClick={() => navigate("/admin/create-blog")}
+              className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 mx-auto"
+            >
+              <Plus className="w-4 h-4" />
+              Create First Post
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {filteredBlogs.map((blog) => (
+              <div
+                key={blog.id}
+                className="bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 transition-all group"
               >
-                <Plus className="w-4 h-4" />
-                Create First Post
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {filteredBlogs.map((blog) => (
-                <div
-                  key={blog.id}
-                  className="bg-white/5 border border-white/10 rounded-lg p-6 hover:border-white/20 transition-all group"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors truncate">
-                        {blog.title}
-                      </h3>
-                      <p className="text-white/60 text-sm mt-1 line-clamp-2">
-                        {blog.excerpt}
-                      </p>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors truncate">
+                      {blog.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm mt-1 line-clamp-2">
+                      {blog.excerpt}
+                    </p>
 
-                      {/* Meta Info */}
-                      <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-white/50">
-                        <div className="flex items-center gap-1">
-                          <User className="w-3 h-3" />
-                          <span>{blog.author}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          <span>
-                            {new Date(blog.created_at).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Eye className="w-3 h-3" />
-                          <span>{blog.views} views</span>
-                        </div>
-                        <span
-                          className={`px-2 py-0.5 rounded-full text-xs ${
-                            blog.visibility === "visible"
-                              ? "bg-green-500/20 text-green-400"
-                              : "bg-gray-500/20 text-gray-400"
-                          }`}
-                        >
-                          {blog.visibility === "visible"
-                            ? "Published"
-                            : "Draft"}
-                        </span>
-                        <span
-                          className={`px-2 py-0.5 rounded-full text-xs ${
-                            blog.show_in_listing !== false
-                              ? "bg-blue-500/20 text-blue-400"
-                              : "bg-yellow-500/20 text-yellow-400"
-                          }`}
-                        >
-                          {blog.show_in_listing !== false
-                            ? "In Listing"
-                            : "Hidden from Listing"}
+                    {/* Meta Info */}
+                    <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <User className="w-3 h-3" />
+                        <span>{blog.author}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        <span>
+                          {new Date(blog.created_at).toLocaleDateString()}
                         </span>
                       </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <button
-                        onClick={() => navigate(`/blog/${blog.id}`)}
-                        className="p-2 hover:bg-white/10 rounded-lg text-white/60 hover:text-white transition-colors"
-                        title="View blog"
+                      <div className="flex items-center gap-1">
+                        <Eye className="w-3 h-3" />
+                        <span>{blog.views} views</span>
+                      </div>
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-xs ${
+                          blog.visibility === "visible"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-100 text-gray-700"
+                        }`}
                       >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => navigate(`/admin/edit-blog/${blog.id}`)}
-                        className="p-2 hover:bg-white/10 rounded-lg text-white/60 hover:text-blue-400 transition-colors"
-                        title="Edit blog"
+                        {blog.visibility === "visible"
+                          ? "Published"
+                          : "Draft"}
+                      </span>
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-xs ${
+                          blog.show_in_listing !== false
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
                       >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteBlog(blog.id)}
-                        disabled={isDeleting === blog.id}
-                        className="p-2 hover:bg-white/10 rounded-lg text-white/60 hover:text-red-400 transition-colors disabled:opacity-50"
-                        title="Delete blog"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                        {blog.show_in_listing !== false
+                          ? "In Listing"
+                          : "Hidden from Listing"}
+                      </span>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
 
-          {/* Footer Stats */}
-          {!isLoading && blogs.length > 0 && (
-            <div className="mt-8 pt-6 border-t border-white/10 grid grid-cols-3 gap-4">
-              <div className="bg-white/5 border border-white/10 rounded-lg p-4">
-                <p className="text-white/60 text-sm">Total Posts</p>
-                <p className="text-2xl font-bold text-white mt-1">
-                  {blogs.length}
-                </p>
+                  {/* Actions */}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <button
+                      onClick={() => navigate(`/blog/${blog.id}`)}
+                      className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 hover:text-gray-900 transition-colors"
+                      title="View blog"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => navigate(`/admin/edit-blog/${blog.id}`)}
+                      className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 hover:text-blue-600 transition-colors"
+                      title="Edit blog"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteBlog(blog.id)}
+                      disabled={isDeleting === blog.id}
+                      className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 hover:text-red-600 transition-colors disabled:opacity-50"
+                      title="Delete blog"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="bg-white/5 border border-white/10 rounded-lg p-4">
-                <p className="text-white/60 text-sm">Published</p>
-                <p className="text-2xl font-bold text-green-400 mt-1">
-                  {blogs.filter((b) => b.visibility === "visible").length}
-                </p>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-lg p-4">
-                <p className="text-white/60 text-sm">Total Views</p>
-                <p className="text-2xl font-bold text-white mt-1">
-                  {blogs.reduce((sum, b) => sum + b.views, 0)}
-                </p>
-              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Footer Stats */}
+        {!isLoading && blogs.length > 0 && (
+          <div className="mt-8 pt-6 border-t border-gray-200 grid grid-cols-3 gap-4">
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <p className="text-gray-600 text-sm">Total Posts</p>
+              <p className="text-2xl font-bold text-gray-900 mt-1">
+                {blogs.length}
+              </p>
             </div>
-          )}
-        </div>
-      </main>
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <p className="text-gray-600 text-sm">Published</p>
+              <p className="text-2xl font-bold text-green-600 mt-1">
+                {blogs.filter((b) => b.visibility === "visible").length}
+              </p>
+            </div>
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <p className="text-gray-600 text-sm">Total Views</p>
+              <p className="text-2xl font-bold text-gray-900 mt-1">
+                {blogs.reduce((sum, b) => sum + b.views, 0)}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
     </AdminLayout>
   );
 }
