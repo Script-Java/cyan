@@ -736,7 +736,7 @@ export default function CheckoutNew() {
                                           Amount Saved: $
                                           {amountSaved.toFixed(2)}
                                         </p>
-                                        <p className="text-gray-900 font-bold border-t border-white/20 pt-1">
+                                        <p className="text-gray-900 font-bold border-t border-gray-200 pt-1">
                                           Total: ${total.toFixed(2)}
                                         </p>
                                       </>
