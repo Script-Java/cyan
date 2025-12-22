@@ -233,121 +233,109 @@ export default function Customers() {
     <AdminLayout>
       <div className="w-full">
         {/* Header Section */}
-        <div className="border-b border-white/10 bg-black">
+        <div className="border-b border-gray-200 bg-white">
           <div className="px-4 sm:px-10 py-8">
-            <div className="max-w-7xl mx-auto">
-              <h1 className="text-3xl sm:text-4xl font-bold mb-2">Customers</h1>
-              <p className="text-white/60">
+            <div className="max-w-6xl mx-auto">
+              <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">Customers</h1>
+              <p className="text-gray-600">
                 Manage and analyze all customer information
               </p>
             </div>
           </div>
         </div>
 
-        {/* Navigation Grid - Desktop/Tablet Only */}
-        <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
-          <div className="px-4 sm:px-10 py-8">
-            <div className="max-w-7xl mx-auto">
-              <h2 className="text-sm font-semibold text-white/80 mb-4">
-                Quick Navigation
-              </h2>
-              <AdminNavigationGrid />
-            </div>
-          </div>
-        </div>
-
         {/* Main Content */}
-        <main className="min-h-screen bg-black text-white px-4 sm:px-10 py-12 pb-20 lg:pb-0">
-          <div className="max-w-7xl mx-auto">
+        <main className="min-h-screen text-gray-900 px-4 sm:px-10 py-12">
+          <div className="max-w-6xl mx-auto">
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-colors">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-white/60 text-xs font-medium mb-1">
+                    <p className="text-gray-600 text-xs font-medium mb-1">
                       Total Customers
                     </p>
-                    <p className="text-2xl sm:text-3xl font-bold text-white">
+                    <p className="text-2xl sm:text-3xl font-bold text-gray-900">
                       {stats.totalCustomers}
                     </p>
                   </div>
-                  <div className="p-2 bg-[#FFD713]/20 rounded-lg">
-                    <Users className="w-5 h-5 text-[#FFD713]" />
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <Users className="w-5 h-5 text-blue-600" />
                   </div>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-colors">
+              <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-white/60 text-xs font-medium mb-1">
+                    <p className="text-gray-600 text-xs font-medium mb-1">
                       Active Customers
                     </p>
-                    <p className="text-2xl sm:text-3xl font-bold text-white">
+                    <p className="text-2xl sm:text-3xl font-bold text-gray-900">
                       {stats.customersWithOrders}
                     </p>
                   </div>
-                  <div className="p-2 bg-purple-500/20 rounded-lg">
-                    <ShoppingBag className="w-5 h-5 text-purple-400" />
+                  <div className="p-2 bg-purple-100 rounded-lg">
+                    <ShoppingBag className="w-5 h-5 text-purple-600" />
                   </div>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-colors">
+              <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-white/60 text-xs font-medium mb-1">
+                    <p className="text-gray-600 text-xs font-medium mb-1">
                       Total Revenue
                     </p>
-                    <p className="text-2xl sm:text-3xl font-bold text-white">
+                    <p className="text-2xl sm:text-3xl font-bold text-gray-900">
                       ${stats.totalRevenue.toFixed(0)}
                     </p>
                   </div>
-                  <div className="p-2 bg-[#FFD713]/20 rounded-lg">
-                    <DollarSign className="w-5 h-5 text-[#FFD713]" />
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <DollarSign className="w-5 h-5 text-green-600" />
                   </div>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-colors">
+              <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-white/60 text-xs font-medium mb-1">
+                    <p className="text-gray-600 text-xs font-medium mb-1">
                       Avg Order Value
                     </p>
-                    <p className="text-2xl sm:text-3xl font-bold text-white">
+                    <p className="text-2xl sm:text-3xl font-bold text-gray-900">
                       ${stats.avgOrderValue.toFixed(0)}
                     </p>
                   </div>
-                  <div className="p-2 bg-purple-500/20 rounded-lg">
-                    <TrendingUp className="w-5 h-5 text-purple-400" />
+                  <div className="p-2 bg-orange-100 rounded-lg">
+                    <TrendingUp className="w-5 h-5 text-orange-600" />
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Search and Filter Controls */}
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 mb-8">
+            <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 mb-8">
               <div className="flex flex-col sm:flex-row gap-4 mb-4">
                 <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-3.5 w-5 h-5 text-white/40" />
+                  <Search className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
                     placeholder="Search by name, email, or company..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all text-white placeholder-white/40"
+                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-500"
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Filter className="w-5 h-5 text-white/60" />
+                  <Filter className="w-5 h-5 text-gray-600" />
                   <select
                     value={filterOption}
                     onChange={(e) =>
                       setFilterOption(e.target.value as typeof filterOption)
                     }
-                    className="px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all text-white"
+                    className="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
                   >
                     <option value="all">All Customers</option>
                     <option value="with-orders">With Orders</option>
@@ -356,13 +344,13 @@ export default function Customers() {
                 </div>
               </div>
 
-              <p className="text-sm text-white/60">
+              <p className="text-sm text-gray-600">
                 Showing{" "}
-                <span className="font-semibold text-white">
+                <span className="font-semibold text-gray-900">
                   {sortedCustomers.length}
                 </span>{" "}
                 of{" "}
-                <span className="font-semibold text-white">
+                <span className="font-semibold text-gray-900">
                   {customers.length}
                 </span>{" "}
                 customers
