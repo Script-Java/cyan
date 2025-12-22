@@ -205,66 +205,112 @@ export default function LegalPages() {
               )}
             </div>
           ) : (
-            <div className="space-y-5">
+            <div className="space-y-4">
               <div className="text-sm text-gray-600 font-medium mb-6">
                 Showing {filteredPages.length} of {pages.length} pages
               </div>
-              {filteredPages.map((page) => (
-                <button
-                  key={page.id}
-                  onClick={() => navigate(`/${page.page_type}`)}
-                  className="w-full text-left bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-300 hover:shadow-lg transition-all duration-300 group"
-                >
-                  <div className="flex gap-6 p-6">
-                    {/* Icon Section */}
-                    <div className="flex-shrink-0 flex items-center justify-center w-16 h-16 rounded-lg bg-gray-100 group-hover:bg-blue-100 transition-all duration-300">
-                      <FileText className="w-8 h-8 text-gray-600 group-hover:text-blue-600" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex-1 min-w-0 flex flex-col justify-between">
-                      {/* Top Section */}
-                      <div>
-                        {/* Date and Badge Row */}
-                        <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-gray-400" />
-                            <span className="text-sm text-gray-600 font-medium">
-                              {formatDate(page.updated_at)}
-                            </span>
-                            <span className="text-gray-300 text-xs">•</span>
-                            <span className="text-xs text-gray-500">
-                              {getTimeAgo(page.updated_at)}
-                            </span>
-                          </div>
-                          <Badge
-                            variant="secondary"
-                            className={`text-xs font-medium border-transparent ${pageTypeColors[page.page_type].bg} ${pageTypeColors[page.page_type].text}`}
-                          >
-                            {pageTypeLabels[page.page_type]}
-                          </Badge>
+              {filteredPages.map((page) => {
+                const isExpanded = expandedPageId === page.id;
+                return (
+                  <div
+                    key={page.id}
+                    className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-300 hover:shadow-lg transition-all duration-300"
+                  >
+                    {/* Card Header - Always Visible */}
+                    <button
+                      onClick={() =>
+                        setExpandedPageId(isExpanded ? null : page.id)
+                      }
+                      className="w-full text-left p-6 hover:bg-gray-50 transition-colors group"
+                    >
+                      <div className="flex gap-6 items-start">
+                        {/* Icon Section */}
+                        <div className="flex-shrink-0 flex items-center justify-center w-16 h-16 rounded-lg bg-gray-100 group-hover:bg-blue-100 transition-all duration-300">
+                          <FileText className="w-8 h-8 text-gray-600 group-hover:text-blue-600" />
                         </div>
 
-                        {/* Title */}
-                        <h2 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-2 line-clamp-2">
-                          {page.title}
-                        </h2>
+                        {/* Content */}
+                        <div className="flex-1 min-w-0">
+                          {/* Date and Badge Row */}
+                          <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
+                            <div className="flex items-center gap-2">
+                              <Calendar className="w-4 h-4 text-gray-400" />
+                              <span className="text-sm text-gray-600 font-medium">
+                                {formatDate(page.updated_at)}
+                              </span>
+                              <span className="text-gray-300 text-xs">•</span>
+                              <span className="text-xs text-gray-500">
+                                {getTimeAgo(page.updated_at)}
+                              </span>
+                            </div>
+                            <Badge
+                              variant="secondary"
+                              className={`text-xs font-medium border-transparent ${pageTypeColors[page.page_type].bg} ${pageTypeColors[page.page_type].text}`}
+                            >
+                              {pageTypeLabels[page.page_type]}
+                            </Badge>
+                          </div>
 
-                        {/* Excerpt */}
-                        <p className="text-gray-600 text-base mb-4 line-clamp-2 leading-relaxed">
-                          {page.content.substring(0, 200)}
-                          {page.content.length > 200 ? "..." : ""}
-                        </p>
+                          {/* Title */}
+                          <h2 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-2 line-clamp-2">
+                            {page.title}
+                          </h2>
+
+                          {/* Excerpt - Hidden when expanded */}
+                          {!isExpanded && (
+                            <p className="text-gray-600 text-base line-clamp-2 leading-relaxed">
+                              {page.content.substring(0, 200)}
+                              {page.content.length > 200 ? "..." : ""}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Expand/Collapse Arrow */}
+                        <div
+                          className={`flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 ${
+                            isExpanded ? "bg-blue-600 text-white" : ""
+                          }`}
+                        >
+                          <ChevronDown
+                            className={`w-5 h-5 transition-transform duration-300 ${
+                              isExpanded ? "rotate-180" : ""
+                            }`}
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </button>
 
-                    {/* Arrow */}
-                    <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                      <ArrowRight className="w-5 h-5" />
-                    </div>
+                    {/* Expanded Content */}
+                    {isExpanded && (
+                      <div className="border-t border-gray-200 bg-gray-50 p-6">
+                        <div className="prose prose-sm max-w-none">
+                          <div className="text-gray-700 whitespace-pre-wrap leading-relaxed space-y-4">
+                            {page.content.split("\n").map((paragraph, index) => (
+                              <p key={index} className="text-base">
+                                {paragraph}
+                              </p>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Footer Info */}
+                        <div className="mt-6 pt-4 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">
+                          <span>
+                            Updated{" "}
+                            {formatDate(page.updated_at)}
+                          </span>
+                          <button
+                            onClick={() => navigate(`/${page.page_type}`)}
+                            className="text-blue-600 hover:text-blue-700 font-medium"
+                          >
+                            View Full Page →
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </button>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
