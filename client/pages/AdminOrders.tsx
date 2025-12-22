@@ -216,19 +216,19 @@ export default function AdminOrders() {
   return (
     <AdminLayout>
       <div className="max-w-6xl mx-auto px-4 py-6">
-          {/* Header */}
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-white">Orders</h1>
-            <p className="text-white/60 mt-1">
-              View and manage all orders across all statuses
-            </p>
-          </div>
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">Orders</h1>
+          <p className="text-gray-600 mt-1">
+            View and manage all orders across all statuses
+          </p>
+        </div>
 
-          {/* Quick Navigation */}
-          <div className="mb-6">
-            <h2 className="text-sm font-semibold text-white/80 mb-3">
-              Quick Navigation
-            </h2>
+        {/* Quick Navigation */}
+        <div className="mb-6">
+          <h2 className="text-sm font-semibold text-gray-700 mb-3">
+            Quick Navigation
+          </h2>
             <AdminNavigationGrid />
           </div>
 
