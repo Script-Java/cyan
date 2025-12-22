@@ -346,12 +346,12 @@ export default function AdminProofs() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "approved":
-        return "text-green-300 bg-green-500/20 border border-green-500/30";
+        return "text-green-700 bg-green-100 border border-green-300";
       case "revisions_requested":
-        return "text-orange-300 bg-orange-500/20 border border-orange-500/30";
+        return "text-orange-700 bg-orange-100 border border-orange-300";
       case "pending":
       default:
-        return "text-blue-300 bg-blue-500/20 border border-blue-500/30";
+        return "text-blue-700 bg-blue-100 border border-blue-300";
     }
   };
 
