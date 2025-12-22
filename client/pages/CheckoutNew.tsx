@@ -656,7 +656,7 @@ export default function CheckoutNew() {
                 {cartItems.map((item, index) => (
                   <div
                     key={index}
-                    className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6"
+                    className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6"
                   >
                     <div className="flex gap-6">
                       <div className="flex flex-col gap-4 flex-shrink-0">
