@@ -93,80 +93,80 @@ export default function AdminDashboard() {
       description: "View all orders",
       icon: <Package className="w-5 h-5" />,
       path: "/admin/orders",
-      color: "bg-blue-500/20 hover:bg-blue-500/30",
-      textColor: "text-blue-400",
+      color: "bg-blue-100 hover:bg-blue-200",
+      textColor: "text-blue-600",
     },
     {
       title: "Proofs",
       description: "Manage proofs",
       icon: <Eye className="w-5 h-5" />,
       path: "/admin/proofs",
-      color: "bg-orange-500/20 hover:bg-orange-500/30",
-      textColor: "text-orange-400",
+      color: "bg-orange-100 hover:bg-orange-200",
+      textColor: "text-orange-600",
     },
     {
       title: "Products",
       description: "Manage catalog",
       icon: <Package className="w-5 h-5" />,
       path: "/admin/products",
-      color: "bg-pink-500/20 hover:bg-pink-500/30",
-      textColor: "text-pink-400",
+      color: "bg-pink-100 hover:bg-pink-200",
+      textColor: "text-pink-600",
     },
     {
       title: "Customers",
       description: "View customers",
       icon: <Users className="w-5 h-5" />,
       path: "/admin/customers",
-      color: "bg-purple-500/20 hover:bg-purple-500/30",
-      textColor: "text-purple-400",
+      color: "bg-purple-100 hover:bg-purple-200",
+      textColor: "text-purple-600",
     },
     {
       title: "Finance",
       description: "View spending",
       icon: <DollarSign className="w-5 h-5" />,
       path: "/admin/finance",
-      color: "bg-green-500/20 hover:bg-green-500/30",
-      textColor: "text-green-400",
+      color: "bg-green-100 hover:bg-green-200",
+      textColor: "text-green-600",
     },
     {
       title: "Analytics",
       description: "View analytics",
       icon: <BarChart3 className="w-5 h-5" />,
       path: "/admin/analytics",
-      color: "bg-cyan-500/20 hover:bg-cyan-500/30",
-      textColor: "text-cyan-400",
+      color: "bg-cyan-100 hover:bg-cyan-200",
+      textColor: "text-cyan-600",
     },
     {
       title: "Blogs",
       description: "Manage blogs",
       icon: <BookOpen className="w-5 h-5" />,
       path: "/admin/blogs",
-      color: "bg-indigo-500/20 hover:bg-indigo-500/30",
-      textColor: "text-indigo-400",
+      color: "bg-indigo-100 hover:bg-indigo-200",
+      textColor: "text-indigo-600",
     },
     {
       title: "Legal Pages",
       description: "Manage legal content",
       icon: <FileText className="w-5 h-5" />,
       path: "/admin/legal-pages",
-      color: "bg-amber-500/20 hover:bg-amber-500/30",
-      textColor: "text-amber-400",
+      color: "bg-amber-100 hover:bg-amber-200",
+      textColor: "text-amber-600",
     },
     {
       title: "Shipping",
       description: "Manage shipping options",
       icon: <Truck className="w-5 h-5" />,
       path: "/admin/shipping",
-      color: "bg-teal-500/20 hover:bg-teal-500/30",
-      textColor: "text-teal-400",
+      color: "bg-teal-100 hover:bg-teal-200",
+      textColor: "text-teal-600",
     },
     {
       title: "Support",
       description: "Answer support tickets",
       icon: <MessageSquare className="w-5 h-5" />,
       path: "/admin/support",
-      color: "bg-red-500/20 hover:bg-red-500/30",
-      textColor: "text-red-400",
+      color: "bg-red-100 hover:bg-red-200",
+      textColor: "text-red-600",
     },
   ];
 
@@ -199,7 +199,7 @@ export default function AdminDashboard() {
             <div className="space-y-6">
               {/* Quick Access Links */}
               <div>
-                <h2 className="text-lg font-semibold text-white mb-4">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
                   Quick Access
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
@@ -207,11 +207,11 @@ export default function AdminDashboard() {
                     <button
                       key={link.path}
                       onClick={() => navigate(link.path)}
-                      className={`flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-105 active:scale-95 ${link.color}`}
+                      className={`flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-gray-200 transition-all duration-200 hover:scale-105 active:scale-95 ${link.color}`}
                     >
                       <div className={`${link.textColor}`}>{link.icon}</div>
                       <div className="text-center">
-                        <p className="text-xs font-semibold text-white line-clamp-1">
+                        <p className="text-xs font-semibold text-gray-900 line-clamp-1">
                           {link.title}
                         </p>
                       </div>
@@ -222,13 +222,13 @@ export default function AdminDashboard() {
 
               {/* Pending Orders Section */}
               {pendingOrdersCount > 0 && (
-                <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden backdrop-blur-sm">
+                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                   {/* Header */}
-                  <div className="px-6 py-4 border-b border-white/10">
-                    <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                      <Package className="w-5 h-5 text-[#FFD713]" />
+                  <div className="px-6 py-4 border-b border-gray-200">
+                    <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                      <Package className="w-5 h-5 text-blue-600" />
                       Pending Orders
-                      <span className="ml-auto text-sm font-normal text-white/60">
+                      <span className="ml-auto text-sm font-normal text-gray-600">
                         {pendingOrdersCount}{" "}
                         {pendingOrdersCount === 1 ? "order" : "orders"}
                       </span>
@@ -236,7 +236,7 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Orders List */}
-                  <div className="divide-y divide-white/10">
+                  <div className="divide-y divide-gray-200">
                     {pendingOrders.slice(0, 5).map((order) => (
                       <div key={order.id}>
                         {/* Order Row */}
@@ -246,27 +246,27 @@ export default function AdminDashboard() {
                               expandedOrderId === order.id ? null : order.id,
                             )
                           }
-                          className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors text-left"
+                          className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors text-left"
                         >
                           <div className="flex-1">
                             <div className="flex items-center gap-3">
-                              <span className="font-semibold text-white">
+                              <span className="font-semibold text-gray-900">
                                 Order #{order.id}
                               </span>
-                              <span className="text-sm text-white/60">
+                              <span className="text-sm text-gray-600">
                                 {order.customerName}
                               </span>
                             </div>
-                            <div className="text-xs text-white/50 mt-1">
+                            <div className="text-xs text-gray-500 mt-1">
                               {new Date(order.dateCreated).toLocaleDateString()}
                             </div>
                           </div>
                           <div className="flex items-center gap-3">
-                            <span className="font-semibold text-white">
+                            <span className="font-semibold text-gray-900">
                               ${order.total.toFixed(2)}
                             </span>
                             <ChevronDown
-                              className={`w-5 h-5 text-white/60 transition-transform ${
+                              className={`w-5 h-5 text-gray-600 transition-transform ${
                                 expandedOrderId === order.id ? "rotate-180" : ""
                               }`}
                             />
@@ -275,45 +275,45 @@ export default function AdminDashboard() {
 
                         {/* Order Details */}
                         {expandedOrderId === order.id && (
-                          <div className="px-6 py-4 bg-white/5 border-t border-white/10">
+                          <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
                             <div className="space-y-3">
                               <div>
-                                <p className="text-sm text-white/60">
+                                <p className="text-sm text-gray-600">
                                   Customer
                                 </p>
-                                <p className="text-white">
+                                <p className="text-gray-900">
                                   {order.customerName}
                                 </p>
-                                <p className="text-sm text-white/60">
+                                <p className="text-sm text-gray-600">
                                   {order.customerEmail}
                                 </p>
                               </div>
                               <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                  <p className="text-sm text-white/60">
+                                  <p className="text-sm text-gray-600">
                                     Subtotal
                                   </p>
-                                  <p className="text-white">
+                                  <p className="text-gray-900">
                                     ${(order.subtotal || 0).toFixed(2)}
                                   </p>
                                 </div>
                                 <div>
-                                  <p className="text-sm text-white/60">Tax</p>
-                                  <p className="text-white">
+                                  <p className="text-sm text-gray-600">Tax</p>
+                                  <p className="text-gray-900">
                                     ${(order.tax || 0).toFixed(2)}
                                   </p>
                                 </div>
                                 <div>
-                                  <p className="text-sm text-white/60">
+                                  <p className="text-sm text-gray-600">
                                     Shipping
                                   </p>
-                                  <p className="text-white">
+                                  <p className="text-gray-900">
                                     ${(order.shipping || 0).toFixed(2)}
                                   </p>
                                 </div>
                                 <div>
-                                  <p className="text-sm text-white/60">Total</p>
-                                  <p className="text-white font-semibold">
+                                  <p className="text-sm text-gray-600">Total</p>
+                                  <p className="text-gray-900 font-semibold">
                                     ${order.total.toFixed(2)}
                                   </p>
                                 </div>
@@ -334,10 +334,10 @@ export default function AdminDashboard() {
                   </div>
 
                   {pendingOrdersCount > 5 && (
-                    <div className="px-6 py-3 text-center border-t border-white/10">
+                    <div className="px-6 py-3 text-center border-t border-gray-200">
                       <button
                         onClick={() => navigate("/admin/orders")}
-                        className="text-blue-400 hover:text-blue-300 text-sm font-medium inline-flex items-center gap-1"
+                        className="text-blue-600 hover:text-blue-700 text-sm font-medium inline-flex items-center gap-1"
                       >
                         View All Orders
                         <ArrowRight className="w-4 h-4" />
@@ -350,44 +350,44 @@ export default function AdminDashboard() {
               {/* Stats Section */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Live Visitors */}
-                <div className="bg-white/5 border border-white/10 rounded-lg p-6 backdrop-blur-sm">
+                <div className="bg-white border border-gray-200 rounded-lg p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-white/60 text-sm">Live Visitors</p>
-                      <p className="text-3xl font-bold text-white mt-2">
+                      <p className="text-gray-600 text-sm">Live Visitors</p>
+                      <p className="text-3xl font-bold text-gray-900 mt-2">
                         {liveVisitors}
                       </p>
                     </div>
-                    <Eye className="w-8 h-8 text-green-400 opacity-50" />
+                    <Eye className="w-8 h-8 text-green-600 opacity-50" />
                   </div>
                 </div>
 
                 {/* Total Orders */}
-                <div className="bg-white/5 border border-white/10 rounded-lg p-6 backdrop-blur-sm">
+                <div className="bg-white border border-gray-200 rounded-lg p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-white/60 text-sm">Pending Orders</p>
-                      <p className="text-3xl font-bold text-white mt-2">
+                      <p className="text-gray-600 text-sm">Pending Orders</p>
+                      <p className="text-3xl font-bold text-gray-900 mt-2">
                         {pendingOrdersCount}
                       </p>
                     </div>
-                    <Package className="w-8 h-8 text-yellow-400 opacity-50" />
+                    <Package className="w-8 h-8 text-yellow-600 opacity-50" />
                   </div>
                 </div>
 
                 {/* Quick Stats */}
-                <div className="bg-white/5 border border-white/10 rounded-lg p-6 backdrop-blur-sm">
+                <div className="bg-white border border-gray-200 rounded-lg p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-white/60 text-sm">Quick Links</p>
+                      <p className="text-gray-600 text-sm">Quick Links</p>
                       <button
                         onClick={() => navigate("/admin/settings")}
-                        className="text-blue-400 hover:text-blue-300 text-sm font-medium mt-2 inline-flex items-center gap-1"
+                        className="text-blue-600 hover:text-blue-700 text-sm font-medium mt-2 inline-flex items-center gap-1"
                       >
                         Settings <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>
-                    <Settings className="w-8 h-8 text-blue-400 opacity-50" />
+                    <Settings className="w-8 h-8 text-blue-600 opacity-50" />
                   </div>
                 </div>
               </div>
