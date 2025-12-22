@@ -109,6 +109,8 @@ export default function CheckoutNew() {
   const [agreedToPrivacy, setAgreedToPrivacy] = useState(false);
   const [agreedToGDPR, setAgreedToGDPR] = useState(false);
   const [agreedToCCPA, setAgreedToCCPA] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [agreedToShippingPolicy, setAgreedToShippingPolicy] = useState(false);
 
   useEffect(() => {
     const loadCustomerInfo = async () => {
