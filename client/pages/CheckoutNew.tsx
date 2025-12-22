@@ -635,8 +635,8 @@ export default function CheckoutNew() {
     return (
       <>
         <Header />
-        <main className="pt-20 min-h-screen bg-black flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-[#FFD713]" />
+        <main className="pt-20 min-h-screen bg-[#fafafa] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         </main>
       </>
     );
@@ -645,7 +645,7 @@ export default function CheckoutNew() {
   return (
     <>
       <Header />
-      <main className="pt-24 min-h-screen bg-black text-white px-10 py-12">
+      <main className="pt-24 min-h-screen bg-[#fafafa] text-gray-900 px-10 py-12">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold mb-8">Your Cart</h1>
 
