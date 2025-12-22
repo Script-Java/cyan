@@ -655,30 +655,30 @@ export default function AdminProofs() {
                 {selectedOrder &&
                   selectedOrder.orderItems &&
                   selectedOrder.orderItems.length > 0 && (
-                    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4">
-                      <h4 className="font-medium text-white mb-4">
+                    <div className="backdrop-blur-xl bg-gray-50 border border-gray-300 rounded-xl p-4">
+                      <h4 className="font-medium text-gray-900 mb-4">
                         Order Details
                       </h4>
                       <div className="space-y-4">
                         {selectedOrder.orderItems.map((item, index) => (
                           <div
                             key={index}
-                            className="bg-white/5 rounded-lg border border-white/10 p-4"
+                            className="bg-white rounded-lg border border-gray-300 p-4"
                           >
                             <div className="grid grid-cols-2 gap-4 mb-4">
                               <div>
-                                <p className="text-xs text-white/60 uppercase tracking-wide">
+                                <p className="text-xs text-gray-600 uppercase tracking-wide">
                                   Product
                                 </p>
-                                <p className="text-sm font-medium text-white">
+                                <p className="text-sm font-medium text-gray-900">
                                   {item.product_name || "Custom Item"}
                                 </p>
                               </div>
                               <div>
-                                <p className="text-xs text-white/60 uppercase tracking-wide">
+                                <p className="text-xs text-gray-600 uppercase tracking-wide">
                                   Quantity
                                 </p>
-                                <p className="text-sm font-medium text-white">
+                                <p className="text-sm font-medium text-gray-900">
                                   {item.quantity || "N/A"}
                                 </p>
                               </div>
@@ -689,40 +689,40 @@ export default function AdminProofs() {
                                 <div className="grid grid-cols-2 gap-4 mb-4">
                                   {item.options.size && (
                                     <div>
-                                      <p className="text-xs text-white/60 uppercase tracking-wide">
+                                      <p className="text-xs text-gray-600 uppercase tracking-wide">
                                         Size
                                       </p>
-                                      <p className="text-sm font-medium text-white">
+                                      <p className="text-sm font-medium text-gray-900">
                                         {item.options.size}
                                       </p>
                                     </div>
                                   )}
                                   {item.options.color && (
                                     <div>
-                                      <p className="text-xs text-white/60 uppercase tracking-wide">
+                                      <p className="text-xs text-gray-600 uppercase tracking-wide">
                                         Color
                                       </p>
-                                      <p className="text-sm font-medium text-white">
+                                      <p className="text-sm font-medium text-gray-900">
                                         {item.options.color}
                                       </p>
                                     </div>
                                   )}
                                   {item.options.vinyl_finish && (
                                     <div>
-                                      <p className="text-xs text-white/60 uppercase tracking-wide">
+                                      <p className="text-xs text-gray-600 uppercase tracking-wide">
                                         Vinyl Finish
                                       </p>
-                                      <p className="text-sm font-medium text-white">
+                                      <p className="text-sm font-medium text-gray-900">
                                         {item.options.vinyl_finish}
                                       </p>
                                     </div>
                                   )}
                                   {item.options.sticker_type && (
                                     <div>
-                                      <p className="text-xs text-white/60 uppercase tracking-wide">
+                                      <p className="text-xs text-gray-600 uppercase tracking-wide">
                                         Sticker Type
                                       </p>
-                                      <p className="text-sm font-medium text-white">
+                                      <p className="text-sm font-medium text-gray-900">
                                         {item.options.sticker_type}
                                       </p>
                                     </div>
@@ -731,12 +731,12 @@ export default function AdminProofs() {
                               )}
 
                             {item.design_file_url && (
-                              <div className="pt-4 border-t border-white/10">
-                                <p className="text-xs text-white/60 uppercase tracking-wide mb-2">
+                              <div className="pt-4 border-t border-gray-300">
+                                <p className="text-xs text-gray-600 uppercase tracking-wide mb-2">
                                   Design Thumbnail
                                 </p>
                                 <div
-                                  className="rounded-lg border border-white/10 overflow-hidden bg-white/5 flex items-center justify-center"
+                                  className={"rounded-lg border border-gray-300 overflow-hidden bg-gray-100 flex items-center justify-center\""}
                                   style={{ maxHeight: "120px" }}
                                 >
                                   <img
