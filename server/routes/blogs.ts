@@ -15,15 +15,17 @@ interface BlogFormData {
   featured_image_url?: string;
   tags: string[];
   visibility: "visible" | "hidden";
+  show_in_listing?: boolean;
 }
 
-// Get all published blogs (public)
+// Get all published blogs (public) - only show blogs with show_in_listing = true
 export const handleGetPublishedBlogs: RequestHandler = async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("blogs")
       .select("*")
       .eq("visibility", "visible")
+      .eq("show_in_listing", true)
       .order("created_at", { ascending: false });
 
     if (error) throw error;
@@ -94,6 +96,7 @@ export const handleCreateBlog: RequestHandler = async (req, res) => {
           featured_image_url: formData.featured_image_url,
           tags: formData.tags || [],
           visibility: formData.visibility || "hidden",
+          show_in_listing: formData.show_in_listing !== false,
           views: 0,
           created_at: new Date().toISOString(),
         },
@@ -205,6 +208,9 @@ export const handleUpdateBlog: RequestHandler = async (req, res) => {
         }),
         ...(formData.tags && { tags: formData.tags }),
         ...(formData.visibility && { visibility: formData.visibility }),
+        ...(formData.show_in_listing !== undefined && {
+          show_in_listing: formData.show_in_listing,
+        }),
       })
       .eq("id", blogId)
       .select()
