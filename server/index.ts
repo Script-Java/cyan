@@ -155,6 +155,7 @@ import {
   handleUploadBlogImage,
 } from "./routes/blogs";
 import {
+  handleGetPublishedLegalPages,
   handleGetAllLegalPages,
   handleGetLegalPageByType,
   handleGetAdminLegalPageById,
