@@ -218,12 +218,12 @@ export default function Customers() {
   }) => (
     <button
       onClick={() => handleSort(column)}
-      className="flex items-center gap-2 hover:text-[#FFD713] transition-colors"
+      className="flex items-center gap-2 hover:text-blue-600 transition-colors"
     >
       {label}
       <ArrowUpDown
         className={`w-4 h-4 transition-all ${
-          sortColumn === column ? "text-[#FFD713]" : "text-white/40"
+          sortColumn === column ? "text-blue-600" : "text-gray-400"
         }`}
       />
     </button>
