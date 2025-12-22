@@ -1040,7 +1040,7 @@ export default function AdminProofs() {
           {reviewedProofs.length > 0 && (
             <div>
               <div className="mb-4">
-                <h2 className="text-lg font-semibold text-white">
+                <h2 className="text-lg font-semibold text-gray-900">
                   Reviewed Proofs ({reviewedProofs.length})
                 </h2>
               </div>
@@ -1048,7 +1048,7 @@ export default function AdminProofs() {
                 {reviewedProofs.map((proof) => (
                   <div
                     key={proof.id}
-                    className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 transition-colors"
+                    className="backdrop-blur-xl bg-white border border-gray-300 rounded-2xl overflow-hidden hover:bg-gray-50 transition-colors"
                   >
                     {/* Proof Header */}
                     <button
@@ -1057,15 +1057,15 @@ export default function AdminProofs() {
                           expandedProofId === proof.id ? null : proof.id,
                         )
                       }
-                      className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors"
+                      className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
                     >
                       <div className="flex items-center gap-4 flex-1 text-left">
-                        <div className="bg-white/10 border border-white/10 p-3 rounded-lg flex-shrink-0">
+                        <div className="bg-gray-100 border border-gray-300 p-3 rounded-lg flex-shrink-0">
                           {getStatusIcon(proof.status)}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-lg font-semibold text-white">
+                            <h3 className="text-lg font-semibold text-gray-900">
                               Order #{proof.order_id}
                             </h3>
                             <span
@@ -1074,7 +1074,7 @@ export default function AdminProofs() {
                               {getStatusLabel(proof.status)}
                             </span>
                           </div>
-                          <p className="text-sm text-white/60">
+                          <p className="text-sm text-gray-600">
                             Customer: {proof.customers?.first_name}{" "}
                             {proof.customers?.last_name}
                           </p>
