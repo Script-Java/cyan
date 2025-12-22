@@ -911,8 +911,8 @@ export default function AdminProofs() {
           {pendingProofs.length > 0 && (
             <div className="mb-6 sm:mb-8">
               <div className="mb-4">
-                <h2 className="text-base sm:text-lg font-semibold text-white flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   <span>Awaiting Customer Review ({pendingProofs.length})</span>
                 </h2>
               </div>
@@ -920,7 +920,7 @@ export default function AdminProofs() {
                 {pendingProofs.map((proof) => (
                   <div
                     key={proof.id}
-                    className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg sm:rounded-2xl overflow-hidden hover:bg-white/10 transition-colors"
+                    className="backdrop-blur-xl bg-white border border-gray-300 rounded-lg sm:rounded-2xl overflow-hidden hover:bg-gray-50 transition-colors"
                   >
                     {/* Proof Header */}
                     <button
@@ -929,15 +929,15 @@ export default function AdminProofs() {
                           expandedProofId === proof.id ? null : proof.id,
                         )
                       }
-                      className="w-full px-3 sm:px-6 py-3 sm:py-4 flex items-start sm:items-center justify-between hover:bg-white/5 transition-colors gap-3"
+                      className="w-full px-3 sm:px-6 py-3 sm:py-4 flex items-start sm:items-center justify-between hover:bg-gray-50 transition-colors gap-3"
                     >
                       <div className="flex items-start sm:items-center gap-2 sm:gap-4 flex-1 text-left min-w-0">
-                        <div className="bg-blue-500/20 border border-blue-500/30 p-2 sm:p-3 rounded-lg flex-shrink-0">
+                        <div className="bg-blue-100 border border-blue-300 p-2 sm:p-3 rounded-lg flex-shrink-0">
                           {getStatusIcon(proof.status)}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1 sm:mb-2 flex-wrap">
-                            <h3 className="text-base sm:text-lg font-semibold text-white">
+                            <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                               Order #{proof.order_id}
                             </h3>
                             <span
@@ -946,14 +946,14 @@ export default function AdminProofs() {
                               {getStatusLabel(proof.status)}
                             </span>
                           </div>
-                          <p className="text-xs sm:text-sm text-white/60 truncate">
+                          <p className="text-xs sm:text-sm text-gray-600 truncate">
                             Customer: {proof.customers?.first_name}{" "}
                             {proof.customers?.last_name}
                           </p>
-                          <p className="text-xs sm:text-sm text-white/60 mt-1 line-clamp-2">
+                          <p className="text-xs sm:text-sm text-gray-600 mt-1 line-clamp-2">
                             {proof.description}
                           </p>
-                          <p className="text-xs text-white/40 mt-1">
+                          <p className="text-xs text-gray-500 mt-1">
                             Sent on {formatDate(proof.created_at)}
                           </p>
                         </div>
