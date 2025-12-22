@@ -1117,12 +1117,12 @@ export default function AdminProofs() {
 
                         {/* Approved File Section */}
                         {proof.file_url && (
-                          <div className="mb-6 p-4 bg-white/5 rounded-lg border border-white/10">
-                            <p className="text-sm font-medium text-white mb-3">
+                          <div className="mb-6 p-4 bg-white rounded-lg border border-gray-300">
+                            <p className="text-sm font-medium text-gray-900 mb-3">
                               Approved Design
                             </p>
                             <div
-                              className="rounded-lg border border-white/10 overflow-hidden bg-white/5 flex items-center justify-center mb-3"
+                              className="rounded-lg border border-gray-300 overflow-hidden bg-gray-100 flex items-center justify-center mb-3"
                               style={{
                                 maxHeight: "200px",
                                 minHeight: "100px",
@@ -1143,20 +1143,20 @@ export default function AdminProofs() {
                                 />
                               ) : (
                                 <div className="flex flex-col items-center justify-center p-6 text-center w-full">
-                                  <FileIcon className="w-10 h-10 text-white/20 mb-2" />
-                                  <p className="text-sm text-white/60">
+                                  <FileIcon className="w-10 h-10 text-gray-300 mb-2" />
+                                  <p className="text-sm text-gray-600">
                                     {proof.file_name || "File"}
                                   </p>
                                 </div>
                               )}
                             </div>
                             {proof.file_name && (
-                              <p className="text-xs text-white/40 mb-2">
+                              <p className="text-xs text-gray-500 mb-2">
                                 {proof.file_name}
                               </p>
                             )}
                             {proof.description && (
-                              <p className="text-sm text-white/80">
+                              <p className="text-sm text-gray-700">
                                 {proof.description}
                               </p>
                             )}
