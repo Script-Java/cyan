@@ -1078,13 +1078,13 @@ export default function AdminProofs() {
                             Customer: {proof.customers?.first_name}{" "}
                             {proof.customers?.last_name}
                           </p>
-                          <p className="text-xs text-white/40 mt-1">
+                          <p className="text-xs text-gray-500 mt-1">
                             Last updated on {formatDate(proof.updated_at)}
                           </p>
                         </div>
                       </div>
                       <ChevronDown
-                        className={`w-5 h-5 text-white/40 flex-shrink-0 transition-transform ${
+                        className={`w-5 h-5 text-gray-400 flex-shrink-0 transition-transform ${
                           expandedProofId === proof.id ? "rotate-180" : ""
                         }`}
                       />
@@ -1092,23 +1092,23 @@ export default function AdminProofs() {
 
                     {/* Proof Details - Expanded */}
                     {expandedProofId === proof.id && (
-                      <div className="border-t border-white/10 px-3 sm:px-6 py-4 sm:py-6 bg-white/5">
+                      <div className="border-t border-gray-300 px-3 sm:px-6 py-4 sm:py-6 bg-gray-50">
                         {/* Status Info */}
-                        <div className="mb-6 p-4 bg-white/5 rounded-lg border border-white/10">
-                          <p className="text-sm font-medium text-white mb-2">
+                        <div className="mb-6 p-4 bg-white rounded-lg border border-gray-300">
+                          <p className="text-sm font-medium text-gray-900 mb-2">
                             Status
                           </p>
-                          <p className="text-sm text-white/60">
+                          <p className="text-sm text-gray-600">
                             {proof.status === "approved"
                               ? "✓ Customer approved this proof"
                               : "Customer requested revisions"}
                           </p>
                           {proof.revision_notes && (
-                            <div className="mt-3 p-3 bg-orange-500/20 rounded-lg border border-orange-500/30">
-                              <p className="text-xs font-medium text-orange-300 mb-1">
+                            <div className="mt-3 p-3 bg-orange-50 rounded-lg border border-orange-300">
+                              <p className="text-xs font-medium text-orange-700 mb-1">
                                 Customer Notes:
                               </p>
-                              <p className="text-sm text-orange-200 whitespace-pre-wrap">
+                              <p className="text-sm text-orange-800 whitespace-pre-wrap">
                                 {proof.revision_notes}
                               </p>
                             </div>
