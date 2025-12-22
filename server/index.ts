@@ -164,6 +164,10 @@ import {
   handleDeleteLegalPage,
 } from "./routes/legal-pages";
 import {
+  getReturnRefundPolicy,
+  updateReturnRefundPolicy,
+} from "./routes/admin-return-refund-policy";
+import {
   handleEcwidMigration,
   handleGetMigrationStatus,
   handleCSVCustomerImport,
