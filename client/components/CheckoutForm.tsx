@@ -246,41 +246,56 @@ export default function CheckoutForm({
         </div>
 
         <div className="mb-4">
-          <Label className="text-gray-700">Email Address *</Label>
+          <Label htmlFor="shipping-email" className="text-gray-700">
+            Email Address <span aria-label="required">*</span>
+          </Label>
           <Input
+            id="shipping-email"
             type="email"
             value={customerInfo.email}
             onChange={(e) => onCustomerChange("email", e.target.value)}
             className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
             required
+            aria-required="true"
           />
         </div>
 
         <div className="mb-4">
-          <Label className="text-gray-700">Phone Number *</Label>
+          <Label htmlFor="shipping-phone" className="text-gray-700">
+            Phone Number <span aria-label="required">*</span>
+          </Label>
           <Input
+            id="shipping-phone"
             type="tel"
             value={customerInfo.phone}
             onChange={(e) => onCustomerChange("phone", e.target.value)}
             className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
             required
+            aria-required="true"
           />
         </div>
 
         <div className="mb-4">
-          <Label className="text-gray-700">Street Address *</Label>
+          <Label htmlFor="shipping-street" className="text-gray-700">
+            Street Address <span aria-label="required">*</span>
+          </Label>
           <Input
+            id="shipping-street"
             value={customerInfo.street}
             onChange={(e) => onCustomerChange("street", e.target.value)}
             placeholder="123 Main St"
             className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
             required
+            aria-required="true"
           />
         </div>
 
         <div className="mb-4">
-          <Label className="text-gray-700">Apt, Suite, etc. (optional)</Label>
+          <Label htmlFor="shipping-street2" className="text-gray-700">
+            Apt, Suite, etc. (optional)
+          </Label>
           <Input
+            id="shipping-street2"
             value={customerInfo.street2}
             onChange={(e) => onCustomerChange("street2", e.target.value)}
             placeholder="Apt 4B"
