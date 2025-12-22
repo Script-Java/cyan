@@ -471,6 +471,16 @@ export default function CheckoutNew() {
       return false;
     }
 
+    if (!agreedToTerms) {
+      toast.error("Please agree to the Terms of Service to proceed");
+      return false;
+    }
+
+    if (!agreedToShippingPolicy) {
+      toast.error("Please agree to the Shipping Policy to proceed");
+      return false;
+    }
+
     return true;
   };
 
