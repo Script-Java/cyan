@@ -130,6 +130,7 @@ export default function App() {
               path="/admin/edit-legal-page/:pageId"
               element={<EditLegalPage />}
             />
+            <Route path="/admin/return-refund-policy" element={<AdminReturnRefundPolicy />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="/admin/support" element={<AdminSupport />} />
             <Route path="/admin/shipping" element={<AdminShipping />} />
