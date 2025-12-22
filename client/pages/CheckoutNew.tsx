@@ -1321,10 +1321,10 @@ export default function CheckoutNew() {
                       <div>
                         <p className="text-xs text-gray-600 mb-1">Email Support</p>
                         <a
-                          href="mailto:support@stickyhub.com"
+                          href="mailto:sticky@stickyslap.com"
                           className="text-blue-600 hover:text-blue-700 font-medium text-sm break-all"
                         >
-                          support@stickyhub.com
+                          sticky@stickyslap.com
                         </a>
                       </div>
                       <div>
