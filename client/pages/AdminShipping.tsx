@@ -29,7 +29,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Truck, Plus, Edit2, Trash2, AlertCircle } from "lucide-react";
+import {
+  Truck,
+  Plus,
+  Edit2,
+  Trash2,
+  AlertCircle,
+  Package,
+  Eye,
+  BarChart3,
+  DollarSign,
+  Users,
+  BookOpen,
+  FileText,
+  MessageSquare,
+} from "lucide-react";
 import { toast } from "sonner";
 
 interface ShippingOption {
@@ -303,352 +317,454 @@ export default function AdminShipping() {
     }
   };
 
+  const quickAccessLinks = [
+    {
+      title: "Orders",
+      description: "View all orders",
+      icon: <Package className="w-5 h-5" />,
+      path: "/admin/orders",
+      color: "bg-blue-100 hover:bg-blue-200",
+      textColor: "text-blue-600",
+    },
+    {
+      title: "Proofs",
+      description: "Manage proofs",
+      icon: <Eye className="w-5 h-5" />,
+      path: "/admin/proofs",
+      color: "bg-orange-100 hover:bg-orange-200",
+      textColor: "text-orange-600",
+    },
+    {
+      title: "Products",
+      description: "Manage catalog",
+      icon: <Package className="w-5 h-5" />,
+      path: "/admin/products",
+      color: "bg-pink-100 hover:bg-pink-200",
+      textColor: "text-pink-600",
+    },
+    {
+      title: "Customers",
+      description: "View customers",
+      icon: <Users className="w-5 h-5" />,
+      path: "/admin/customers",
+      color: "bg-purple-100 hover:bg-purple-200",
+      textColor: "text-purple-600",
+    },
+    {
+      title: "Finance",
+      description: "View spending",
+      icon: <DollarSign className="w-5 h-5" />,
+      path: "/admin/finance",
+      color: "bg-green-100 hover:bg-green-200",
+      textColor: "text-green-600",
+    },
+    {
+      title: "Analytics",
+      description: "View analytics",
+      icon: <BarChart3 className="w-5 h-5" />,
+      path: "/admin/analytics",
+      color: "bg-cyan-100 hover:bg-cyan-200",
+      textColor: "text-cyan-600",
+    },
+    {
+      title: "Blogs",
+      description: "Manage blogs",
+      icon: <BookOpen className="w-5 h-5" />,
+      path: "/admin/blogs",
+      color: "bg-indigo-100 hover:bg-indigo-200",
+      textColor: "text-indigo-600",
+    },
+    {
+      title: "Legal Pages",
+      description: "Manage legal content",
+      icon: <FileText className="w-5 h-5" />,
+      path: "/admin/legal-pages",
+      color: "bg-amber-100 hover:bg-amber-200",
+      textColor: "text-amber-600",
+    },
+    {
+      title: "Shipping",
+      description: "Manage shipping options",
+      icon: <Truck className="w-5 h-5" />,
+      path: "/admin/shipping",
+      color: "bg-teal-100 hover:bg-teal-200",
+      textColor: "text-teal-600",
+    },
+    {
+      title: "Support",
+      description: "Answer support tickets",
+      icon: <MessageSquare className="w-5 h-5" />,
+      path: "/admin/support",
+      color: "bg-red-100 hover:bg-red-200",
+      textColor: "text-red-600",
+    },
+  ];
+
   return (
     <AdminLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 sm:p-6">
-        <div className="max-w-7xl mx-auto space-y-6">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 rounded-lg bg-blue-500/20">
-                  <Truck className="w-6 h-6 text-blue-400" />
+      <div className="w-full">
+        {/* Header Section */}
+        <div className="border-b border-gray-200 bg-white">
+          <div className="px-4 sm:px-10 py-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">
+                    Shipping Options
+                  </h1>
+                  <p className="text-gray-600">
+                    Manage shipping methods, costs, and delivery times
+                  </p>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-white">
-                  Shipping Options
-                </h1>
-              </div>
-              <p className="text-gray-400">
-                Manage shipping methods, costs, and delivery times
-              </p>
-            </div>
-            <Button
-              onClick={() => handleOpenDialog()}
-              className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              Add Shipping Option
-            </Button>
-          </div>
-
-          {/* Navigation Grid */}
-          <div>
-            <h2 className="text-lg font-semibold text-white mb-4">
-              Quick Navigation
-            </h2>
-            <AdminNavigationGrid />
-          </div>
-
-          {/* Main Content */}
-          <div className="bg-slate-800/50 border border-slate-700 rounded-lg overflow-hidden">
-            {isLoading ? (
-              <div className="p-8 text-center">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400" />
-                <p className="mt-2 text-gray-400">
-                  Loading shipping options...
-                </p>
-              </div>
-            ) : shippingOptions.length === 0 ? (
-              <div className="p-8 text-center">
-                <Truck className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                <h2 className="text-xl font-semibold text-white mb-2">
-                  No Shipping Options
-                </h2>
-                <p className="text-gray-400 mb-6">
-                  Create your first shipping option to get started
-                </p>
                 <Button
                   onClick={() => handleOpenDialog()}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
                 >
-                  Create Shipping Option
+                  <Plus className="w-4 h-4" />
+                  Add Shipping Option
                 </Button>
               </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-slate-700 hover:bg-slate-700/50">
-                      <TableHead className="text-gray-300">Name</TableHead>
-                      <TableHead className="text-gray-300">Cost</TableHead>
-                      <TableHead className="text-gray-300">
-                        Processing Time
-                      </TableHead>
-                      <TableHead className="text-gray-300">
-                        Est. Delivery
-                      </TableHead>
-                      <TableHead className="text-gray-300">Status</TableHead>
-                      <TableHead className="text-gray-300">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {shippingOptions.map((option) => (
-                      <TableRow
-                        key={option.id}
-                        className="border-slate-700 hover:bg-slate-700/50"
-                      >
-                        <TableCell className="font-medium text-white">
-                          <div>
-                            <p>{option.name}</p>
-                            {option.description && (
-                              <p className="text-xs text-gray-400 mt-1">
-                                {option.description}
-                              </p>
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-white">
-                          ${option.cost.toFixed(2)}
-                        </TableCell>
-                        <TableCell className="text-gray-300">
-                          {option.processing_time_days} day
-                          {option.processing_time_days !== 1 ? "s" : ""}
-                        </TableCell>
-                        <TableCell className="text-gray-300">
-                          {option.estimated_delivery_days_min}-
-                          {option.estimated_delivery_days_max} days
-                        </TableCell>
-                        <TableCell>
-                          {option.is_active ? (
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-500/20 text-green-400">
-                              Active
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-500/20 text-gray-400">
-                              Inactive
-                            </span>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-white">
-                          <div className="flex gap-2">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleOpenDialog(option)}
-                              className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/20"
-                            >
-                              <Edit2 className="w-4 h-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => {
-                                setDeletingId(option.id);
-                                setShowDeleteDialog(true);
-                              }}
-                              className="text-red-400 hover:text-red-300 hover:bg-red-500/20"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            )}
+            </div>
           </div>
         </div>
 
-        {/* Create/Edit Dialog */}
-        <Dialog open={showDialog} onOpenChange={setShowDialog}>
-          <DialogContent className="bg-slate-800 border-slate-700 max-w-2xl">
-            <DialogHeader>
-              <DialogTitle className="text-white">
-                {editingId ? "Edit Shipping Option" : "Create Shipping Option"}
-              </DialogTitle>
-              <DialogDescription className="text-gray-400">
-                {editingId
-                  ? "Update the shipping option details below"
-                  : "Add a new shipping option with cost and delivery time information"}
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="space-y-4">
-              {/* Name */}
-              <div>
-                <Label className="text-white mb-2 block">
-                  Option Name <span className="text-red-400">*</span>
-                </Label>
-                <Input
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder="e.g., Standard Shipping, Express, Overnight"
-                  className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-500"
-                />
+        {/* Main Content */}
+        <main className="min-h-screen text-gray-900 px-4 sm:px-10 py-12">
+          <div className="max-w-7xl mx-auto space-y-6">
+            {/* Quick Access Links */}
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Quick Access
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                {quickAccessLinks.map((link) => (
+                  <button
+                    key={link.path}
+                    onClick={() => navigate(link.path)}
+                    className={`flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-gray-200 transition-all duration-200 hover:scale-105 active:scale-95 ${link.color}`}
+                  >
+                    <div className={`${link.textColor}`}>{link.icon}</div>
+                    <div className="text-center">
+                      <p className="text-xs font-semibold text-gray-900 line-clamp-1">
+                        {link.title}
+                      </p>
+                    </div>
+                  </button>
+                ))}
               </div>
+            </div>
 
-              {/* Description */}
-              <div>
-                <Label className="text-white mb-2 block">Description</Label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  placeholder="e.g., Delivery within 5-7 business days"
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  rows={3}
-                />
-              </div>
-
-              {/* Cost */}
-              <div>
-                <Label className="text-white mb-2 block">
-                  Shipping Cost <span className="text-red-400">*</span>
-                </Label>
-                <div className="relative">
-                  <span className="absolute left-3 top-2.5 text-gray-400">
-                    $
-                  </span>
-                  <Input
-                    type="number"
-                    name="cost"
-                    value={formData.cost}
-                    onChange={handleInputChange}
-                    placeholder="0.00"
-                    step="0.01"
-                    min="0"
-                    className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-500 pl-7"
-                  />
+            {/* Main Content Container */}
+            <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+              {isLoading ? (
+                <div className="p-8 text-center">
+                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+                  <p className="mt-2 text-gray-600">
+                    Loading shipping options...
+                  </p>
                 </div>
-              </div>
-
-              {/* Processing Time */}
-              <div>
-                <Label className="text-white mb-2 block">
-                  Processing Time <span className="text-red-400">*</span>
-                </Label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="number"
-                    name="processing_time_days"
-                    value={formData.processing_time_days}
-                    onChange={handleInputChange}
-                    placeholder="0"
-                    min="0"
-                    className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-500"
-                  />
-                  <span className="text-gray-400">days</span>
+              ) : shippingOptions.length === 0 ? (
+                <div className="p-8 text-center">
+                  <Truck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                    No Shipping Options
+                  </h2>
+                  <p className="text-gray-600 mb-6">
+                    Create your first shipping option to get started
+                  </p>
+                  <Button
+                    onClick={() => handleOpenDialog()}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    Create Shipping Option
+                  </Button>
                 </div>
-              </div>
-
-              {/* Estimated Delivery Days */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-white mb-2 block">
-                    Min Delivery Days <span className="text-red-400">*</span>
-                  </Label>
-                  <Input
-                    type="number"
-                    name="estimated_delivery_days_min"
-                    value={formData.estimated_delivery_days_min}
-                    onChange={handleInputChange}
-                    placeholder="1"
-                    min="1"
-                    className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-500"
-                  />
+              ) : (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-gray-200 bg-gray-50 hover:bg-gray-50">
+                        <TableHead className="text-gray-900">Name</TableHead>
+                        <TableHead className="text-gray-900">Cost</TableHead>
+                        <TableHead className="text-gray-900">
+                          Processing Time
+                        </TableHead>
+                        <TableHead className="text-gray-900">
+                          Est. Delivery
+                        </TableHead>
+                        <TableHead className="text-gray-900">Status</TableHead>
+                        <TableHead className="text-gray-900">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {shippingOptions.map((option) => (
+                        <TableRow
+                          key={option.id}
+                          className="border-gray-200 hover:bg-gray-50"
+                        >
+                          <TableCell className="font-medium text-gray-900">
+                            <div>
+                              <p>{option.name}</p>
+                              {option.description && (
+                                <p className="text-xs text-gray-600 mt-1">
+                                  {option.description}
+                                </p>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-gray-900">
+                            ${option.cost.toFixed(2)}
+                          </TableCell>
+                          <TableCell className="text-gray-700">
+                            {option.processing_time_days} day
+                            {option.processing_time_days !== 1 ? "s" : ""}
+                          </TableCell>
+                          <TableCell className="text-gray-700">
+                            {option.estimated_delivery_days_min}-
+                            {option.estimated_delivery_days_max} days
+                          </TableCell>
+                          <TableCell>
+                            {option.is_active ? (
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                Active
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                                Inactive
+                              </span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-gray-900">
+                            <div className="flex gap-2">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleOpenDialog(option)}
+                                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                              >
+                                <Edit2 className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  setDeletingId(option.id);
+                                  setShowDeleteDialog(true);
+                                }}
+                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </div>
-                <div>
-                  <Label className="text-white mb-2 block">
-                    Max Delivery Days <span className="text-red-400">*</span>
-                  </Label>
-                  <Input
-                    type="number"
-                    name="estimated_delivery_days_max"
-                    value={formData.estimated_delivery_days_max}
-                    onChange={handleInputChange}
-                    placeholder="7"
-                    min="1"
-                    className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-500"
-                  />
-                </div>
-              </div>
+              )}
+            </div>
+          </div>
+        </main>
+      </div>
 
-              {/* Display Order */}
-              <div>
-                <Label className="text-white mb-2 block">Display Order</Label>
+      {/* Create/Edit Dialog */}
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="bg-white border-gray-200 max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-gray-900">
+              {editingId ? "Edit Shipping Option" : "Create Shipping Option"}
+            </DialogTitle>
+            <DialogDescription className="text-gray-600">
+              {editingId
+                ? "Update the shipping option details below"
+                : "Add a new shipping option with cost and delivery time information"}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            {/* Name */}
+            <div>
+              <Label className="text-gray-900 mb-2 block">
+                Option Name <span className="text-red-600">*</span>
+              </Label>
+              <Input
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="e.g., Standard Shipping, Express, Overnight"
+                className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
+              />
+            </div>
+
+            {/* Description */}
+            <div>
+              <Label className="text-gray-900 mb-2 block">Description</Label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                placeholder="e.g., Delivery within 5-7 business days"
+                className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                rows={3}
+              />
+            </div>
+
+            {/* Cost */}
+            <div>
+              <Label className="text-gray-900 mb-2 block">
+                Shipping Cost <span className="text-red-600">*</span>
+              </Label>
+              <div className="relative">
+                <span className="absolute left-3 top-2.5 text-gray-600">
+                  $
+                </span>
                 <Input
                   type="number"
-                  name="display_order"
-                  value={formData.display_order}
+                  name="cost"
+                  value={formData.cost}
+                  onChange={handleInputChange}
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 pl-7"
+                />
+              </div>
+            </div>
+
+            {/* Processing Time */}
+            <div>
+              <Label className="text-gray-900 mb-2 block">
+                Processing Time <span className="text-red-600">*</span>
+              </Label>
+              <div className="flex items-center gap-2">
+                <Input
+                  type="number"
+                  name="processing_time_days"
+                  value={formData.processing_time_days}
                   onChange={handleInputChange}
                   placeholder="0"
                   min="0"
-                  className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-500"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
                 />
-                <p className="text-xs text-gray-400 mt-1">
-                  Lower numbers appear first
-                </p>
+                <span className="text-gray-600">days</span>
               </div>
+            </div>
 
-              {/* Active Status */}
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="is_active"
-                  id="is_active"
-                  checked={formData.is_active}
-                  onChange={handleInputChange}
-                  className="w-4 h-4 rounded border-slate-600 bg-slate-700 cursor-pointer"
-                />
-                <Label
-                  htmlFor="is_active"
-                  className="text-white cursor-pointer"
-                >
-                  Active (available for customers)
+            {/* Estimated Delivery Days */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-gray-900 mb-2 block">
+                  Min Delivery Days <span className="text-red-600">*</span>
                 </Label>
+                <Input
+                  type="number"
+                  name="estimated_delivery_days_min"
+                  value={formData.estimated_delivery_days_min}
+                  onChange={handleInputChange}
+                  placeholder="1"
+                  min="1"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
+                />
+              </div>
+              <div>
+                <Label className="text-gray-900 mb-2 block">
+                  Max Delivery Days <span className="text-red-600">*</span>
+                </Label>
+                <Input
+                  type="number"
+                  name="estimated_delivery_days_max"
+                  value={formData.estimated_delivery_days_max}
+                  onChange={handleInputChange}
+                  placeholder="7"
+                  min="1"
+                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
+                />
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 mt-6">
-              <Button
-                variant="outline"
-                onClick={handleCloseDialog}
-                className="border-slate-600 text-gray-300 hover:bg-slate-700/50"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleSave}
-                disabled={isSaving}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                {isSaving ? "Saving..." : editingId ? "Update" : "Create"}
-              </Button>
+            {/* Display Order */}
+            <div>
+              <Label className="text-gray-900 mb-2 block">Display Order</Label>
+              <Input
+                type="number"
+                name="display_order"
+                value={formData.display_order}
+                onChange={handleInputChange}
+                placeholder="0"
+                min="0"
+                className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500"
+              />
+              <p className="text-xs text-gray-600 mt-1">
+                Lower numbers appear first
+              </p>
             </div>
-          </DialogContent>
-        </Dialog>
 
-        {/* Delete Confirmation Dialog */}
-        <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-          <AlertDialogContent className="bg-slate-800 border-slate-700">
-            <AlertDialogHeader>
-              <AlertDialogTitle className="text-white flex items-center gap-2">
-                <AlertCircle className="w-5 h-5 text-red-400" />
-                Delete Shipping Option
-              </AlertDialogTitle>
-              <AlertDialogDescription className="text-gray-400">
-                Are you sure you want to delete this shipping option? This
-                action cannot be undone.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <div className="flex justify-end gap-3">
-              <AlertDialogCancel className="border-slate-600 text-gray-300 hover:bg-slate-700/50">
-                Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction
-                onClick={handleDelete}
-                disabled={isSaving}
-                className="bg-red-600 hover:bg-red-700 text-white"
+            {/* Active Status */}
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                name="is_active"
+                id="is_active"
+                checked={formData.is_active}
+                onChange={handleInputChange}
+                className="w-4 h-4 rounded border-gray-300 bg-white cursor-pointer"
+              />
+              <Label
+                htmlFor="is_active"
+                className="text-gray-900 cursor-pointer"
               >
-                {isSaving ? "Deleting..." : "Delete"}
-              </AlertDialogAction>
+                Active (available for customers)
+              </Label>
             </div>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
+          </div>
+
+          <div className="flex justify-end gap-3 mt-6">
+            <Button
+              variant="outline"
+              onClick={handleCloseDialog}
+              className="border-gray-300 text-gray-700 hover:bg-gray-50"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              {isSaving ? "Saving..." : editingId ? "Update" : "Create"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent className="bg-white border-gray-200">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-gray-900 flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 text-red-600" />
+              Delete Shipping Option
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-600">
+              Are you sure you want to delete this shipping option? This action
+              cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="flex justify-end gap-3">
+            <AlertDialogCancel className="border-gray-300 text-gray-700 hover:bg-gray-50">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              disabled={isSaving}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              {isSaving ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </AdminLayout>
   );
 }
