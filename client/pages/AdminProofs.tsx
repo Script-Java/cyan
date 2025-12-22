@@ -424,9 +424,9 @@ export default function AdminProofs() {
           </div>
 
           {/* Navigation Grid - Desktop/Tablet Only */}
-          <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
+          <div className="hidden md:block border-b border-gray-300 bg-gray-100 backdrop-blur-sm">
             <div className="px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
-              <h2 className="text-sm font-semibold text-white/80 mb-4">
+              <h2 className="text-sm font-semibold text-gray-700 mb-4">
                 Quick Navigation
               </h2>
               <AdminNavigationGrid />
@@ -435,12 +435,12 @@ export default function AdminProofs() {
 
           {/* Pending Orders Section */}
           {pendingOrders.length > 0 && !showSendForm && (
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg sm:rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-3">
-                <Package className="w-5 h-5 text-green-400" />
+            <div className="backdrop-blur-xl bg-white border border-gray-300 rounded-lg sm:rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-3">
+                <Package className="w-5 h-5 text-green-600" />
                 Pending Orders Ready for Proofs
               </h3>
-              <p className="text-sm text-white/60 mb-6">
+              <p className="text-sm text-gray-600 mb-6">
                 Click on any order below to quickly send a proof to that
                 customer
               </p>
