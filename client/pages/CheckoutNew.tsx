@@ -429,6 +429,11 @@ export default function CheckoutNew() {
       return false;
     }
 
+    if (!agreedToPolicy) {
+      toast.error("Please agree to the Return & Refund Policy to proceed");
+      return false;
+    }
+
     return true;
   };
 
