@@ -493,26 +493,26 @@ export default function AdminOrders() {
                               )}
 
                             {/* Tracking Information */}
-                            <div className="bg-white/5 rounded border border-white/10 p-3">
-                              <h4 className="text-sm font-semibold text-white mb-2">
+                            <div className="bg-gray-50 rounded border border-gray-200 p-3">
+                              <h4 className="text-sm font-semibold text-gray-900 mb-2">
                                 Tracking Information
                               </h4>
                               {order.tracking_number ? (
                                 <div className="space-y-2">
                                   <div>
-                                    <p className="text-xs text-white/60">
+                                    <p className="text-xs text-gray-600">
                                       Tracking Number
                                     </p>
-                                    <p className="text-sm font-mono text-white">
+                                    <p className="text-sm font-mono text-gray-900">
                                       {order.tracking_number}
                                     </p>
                                   </div>
                                   {order.tracking_carrier && (
                                     <div>
-                                      <p className="text-xs text-white/60">
+                                      <p className="text-xs text-gray-600">
                                         Carrier
                                       </p>
-                                      <p className="text-sm text-white">
+                                      <p className="text-sm text-gray-900">
                                         {order.tracking_carrier}
                                       </p>
                                     </div>
@@ -523,7 +523,7 @@ export default function AdminOrders() {
                                         href={order.tracking_url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-sm text-blue-300 hover:text-blue-200 transition-colors break-all"
+                                        className="text-sm text-blue-600 hover:text-blue-700 transition-colors break-all"
                                       >
                                         Track Package →
                                       </a>
