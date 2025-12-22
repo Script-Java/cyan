@@ -443,12 +443,12 @@ export default function AdminOrders() {
                                             {item.options &&
                                               Object.keys(item.options).length >
                                                 0 && (
-                                                <div className="mt-2 text-xs text-white/60 space-y-1">
+                                                <div className="mt-2 text-xs text-gray-600 space-y-1">
                                                   {Object.entries(
                                                     item.options,
                                                   ).map(([key, val]) => (
                                                     <div key={key}>
-                                                      <span className="text-white/80">
+                                                      <span className="text-gray-900">
                                                         {key}:
                                                       </span>{" "}
                                                       {String(val)}
@@ -459,7 +459,7 @@ export default function AdminOrders() {
                                           </div>
                                           {item.design_file_url && (
                                             <div className="flex-shrink-0">
-                                              <div className="w-16 h-16 bg-white/5 border border-white/10 rounded overflow-hidden flex items-center justify-center">
+                                              <div className="w-16 h-16 bg-gray-100 border border-gray-200 rounded overflow-hidden flex items-center justify-center">
                                                 {item.design_file_url.match(
                                                   /\.(jpg|jpeg|png|gif|webp)$/i,
                                                 ) ? (
@@ -477,9 +477,9 @@ export default function AdminOrders() {
                                                     href={item.design_file_url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="flex items-center gap-1 p-1 hover:text-green-300 transition-colors"
+                                                    className="flex items-center gap-1 p-1 hover:text-green-700 transition-colors"
                                                   >
-                                                    <ImageIcon className="w-5 h-5 text-white/60" />
+                                                    <ImageIcon className="w-5 h-5 text-gray-600" />
                                                   </a>
                                                 )}
                                               </div>
