@@ -802,7 +802,7 @@ export default function CheckoutNew() {
                         placeholder="Discount code"
                         value={discountCode}
                         onChange={(e) => setDiscountCode(e.target.value)}
-                        className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400"
+                        className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400"
                       />
                     </div>
                     <Button
