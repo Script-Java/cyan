@@ -225,11 +225,30 @@ export function createServer() {
       );
     }
 
-    // Additional security headers
+    // Additional security headers for PCI DSS compliance
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("X-Frame-Options", "SAMEORIGIN");
     res.setHeader("X-XSS-Protection", "1; mode=block");
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+
+    // Strict Transport Security (HSTS) - Enforce HTTPS for 1 year
+    res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+
+    // Permissions Policy (formerly Feature Policy) - Restrict API access
+    res.setHeader(
+      "Permissions-Policy",
+      "geolocation=(), microphone=(), camera=(), payment=self, usb=()"
+    );
+
+    // Prevent MIME sniffing for PCI security
+    res.setHeader("X-Content-Type-Options", "nosniff");
+
+    // Additional cache control for sensitive pages
+    if (req.path.includes("/checkout") || req.path.includes("/payment")) {
+      res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
+    }
 
     next();
   });
