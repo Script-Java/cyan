@@ -809,7 +809,7 @@ export default function CheckoutNew() {
                       type="button"
                       onClick={handleApplyDiscount}
                       disabled={!discountCode}
-                      className="bg-green-500 hover:bg-green-600 text-gray-900 px-6"
+                      className="bg-green-500 hover:bg-green-600 text-white px-6"
                     >
                       Apply
                     </Button>
