@@ -176,7 +176,7 @@ export default function AdminNavbar() {
             }}
             className={cn(
               "flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-all duration-200 text-sm font-medium",
-              "text-white/60 hover:text-white hover:bg-white/5",
+              "text-gray-600 hover:text-gray-900 hover:bg-gray-100",
             )}
           >
             {item.icon}
@@ -194,7 +194,7 @@ export default function AdminNavbar() {
           {(isMobile ? isDropdownOpen : expandedDropdown === item.label) && (
             <div
               className={cn(
-                "rounded-lg bg-black border border-white/10 shadow-lg overflow-hidden z-50",
+                "rounded-lg bg-white border border-gray-200 shadow-lg overflow-hidden z-50",
                 isMobile
                   ? "mt-2 w-full"
                   : "absolute left-0 top-full mt-1 min-w-[200px] group-hover:block hidden",
@@ -213,8 +213,8 @@ export default function AdminNavbar() {
                   className={cn(
                     "w-full flex items-center gap-2 px-3 py-1.5 text-sm transition-all",
                     isActive(child.path)
-                      ? "bg-white/10 text-[#FFD713]"
-                      : "text-white/60 hover:text-white hover:bg-white/5",
+                      ? "bg-blue-50 text-blue-600"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100",
                   )}
                 >
                   {child.icon}
@@ -234,14 +234,14 @@ export default function AdminNavbar() {
         className={cn(
           "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm font-medium",
           active
-            ? "bg-white/10 text-[#FFD713] font-semibold"
-            : "text-white/60 hover:text-white hover:bg-white/5",
+            ? "bg-blue-50 text-blue-600 font-semibold"
+            : "text-gray-600 hover:text-gray-900 hover:bg-gray-100",
         )}
       >
         {item.icon}
         <span>{item.label}</span>
         {item.badge ? (
-          <span className="ml-1 bg-[#FFD713] text-black text-xs font-bold rounded-full px-1.5 py-0.5">
+          <span className="ml-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
             {item.badge}
           </span>
         ) : null}
@@ -250,7 +250,7 @@ export default function AdminNavbar() {
   };
 
   return (
-    <nav className="bg-black border-b border-white/10">
+    <nav className="bg-white border-b border-gray-200">
       <div className="px-4 sm:px-6 lg:px-8">
         {/* Desktop Navigation */}
         <div className="hidden md:flex h-14 items-center justify-between">
@@ -269,14 +269,14 @@ export default function AdminNavbar() {
           </div>
 
           {/* Settings and Logout */}
-          <div className="flex items-center gap-0.5 ml-3 pl-3 border-l border-white/10">
+          <div className="flex items-center gap-0.5 ml-3 pl-3 border-l border-gray-200">
             <button
               onClick={() => navigate("/admin/settings")}
               className={cn(
                 "flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-all duration-200 text-sm font-medium",
                 isActive("/admin/settings")
-                  ? "bg-white/10 text-[#FFD713]"
-                  : "text-white/60 hover:text-white hover:bg-white/5",
+                  ? "bg-blue-50 text-blue-600"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-100",
               )}
             >
               <Settings className="w-4 h-4" />
@@ -284,7 +284,7 @@ export default function AdminNavbar() {
             </button>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm font-medium text-white/60 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all duration-200"
             >
               <LogOut className="w-4 h-4" />
               <span>Logout</span>
@@ -303,8 +303,8 @@ export default function AdminNavbar() {
                   className={cn(
                     "flex items-center gap-1 px-1.5 py-1 rounded text-xs font-medium whitespace-nowrap",
                     isActive(item.path)
-                      ? "bg-white/10 text-[#FFD713]"
-                      : "text-white/60 hover:text-white hover:bg-white/5",
+                      ? "bg-blue-50 text-blue-600"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100",
                   )}
                 >
                   {item.icon}
@@ -315,19 +315,19 @@ export default function AdminNavbar() {
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="ml-2 p-2 hover:bg-white/5 rounded-lg transition-all"
+              className="ml-2 p-2 hover:bg-gray-100 rounded-lg transition-all"
             >
               {mobileMenuOpen ? (
-                <X className="w-5 h-5 text-white" />
+                <X className="w-5 h-5 text-gray-900" />
               ) : (
-                <Menu className="w-5 h-5 text-white" />
+                <Menu className="w-5 h-5 text-gray-900" />
               )}
             </button>
           </div>
 
           {/* Mobile Menu Dropdown */}
           {mobileMenuOpen && (
-            <div className="border-t border-white/10 bg-black/50 backdrop-blur-sm max-h-96 overflow-y-auto">
+            <div className="border-t border-gray-200 bg-gray-50/50 backdrop-blur-sm max-h-96 overflow-y-auto">
               <div className="p-2 space-y-0.5">
                 {mainNavItems.map((item) => (
                   <button
@@ -336,8 +336,8 @@ export default function AdminNavbar() {
                     className={cn(
                       "w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-all text-sm",
                       isActive(item.path)
-                        ? "bg-white/10 text-[#FFD713] font-semibold"
-                        : "text-white/60 hover:text-white hover:bg-white/5",
+                        ? "bg-blue-50 text-blue-600 font-semibold"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100",
                     )}
                   >
                     {item.icon}
@@ -350,13 +350,13 @@ export default function AdminNavbar() {
                   </button>
                 ))}
 
-                <div className="border-t border-white/10 my-1.5 pt-1.5">
+                <div className="border-t border-gray-200 my-1.5 pt-1.5">
                   {secondaryNavItems.map((item) => (
                     <NavItem key={item.label} item={item} isMobile={true} />
                   ))}
                 </div>
 
-                <div className="border-t border-white/10 my-1.5 pt-1.5 space-y-0.5">
+                <div className="border-t border-gray-200 my-1.5 pt-1.5 space-y-0.5">
                   <button
                     onClick={() => {
                       navigate("/admin/settings");
@@ -365,8 +365,8 @@ export default function AdminNavbar() {
                     className={cn(
                       "w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-all text-sm",
                       isActive("/admin/settings")
-                        ? "bg-white/10 text-[#FFD713] font-semibold"
-                        : "text-white/60 hover:text-white hover:bg-white/5",
+                        ? "bg-blue-50 text-blue-600 font-semibold"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100",
                     )}
                   >
                     <Settings className="w-4 h-4" />
@@ -374,7 +374,7 @@ export default function AdminNavbar() {
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm text-white/60 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all"
                   >
                     <LogOut className="w-4 h-4" />
                     <span>Logout</span>
