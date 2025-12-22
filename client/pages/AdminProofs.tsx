@@ -590,7 +590,7 @@ export default function AdminProofs() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-purple-300 mb-2 uppercase tracking-wider">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
                     Upload File (Optional)
                   </label>
                   <div className="relative">
@@ -600,14 +600,14 @@ export default function AdminProofs() {
                       accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
-                    <div className="px-4 py-6 border-2 border-dashed border-white/10 rounded-xl text-center hover:border-green-500/50 hover:bg-white/5 transition-all">
-                      <Upload className="w-5 h-5 text-white/40 mx-auto mb-2" />
-                      <p className="text-sm text-white/60">
+                    <div className="px-4 py-6 border-2 border-dashed border-gray-300 rounded-xl text-center hover:border-green-500 hover:bg-gray-50 transition-all">
+                      <Upload className="w-5 h-5 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm text-gray-600">
                         {uploadedFile
                           ? `Selected: ${uploadedFile.name}`
                           : "Click to upload or drag and drop"}
                       </p>
-                      <p className="text-xs text-white/40 mt-1">
+                      <p className="text-xs text-gray-500 mt-1">
                         Images, PDF, or Office files (max 50MB)
                       </p>
                     </div>
