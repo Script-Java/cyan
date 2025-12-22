@@ -423,21 +423,21 @@ export default function AdminOrders() {
                             {order.orderItems &&
                               order.orderItems.length > 0 && (
                                 <div>
-                                  <h4 className="text-sm font-semibold text-white mb-3">
+                                  <h4 className="text-sm font-semibold text-gray-900 mb-3">
                                     Items ({order.orderItems.length})
                                   </h4>
                                   <div className="space-y-3">
                                     {order.orderItems.map((item, idx) => (
                                       <div
                                         key={idx}
-                                        className="bg-white/5 rounded border border-white/10 p-3"
+                                        className="bg-gray-50 rounded border border-gray-200 p-3"
                                       >
                                         <div className="flex gap-4 items-start">
                                           <div className="flex-1 min-w-0">
-                                            <p className="text-white font-medium text-sm">
+                                            <p className="text-gray-900 font-medium text-sm">
                                               {item.product_name || "Product"}
                                             </p>
-                                            <p className="text-white/60 text-xs mt-1">
+                                            <p className="text-gray-600 text-xs mt-1">
                                               Qty: {item.quantity || 1}
                                             </p>
                                             {item.options &&
