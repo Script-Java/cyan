@@ -565,7 +565,7 @@ export default function AdminProofs() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-purple-300 mb-2 uppercase tracking-wider">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
                     Customer Email (Optional)
                   </label>
                   <input
@@ -573,19 +573,19 @@ export default function AdminProofs() {
                     value={customerEmail}
                     onChange={(e) => setCustomerEmail(e.target.value)}
                     placeholder="Enter customer email (optional)"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                   />
                   <input type="hidden" value={customerId} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-purple-300 mb-2 uppercase tracking-wider">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
                     Proof Description *
                   </label>
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Describe the proof (e.g., 'Front and back design mockup')"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                     rows={3}
                   />
                 </div>
