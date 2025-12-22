@@ -105,6 +105,7 @@ export default function CheckoutNew() {
   const [createdOrderId, setCreatedOrderId] = useState<number | null>(null);
   const [agreedToPolicy, setAgreedToPolicy] = useState(false);
   const [showPolicyDropdown, setShowPolicyDropdown] = useState(false);
+  const [policy, setPolicy] = useState<any>(null);
 
   useEffect(() => {
     const loadCustomerInfo = async () => {
@@ -306,6 +307,22 @@ export default function CheckoutNew() {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [cartId, fetchStoreCredit]);
+
+  useEffect(() => {
+    const fetchPolicy = async () => {
+      try {
+        const response = await fetch("/api/return-refund-policy");
+        if (response.ok) {
+          const data = await response.json();
+          setPolicy(data.policy);
+        }
+      } catch (err) {
+        console.error("Failed to fetch policy:", err);
+      }
+    };
+
+    fetchPolicy();
+  }, []);
 
   const calculateOrderData = (
     subtotal: number,
