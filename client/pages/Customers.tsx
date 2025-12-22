@@ -361,8 +361,8 @@ export default function Customers() {
             {isLoading ? (
               <div className="flex justify-center items-center h-96">
                 <div className="text-center">
-                  <Users className="w-12 h-12 text-white/40 mx-auto mb-3 animate-pulse" />
-                  <p className="text-white/60 font-medium">
+                  <Users className="w-12 h-12 text-gray-400 mx-auto mb-3 animate-pulse" />
+                  <p className="text-gray-600 font-medium">
                     Loading customers...
                   </p>
                 </div>
@@ -370,7 +370,7 @@ export default function Customers() {
             ) : error ? (
               <div className="flex justify-center items-center h-96">
                 <div className="text-center">
-                  <p className="text-red-400 font-medium">{error}</p>
+                  <p className="text-red-600 font-medium">{error}</p>
                   <Button onClick={fetchCustomers} className="mt-4">
                     Retry
                   </Button>
@@ -379,11 +379,11 @@ export default function Customers() {
             ) : sortedCustomers.length === 0 ? (
               <div className="flex justify-center items-center h-96">
                 <div className="text-center">
-                  <Users className="w-12 h-12 text-white/40 mx-auto mb-3" />
-                  <p className="text-white/60 font-medium">
+                  <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                  <p className="text-gray-600 font-medium">
                     No customers found
                   </p>
-                  <p className="text-white/40 text-sm mt-1">
+                  <p className="text-gray-500 text-sm mt-1">
                     {searchQuery
                       ? "Try adjusting your search"
                       : "Customers will appear here"}
@@ -391,45 +391,45 @@ export default function Customers() {
                 </div>
               </div>
             ) : (
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+              <div className="bg-white border border-gray-200 rounded-lg shadow overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-white/10 bg-white/5">
+                      <tr className="border-b border-gray-200 bg-gray-50">
                         <th className="px-4 sm:px-6 py-4 text-left w-8"></th>
-                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-white">
+                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-gray-900">
                           <SortHeader label="Name" column="name" />
                         </th>
-                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-white hidden sm:table-cell">
+                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-gray-900 hidden sm:table-cell">
                           <SortHeader label="Email" column="email" />
                         </th>
-                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-white hidden md:table-cell">
+                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">
                           Contact
                         </th>
-                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-white">
+                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-gray-900">
                           <SortHeader label="Orders" column="orders" />
                         </th>
-                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-white hidden sm:table-cell">
+                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-gray-900 hidden sm:table-cell">
                           <SortHeader label="Spent" column="spent" />
                         </th>
-                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-white hidden lg:table-cell">
+                        <th className="px-4 sm:px-6 py-4 text-left text-sm font-semibold text-gray-900 hidden lg:table-cell">
                           <SortHeader label="Date" column="date" />
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/10">
+                    <tbody className="divide-y divide-gray-200">
                       {sortedCustomers.map((customer, index) => (
                         <React.Fragment key={`customer-${customer.id}`}>
                           {/* Main Row */}
                           <tr
                             onClick={() => handleRowClick(customer.id)}
-                            className="hover:bg-white/5 transition-colors duration-200 cursor-pointer"
+                            className="hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
                           >
                             <td className="px-4 sm:px-6 py-4">
                               <ChevronDown
-                                className={`w-5 h-5 text-white/40 transition-transform duration-300 ${
+                                className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${
                                   expandedCustomerId === customer.id
-                                    ? "rotate-180 text-[#FFD713]"
+                                    ? "rotate-180 text-blue-600"
                                     : ""
                                 }`}
                               />
@@ -437,18 +437,18 @@ export default function Customers() {
 
                             <td className="px-4 sm:px-6 py-4">
                               <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFD713] to-purple-500 flex items-center justify-center flex-shrink-0">
-                                  <span className="text-black font-bold text-sm">
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                                  <span className="text-white font-bold text-sm">
                                     {customer.firstName.charAt(0)}
                                     {customer.lastName.charAt(0)}
                                   </span>
                                 </div>
                                 <div className="min-w-0">
-                                  <p className="font-semibold text-white text-sm truncate">
+                                  <p className="font-semibold text-gray-900 text-sm truncate">
                                     {customer.firstName} {customer.lastName}
                                   </p>
                                   {customer.company && (
-                                    <p className="text-xs text-white/60 truncate">
+                                    <p className="text-xs text-gray-600 truncate">
                                       {customer.company}
                                     </p>
                                   )}
@@ -457,8 +457,8 @@ export default function Customers() {
                             </td>
 
                             <td className="px-4 sm:px-6 py-4 hidden sm:table-cell">
-                              <div className="flex items-center gap-2 text-white/80 text-sm truncate">
-                                <Mail className="w-4 h-4 text-white/40 flex-shrink-0 hidden sm:inline" />
+                              <div className="flex items-center gap-2 text-gray-700 text-sm truncate">
+                                <Mail className="w-4 h-4 text-gray-400 flex-shrink-0 hidden sm:inline" />
                                 <span className="truncate">
                                   {customer.email}
                                 </span>
@@ -467,32 +467,32 @@ export default function Customers() {
 
                             <td className="px-4 sm:px-6 py-4 hidden md:table-cell">
                               {customer.phone ? (
-                                <div className="flex items-center gap-2 text-white/80 text-sm">
-                                  <Phone className="w-4 h-4 text-white/40 flex-shrink-0" />
+                                <div className="flex items-center gap-2 text-gray-700 text-sm">
+                                  <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
                                   {customer.phone}
                                 </div>
                               ) : (
-                                <span className="text-sm text-white/40">—</span>
+                                <span className="text-sm text-gray-400">—</span>
                               )}
                             </td>
 
                             <td className="px-4 sm:px-6 py-4">
-                              <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-[#FFD713]/20">
-                                <span className="font-bold text-[#FFD713] text-sm">
+                              <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100">
+                                <span className="font-bold text-blue-600 text-sm">
                                   {customer.orderCount}
                                 </span>
                               </div>
                             </td>
 
                             <td className="px-4 sm:px-6 py-4 hidden sm:table-cell">
-                              <div className="font-semibold text-white text-sm">
+                              <div className="font-semibold text-gray-900 text-sm">
                                 ${customer.totalSpent.toFixed(2)}
                               </div>
                             </td>
 
                             <td className="px-4 sm:px-6 py-4 hidden lg:table-cell">
-                              <div className="flex items-center gap-2 text-white/80 text-sm">
-                                <Calendar className="w-4 h-4 text-white/40 flex-shrink-0" />
+                              <div className="flex items-center gap-2 text-gray-700 text-sm">
+                                <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
                                 <span>
                                   {new Date(
                                     customer.createdAt,
