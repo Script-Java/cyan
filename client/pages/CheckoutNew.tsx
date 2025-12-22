@@ -699,7 +699,21 @@ export default function CheckoutNew() {
   return (
     <>
       <Header />
-      <main className="pt-24 min-h-screen bg-[#fafafa] text-gray-900 px-10 py-12">
+
+      {/* Skip to Main Content Link - Accessibility */}
+      <a
+        href="#checkout-form"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 bg-blue-600 text-white px-4 py-2"
+      >
+        Skip to checkout form
+      </a>
+
+      <main
+        className="pt-24 min-h-screen bg-[#fafafa] text-gray-900 px-10 py-12"
+        id="checkout-main"
+        role="main"
+        aria-label="Checkout page"
+      >
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold mb-8">Your Cart</h1>
 
