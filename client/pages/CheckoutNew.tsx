@@ -660,7 +660,7 @@ export default function CheckoutNew() {
                   >
                     <div className="flex gap-6">
                       <div className="flex flex-col gap-4 flex-shrink-0">
-                        <div className="w-48 h-48 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center">
+                        <div className="w-48 h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center">
                           {item.image ? (
                             <img
                               src={item.image}
@@ -674,7 +674,7 @@ export default function CheckoutNew() {
                           )}
                         </div>
                         {item.design_file_url && (
-                          <div className="w-48 bg-white/5 border border-white/10 rounded-xl overflow-hidden flex items-center justify-center">
+                          <div className="w-48 bg-white border border-gray-200 rounded-xl overflow-hidden flex items-center justify-center">
                             {item.design_file_url.match(
                               /\.(jpg|jpeg|png|gif|webp)$/i,
                             ) ||
@@ -688,7 +688,7 @@ export default function CheckoutNew() {
                               </div>
                             ) : (
                               <div className="p-4 text-center">
-                                <p className="text-xs text-white/60">
+                                <p className="text-xs text-gray-600">
                                   Design file uploaded
                                 </p>
                               </div>
@@ -723,20 +723,20 @@ export default function CheckoutNew() {
                                       (item.price || 0.25) * item.quantity;
                                     return (
                                       <>
-                                        <p className="text-white/60">
+                                        <p className="text-gray-600">
                                           Regular: ${regularTotal.toFixed(2)}
                                         </p>
-                                        <p className="text-white/60">
+                                        <p className="text-gray-600">
                                           Quantity: {item.quantity}
                                         </p>
-                                        <p className="text-green-400 font-semibold">
+                                        <p className="text-green-600 font-semibold">
                                           Save {item.savePercentage}%
                                         </p>
-                                        <p className="text-green-400">
+                                        <p className="text-green-600">
                                           Amount Saved: $
                                           {amountSaved.toFixed(2)}
                                         </p>
-                                        <p className="text-white font-bold border-t border-white/20 pt-1">
+                                        <p className="text-gray-900 font-bold border-t border-white/20 pt-1">
                                           Total: ${total.toFixed(2)}
                                         </p>
                                       </>
@@ -744,7 +744,7 @@ export default function CheckoutNew() {
                                   })()}
                                 </>
                               ) : (
-                                <p className="text-white/60">
+                                <p className="text-gray-600">
                                   $
                                   {(
                                     (item.price || 0.25) * item.quantity
@@ -763,31 +763,31 @@ export default function CheckoutNew() {
                         </div>
 
                         <div className="space-y-3 bg-white/5 rounded-lg p-4 mb-4">
-                          <h4 className="text-purple-400 text-sm font-bold uppercase tracking-wider">
+                          <h4 className="text-blue-600 text-sm font-bold uppercase tracking-wider">
                             Product Specifications
                           </h4>
                           <div className="space-y-2 text-sm">
                             <div className="flex items-center justify-between">
-                              <span className="text-white/60">Quantity</span>
+                              <span className="text-gray-600">Quantity</span>
                               <span className="font-medium">
                                 {item.quantity}
                               </span>
                             </div>
                             <div className="flex items-center justify-between">
-                              <span className="text-white/60">Size</span>
+                              <span className="text-gray-600">Size</span>
                               <span className="font-medium">Custom</span>
                             </div>
                           </div>
                         </div>
 
                         <div className="space-y-2">
-                          <label className="text-purple-400 text-sm font-bold uppercase tracking-wider">
+                          <label className="text-blue-600 text-sm font-bold uppercase tracking-wider">
                             Additional Notes
                           </label>
                           <textarea
                             placeholder="Any special instructions or requests..."
                             rows={3}
-                            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/40 text-sm"
+                            className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-gray-900 placeholder-gray-400 text-sm"
                           />
                         </div>
                       </div>
@@ -795,21 +795,21 @@ export default function CheckoutNew() {
                   </div>
                 ))}
 
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6">
                   <div className="flex gap-2">
                     <div className="flex-1 relative">
                       <Input
                         placeholder="Discount code"
                         value={discountCode}
                         onChange={(e) => setDiscountCode(e.target.value)}
-                        className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                        className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400"
                       />
                     </div>
                     <Button
                       type="button"
                       onClick={handleApplyDiscount}
                       disabled={!discountCode}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+                      className="bg-green-500 hover:bg-green-600 text-gray-900 px-6"
                     >
                       Apply
                     </Button>
@@ -827,23 +827,23 @@ export default function CheckoutNew() {
               {/* Order Summary Sidebar */}
               <div className="lg:col-span-1">
                 <div className="sticky top-32 space-y-6">
-                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+                  <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6">
                     <div className="flex justify-between items-center mb-6">
                       <h3 className="text-xl font-bold">Order Summary</h3>
                       <button
                         type="button"
-                        className="text-white/60 hover:text-white transition"
+                        className="text-gray-600 hover:text-gray-900 transition"
                       >
                         <Share2 className="w-5 h-5" />
                       </button>
                     </div>
 
-                    <div className="space-y-3 text-sm mb-6 pb-6 border-b border-white/10">
-                      <div className="flex justify-between text-white/60">
+                    <div className="space-y-3 text-sm mb-6 pb-6 border-b border-gray-200">
+                      <div className="flex justify-between text-gray-600">
                         <span>Subtotal ({cartItems.length} items)</span>
                         <span>${orderData.subtotal.toFixed(2)}</span>
                       </div>
-                      <div className="flex justify-between text-white/60">
+                      <div className="flex justify-between text-gray-600">
                         <span>You're paying</span>
                         <span>
                           $
@@ -858,7 +858,7 @@ export default function CheckoutNew() {
                         </span>
                       </div>
                       {orderData.tax > 0 && (
-                        <div className="flex justify-between text-orange-400">
+                        <div className="flex justify-between text-orange-600">
                           <span>Tax (8%)</span>
                           <span className="font-bold">
                             ${orderData.tax.toFixed(2)}
@@ -866,7 +866,7 @@ export default function CheckoutNew() {
                         </div>
                       )}
                       {shippingCost > 0 && (
-                        <div className="flex justify-between text-blue-400">
+                        <div className="flex justify-between text-blue-600">
                           <span>Shipping</span>
                           <span className="font-bold">
                             ${shippingCost.toFixed(2)}
@@ -874,13 +874,13 @@ export default function CheckoutNew() {
                         </div>
                       )}
                       {shippingCost === 0 && (
-                        <div className="flex justify-between text-green-400">
+                        <div className="flex justify-between text-green-600">
                           <span>Shipping</span>
                           <span className="font-bold">FREE</span>
                         </div>
                       )}
                       {appliedDiscount > 0 && (
-                        <div className="flex justify-between text-green-400">
+                        <div className="flex justify-between text-green-600">
                           <span>Deal Savings</span>
                           <span className="font-bold">
                             -${appliedDiscount.toFixed(2)}
@@ -888,13 +888,13 @@ export default function CheckoutNew() {
                         </div>
                       )}
                       {blindShipmentEnabled && (
-                        <div className="flex justify-between text-orange-400">
+                        <div className="flex justify-between text-orange-600">
                           <span>Blind Shipment Fee</span>
                           <span>+${orderData.blindShipmentFee.toFixed(2)}</span>
                         </div>
                       )}
                       {orderData.additionalPayment > 0 && (
-                        <div className="flex justify-between text-orange-400">
+                        <div className="flex justify-between text-orange-600">
                           <span>Additional Payment</span>
                           <span>
                             +${orderData.additionalPayment.toFixed(2)}
@@ -930,13 +930,13 @@ export default function CheckoutNew() {
                   />
 
                   {estimatedDeliveryDate && (
-                    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
-                      <h4 className="text-white font-bold mb-4 flex items-center gap-2">
+                    <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6">
+                      <h4 className="text-gray-900 font-bold mb-4 flex items-center gap-2">
                         📦 Estimated Delivery
                       </h4>
-                      <div className="border-t border-white/10 pt-3 flex justify-between font-bold text-lg">
+                      <div className="border-t border-gray-200 pt-3 flex justify-between font-bold text-lg">
                         <span>Delivery by</span>
-                        <span className="text-green-400">
+                        <span className="text-green-600">
                           {new Date(estimatedDeliveryDate).toLocaleDateString(
                             "en-US",
                             {
@@ -947,7 +947,7 @@ export default function CheckoutNew() {
                           )}
                         </span>
                       </div>
-                      <p className="text-xs text-white/40 mt-3">
+                      <p className="text-xs text-gray-400 mt-3">
                         * Delivery may not occur on weekends. Dates are
                         automatically moved to the next business day.
                       </p>
@@ -969,7 +969,7 @@ export default function CheckoutNew() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 text-lg font-bold rounded-lg mb-3"
+                      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-gray-900 py-6 text-lg font-bold rounded-lg mb-3"
                     >
                       {isSubmitting ? (
                         <>
