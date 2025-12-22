@@ -386,7 +386,7 @@ export default function AdminProofs() {
         <div className="w-full pb-20 md:pb-0 py-6 md:py-8 px-3 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="flex justify-center items-center h-48 sm:h-64">
-              <div className="text-white/60 text-sm">Loading proofs...</div>
+              <div className="text-gray-600 text-sm">Loading proofs...</div>
             </div>
           </div>
         </div>
@@ -399,14 +399,14 @@ export default function AdminProofs() {
       <div className="w-full pb-20 md:pb-0 px-3 sm:px-6 lg:px-8 pt-6 md:pt-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="mb-6 sm:mb-8 border-b border-white/10 pb-6 sm:pb-8">
+          <div className="mb-6 sm:mb-8 border-b border-gray-300 pb-6 sm:pb-8">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-4">
               <div className="flex-1">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white flex items-center gap-2 sm:gap-3">
-                  <Package className="w-6 sm:w-8 lg:w-10 h-6 sm:h-8 lg:h-10 text-green-400 flex-shrink-0" />
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 flex items-center gap-2 sm:gap-3">
+                  <Package className="w-6 sm:w-8 lg:w-10 h-6 sm:h-8 lg:h-10 text-green-600 flex-shrink-0" />
                   <span>Proofs</span>
                 </h1>
-                <p className="text-white/60 mt-2 text-xs sm:text-sm">
+                <p className="text-gray-600 mt-2 text-xs sm:text-sm">
                   Manage design proofs for customers
                 </p>
               </div>
