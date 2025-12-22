@@ -126,28 +126,28 @@ export default function AdminBlogs() {
             </Button>
           </div>
 
-          {/* Messages */}
-          {error && (
-            <div className="mb-4 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400">
-              {error}
-            </div>
-          )}
-          {success && (
-            <div className="mb-4 p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400">
-              {success}
-            </div>
-          )}
+        {/* Messages */}
+        {error && (
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg text-green-800">
+            {success}
+          </div>
+        )}
 
-          {/* Search */}
-          <div className="mb-6 relative">
-            <Search className="w-4 h-4 absolute left-3 top-3 text-white/40" />
-            <Input
-              type="text"
-              placeholder="Search by title or author..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-white/5 border border-white/10 text-white placeholder:text-white/40 pl-10 focus:border-blue-500"
-            />
+        {/* Search */}
+        <div className="mb-6 relative">
+          <Search className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
+          <Input
+            type="text"
+            placeholder="Search by title or author..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 pl-10 focus:border-blue-500"
+          />
           </div>
 
           {/* Blog List */}
