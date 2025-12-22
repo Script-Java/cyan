@@ -268,6 +268,81 @@ export default function LegalPages() {
           )}
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-gradient-to-b from-white to-slate-50 border-t border-gray-200 py-12 mt-12">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
+            {/* Company Info */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-4">About</h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                We're committed to transparency and providing clear information about our policies and practices.
+              </p>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-4">Quick Links</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <button
+                    onClick={() => navigate("/")}
+                    className="text-gray-600 hover:text-blue-600 transition-colors"
+                  >
+                    Home
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/blogs")}
+                    className="text-gray-600 hover:text-blue-600 transition-colors"
+                  >
+                    Blog
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate("/support")}
+                    className="text-gray-600 hover:text-blue-600 transition-colors"
+                  >
+                    Support
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Legal Pages Links */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-4">Legal</h3>
+              <ul className="space-y-2 text-sm">
+                {pages.slice(0, 3).map((page) => (
+                  <li key={page.id}>
+                    <button
+                      onClick={() => navigate(`/${page.page_type}`)}
+                      className="text-gray-600 hover:text-blue-600 transition-colors"
+                    >
+                      {pageTypeLabels[page.page_type]}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-gray-200 pt-8">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <p className="text-gray-600 text-sm">
+                © 2024 Your Company. All rights reserved.
+              </p>
+              <p className="text-gray-500 text-xs">
+                Last updated {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </>
   );
 }
