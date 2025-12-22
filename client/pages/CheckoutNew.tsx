@@ -1081,6 +1081,56 @@ export default function CheckoutNew() {
                       </label>
                     </div>
 
+                    {/* Terms of Service */}
+                    <div className="flex items-start gap-3 mb-4">
+                      <input
+                        type="checkbox"
+                        id="agreeToTerms"
+                        checked={agreedToTerms}
+                        onChange={(e) => setAgreedToTerms(e.target.checked)}
+                        className="w-5 h-5 rounded border-gray-300 text-red-600 focus:ring-2 focus:ring-red-500 mt-1 flex-shrink-0 cursor-pointer"
+                      />
+                      <label
+                        htmlFor="agreeToTerms"
+                        className="text-gray-600 text-sm flex-1 cursor-pointer"
+                      >
+                        I have read and agree to the{" "}
+                        <a
+                          href="/terms"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-700 font-medium"
+                        >
+                          Terms of Service
+                        </a>
+                      </label>
+                    </div>
+
+                    {/* Shipping Policy */}
+                    <div className="flex items-start gap-3 mb-4">
+                      <input
+                        type="checkbox"
+                        id="agreeToShippingPolicy"
+                        checked={agreedToShippingPolicy}
+                        onChange={(e) => setAgreedToShippingPolicy(e.target.checked)}
+                        className="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-2 focus:ring-green-500 mt-1 flex-shrink-0 cursor-pointer"
+                      />
+                      <label
+                        htmlFor="agreeToShippingPolicy"
+                        className="text-gray-600 text-sm flex-1 cursor-pointer"
+                      >
+                        I have read and agree to the{" "}
+                        <a
+                          href="/shipping"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-700 font-medium"
+                        >
+                          Shipping Policy
+                        </a>
+                      </label>
+                    </div>
+
                     {/* Data Handling Transparency */}
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-gray-700">
                       <p className="font-semibold text-gray-900 mb-2">How We Handle Your Data</p>
