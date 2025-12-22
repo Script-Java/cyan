@@ -12,6 +12,26 @@ interface LegalPageFormData {
   visibility: "visible" | "hidden";
 }
 
+// Get all published legal pages (public)
+export const handleGetPublishedLegalPages: RequestHandler = async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("legal_pages")
+      .select("*")
+      .eq("visibility", "visible")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    res.json({
+      pages: data || [],
+    });
+  } catch (err) {
+    console.error("Error fetching legal pages:", err);
+    res.status(500).json({ error: "Failed to fetch legal pages" });
+  }
+};
+
 // Get all legal pages (admin only)
 export const handleGetAllLegalPages: RequestHandler = async (req, res) => {
   try {
