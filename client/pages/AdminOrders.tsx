@@ -561,16 +561,16 @@ export default function AdminOrders() {
                             </div>
 
                             {/* Shipping Address */}
-                            <div className="bg-white/5 rounded border border-white/10 p-3">
+                            <div className="bg-gray-50 rounded border border-gray-200 p-3">
                               <div className="flex items-center justify-between mb-3">
-                                <h4 className="text-sm font-semibold text-white">
+                                <h4 className="text-sm font-semibold text-gray-900">
                                   Shipping Address
                                 </h4>
                                 <button
                                   onClick={() =>
                                     setEditingShippingAddressOrderId(order.id)
                                   }
-                                  className="inline-flex items-center gap-1 px-2 py-1 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 rounded text-blue-300 hover:text-blue-200 transition-colors text-xs font-medium"
+                                  className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 hover:bg-blue-200 border border-blue-300 rounded text-blue-700 hover:text-blue-800 transition-colors text-xs font-medium"
                                 >
                                   <Edit className="w-3 h-3" />
                                   {order.shipping_addresses &&
