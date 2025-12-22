@@ -218,12 +218,16 @@ export default function CheckoutForm({
 
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <Label className="text-gray-700">First Name *</Label>
+            <Label htmlFor="shipping-first-name" className="text-gray-700">
+              First Name <span aria-label="required">*</span>
+            </Label>
             <Input
+              id="shipping-first-name"
               value={customerInfo.firstName}
               onChange={(e) => onCustomerChange("firstName", e.target.value)}
               className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
               required
+              aria-required="true"
             />
           </div>
           <div>
