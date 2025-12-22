@@ -447,23 +447,23 @@ export default function AdminProofs() {
               <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
                 <table className="w-full text-left text-xs sm:text-sm">
                   <thead>
-                    <tr className="border-b border-white/10 bg-white/5">
-                      <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-purple-300 whitespace-nowrap">
+                    <tr className="border-b border-gray-300 bg-gray-100">
+                      <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-gray-700 whitespace-nowrap">
                         Order #
                       </th>
-                      <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-purple-300 whitespace-nowrap hidden sm:table-cell">
+                      <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-gray-700 whitespace-nowrap hidden sm:table-cell">
                         Customer
                       </th>
-                      <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-purple-300 whitespace-nowrap hidden md:table-cell">
+                      <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-gray-700 whitespace-nowrap hidden md:table-cell">
                         Email
                       </th>
-                      <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-purple-300 whitespace-nowrap">
+                      <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-gray-700 whitespace-nowrap">
                         Status
                       </th>
-                      <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-purple-300 text-right whitespace-nowrap">
+                      <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-gray-700 text-right whitespace-nowrap">
                         Total
                       </th>
-                      <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-purple-300 whitespace-nowrap text-right">
+                      <th className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-gray-700 whitespace-nowrap text-right">
                         Action
                       </th>
                     </tr>
@@ -472,21 +472,21 @@ export default function AdminProofs() {
                     {pendingOrders.map((order) => (
                       <tr
                         key={order.id}
-                        className="border-b border-white/10 hover:bg-white/5 transition-colors cursor-pointer"
+                        className="border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
                       >
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-white whitespace-nowrap text-xs sm:text-sm">
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap text-xs sm:text-sm">
                           #{order.id}
                         </td>
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-white/80 whitespace-nowrap hidden sm:table-cell truncate max-w-xs text-xs sm:text-sm">
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-gray-700 whitespace-nowrap hidden sm:table-cell truncate max-w-xs text-xs sm:text-sm">
                           {order.customerName}
                         </td>
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-white/60 hidden md:table-cell text-xs sm:text-sm">
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-gray-600 hidden md:table-cell text-xs sm:text-sm">
                           <div className="flex items-center gap-1 truncate max-w-xs">
                             {order.customerEmail}
                           </div>
                         </td>
                         <td className="px-2 sm:px-4 py-3 sm:py-4">
-                          <span className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-medium bg-orange-500/20 text-orange-300 border border-orange-500/30 whitespace-nowrap inline-block">
+                          <span className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-medium bg-orange-100 text-orange-700 border border-orange-300 whitespace-nowrap inline-block">
                             {order.status.charAt(0).toUpperCase() +
                               order.status.slice(1)}
                           </span>
