@@ -491,13 +491,13 @@ export default function AdminProofs() {
                               order.status.slice(1)}
                           </span>
                         </td>
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-green-300 text-right whitespace-nowrap text-xs sm:text-sm">
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-green-700 text-right whitespace-nowrap text-xs sm:text-sm">
                           ${order.total.toFixed(2)}
                         </td>
                         <td className="px-2 sm:px-4 py-3 sm:py-4 text-right">
                           <button
                             onClick={() => handleSelectOrder(order)}
-                            className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-2 rounded-lg bg-green-600/20 text-green-300 hover:bg-green-600/30 transition-colors font-medium text-xs whitespace-nowrap border border-green-600/30"
+                            className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-2 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors font-medium text-xs whitespace-nowrap border border-green-300"
                           >
                             <span>Send</span>
                             <span className="hidden sm:inline">Proof</span>
@@ -513,7 +513,7 @@ export default function AdminProofs() {
 
           {/* Send Proof Form */}
           {showSendForm && (
-            <div className="backdrop-blur-xl bg-white/5 border border-green-500/30 rounded-lg sm:rounded-2xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+            <div className="backdrop-blur-xl bg-white border border-green-300 rounded-lg sm:rounded-2xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
               <div className="flex justify-between items-start gap-3 mb-4 sm:mb-6">
                 <div className="flex-1 min-w-0">
                   <h3 className="text-base sm:text-lg font-semibold text-white">
