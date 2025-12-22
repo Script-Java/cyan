@@ -20,6 +20,7 @@ interface BlogFormData {
   featured_image_url?: string;
   tags: string[];
   visibility: "visible" | "hidden";
+  show_in_listing?: boolean;
 }
 
 export default function EditBlog() {
@@ -35,6 +36,7 @@ export default function EditBlog() {
     author: "Arlington Teheran",
     tags: [],
     visibility: "visible",
+    show_in_listing: true,
   });
   const [currentTag, setCurrentTag] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -75,6 +77,7 @@ export default function EditBlog() {
         featured_image_url: blog.featured_image_url,
         tags: blog.tags || [],
         visibility: blog.visibility,
+        show_in_listing: blog.show_in_listing !== false,
       });
 
       if (blog.featured_image_url) {
@@ -435,6 +438,34 @@ export default function EditBlog() {
                     className="w-4 h-4"
                   />
                   <span className="text-white/80">Draft (Hidden)</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Show in Blog Listing */}
+            <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+              <label className="block text-sm font-semibold text-white mb-3">
+                Blog Listing
+              </label>
+              <div className="space-y-3">
+                <p className="text-xs text-white/50">
+                  Control whether this post appears in the blog listing page. Direct links will always work.
+                </p>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.show_in_listing !== false}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        show_in_listing: e.target.checked,
+                      })
+                    }
+                    className="w-4 h-4 rounded"
+                  />
+                  <span className="text-white/80">
+                    Show this post in blog listing
+                  </span>
                 </label>
               </div>
             </div>
