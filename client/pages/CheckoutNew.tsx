@@ -1179,6 +1179,36 @@ export default function CheckoutNew() {
                       </p>
                     </div>
                   )}
+
+                  {/* Support Contact Info */}
+                  <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6 mt-6">
+                    <h4 className="text-gray-900 font-bold mb-4 flex items-center gap-2">
+                      💬 Need Help?
+                    </h4>
+                    <div className="space-y-3">
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">Email Support</p>
+                        <a
+                          href="mailto:sticky@stickyslap.com"
+                          className="text-blue-600 hover:text-blue-700 font-medium text-sm break-all"
+                        >
+                          sticky@stickyslap.com
+                        </a>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">Create a Support Ticket</p>
+                        <a
+                          href="/support"
+                          className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                        >
+                          Contact Support →
+                        </a>
+                      </div>
+                      <div className="pt-2 border-t border-gray-200">
+                        <p className="text-xs text-gray-500">We typically respond within 24 hours</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
