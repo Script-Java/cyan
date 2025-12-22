@@ -38,8 +38,8 @@ export default function AdminNavigationGrid({
       icon: <Home className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin",
       color:
-        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
-      iconColor: "text-emerald-400",
+        "bg-gray-300 hover:bg-gray-400 border-gray-400 hover:border-gray-500",
+      iconColor: "text-emerald-600",
     },
     {
       label: "Orders",
@@ -47,8 +47,8 @@ export default function AdminNavigationGrid({
       icon: <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/orders",
       color:
-        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
-      iconColor: "text-emerald-400",
+        "bg-gray-300 hover:bg-gray-400 border-gray-400 hover:border-gray-500",
+      iconColor: "text-emerald-600",
     },
     {
       label: "Proofs",
@@ -56,8 +56,8 @@ export default function AdminNavigationGrid({
       icon: <Eye className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/proofs",
       color:
-        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
-      iconColor: "text-orange-400",
+        "bg-gray-300 hover:bg-gray-400 border-gray-400 hover:border-gray-500",
+      iconColor: "text-orange-600",
     },
     {
       label: "Products",
@@ -65,8 +65,8 @@ export default function AdminNavigationGrid({
       icon: <Package className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/products",
       color:
-        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
-      iconColor: "text-pink-400",
+        "bg-gray-300 hover:bg-gray-400 border-gray-400 hover:border-gray-500",
+      iconColor: "text-pink-600",
     },
     {
       label: "Customers",
@@ -74,8 +74,8 @@ export default function AdminNavigationGrid({
       icon: <Users className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/customers",
       color:
-        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
-      iconColor: "text-gray-400",
+        "bg-gray-300 hover:bg-gray-400 border-gray-400 hover:border-gray-500",
+      iconColor: "text-gray-700",
     },
     {
       label: "Finance",
@@ -83,8 +83,8 @@ export default function AdminNavigationGrid({
       icon: <DollarSign className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/finance",
       color:
-        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
-      iconColor: "text-blue-400",
+        "bg-gray-300 hover:bg-gray-400 border-gray-400 hover:border-gray-500",
+      iconColor: "text-blue-600",
     },
     {
       label: "Analytics",
@@ -92,8 +92,8 @@ export default function AdminNavigationGrid({
       icon: <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/analytics",
       color:
-        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
-      iconColor: "text-blue-400",
+        "bg-gray-300 hover:bg-gray-400 border-gray-400 hover:border-gray-500",
+      iconColor: "text-blue-600",
     },
     {
       label: "Shipping",
@@ -101,8 +101,8 @@ export default function AdminNavigationGrid({
       icon: <Truck className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/shipping",
       color:
-        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
-      iconColor: "text-teal-400",
+        "bg-gray-300 hover:bg-gray-400 border-gray-400 hover:border-gray-500",
+      iconColor: "text-teal-600",
     },
     {
       label: "Settings",
@@ -110,8 +110,8 @@ export default function AdminNavigationGrid({
       icon: <Settings className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "/admin/settings",
       color:
-        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20",
-      iconColor: "text-gray-400",
+        "bg-gray-300 hover:bg-gray-400 border-gray-400 hover:border-gray-500",
+      iconColor: "text-gray-700",
     },
     {
       label: "Logout",
@@ -119,8 +119,8 @@ export default function AdminNavigationGrid({
       icon: <LogOut className="w-5 h-5 sm:w-6 sm:h-6" />,
       path: "#logout",
       color:
-        "bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20 opacity-85",
-      iconColor: "text-gray-400",
+        "bg-gray-300 hover:bg-gray-400 border-gray-400 hover:border-gray-500 opacity-85",
+      iconColor: "text-gray-700",
     },
   ];
 
@@ -156,7 +156,7 @@ export default function AdminNavigationGrid({
           >
             {item.icon}
           </div>
-          <p className="text-xs font-semibold text-white line-clamp-1">
+          <p className="text-xs font-semibold text-gray-900 line-clamp-1">
             {item.label}
           </p>
         </button>
