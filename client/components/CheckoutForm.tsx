@@ -311,12 +311,12 @@ export default function CheckoutForm({
               <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-2">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-gray-900 border-gray-200">
+              <SelectContent className="bg-white border-gray-200">
                 {COUNTRIES.map((country) => (
                   <SelectItem
                     key={country.code}
                     value={country.code}
-                    className="text-gray-900 hover:bg-white/10"
+                    className="text-gray-900 hover:bg-gray-100"
                   >
                     {country.name}
                   </SelectItem>
@@ -334,12 +334,12 @@ export default function CheckoutForm({
                 <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-2">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-900 border-gray-200 max-h-60">
+                <SelectContent className="bg-white border-gray-200 max-h-60">
                   {US_STATES.map((state) => (
                     <SelectItem
                       key={state}
                       value={state}
-                      className="text-gray-900 hover:bg-white/10"
+                      className="text-gray-900 hover:bg-gray-100"
                     >
                       {state}
                     </SelectItem>
@@ -460,12 +460,12 @@ export default function CheckoutForm({
                   <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-2">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 border-gray-200">
+                  <SelectContent className="bg-white border-gray-200">
                     {COUNTRIES.map((country) => (
                       <SelectItem
                         key={country.code}
                         value={country.code}
-                        className="text-gray-900 hover:bg-white/10"
+                        className="text-gray-900 hover:bg-gray-100"
                       >
                         {country.name}
                       </SelectItem>
@@ -483,12 +483,12 @@ export default function CheckoutForm({
                     <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-2">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-900 border-gray-200 max-h-60">
+                    <SelectContent className="bg-white border-gray-200 max-h-60">
                       {US_STATES.map((state) => (
                         <SelectItem
                           key={state}
                           value={state}
-                          className="text-gray-900 hover:bg-white/10"
+                          className="text-gray-900 hover:bg-gray-100"
                         >
                           {state}
                         </SelectItem>
