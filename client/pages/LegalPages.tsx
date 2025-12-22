@@ -381,7 +381,7 @@ export default function LegalPages() {
           <div className="border-t border-gray-200 pt-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <p className="text-gray-600 text-sm">
-                © 2024 Your Company. All rights reserved.
+                © 2025 Sticky Slap.
               </p>
               <p className="text-gray-500 text-xs">
                 Last updated {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
