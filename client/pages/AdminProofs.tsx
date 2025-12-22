@@ -959,7 +959,7 @@ export default function AdminProofs() {
                         </div>
                       </div>
                       <ChevronDown
-                        className={`w-5 h-5 text-white/40 flex-shrink-0 transition-transform ${
+                        className={`w-5 h-5 text-gray-400 flex-shrink-0 transition-transform ${
                           expandedProofId === proof.id ? "rotate-180" : ""
                         }`}
                       />
@@ -967,11 +967,11 @@ export default function AdminProofs() {
 
                     {/* Proof Details - Expanded */}
                     {expandedProofId === proof.id && (
-                      <div className="border-t border-white/10 px-3 sm:px-6 py-4 sm:py-6 bg-white/5">
+                      <div className="border-t border-gray-300 px-3 sm:px-6 py-4 sm:py-6 bg-gray-50">
                         {/* Comments Section */}
                         {proof.comments && proof.comments.length > 0 && (
                           <div className="mb-6">
-                            <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                            <h4 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                               <MessageSquare className="w-4 h-4" />
                               Comments ({proof.comments.length})
                             </h4>
