@@ -988,6 +988,93 @@ export default function CheckoutNew() {
                       </p>
                     </div>
                   )}
+
+                  {/* Privacy Policy & Data Handling */}
+                  <div className="border-t border-gray-200 pt-6 mt-6">
+                    <h4 className="text-gray-900 font-bold text-lg mb-4">
+                      Privacy & Data Protection
+                    </h4>
+
+                    {/* Privacy Policy Agreement */}
+                    <div className="flex items-start gap-3 mb-4">
+                      <input
+                        type="checkbox"
+                        id="agreeToPrivacy"
+                        checked={agreedToPrivacy}
+                        onChange={(e) => setAgreedToPrivacy(e.target.checked)}
+                        className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500 mt-1 flex-shrink-0 cursor-pointer"
+                      />
+                      <label
+                        htmlFor="agreeToPrivacy"
+                        className="text-gray-600 text-sm flex-1 cursor-pointer"
+                      >
+                        I have read and agree to the{" "}
+                        <a
+                          href="/privacy"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-700 font-medium"
+                        >
+                          Privacy Policy
+                        </a>
+                      </label>
+                    </div>
+
+                    {/* GDPR Compliance */}
+                    <div className="flex items-start gap-3 mb-4">
+                      <input
+                        type="checkbox"
+                        id="agreeToGDPR"
+                        checked={agreedToGDPR}
+                        onChange={(e) => setAgreedToGDPR(e.target.checked)}
+                        className="w-5 h-5 rounded border-gray-300 text-purple-600 focus:ring-2 focus:ring-purple-500 mt-1 flex-shrink-0 cursor-pointer"
+                      />
+                      <label
+                        htmlFor="agreeToGDPR"
+                        className="text-gray-600 text-sm flex-1 cursor-pointer"
+                      >
+                        <span className="font-medium">GDPR Compliance:</span> I consent to the collection, processing, and storage of my personal data in accordance with GDPR regulations. I understand my rights including data access, correction, deletion, and portability.
+                      </label>
+                    </div>
+
+                    {/* CCPA Compliance */}
+                    <div className="flex items-start gap-3 mb-4">
+                      <input
+                        type="checkbox"
+                        id="agreeToCCPA"
+                        checked={agreedToCCPA}
+                        onChange={(e) => setAgreedToCCPA(e.target.checked)}
+                        className="w-5 h-5 rounded border-gray-300 text-orange-600 focus:ring-2 focus:ring-orange-500 mt-1 flex-shrink-0 cursor-pointer"
+                      />
+                      <label
+                        htmlFor="agreeToCCPA"
+                        className="text-gray-600 text-sm flex-1 cursor-pointer"
+                      >
+                        <span className="font-medium">CCPA Rights (California residents):</span> I acknowledge my rights to know what personal information is collected, the purposes of use, and my right to delete or opt-out of the sale of personal information.
+                      </label>
+                    </div>
+
+                    {/* Data Handling Transparency */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-gray-700">
+                      <p className="font-semibold text-gray-900 mb-2">How We Handle Your Data</p>
+                      <ul className="space-y-2 text-xs">
+                        <li>✓ Your personal information is encrypted and transmitted securely using SSL/TLS</li>
+                        <li>✓ Payment information is processed by Square and never stored on our servers</li>
+                        <li>✓ We do not sell or share your personal data with third parties for marketing</li>
+                        <li>✓ You can request access, correction, or deletion of your data at any time</li>
+                        <li>✓ We retain your data only as long as necessary for order fulfillment and legal compliance</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {(!agreedToPrivacy || !agreedToGDPR || !agreedToCCPA) && (
+                    <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2">
+                      <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-amber-800">
+                        You must agree to the Privacy Policy and data protection terms to complete your purchase.
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
 
