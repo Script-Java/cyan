@@ -38,6 +38,7 @@ export default function LegalPages() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPageTypes, setSelectedPageTypes] = useState<string[]>([]);
+  const [expandedPageId, setExpandedPageId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchLegalPages();
