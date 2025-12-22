@@ -104,6 +104,7 @@ export default function App() {
             <Route path="/blogs" element={<Blogs />} />
             <Route path="/blog/:blogId" element={<BlogPost />} />
             <Route path="/legal-pages" element={<LegalPages />} />
+            <Route path="/return-refund-policy" element={<ReturnRefundPolicy />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/orders" element={<AdminOrders />} />
             <Route path="/admin/customers" element={<Customers />} />
