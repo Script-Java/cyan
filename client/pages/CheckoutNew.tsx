@@ -969,7 +969,7 @@ export default function CheckoutNew() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-gray-900 py-6 text-lg font-bold rounded-lg mb-3"
+                      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 text-lg font-bold rounded-lg mb-3"
                     >
                       {isSubmitting ? (
                         <>
