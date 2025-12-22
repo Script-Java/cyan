@@ -222,7 +222,7 @@ export default function CheckoutForm({
             <Input
               value={customerInfo.firstName}
               onChange={(e) => onCustomerChange("firstName", e.target.value)}
-              className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+              className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
               required
             />
           </div>
@@ -231,7 +231,7 @@ export default function CheckoutForm({
             <Input
               value={customerInfo.lastName}
               onChange={(e) => onCustomerChange("lastName", e.target.value)}
-              className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+              className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
               required
             />
           </div>
@@ -243,7 +243,7 @@ export default function CheckoutForm({
             type="email"
             value={customerInfo.email}
             onChange={(e) => onCustomerChange("email", e.target.value)}
-            className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
             required
           />
         </div>
@@ -254,7 +254,7 @@ export default function CheckoutForm({
             type="tel"
             value={customerInfo.phone}
             onChange={(e) => onCustomerChange("phone", e.target.value)}
-            className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
             required
           />
         </div>
@@ -265,7 +265,7 @@ export default function CheckoutForm({
             value={customerInfo.street}
             onChange={(e) => onCustomerChange("street", e.target.value)}
             placeholder="123 Main St"
-            className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
             required
           />
         </div>
@@ -276,7 +276,7 @@ export default function CheckoutForm({
             value={customerInfo.street2}
             onChange={(e) => onCustomerChange("street2", e.target.value)}
             placeholder="Apt 4B"
-            className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
           />
         </div>
 
@@ -286,7 +286,7 @@ export default function CheckoutForm({
             <Input
               value={customerInfo.city}
               onChange={(e) => onCustomerChange("city", e.target.value)}
-              className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+              className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
               required
             />
           </div>
@@ -295,7 +295,7 @@ export default function CheckoutForm({
             <Input
               value={customerInfo.postalCode}
               onChange={(e) => onCustomerChange("postalCode", e.target.value)}
-              className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+              className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
               required
             />
           </div>
@@ -308,7 +308,7 @@ export default function CheckoutForm({
               value={customerInfo.country}
               onValueChange={(value) => onCustomerChange("country", value)}
             >
-              <SelectTrigger className="bg-white/5 border-gray-200 text-gray-900 mt-2">
+              <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-2">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-gray-900 border-gray-200">
@@ -331,7 +331,7 @@ export default function CheckoutForm({
                 value={customerInfo.state}
                 onValueChange={(value) => onCustomerChange("state", value)}
               >
-                <SelectTrigger className="bg-white/5 border-gray-200 text-gray-900 mt-2">
+                <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-2">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-900 border-gray-200 max-h-60">
@@ -351,7 +351,7 @@ export default function CheckoutForm({
                 value={customerInfo.state}
                 onChange={(e) => onCustomerChange("state", e.target.value)}
                 placeholder="State/Province"
-                className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                 required
               />
             )}
@@ -371,7 +371,7 @@ export default function CheckoutForm({
             onChange={(e) =>
               onBillingChange("sameAsShipping", e.target.checked)
             }
-            className="w-5 h-5 rounded bg-white/5 border-gray-200"
+            className="w-5 h-5 rounded bg-gray-50 border-gray-200"
           />
           <Label
             htmlFor="sameAsShipping"
@@ -389,7 +389,7 @@ export default function CheckoutForm({
                 <Input
                   value={billingInfo.firstName}
                   onChange={(e) => onBillingChange("firstName", e.target.value)}
-                  className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                   required
                 />
               </div>
@@ -398,7 +398,7 @@ export default function CheckoutForm({
                 <Input
                   value={billingInfo.lastName}
                   onChange={(e) => onBillingChange("lastName", e.target.value)}
-                  className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                   required
                 />
               </div>
@@ -410,7 +410,7 @@ export default function CheckoutForm({
                 value={billingInfo.street}
                 onChange={(e) => onBillingChange("street", e.target.value)}
                 placeholder="123 Main St"
-                className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                 required
               />
             </div>
@@ -423,7 +423,7 @@ export default function CheckoutForm({
                 value={billingInfo.street2}
                 onChange={(e) => onBillingChange("street2", e.target.value)}
                 placeholder="Apt 4B"
-                className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
               />
             </div>
 
@@ -433,7 +433,7 @@ export default function CheckoutForm({
                 <Input
                   value={billingInfo.city}
                   onChange={(e) => onBillingChange("city", e.target.value)}
-                  className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                   required
                 />
               </div>
@@ -444,7 +444,7 @@ export default function CheckoutForm({
                   onChange={(e) =>
                     onBillingChange("postalCode", e.target.value)
                   }
-                  className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                   required
                 />
               </div>
@@ -457,7 +457,7 @@ export default function CheckoutForm({
                   value={billingInfo.country}
                   onValueChange={(value) => onBillingChange("country", value)}
                 >
-                  <SelectTrigger className="bg-white/5 border-gray-200 text-gray-900 mt-2">
+                  <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-2">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-900 border-gray-200">
@@ -480,7 +480,7 @@ export default function CheckoutForm({
                     value={billingInfo.state}
                     onValueChange={(value) => onBillingChange("state", value)}
                   >
-                    <SelectTrigger className="bg-white/5 border-gray-200 text-gray-900 mt-2">
+                    <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-2">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-gray-900 border-gray-200 max-h-60">
@@ -500,7 +500,7 @@ export default function CheckoutForm({
                     value={billingInfo.state}
                     onChange={(e) => onBillingChange("state", e.target.value)}
                     placeholder="State/Province"
-                    className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                    className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                     required
                   />
                 )}
