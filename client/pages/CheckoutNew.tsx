@@ -1035,8 +1035,8 @@ export default function CheckoutNew() {
                   </div>
 
                   {!agreedToPolicy && (
-                    <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2">
-                      <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2" role="alert">
+                      <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" aria-hidden="true" />
                       <p className="text-xs text-amber-800">
                         You must agree to the Return & Refund Policy to complete your purchase.
                       </p>
