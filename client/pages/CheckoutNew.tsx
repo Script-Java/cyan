@@ -1144,11 +1144,11 @@ export default function CheckoutNew() {
                     </div>
                   </div>
 
-                  {(!agreedToPrivacy || !agreedToGDPR || !agreedToCCPA) && (
+                  {(!agreedToPrivacy || !agreedToGDPR || !agreedToCCPA || !agreedToTerms || !agreedToShippingPolicy) && (
                     <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2">
                       <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
                       <p className="text-xs text-amber-800">
-                        You must agree to the Privacy Policy and data protection terms to complete your purchase.
+                        You must agree to all policies and terms to complete your purchase.
                       </p>
                     </div>
                   )}
