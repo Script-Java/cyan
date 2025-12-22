@@ -979,21 +979,21 @@ export default function AdminProofs() {
                               {proof.comments.map((comment) => (
                                 <div
                                   key={comment.id}
-                                  className="bg-white/5 rounded-lg border border-white/10 p-4"
+                                  className="bg-white rounded-lg border border-gray-300 p-4"
                                 >
                                   <div className="flex items-start justify-between mb-2">
                                     <div className="flex-1">
-                                      <p className="text-sm font-medium text-white">
+                                      <p className="text-sm font-medium text-gray-900">
                                         {comment.admin_email
                                           ? "Admin"
                                           : "Customer"}
                                       </p>
-                                      <p className="text-xs text-white/40">
+                                      <p className="text-xs text-gray-500">
                                         {formatDate(comment.created_at)}
                                       </p>
                                     </div>
                                   </div>
-                                  <p className="text-sm text-white/80 whitespace-pre-wrap">
+                                  <p className="text-sm text-gray-700 whitespace-pre-wrap">
                                     {comment.message}
                                   </p>
                                 </div>
@@ -1003,8 +1003,8 @@ export default function AdminProofs() {
                         )}
 
                         {/* Add Comment Section */}
-                        <div className="bg-white/5 rounded-lg border border-white/10 p-4">
-                          <label className="block text-sm font-medium text-purple-300 mb-2 uppercase tracking-wider">
+                        <div className="bg-white rounded-lg border border-gray-300 p-4">
+                          <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
                             Add a Comment
                           </label>
                           <textarea
@@ -1016,7 +1016,7 @@ export default function AdminProofs() {
                               }))
                             }
                             placeholder="Add feedback or ask for changes..."
-                            className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-green-500/50 mb-3 transition"
+                            className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500/50 mb-3 transition"
                             rows={3}
                           />
                           <button
