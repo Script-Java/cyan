@@ -9,6 +9,15 @@ import {
   ArrowDownRight,
   CreditCard,
   Wallet,
+  Package,
+  Eye,
+  BarChart3,
+  Users,
+  Settings,
+  BookOpen,
+  FileText,
+  Truck,
+  MessageSquare,
 } from "lucide-react";
 
 interface FinanceStats {
