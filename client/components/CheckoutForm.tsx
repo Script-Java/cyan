@@ -188,8 +188,8 @@ export default function CheckoutForm({
                 onClick={() => handleSelectAddress(address.id)}
                 className={`w-full text-left p-4 rounded-lg border-2 transition-colors ${
                   selectedSavedAddressId === address.id
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-200 hover:border-white/20 bg-white/5"
+                    ? "border-blue-600 bg-blue-50"
+                    : "border-gray-200 hover:border-gray-300 bg-gray-50"
                 }`}
               >
                 <p className="font-semibold text-gray-900">
