@@ -356,7 +356,7 @@ export default function AdminOrders() {
 
                     {/* Order Details */}
                     {expandedOrderId === order.id && (
-                      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 space-y-4">
+                      <div className="px-6 py-4 bg-white border-t border-gray-200 space-y-4">
                             {/* Action Buttons */}
                             <div className="flex gap-2 flex-wrap">
                               <button
@@ -378,41 +378,41 @@ export default function AdminOrders() {
                             </div>
                             {/* Price Breakdown */}
                             <div>
-                              <h4 className="text-sm font-semibold text-white mb-3">
+                              <h4 className="text-sm font-semibold text-gray-900 mb-3">
                                 Price Breakdown
                               </h4>
                               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                <div className="bg-white/5 rounded border border-white/10 p-3">
-                                  <p className="text-xs text-white/60">
+                                <div className="bg-gray-50 rounded border border-gray-200 p-3">
+                                  <p className="text-xs text-gray-600">
                                     Subtotal
                                   </p>
-                                  <p className="text-sm font-semibold text-white">
+                                  <p className="text-sm font-semibold text-gray-900">
                                     $
                                     {(
                                       order.subtotal || order.total * 0.8
                                     ).toFixed(2)}
                                   </p>
                                 </div>
-                                <div className="bg-white/5 rounded border border-white/10 p-3">
-                                  <p className="text-xs text-white/60">Tax</p>
-                                  <p className="text-sm font-semibold text-white">
+                                <div className="bg-gray-50 rounded border border-gray-200 p-3">
+                                  <p className="text-xs text-gray-600">Tax</p>
+                                  <p className="text-sm font-semibold text-gray-900">
                                     $
                                     {(order.tax || order.total * 0.1).toFixed(
                                       2,
                                     )}
                                   </p>
                                 </div>
-                                <div className="bg-white/5 rounded border border-white/10 p-3">
-                                  <p className="text-xs text-white/60">
+                                <div className="bg-gray-50 rounded border border-gray-200 p-3">
+                                  <p className="text-xs text-gray-600">
                                     Shipping
                                   </p>
-                                  <p className="text-sm font-semibold text-white">
+                                  <p className="text-sm font-semibold text-gray-900">
                                     ${(order.shipping || 0).toFixed(2)}
                                   </p>
                                 </div>
-                                <div className="bg-green-500/20 border border-green-500/30 rounded p-3">
-                                  <p className="text-xs text-white/60">Total</p>
-                                  <p className="text-sm font-semibold text-green-300">
+                                <div className="bg-green-50 border border-green-200 rounded p-3">
+                                  <p className="text-xs text-gray-600">Total</p>
+                                  <p className="text-sm font-semibold text-green-700">
                                     ${order.total.toFixed(2)}
                                   </p>
                                 </div>
