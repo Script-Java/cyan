@@ -531,31 +531,31 @@ export default function AdminOrders() {
                                   )}
                                   {order.shipped_date && (
                                     <div>
-                                      <p className="text-xs text-white/60">
+                                      <p className="text-xs text-gray-600">
                                         Shipped
                                       </p>
-                                      <p className="text-sm text-white">
+                                      <p className="text-sm text-gray-900">
                                         {formatDate(order.shipped_date)}
                                       </p>
                                     </div>
                                   )}
                                 </div>
                               ) : (
-                                <p className="text-sm text-white/60">
+                                <p className="text-sm text-gray-600">
                                   No tracking information yet
                                 </p>
                               )}
                             </div>
 
                             {/* Customer Info */}
-                            <div className="bg-white/5 rounded border border-white/10 p-3">
-                              <h4 className="text-sm font-semibold text-white mb-2">
+                            <div className="bg-gray-50 rounded border border-gray-200 p-3">
+                              <h4 className="text-sm font-semibold text-gray-900 mb-2">
                                 Customer
                               </h4>
-                              <p className="text-sm text-white">
+                              <p className="text-sm text-gray-900">
                                 {order.customerName}
                               </p>
-                              <p className="text-sm text-white/60">
+                              <p className="text-sm text-gray-600">
                                 {order.customerEmail}
                               </p>
                             </div>
