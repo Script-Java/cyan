@@ -622,54 +622,54 @@ export default function AdminOrders() {
                     ))}
                   </div>
                 </div>
-              ) : (
-                <div className="bg-white/5 border border-white/10 rounded-lg p-8 sm:p-12 text-center">
-                  <Package className="w-12 h-12 text-white/20 mx-auto mb-3" />
-                  <h3 className="text-lg font-semibold text-white mb-1">
-                    No Orders Found
-                  </h3>
-                  <p className="text-sm text-white/60">
-                    {searchTerm || filterStatus !== "all" || hideRecentOrders
-                      ? "No orders match your search or filter criteria."
-                      : "There are no orders at this time."}
+            ) : (
+              <div className="bg-white border border-gray-200 rounded-lg p-8 sm:p-12 text-center">
+                <Package className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                  No Orders Found
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {searchTerm || filterStatus !== "all" || hideRecentOrders
+                    ? "No orders match your search or filter criteria."
+                    : "There are no orders at this time."}
+                </p>
+              </div>
+            )}
+
+            {/* Summary Stats */}
+            {filteredOrders.length > 0 && (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                  <p className="text-xs text-gray-600 mb-1">Total Orders</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {filteredOrders.length}
                   </p>
                 </div>
-              )}
-
-              {/* Summary Stats */}
-              {filteredOrders.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  <div className="bg-white/5 border border-white/10 rounded-lg p-4">
-                    <p className="text-xs text-white/60 mb-1">Total Orders</p>
-                    <p className="text-2xl font-bold text-white">
-                      {filteredOrders.length}
-                    </p>
-                  </div>
-                  <div className="bg-white/5 border border-white/10 rounded-lg p-4">
-                    <p className="text-xs text-white/60 mb-1">Total Revenue</p>
-                    <p className="text-2xl font-bold text-green-300">
-                      $
-                      {filteredOrders
-                        .reduce((sum, order) => sum + order.total, 0)
-                        .toFixed(2)}
-                    </p>
-                  </div>
-                  <div className="bg-white/5 border border-white/10 rounded-lg p-4">
-                    <p className="text-xs text-white/60 mb-1">
-                      Avg Order Value
-                    </p>
-                    <p className="text-2xl font-bold text-blue-300">
-                      $
-                      {(
-                        filteredOrders.reduce(
-                          (sum, order) => sum + order.total,
-                          0,
-                        ) / filteredOrders.length
-                      ).toFixed(2)}
-                    </p>
-                  </div>
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                  <p className="text-xs text-gray-600 mb-1">Total Revenue</p>
+                  <p className="text-2xl font-bold text-green-600">
+                    $
+                    {filteredOrders
+                      .reduce((sum, order) => sum + order.total, 0)
+                      .toFixed(2)}
+                  </p>
                 </div>
-              )}
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                  <p className="text-xs text-gray-600 mb-1">
+                    Avg Order Value
+                  </p>
+                  <p className="text-2xl font-bold text-blue-600">
+                    $
+                    {(
+                      filteredOrders.reduce(
+                        (sum, order) => sum + order.total,
+                        0,
+                      ) / filteredOrders.length
+                    ).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            )}
             </div>
           )}
       </div>
