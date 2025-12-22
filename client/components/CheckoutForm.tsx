@@ -179,7 +179,7 @@ export default function CheckoutForm({
     <div className="space-y-6">
       {/* Saved Addresses */}
       {savedAddresses.length > 0 && (
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6">
           <h3 className="text-xl font-bold mb-6">Saved Addresses</h3>
           <div className="space-y-2 mb-4">
             {savedAddresses.map((address) => (
@@ -188,114 +188,114 @@ export default function CheckoutForm({
                 onClick={() => handleSelectAddress(address.id)}
                 className={`w-full text-left p-4 rounded-lg border-2 transition-colors ${
                   selectedSavedAddressId === address.id
-                    ? "border-blue-500 bg-blue-500/10"
-                    : "border-white/10 hover:border-white/20 bg-white/5"
+                    ? "border-blue-500 bg-blue-50"
+                    : "border-gray-200 hover:border-white/20 bg-white/5"
                 }`}
               >
-                <p className="font-semibold text-white">
+                <p className="font-semibold text-gray-900">
                   {address.first_name} {address.last_name}
                 </p>
-                <p className="text-white/70 text-sm">{address.street_1}</p>
+                <p className="text-gray-700 text-sm">{address.street_1}</p>
                 {address.street_2 && (
-                  <p className="text-white/70 text-sm">{address.street_2}</p>
+                  <p className="text-gray-700 text-sm">{address.street_2}</p>
                 )}
-                <p className="text-white/70 text-sm">
+                <p className="text-gray-700 text-sm">
                   {address.city}, {address.state_or_province}{" "}
                   {address.postal_code}
                 </p>
               </button>
             ))}
           </div>
-          <p className="text-white/60 text-sm mb-6">
+          <p className="text-gray-600 text-sm mb-6">
             Or enter a different address below:
           </p>
         </div>
       )}
 
       {/* Shipping Information */}
-      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+      <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6">
         <h3 className="text-xl font-bold mb-6">Shipping Address</h3>
 
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <Label className="text-white/80">First Name *</Label>
+            <Label className="text-gray-700">First Name *</Label>
             <Input
               value={customerInfo.firstName}
               onChange={(e) => onCustomerChange("firstName", e.target.value)}
-              className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+              className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
               required
             />
           </div>
           <div>
-            <Label className="text-white/80">Last Name *</Label>
+            <Label className="text-gray-700">Last Name *</Label>
             <Input
               value={customerInfo.lastName}
               onChange={(e) => onCustomerChange("lastName", e.target.value)}
-              className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+              className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
               required
             />
           </div>
         </div>
 
         <div className="mb-4">
-          <Label className="text-white/80">Email Address *</Label>
+          <Label className="text-gray-700">Email Address *</Label>
           <Input
             type="email"
             value={customerInfo.email}
             onChange={(e) => onCustomerChange("email", e.target.value)}
-            className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+            className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
             required
           />
         </div>
 
         <div className="mb-4">
-          <Label className="text-white/80">Phone Number *</Label>
+          <Label className="text-gray-700">Phone Number *</Label>
           <Input
             type="tel"
             value={customerInfo.phone}
             onChange={(e) => onCustomerChange("phone", e.target.value)}
-            className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+            className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
             required
           />
         </div>
 
         <div className="mb-4">
-          <Label className="text-white/80">Street Address *</Label>
+          <Label className="text-gray-700">Street Address *</Label>
           <Input
             value={customerInfo.street}
             onChange={(e) => onCustomerChange("street", e.target.value)}
             placeholder="123 Main St"
-            className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+            className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
             required
           />
         </div>
 
         <div className="mb-4">
-          <Label className="text-white/80">Apt, Suite, etc. (optional)</Label>
+          <Label className="text-gray-700">Apt, Suite, etc. (optional)</Label>
           <Input
             value={customerInfo.street2}
             onChange={(e) => onCustomerChange("street2", e.target.value)}
             placeholder="Apt 4B"
-            className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+            className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <Label className="text-white/80">City *</Label>
+            <Label className="text-gray-700">City *</Label>
             <Input
               value={customerInfo.city}
               onChange={(e) => onCustomerChange("city", e.target.value)}
-              className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+              className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
               required
             />
           </div>
           <div>
-            <Label className="text-white/80">Postal Code *</Label>
+            <Label className="text-gray-700">Postal Code *</Label>
             <Input
               value={customerInfo.postalCode}
               onChange={(e) => onCustomerChange("postalCode", e.target.value)}
-              className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+              className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
               required
             />
           </div>
@@ -303,20 +303,20 @@ export default function CheckoutForm({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label className="text-white/80">Country *</Label>
+            <Label className="text-gray-700">Country *</Label>
             <Select
               value={customerInfo.country}
               onValueChange={(value) => onCustomerChange("country", value)}
             >
-              <SelectTrigger className="bg-white/5 border-white/10 text-white mt-2">
+              <SelectTrigger className="bg-white/5 border-gray-200 text-gray-900 mt-2">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-gray-900 border-white/10">
+              <SelectContent className="bg-gray-900 border-gray-200">
                 {COUNTRIES.map((country) => (
                   <SelectItem
                     key={country.code}
                     value={country.code}
-                    className="text-white hover:bg-white/10"
+                    className="text-gray-900 hover:bg-white/10"
                   >
                     {country.name}
                   </SelectItem>
@@ -325,21 +325,21 @@ export default function CheckoutForm({
             </Select>
           </div>
           <div>
-            <Label className="text-white/80">State/Province *</Label>
+            <Label className="text-gray-700">State/Province *</Label>
             {customerInfo.country === "US" ? (
               <Select
                 value={customerInfo.state}
                 onValueChange={(value) => onCustomerChange("state", value)}
               >
-                <SelectTrigger className="bg-white/5 border-white/10 text-white mt-2">
+                <SelectTrigger className="bg-white/5 border-gray-200 text-gray-900 mt-2">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-900 border-white/10 max-h-60">
+                <SelectContent className="bg-gray-900 border-gray-200 max-h-60">
                   {US_STATES.map((state) => (
                     <SelectItem
                       key={state}
                       value={state}
-                      className="text-white hover:bg-white/10"
+                      className="text-gray-900 hover:bg-white/10"
                     >
                       {state}
                     </SelectItem>
@@ -351,7 +351,7 @@ export default function CheckoutForm({
                 value={customerInfo.state}
                 onChange={(e) => onCustomerChange("state", e.target.value)}
                 placeholder="State/Province"
-                className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+                className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                 required
               />
             )}
@@ -360,7 +360,7 @@ export default function CheckoutForm({
       </div>
 
       {/* Billing Information */}
-      <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6">
+      <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6">
         <h3 className="text-xl font-bold mb-6">Billing Address</h3>
 
         <div className="flex items-center gap-3 mb-6">
@@ -371,11 +371,11 @@ export default function CheckoutForm({
             onChange={(e) =>
               onBillingChange("sameAsShipping", e.target.checked)
             }
-            className="w-5 h-5 rounded bg-white/5 border-white/10"
+            className="w-5 h-5 rounded bg-white/5 border-gray-200"
           />
           <Label
             htmlFor="sameAsShipping"
-            className="text-white/80 cursor-pointer font-normal"
+            className="text-gray-700 cursor-pointer font-normal"
           >
             Same as shipping address
           </Label>
@@ -385,66 +385,66 @@ export default function CheckoutForm({
           <>
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
-                <Label className="text-white/80">First Name *</Label>
+                <Label className="text-gray-700">First Name *</Label>
                 <Input
                   value={billingInfo.firstName}
                   onChange={(e) => onBillingChange("firstName", e.target.value)}
-                  className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+                  className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                   required
                 />
               </div>
               <div>
-                <Label className="text-white/80">Last Name *</Label>
+                <Label className="text-gray-700">Last Name *</Label>
                 <Input
                   value={billingInfo.lastName}
                   onChange={(e) => onBillingChange("lastName", e.target.value)}
-                  className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+                  className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                   required
                 />
               </div>
             </div>
 
             <div className="mb-4">
-              <Label className="text-white/80">Street Address *</Label>
+              <Label className="text-gray-700">Street Address *</Label>
               <Input
                 value={billingInfo.street}
                 onChange={(e) => onBillingChange("street", e.target.value)}
                 placeholder="123 Main St"
-                className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+                className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                 required
               />
             </div>
 
             <div className="mb-4">
-              <Label className="text-white/80">
+              <Label className="text-gray-700">
                 Apt, Suite, etc. (optional)
               </Label>
               <Input
                 value={billingInfo.street2}
                 onChange={(e) => onBillingChange("street2", e.target.value)}
                 placeholder="Apt 4B"
-                className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+                className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
-                <Label className="text-white/80">City *</Label>
+                <Label className="text-gray-700">City *</Label>
                 <Input
                   value={billingInfo.city}
                   onChange={(e) => onBillingChange("city", e.target.value)}
-                  className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+                  className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                   required
                 />
               </div>
               <div>
-                <Label className="text-white/80">Postal Code *</Label>
+                <Label className="text-gray-700">Postal Code *</Label>
                 <Input
                   value={billingInfo.postalCode}
                   onChange={(e) =>
                     onBillingChange("postalCode", e.target.value)
                   }
-                  className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+                  className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                   required
                 />
               </div>
@@ -452,20 +452,20 @@ export default function CheckoutForm({
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label className="text-white/80">Country *</Label>
+                <Label className="text-gray-700">Country *</Label>
                 <Select
                   value={billingInfo.country}
                   onValueChange={(value) => onBillingChange("country", value)}
                 >
-                  <SelectTrigger className="bg-white/5 border-white/10 text-white mt-2">
+                  <SelectTrigger className="bg-white/5 border-gray-200 text-gray-900 mt-2">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 border-white/10">
+                  <SelectContent className="bg-gray-900 border-gray-200">
                     {COUNTRIES.map((country) => (
                       <SelectItem
                         key={country.code}
                         value={country.code}
-                        className="text-white hover:bg-white/10"
+                        className="text-gray-900 hover:bg-white/10"
                       >
                         {country.name}
                       </SelectItem>
@@ -474,21 +474,21 @@ export default function CheckoutForm({
                 </Select>
               </div>
               <div>
-                <Label className="text-white/80">State/Province *</Label>
+                <Label className="text-gray-700">State/Province *</Label>
                 {billingInfo.country === "US" ? (
                   <Select
                     value={billingInfo.state}
                     onValueChange={(value) => onBillingChange("state", value)}
                   >
-                    <SelectTrigger className="bg-white/5 border-white/10 text-white mt-2">
+                    <SelectTrigger className="bg-white/5 border-gray-200 text-gray-900 mt-2">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-900 border-white/10 max-h-60">
+                    <SelectContent className="bg-gray-900 border-gray-200 max-h-60">
                       {US_STATES.map((state) => (
                         <SelectItem
                           key={state}
                           value={state}
-                          className="text-white hover:bg-white/10"
+                          className="text-gray-900 hover:bg-white/10"
                         >
                           {state}
                         </SelectItem>
@@ -500,7 +500,7 @@ export default function CheckoutForm({
                     value={billingInfo.state}
                     onChange={(e) => onBillingChange("state", e.target.value)}
                     placeholder="State/Province"
-                    className="bg-white/5 border-white/10 text-white placeholder-white/40 mt-2"
+                    className="bg-white/5 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
                     required
                   />
                 )}
