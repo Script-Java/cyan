@@ -516,23 +516,23 @@ export default function AdminProofs() {
             <div className="backdrop-blur-xl bg-white border border-green-300 rounded-lg sm:rounded-2xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
               <div className="flex justify-between items-start gap-3 mb-4 sm:mb-6">
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-base sm:text-lg font-semibold text-white">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                     Send Proof to Customer
                   </h3>
-                  <p className="text-xs text-white/50 mt-1">
+                  <p className="text-xs text-gray-600 mt-1">
                     For Supabase orders only
                   </p>
                 </div>
                 <button
                   onClick={() => setShowSendForm(false)}
-                  className="text-white/40 hover:text-white/60 transition-colors flex-shrink-0"
+                  className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
               <div className="space-y-4 sm:space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-purple-300 mb-2 uppercase tracking-wider">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
                     Order ID * {orderId && `(#${orderId})`}
                   </label>
                   <div className="flex gap-2">
@@ -552,7 +552,7 @@ export default function AdminProofs() {
                         }
                       }}
                       placeholder="Enter order ID"
-                      className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
+                      className="flex-1 px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                     />
                     {pendingOrders.length > 0 && (
                       <Button
