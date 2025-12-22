@@ -94,22 +94,12 @@ export default function ReturnRefundPolicy() {
             <section className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="text-2xl font-bold mb-4">Return Conditions</h2>
               <ul className="space-y-3">
-                <li className="flex gap-3">
-                  <span className="text-green-600 font-bold flex-shrink-0">✓</span>
-                  <span className="text-gray-600">Stickers must be unused and in original condition</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-green-600 font-bold flex-shrink-0">✓</span>
-                  <span className="text-gray-600">Original packaging must be intact</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-green-600 font-bold flex-shrink-0">✓</span>
-                  <span className="text-gray-600">Proof of purchase (order number) is required</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-green-600 font-bold flex-shrink-0">✓</span>
-                  <span className="text-gray-600">Return shipping is the customer's responsibility</span>
-                </li>
+                {policy.return_conditions.map((condition, index) => (
+                  <li key={index} className="flex gap-3">
+                    <span className="text-green-600 font-bold flex-shrink-0">✓</span>
+                    <span className="text-gray-600">{condition}</span>
+                  </li>
+                ))}
               </ul>
             </section>
 
@@ -117,26 +107,12 @@ export default function ReturnRefundPolicy() {
             <section className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="text-2xl font-bold mb-4">How to Request a Return</h2>
               <ol className="space-y-3">
-                <li className="flex gap-3">
-                  <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">1</span>
-                  <span className="text-gray-600">Contact our support team at support@stickyhub.com with your order number</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">2</span>
-                  <span className="text-gray-600">Provide a reason for your return request</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">3</span>
-                  <span className="text-gray-600">We'll review your request and provide return shipping instructions</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">4</span>
-                  <span className="text-gray-600">Ship the item back to us using the provided address</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">5</span>
-                  <span className="text-gray-600">Once received and inspected, we'll process your refund (5-7 business days)</span>
-                </li>
+                {policy.how_to_return.map((step, index) => (
+                  <li key={index} className="flex gap-3">
+                    <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-sm font-bold">{index + 1}</span>
+                    <span className="text-gray-600">{step}</span>
+                  </li>
+                ))}
               </ol>
             </section>
 
@@ -144,12 +120,12 @@ export default function ReturnRefundPolicy() {
             <section className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="text-2xl font-bold mb-4">Defective or Damaged Items</h2>
               <p className="text-gray-600 mb-4 leading-relaxed">
-                If your stickers arrive damaged or defective, we'll replace them at no cost 
-                to you. Simply contact us within 7 days of delivery with photos of the damage.
+                If your stickers arrive damaged or defective, we'll replace them at no cost
+                to you. Simply contact us within {policy.defective_items_days} days of delivery with photos of the damage.
               </p>
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                 <p className="text-amber-900 font-semibold">
-                  7 days from the date of delivery
+                  {policy.defective_items_days} days from the date of delivery
                 </p>
               </div>
             </section>
@@ -159,12 +135,11 @@ export default function ReturnRefundPolicy() {
               <h2 className="text-2xl font-bold mb-4">Refund Timeline</h2>
               <div className="space-y-4">
                 <div className="flex gap-4">
-                  <div className="bg-green-100 text-green-800 rounded-lg px-3 py-1 font-bold text-sm flex-shrink-0">5-7 days</div>
-                  <div className="text-gray-600">After we receive and inspect your return</div>
+                  <div className="bg-green-100 text-green-800 rounded-lg px-3 py-1 font-bold text-sm flex-shrink-0">{policy.refund_timeline}</div>
                 </div>
                 <p className="text-gray-600 text-sm">
-                  Refunds are processed to the original payment method. Depending on your bank 
-                  or credit card company, it may take an additional 2-5 business days for the 
+                  Refunds are processed to the original payment method. Depending on your bank
+                  or credit card company, it may take an additional 2-5 business days for the
                   credit to appear in your account.
                 </p>
               </div>
@@ -174,22 +149,12 @@ export default function ReturnRefundPolicy() {
             <section className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="text-2xl font-bold mb-4">Items Not Eligible for Return</h2>
               <ul className="space-y-2">
-                <li className="flex gap-3">
-                  <span className="text-red-600 font-bold flex-shrink-0">×</span>
-                  <span className="text-gray-600">Used, applied, or partially used stickers</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-red-600 font-bold flex-shrink-0">×</span>
-                  <span className="text-gray-600">Items without original packaging</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-red-600 font-bold flex-shrink-0">×</span>
-                  <span className="text-gray-600">Items returned after 30 days</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-red-600 font-bold flex-shrink-0">×</span>
-                  <span className="text-gray-600">Wholesale or bulk orders (special terms apply)</span>
-                </li>
+                {policy.non_returnable_items.map((item, index) => (
+                  <li key={index} className="flex gap-3">
+                    <span className="text-red-600 font-bold flex-shrink-0">×</span>
+                    <span className="text-gray-600">{item}</span>
+                  </li>
+                ))}
               </ul>
             </section>
 
