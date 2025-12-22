@@ -1263,7 +1263,7 @@ export default function CheckoutNew() {
                     <>
                       <Button
                         type="submit"
-                        disabled={isSubmitting || !agreedToPolicy || !agreedToPrivacy || !agreedToGDPR || !agreedToCCPA}
+                        disabled={isSubmitting || !agreedToPolicy || !agreedToPrivacy || !agreedToGDPR || !agreedToCCPA || !agreedToTerms || !agreedToShippingPolicy}
                         className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 text-lg font-bold rounded-lg mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isSubmitting ? (
