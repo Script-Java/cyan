@@ -223,10 +223,11 @@ export default function AdminReturnRefundPolicy() {
                 <Label className="text-gray-700">Guarantee Days</Label>
                 <Input
                   type="number"
-                  value={policy.guarantee_days}
-                  onChange={(e) =>
-                    setPolicy({ ...policy, guarantee_days: parseInt(e.target.value) })
-                  }
+                  value={policy.guarantee_days || ""}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setPolicy({ ...policy, guarantee_days: val === "" ? 0 : parseInt(val) });
+                  }}
                   className="mt-2"
                 />
               </div>
@@ -234,10 +235,11 @@ export default function AdminReturnRefundPolicy() {
                 <Label className="text-gray-700">Defective Items Days</Label>
                 <Input
                   type="number"
-                  value={policy.defective_items_days}
-                  onChange={(e) =>
-                    setPolicy({ ...policy, defective_items_days: parseInt(e.target.value) })
-                  }
+                  value={policy.defective_items_days || ""}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setPolicy({ ...policy, defective_items_days: val === "" ? 0 : parseInt(val) });
+                  }}
                   className="mt-2"
                 />
               </div>
