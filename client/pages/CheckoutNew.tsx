@@ -103,6 +103,8 @@ export default function CheckoutNew() {
 
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [createdOrderId, setCreatedOrderId] = useState<number | null>(null);
+  const [agreedToPolicy, setAgreedToPolicy] = useState(false);
+  const [showPolicyDropdown, setShowPolicyDropdown] = useState(false);
 
   useEffect(() => {
     const loadCustomerInfo = async () => {
