@@ -48,20 +48,16 @@ export const getReturnRefundPolicy: RequestHandler = async (req, res) => {
       .eq("id", "default")
       .single();
 
-    if (error && error.code === "PGRST116") {
-      // No policy found, return default
+    // Table doesn't exist yet or no data found - return default
+    if (error || !data) {
       return res.json({ policy: DEFAULT_POLICY });
     }
-
-    if (error) throw error;
 
     res.json({ policy: data?.content || DEFAULT_POLICY });
   } catch (error) {
     console.error("Error fetching return/refund policy:", error);
-    res.status(500).json({
-      error: "Failed to fetch policy",
-      message: error instanceof Error ? error.message : "Unknown error",
-    });
+    // Return default policy instead of erroring out
+    res.json({ policy: DEFAULT_POLICY });
   }
 };
 
