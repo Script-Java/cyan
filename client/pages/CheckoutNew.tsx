@@ -947,7 +947,7 @@ export default function CheckoutNew() {
                           )}
                         </span>
                       </div>
-                      <p className="text-xs text-gray-400 mt-3">
+                      <p className="text-xs text-gray-500 mt-3">
                         * Delivery may not occur on weekends. Dates are
                         automatically moved to the next business day.
                       </p>
