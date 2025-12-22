@@ -106,6 +106,9 @@ export default function CheckoutNew() {
   const [agreedToPolicy, setAgreedToPolicy] = useState(false);
   const [showPolicyDropdown, setShowPolicyDropdown] = useState(false);
   const [policy, setPolicy] = useState<any>(null);
+  const [agreedToPrivacy, setAgreedToPrivacy] = useState(false);
+  const [agreedToGDPR, setAgreedToGDPR] = useState(false);
+  const [agreedToCCPA, setAgreedToCCPA] = useState(false);
 
   useEffect(() => {
     const loadCustomerInfo = async () => {
