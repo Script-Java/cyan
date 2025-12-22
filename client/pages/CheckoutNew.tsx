@@ -867,46 +867,88 @@ export default function CheckoutNew() {
                   {showPolicyDropdown && (
                     <div className="mb-4 pb-4 border-b border-gray-200">
                       <div className="bg-gray-50 rounded-lg p-4 mb-4 max-h-80 overflow-y-auto text-sm space-y-3">
-                        <div>
-                          <p className="font-semibold text-gray-900 mb-2">
-                            30-Day Money-Back Guarantee
-                          </p>
-                          <p className="text-gray-600">
-                            We offer a 30-day money-back guarantee on all orders. If you're not satisfied with your custom stickers for any reason, you can request a full refund within 30 days of your purchase.
-                          </p>
-                        </div>
+                        {policy ? (
+                          <>
+                            <div>
+                              <p className="font-semibold text-gray-900 mb-2">
+                                {policy.guarantee_days}-Day Money-Back Guarantee
+                              </p>
+                              <p className="text-gray-600">
+                                We offer a {policy.guarantee_days}-day money-back guarantee on all orders. If you're not satisfied with your custom stickers for any reason, you can request a full refund within {policy.guarantee_days} days of your purchase.
+                              </p>
+                            </div>
 
-                        <div>
-                          <p className="font-semibold text-gray-900 mb-2">
-                            Return Conditions
-                          </p>
-                          <ul className="text-gray-600 space-y-1">
-                            <li>• Stickers must be unused and in original condition</li>
-                            <li>• Original packaging must be intact</li>
-                            <li>• Proof of purchase (order number) is required</li>
-                            <li>• Return shipping is the customer's responsibility</li>
-                          </ul>
-                        </div>
+                            {policy.return_conditions && policy.return_conditions.length > 0 && (
+                              <div>
+                                <p className="font-semibold text-gray-900 mb-2">
+                                  Return Conditions
+                                </p>
+                                <ul className="text-gray-600 space-y-1">
+                                  {policy.return_conditions.map((condition: string, index: number) => (
+                                    <li key={index}>• {condition}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
 
-                        <div>
-                          <p className="font-semibold text-gray-900 mb-2">
-                            Defective or Damaged Items
-                          </p>
-                          <p className="text-gray-600">
-                            If your stickers arrive damaged or defective, we'll replace them at no cost to you within 7 days of delivery.
-                          </p>
-                        </div>
+                            {policy.how_to_return && policy.how_to_return.length > 0 && (
+                              <div>
+                                <p className="font-semibold text-gray-900 mb-2">
+                                  How to Return
+                                </p>
+                                <ol className="text-gray-600 space-y-1">
+                                  {policy.how_to_return.map((step: string, index: number) => (
+                                    <li key={index}>{index + 1}. {step}</li>
+                                  ))}
+                                </ol>
+                              </div>
+                            )}
 
-                        <div className="flex items-center gap-2 pt-2 border-t border-gray-200">
-                          <a
-                            href="/return-refund-policy"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-700 font-medium text-sm"
-                          >
-                            Read Full Policy →
-                          </a>
-                        </div>
+                            <div>
+                              <p className="font-semibold text-gray-900 mb-2">
+                                Defective or Damaged Items
+                              </p>
+                              <p className="text-gray-600">
+                                If your stickers arrive damaged or defective, we'll replace them at no cost to you within {policy.defective_items_days} days of delivery.
+                              </p>
+                            </div>
+
+                            {policy.non_returnable_items && policy.non_returnable_items.length > 0 && (
+                              <div>
+                                <p className="font-semibold text-gray-900 mb-2">
+                                  Non-Returnable Items
+                                </p>
+                                <ul className="text-gray-600 space-y-1">
+                                  {policy.non_returnable_items.map((item: string, index: number) => (
+                                    <li key={index}>• {item}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+
+                            <div>
+                              <p className="font-semibold text-gray-900 mb-2">
+                                Refund Timeline
+                              </p>
+                              <p className="text-gray-600">
+                                {policy.refund_timeline}
+                              </p>
+                            </div>
+
+                            <div className="flex items-center gap-2 pt-2 border-t border-gray-200">
+                              <a
+                                href="/return-refund-policy"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                              >
+                                Read Full Policy →
+                              </a>
+                            </div>
+                          </>
+                        ) : (
+                          <p className="text-gray-500 text-sm">Loading policy...</p>
+                        )}
                       </div>
                     </div>
                   )}
