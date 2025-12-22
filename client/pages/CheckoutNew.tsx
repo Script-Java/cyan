@@ -454,6 +454,21 @@ export default function CheckoutNew() {
       return false;
     }
 
+    if (!agreedToPrivacy) {
+      toast.error("Please agree to the Privacy Policy to proceed");
+      return false;
+    }
+
+    if (!agreedToGDPR) {
+      toast.error("Please confirm GDPR data processing consent to proceed");
+      return false;
+    }
+
+    if (!agreedToCCPA) {
+      toast.error("Please acknowledge CCPA privacy rights to proceed");
+      return false;
+    }
+
     return true;
   };
 
