@@ -41,7 +41,7 @@ export default function SquarePaymentForm({
             "payment-status-container",
           );
           if (statusContainer) {
-            statusContainer.innerHTML = `<div class="text-red-400">Square SDK failed to load. Check browser console for details.</div>`;
+            statusContainer.innerHTML = `<div class="text-red-600">Square SDK failed to load. Check browser console for details.</div>`;
           }
           return;
         }
@@ -83,7 +83,7 @@ export default function SquarePaymentForm({
             try {
               if (statusContainer) {
                 statusContainer.innerHTML =
-                  '<div class="text-white">Processing payment...</div>';
+                  '<div class="text-gray-900">Processing payment...</div>';
               }
 
               const result = await card.tokenize();
@@ -92,7 +92,7 @@ export default function SquarePaymentForm({
 
                 if (statusContainer) {
                   statusContainer.innerHTML =
-                    '<div class="text-white">Sending payment to Square...</div>';
+                    '<div class="text-gray-900">Sending payment to Square...</div>';
                 }
 
                 // Send token to backend to create payment using Square's Payments API (POST /v2/payments)
@@ -133,10 +133,10 @@ export default function SquarePaymentForm({
 
                   if (statusContainer) {
                     statusContainer.innerHTML = `
-                      <div class="bg-green-400/10 border border-green-400/30 rounded-lg p-3 space-y-2">
-                        <div class="text-green-400 font-bold">✓ Payment completed successfully!</div>
-                        <div class="text-sm text-green-300">Payment ID: ${paymentResult.payment.id}</div>
-                        <div class="text-sm text-green-300">Amount: $${paymentResult.payment.amount.toFixed(2)}</div>
+                      <div class="bg-green-50 border border-green-200 rounded-lg p-3 space-y-2">
+                        <div class="text-green-700 font-bold">✓ Payment completed successfully!</div>
+                        <div class="text-sm text-green-600">Payment ID: ${paymentResult.payment.id}</div>
+                        <div class="text-sm text-green-600">Amount: $${paymentResult.payment.amount.toFixed(2)}</div>
                       </div>
                     `;
                   }
@@ -165,9 +165,9 @@ export default function SquarePaymentForm({
                 const errorMsg =
                   e instanceof Error ? e.message : "Payment failed";
                 statusContainer.innerHTML = `
-                  <div class="bg-red-400/10 border border-red-400/30 rounded-lg p-3">
-                    <div class="text-red-400 font-bold">✗ Payment Failed</div>
-                    <div class="text-sm text-red-300 mt-1">${errorMsg}</div>
+                  <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                    <div class="text-red-700 font-bold">✗ Payment Failed</div>
+                    <div class="text-sm text-red-600 mt-1">${errorMsg}</div>
                   </div>
                 `;
               }
@@ -184,32 +184,32 @@ export default function SquarePaymentForm({
 
   return (
     <div id="payment-form" className="space-y-4">
-      <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
         <div className="mb-6">
-          <h3 className="text-lg font-bold text-white mb-2">Payment Details</h3>
-          <p className="text-white/60 text-sm">Amount: ${amount.toFixed(2)}</p>
+          <h3 className="text-lg font-bold text-gray-900 mb-2">Payment Details</h3>
+          <p className="text-gray-600 text-sm">Amount: ${amount.toFixed(2)}</p>
         </div>
 
         <div
           id="payment-status-container"
-          className="mb-4 text-sm font-medium text-white"
+          className="mb-4 text-sm font-medium text-gray-900"
         />
 
         <div
           id="card-container"
-          className="mb-6 p-4 bg-black/30 rounded-lg border border-white/10 min-h-14"
+          className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200 min-h-14"
         />
 
         <button
           id="card-button"
           type="button"
           disabled={isLoading}
-          className="w-full bg-[#FFD713] hover:bg-[#FFD713]/90 text-black font-bold py-3 rounded-lg transition-all disabled:opacity-50"
+          className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition-all disabled:opacity-50"
         >
           Pay ${amount.toFixed(2)}
         </button>
 
-        <p className="text-xs text-white/40 text-center mt-4">
+        <p className="text-xs text-gray-500 text-center mt-4">
           Secure payment powered by Square
         </p>
       </div>
