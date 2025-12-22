@@ -22,6 +22,7 @@ interface BlogItem {
   created_at: string;
   visibility: "visible" | "hidden";
   views: number;
+  show_in_listing?: boolean;
 }
 
 export default function AdminBlogs() {
@@ -212,6 +213,17 @@ export default function AdminBlogs() {
                           {blog.visibility === "visible"
                             ? "Published"
                             : "Draft"}
+                        </span>
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-xs ${
+                            blog.show_in_listing !== false
+                              ? "bg-blue-500/20 text-blue-400"
+                              : "bg-yellow-500/20 text-yellow-400"
+                          }`}
+                        >
+                          {blog.show_in_listing !== false
+                            ? "In Listing"
+                            : "Hidden from Listing"}
                         </span>
                       </div>
                     </div>
