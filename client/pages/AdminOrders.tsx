@@ -215,8 +215,7 @@ export default function AdminOrders() {
 
   return (
     <AdminLayout>
-      <main className="min-h-screen bg-black py-6">
-        <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-4 py-6">
           {/* Header */}
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-white">Orders</h1>
@@ -673,8 +672,7 @@ export default function AdminOrders() {
               )}
             </div>
           )}
-        </div>
-      </main>
+      </div>
 
       {/* Order Status Editor Modal */}
       {editingOrderId !== null && (
