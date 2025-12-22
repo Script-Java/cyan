@@ -532,6 +532,7 @@ export function createServer() {
 
   // ===== Legal Pages Routes =====
   // Public routes
+  app.get("/api/legal-pages", handleGetPublishedLegalPages);
   app.get("/api/legal/:pageType", handleGetLegalPageByType);
 
   // Admin routes (Protected)
