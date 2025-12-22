@@ -620,7 +620,7 @@ export default function Customers() {
                                     {expandedDetails.orders &&
                                       expandedDetails.orders.length > 0 && (
                                         <div>
-                                          <h3 className="font-bold text-white mb-4 text-lg">
+                                          <h3 className="font-bold text-gray-900 mb-4 text-lg">
                                             Order History (
                                             {expandedDetails.orders.length})
                                           </h3>
@@ -629,14 +629,14 @@ export default function Customers() {
                                               (order) => (
                                                 <div
                                                   key={order.id}
-                                                  className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-colors"
+                                                  className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
                                                 >
                                                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                                                     <div className="flex-1 min-w-0">
-                                                      <p className="font-semibold text-white text-sm">
+                                                      <p className="font-semibold text-gray-900 text-sm">
                                                         Order #{order.id}
                                                       </p>
-                                                      <div className="flex flex-wrap items-center gap-3 mt-2 text-xs sm:text-sm text-white/60">
+                                                      <div className="flex flex-wrap items-center gap-3 mt-2 text-xs sm:text-sm text-gray-600">
                                                         <span className="flex items-center gap-1">
                                                           <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
                                                           {new Date(
@@ -653,7 +653,7 @@ export default function Customers() {
                                                       </div>
                                                     </div>
                                                     <div className="text-right">
-                                                      <p className="font-bold text-white text-sm">
+                                                      <p className="font-bold text-gray-900 text-sm">
                                                         $
                                                         {order.total.toFixed(2)}
                                                       </p>
@@ -661,11 +661,11 @@ export default function Customers() {
                                                         className={`text-xs font-medium inline-block mt-2 px-3 py-1 rounded-full ${
                                                           order.status ===
                                                           "pending"
-                                                            ? "bg-yellow-500/30 text-yellow-300"
+                                                            ? "bg-yellow-100 text-yellow-800"
                                                             : order.status ===
                                                                 "completed"
-                                                              ? "bg-green-500/30 text-green-300"
-                                                              : "bg-gray-500/30 text-gray-300"
+                                                              ? "bg-green-100 text-green-800"
+                                                              : "bg-gray-100 text-gray-800"
                                                         }`}
                                                       >
                                                         {order.status}
@@ -681,12 +681,12 @@ export default function Customers() {
 
                                     {(!expandedDetails.orders ||
                                       expandedDetails.orders.length === 0) && (
-                                      <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-8 text-center">
-                                        <ShoppingBag className="w-12 h-12 text-white/40 mx-auto mb-2" />
-                                        <p className="text-white/80 font-medium">
+                                      <div className="bg-white border border-gray-200 rounded-lg p-8 text-center">
+                                        <ShoppingBag className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                                        <p className="text-gray-700 font-medium">
                                           No orders yet
                                         </p>
-                                        <p className="text-white/60 text-sm mt-1">
+                                        <p className="text-gray-600 text-sm mt-1">
                                           This customer hasn't placed any orders
                                         </p>
                                       </div>
