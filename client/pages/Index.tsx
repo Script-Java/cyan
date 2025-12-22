@@ -445,6 +445,14 @@ export default function Index() {
                 <ul className="space-y-2 text-sm">
                   <li>
                     <a
+                      href="/legal-pages"
+                      className="hover:text-gray-900 transition-colors font-medium text-blue-600"
+                    >
+                      All Legal Pages
+                    </a>
+                  </li>
+                  <li>
+                    <a
                       href="/privacy"
                       className="hover:text-gray-900 transition-colors"
                     >
