@@ -53,6 +53,7 @@ import Customers from "./pages/Customers";
 import AdminShipping from "./pages/AdminShipping";
 import AdminEcwidMigration from "./pages/AdminEcwidMigration";
 import ReturnRefundPolicy from "./pages/ReturnRefundPolicy";
+import AdminReturnRefundPolicy from "./pages/AdminReturnRefundPolicy";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 
