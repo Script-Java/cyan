@@ -396,7 +396,7 @@ export default function AdminProofs() {
 
   return (
     <AdminLayout>
-      <div className="w-full bg-black text-white pb-20 md:pb-0 px-3 sm:px-6 lg:px-8 pt-6 md:pt-8">
+      <div className="w-full pb-20 md:pb-0 px-3 sm:px-6 lg:px-8 pt-6 md:pt-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="mb-6 sm:mb-8 border-b border-white/10 pb-6 sm:pb-8">
