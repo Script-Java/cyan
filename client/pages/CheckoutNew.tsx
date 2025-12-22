@@ -864,24 +864,37 @@ export default function CheckoutNew() {
                 ))}
 
                 <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6">
-                  <div className="flex gap-2">
-                    <div className="flex-1 relative">
-                      <Input
-                        placeholder="Discount code"
-                        value={discountCode}
-                        onChange={(e) => setDiscountCode(e.target.value)}
-                        className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400"
-                      />
+                  <fieldset>
+                    <legend className="sr-only">Discount Code Section</legend>
+                    <div className="flex gap-2">
+                      <div className="flex-1 relative">
+                        <label htmlFor="discount-code" className="sr-only">
+                          Discount code
+                        </label>
+                        <Input
+                          id="discount-code"
+                          placeholder="Discount code"
+                          value={discountCode}
+                          onChange={(e) => setDiscountCode(e.target.value)}
+                          className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400"
+                          aria-label="Discount code"
+                          aria-describedby="discount-help"
+                        />
+                        <span id="discount-help" className="sr-only">
+                          Enter your discount code to apply savings to your order
+                        </span>
+                      </div>
+                      <Button
+                        type="button"
+                        onClick={handleApplyDiscount}
+                        disabled={!discountCode}
+                        className="bg-green-500 hover:bg-green-600 text-white px-6"
+                        aria-label="Apply discount code"
+                      >
+                        Apply
+                      </Button>
                     </div>
-                    <Button
-                      type="button"
-                      onClick={handleApplyDiscount}
-                      disabled={!discountCode}
-                      className="bg-green-500 hover:bg-green-600 text-white px-6"
-                    >
-                      Apply
-                    </Button>
-                  </div>
+                  </fieldset>
                 </div>
 
                 <CheckoutForm
