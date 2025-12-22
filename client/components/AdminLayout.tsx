@@ -13,7 +13,7 @@ export default function AdminLayout({
     <>
       <Header />
       <AdminNavbar />
-      <main className="min-h-screen bg-black text-white">{children}</main>
+      <main className="min-h-screen bg-[#fafafa] text-gray-900">{children}</main>
     </>
   );
 }
