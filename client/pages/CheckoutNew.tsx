@@ -762,7 +762,7 @@ export default function CheckoutNew() {
                           </button>
                         </div>
 
-                        <div className="space-y-3 bg-white/5 rounded-lg p-4 mb-4">
+                        <div className="space-y-3 bg-gray-50 rounded-lg p-4 mb-4">
                           <h4 className="text-blue-600 text-sm font-bold uppercase tracking-wider">
                             Product Specifications
                           </h4>
