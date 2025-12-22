@@ -499,7 +499,7 @@ export default function AdminSupport() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-gray-50 pt-16">
         {/* Header Section */}
         <div className="border-b border-gray-200 bg-white">
           <div className="px-4 sm:px-10 py-8 max-w-7xl mx-auto">
