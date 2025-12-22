@@ -162,12 +162,12 @@ export default function ReturnRefundPolicy() {
             <section className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="text-2xl font-bold mb-4">Questions?</h2>
               <p className="text-gray-600 mb-4 leading-relaxed">
-                If you have any questions about our return and refund policy, please don't 
+                If you have any questions about our return and refund policy, please don't
                 hesitate to reach out to our customer support team.
               </p>
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                 <p className="font-semibold text-gray-900 mb-2">Contact Us</p>
-                <p className="text-gray-600">Email: support@stickyhub.com</p>
+                <p className="text-gray-600">Email: {policy.contact_email}</p>
               </div>
             </section>
 
