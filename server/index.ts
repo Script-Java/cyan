@@ -554,6 +554,17 @@ export function createServer() {
     handleDeleteLegalPage,
   );
 
+  // ===== Return & Refund Policy Routes =====
+  // Public route
+  app.get("/api/return-refund-policy", getReturnRefundPolicy);
+
+  // Admin route (Protected)
+  app.post(
+    "/api/admin/return-refund-policy",
+    verifyToken,
+    updateReturnRefundPolicy,
+  );
+
   // Global error handler - must be last
   app.use((err: any, _req: any, res: any, _next: any) => {
     console.error("Global error handler:", err);
