@@ -505,51 +505,51 @@ export default function Customers() {
                           {/* Expanded Details Row */}
                           {expandedCustomerId === customer.id &&
                             expandedDetails && (
-                              <tr className="border-b-2 border-[#FFD713]/30">
+                              <tr className="border-b-2 border-blue-200">
                                 <td colSpan={8} className="p-0">
-                                  <div className="px-4 sm:px-6 lg:px-8 py-8 space-y-6 bg-white/5 border-t border-white/10">
+                                  <div className="px-4 sm:px-6 lg:px-8 py-8 space-y-6 bg-gray-50 border-t border-gray-200">
                                     {/* Personal Information */}
                                     <div>
-                                      <h3 className="font-bold text-white mb-4 text-lg">
+                                      <h3 className="font-bold text-gray-900 mb-4 text-lg">
                                         Personal Information
                                       </h3>
                                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
-                                          <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
+                                        <div className="bg-white border border-gray-200 rounded-lg p-4">
+                                          <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
                                             Email
                                           </p>
-                                          <p className="text-white text-sm break-all">
+                                          <p className="text-gray-900 text-sm break-all">
                                             {expandedDetails.email}
                                           </p>
                                         </div>
 
                                         {expandedDetails.phone && (
-                                          <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
-                                            <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
+                                          <div className="bg-white border border-gray-200 rounded-lg p-4">
+                                            <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
                                               Phone
                                             </p>
-                                            <p className="text-white text-sm">
+                                            <p className="text-gray-900 text-sm">
                                               {expandedDetails.phone}
                                             </p>
                                           </div>
                                         )}
 
                                         {expandedDetails.company && (
-                                          <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
-                                            <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
+                                          <div className="bg-white border border-gray-200 rounded-lg p-4">
+                                            <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
                                               Company
                                             </p>
-                                            <p className="text-white text-sm">
+                                            <p className="text-gray-900 text-sm">
                                               {expandedDetails.company}
                                             </p>
                                           </div>
                                         )}
 
-                                        <div className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-lg p-4">
-                                          <p className="text-xs text-white/60 font-medium mb-2 uppercase tracking-wide">
+                                        <div className="bg-white border border-gray-200 rounded-lg p-4">
+                                          <p className="text-xs text-gray-600 font-medium mb-2 uppercase tracking-wide">
                                             Signup Date
                                           </p>
-                                          <p className="text-white text-sm">
+                                          <p className="text-gray-900 text-sm">
                                             {new Date(
                                               expandedDetails.createdAt,
                                             ).toLocaleDateString()}
@@ -560,24 +560,24 @@ export default function Customers() {
 
                                     {/* Customer Statistics */}
                                     <div>
-                                      <h3 className="font-bold text-white mb-4 text-lg">
+                                      <h3 className="font-bold text-gray-900 mb-4 text-lg">
                                         Customer Statistics
                                       </h3>
                                       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        <div className="backdrop-blur-lg bg-[#FFD713]/10 border border-[#FFD713]/20 rounded-lg p-4">
-                                          <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
+                                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                          <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
                                             Total Orders
                                           </p>
-                                          <p className="text-2xl sm:text-3xl font-bold text-[#FFD713]">
+                                          <p className="text-2xl sm:text-3xl font-bold text-blue-600">
                                             {expandedDetails.orderCount}
                                           </p>
                                         </div>
 
-                                        <div className="backdrop-blur-lg bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
-                                          <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
+                                        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                                          <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
                                             Total Spent
                                           </p>
-                                          <p className="text-2xl sm:text-3xl font-bold text-purple-400">
+                                          <p className="text-2xl sm:text-3xl font-bold text-purple-600">
                                             $
                                             {expandedDetails.totalSpent.toFixed(
                                               2,
@@ -586,11 +586,11 @@ export default function Customers() {
                                         </div>
 
                                         {expandedDetails.storeCredit > 0 && (
-                                          <div className="backdrop-blur-lg bg-[#FFD713]/10 border border-[#FFD713]/20 rounded-lg p-4">
-                                            <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
+                                          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                                            <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
                                               Store Credit
                                             </p>
-                                            <p className="text-2xl sm:text-3xl font-bold text-[#FFD713]">
+                                            <p className="text-2xl sm:text-3xl font-bold text-green-600">
                                               $
                                               {expandedDetails.storeCredit.toFixed(
                                                 2,
@@ -600,11 +600,11 @@ export default function Customers() {
                                         )}
 
                                         {expandedDetails.orderCount > 0 && (
-                                          <div className="backdrop-blur-lg bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
-                                            <p className="text-white/60 text-xs font-medium mb-2 uppercase tracking-wide">
+                                          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                                            <p className="text-gray-600 text-xs font-medium mb-2 uppercase tracking-wide">
                                               Avg Order Value
                                             </p>
-                                            <p className="text-2xl sm:text-3xl font-bold text-purple-400">
+                                            <p className="text-2xl sm:text-3xl font-bold text-orange-600">
                                               $
                                               {(
                                                 expandedDetails.totalSpent /
