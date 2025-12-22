@@ -558,7 +558,12 @@ export function createServer() {
   // Public route
   app.get("/api/return-refund-policy", getReturnRefundPolicy);
 
-  // Admin route (Protected)
+  // Admin routes (Protected)
+  app.get(
+    "/api/admin/return-refund-policy",
+    verifyToken,
+    getReturnRefundPolicy,
+  );
   app.post(
     "/api/admin/return-refund-policy",
     verifyToken,
