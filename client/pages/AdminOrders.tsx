@@ -195,7 +195,7 @@ export default function AdminOrders() {
       case "cancelled":
         return "text-red-300 bg-red-500/20 border border-red-500/30";
       default:
-        return "text-white/60 bg-white/10 border border-white/10";
+        return "text-gray-600 bg-gray-100 border border-gray-200";
     }
   };
 
@@ -233,150 +233,131 @@ export default function AdminOrders() {
             <AdminNavigationGrid />
           </div>
 
-          {isLoading ? (
-            <div className="flex justify-center items-center h-96">
-              <div className="text-white/60">Loading orders...</div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {/* Search and Filter */}
-              <div className="flex flex-col gap-3">
-                <div className="flex gap-3">
-                  <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-3.5 w-4 h-4 text-white/40" />
-                    <input
-                      type="text"
-                      placeholder="Search by order, customer, or email..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
-                    />
+        {isLoading ? (
+          <div className="flex justify-center items-center h-96">
+            <div className="text-gray-600">Loading orders...</div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {/* Search and Filter */}
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-3">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search by order, customer, or email..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
+                  />
                   </div>
                   <div className="flex items-center gap-2">
-                    <Filter className="w-4 h-4 text-white/40 flex-shrink-0" />
+                    <Filter className="w-4 h-4 text-gray-400 flex-shrink-0" />
                     <select
                       value={filterStatus}
                       onChange={(e) => setFilterStatus(e.target.value)}
-                      className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
+                      className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
                     >
-                      <option value="all" className="bg-gray-900">
-                        All Statuses
-                      </option>
-                      <option value="pending" className="bg-gray-900">
-                        Pending
-                      </option>
-                      <option value="processing" className="bg-gray-900">
-                        Processing
-                      </option>
-                      <option value="printing" className="bg-gray-900">
-                        Printing
-                      </option>
-                      <option
-                        value="preparing for shipping"
-                        className="bg-gray-900"
-                      >
+                      <option value="all">All Statuses</option>
+                      <option value="pending">Pending</option>
+                      <option value="processing">Processing</option>
+                      <option value="printing">Printing</option>
+                      <option value="preparing for shipping">
                         Preparing for Shipping
                       </option>
-                      <option value="in transit" className="bg-gray-900">
-                        In Transit
-                      </option>
-                      <option value="shipped" className="bg-gray-900">
-                        Shipped
-                      </option>
-                      <option value="delivered" className="bg-gray-900">
-                        Delivered
-                      </option>
-                      <option value="cancelled" className="bg-gray-900">
-                        Cancelled
-                      </option>
+                      <option value="in transit">In Transit</option>
+                      <option value="shipped">Shipped</option>
+                      <option value="delivered">Delivered</option>
+                      <option value="cancelled">Cancelled</option>
                     </select>
                   </div>
                 </div>
 
                 {/* Hide Recent Orders Toggle */}
-                <div className="flex items-center gap-3 px-3 py-2 bg-white/5 border border-white/10 rounded-lg w-fit">
+                <div className="flex items-center gap-3 px-3 py-2 bg-white border border-gray-200 rounded-lg w-fit">
                   <input
                     type="checkbox"
                     id="hideRecentOrders"
                     checked={hideRecentOrders}
                     onChange={(e) => setHideRecentOrders(e.target.checked)}
-                    className="w-4 h-4 rounded border border-white/30 bg-white/10 cursor-pointer accent-green-500"
+                    className="w-4 h-4 rounded border border-gray-300 bg-white cursor-pointer accent-green-500"
                   />
                   <label
                     htmlFor="hideRecentOrders"
-                    className="text-sm text-white/80 cursor-pointer font-medium"
+                    className="text-sm text-gray-700 cursor-pointer font-medium"
                   >
                     Hide orders from past 7 days
                   </label>
                 </div>
               </div>
 
-              {/* Orders List */}
-              {filteredOrders.length > 0 ? (
-                <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden backdrop-blur-sm">
-                  {/* Header */}
-                  <div className="px-6 py-3 border-b border-white/10 bg-white/5">
-                    <h2 className="text-lg font-semibold text-white">
-                      Orders
-                      <span className="ml-3 text-sm font-normal text-white/60">
-                        {filteredOrders.length}{" "}
-                        {filteredOrders.length === 1 ? "order" : "orders"}
-                      </span>
-                    </h2>
-                  </div>
+            {/* Orders List */}
+            {filteredOrders.length > 0 ? (
+              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                {/* Header */}
+                <div className="px-6 py-3 border-b border-gray-200 bg-gray-50">
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    Orders
+                    <span className="ml-3 text-sm font-normal text-gray-600">
+                      {filteredOrders.length}{" "}
+                      {filteredOrders.length === 1 ? "order" : "orders"}
+                    </span>
+                  </h2>
+                </div>
 
-                  {/* Orders */}
-                  <div className="divide-y divide-white/10">
-                    {filteredOrders.map((order) => (
-                      <div key={order.id}>
-                        {/* Order Row */}
-                        <button
-                          onClick={() =>
-                            setExpandedOrderId(
-                              expandedOrderId === order.id ? null : order.id,
-                            )
-                          }
-                          className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors text-left"
-                        >
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-3 flex-wrap">
-                              <span className="font-semibold text-white">
-                                Order #{order.id}
-                              </span>
-                              <span
-                                className={`px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                                  order.status,
-                                )}`}
-                              >
-                                {order.status.charAt(0).toUpperCase() +
-                                  order.status.slice(1)}
-                              </span>
-                            </div>
-                            <div className="text-sm text-white/60 mt-1">
-                              {order.customerName} •{" "}
-                              <span className="text-white/50">
-                                {order.customerEmail}
-                              </span>
-                            </div>
-                            <div className="text-xs text-white/50 mt-1">
-                              {formatDate(order.dateCreated)}
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-4 flex-shrink-0 ml-4">
-                            <span className="font-semibold text-green-300 text-right">
-                              ${order.total.toFixed(2)}
-                            </span>
-                            <ChevronDown
-                              className={`w-5 h-5 text-white/60 transition-transform ${
-                                expandedOrderId === order.id ? "rotate-180" : ""
-                              }`}
-                            />
-                          </div>
-                        </button>
+                {/* Orders */}
+                <div className="divide-y divide-gray-200">
+                {filteredOrders.map((order) => (
+                  <div key={order.id}>
+                    {/* Order Row */}
+                    <button
+                      onClick={() =>
+                        setExpandedOrderId(
+                          expandedOrderId === order.id ? null : order.id,
+                        )
+                      }
+                      className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors text-left"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-3 flex-wrap">
+                          <span className="font-semibold text-gray-900">
+                            Order #{order.id}
+                          </span>
+                          <span
+                            className={`px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                              order.status,
+                            )}`}
+                          >
+                            {order.status.charAt(0).toUpperCase() +
+                              order.status.slice(1)}
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-600 mt-1">
+                          {order.customerName} •{" "}
+                          <span className="text-gray-500">
+                            {order.customerEmail}
+                          </span>
+                        </div>
+                        <div className="text-xs text-gray-500 mt-1">
+                          {formatDate(order.dateCreated)}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4 flex-shrink-0 ml-4">
+                        <span className="font-semibold text-green-600 text-right">
+                          ${order.total.toFixed(2)}
+                        </span>
+                        <ChevronDown
+                          className={`w-5 h-5 text-gray-600 transition-transform ${
+                            expandedOrderId === order.id ? "rotate-180" : ""
+                          }`}
+                        />
+                      </div>
+                    </button>
 
-                        {/* Order Details */}
-                        {expandedOrderId === order.id && (
-                          <div className="px-6 py-4 bg-white/5 border-t border-white/10 space-y-4">
+                    {/* Order Details */}
+                    {expandedOrderId === order.id && (
+                      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 space-y-4">
                             {/* Action Buttons */}
                             <div className="flex gap-2 flex-wrap">
                               <button
