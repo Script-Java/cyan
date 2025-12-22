@@ -1237,8 +1237,8 @@ export default function CheckoutNew() {
                   ) : (
                     <Button
                       type="submit"
-                      disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 text-lg font-bold rounded-lg mb-3"
+                      disabled={isSubmitting || !agreedToPolicy || !agreedToPrivacy || !agreedToGDPR || !agreedToCCPA}
+                      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 text-lg font-bold rounded-lg mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSubmitting ? (
                         <>
