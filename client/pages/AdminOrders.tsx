@@ -583,34 +583,34 @@ export default function AdminOrders() {
                               order.shipping_addresses.length > 0 ? (
                                 order.shipping_addresses.map((address, idx) => (
                                   <div key={idx} className="text-sm">
-                                    <p className="text-white">
+                                    <p className="text-gray-900">
                                       {address.first_name} {address.last_name}
                                     </p>
-                                    <p className="text-white/60">
+                                    <p className="text-gray-600">
                                       {address.street_1}
                                     </p>
                                     {address.street_2 && (
-                                      <p className="text-white/60">
+                                      <p className="text-gray-600">
                                         {address.street_2}
                                       </p>
                                     )}
-                                    <p className="text-white/60">
+                                    <p className="text-gray-600">
                                       {address.city},{" "}
                                       {address.state_or_province}{" "}
                                       {address.postal_code}
                                     </p>
-                                    <p className="text-white/60">
+                                    <p className="text-gray-600">
                                       {address.country_iso2}
                                     </p>
                                     {address.phone && (
-                                      <p className="text-white/60 mt-1">
+                                      <p className="text-gray-600 mt-1">
                                         {address.phone}
                                       </p>
                                     )}
                                   </div>
                                 ))
                               ) : (
-                                <p className="text-sm text-white/60">
+                                <p className="text-sm text-gray-600">
                                   No shipping address yet. Click "Add" to add
                                   one.
                                 </p>
