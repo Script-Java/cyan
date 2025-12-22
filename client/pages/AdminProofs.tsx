@@ -1166,7 +1166,7 @@ export default function AdminProofs() {
                         {/* Comments Section */}
                         {proof.comments && proof.comments.length > 0 && (
                           <div>
-                            <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                            <h4 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                               <MessageSquare className="w-4 h-4" />
                               Comments
                             </h4>
@@ -1174,21 +1174,21 @@ export default function AdminProofs() {
                               {proof.comments.map((comment) => (
                                 <div
                                   key={comment.id}
-                                  className="bg-white/5 rounded-lg border border-white/10 p-4"
+                                  className="bg-white rounded-lg border border-gray-300 p-4"
                                 >
                                   <div className="flex items-start justify-between mb-2">
                                     <div className="flex-1">
-                                      <p className="text-sm font-medium text-white">
+                                      <p className="text-sm font-medium text-gray-900">
                                         {comment.admin_email
                                           ? "Admin"
                                           : "Customer"}
                                       </p>
-                                      <p className="text-xs text-white/40">
+                                      <p className="text-xs text-gray-500">
                                         {formatDate(comment.created_at)}
                                       </p>
                                     </div>
                                   </div>
-                                  <p className="text-sm text-white/80 whitespace-pre-wrap">
+                                  <p className="text-sm text-gray-700 whitespace-pre-wrap">
                                     {comment.message}
                                   </p>
                                 </div>
