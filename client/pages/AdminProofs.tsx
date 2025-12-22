@@ -614,12 +614,12 @@ export default function AdminProofs() {
                   </div>
                 </div>
                 {uploadedFile && (
-                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4">
+                  <div className="backdrop-blur-xl bg-gray-50 border border-gray-300 rounded-xl p-4">
                     <div className="flex items-start justify-between mb-4">
-                      <h4 className="font-medium text-white">File Preview</h4>
+                      <h4 className="font-medium text-gray-900">File Preview</h4>
                       <button
                         onClick={handleRemoveFile}
-                        className="text-white/40 hover:text-white/60 transition-colors"
+                        className="text-gray-400 hover:text-gray-600 transition-colors"
                       >
                         <X className="w-5 h-5" />
                       </button>
@@ -629,20 +629,20 @@ export default function AdminProofs() {
                         <img
                           src={filePreview}
                           alt="Preview"
-                          className="w-full max-h-48 object-cover rounded-lg border border-white/10"
+                          className="w-full max-h-48 object-cover rounded-lg border border-gray-300"
                         />
-                        <p className="text-sm text-white/60 mt-2">
+                        <p className="text-sm text-gray-600 mt-2">
                           {uploadedFile.name}
                         </p>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
-                        <FileIcon className="w-8 h-8 text-green-400 flex-shrink-0" />
+                      <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-300">
+                        <FileIcon className="w-8 h-8 text-green-600 flex-shrink-0" />
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-white truncate">
+                          <p className="text-sm font-medium text-gray-900 truncate">
                             {uploadedFile.name}
                           </p>
-                          <p className="text-xs text-white/40">
+                          <p className="text-xs text-gray-500">
                             {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
                           </p>
                         </div>
