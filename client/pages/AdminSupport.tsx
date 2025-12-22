@@ -5,7 +5,16 @@ import {
   Send,
   Loader,
   AlertCircle,
+  Package,
+  Eye,
+  BarChart3,
+  DollarSign,
+  Users,
+  BookOpen,
+  FileText,
+  Truck,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import MobileAdminPanel from "@/components/MobileAdminPanel";
@@ -32,6 +41,7 @@ interface TicketReply {
 }
 
 export default function AdminSupport() {
+  const navigate = useNavigate();
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(
     null,
@@ -167,41 +177,41 @@ export default function AdminSupport() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "open":
-        return "bg-blue-500/20 border-blue-500/30 text-blue-300";
+        return "bg-blue-100 border-blue-200 text-blue-700";
       case "in-progress":
-        return "bg-yellow-500/20 border-yellow-500/30 text-yellow-300";
+        return "bg-yellow-100 border-yellow-200 text-yellow-700";
       case "resolved":
-        return "bg-green-500/20 border-green-500/30 text-green-300";
+        return "bg-green-100 border-green-200 text-green-700";
       case "closed":
-        return "bg-gray-500/20 border-gray-500/30 text-gray-300";
+        return "bg-gray-100 border-gray-200 text-gray-700";
       default:
-        return "bg-gray-500/20 border-gray-500/30 text-gray-300";
+        return "bg-gray-100 border-gray-200 text-gray-700";
     }
   };
 
   const getPriorityBg = (priority: string) => {
     switch (priority) {
       case "high":
-        return "bg-red-500/20";
+        return "bg-red-100";
       case "medium":
-        return "bg-yellow-500/20";
+        return "bg-yellow-100";
       case "low":
-        return "bg-green-500/20";
+        return "bg-green-100";
       default:
-        return "bg-gray-500/20";
+        return "bg-gray-100";
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
-        return "text-red-300";
+        return "text-red-700";
       case "medium":
-        return "text-yellow-300";
+        return "text-yellow-700";
       case "low":
-        return "text-green-300";
+        return "text-green-700";
       default:
-        return "text-gray-300";
+        return "text-gray-700";
     }
   };
 
@@ -215,41 +225,118 @@ export default function AdminSupport() {
     });
   };
 
+  const quickAccessLinks = [
+    {
+      title: "Orders",
+      description: "View all orders",
+      icon: <Package className="w-5 h-5" />,
+      path: "/admin/orders",
+      color: "bg-blue-100 hover:bg-blue-200",
+      textColor: "text-blue-600",
+    },
+    {
+      title: "Proofs",
+      description: "Manage proofs",
+      icon: <Eye className="w-5 h-5" />,
+      path: "/admin/proofs",
+      color: "bg-orange-100 hover:bg-orange-200",
+      textColor: "text-orange-600",
+    },
+    {
+      title: "Products",
+      description: "Manage catalog",
+      icon: <Package className="w-5 h-5" />,
+      path: "/admin/products",
+      color: "bg-pink-100 hover:bg-pink-200",
+      textColor: "text-pink-600",
+    },
+    {
+      title: "Customers",
+      description: "View customers",
+      icon: <Users className="w-5 h-5" />,
+      path: "/admin/customers",
+      color: "bg-purple-100 hover:bg-purple-200",
+      textColor: "text-purple-600",
+    },
+    {
+      title: "Finance",
+      description: "View spending",
+      icon: <DollarSign className="w-5 h-5" />,
+      path: "/admin/finance",
+      color: "bg-green-100 hover:bg-green-200",
+      textColor: "text-green-600",
+    },
+    {
+      title: "Analytics",
+      description: "View analytics",
+      icon: <BarChart3 className="w-5 h-5" />,
+      path: "/admin/analytics",
+      color: "bg-cyan-100 hover:bg-cyan-200",
+      textColor: "text-cyan-600",
+    },
+    {
+      title: "Blogs",
+      description: "Manage blogs",
+      icon: <BookOpen className="w-5 h-5" />,
+      path: "/admin/blogs",
+      color: "bg-indigo-100 hover:bg-indigo-200",
+      textColor: "text-indigo-600",
+    },
+    {
+      title: "Legal Pages",
+      description: "Manage legal content",
+      icon: <FileText className="w-5 h-5" />,
+      path: "/admin/legal-pages",
+      color: "bg-amber-100 hover:bg-amber-200",
+      textColor: "text-amber-600",
+    },
+    {
+      title: "Shipping",
+      description: "Manage shipping options",
+      icon: <Truck className="w-5 h-5" />,
+      path: "/admin/shipping",
+      color: "bg-teal-100 hover:bg-teal-200",
+      textColor: "text-teal-600",
+    },
+    {
+      title: "Support",
+      description: "Answer support tickets",
+      icon: <MessageSquare className="w-5 h-5" />,
+      path: "/admin/support",
+      color: "bg-red-100 hover:bg-red-200",
+      textColor: "text-red-600",
+    },
+  ];
+
   if (selectedTicket) {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-black py-6">
-          {/* Navigation Grid - Desktop/Tablet Only */}
-          <div className="hidden md:block border-b border-white/10">
-            <div className="px-6 lg:px-8 py-6 max-w-4xl mx-auto">
-              <h2 className="text-sm font-semibold text-white/60 mb-4 uppercase tracking-wide">
-                Quick Navigation
-              </h2>
-              <AdminNavigationGrid />
+        <main className="min-h-screen bg-gray-50 py-6">
+          {/* Header Section */}
+          <div className="border-b border-gray-200 bg-white">
+            <div className="px-4 sm:px-10 py-6 max-w-4xl mx-auto">
+              <button
+                onClick={handleCloseTicket}
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors text-sm"
+              >
+                <ArrowLeft className="w-4 h-5" />
+                Back to Tickets
+              </button>
             </div>
           </div>
 
-          <div className="max-w-4xl mx-auto px-4">
-            {/* Back button */}
-            <button
-              onClick={handleCloseTicket}
-              className="flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors text-sm pt-6"
-            >
-              <ArrowLeft className="w-4 h-5" />
-              Back to Tickets
-            </button>
-
+          <div className="max-w-4xl mx-auto px-4 py-8">
             {/* Ticket Details */}
-            <div className="bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm p-8">
+            <div className="bg-white border border-gray-200 rounded-lg p-8">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
                 <div>
-                  <h1 className="text-3xl font-bold text-white mb-2">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
                     {selectedTicket.subject}
                   </h1>
-                  <p className="text-sm text-white/60">
+                  <p className="text-sm text-gray-600">
                     From:{" "}
-                    <span className="font-semibold text-white">
+                    <span className="font-semibold text-gray-900">
                       {selectedTicket.customer_name}
                     </span>{" "}
                     ({selectedTicket.customer_email})
@@ -258,7 +345,7 @@ export default function AdminSupport() {
                 <select
                   value={selectedTicket.status}
                   onChange={(e) => handleUpdateStatus(e.target.value)}
-                  className={`px-4 py-2 rounded-lg border font-semibold text-sm outline-none bg-black/50 ${getStatusColor(selectedTicket.status)}`}
+                  className={`px-4 py-2 rounded-lg border font-semibold text-sm outline-none bg-white ${getStatusColor(selectedTicket.status)}`}
                 >
                   <option value="open">Open</option>
                   <option value="in-progress">In Progress</option>
@@ -268,9 +355,9 @@ export default function AdminSupport() {
               </div>
 
               {/* Ticket Meta Info */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 pb-8 border-b border-white/10">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 pb-8 border-b border-gray-200">
                 <div>
-                  <p className="text-xs text-white/60 uppercase tracking-wide mb-1">
+                  <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
                     Priority
                   </p>
                   <span
@@ -280,26 +367,26 @@ export default function AdminSupport() {
                   </span>
                 </div>
                 <div>
-                  <p className="text-xs text-white/60 uppercase tracking-wide mb-1">
+                  <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
                     Category
                   </p>
-                  <p className="text-sm font-semibold text-white">
+                  <p className="text-sm font-semibold text-gray-900">
                     {selectedTicket.category}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-white/60 uppercase tracking-wide mb-1">
+                  <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
                     Created
                   </p>
-                  <p className="text-sm font-semibold text-white">
+                  <p className="text-sm font-semibold text-gray-900">
                     {formatDate(selectedTicket.created_at)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-white/60 uppercase tracking-wide mb-1">
+                  <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
                     Last Updated
                   </p>
-                  <p className="text-sm font-semibold text-white">
+                  <p className="text-sm font-semibold text-gray-900">
                     {formatDate(selectedTicket.updated_at)}
                   </p>
                 </div>
@@ -307,11 +394,11 @@ export default function AdminSupport() {
 
               {/* Original Message */}
               <div className="mb-8">
-                <h3 className="text-lg font-bold text-white mb-3">
+                <h3 className="text-lg font-bold text-gray-900 mb-3">
                   Customer Message
                 </h3>
-                <div className="bg-white/5 rounded-lg p-6 border border-white/10">
-                  <p className="text-white/80 whitespace-pre-wrap">
+                <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                  <p className="text-gray-700 whitespace-pre-wrap">
                     {selectedTicket.message}
                   </p>
                 </div>
@@ -319,14 +406,14 @@ export default function AdminSupport() {
 
               {/* Conversation */}
               <div className="mb-8">
-                <h3 className="text-lg font-bold text-white mb-4">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">
                   Conversation ({ticketReplies.length})
                 </h3>
 
                 {ticketReplies.length === 0 ? (
-                  <div className="bg-blue-500/10 rounded-lg border border-blue-500/20 p-6 text-center mb-8">
-                    <MessageSquare className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                    <p className="text-blue-300">
+                  <div className="bg-blue-50 rounded-lg border border-blue-200 p-6 text-center mb-8">
+                    <MessageSquare className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                    <p className="text-blue-700">
                       No replies yet. Add your response below.
                     </p>
                   </div>
@@ -337,28 +424,28 @@ export default function AdminSupport() {
                         key={reply.id}
                         className={`rounded-lg p-6 border ${
                           reply.sender_type === "admin"
-                            ? "bg-green-500/10 border-green-500/20"
-                            : "bg-white/5 border-white/10"
+                            ? "bg-green-50 border-green-200"
+                            : "bg-gray-50 border-gray-200"
                         }`}
                       >
                         <div className="flex items-start justify-between mb-3">
                           <div>
                             <p
-                              className={`font-semibold ${reply.sender_type === "admin" ? "text-green-300" : "text-white"}`}
+                              className={`font-semibold ${reply.sender_type === "admin" ? "text-green-700" : "text-gray-900"}`}
                             >
                               {reply.sender_name}
                             </p>
-                            <p className="text-xs text-white/60">
+                            <p className="text-xs text-gray-600">
                               {reply.sender_type === "admin"
                                 ? "Admin"
                                 : "Customer"}
                             </p>
                           </div>
-                          <p className="text-xs text-white/60">
+                          <p className="text-xs text-gray-600">
                             {formatDate(reply.created_at)}
                           </p>
                         </div>
-                        <p className="text-white/80 whitespace-pre-wrap">
+                        <p className="text-gray-700 whitespace-pre-wrap">
                           {reply.message}
                         </p>
                       </div>
@@ -368,8 +455,8 @@ export default function AdminSupport() {
               </div>
 
               {/* Reply Form */}
-              <div className="border-t border-white/10 pt-8">
-                <h3 className="text-lg font-bold text-white mb-4">
+              <div className="border-t border-gray-200 pt-8">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">
                   Send Reply
                 </h3>
                 <div className="space-y-4">
@@ -378,13 +465,13 @@ export default function AdminSupport() {
                     onChange={(e) => setReplyMessage(e.target.value)}
                     placeholder="Type your response here..."
                     rows={6}
-                    className="w-full px-4 py-2 border border-white/20 bg-white/5 text-white placeholder-white/40 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
+                    className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
                   />
                   <div className="flex gap-3">
                     <button
                       onClick={handleSubmitReply}
                       disabled={isSubmittingReply || !replyMessage.trim()}
-                      className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-white/10 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
                     >
                       {isSubmittingReply ? (
                         <>
@@ -412,37 +499,52 @@ export default function AdminSupport() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black py-6">
-        {/* Navigation Grid - Desktop/Tablet Only */}
-        <div className="hidden md:block border-b border-white/10">
-          <div className="px-6 lg:px-8 py-6 max-w-7xl mx-auto">
-            <h2 className="text-sm font-semibold text-white/60 mb-4 uppercase tracking-wide">
-              Quick Navigation
-            </h2>
-            <AdminNavigationGrid />
+      <main className="min-h-screen bg-gray-50">
+        {/* Header Section */}
+        <div className="border-b border-gray-200 bg-white">
+          <div className="px-4 sm:px-10 py-8 max-w-7xl mx-auto">
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">
+              Support Tickets
+            </h1>
+            <p className="text-gray-600">
+              Manage customer support tickets and respond to inquiries
+            </p>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4">
-          {/* Header */}
-          <div className="mb-8 pt-6">
-            <h1 className="text-3xl font-bold text-white mb-2">
-              Support Tickets
-            </h1>
-            <p className="text-white/60">
-              Manage customer support tickets and respond to inquiries
-            </p>
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          {/* Quick Access Links */}
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Quick Access
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+              {quickAccessLinks.map((link) => (
+                <button
+                  key={link.path}
+                  onClick={() => navigate(link.path)}
+                  className={`flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-gray-200 transition-all duration-200 hover:scale-105 active:scale-95 ${link.color}`}
+                >
+                  <div className={`${link.textColor}`}>{link.icon}</div>
+                  <div className="text-center">
+                    <p className="text-xs font-semibold text-gray-900 line-clamp-1">
+                      {link.title}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            <div className="bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm p-6">
+            <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white/60 text-sm uppercase tracking-wide mb-1">
+                  <p className="text-gray-600 text-sm uppercase tracking-wide mb-1">
                     Total Tickets
                   </p>
-                  <p className="text-3xl font-bold text-white">
+                  <p className="text-3xl font-bold text-gray-900">
                     {tickets.length}
                   </p>
                 </div>
@@ -450,13 +552,13 @@ export default function AdminSupport() {
               </div>
             </div>
 
-            <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg backdrop-blur-sm p-6">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-blue-300 text-sm uppercase tracking-wide mb-1">
+                  <p className="text-blue-700 text-sm uppercase tracking-wide mb-1">
                     Open
                   </p>
-                  <p className="text-3xl font-bold text-blue-400">
+                  <p className="text-3xl font-bold text-blue-600">
                     {tickets.filter((t) => t.status === "open").length}
                   </p>
                 </div>
@@ -464,13 +566,13 @@ export default function AdminSupport() {
               </div>
             </div>
 
-            <div className="bg-green-500/10 border border-green-500/20 rounded-lg backdrop-blur-sm p-6">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-6 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-green-300 text-sm uppercase tracking-wide mb-1">
+                  <p className="text-green-700 text-sm uppercase tracking-wide mb-1">
                     Resolved
                   </p>
-                  <p className="text-3xl font-bold text-green-400">
+                  <p className="text-3xl font-bold text-green-600">
                     {tickets.filter((t) => t.status === "resolved").length}
                   </p>
                 </div>
@@ -481,51 +583,51 @@ export default function AdminSupport() {
 
           {/* Tickets Table */}
           {loading ? (
-            <div className="bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm p-8 text-center">
-              <Loader className="w-8 h-8 animate-spin text-white/40 mx-auto mb-4" />
-              <p className="text-white/60">Loading tickets...</p>
+            <div className="bg-white border border-gray-200 rounded-lg p-8 text-center">
+              <Loader className="w-8 h-8 animate-spin text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600">Loading tickets...</p>
             </div>
           ) : tickets.length === 0 ? (
-            <div className="bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm p-8 text-center">
-              <AlertCircle className="w-8 h-8 text-white/40 mx-auto mb-4" />
-              <p className="text-white/60">No support tickets yet.</p>
+            <div className="bg-white border border-gray-200 rounded-lg p-8 text-center">
+              <AlertCircle className="w-8 h-8 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600">No support tickets yet.</p>
             </div>
           ) : (
-            <div className="bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm overflow-hidden">
+            <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-white/5 border-b border-white/10">
+                  <thead className="bg-gray-50 border-b border-gray-200">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-semibold text-white/70 uppercase tracking-wide">
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wide">
                         Subject
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold text-white/70 uppercase tracking-wide">
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wide">
                         Customer
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold text-white/70 uppercase tracking-wide">
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wide">
                         Status
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold text-white/70 uppercase tracking-wide">
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wide">
                         Priority
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold text-white/70 uppercase tracking-wide">
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wide">
                         Created
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-semibold text-white/70 uppercase tracking-wide">
+                      <th className="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wide">
                         Action
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/10">
+                  <tbody className="divide-y divide-gray-200">
                     {tickets.map((ticket) => (
                       <tr
                         key={ticket.id}
-                        className="hover:bg-white/5 transition-colors cursor-pointer"
+                        className="hover:bg-gray-50 transition-colors cursor-pointer"
                       >
-                        <td className="px-6 py-4 text-sm font-medium text-white">
+                        <td className="px-6 py-4 text-sm font-medium text-gray-900">
                           {ticket.subject}
                         </td>
-                        <td className="px-6 py-4 text-sm text-white/60">
+                        <td className="px-6 py-4 text-sm text-gray-600">
                           {ticket.customer_name}
                         </td>
                         <td className="px-6 py-4 text-sm">
@@ -544,13 +646,13 @@ export default function AdminSupport() {
                               ticket.priority.slice(1)}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-white/60">
+                        <td className="px-6 py-4 text-sm text-gray-600">
                           {formatDate(ticket.created_at)}
                         </td>
                         <td className="px-6 py-4 text-sm">
                           <button
                             onClick={() => handleSelectTicket(ticket)}
-                            className="text-blue-400 hover:text-blue-300 font-semibold transition-colors"
+                            className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
                           >
                             View
                           </button>
