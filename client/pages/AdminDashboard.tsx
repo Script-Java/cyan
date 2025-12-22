@@ -176,12 +176,12 @@ export default function AdminDashboard() {
 
   return (
     <AdminLayout>
-      <main className="min-h-screen bg-black py-6">
+      <main className="py-6">
         <div className="max-w-6xl mx-auto px-4">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-            <p className="text-white/60 mt-1">
+            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+            <p className="text-gray-600 mt-1">
               Welcome back! Here's what's happening with your store.
             </p>
           </div>
@@ -193,7 +193,7 @@ export default function AdminDashboard() {
 
           {isLoading ? (
             <div className="flex justify-center items-center h-96">
-              <div className="text-white/60">Loading dashboard...</div>
+              <div className="text-gray-600">Loading dashboard...</div>
             </div>
           ) : (
             <div className="space-y-6">
