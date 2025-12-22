@@ -48,6 +48,7 @@ import AdminLegalPages from "./pages/AdminLegalPages";
 import CreateLegalPage from "./pages/CreateLegalPage";
 import EditLegalPage from "./pages/EditLegalPage";
 import LegalPage from "./pages/LegalPage";
+import LegalPages from "./pages/LegalPages";
 import Customers from "./pages/Customers";
 import AdminShipping from "./pages/AdminShipping";
 import AdminEcwidMigration from "./pages/AdminEcwidMigration";
