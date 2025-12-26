@@ -45,58 +45,6 @@ export const handleTestAdminOrders: RequestHandler = async (_req, res) => {
  */
 export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
   try {
-    let allOrders: any[] = [];
-    let ecwidOrders: any[] = [];
-
-    // Fetch Ecwid orders (completed orders - shipped or delivered)
-    try {
-      console.log("Fetching completed orders from Ecwid...");
-      // Fetch shipped orders
-      const shippedOrders = await ecwidAPI.getAllOrders("SHIPPED", 100);
-      // Fetch delivered orders
-      const deliveredOrders = await ecwidAPI.getAllOrders("DELIVERED", 100);
-      const ecwidOrdersList = [...shippedOrders, ...deliveredOrders];
-
-      ecwidOrders = ecwidOrdersList.map((order: any) => ({
-        id: order.id,
-        customerId: order.customerId,
-        customerName: order.shippingPerson?.name || order.email || "Guest",
-        customerEmail: order.email || "N/A",
-        status: "completed",
-        total: order.total || 0,
-        subtotal: order.subtotal || 0,
-        tax: order.tax || 0,
-        shipping: order.shipping || 0,
-        dateCreated: order.createDate,
-        tracking_number: order.shippingTrackingCode,
-        tracking_carrier: order.shippingCarrier,
-        tracking_url: order.trackingUrl,
-        shipping_addresses: order.shippingPerson
-          ? [{
-              first_name: order.shippingPerson.name?.split(" ")[0] || "",
-              last_name: order.shippingPerson.name?.split(" ").slice(1).join(" ") || "",
-              street_1: order.shippingPerson.street || "",
-              city: order.shippingPerson.city || "",
-              state_or_province: order.shippingPerson.stateOrProvinceCode || "",
-              postal_code: order.shippingPerson.postalCode || "",
-              country_iso2: order.shippingPerson.countryCode || "",
-            }]
-          : [],
-        source: "ecwid" as const,
-        orderItems: (order.items || []).map((item: any) => ({
-          id: item.id,
-          quantity: item.quantity,
-          product_name: item.productName,
-          options: item.options || {},
-          design_file_url: null,
-        })),
-      }));
-
-      console.log("Fetched", ecwidOrders.length, "completed orders from Ecwid");
-    } catch (ecwidError) {
-      console.warn("Failed to fetch orders from Ecwid:", ecwidError);
-    }
-
     // Fetch Supabase orders (all statuses)
     let supabaseOrders: any[] = [];
     try {
