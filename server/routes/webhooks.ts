@@ -8,6 +8,23 @@ const supabase = createClient(
 );
 
 /**
+ * Map Ecwid fulfillment status to internal order status
+ */
+function mapEcwidStatusToOrderStatus(fulfillmentStatus: string | undefined, paymentStatus: string | undefined): string {
+  const statusMap: Record<string, string> = {
+    "AWAITING_PAYMENT": "pending",
+    "PAID": "processing",
+    "PROCESSING": "processing",
+    "SHIPPED": "completed",
+    "DELIVERED": "completed",
+    "CANCELLED": "cancelled",
+  };
+
+  const ecwidStatus = fulfillmentStatus || paymentStatus || "PROCESSING";
+  return statusMap[ecwidStatus] || "pending";
+}
+
+/**
  * Verify Ecwid webhook signature
  * Ecwid sends an X-Ecwid-Webhook-Signature header
  */
