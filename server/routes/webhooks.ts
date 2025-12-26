@@ -108,10 +108,22 @@ async function handleOrderCompleted(data: any): Promise<void> {
         .eq("ecwid_customer_id", data.customerId)
         .single();
 
-      // Create new order record
+      // Create new order record - use Ecwid's fulfillment status if available
+      const statusMap: Record<string, string> = {
+        "AWAITING_PAYMENT": "pending",
+        "PAID": "processing",
+        "PROCESSING": "processing",
+        "SHIPPED": "completed",
+        "DELIVERED": "completed",
+        "CANCELLED": "cancelled",
+      };
+
+      const ecwidStatus = data.fulfillmentStatus || data.paymentStatus || "PROCESSING";
+      const orderStatus = statusMap[ecwidStatus] || "pending";
+
       const orderData = {
         customer_id: customer?.id || null,
-        status: "pending",
+        status: orderStatus,
         total: data.total || 0,
         subtotal: data.subtotal || 0,
         tax: data.tax || 0,
