@@ -111,7 +111,7 @@ async function handleOrderCompleted(data: any): Promise<void> {
       // Create new order record
       const orderData = {
         customer_id: customer?.id || null,
-        status: "completed",
+        status: "pending",
         total: data.total || 0,
         subtotal: data.subtotal || 0,
         tax: data.tax || 0,
