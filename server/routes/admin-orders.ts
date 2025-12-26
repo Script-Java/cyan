@@ -45,6 +45,8 @@ export const handleTestAdminOrders: RequestHandler = async (_req, res) => {
  */
 export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
   try {
+    let allOrders: any[] = [];
+
     // Fetch Supabase orders (all statuses)
     let supabaseOrders: any[] = [];
     try {
