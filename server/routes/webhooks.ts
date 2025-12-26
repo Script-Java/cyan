@@ -172,7 +172,7 @@ async function handleOrderUpdated(data: any): Promise<void> {
     console.log("Processing Ecwid order update:", data.orderId);
 
     const updateData: any = {
-      status: data.fulfillmentStatus || data.paymentStatus || "processing",
+      status: mapEcwidStatusToOrderStatus(data.fulfillmentStatus, data.paymentStatus),
       updated_at: new Date().toISOString(),
     };
 
