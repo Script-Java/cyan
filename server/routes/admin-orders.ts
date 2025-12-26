@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import { supabase, getPendingOrders, getActiveOrders } from "../utils/supabase";
-import { ecwidAPI } from "../utils/ecwid";
 
 interface OrderItem {
   id?: number;
