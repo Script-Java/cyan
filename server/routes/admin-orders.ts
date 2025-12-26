@@ -48,10 +48,14 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
     let allOrders: any[] = [];
     let ecwidOrders: any[] = [];
 
-    // Fetch Ecwid orders (completed orders)
+    // Fetch Ecwid orders (completed orders - shipped or delivered)
     try {
       console.log("Fetching completed orders from Ecwid...");
-      const ecwidOrdersList = await ecwidAPI.getAllOrders("SHIPPED", 100);
+      // Fetch shipped orders
+      const shippedOrders = await ecwidAPI.getAllOrders("SHIPPED", 100);
+      // Fetch delivered orders
+      const deliveredOrders = await ecwidAPI.getAllOrders("DELIVERED", 100);
+      const ecwidOrdersList = [...shippedOrders, ...deliveredOrders];
 
       ecwidOrders = ecwidOrdersList.map((order: any) => ({
         id: order.id,
