@@ -677,6 +677,54 @@ class EcwidAPI {
   }
 
   /**
+   * Get all orders from the store with optional filtering
+   */
+  async getAllOrders(fulfillmentStatus?: string, limit = 100): Promise<any[]> {
+    let endpoint = `/orders?limit=${limit}`;
+
+    if (fulfillmentStatus) {
+      endpoint += `&fulfillmentStatus=${fulfillmentStatus}`;
+    }
+
+    const url = this.getAuthUrl(endpoint);
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Get all orders failed:", {
+          status: response.status,
+          statusText: response.statusText,
+        });
+        return [];
+      }
+
+      let data: any;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse orders response:", parseError);
+        return [];
+      }
+
+      return (data?.items || []).map((order: any) => ({
+        ...order,
+        shippingTrackingCode: order.shippingTrackingCode,
+        shippingCarrier: this.extractShippingCarrier(order),
+        estimatedDeliveryDate: this.extractEstimatedDeliveryDate(order),
+      }));
+    } catch (error) {
+      console.error("Get all orders error:", error);
+      return [];
+    }
+  }
+
+  /**
    * Update order status
    */
   async updateOrderStatus(orderId: number, status: string): Promise<any> {
