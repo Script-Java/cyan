@@ -90,16 +90,16 @@ async function handleOrderCompleted(data: any): Promise<void> {
       .single();
 
     if (existingOrder) {
-      // Update status
+      // Don't overwrite status on order.completed if order already exists
+      // Just update the timestamp to mark as processed
       await supabase
         .from("orders")
         .update({
-          status: "completed",
           updated_at: new Date().toISOString(),
         })
         .eq("id", existingOrder.id);
 
-      console.log("Ecwid order updated in Supabase:", existingOrder.id);
+      console.log("Ecwid order already exists in Supabase:", existingOrder.id);
     } else {
       // Find customer by Ecwid customer ID
       const { data: customer } = await supabase
