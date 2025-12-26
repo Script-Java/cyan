@@ -268,6 +268,7 @@ export default function AdminOrders() {
                       <option value="in transit">In Transit</option>
                       <option value="shipped">Shipped</option>
                       <option value="delivered">Delivered</option>
+                      <option value="completed">Completed</option>
                       <option value="cancelled">Cancelled</option>
                     </select>
                   </div>
