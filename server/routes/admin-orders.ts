@@ -38,19 +38,68 @@ export const handleTestAdminOrders: RequestHandler = async (_req, res) => {
 };
 
 /**
- * Get all orders from Supabase (admin only)
+ * Get all orders from Supabase and Ecwid (admin only)
  * Fetches all orders regardless of status
  * Returns orders with customer details and tracking info
+ * Includes both pending/processing orders from Supabase and completed orders from Ecwid
  */
 export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
   try {
-    // Fetch all orders with customer and order items
     let allOrders: any[] = [];
-    let error: any = null;
+    let ecwidOrders: any[] = [];
 
+    // Fetch Ecwid orders (completed orders)
     try {
-      // Fetch orders with a reasonable limit to prevent timeouts
-      // Admin can paginate if needed
+      console.log("Fetching completed orders from Ecwid...");
+      const ecwidResult = await ecwidAPI.getOrders({
+        fulfillmentStatus: "SHIPPED,DELIVERED",
+        limit: 100,
+        offset: 0,
+      });
+
+      ecwidOrders = (ecwidResult.items || []).map((order: any) => ({
+        id: order.id,
+        customerId: order.customerId,
+        customerName: order.shippingPerson?.name || "Guest",
+        customerEmail: order.email || "N/A",
+        status: "completed",
+        total: order.total || 0,
+        subtotal: order.subtotal || 0,
+        tax: order.tax || 0,
+        shipping: order.shippingCost || 0,
+        dateCreated: order.createDate,
+        tracking_number: order.shippingTrackingCode,
+        tracking_carrier: order.shippingCarrier,
+        tracking_url: order.trackingUrl,
+        shipping_addresses: order.shippingPerson
+          ? [{
+              first_name: order.shippingPerson.name?.split(" ")[0] || "",
+              last_name: order.shippingPerson.name?.split(" ").slice(1).join(" ") || "",
+              street_1: order.shippingPerson.street || "",
+              city: order.shippingPerson.city || "",
+              state_or_province: order.shippingPerson.stateOrProvinceCode || "",
+              postal_code: order.shippingPerson.postalCode || "",
+              country_iso2: order.shippingPerson.countryCode || "",
+            }]
+          : [],
+        source: "ecwid" as const,
+        orderItems: (order.items || []).map((item: any) => ({
+          id: item.id,
+          quantity: item.quantity,
+          product_name: item.productName,
+          options: item.options || {},
+          design_file_url: null,
+        })),
+      }));
+
+      console.log("Fetched", ecwidOrders.length, "completed orders from Ecwid");
+    } catch (ecwidError) {
+      console.warn("Failed to fetch orders from Ecwid:", ecwidError);
+    }
+
+    // Fetch Supabase orders (all statuses)
+    let supabaseOrders: any[] = [];
+    try {
       const result = await supabase
         .from("orders")
         .select(
@@ -73,36 +122,19 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           `
         )
         .order("created_at", { ascending: false })
-        .limit(1000); // Reasonable limit to prevent large response
+        .limit(1000);
 
-      allOrders = result.data || [];
-      error = result.error;
+      supabaseOrders = result.data || [];
+
+      if (result.error) {
+        console.error("Supabase error:", result.error);
+      }
     } catch (queryError) {
       console.error("Supabase query exception:", queryError);
-      error = queryError;
     }
 
-    if (error) {
-      console.error("Error fetching all orders:", {
-        message: error.message || String(error),
-        error,
-      });
-      return res.status(500).json({
-        error: "Failed to fetch orders",
-        details: error.message || "Unknown database error"
-      });
-    }
-
-    if (!allOrders || allOrders.length === 0) {
-      return res.json({
-        success: true,
-        orders: [],
-        count: 0,
-      });
-    }
-
-    // Format orders with customer details and order items
-    const formattedOrders = allOrders.map((order: any) => {
+    // Format Supabase orders
+    const formattedSupabaseOrders = supabaseOrders.map((order: any) => {
       try {
         const customerName = order.customers && Array.isArray(order.customers)
           ? `${order.customers[0]?.first_name || ""} ${order.customers[0]?.last_name || ""}`.trim()
@@ -143,7 +175,6 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
         };
       } catch (formatError) {
         console.error("Error formatting order:", { orderId: order.id, formatError });
-        // Return a minimal order object if formatting fails
         return {
           id: order.id,
           customerId: order.customer_id,
@@ -162,10 +193,15 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
       }
     });
 
+    // Combine all orders
+    allOrders = [...formattedSupabaseOrders, ...ecwidOrders].sort(
+      (a, b) => new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime()
+    );
+
     res.json({
       success: true,
-      orders: formattedOrders,
-      count: formattedOrders.length,
+      orders: allOrders,
+      count: allOrders.length,
     });
   } catch (error) {
     console.error("Get all admin orders error:", {
