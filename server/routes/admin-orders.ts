@@ -143,8 +143,8 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
       }
     });
 
-    // Combine all orders
-    allOrders = [...formattedSupabaseOrders, ...ecwidOrders].sort(
+    // Return Supabase orders sorted by date
+    allOrders = formattedSupabaseOrders.sort(
       (a, b) => new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime()
     );
 
