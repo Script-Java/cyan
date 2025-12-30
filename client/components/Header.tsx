@@ -212,7 +212,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
                               Admin
                             </Link>
                             <Link
-                              to="/admin"
+                              to="/dashboard"
                               className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
                               onClick={() => setIsProfileMenuOpen(false)}
                             >
