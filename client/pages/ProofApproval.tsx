@@ -104,7 +104,7 @@ export default function ProofApproval() {
 
       setIsSubmitting(true);
 
-      const response = await fetch(`/api/proofs/${proofId}/deny`, {
+      const response = await fetch(`/api/proofs/public/${proofId}/deny`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ revision_notes: revisionNotes }),
