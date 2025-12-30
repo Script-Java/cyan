@@ -618,3 +618,179 @@ export const handleAddAdminProofComment: RequestHandler = async (req, res) => {
     res.status(500).json({ error: "Failed to add comment" });
   }
 };
+
+/**
+ * Get a single proof (public - no authentication required)
+ * Used for proof review links sent via email
+ */
+export const handleGetProofDetailPublic: RequestHandler = async (req, res) => {
+  try {
+    const { proofId } = req.params;
+
+    if (!proofId) {
+      return res.status(400).json({ error: "Proof ID is required" });
+    }
+
+    // Get proof
+    const { data: proof, error: proofError } = await supabase
+      .from("proofs")
+      .select("*")
+      .eq("id", proofId)
+      .single();
+
+    if (proofError || !proof) {
+      return res.status(404).json({ error: "Proof not found" });
+    }
+
+    // Get comments
+    const { data: comments, error: commentsError } = await supabase
+      .from("proof_comments")
+      .select("*")
+      .eq("proof_id", proofId)
+      .order("created_at", { ascending: true });
+
+    if (commentsError) {
+      console.error("Error fetching comments:", commentsError);
+      return res.status(500).json({ error: "Failed to fetch proof details" });
+    }
+
+    res.json({
+      success: true,
+      proof: {
+        ...proof,
+        comments: comments || [],
+      },
+    });
+  } catch (error) {
+    console.error("Get proof detail public error:", error);
+    res.status(500).json({ error: "Failed to fetch proof details" });
+  }
+};
+
+/**
+ * Approve a proof (public - no authentication required)
+ * Used for proof review links sent via email
+ */
+export const handleApproveProofPublic: RequestHandler = async (req, res) => {
+  try {
+    const { proofId } = req.params;
+
+    if (!proofId) {
+      return res.status(400).json({ error: "Proof ID is required" });
+    }
+
+    // Get proof
+    const { data: proof, error: proofError } = await supabase
+      .from("proofs")
+      .select("*")
+      .eq("id", proofId)
+      .single();
+
+    if (proofError || !proof) {
+      return res.status(404).json({ error: "Proof not found" });
+    }
+
+    // Update proof status
+    const { error: updateError } = await supabase
+      .from("proofs")
+      .update({
+        status: "approved",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", proofId);
+
+    if (updateError) {
+      console.error("Error approving proof:", updateError);
+      return res.status(500).json({ error: "Failed to approve proof" });
+    }
+
+    // Create admin notification
+    const { data: customerData } = await supabase
+      .from("customers")
+      .select("email, first_name, last_name")
+      .eq("id", proof.customer_id)
+      .single();
+
+    await supabase.from("proof_notifications").insert({
+      customer_id: proof.customer_id,
+      proof_id: proofId,
+      notification_type: "customer_approved",
+      message: `${customerData?.first_name} ${customerData?.last_name} has approved their proof for order #${proof.order_id}`,
+      is_read: false,
+    });
+
+    res.json({
+      success: true,
+      message: "Proof approved successfully",
+      status: "approved",
+    });
+  } catch (error) {
+    console.error("Approve proof public error:", error);
+    res.status(500).json({ error: "Failed to approve proof" });
+  }
+};
+
+/**
+ * Deny a proof - request revisions (public - no authentication required)
+ * Used for proof review links sent via email
+ */
+export const handleDenyProofPublic: RequestHandler = async (req, res) => {
+  try {
+    const { proofId } = req.params;
+    const { revision_notes } = req.body;
+
+    if (!proofId) {
+      return res.status(400).json({ error: "Proof ID is required" });
+    }
+
+    // Get proof
+    const { data: proof, error: proofError } = await supabase
+      .from("proofs")
+      .select("*")
+      .eq("id", proofId)
+      .single();
+
+    if (proofError || !proof) {
+      return res.status(404).json({ error: "Proof not found" });
+    }
+
+    // Update proof status
+    const { error: updateError } = await supabase
+      .from("proofs")
+      .update({
+        status: "revisions_requested",
+        revision_notes: revision_notes || "",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", proofId);
+
+    if (updateError) {
+      console.error("Error requesting revisions:", updateError);
+      return res.status(500).json({ error: "Failed to request revisions" });
+    }
+
+    // Create admin notification
+    const { data: customerData } = await supabase
+      .from("customers")
+      .select("email, first_name, last_name")
+      .eq("id", proof.customer_id)
+      .single();
+
+    await supabase.from("proof_notifications").insert({
+      customer_id: proof.customer_id,
+      proof_id: proofId,
+      notification_type: "revision_requested",
+      message: `${customerData?.first_name} ${customerData?.last_name} has requested revisions for their proof on order #${proof.order_id}`,
+      is_read: false,
+    });
+
+    res.json({
+      success: true,
+      message: "Revision request submitted successfully",
+      status: "revisions_requested",
+    });
+  } catch (error) {
+    console.error("Deny proof public error:", error);
+    res.status(500).json({ error: "Failed to request revisions" });
+  }
+};
