@@ -120,6 +120,7 @@ export default function App() {
               element={<ProductForm />}
             />
             <Route path="/admin/proofs" element={<AdminProofs />} />
+            <Route path="/admin/email-notifications" element={<AdminEmailNotifications />} />
             <Route path="/admin/finance" element={<AdminFinance />} />
             <Route path="/admin/analytics" element={<AdminAnalytics />} />
             <Route path="/admin/blogs" element={<AdminBlogs />} />
