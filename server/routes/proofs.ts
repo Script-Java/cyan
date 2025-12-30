@@ -79,7 +79,7 @@ export const handleGetProofs: RequestHandler = async (req, res) => {
 };
 
 /**
- * Get a single proof with its comments (authenticated)
+ * Get a single proof with its comments
  */
 export const handleGetProofDetail: RequestHandler = async (req, res) => {
   try {
@@ -101,8 +101,8 @@ export const handleGetProofDetail: RequestHandler = async (req, res) => {
       return res.status(404).json({ error: "Proof not found" });
     }
 
-    // Verify customer owns this proof (only if authenticated)
-    if (customerId && proof.customer_id !== customerId) {
+    // Verify customer owns this proof
+    if (proof.customer_id !== customerId) {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
