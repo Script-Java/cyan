@@ -488,24 +488,19 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
         const approvalLink = `${baseUrl}/proofs/${proof.id}/approve`;
         const revisionLink = `${baseUrl}/proofs/${proof.id}/request-revisions`;
 
-        // Build email HTML using React component
-        const { render } = await import("@react-email/render");
-        const { ProofEmail } = await import("../emails/proof-email");
-
         const customerName = customer.first_name
           ? `${customer.first_name}${customer.last_name ? " " + customer.last_name : ""}`
           : "Valued Customer";
 
-        const emailHtml = render(
-          ProofEmail({
-            customerName,
-            orderId,
-            proofDescription: description,
-            proofFileUrl: fileUrl,
-            approvalLink,
-            revisionLink,
-          })
-        );
+        // Generate email HTML
+        const emailHtml = generateProofEmailHtml({
+          customerName,
+          orderId,
+          proofDescription: description,
+          proofFileUrl: fileUrl,
+          approvalLink,
+          revisionLink,
+        });
 
         // Send email via Resend
         const emailResult = await resend.emails.send({
@@ -522,7 +517,6 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
         }
       } catch (emailError) {
         console.error("Error preparing or sending proof email:", emailError);
-        // Don't fail the proof creation if email fails
       }
     }
 
