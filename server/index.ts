@@ -482,6 +482,11 @@ export function createServer() {
   app.post("/api/admin/proofs/:proofId/comments", handleAddAdminProofComment);
   app.get("/api/email-preview/proof", handleProofEmailPreview);
   app.post("/api/email-preview/send", handleSendProofEmailPreview);
+  app.get("/api/email-preview/signup", handleSignupConfirmationPreview);
+  app.get("/api/email-preview/order-confirmation", handleOrderConfirmationPreview);
+  app.get("/api/email-preview/shipping", handleShippingConfirmationPreview);
+  app.get("/api/email-preview/password-reset", handlePasswordResetPreview);
+  app.get("/api/email-preview/support-reply", handleSupportTicketReplyPreview);
   app.get("/api/admin/pending-orders", handleGetAdminPendingOrders);
   app.get("/api/admin/orders/test", verifyToken, handleTestAdminOrders);
   app.get("/api/admin/all-orders", verifyToken, handleGetAllAdminOrders);
