@@ -89,7 +89,7 @@ export const handleOrderConfirmationPreview: RequestHandler = (req, res) => {
     shipping: 5.00,
     total: 42.79,
     estimatedDelivery: "7-10 business days",
-    orderLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/order-history/SS-2024-001",
+    orderLink: "/order-history/12345",
   });
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.send(html);
