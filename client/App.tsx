@@ -86,6 +86,8 @@ export default function App() {
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/verify" element={<VerifyEmail />} />
             <Route path="/products" element={<Products />} />
             <Route path="/product/:productId" element={<Product />} />
             <Route path="/product-page/:productId" element={<ProductPage />} />
