@@ -99,6 +99,7 @@ export default function App() {
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/order-history" element={<OrderHistory />} />
+            <Route path="/order-history/:orderId" element={<OrderDetails />} />
             <Route path="/finances" element={<Finances />} />
             <Route path="/designs" element={<Designs />} />
             <Route path="/proofs" element={<Proofs />} />
