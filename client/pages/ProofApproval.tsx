@@ -69,7 +69,7 @@ export default function ProofApproval() {
 
       setIsSubmitting(true);
 
-      const response = await fetch(`/api/proofs/${proofId}/approve`, {
+      const response = await fetch(`/api/proofs/public/${proofId}/approve`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
