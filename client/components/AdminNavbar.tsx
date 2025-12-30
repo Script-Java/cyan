@@ -109,14 +109,14 @@ export default function AdminNavbar() {
 
   const secondaryNavItems: NavItem[] = [
     {
+      label: "Email Notifications",
+      icon: <Mail className="w-4 h-4" />,
+      path: "/admin/email-notifications",
+    },
+    {
       label: "Apps",
       icon: <Plus className="w-4 h-4" />,
       children: [
-        {
-          label: "Email",
-          icon: <Mail className="w-3.5 h-3.5" />,
-          path: "/admin/apps/email",
-        },
         {
           label: "Forms",
           icon: <Clipboard className="w-3.5 h-3.5" />,
