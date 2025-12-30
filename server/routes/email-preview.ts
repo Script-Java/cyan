@@ -76,6 +76,7 @@ export const handleSignupConfirmationPreview: RequestHandler = (req, res) => {
 };
 
 export const handleOrderConfirmationPreview: RequestHandler = (req, res) => {
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
   const html = generateOrderConfirmationEmail({
     customerName: "John Smith",
     orderNumber: "SS-2024-001",
@@ -89,7 +90,7 @@ export const handleOrderConfirmationPreview: RequestHandler = (req, res) => {
     shipping: 5.00,
     total: 42.79,
     estimatedDelivery: "7-10 business days",
-    orderLink: "/order-history/12345",
+    orderLink: `${baseUrl}/order-history/12345`,
   });
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.send(html);
