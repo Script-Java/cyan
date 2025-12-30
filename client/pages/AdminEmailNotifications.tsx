@@ -203,37 +203,106 @@ export default function AdminEmailNotifications() {
                   </select>
                 </div>
 
-                {/* Template List */}
+                {/* Template List with Category Sections */}
                 <div className="divide-y divide-gray-200">
-                  {filteredTemplates.map((template) => (
-                    <button
-                      key={template.id}
-                      onClick={() => handlePreview(template)}
-                      className={`w-full text-left p-4 hover:bg-blue-50 transition-colors ${
-                        selectedTemplate?.id === template.id ? "bg-blue-50" : ""
-                      }`}
-                    >
-                      <div className="flex items-start gap-3">
-                        <div
-                          className={`flex-shrink-0 p-2 rounded-lg ${
-                            selectedTemplate?.id === template.id
-                              ? "text-blue-600 bg-blue-100"
-                              : "text-gray-600 bg-gray-100"
+                  {filterCategory === "all" ? (
+                    <>
+                      {["order", "account", "support"].map((category) => {
+                        const categoryTemplates = EMAIL_TEMPLATES.filter(
+                          (t) => t.category === category
+                        );
+                        if (categoryTemplates.length === 0) return null;
+
+                        return (
+                          <div key={category}>
+                            {/* Category Header */}
+                            <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                              <h3 className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                                {categoryLabels[category as keyof typeof categoryLabels]}
+                              </h3>
+                              <p className="text-xs text-gray-500 mt-1">
+                                {categoryDescriptions[category as keyof typeof categoryDescriptions]}
+                              </p>
+                            </div>
+
+                            {/* Templates in Category */}
+                            {categoryTemplates.map((template) => (
+                              <button
+                                key={template.id}
+                                onClick={() => handlePreview(template)}
+                                className={`w-full text-left p-4 hover:bg-blue-50 transition-colors border-b border-gray-100 last:border-0 ${
+                                  selectedTemplate?.id === template.id ? "bg-blue-50" : ""
+                                }`}
+                              >
+                                <div className="flex items-start gap-3">
+                                  <div
+                                    className={`flex-shrink-0 p-2 rounded-lg ${
+                                      selectedTemplate?.id === template.id
+                                        ? "text-blue-600 bg-blue-100"
+                                        : "text-gray-600 bg-gray-100"
+                                    }`}
+                                  >
+                                    {template.icon}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <h3 className="text-sm font-medium text-gray-900 truncate">
+                                      {template.name}
+                                    </h3>
+                                    <p className="mt-1 text-xs text-gray-500">
+                                      {template.description}
+                                    </p>
+                                  </div>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <>
+                      {/* Category Header for Filtered View */}
+                      <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                        <h3 className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                          {categoryLabels[filterCategory as keyof typeof categoryLabels]}
+                        </h3>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {categoryDescriptions[filterCategory as keyof typeof categoryDescriptions]}
+                        </p>
+                      </div>
+
+                      {/* Filtered Templates */}
+                      {filteredTemplates.map((template) => (
+                        <button
+                          key={template.id}
+                          onClick={() => handlePreview(template)}
+                          className={`w-full text-left p-4 hover:bg-blue-50 transition-colors border-b border-gray-100 last:border-0 ${
+                            selectedTemplate?.id === template.id ? "bg-blue-50" : ""
                           }`}
                         >
-                          {template.icon}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-sm font-medium text-gray-900 truncate">
-                            {template.name}
-                          </h3>
-                          <p className="mt-1 text-xs text-gray-500">
-                            {template.description}
-                          </p>
-                        </div>
-                      </div>
-                    </button>
-                  ))}
+                          <div className="flex items-start gap-3">
+                            <div
+                              className={`flex-shrink-0 p-2 rounded-lg ${
+                                selectedTemplate?.id === template.id
+                                  ? "text-blue-600 bg-blue-100"
+                                  : "text-gray-600 bg-gray-100"
+                              }`}
+                            >
+                              {template.icon}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-sm font-medium text-gray-900 truncate">
+                                {template.name}
+                              </h3>
+                              <p className="mt-1 text-xs text-gray-500">
+                                {template.description}
+                              </p>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
