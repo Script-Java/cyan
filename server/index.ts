@@ -108,7 +108,7 @@ import {
   handleGetAdminProofs,
   handleAddAdminProofComment,
 } from "./routes/proofs";
-import { handleProofEmailPreview } from "./routes/email-preview";
+import { handleProofEmailPreview, handleSendProofEmailPreview } from "./routes/email-preview";
 import {
   handleGetAdminPendingOrders,
   handleUpdateOrderStatus,
