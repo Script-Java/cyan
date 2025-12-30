@@ -113,9 +113,10 @@ export const handleShippingConfirmationPreview: RequestHandler = (req, res) => {
 };
 
 export const handlePasswordResetPreview: RequestHandler = (req, res) => {
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
   const html = generatePasswordResetEmail({
     customerName: "Sarah Johnson",
-    resetLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/reset-password?token=reset_abc123def456",
+    resetLink: `${baseUrl}/reset-password?token=sample_reset_token_abc123def456`,
     expiresIn: "1 hour",
   });
   res.setHeader("Content-Type", "text/html; charset=utf-8");
