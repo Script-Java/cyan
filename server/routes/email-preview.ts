@@ -97,6 +97,7 @@ export const handleOrderConfirmationPreview: RequestHandler = (req, res) => {
 };
 
 export const handleShippingConfirmationPreview: RequestHandler = (req, res) => {
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
   const html = generateShippingConfirmationEmail({
     customerName: "John Smith",
     orderNumber: "SS-2024-001",
@@ -104,7 +105,7 @@ export const handleShippingConfirmationPreview: RequestHandler = (req, res) => {
     carrier: "UPS",
     trackingUrl: "https://www.ups.com/track?tracknum=1Z999AA10123456784",
     estimatedDelivery: "December 22, 2024",
-    orderLink: "/order-history/12345",
+    orderLink: `${baseUrl}/order-history/12345`,
   });
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.send(html);
