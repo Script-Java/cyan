@@ -61,6 +61,14 @@ const EMAIL_TEMPLATES: EmailTemplate[] = [
     category: "order",
   },
   {
+    id: "order-status-update",
+    name: "Order Status Update",
+    description: "Sent when order status changes throughout the process",
+    icon: <Activity className="w-6 h-6" />,
+    previewUrl: "/api/email-preview/order-status-update",
+    category: "order",
+  },
+  {
     id: "password-reset",
     name: "Password Reset",
     description: "Sent when customer requests to reset their password",
