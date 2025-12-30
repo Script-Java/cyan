@@ -126,11 +126,24 @@ export default function AdminEmailNotifications() {
       ? EMAIL_TEMPLATES
       : EMAIL_TEMPLATES.filter((t) => t.category === filterCategory);
 
+  const categoryLabels = {
+    all: "All Templates",
+    account: "Account & Authentication",
+    order: "Order Management",
+    support: "Support & Feedback",
+  };
+
+  const categoryDescriptions = {
+    account: "Emails for user account management, verification, and password recovery",
+    order: "Emails related to order processing, tracking, and status updates",
+    support: "Emails for customer support and ticket responses",
+  };
+
   const categories = [
-    { value: "all", label: "All Templates" },
-    { value: "account", label: "Account" },
-    { value: "order", label: "Orders" },
-    { value: "support", label: "Support" },
+    { value: "all", label: categoryLabels.all },
+    { value: "account", label: categoryLabels.account },
+    { value: "order", label: categoryLabels.order },
+    { value: "support", label: categoryLabels.support },
   ];
 
   if (!isAuthenticated) {
