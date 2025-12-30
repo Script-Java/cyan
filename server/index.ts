@@ -111,7 +111,15 @@ import {
   handleApproveProofPublic,
   handleDenyProofPublic,
 } from "./routes/proofs";
-import { handleProofEmailPreview, handleSendProofEmailPreview } from "./routes/email-preview";
+import {
+  handleProofEmailPreview,
+  handleSendProofEmailPreview,
+  handleSignupConfirmationPreview,
+  handleOrderConfirmationPreview,
+  handleShippingConfirmationPreview,
+  handlePasswordResetPreview,
+  handleSupportTicketReplyPreview,
+} from "./routes/email-preview";
 import {
   handleGetAdminPendingOrders,
   handleUpdateOrderStatus,
