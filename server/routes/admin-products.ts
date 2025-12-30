@@ -393,7 +393,7 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
 
     const { data, error } = await supabase
       .from("admin_products")
-      .select("*")
+      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, created_at, updated_at")
       .eq("id", id)
       .eq("availability", true)
       .single();
@@ -414,7 +414,26 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
         .json({ error: "Failed to fetch product", details: error.message, code: error.code });
     }
 
-    res.json({ product: data });
+    if (!data) {
+      return res.status(404).json({ error: "Product not found or not available" });
+    }
+
+    // Ensure proper data types for JSON fields
+    const product = {
+      ...data,
+      images: Array.isArray(data.images) ? data.images : [],
+      options: Array.isArray(data.options) ? data.options : [],
+      shared_variants: Array.isArray(data.shared_variants) ? data.shared_variants : [],
+      customer_upload_config: typeof data.customer_upload_config === 'object' ? data.customer_upload_config : {
+        enabled: false,
+        maxFileSize: 5,
+        allowedFormats: ["pdf", "png", "jpg"],
+        description: ""
+      },
+      optional_fields: Array.isArray(data.optional_fields) ? data.optional_fields : [],
+    };
+
+    res.json({ product });
   } catch (error) {
     console.error("Error fetching product:", error);
     res.status(500).json({
