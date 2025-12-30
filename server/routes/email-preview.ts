@@ -147,6 +147,20 @@ Sticky Slap Support Team`,
   res.send(html);
 };
 
+export const handleOrderStatusUpdatePreview: RequestHandler = (req, res) => {
+  const html = generateOrderStatusUpdateEmail({
+    customerName: "John Smith",
+    orderNumber: "SS-2024-001",
+    previousStatus: "Order Confirmed",
+    currentStatus: "Processing",
+    statusMessage: "Your order is now being prepared for production. Our team is working on bringing your design to life with precision and care.",
+    nextSteps: "Your custom stickers will be carefully printed and inspected for quality. Once approved, they will be packaged and shipped to you. You'll receive a notification as soon as your order ships.",
+    orderLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/order-history/SS-2024-001",
+  });
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(html);
+};
+
 export const handleSendProofEmailPreview: RequestHandler = async (req, res) => {
   try {
     const { email } = req.body;
