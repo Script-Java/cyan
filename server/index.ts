@@ -107,6 +107,9 @@ import {
   handleSendProofToCustomer,
   handleGetAdminProofs,
   handleAddAdminProofComment,
+  handleGetProofDetailPublic,
+  handleApproveProofPublic,
+  handleDenyProofPublic,
 } from "./routes/proofs";
 import { handleProofEmailPreview, handleSendProofEmailPreview } from "./routes/email-preview";
 import {
