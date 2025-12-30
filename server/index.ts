@@ -463,12 +463,12 @@ export function createServer() {
     handleGetProofNotifications,
   );
   app.get("/api/proofs/:proofId", verifyToken, handleGetProofDetail);
-  app.get("/api/proofs/public/:proofId", handleGetProofDetail);
   app.post("/api/proofs/:proofId/approve", verifyToken, handleApproveProof);
   app.post("/api/proofs/:proofId/deny", verifyToken, handleDenyProof);
-  app.post("/api/proofs/public/:proofId/approve", handleApproveProof);
-  app.post("/api/proofs/public/:proofId/deny", handleDenyProof);
   app.post("/api/proofs/:proofId/comments", verifyToken, handleAddProofComment);
+  app.get("/api/proofs/public/:proofId", handleGetProofDetailPublic);
+  app.post("/api/proofs/public/:proofId/approve", handleApproveProofPublic);
+  app.post("/api/proofs/public/:proofId/deny", handleDenyProofPublic);
   app.post("/api/admin/proofs/send", handleSendProofToCustomer);
   app.get("/api/admin/proofs", handleGetAdminProofs);
   app.post("/api/admin/proofs/:proofId/comments", handleAddAdminProofComment);
