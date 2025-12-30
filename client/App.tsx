@@ -21,6 +21,7 @@ import CheckoutSuccess from "./pages/CheckoutSuccess";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import Dashboard from "./pages/Dashboard";
 import OrderHistory from "./pages/OrderHistory";
+import OrderDetails from "./pages/OrderDetails";
 import Finances from "./pages/Finances";
 import Designs from "./pages/Designs";
 import Proofs from "./pages/Proofs";
