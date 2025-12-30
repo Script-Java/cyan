@@ -1,10 +1,14 @@
 import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
+import { Resend } from "resend";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
   process.env.SUPABASE_SERVICE_KEY || "",
 );
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+const PROOF_EMAIL_FROM = "sticky@stickyslap.com";
 
 interface ProofComment {
   id: string;
