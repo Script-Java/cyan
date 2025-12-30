@@ -383,24 +383,70 @@ export default function AdminEmailNotifications() {
 
           {/* Template Information */}
           <div className="mt-6 bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">About Email Templates</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">Email Notification Categories</h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Account & Authentication */}
               <div>
-                <h4 className="font-medium text-gray-900 mb-2">Customer Emails</h4>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                  <h4 className="font-semibold text-gray-900">Account & Authentication</h4>
+                </div>
+                <p className="text-sm text-gray-600 mb-3">
+                  Emails for user account management and security
+                </p>
                 <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Signup confirmation for new accounts</li>
-                  <li>• Order confirmation after purchase</li>
-                  <li>• Shipping & tracking information</li>
-                  <li>• Password reset requests</li>
+                  <li>✓ Signup confirmation & email verification</li>
+                  <li>✓ Password reset requests</li>
                 </ul>
               </div>
+
+              {/* Order Management */}
               <div>
-                <h4 className="font-medium text-gray-900 mb-2">Order Management</h4>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                  <h4 className="font-semibold text-gray-900">Order Management</h4>
+                </div>
+                <p className="text-sm text-gray-600 mb-3">
+                  Emails related to order processing and tracking
+                </p>
                 <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Proof approval requests</li>
-                  <li>• Design revision notifications</li>
-                  <li>• Order status updates</li>
-                  <li>• Support ticket responses</li>
+                  <li>✓ Order confirmation</li>
+                  <li>✓ Design proof approval</li>
+                  <li>✓ Shipping & tracking updates</li>
+                  <li>✓ Order status changes</li>
+                </ul>
+              </div>
+
+              {/* Support & Feedback */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  <h4 className="font-semibold text-gray-900">Support & Feedback</h4>
+                </div>
+                <p className="text-sm text-gray-600 mb-3">
+                  Emails for customer support interactions
+                </p>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>✓ Support ticket responses</li>
+                  <li>✓ Issue resolution updates</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Important Note */}
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h4 className="font-semibold text-blue-900 mb-2">All Buttons Point to Correct Routes</h4>
+                <p className="text-sm text-blue-800">
+                  Every button in these email templates has been configured with the correct customer-facing URLs:
+                </p>
+                <ul className="text-sm text-blue-800 mt-2 space-y-1 ml-4">
+                  <li>• <strong>Verify Email</strong> → <code className="bg-white px-2 py-1 rounded">/verify?token=...</code></li>
+                  <li>• <strong>Reset Password</strong> → <code className="bg-white px-2 py-1 rounded">/reset-password?token=...</code></li>
+                  <li>• <strong>View Order</strong> → <code className="bg-white px-2 py-1 rounded">/order-history/:id</code></li>
+                  <li>• <strong>View Ticket</strong> → <code className="bg-white px-2 py-1 rounded">/my-tickets/:id</code></li>
+                  <li>• <strong>Approve Proof</strong> → <code className="bg-white px-2 py-1 rounded">/proofs/:id/approve</code></li>
                 </ul>
               </div>
             </div>
