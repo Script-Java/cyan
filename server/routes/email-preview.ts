@@ -64,6 +64,88 @@ export const handleProofEmailPreview: RequestHandler = async (req, res) => {
   }
 };
 
+export const handleSignupConfirmationPreview: RequestHandler = (req, res) => {
+  const html = generateSignupConfirmationEmail({
+    customerName: "Sarah Johnson",
+    email: "sarah@example.com",
+    verificationLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/verify?token=abc123",
+  });
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(html);
+};
+
+export const handleOrderConfirmationPreview: RequestHandler = (req, res) => {
+  const html = generateOrderConfirmationEmail({
+    customerName: "John Smith",
+    orderNumber: "SS-2024-001",
+    orderDate: "December 15, 2024",
+    items: [
+      { name: "Custom Circle Stickers (100 units)", quantity: 1, price: 29.99 },
+      { name: "Glossy Finish", quantity: 1, price: 5.00 },
+    ],
+    subtotal: 34.99,
+    tax: 2.80,
+    shipping: 5.00,
+    total: 42.79,
+    estimatedDelivery: "7-10 business days",
+    orderLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/order-history/SS-2024-001",
+  });
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(html);
+};
+
+export const handleShippingConfirmationPreview: RequestHandler = (req, res) => {
+  const html = generateShippingConfirmationEmail({
+    customerName: "John Smith",
+    orderNumber: "SS-2024-001",
+    trackingNumber: "1Z999AA10123456784",
+    carrier: "UPS",
+    trackingUrl: "https://www.ups.com/track?tracknum=1Z999AA10123456784",
+    estimatedDelivery: "December 22, 2024",
+    orderLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/order-history/SS-2024-001",
+  });
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(html);
+};
+
+export const handlePasswordResetPreview: RequestHandler = (req, res) => {
+  const html = generatePasswordResetEmail({
+    customerName: "Sarah Johnson",
+    resetLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/reset-password?token=reset_abc123def456",
+    expiresIn: "1 hour",
+  });
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(html);
+};
+
+export const handleSupportTicketReplyPreview: RequestHandler = (req, res) => {
+  const html = generateSupportTicketReplyEmail({
+    customerName: "Michael Chen",
+    ticketNumber: "TKT-2024-0042",
+    subject: "Question about sticker material options",
+    response: `Hi Michael,
+
+Thank you for reaching out! We're happy to help answer your question about our sticker materials.
+
+We offer several options for your custom stickers:
+
+1. Vinyl (Standard): Durable and weather-resistant, perfect for outdoor use
+2. Glossy Finish: High-shine appearance with vibrant colors
+3. Matte Finish: Subtle, professional look with reduced glare
+4. Holographic: Eye-catching reflective surface for premium designs
+
+All materials are high-quality and designed to last. The choice depends on your use case and aesthetic preferences.
+
+Would you like recommendations for your specific project? Feel free to share more details about what you're planning!
+
+Best regards,
+Sticky Slap Support Team`,
+    viewLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/my-tickets/TKT-2024-0042",
+  });
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.send(html);
+};
+
 export const handleSendProofEmailPreview: RequestHandler = async (req, res) => {
   try {
     const { email } = req.body;
