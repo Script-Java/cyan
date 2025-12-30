@@ -24,6 +24,7 @@ import OrderHistory from "./pages/OrderHistory";
 import Finances from "./pages/Finances";
 import Designs from "./pages/Designs";
 import Proofs from "./pages/Proofs";
+import ProofApproval from "./pages/ProofApproval";
 import AccountSettings from "./pages/AccountSettings";
 import Support from "./pages/Support";
 import MyTickets from "./pages/MyTickets";
