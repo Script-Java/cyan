@@ -14,14 +14,15 @@ const PROOF_EMAIL_FROM = "sticky@stickyslap.com";
 export const handleProofEmailPreview: RequestHandler = async (req, res) => {
   try {
     const { email } = req.query;
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
 
     const sampleHtml = generateProofEmailHtml({
       customerName: "John Doe",
       orderId: 12345,
       proofDescription: "Custom sticker design with your company logo and tagline.\n\nThe design features:\n- Vibrant color scheme\n- High-resolution graphics\n- Print-ready format\n\nPlease review and let us know if any changes are needed!",
       proofFileUrl: "https://images.unsplash.com/photo-1557821552-17105176677c?w=600&h=400&fit=crop",
-      approvalLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/proofs/preview123/approve",
-      revisionLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/proofs/preview123/request-revisions",
+      approvalLink: `${baseUrl}/proofs/sample_proof_123/approve`,
+      revisionLink: `${baseUrl}/proofs/sample_proof_123/request-revisions`,
     });
 
     // If email param is provided, send the email
