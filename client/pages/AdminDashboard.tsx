@@ -168,6 +168,14 @@ export default function AdminDashboard() {
       color: "bg-red-100 hover:bg-red-200",
       textColor: "text-red-600",
     },
+    {
+      title: "Email Templates",
+      description: "View & manage email notifications",
+      icon: <Mail className="w-5 h-5" />,
+      path: "/admin/email-notifications",
+      color: "bg-sky-100 hover:bg-sky-200",
+      textColor: "text-sky-600",
+    },
   ];
 
   if (!isAuthenticated) {
