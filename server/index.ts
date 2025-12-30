@@ -119,6 +119,7 @@ import {
   handleShippingConfirmationPreview,
   handlePasswordResetPreview,
   handleSupportTicketReplyPreview,
+  handleOrderStatusUpdatePreview,
 } from "./routes/email-preview";
 import {
   handleGetAdminPendingOrders,
