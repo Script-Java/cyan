@@ -1,5 +1,10 @@
 import { RequestHandler } from "express";
 import { generateProofEmailHtml } from "../emails/generate-proof-email";
+import { generateSignupConfirmationEmail } from "../emails/signup-confirmation";
+import { generateOrderConfirmationEmail } from "../emails/order-confirmation";
+import { generateShippingConfirmationEmail } from "../emails/shipping-confirmation";
+import { generatePasswordResetEmail } from "../emails/password-reset";
+import { generateSupportTicketReplyEmail } from "../emails/support-ticket-reply";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
