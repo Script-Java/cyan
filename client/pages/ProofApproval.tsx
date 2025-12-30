@@ -45,7 +45,7 @@ export default function ProofApproval() {
         return;
       }
 
-      const response = await fetch(`/api/proofs/${proofId}`);
+      const response = await fetch(`/api/proofs/public/${proofId}`);
 
       if (!response.ok) {
         const errorData = await response.json();
