@@ -471,6 +471,60 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
       console.error("Error creating notification:", notifError);
     }
 
+    // Fetch customer email to send proof email
+    const { data: customer, error: customerError } = await supabase
+      .from("customers")
+      .select("email, first_name, last_name")
+      .eq("id", resolvedCustomerId)
+      .single();
+
+    if (customerError) {
+      console.error("Error fetching customer for email:", customerError);
+    } else if (customer && customer.email && process.env.RESEND_API_KEY) {
+      try {
+        // Generate approval and revision links
+        const baseUrl = process.env.FRONTEND_URL || "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev";
+        const approvalLink = `${baseUrl}/proofs/${proof.id}/approve`;
+        const revisionLink = `${baseUrl}/proofs/${proof.id}/request-revisions`;
+
+        // Build email HTML using React component
+        const { render } = await import("@react-email/render");
+        const { ProofEmail } = await import("../emails/proof-email");
+
+        const customerName = customer.first_name
+          ? `${customer.first_name}${customer.last_name ? " " + customer.last_name : ""}`
+          : "Valued Customer";
+
+        const emailHtml = render(
+          ProofEmail({
+            customerName,
+            orderId,
+            proofDescription: description,
+            proofFileUrl: fileUrl,
+            approvalLink,
+            revisionLink,
+          })
+        );
+
+        // Send email via Resend
+        const emailResult = await resend.emails.send({
+          from: PROOF_EMAIL_FROM,
+          to: customer.email,
+          subject: `Your Design Proof is Ready - Order #${orderId}`,
+          html: emailHtml,
+        });
+
+        if (emailResult.error) {
+          console.error("Error sending proof email:", emailResult.error);
+        } else {
+          console.log("Proof email sent successfully:", emailResult.data);
+        }
+      } catch (emailError) {
+        console.error("Error preparing or sending proof email:", emailError);
+        // Don't fail the proof creation if email fails
+      }
+    }
+
     res.json({
       success: true,
       proof,
