@@ -124,6 +124,7 @@ export const handlePasswordResetPreview: RequestHandler = (req, res) => {
 };
 
 export const handleSupportTicketReplyPreview: RequestHandler = (req, res) => {
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
   const html = generateSupportTicketReplyEmail({
     customerName: "Michael Chen",
     ticketNumber: "TKT-2024-0042",
@@ -145,7 +146,7 @@ Would you like recommendations for your specific project? Feel free to share mor
 
 Best regards,
 Sticky Slap Support Team`,
-    viewLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/my-tickets/TKT-2024-0042",
+    viewLink: `${baseUrl}/my-tickets/TKT-2024-0042`,
   });
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.send(html);
