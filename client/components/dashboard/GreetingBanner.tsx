@@ -232,11 +232,11 @@ export default function GreetingBanner({
               Greetings, {firstName}
             </h1>
             <div className="flex items-center gap-2 mb-2">
-              <p className="text-blue-100 text-xs sm:text-sm font-medium">
+              <p className="text-white text-xs sm:text-sm font-medium">
                 Sticky Slap Dashboard
               </p>
             </div>
-            <div className="font-mono text-xs text-green-300 drop-shadow-lg">
+            <div className="font-mono text-xs text-white drop-shadow-lg">
               <p className="opacity-90">
                 &gt; REVIEW YOUR ORDERS BELOW
               </p>
