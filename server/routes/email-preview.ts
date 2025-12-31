@@ -8,7 +8,9 @@ import { generateSupportTicketReplyEmail } from "../emails/support-ticket-reply"
 import { generateOrderStatusUpdateEmail } from "../emails/order-status-update";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 const PROOF_EMAIL_FROM = "sticky@stickyslap.com";
 
 export const handleProofEmailPreview: RequestHandler = async (req, res) => {
