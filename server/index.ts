@@ -200,8 +200,13 @@ export function createServer() {
 
   // CORS Configuration - Allow only trusted origins
   const allowedOrigins = [
-    // Frontend URLs
-    process.env.FRONTEND_URL || "http://localhost:5173", // Development
+    // Frontend URLs - Development
+    "http://localhost:5173",
+    "http://localhost:8080", // Vite dev server proxy
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:8080",
+    // Custom frontend URL
+    process.env.FRONTEND_URL || "http://localhost:5173",
     "https://stickershop.test", // Local testing
     // Add production domains here as environment variables
     ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : []),
