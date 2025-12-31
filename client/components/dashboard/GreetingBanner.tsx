@@ -35,6 +35,60 @@ export default function GreetingBanner({
     }
   }, []);
 
+  // Update avatar when prop changes
+  useEffect(() => {
+    setCurrentAvatarUrl(avatarUrl);
+  }, [avatarUrl]);
+
+  const handleAvatarFileSelect = async (file: File) => {
+    if (!file) return;
+
+    setIsUploadingAvatar(true);
+    setAvatarUploadError("");
+
+    try {
+      const formData = new FormData();
+      formData.append("avatar", file);
+
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const response = await fetch("/api/customers/me/avatar", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to upload avatar");
+      }
+
+      const data = await response.json();
+      setCurrentAvatarUrl(data.customer.avatarUrl);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to upload avatar";
+      setAvatarUploadError(message);
+      console.error("Avatar upload error:", error);
+    } finally {
+      setIsUploadingAvatar(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleAvatarClick = () => {
+    if (!isUploadingAvatar) {
+      fileInputRef.current?.click();
+    }
+  };
+
   const handleChangeBackground = () => {
     setImageUrl(bannerImage);
     setShowImageDialog(true);
