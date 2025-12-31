@@ -2,17 +2,24 @@ import rateLimit from "express-rate-limit";
 
 /**
  * General API rate limiter
- * 15 minutes window, max 100 requests per IP
+ * 15 minutes window, max 150 requests per IP
  */
 export const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  max: 150, // Limit each IP to 150 requests per windowMs
   message: "Too many requests from this IP address, please try again later.",
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   skip: (req) => {
-    // Skip rate limiting for health checks and webhook endpoints
-    return req.path === "/health" || req.path.includes("/webhooks/");
+    // Skip rate limiting for:
+    // 1. Health checks
+    // 2. Webhook endpoints
+    // 3. CORS preflight requests
+    return (
+      req.path === "/health" ||
+      req.path.includes("/webhooks/") ||
+      req.method === "OPTIONS"
+    );
   },
 });
 
