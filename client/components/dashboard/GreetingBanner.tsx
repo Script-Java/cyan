@@ -25,7 +25,7 @@ export default function GreetingBanner({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const defaultAvatar =
-    "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1751390215/StickerShuttle_Avatar1_dmnkat.png";
+    "https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Ffe5969ebdc6b4457967ce6fafa740c78?format=webp&width=800";
 
   // Load banner image from localStorage on mount
   useEffect(() => {
