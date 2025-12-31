@@ -195,30 +195,7 @@ import {
   adminLimiter,
 } from "./middleware/rate-limit";
 
-// Validate critical environment variables on server startup
-function validateEnvironment() {
-  const requiredVars = ["JWT_SECRET"];
-  const missingVars = requiredVars.filter((varName) => !process.env[varName]);
-
-  if (missingVars.length > 0) {
-    if (process.env.NODE_ENV === "production") {
-      console.error(
-        `CRITICAL: Missing required environment variables in production: ${missingVars.join(", ")}`
-      );
-      console.error("Server cannot start without these variables.");
-      process.exit(1);
-    } else {
-      console.warn(
-        `WARNING: Missing environment variables (development mode): ${missingVars.join(", ")}`
-      );
-    }
-  }
-}
-
 export function createServer() {
-  // Validate environment on server creation
-  validateEnvironment();
-
   const app = express();
 
   // CORS Configuration - Allow only trusted origins
