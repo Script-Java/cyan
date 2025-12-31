@@ -187,6 +187,13 @@ import {
   handleCSVCustomerImport,
 } from "./routes/ecwid-migration";
 import { verifyToken, optionalVerifyToken, requireAdmin } from "./middleware/auth";
+import {
+  apiLimiter,
+  authLimiter,
+  paymentLimiter,
+  checkoutLimiter,
+  adminLimiter,
+} from "./middleware/rate-limit";
 
 // Validate critical environment variables on server startup
 function validateEnvironment() {
