@@ -2,20 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { createClient } from "@supabase/supabase-js";
 
-// Enforce JWT_SECRET - fail immediately if not set in production
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  if (process.env.NODE_ENV === "production") {
-    console.error(
-      "CRITICAL: JWT_SECRET environment variable is not set. This is required for secure token verification in production."
-    );
-    process.exit(1);
-  } else {
-    console.warn(
-      "WARNING: JWT_SECRET not set. Using temporary secret for development only."
-    );
-  }
-}
+const JWT_SECRET =
+  process.env.JWT_SECRET || "your-secret-key-change-in-production";
 
 declare global {
   namespace Express {
