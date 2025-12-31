@@ -48,6 +48,7 @@ export const handleGetCustomer: RequestHandler = async (req, res) => {
         lastName: customer.last_name,
         phone: customer.phone,
         companyName: customer.company,
+        avatarUrl: customer.avatar_url,
         addresses: addresses || [],
       },
     });
