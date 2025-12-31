@@ -387,7 +387,7 @@ export function createServer() {
   app.delete("/api/cart/:cartId", handleClearCart);
 
   // ===== Checkout Routes (Public - guest checkout supported) =====
-  app.post("/api/checkout", handleCheckout);
+  app.post("/api/checkout", checkoutLimiter, handleCheckout);
   app.get("/api/checkout/:cartId", handleGetCheckoutDetails);
 
   // ===== Products Routes (Public) =====
@@ -415,17 +415,17 @@ export function createServer() {
 
   // ===== Payments Routes (Public) =====
   app.get("/api/payments/methods", handleGetPaymentMethods);
-  app.post("/api/payments/process", handleProcessPayment);
+  app.post("/api/payments/process", paymentLimiter, handleProcessPayment);
 
   // ===== Square Payment Routes (Public) =====
   app.get("/api/square/config", handleGetSquareConfig);
   app.get("/api/square/locations", handleGetSquareLocations);
   app.get("/api/square/test", handleTestSquareConfig);
-  app.post("/api/square/checkout", handleCreateCheckoutSession);
-  app.post("/api/square/confirm-checkout", handleConfirmCheckout);
-  app.post("/api/square/pay", handleSquarePayment);
-  app.post("/api/square/process-payment", processSquarePayment);
-  app.post("/api/square/create-payment", handleCreatePayment);
+  app.post("/api/square/checkout", checkoutLimiter, handleCreateCheckoutSession);
+  app.post("/api/square/confirm-checkout", paymentLimiter, handleConfirmCheckout);
+  app.post("/api/square/pay", paymentLimiter, handleSquarePayment);
+  app.post("/api/square/process-payment", paymentLimiter, processSquarePayment);
+  app.post("/api/square/create-payment", paymentLimiter, handleCreatePayment);
   app.post("/api/webhooks/square", handleSquareWebhook);
 
   // ===== Admin Routes (Protected - Admin only) =====
