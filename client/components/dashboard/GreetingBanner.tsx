@@ -98,13 +98,15 @@ export default function GreetingBanner({
       {isHovering && (
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-4 z-20 transition-opacity duration-200">
           <button
-            title="Choose Banner Template"
+            title="Change Banner Background"
+            onClick={handleChangeBackground}
             className="p-3 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-md border border-white/40 transition-all"
           >
             <Edit3 className="w-6 h-6 text-white" />
           </button>
           <button
             title="Reset to Default Banner"
+            onClick={handleResetBackground}
             className="p-3 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-md border border-white/40 transition-all"
           >
             <RotateCcw className="w-6 h-6 text-white" />
