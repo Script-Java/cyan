@@ -483,3 +483,77 @@ export const handleGetStoreCredit: RequestHandler = async (req, res) => {
     res.status(500).json({ error: message });
   }
 };
+
+/**
+ * Upload customer avatar
+ * Requires: customerId in JWT token, image file
+ */
+export const handleUploadAvatar: RequestHandler = async (req, res) => {
+  try {
+    const customerId = (req as any).customerId;
+
+    if (!customerId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+
+    if (!req.file) {
+      return res.status(400).json({ error: "No file provided" });
+    }
+
+    // Compress and resize image for avatar (square format)
+    const compressedBuffer = await sharp(req.file.buffer)
+      .resize(500, 500, {
+        fit: "cover",
+        withoutEnlargement: false,
+      })
+      .jpeg({ quality: 85, progressive: true })
+      .toBuffer();
+
+    const b64 = compressedBuffer.toString("base64");
+    const dataURI = `data:image/jpeg;base64,${b64}`;
+
+    const result = await cloudinary.uploader.upload(dataURI, {
+      folder: "sticky-shuttle/avatars",
+      resource_type: "auto",
+    });
+
+    // Update customer with avatar URL
+    const { data: updatedCustomer, error } = await supabase
+      .from("customers")
+      .update({
+        avatar_url: result.secure_url,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", customerId)
+      .select()
+      .single();
+
+    if (error || !updatedCustomer) {
+      return res.status(500).json({ error: "Failed to update avatar" });
+    }
+
+    res.json({
+      success: true,
+      message: "Avatar updated successfully",
+      customer: {
+        id: updatedCustomer.id,
+        email: updatedCustomer.email,
+        firstName: updatedCustomer.first_name,
+        lastName: updatedCustomer.last_name,
+        phone: updatedCustomer.phone,
+        avatarUrl: updatedCustomer.avatar_url,
+      },
+    });
+  } catch (error) {
+    console.error("Upload avatar error:", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to upload avatar";
+    res.status(500).json({ error: message });
+  }
+};
