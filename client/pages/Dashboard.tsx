@@ -26,6 +26,7 @@ interface Customer {
   lastName: string;
   phone?: string;
   companyName?: string;
+  avatarUrl?: string;
 }
 
 interface Order {
