@@ -113,7 +113,7 @@ export default function Signup() {
                 Create Account
               </h1>
               <p className="text-gray-600">
-                Join StickerHub and start creating today
+                Join Sticky Slap and start creating today
               </p>
             </div>
 

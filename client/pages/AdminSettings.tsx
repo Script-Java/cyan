@@ -12,8 +12,8 @@ export default function AdminSettings() {
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   const [settings, setSettings] = useState({
-    storeName: "Sticker Hub",
-    storeEmail: "support@stickerhub.com",
+    storeName: "Sticky Slap",
+    storeEmail: "support@stickyslap.com",
     storePhone: "+1 (555) 123-4567",
     storeAddress: "123 Main Street, Anytown, ST 12345",
     timeZone: "UTC",

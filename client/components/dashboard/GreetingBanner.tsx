@@ -127,7 +127,7 @@ export default function GreetingBanner({
           </h1>
           <div className="flex items-center gap-2 mb-2">
             <p className="text-blue-100 text-xs sm:text-sm font-medium">
-              StickerHub Dashboard
+              Sticky Slap Dashboard
             </p>
             <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-cyan-400/50 backdrop-blur-md">
               <span className="bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
