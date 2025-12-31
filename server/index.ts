@@ -302,6 +302,12 @@ export function createServer() {
   // ===== Customer Routes (Protected) =====
   app.get("/api/customers/me", verifyToken, handleGetCustomer);
   app.patch("/api/customers/me", verifyToken, handleUpdateCustomer);
+  app.post(
+    "/api/customers/me/avatar",
+    verifyToken,
+    upload.single("avatar"),
+    handleUploadAvatar,
+  );
   app.get(
     "/api/customers/me/addresses",
     verifyToken,
