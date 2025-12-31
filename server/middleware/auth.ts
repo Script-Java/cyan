@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { createClient } from "@supabase/supabase-js";
 
 const JWT_SECRET =
   process.env.JWT_SECRET || "your-secret-key-change-in-production";
@@ -9,9 +10,15 @@ declare global {
     interface Request {
       customerId?: number;
       email?: string;
+      isAdmin?: boolean;
     }
   }
 }
+
+const supabase = createClient(
+  process.env.SUPABASE_URL || "",
+  process.env.SUPABASE_SERVICE_KEY || "",
+);
 
 /**
  * Middleware to verify JWT token and extract customer info
