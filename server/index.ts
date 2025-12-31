@@ -237,8 +237,10 @@ export function createServer() {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-  // Apply rate limiting globally
-  app.use(apiLimiter);
+  // Apply rate limiting globally (only in production)
+  if (process.env.NODE_ENV === "production") {
+    app.use(apiLimiter);
+  }
 
   // Multer configuration for file uploads
   const upload = multer({
