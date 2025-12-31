@@ -78,7 +78,7 @@ export const optionalVerifyToken = async (
   try {
     const authHeader = req.headers.authorization;
 
-    if (authHeader && authHeader.startsWith("Bearer ") && JWT_SECRET) {
+    if (authHeader && authHeader.startsWith("Bearer ")) {
       const token = authHeader.substring(7);
       const decoded = jwt.verify(token, JWT_SECRET) as {
         customerId: number;
