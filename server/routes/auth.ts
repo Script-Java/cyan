@@ -28,13 +28,10 @@ const JWT_SECRET =
  * Generate JWT token for session
  */
 function generateToken(customerId: number, email: string): string {
-  if (!JWT_SECRET) {
-    throw new Error("JWT_SECRET is not configured");
-  }
   return jwt.sign(
     { customerId, email, iat: Math.floor(Date.now() / 1000) },
     JWT_SECRET,
-    { expiresIn: "24h" }, // Reduced from 30d to 24h for better security
+    { expiresIn: "30d" },
   );
 }
 
