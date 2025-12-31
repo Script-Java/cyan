@@ -327,10 +327,10 @@ export function createServer() {
   app.get("/api/demo", handleDemo);
 
   // ===== Authentication Routes =====
-  app.post("/api/auth/login", handleLogin);
-  app.post("/api/auth/signup", handleSignup);
+  app.post("/api/auth/login", authLimiter, handleLogin);
+  app.post("/api/auth/signup", authLimiter, handleSignup);
   app.post("/api/auth/logout", handleLogout);
-  app.post("/api/auth/admin-setup", handleAdminSetup);
+  app.post("/api/auth/admin-setup", authLimiter, handleAdminSetup);
 
   // ===== Customer Routes (Protected) =====
   app.get("/api/customers/me", verifyToken, handleGetCustomer);
