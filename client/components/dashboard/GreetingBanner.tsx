@@ -7,7 +7,7 @@ interface GreetingBannerProps {
 }
 
 const DEFAULT_BANNER_IMAGE =
-  "https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Fcdd9c054381849a7b9fe4904f219304b?format=webp&width=800";
+  "https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Ffd4152bc45944f0ca5705b17389968cc?format=webp&width=800";
 const BANNER_IMAGE_STORAGE_KEY = "bannerImageUrl";
 
 export default function GreetingBanner({
