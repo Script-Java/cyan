@@ -1,5 +1,7 @@
 import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
+import { v2 as cloudinary } from "cloudinary";
+import sharp from "sharp";
 import { getCustomerStoreCredit } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
 
