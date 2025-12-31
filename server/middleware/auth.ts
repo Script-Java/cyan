@@ -70,11 +70,11 @@ export const verifyToken = async (
 /**
  * Middleware to optionally verify token (doesn't fail if missing)
  */
-export const optionalVerifyToken = (
+export const optionalVerifyToken = async (
   req: Request,
   res: Response,
   next: NextFunction,
-): void => {
+): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
 
@@ -87,6 +87,20 @@ export const optionalVerifyToken = (
 
       req.customerId = decoded.customerId;
       req.email = decoded.email;
+
+      // Fetch customer to get isAdmin status
+      try {
+        const { data: customer } = await supabase
+          .from("customers")
+          .select("is_admin")
+          .eq("id", decoded.customerId)
+          .single();
+
+        req.isAdmin = customer?.is_admin || false;
+      } catch (error) {
+        // If we can't fetch from DB, default to false
+        req.isAdmin = false;
+      }
     }
 
     next();
@@ -95,4 +109,26 @@ export const optionalVerifyToken = (
     // This is useful for endpoints that work with or without auth
     next();
   }
+};
+
+/**
+ * Middleware to require admin role
+ * Must be used after verifyToken middleware
+ */
+export const requireAdmin = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): void => {
+  if (!req.customerId) {
+    res.status(401).json({ error: "Authentication required" });
+    return;
+  }
+
+  if (!req.isAdmin) {
+    res.status(403).json({ error: "Admin access required" });
+    return;
+  }
+
+  next();
 };
