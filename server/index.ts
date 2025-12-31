@@ -221,8 +221,37 @@ export function createServer() {
 
   const app = express();
 
+  // CORS Configuration - Allow only trusted origins
+  const allowedOrigins = [
+    // Frontend URLs
+    process.env.FRONTEND_URL || "http://localhost:5173", // Development
+    "https://stickershop.test", // Local testing
+    // Add production domains here as environment variables
+    ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : []),
+  ];
+
+  const corsOptions = {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.warn(`CORS request blocked from origin: ${origin}`);
+        callback(new Error("Not allowed by CORS policy"));
+      }
+    },
+    credentials: true,
+    optionsSuccessStatus: 200,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Admin-Setup-Key"],
+  };
+
   // Middleware
-  app.use(cors());
+  app.use(cors(corsOptions));
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
