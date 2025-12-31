@@ -339,7 +339,7 @@ export function createServer() {
   app.get("/api/orders", verifyToken, handleGetOrders);
   app.post("/api/orders", verifyToken, handleCreateOrder);
   app.get("/api/orders/:orderId", verifyToken, handleGetOrder);
-  app.get("/api/admin/orders/pending", verifyToken, handleGetPendingOrders);
+  app.get("/api/admin/orders/pending", verifyToken, requireAdmin, handleGetPendingOrders);
 
   // ===== Design Routes (Protected) =====
   app.get("/api/designs", verifyToken, handleGetDesigns);
@@ -372,10 +372,11 @@ export function createServer() {
 
   // ===== Imported Products Routes =====
   app.get("/api/imported-products", handleGetProducts);
-  app.post("/api/import-products", handleImportProducts);
+  app.post("/api/import-products", verifyToken, requireAdmin, handleImportProducts);
   app.delete(
     "/api/imported-products/all",
     verifyToken,
+    requireAdmin,
     handleDeleteAllProducts,
   );
 
@@ -394,27 +395,29 @@ export function createServer() {
   app.post("/api/square/create-payment", handleCreatePayment);
   app.post("/api/webhooks/square", handleSquareWebhook);
 
-  // ===== Admin Routes (No auth required for now, add auth middleware in production) =====
-  app.get("/api/admin/orders/:orderId", handleAdminGetOrder);
-  app.get("/api/admin/customers", verifyToken, handleGetAllCustomers);
-  app.get("/api/admin/customers/search", verifyToken, handleSearchCustomers);
+  // ===== Admin Routes (Protected - Admin only) =====
+  app.get("/api/admin/orders/:orderId", verifyToken, requireAdmin, handleAdminGetOrder);
+  app.get("/api/admin/customers", verifyToken, requireAdmin, handleGetAllCustomers);
+  app.get("/api/admin/customers/search", verifyToken, requireAdmin, handleSearchCustomers);
   app.get(
     "/api/admin/customers/:customerId",
     verifyToken,
+    requireAdmin,
     handleGetCustomerDetails,
   );
-  app.get("/api/admin/analytics", verifyToken, handleGetAnalytics);
+  app.get("/api/admin/analytics", verifyToken, requireAdmin, handleGetAnalytics);
   app.post("/api/analytics/track", handleTrackEvent);
-  app.get("/api/admin/finance", verifyToken, handleGetFinance);
+  app.get("/api/admin/finance", verifyToken, requireAdmin, handleGetFinance);
 
-  // ===== Admin Products Routes (Protected) =====
-  app.post("/api/products", verifyToken, handleCreateProduct);
-  app.put("/api/products/:productId", verifyToken, handleUpdateProduct);
-  app.get("/api/admin/products", verifyToken, handleGetAdminProducts);
-  app.get("/api/admin/products/:productId", verifyToken, handleGetAdminProduct);
+  // ===== Admin Products Routes (Protected - Admin only) =====
+  app.post("/api/products", verifyToken, requireAdmin, handleCreateProduct);
+  app.put("/api/products/:productId", verifyToken, requireAdmin, handleUpdateProduct);
+  app.get("/api/admin/products", verifyToken, requireAdmin, handleGetAdminProducts);
+  app.get("/api/admin/products/:productId", verifyToken, requireAdmin, handleGetAdminProduct);
   app.delete(
     "/api/admin/products/:productId",
     verifyToken,
+    requireAdmin,
     handleDeleteAdminProduct,
   );
 
@@ -422,22 +425,26 @@ export function createServer() {
   app.get(
     "/api/store-credit/customers",
     verifyToken,
+    requireAdmin,
     handleGetAllCustomersCredit,
   );
   app.get(
     "/api/store-credit/:customerId",
     verifyToken,
+    requireAdmin,
     handleGetCustomerCredit,
   );
   app.get(
     "/api/store-credit/:customerId/history",
     verifyToken,
+    requireAdmin,
     handleGetCreditHistory,
   );
-  app.post("/api/store-credit/modify", verifyToken, handleModifyStoreCredit);
+  app.post("/api/store-credit/modify", verifyToken, requireAdmin, handleModifyStoreCredit);
   app.post(
     "/api/store-credit/apply-to-order",
     verifyToken,
+    requireAdmin,
     handleApplyStoreCreditToOrder,
   );
 
@@ -454,15 +461,17 @@ export function createServer() {
     verifyToken,
     handleCustomerReplyToTicket,
   );
-  app.get("/api/admin/tickets", verifyToken, handleAdminGetAllTickets);
+  app.get("/api/admin/tickets", verifyToken, requireAdmin, handleAdminGetAllTickets);
   app.post(
     "/api/admin/tickets/:ticketId/reply",
     verifyToken,
+    requireAdmin,
     handleAdminReplyToTicket,
   );
   app.patch(
     "/api/admin/tickets/:ticketId/status",
     verifyToken,
+    requireAdmin,
     handleUpdateTicketStatus,
   );
 
@@ -485,9 +494,9 @@ export function createServer() {
   app.get("/api/proofs/public/:proofId", handleGetProofDetailPublic);
   app.post("/api/proofs/public/:proofId/approve", handleApproveProofPublic);
   app.post("/api/proofs/public/:proofId/deny", handleDenyProofPublic);
-  app.post("/api/admin/proofs/send", handleSendProofToCustomer);
-  app.get("/api/admin/proofs", handleGetAdminProofs);
-  app.post("/api/admin/proofs/:proofId/comments", handleAddAdminProofComment);
+  app.post("/api/admin/proofs/send", verifyToken, requireAdmin, handleSendProofToCustomer);
+  app.get("/api/admin/proofs", verifyToken, requireAdmin, handleGetAdminProofs);
+  app.post("/api/admin/proofs/:proofId/comments", verifyToken, requireAdmin, handleAddAdminProofComment);
   app.get("/api/email-preview/proof", handleProofEmailPreview);
   app.post("/api/email-preview/send", handleSendProofEmailPreview);
   app.get("/api/email-preview/signup", handleSignupConfirmationPreview);
@@ -496,49 +505,55 @@ export function createServer() {
   app.get("/api/email-preview/password-reset", handlePasswordResetPreview);
   app.get("/api/email-preview/support-reply", handleSupportTicketReplyPreview);
   app.get("/api/email-preview/order-status-update", handleOrderStatusUpdatePreview);
-  app.get("/api/admin/pending-orders", handleGetAdminPendingOrders);
-  app.get("/api/admin/orders/test", verifyToken, handleTestAdminOrders);
-  app.get("/api/admin/all-orders", verifyToken, handleGetAllAdminOrders);
+  app.get("/api/admin/pending-orders", verifyToken, requireAdmin, handleGetAdminPendingOrders);
+  app.get("/api/admin/orders/test", verifyToken, requireAdmin, handleTestAdminOrders);
+  app.get("/api/admin/all-orders", verifyToken, requireAdmin, handleGetAllAdminOrders);
   app.put(
     "/api/admin/orders/:orderId/status",
     verifyToken,
+    requireAdmin,
     handleUpdateOrderStatus,
   );
   app.put(
     "/api/admin/orders/:orderId/shipping-address",
     verifyToken,
+    requireAdmin,
     handleUpdateShippingAddress,
   );
 
   // ===== Shipping Routes (Protected - admin only) =====
-  app.post("/api/shipping/label", verifyToken, handleCreateLabel);
-  app.post("/api/shipping/rates", verifyToken, handleGetRates);
-  app.get("/api/shipping/carriers", verifyToken, handleGetCarriers);
-  app.get("/api/shipping/services", verifyToken, handleGetServices);
+  app.post("/api/shipping/label", verifyToken, requireAdmin, handleCreateLabel);
+  app.post("/api/shipping/rates", verifyToken, requireAdmin, handleGetRates);
+  app.get("/api/shipping/carriers", verifyToken, requireAdmin, handleGetCarriers);
+  app.get("/api/shipping/services", verifyToken, requireAdmin, handleGetServices);
 
   // ===== Shipping Options Routes (Public - for checkout) =====
   app.get("/api/shipping-options", handleGetPublicShippingOptions);
 
   // ===== Shipping Options Routes (Protected - admin only) =====
-  app.get("/api/admin/shipping-options", verifyToken, handleGetShippingOptions);
+  app.get("/api/admin/shipping-options", verifyToken, requireAdmin, handleGetShippingOptions);
   app.get(
     "/api/admin/shipping-options/:id",
     verifyToken,
+    requireAdmin,
     handleGetShippingOption,
   );
   app.post(
     "/api/admin/shipping-options",
     verifyToken,
+    requireAdmin,
     handleCreateShippingOption,
   );
   app.put(
     "/api/admin/shipping-options/:id",
     verifyToken,
+    requireAdmin,
     handleUpdateShippingOption,
   );
   app.delete(
     "/api/admin/shipping-options/:id",
     verifyToken,
+    requireAdmin,
     handleDeleteShippingOption,
   );
 
@@ -546,23 +561,26 @@ export function createServer() {
   app.post("/api/webhooks/ecwid", handleEcwidOrderWebhook);
   app.get("/api/webhooks/health", handleWebhookHealth);
   app.get("/api/webhooks/url", handleGetWebhookUrl);
-  app.get("/api/webhooks/diagnostic", verifyToken, handleEcwidDiagnostic);
-  app.post("/api/webhooks/test", verifyToken, handleTestWebhook);
+  app.get("/api/webhooks/diagnostic", verifyToken, requireAdmin, handleEcwidDiagnostic);
+  app.post("/api/webhooks/test", verifyToken, requireAdmin, handleTestWebhook);
 
   // ===== Ecwid Migration Routes (Protected - admin only) =====
   app.post(
     "/api/admin/ecwid/migrate",
     verifyToken,
+    requireAdmin,
     handleEcwidMigration,
   );
   app.get(
     "/api/admin/ecwid/migration-status",
     verifyToken,
+    requireAdmin,
     handleGetMigrationStatus,
   );
   app.post(
     "/api/admin/ecwid/import-csv",
     verifyToken,
+    requireAdmin,
     handleCSVCustomerImport,
   );
 
@@ -571,15 +589,16 @@ export function createServer() {
   app.get("/api/blogs", handleGetPublishedBlogs);
   app.get("/api/blogs/:blogId", handleGetBlogById);
 
-  // Admin routes (Protected)
-  app.post("/api/admin/blogs", verifyToken, handleCreateBlog);
-  app.get("/api/admin/blogs", verifyToken, handleGetAllBlogs);
-  app.get("/api/admin/blogs/:blogId", verifyToken, handleGetAdminBlogById);
-  app.put("/api/admin/blogs/:blogId", verifyToken, handleUpdateBlog);
-  app.delete("/api/admin/blogs/:blogId", verifyToken, handleDeleteBlog);
+  // Admin routes (Protected - Admin only)
+  app.post("/api/admin/blogs", verifyToken, requireAdmin, handleCreateBlog);
+  app.get("/api/admin/blogs", verifyToken, requireAdmin, handleGetAllBlogs);
+  app.get("/api/admin/blogs/:blogId", verifyToken, requireAdmin, handleGetAdminBlogById);
+  app.put("/api/admin/blogs/:blogId", verifyToken, requireAdmin, handleUpdateBlog);
+  app.delete("/api/admin/blogs/:blogId", verifyToken, requireAdmin, handleDeleteBlog);
   app.post(
     "/api/admin/upload-image",
     verifyToken,
+    requireAdmin,
     upload.single("file"),
     handleUploadBlogImage,
   );
@@ -589,18 +608,20 @@ export function createServer() {
   app.get("/api/legal-pages", handleGetPublishedLegalPages);
   app.get("/api/legal/:pageType", handleGetLegalPageByType);
 
-  // Admin routes (Protected)
-  app.post("/api/admin/legal-pages", verifyToken, handleCreateLegalPage);
-  app.get("/api/admin/legal-pages", verifyToken, handleGetAllLegalPages);
+  // Admin routes (Protected - Admin only)
+  app.post("/api/admin/legal-pages", verifyToken, requireAdmin, handleCreateLegalPage);
+  app.get("/api/admin/legal-pages", verifyToken, requireAdmin, handleGetAllLegalPages);
   app.get(
     "/api/admin/legal-pages/:pageId",
     verifyToken,
+    requireAdmin,
     handleGetAdminLegalPageById,
   );
-  app.put("/api/admin/legal-pages/:pageId", verifyToken, handleUpdateLegalPage);
+  app.put("/api/admin/legal-pages/:pageId", verifyToken, requireAdmin, handleUpdateLegalPage);
   app.delete(
     "/api/admin/legal-pages/:pageId",
     verifyToken,
+    requireAdmin,
     handleDeleteLegalPage,
   );
 
@@ -608,15 +629,17 @@ export function createServer() {
   // Public route
   app.get("/api/return-refund-policy", getReturnRefundPolicy);
 
-  // Admin routes (Protected)
+  // Admin routes (Protected - Admin only)
   app.get(
     "/api/admin/return-refund-policy",
     verifyToken,
+    requireAdmin,
     getReturnRefundPolicy,
   );
   app.post(
     "/api/admin/return-refund-policy",
     verifyToken,
+    requireAdmin,
     updateReturnRefundPolicy,
   );
 
