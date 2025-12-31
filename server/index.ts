@@ -615,6 +615,11 @@ export function createServer() {
   app.get("/api/webhooks/diagnostic", verifyToken, requireAdmin, handleEcwidDiagnostic);
   app.post("/api/webhooks/test", verifyToken, requireAdmin, handleTestWebhook);
 
+  // ===== Zapier Integration Routes =====
+  app.post("/api/zapier/webhook", handleZapierEcwidWebhook);
+  app.get("/api/zapier/health", handleZapierHealth);
+  app.get("/api/zapier/webhook-url", handleGetZapierWebhookUrl);
+
   // ===== Ecwid Migration Routes (Protected - admin only) =====
   app.post(
     "/api/admin/ecwid/migrate",
