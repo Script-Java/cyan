@@ -177,7 +177,12 @@ export default function Dashboard() {
           )}
 
           {/* Greeting Banner */}
-          {customer && <GreetingBanner firstName={customer.firstName} />}
+          {customer && (
+            <GreetingBanner
+              firstName={customer.firstName}
+              avatarUrl={customer.avatarUrl}
+            />
+          )}
 
           {/* Proof Notifications */}
           <ProofNotificationBadge />
