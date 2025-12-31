@@ -23,11 +23,11 @@ const supabase = createClient(
 /**
  * Middleware to verify JWT token and extract customer info
  */
-export const verifyToken = (
+export const verifyToken = async (
   req: Request,
   res: Response,
   next: NextFunction,
-): void => {
+): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
 
@@ -45,6 +45,20 @@ export const verifyToken = (
 
     req.customerId = decoded.customerId;
     req.email = decoded.email;
+
+    // Fetch customer to get isAdmin status
+    try {
+      const { data: customer } = await supabase
+        .from("customers")
+        .select("is_admin")
+        .eq("id", decoded.customerId)
+        .single();
+
+      req.isAdmin = customer?.is_admin || false;
+    } catch (error) {
+      // If we can't fetch from DB, default to false
+      req.isAdmin = false;
+    }
 
     next();
   } catch (error) {
