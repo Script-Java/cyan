@@ -8,7 +8,9 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY || "",
 );
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 const PROOF_EMAIL_FROM = "sticky@stickyslap.com";
 
 interface ProofComment {
