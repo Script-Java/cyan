@@ -165,15 +165,10 @@ export default function GreetingBanner({
               <p className="text-blue-100 text-xs sm:text-sm font-medium">
                 Sticky Slap Dashboard
               </p>
-              <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-cyan-400/50 backdrop-blur-md">
-                <span className="bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
-                  v4
-                </span>
-              </span>
             </div>
             <div className="font-mono text-xs text-green-300 drop-shadow-lg">
               <p className="opacity-90">
-                &gt; MISSION ACTIVE &gt; REVIEW YOUR ORDERS BELOW
+                &gt; REVIEW YOUR ORDERS BELOW
               </p>
             </div>
           </div>
