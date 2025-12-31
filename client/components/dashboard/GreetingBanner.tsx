@@ -1,21 +1,53 @@
-import { Edit3, RotateCcw, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { Edit3, RotateCcw, ChevronDown, X } from "lucide-react";
+import { useState, useEffect } from "react";
 
 interface GreetingBannerProps {
   firstName: string;
   avatarUrl?: string;
 }
 
+const DEFAULT_BANNER_IMAGE =
+  "https://images-assets.nasa.gov/image/iss073e0204297/iss073e0204297~orig.jpg";
+const BANNER_IMAGE_STORAGE_KEY = "bannerImageUrl";
+
 export default function GreetingBanner({
   firstName,
   avatarUrl,
 }: GreetingBannerProps) {
   const [isHovering, setIsHovering] = useState(false);
+  const [showImageDialog, setShowImageDialog] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+  const [bannerImage, setBannerImage] = useState(DEFAULT_BANNER_IMAGE);
 
   const defaultAvatar =
     "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1751390215/StickerShuttle_Avatar1_dmnkat.png";
-  const bannerImage =
-    "https://images-assets.nasa.gov/image/iss073e0204297/iss073e0204297~orig.jpg";
+
+  // Load banner image from localStorage on mount
+  useEffect(() => {
+    const savedImage = localStorage.getItem(BANNER_IMAGE_STORAGE_KEY);
+    if (savedImage) {
+      setBannerImage(savedImage);
+    }
+  }, []);
+
+  const handleChangeBackground = () => {
+    setImageUrl(bannerImage);
+    setShowImageDialog(true);
+  };
+
+  const handleSaveImage = () => {
+    if (imageUrl.trim()) {
+      setBannerImage(imageUrl);
+      localStorage.setItem(BANNER_IMAGE_STORAGE_KEY, imageUrl);
+      setShowImageDialog(false);
+      setImageUrl("");
+    }
+  };
+
+  const handleResetBackground = () => {
+    setBannerImage(DEFAULT_BANNER_IMAGE);
+    localStorage.removeItem(BANNER_IMAGE_STORAGE_KEY);
+  };
 
   return (
     <div
