@@ -24,6 +24,7 @@ export default function GreetingBanner({
         backgroundImage: `url('${bannerImage}')`,
         aspectRatio: "5.2 / 1",
         minHeight: "207px",
+        paddingRight: "12px",
       }}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
