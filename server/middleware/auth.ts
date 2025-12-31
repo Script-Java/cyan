@@ -41,6 +41,11 @@ export const verifyToken = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
+    if (!JWT_SECRET) {
+      res.status(500).json({ error: "Server configuration error" });
+      return;
+    }
+
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
