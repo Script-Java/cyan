@@ -186,7 +186,7 @@ import {
   handleGetMigrationStatus,
   handleCSVCustomerImport,
 } from "./routes/ecwid-migration";
-import { verifyToken, optionalVerifyToken } from "./middleware/auth";
+import { verifyToken, optionalVerifyToken, requireAdmin } from "./middleware/auth";
 
 export function createServer() {
   const app = express();
