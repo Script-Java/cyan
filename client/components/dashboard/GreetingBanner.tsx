@@ -1,5 +1,5 @@
-import { Edit3, RotateCcw, ChevronDown, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Edit3, RotateCcw, ChevronDown, X, Upload } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 
 interface GreetingBannerProps {
   firstName: string;
@@ -18,6 +18,11 @@ export default function GreetingBanner({
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [bannerImage, setBannerImage] = useState(DEFAULT_BANNER_IMAGE);
+  const [currentAvatarUrl, setCurrentAvatarUrl] = useState(avatarUrl);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [avatarUploadError, setAvatarUploadError] = useState("");
+  const [isAvatarHovering, setIsAvatarHovering] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const defaultAvatar =
     "https://res.cloudinary.com/dxcnvqk6b/image/upload/v1751390215/StickerShuttle_Avatar1_dmnkat.png";
