@@ -73,6 +73,11 @@ import {
   handleTestWebhook,
 } from "./routes/webhooks";
 import {
+  handleZapierEcwidWebhook,
+  handleZapierHealth,
+  handleGetZapierWebhookUrl,
+} from "./routes/zapier";
+import {
   handleSquarePayment,
   handleGetSquareConfig,
   handleGetSquareLocations,
