@@ -40,7 +40,7 @@ export default function GreetingBanner({
 
       {/* Sticker Type Selector */}
       <div
-        className="absolute flex-1 left-0 right-0 flex items-center justify-center z-30"
+        className="absolute flex-1 left-0 right-0 flex items-center justify-center z-30 hidden"
         style={{
           margin: "0 16px",
           position: "relative",
