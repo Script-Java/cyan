@@ -2,13 +2,31 @@ export function generateOrderConfirmationEmail(params: {
   customerName: string;
   orderNumber: string;
   orderDate: string;
-  items: Array<{ name: string; quantity: number; price: number }>;
+  items: Array<{ name: string; quantity: number; price: number; designFileUrl?: string }>;
   subtotal: number;
   tax: number;
   shipping: number;
   total: number;
   estimatedDelivery: string;
   orderLink: string;
+  shippingAddress?: {
+    firstName: string;
+    lastName: string;
+    street: string;
+    street2?: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  policies?: {
+    returnAndRefund: boolean;
+    privacy: boolean;
+    gdpr: boolean;
+    ccpa: boolean;
+    terms: boolean;
+    shipping: boolean;
+  };
 }): string {
   const {
     customerName,
@@ -21,6 +39,8 @@ export function generateOrderConfirmationEmail(params: {
     total,
     estimatedDelivery,
     orderLink,
+    shippingAddress,
+    policies,
   } = params;
 
   const itemsHtml = items
