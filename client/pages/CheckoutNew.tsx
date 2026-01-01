@@ -870,10 +870,26 @@ export default function CheckoutNew() {
                                 {item.quantity}
                               </span>
                             </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-gray-600">Size</span>
-                              <span className="font-medium">Custom</span>
-                            </div>
+                            {item.selectedOptions &&
+                              Object.keys(item.selectedOptions).length > 0 && (
+                                <>
+                                  {Object.entries(item.selectedOptions).map(
+                                    ([optionId, valueId]) => (
+                                      <div
+                                        key={optionId}
+                                        className="flex items-center justify-between"
+                                      >
+                                        <span className="text-gray-600">
+                                          Size
+                                        </span>
+                                        <span className="font-medium">
+                                          {valueId}
+                                        </span>
+                                      </div>
+                                    ),
+                                  )}
+                                </>
+                              )}
                           </div>
                         </div>
 
