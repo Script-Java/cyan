@@ -65,6 +65,7 @@ interface SquareCheckoutRequest {
     quantity: number;
     price?: number;
     design_file_url?: string;
+    options?: Array<{ option_id: string; option_value: string }>;
   }>;
   phone?: string;
   shippingAddress: {
