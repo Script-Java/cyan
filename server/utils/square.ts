@@ -290,9 +290,18 @@ export async function createSquarePaymentLink(data: {
     if (data.items && data.items.length > 0) {
       let itemIndex = 0;
       for (const item of data.items) {
+        // Build product name with options appended
+        let displayName = item.product_name;
+        if (item.options && item.options.length > 0) {
+          const optionsText = item.options
+            .map((opt) => opt.option_value)
+            .join(", ");
+          displayName = `${item.product_name} (${optionsText})`;
+        }
+
         lineItems.push({
           uid: `item-${itemIndex}`,
-          name: item.product_name,
+          name: displayName,
           quantity: item.quantity.toString(),
           base_price_money: {
             amount: Math.round(item.price * 100),
