@@ -323,6 +323,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
         quantity: item.quantity,
         price: item.price || 0.25,
         designFileUrl: item.design_file_url,
+        options: (item as any).options,
       })),
       subtotal: checkoutData.subtotal,
       tax: checkoutData.tax,
