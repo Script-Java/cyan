@@ -209,6 +209,7 @@ export default function CheckoutNew() {
                 basePrice: item.basePrice,
                 savePercentage: item.savePercentage,
                 design_file_url: item.design_file_url,
+                selectedOptions: item.selectedOptions,
               });
             } catch (err) {
               console.warn(
