@@ -884,15 +884,12 @@ export default function CheckoutNew() {
                                     ([optionId, valueId]) => {
                                       // Find the option and its value name
                                       const option = item.options?.find(
-                                        (opt: any) => opt.id === optionId || opt.option_id === optionId,
+                                        (opt: any) => opt.id === optionId,
                                       );
                                       const optionValue = option?.values?.find(
-                                        (val: any) => val.id === valueId || val.option_value_id === valueId,
+                                        (val: any) => val.id === valueId,
                                       );
-                                      const displayValue =
-                                        optionValue?.name ||
-                                        optionValue?.option_value ||
-                                        valueId;
+                                      const displayValue = optionValue?.name || valueId;
 
                                       return (
                                         <div
@@ -900,7 +897,7 @@ export default function CheckoutNew() {
                                           className="flex items-center justify-between"
                                         >
                                           <span className="text-gray-600">
-                                            {option?.name || option?.option_name || "Size"}
+                                            {option?.name || "Option"}
                                           </span>
                                           <span className="font-medium">
                                             {displayValue}
