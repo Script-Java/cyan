@@ -25,6 +25,8 @@ interface CartItem {
   basePrice?: number;
   savePercentage?: number;
   design_file_url?: string;
+  selectedOptions?: Record<string, string>;
+  options?: Array<{ option_id: number; option_value: string }>;
 }
 
 interface OrderData {
