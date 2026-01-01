@@ -66,11 +66,21 @@ export function generateOrderConfirmationEmail(params: {
             </div>`
           : "";
 
+        const optionsDisplay = item.options && item.options.length > 0
+          ? `<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #f3f4f6;">
+              <p style="margin: 0 0 4px 0; font-size: 11px; color: #9ca3af; text-transform: uppercase;">Specifications</p>
+              <div style="font-size: 13px; color: #6b7280;">
+                ${item.options.map((opt) => `<div>• ${opt.option_value}</div>`).join("")}
+              </div>
+            </div>`
+          : "";
+
         return `
     <tr>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #374151;">
         <div>
           <strong>${item.name}</strong>
+          ${optionsDisplay}
           ${designThumbnail}
         </div>
       </td>
