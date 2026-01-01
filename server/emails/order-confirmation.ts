@@ -275,6 +275,40 @@ export function generateOrderConfirmationEmail(params: {
         <strong>What happens next?</strong><br>
         Our team will prepare your design for production. You'll receive a proof for approval before we begin printing. Once approved, your stickers will be printed, quality checked, and shipped to your address.
       </p>
+
+      ${
+        shippingAddress
+          ? `
+      <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 20px; margin-top: 30px;">
+        <h3 style="color: #1f2937; margin-top: 0; margin-bottom: 15px; font-size: 16px;">📦 Shipping Address</h3>
+        <div style="color: #374151; font-size: 14px; line-height: 1.6;">
+          <strong>${shippingAddress.firstName} ${shippingAddress.lastName}</strong><br>
+          ${shippingAddress.street}${shippingAddress.street2 ? `<br>${shippingAddress.street2}` : ""}<br>
+          ${shippingAddress.city}, ${shippingAddress.state} ${shippingAddress.postalCode}<br>
+          ${shippingAddress.country}
+        </div>
+      </div>
+      `
+          : ""
+      }
+
+      ${
+        policies
+          ? `
+      <div style="background-color: #f0fdf4; border: 1px solid #86efac; border-radius: 6px; padding: 20px; margin-top: 30px;">
+        <h3 style="color: #166534; margin-top: 0; margin-bottom: 15px; font-size: 16px;">✓ Policies & Agreements</h3>
+        <div style="color: #365314; font-size: 13px; line-height: 1.8; space-y: 8px;">
+          ${policies.returnAndRefund ? `<div style="margin-bottom: 8px;">✓ Return & Refund Policy acknowledged</div>` : ""}
+          ${policies.privacy ? `<div style="margin-bottom: 8px;">✓ Privacy Policy agreed</div>` : ""}
+          ${policies.gdpr ? `<div style="margin-bottom: 8px;">✓ GDPR data processing consent confirmed</div>` : ""}
+          ${policies.ccpa ? `<div style="margin-bottom: 8px;">✓ CCPA privacy rights acknowledged</div>` : ""}
+          ${policies.terms ? `<div style="margin-bottom: 8px;">✓ Terms of Service agreed</div>` : ""}
+          ${policies.shipping ? `<div style="margin-bottom: 0;">✓ Shipping Policy agreed</div>` : ""}
+        </div>
+      </div>
+      `
+          : ""
+      }
     </div>
 
     <!-- Footer -->
