@@ -300,6 +300,48 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       paymentLinkUrl: paymentLinkResult.paymentLinkUrl,
     });
 
+    // Build base URL for order confirmation link
+    let baseUrl = "http://localhost:8080";
+    if (process.env.BASE_URL) {
+      baseUrl = process.env.BASE_URL;
+    } else if (process.env.VERCEL_URL) {
+      baseUrl = `https://${process.env.VERCEL_URL}`;
+    } else if (process.env.FLY_APP_NAME) {
+      baseUrl = `https://${process.env.FLY_APP_NAME}.fly.dev`;
+    }
+
+    // Send order confirmation email with design thumbnails and policies
+    await sendOrderConfirmationEmail({
+      customerEmail: checkoutData.customerEmail,
+      customerName: checkoutData.customerName || "Valued Customer",
+      orderNumber: String(supabaseOrder.id),
+      orderDate: new Date().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      items: checkoutData.items.map((item) => ({
+        name: item.product_name || `Product #${item.product_id}`,
+        quantity: item.quantity,
+        price: item.price || 0.25,
+        designFileUrl: item.design_file_url,
+      })),
+      subtotal: checkoutData.subtotal,
+      tax: checkoutData.tax,
+      shipping: checkoutData.shipping,
+      total: checkoutData.total,
+      estimatedDelivery: new Date(
+        Date.now() + 14 * 24 * 60 * 60 * 1000,
+      ).toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      }),
+      orderLink: `${baseUrl}/order-confirmation?orderId=${supabaseOrder.id}`,
+      shippingAddress: checkoutData.shippingAddress,
+      policies: (checkoutData as any).policies,
+    });
+
     const responsePayload = {
       success: true,
       order: {
