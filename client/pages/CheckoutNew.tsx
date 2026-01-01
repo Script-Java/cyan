@@ -543,6 +543,14 @@ export default function CheckoutNew() {
         ...(selectedShippingOptionId && {
           shipping_option_id: selectedShippingOptionId,
         }),
+        policies: {
+          returnAndRefund: agreedToPolicy,
+          privacy: agreedToPrivacy,
+          gdpr: agreedToGDPR,
+          ccpa: agreedToCCPA,
+          terms: agreedToTerms,
+          shipping: agreedToShippingPolicy,
+        },
       };
 
       console.log("Checkout payload being sent:", {
