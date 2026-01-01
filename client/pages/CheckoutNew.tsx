@@ -210,6 +210,7 @@ export default function CheckoutNew() {
                 savePercentage: item.savePercentage,
                 design_file_url: item.design_file_url,
                 selectedOptions: item.selectedOptions,
+                options: product.options,
               });
             } catch (err) {
               console.warn(
