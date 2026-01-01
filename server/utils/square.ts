@@ -213,6 +213,7 @@ export async function createSquarePaymentLink(data: {
     product_name: string;
     quantity: number;
     price: number;
+    options?: Array<{ option_id: string; option_value: string }>;
   }>;
   shippingAddress?: {
     firstName?: string;
