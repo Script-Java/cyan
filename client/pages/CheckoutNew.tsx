@@ -272,14 +272,43 @@ export default function CheckoutNew() {
 
         try {
           const data = await response.json();
-          const items = data.data?.line_items || [];
+          let items = data.data?.line_items || [];
           console.log("Cart loaded successfully:", {
             itemCount: items.length,
             subtotal: data.data?.subtotal,
           });
-          setCartItems(items);
 
-          const subtotal = items.reduce((sum: number, item: CartItem) => {
+          // Enrich cart items with product options for proper display
+          const enrichedItems = [];
+          for (const item of items) {
+            try {
+              const response = await fetch(
+                `/api/public/products/${item.product_id}`,
+              );
+              if (response.ok) {
+                const productData = await response.json();
+                const product = productData.product;
+                enrichedItems.push({
+                  ...item,
+                  options: product.options,
+                });
+              } else {
+                // If product fetch fails, just use the item as-is
+                enrichedItems.push(item);
+              }
+            } catch (err) {
+              console.warn(
+                `Failed to fetch product ${item.product_id}:`,
+                err instanceof Error ? err.message : err,
+              );
+              // Use item without enriched options
+              enrichedItems.push(item);
+            }
+          }
+
+          setCartItems(enrichedItems);
+
+          const subtotal = enrichedItems.reduce((sum: number, item: CartItem) => {
             return sum + (item.price || 0.25) * item.quantity;
           }, 0);
 
