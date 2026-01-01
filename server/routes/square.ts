@@ -94,6 +94,14 @@ interface SquareCheckoutRequest {
   customerId?: number;
   customerEmail?: string;
   customerName?: string;
+  policies?: {
+    returnAndRefund: boolean;
+    privacy: boolean;
+    gdpr: boolean;
+    ccpa: boolean;
+    terms: boolean;
+    shipping: boolean;
+  };
 }
 
 /**
