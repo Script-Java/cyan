@@ -945,21 +945,37 @@ export default function CheckoutNew() {
                                 <>
                                   {item.product_options.map(
                                     (
-                                      opt: { option_id?: number; option_value?: string },
+                                      opt: { option_id?: number; option_value?: string } | string,
                                       idx: number,
-                                    ) => (
-                                      <div
-                                        key={idx}
-                                        className="flex items-center justify-between"
-                                      >
-                                        <span className="text-gray-600">
-                                          {typeof opt === "string" ? opt : opt.option_id}
-                                        </span>
-                                        <span className="font-medium">
-                                          {typeof opt === "string" ? opt : opt.option_value}
-                                        </span>
-                                      </div>
-                                    ),
+                                    ) => {
+                                      // Handle both simple string options and structured options
+                                      const optionValue =
+                                        typeof opt === "string"
+                                          ? opt
+                                          : opt.option_value || "";
+
+                                      // Try to find the option name from the options array
+                                      const optionName =
+                                        typeof opt !== "string" && opt.option_id && item.options
+                                          ? item.options.find(
+                                              (o: any) => o.id === opt.option_id,
+                                            )?.name
+                                          : null;
+
+                                      return (
+                                        <div
+                                          key={idx}
+                                          className="flex items-center justify-between"
+                                        >
+                                          <span className="text-gray-600">
+                                            {optionName || "Option"}
+                                          </span>
+                                          <span className="font-medium">
+                                            {optionValue}
+                                          </span>
+                                        </div>
+                                      );
+                                    },
                                   )}
                                 </>
                               )}
