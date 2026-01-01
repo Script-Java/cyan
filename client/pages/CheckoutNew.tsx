@@ -524,13 +524,42 @@ export default function CheckoutNew() {
 
   // Helper function to get option display values for an item
   const getOptionsForPayload = (item: CartItem) => {
-    if (!item.selectedOptions || Object.keys(item.selectedOptions).length === 0) {
-      return [];
+    // Handle both selectedOptions (from localStorage) and product_options (from API)
+    if (item.selectedOptions && Object.keys(item.selectedOptions).length > 0) {
+      return Object.entries(item.selectedOptions).map(([optionId, valueId]) => {
+        // Look up the human-readable value name
+        const option = item.options?.find((opt: any) => opt.id === optionId);
+        const optionValue = option?.values?.find(
+          (val: any) => val.id === valueId,
+        );
+        const displayValue = optionValue?.name || valueId;
+
+        return {
+          option_id: optionId,
+          option_value: displayValue,
+        };
+      });
     }
-    return Object.entries(item.selectedOptions).map(([optionId, valueId]) => ({
-      option_id: optionId,
-      option_value: valueId,
-    }));
+
+    // Handle product_options from API carts
+    if (item.product_options && item.product_options.length > 0) {
+      return item.product_options.map(
+        (opt: { option_id?: number; option_value?: string } | string) => {
+          if (typeof opt === "string") {
+            return {
+              option_id: "custom",
+              option_value: opt,
+            };
+          }
+          return {
+            option_id: opt.option_id || "custom",
+            option_value: opt.option_value || "",
+          };
+        },
+      );
+    }
+
+    return [];
   };
 
   const handleCheckout = async (e: React.FormEvent) => {
