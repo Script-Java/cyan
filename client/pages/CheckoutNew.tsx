@@ -906,6 +906,7 @@ export default function CheckoutNew() {
                                 {item.quantity}
                               </span>
                             </div>
+                            {/* Handle both selectedOptions (from localStorage) and product_options (from API) */}
                             {item.selectedOptions &&
                               Object.keys(item.selectedOptions).length > 0 && (
                                 <>
@@ -934,6 +935,31 @@ export default function CheckoutNew() {
                                         </div>
                                       );
                                     },
+                                  )}
+                                </>
+                              )}
+                            {/* Handle product_options from API carts */}
+                            {!item.selectedOptions &&
+                              item.product_options &&
+                              item.product_options.length > 0 && (
+                                <>
+                                  {item.product_options.map(
+                                    (
+                                      opt: { option_id?: number; option_value?: string },
+                                      idx: number,
+                                    ) => (
+                                      <div
+                                        key={idx}
+                                        className="flex items-center justify-between"
+                                      >
+                                        <span className="text-gray-600">
+                                          {typeof opt === "string" ? opt : opt.option_id}
+                                        </span>
+                                        <span className="font-medium">
+                                          {typeof opt === "string" ? opt : opt.option_value}
+                                        </span>
+                                      </div>
+                                    ),
                                   )}
                                 </>
                               )}
