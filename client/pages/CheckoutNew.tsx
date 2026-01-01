@@ -487,6 +487,17 @@ export default function CheckoutNew() {
     return true;
   };
 
+  // Helper function to get option display values for an item
+  const getOptionsForPayload = (item: CartItem) => {
+    if (!item.selectedOptions || Object.keys(item.selectedOptions).length === 0) {
+      return [];
+    }
+    return Object.entries(item.selectedOptions).map(([optionId, valueId]) => ({
+      option_id: optionId,
+      option_value: valueId,
+    }));
+  };
+
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -502,7 +513,14 @@ export default function CheckoutNew() {
       const checkoutPayload = {
         amount: orderData.total,
         currency: "USD",
-        items: cartItems,
+        items: cartItems.map((item) => ({
+          product_id: item.product_id,
+          product_name: item.product_name,
+          quantity: item.quantity,
+          price: item.price,
+          design_file_url: item.design_file_url,
+          options: getOptionsForPayload(item),
+        })),
         phone: customerInfo.phone,
         shippingAddress: {
           firstName: customerInfo.firstName,
