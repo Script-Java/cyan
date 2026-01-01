@@ -147,7 +147,13 @@ export async function sendOrderConfirmationEmail(params: {
   customerName: string;
   orderNumber: string;
   orderDate: string;
-  items: Array<{ name: string; quantity: number; price: number; designFileUrl?: string }>;
+  items: Array<{
+    name: string;
+    quantity: number;
+    price: number;
+    designFileUrl?: string;
+    options?: Array<{ option_id: string; option_value: string }>;
+  }>;
   subtotal: number;
   tax: number;
   shipping: number;
