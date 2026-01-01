@@ -92,8 +92,9 @@ export const handleOrderConfirmationPreview: RequestHandler = (req, res) => {
         price: 29.99,
         designFileUrl:
           "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%2310b981' stroke='%23059669' stroke-width='2'/%3E%3Ctext x='50' y='50' font-size='20' fill='white' text-anchor='middle' dominant-baseline='central'%3EDESIGN%3C/text%3E%3C/svg%3E",
+        options: [{ option_id: "size", option_value: "3 inch" }],
       },
-      { name: "Glossy Finish", quantity: 1, price: 5.0 },
+      { name: "Glossy Finish", quantity: 1, price: 5.0, options: [] },
     ],
     subtotal: 34.99,
     tax: 2.8,
