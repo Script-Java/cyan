@@ -277,6 +277,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
         product_name: item.product_name || `Product #${item.product_id}`,
         quantity: item.quantity,
         price: item.price || 0.25,
+        options: item.options,
       })),
       shippingAddress: {
         firstName: checkoutData.shippingAddress.firstName,
