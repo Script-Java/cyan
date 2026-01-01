@@ -12,6 +12,7 @@ import {
   createOrderItems,
   updateCustomerStoreCredit,
 } from "../utils/supabase";
+import { sendOrderConfirmationEmail } from "../utils/email";
 
 interface SquarePaymentRequest {
   sourceId: string;
