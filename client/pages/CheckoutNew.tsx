@@ -866,6 +866,12 @@ export default function CheckoutNew() {
                           </h4>
                           <div className="space-y-2 text-sm">
                             <div className="flex items-center justify-between">
+                              <span className="text-gray-600">Price per sticker</span>
+                              <span className="font-medium">
+                                ${(item.price || 0.25).toFixed(2)}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between">
                               <span className="text-gray-600">Quantity</span>
                               <span className="font-medium">
                                 {item.quantity}
@@ -875,19 +881,33 @@ export default function CheckoutNew() {
                               Object.keys(item.selectedOptions).length > 0 && (
                                 <>
                                   {Object.entries(item.selectedOptions).map(
-                                    ([optionId, valueId]) => (
-                                      <div
-                                        key={optionId}
-                                        className="flex items-center justify-between"
-                                      >
-                                        <span className="text-gray-600">
-                                          Size
-                                        </span>
-                                        <span className="font-medium">
-                                          {valueId}
-                                        </span>
-                                      </div>
-                                    ),
+                                    ([optionId, valueId]) => {
+                                      // Find the option and its value name
+                                      const option = item.options?.find(
+                                        (opt: any) => opt.id === optionId || opt.option_id === optionId,
+                                      );
+                                      const optionValue = option?.values?.find(
+                                        (val: any) => val.id === valueId || val.option_value_id === valueId,
+                                      );
+                                      const displayValue =
+                                        optionValue?.name ||
+                                        optionValue?.option_value ||
+                                        valueId;
+
+                                      return (
+                                        <div
+                                          key={optionId}
+                                          className="flex items-center justify-between"
+                                        >
+                                          <span className="text-gray-600">
+                                            {option?.name || option?.option_name || "Size"}
+                                          </span>
+                                          <span className="font-medium">
+                                            {displayValue}
+                                          </span>
+                                        </div>
+                                      );
+                                    },
                                   )}
                                 </>
                               )}
