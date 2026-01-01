@@ -308,16 +308,6 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       paymentLinkUrl: paymentLinkResult.paymentLinkUrl,
     });
 
-    // Build base URL for order confirmation link
-    let baseUrl = "http://localhost:8080";
-    if (process.env.BASE_URL) {
-      baseUrl = process.env.BASE_URL;
-    } else if (process.env.VERCEL_URL) {
-      baseUrl = `https://${process.env.VERCEL_URL}`;
-    } else if (process.env.FLY_APP_NAME) {
-      baseUrl = `https://${process.env.FLY_APP_NAME}.fly.dev`;
-    }
-
     // Send order confirmation email with design thumbnails and policies
     await sendOrderConfirmationEmail({
       customerEmail: checkoutData.customerEmail,
