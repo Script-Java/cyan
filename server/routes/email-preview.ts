@@ -86,15 +86,39 @@ export const handleOrderConfirmationPreview: RequestHandler = (req, res) => {
     orderNumber: "SS-2024-001",
     orderDate: "December 15, 2024",
     items: [
-      { name: "Custom Circle Stickers (100 units)", quantity: 1, price: 29.99 },
-      { name: "Glossy Finish", quantity: 1, price: 5.00 },
+      {
+        name: "Custom Circle Stickers (100 units)",
+        quantity: 1,
+        price: 29.99,
+        designFileUrl:
+          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%2310b981' stroke='%23059669' stroke-width='2'/%3E%3Ctext x='50' y='50' font-size='20' fill='white' text-anchor='middle' dominant-baseline='central'%3EDESIGN%3C/text%3E%3C/svg%3E",
+      },
+      { name: "Glossy Finish", quantity: 1, price: 5.0 },
     ],
     subtotal: 34.99,
-    tax: 2.80,
-    shipping: 5.00,
+    tax: 2.8,
+    shipping: 5.0,
     total: 42.79,
-    estimatedDelivery: "7-10 business days",
+    estimatedDelivery: "Dec 22, 2024",
     orderLink: `${baseUrl}/order-history/12345`,
+    shippingAddress: {
+      firstName: "John",
+      lastName: "Smith",
+      street: "123 Main Street",
+      street2: "Apt 4B",
+      city: "New York",
+      state: "NY",
+      postalCode: "10001",
+      country: "United States",
+    },
+    policies: {
+      returnAndRefund: true,
+      privacy: true,
+      gdpr: true,
+      ccpa: true,
+      terms: true,
+      shipping: true,
+    },
   });
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.send(html);
