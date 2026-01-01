@@ -45,13 +45,34 @@ export function generateOrderConfirmationEmail(params: {
 
   const itemsHtml = items
     .map(
-      (item) => `
+      (item) => {
+        const designThumbnail = item.designFileUrl
+          ? `<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f3f4f6;">
+              <p style="margin: 0 0 8px 0; font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Design Preview</p>
+              <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 4px; padding: 8px; text-align: center;">
+                ${
+                  item.designFileUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i) ||
+                  item.designFileUrl.startsWith("data:image")
+                    ? `<img src="${item.designFileUrl}" alt="Design thumbnail" style="max-width: 100%; max-height: 120px; border-radius: 3px;" />`
+                    : `<p style="margin: 0; font-size: 12px; color: #9ca3af;">Design file uploaded</p>`
+                }
+              </div>
+            </div>`
+          : "";
+
+        return `
     <tr>
-      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #374151;">${item.name}</td>
+      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #374151;">
+        <div>
+          <strong>${item.name}</strong>
+          ${designThumbnail}
+        </div>
+      </td>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #374151; text-align: center;">${item.quantity}</td>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #374151; text-align: right;">$${item.price.toFixed(2)}</td>
     </tr>
-  `
+  `;
+      }
     )
     .join("");
 
