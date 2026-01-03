@@ -7,6 +7,10 @@ import {
   getPaymentsApi,
   createSquarePaymentLink,
   isValidCountryCode,
+  isValidEmail,
+  isValidPhone,
+  isValidAddress,
+  sanitizeInput,
 } from "../utils/square";
 import {
   createSupabaseOrder,
