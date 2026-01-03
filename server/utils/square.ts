@@ -1,3 +1,21 @@
+// Valid ISO 3166-1 alpha-2 country codes
+const VALID_COUNTRY_CODES = new Set([
+  "US", "GB", "CA", "AU", "DE", "FR", "IT", "ES", "NL", "BE", "CH", "AT",
+  "SE", "NO", "DK", "FI", "PL", "CZ", "SK", "HU", "RO", "BG", "GR", "PT",
+  "IE", "NZ", "SG", "HK", "JP", "KR", "TW", "CN", "IN", "BR", "MX", "AR",
+  "CO", "PE", "CL", "ZA", "KE", "NG", "EG", "IL", "AE", "SA", "QA", "TH",
+  "MY", "ID", "PH", "VN", "TW", "GR", "CY", "MT", "LU", "IS", "HR", "SI",
+  "LV", "LT", "EE", "GE", "KZ", "UA", "BY", "RU", "TR", "LB", "JO", "AE",
+]);
+
+/**
+ * Validate if a country code is a valid ISO 3166-1 alpha-2 code
+ */
+export function isValidCountryCode(code: string | undefined): boolean {
+  if (!code) return true; // Allow empty/undefined
+  return VALID_COUNTRY_CODES.has(code.toUpperCase());
+}
+
 let squareClient: any = null;
 
 export async function getSquareClient() {
