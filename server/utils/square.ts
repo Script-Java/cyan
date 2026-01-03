@@ -16,6 +16,51 @@ export function isValidCountryCode(code: string | undefined): boolean {
   return VALID_COUNTRY_CODES.has(code.toUpperCase());
 }
 
+/**
+ * Validate email format
+ */
+export function isValidEmail(email: string | undefined): boolean {
+  if (!email) return false;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email) && email.length <= 255;
+}
+
+/**
+ * Validate phone number format (basic - allows digits, +, -, parentheses, spaces)
+ */
+export function isValidPhone(phone: string | undefined): boolean {
+  if (!phone) return true; // Phone is optional
+  const phoneRegex = /^[\d+\-().\s]{7,20}$/;
+  return phoneRegex.test(phone);
+}
+
+/**
+ * Sanitize string input - remove potential XSS characters
+ */
+export function sanitizeInput(input: string | undefined): string {
+  if (!input) return "";
+  // Remove any HTML/script tags and dangerous characters
+  return input
+    .replace(/[<>"{};]/g, "")
+    .trim()
+    .slice(0, 255);
+}
+
+/**
+ * Validate address field
+ */
+export function isValidAddress(
+  address: string | undefined,
+): boolean {
+  if (!address) return false;
+  // Address should be 1-255 characters, no dangerous characters
+  return (
+    address.length > 0 &&
+    address.length <= 255 &&
+    !/[<>"{};]/.test(address)
+  );
+}
+
 let squareClient: any = null;
 
 export async function getSquareClient() {
