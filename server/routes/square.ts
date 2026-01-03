@@ -177,6 +177,33 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       });
     }
 
+    // Validate country codes
+    const invalidCountries: string[] = [];
+    if (
+      checkoutData.shippingAddress?.country &&
+      !isValidCountryCode(checkoutData.shippingAddress.country)
+    ) {
+      invalidCountries.push(
+        `shipping: ${checkoutData.shippingAddress.country}`,
+      );
+    }
+    if (
+      checkoutData.billingAddress?.country &&
+      !isValidCountryCode(checkoutData.billingAddress.country)
+    ) {
+      invalidCountries.push(
+        `billing: ${checkoutData.billingAddress.country}`,
+      );
+    }
+
+    if (invalidCountries.length > 0) {
+      console.error("Invalid country codes:", invalidCountries);
+      return res.status(400).json({
+        success: false,
+        error: `Invalid country code(s): ${invalidCountries.join(", ")}. Please use ISO 3166-1 alpha-2 country codes.`,
+      });
+    }
+
     // Create a guest customer if not logged in
     let customerId = checkoutData.customerId;
 
