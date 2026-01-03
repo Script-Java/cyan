@@ -262,7 +262,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       orderId: supabaseOrder.id,
       amount: checkoutData.total,
       currency: checkoutData.currency || "USD",
-      description: `Order #${supabaseOrder.id} - ${checkoutData.items.length} item(s)`,
+      description: "Sticker Order",
       customerEmail: checkoutData.customerEmail,
       customerName: checkoutData.customerName || "Customer",
       customerPhone: checkoutData.phone,
