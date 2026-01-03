@@ -121,7 +121,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     console.log("handleCreateCheckoutSession called with data:", {
       amount: checkoutData.amount,
       itemsCount: checkoutData.items?.length,
-      customerEmail: checkoutData.customerEmail,
+      hasCustomerEmail: !!checkoutData.customerEmail,
       hasShippingAddress: !!checkoutData.shippingAddress,
       subtotal: checkoutData.subtotal,
       tax: checkoutData.tax,
