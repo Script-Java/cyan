@@ -210,7 +210,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
 
     // Validate email format
     if (!isValidEmail(checkoutData.customerEmail)) {
-      console.error("Invalid email format:", checkoutData.customerEmail);
+      console.error("Invalid email format provided");
       return res.status(400).json({
         success: false,
         error: "Invalid email address format",
@@ -219,7 +219,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
 
     // Validate phone if provided
     if (checkoutData.phone && !isValidPhone(checkoutData.phone)) {
-      console.error("Invalid phone format:", checkoutData.phone);
+      console.error("Invalid phone format provided");
       return res.status(400).json({
         success: false,
         error: "Invalid phone number format",
