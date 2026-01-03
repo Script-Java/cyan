@@ -208,6 +208,50 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       });
     }
 
+    // Validate email format
+    if (!isValidEmail(checkoutData.customerEmail)) {
+      console.error("Invalid email format:", checkoutData.customerEmail);
+      return res.status(400).json({
+        success: false,
+        error: "Invalid email address format",
+      });
+    }
+
+    // Validate phone if provided
+    if (checkoutData.phone && !isValidPhone(checkoutData.phone)) {
+      console.error("Invalid phone format:", checkoutData.phone);
+      return res.status(400).json({
+        success: false,
+        error: "Invalid phone number format",
+      });
+    }
+
+    // Validate shipping address fields
+    if (
+      !isValidAddress(checkoutData.shippingAddress.street) ||
+      !isValidAddress(checkoutData.shippingAddress.city) ||
+      !isValidAddress(checkoutData.shippingAddress.postalCode)
+    ) {
+      console.error("Invalid shipping address format");
+      return res.status(400).json({
+        success: false,
+        error: "Invalid shipping address format",
+      });
+    }
+
+    // Validate billing address fields
+    if (
+      !isValidAddress(checkoutData.billingAddress.street) ||
+      !isValidAddress(checkoutData.billingAddress.city) ||
+      !isValidAddress(checkoutData.billingAddress.postalCode)
+    ) {
+      console.error("Invalid billing address format");
+      return res.status(400).json({
+        success: false,
+        error: "Invalid billing address format",
+      });
+    }
+
     // Create a guest customer if not logged in
     let customerId = checkoutData.customerId;
 
