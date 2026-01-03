@@ -505,8 +505,8 @@ export async function createSquarePaymentLink(data: {
     });
 
     console.log("Pre-populated data being sent to Square:", {
-      buyerAddress,
-      customerContactInfo,
+      hasBuyerAddress: !!Object.keys(buyerAddress).length,
+      hasCustomerContactInfo: !!Object.keys(customerContactInfo).length,
     });
 
     console.log("Payment Link Body - Order Details:", {
