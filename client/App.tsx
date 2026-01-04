@@ -76,10 +76,9 @@ function PageTracker() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
           <PageTracker />
           <Routes>
             <Route path="/" element={<Index />} />
@@ -158,8 +157,7 @@ export default function App() {
             <Route path="/:pageType" element={<LegalPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }
