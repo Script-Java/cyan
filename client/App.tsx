@@ -156,7 +156,7 @@ export default function App() {
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="/:pageType" element={<LegalPage />} />
             <Route path="*" element={<NotFound />} />
-          </Routes>
+        </Routes>
       </BrowserRouter>
     </QueryClientProvider>
   );
