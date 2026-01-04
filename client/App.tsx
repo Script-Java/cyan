@@ -79,8 +79,8 @@ export default function App() {
       <Toaster />
       <Sonner />
       <BrowserRouter>
-          <PageTracker />
-          <Routes>
+        <PageTracker />
+        <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
