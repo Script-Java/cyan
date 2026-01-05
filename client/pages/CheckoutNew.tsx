@@ -859,9 +859,9 @@ export default function CheckoutNew() {
                       </div>
 
                       <div className="flex-1">
-                        <div className="flex justify-between items-start mb-4">
+                        <div className="flex justify-between items-start mb-3 sm:mb-4 gap-3">
                           <div>
-                            <h3 className="text-xl font-bold">
+                            <h3 className="text-lg sm:text-xl font-bold">
                               {item.product_name ||
                                 `Product #${item.product_id}`}
                             </h3>
