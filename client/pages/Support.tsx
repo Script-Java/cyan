@@ -339,11 +339,11 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
 
                   {/* Order Details - if available */}
                   {formData.orderId && formData.orderDetails && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <h3 className="text-sm font-semibold text-gray-900 mb-3">
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4">
+                      <h3 className="text-xs sm:text-sm font-semibold text-gray-900 mb-2">
                         📦 Order Details (Pre-filled)
                       </h3>
-                      <div className="text-xs text-gray-700 space-y-1 font-mono bg-white p-3 rounded border border-blue-100">
+                      <div className="text-xs text-gray-700 space-y-1 font-mono bg-white p-2 sm:p-3 rounded border border-blue-100 max-h-32 overflow-y-auto">
                         {formData.orderDetails
                           .split("\n")
                           .map((line, idx) =>
@@ -361,7 +361,7 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                   <div>
                     <label
                       htmlFor="message"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
                     >
                       Message *
                     </label>
@@ -371,8 +371,8 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                       value={formData.message}
                       onChange={handleInputChange}
                       placeholder="Describe your issue in detail..."
-                      rows={6}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
+                      rows={5}
+                      className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
                     />
                   </div>
 
