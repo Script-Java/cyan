@@ -497,13 +497,13 @@ export default function CheckoutForm({
                 </Select>
               </div>
               <div>
-                <Label className="text-gray-700">State/Province *</Label>
+                <Label className="text-sm sm:text-gray-700">State/Province *</Label>
                 {billingInfo.country === "US" ? (
                   <Select
                     value={billingInfo.state}
                     onValueChange={(value) => onBillingChange("state", value)}
                   >
-                    <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-2">
+                    <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-1 sm:mt-2">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-white border-gray-200 max-h-60">
@@ -523,7 +523,7 @@ export default function CheckoutForm({
                     value={billingInfo.state}
                     onChange={(e) => onBillingChange("state", e.target.value)}
                     placeholder="State/Province"
-                    className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                    className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
                     required
                   />
                 )}
