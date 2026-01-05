@@ -296,31 +296,30 @@ export default function Proofs() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-6xl mx-auto px-4">
+      <main className="min-h-screen bg-gray-50 py-6 sm:py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
             <button
               onClick={() => navigate("/dashboard")}
-              className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 mb-4"
+              className="flex items-center gap-2 text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-700 mb-3 sm:mb-4"
             >
-              <ArrowRight className="w-4 h-4 rotate-180" />
+              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 rotate-180" />
               Back to Dashboard
             </button>
-            <div className="flex justify-between items-start">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Proofs</h1>
-                <p className="text-gray-600 mt-2">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Proofs</h1>
+                <p className="text-xs sm:text-sm text-gray-600 mt-1 sm:mt-2">
                   Review and approve design proofs for your orders
                 </p>
               </div>
               {pendingProofsCount > 0 && (
-                <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-4 py-2">
-                  <Bell className="w-5 h-5 text-blue-600" />
-                  <span className="text-sm font-medium text-blue-900">
+                <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-3 sm:px-4 py-2 flex-shrink-0 text-xs sm:text-sm">
+                  <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 flex-shrink-0" />
+                  <span className="font-medium text-blue-900">
                     {pendingProofsCount}{" "}
                     {pendingProofsCount === 1 ? "proof" : "proofs"} awaiting
-                    your review
                   </span>
                 </div>
               )}
