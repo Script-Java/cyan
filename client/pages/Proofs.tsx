@@ -525,10 +525,11 @@ export default function Proofs() {
                             <button
                               onClick={() => handleApprove(proof.id)}
                               disabled={submittingAction[proof.id]}
-                              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:bg-green-400 transition-colors"
+                              className="flex-1 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:bg-green-400 transition-colors"
                             >
-                              <CheckCircle2 className="w-5 h-5" />
-                              Approve
+                              <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                              <span className="hidden sm:inline">Approve</span>
+                              <span className="sm:hidden">OK</span>
                             </button>
                             <button
                               onClick={() => {
@@ -543,17 +544,18 @@ export default function Proofs() {
                                 }
                               }}
                               disabled={submittingAction[proof.id]}
-                              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 disabled:bg-orange-400 transition-colors"
+                              className="flex-1 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 disabled:bg-orange-400 transition-colors"
                             >
-                              <AlertTriangle className="w-5 h-5" />
-                              Request Revisions
+                              <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5" />
+                              <span className="hidden sm:inline">Request Revisions</span>
+                              <span className="sm:hidden">Revise</span>
                             </button>
                           </div>
 
                           {/* Revision Notes Input */}
                           {commentText[`deny-${proof.id}`] && (
-                            <div className="mt-4">
-                              <label className="block text-sm font-medium text-gray-900 mb-2">
+                            <div className="mt-3 sm:mt-4">
+                              <label className="block text-xs sm:text-sm font-medium text-gray-900 mb-2">
                                 Revision Notes (Optional)
                               </label>
                               <textarea
@@ -565,15 +567,16 @@ export default function Proofs() {
                                   }))
                                 }
                                 placeholder="What needs to be changed?"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 mb-3"
+                                className="w-full px-2 sm:px-3 py-2 border border-gray-300 rounded-md text-xs sm:text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 mb-2 sm:mb-3"
                                 rows={3}
                               />
                               <button
                                 onClick={() => handleDeny(proof.id)}
                                 disabled={submittingAction[proof.id]}
-                                className="w-full px-4 py-2 bg-orange-600 text-white rounded font-medium hover:bg-orange-700 disabled:bg-orange-400 transition-colors"
+                                className="w-full px-3 sm:px-4 py-2 text-xs sm:text-sm bg-orange-600 text-white rounded font-medium hover:bg-orange-700 disabled:bg-orange-400 transition-colors"
                               >
-                                Confirm Request for Revisions
+                                <span className="hidden sm:inline">Confirm Request for Revisions</span>
+                                <span className="sm:hidden">Confirm</span>
                               </button>
                             </div>
                           )}
