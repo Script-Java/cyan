@@ -253,11 +253,11 @@ export default function ActiveOrdersSummary({
           ))}
         </div>
       ) : (
-        <div className="text-center py-12">
-          <h3 className="text-lg font-bold text-gray-600">
+        <div className="text-center py-8 sm:py-12">
+          <h3 className="text-base sm:text-lg font-bold text-gray-600">
             There are no active orders
           </h3>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-xs sm:text-sm text-gray-500 mt-2">
             No orders with pending, processing, printing, or in transit statuses
           </p>
         </div>
