@@ -835,7 +835,7 @@ export default function CheckoutNew() {
                           )}
                         </div>
                         {item.design_file_url && (
-                          <div className="w-48 bg-white border border-gray-200 rounded-xl overflow-hidden flex items-center justify-center">
+                          <div className="w-24 h-24 sm:w-40 md:w-48 bg-white border border-gray-200 rounded-xl overflow-hidden flex items-center justify-center">
                             {item.design_file_url.match(
                               /\.(jpg|jpeg|png|gif|webp)$/i,
                             ) ||
