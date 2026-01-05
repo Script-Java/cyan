@@ -386,7 +386,7 @@ export default function CheckoutForm({
       <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-4 sm:p-6">
         <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Billing Address</h3>
 
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-3 mb-4 sm:mb-6">
           <input
             type="checkbox"
             id="sameAsShipping"
@@ -398,7 +398,7 @@ export default function CheckoutForm({
           />
           <Label
             htmlFor="sameAsShipping"
-            className="text-gray-700 cursor-pointer font-normal"
+            className="text-sm sm:text-gray-700 cursor-pointer font-normal"
           >
             Same as shipping address
           </Label>
@@ -406,81 +406,81 @@ export default function CheckoutForm({
 
         {!billingInfo.sameAsShipping && (
           <>
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
               <div>
-                <Label className="text-gray-700">First Name *</Label>
+                <Label className="text-sm sm:text-gray-700">First Name *</Label>
                 <Input
                   value={billingInfo.firstName}
                   onChange={(e) => onBillingChange("firstName", e.target.value)}
-                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
                   required
                 />
               </div>
               <div>
-                <Label className="text-gray-700">Last Name *</Label>
+                <Label className="text-sm sm:text-gray-700">Last Name *</Label>
                 <Input
                   value={billingInfo.lastName}
                   onChange={(e) => onBillingChange("lastName", e.target.value)}
-                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
                   required
                 />
               </div>
             </div>
 
-            <div className="mb-4">
-              <Label className="text-gray-700">Street Address *</Label>
+            <div className="mb-3 sm:mb-4">
+              <Label className="text-sm sm:text-gray-700">Street Address *</Label>
               <Input
                 value={billingInfo.street}
                 onChange={(e) => onBillingChange("street", e.target.value)}
                 placeholder="123 Main St"
-                className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
                 required
               />
             </div>
 
-            <div className="mb-4">
-              <Label className="text-gray-700">
+            <div className="mb-3 sm:mb-4">
+              <Label className="text-sm sm:text-gray-700">
                 Apt, Suite, etc. (optional)
               </Label>
               <Input
                 value={billingInfo.street2}
                 onChange={(e) => onBillingChange("street2", e.target.value)}
                 placeholder="Apt 4B"
-                className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
               <div>
-                <Label className="text-gray-700">City *</Label>
+                <Label className="text-sm sm:text-gray-700">City *</Label>
                 <Input
                   value={billingInfo.city}
                   onChange={(e) => onBillingChange("city", e.target.value)}
-                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
                   required
                 />
               </div>
               <div>
-                <Label className="text-gray-700">Postal Code *</Label>
+                <Label className="text-sm sm:text-gray-700">Postal Code *</Label>
                 <Input
                   value={billingInfo.postalCode}
                   onChange={(e) =>
                     onBillingChange("postalCode", e.target.value)
                   }
-                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
                   required
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <Label className="text-gray-700">Country *</Label>
+                <Label className="text-sm sm:text-gray-700">Country *</Label>
                 <Select
                   value={billingInfo.country}
                   onValueChange={(value) => onBillingChange("country", value)}
                 >
-                  <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-2">
+                  <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-1 sm:mt-2">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gray-200">
