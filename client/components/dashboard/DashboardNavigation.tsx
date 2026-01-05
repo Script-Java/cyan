@@ -31,15 +31,6 @@ export default function DashboardNavigation({
       bgColor: "rgba(16, 185, 129, 0.05)",
     },
     {
-      id: "finances",
-      icon: TrendingUp,
-      title: "Finances",
-      description: "View spending & savings",
-      color: "text-blue-600",
-      borderColor: "rgba(59, 130, 246, 0.2)",
-      bgColor: "rgba(59, 130, 246, 0.05)",
-    },
-    {
       id: "designs",
       icon: Palette,
       title: "Designs",
