@@ -377,9 +377,9 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                   </div>
 
                   {/* Info Box */}
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex gap-3">
-                    <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-blue-800">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 flex gap-2 sm:gap-3">
+                    <AlertCircle className="w-4 h-4 sm:w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <p className="text-xs sm:text-sm text-blue-800">
                       A confirmation email will be sent to your email address
                       with a reference number. Use this number when following up
                       on your request.
@@ -390,17 +390,17 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 sm:py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
                   >
                     {isSubmitting ? (
                       <>
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        Submitting...
+                        <span className="text-sm sm:text-base">Submitting...</span>
                       </>
                     ) : (
                       <>
-                        <CheckCircle className="w-5 h-5" />
-                        Submit Support Request
+                        <CheckCircle className="w-4 h-4 sm:w-5 h-5" />
+                        <span className="text-sm sm:text-base">Submit</span>
                       </>
                     )}
                   </button>
