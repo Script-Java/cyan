@@ -384,42 +384,43 @@ export default function MyTickets() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-6 sm:py-8 md:py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900">
-                My Support Tickets
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
+                My Tickets
               </h1>
-              <p className="text-gray-600 mt-2">
-                Track your support requests and responses
+              <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                Track your support requests
               </p>
             </div>
             <button
               onClick={() => navigate("/support")}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+              className="flex items-center justify-center gap-1.5 sm:gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 sm:px-4 rounded-lg transition-colors text-sm sm:text-base whitespace-nowrap"
             >
-              <Plus className="w-5 h-5" />
-              New Ticket
+              <Plus className="w-4 h-4 sm:w-5 h-5" />
+              <span className="hidden sm:inline">New Ticket</span>
+              <span className="sm:hidden">New</span>
             </button>
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex gap-2 mb-8 flex-wrap">
+          <div className="flex gap-1.5 sm:gap-2 mb-6 sm:mb-8 flex-wrap">
             {["all", "open", "in-progress", "resolved"].map((status) => (
               <button
                 key={status}
                 onClick={() => setFilter(status as any)}
-                className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm transition-colors ${
                   filter === status
                     ? "bg-blue-600 text-white"
                     : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
                 }`}
               >
                 {status === "all"
-                  ? "All Tickets"
-                  : status.replace("-", " ").toUpperCase()}
+                  ? "All"
+                  : status.replace("-", " ").charAt(0).toUpperCase() + status.slice(1).replace("-", " ")}
               </button>
             ))}
           </div>
@@ -427,26 +428,26 @@ export default function MyTickets() {
           {/* Tickets List */}
           {isLoading ? (
             <div className="flex justify-center items-center h-64">
-              <div className="text-gray-600">Loading your tickets...</div>
+              <div className="text-sm sm:text-base text-gray-600">Loading your tickets...</div>
             </div>
           ) : tickets.length === 0 ? (
-            <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-              <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-12 text-center">
+              <MessageSquare className="w-8 h-8 sm:w-12 h-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">
                 No tickets yet
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
                 Create your first support ticket to get help from our team
               </p>
               <button
                 onClick={() => navigate("/support")}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 sm:px-6 rounded-lg transition-colors text-sm sm:text-base"
               >
                 Create New Ticket
               </button>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-2 sm:space-y-3 md:space-y-4">
               {tickets
                 .filter(
                   (ticket) => filter === "all" || ticket.status === filter,
@@ -455,39 +456,39 @@ export default function MyTickets() {
                   <button
                     key={ticket.id}
                     onClick={() => handleViewTicket(ticket)}
-                    className="w-full bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-all text-left"
+                    className="w-full bg-white rounded-lg border border-gray-200 p-3 sm:p-4 md:p-6 hover:shadow-md transition-all text-left"
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    <div className="flex items-start justify-between gap-2 sm:gap-4">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2 truncate">
                           {ticket.subject}
                         </h3>
-                        <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 line-clamp-1 hidden sm:block">
                           {ticket.message}
                         </p>
-                        <div className="flex items-center gap-3 flex-wrap">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <span
-                            className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(ticket.status)}`}
+                            className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-semibold ${getStatusColor(ticket.status)}`}
                           >
-                            {ticket.status.toUpperCase()}
+                            {ticket.status === "in-progress" ? "In Progress" : ticket.status.toUpperCase()}
                           </span>
                           <span
-                            className={`px-3 py-1 rounded-full text-xs font-semibold ${getPriorityBg(ticket.priority)} ${getPriorityColor(ticket.priority)}`}
+                            className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-semibold ${getPriorityBg(ticket.priority)} ${getPriorityColor(ticket.priority)}`}
                           >
                             {ticket.priority.toUpperCase()}
                           </span>
-                          <span className="text-xs text-gray-600">
+                          <span className="text-xs text-gray-600 hidden md:inline">
                             {ticket.category}
                           </span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3 ml-4">
-                        <div className="text-right">
+                      <div className="flex items-center gap-2 ml-2 flex-shrink-0">
+                        <div className="text-right hidden sm:block">
                           <p className="text-xs text-gray-600">
                             {formatDate(ticket.created_at)}
                           </p>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-gray-400" />
+                        <ChevronRight className="w-4 h-4 sm:w-5 h-5 text-gray-400" />
                       </div>
                     </div>
                   </button>
