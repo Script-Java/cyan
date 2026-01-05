@@ -407,8 +407,8 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                 </form>
               </div>
 
-              {/* FAQs Section */}
-              <div className="mt-8">
+              {/* FAQs Section - Hidden on small screens */}
+              <div className="mt-8 hidden md:block">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
                   Frequently Asked Questions
                 </h3>
