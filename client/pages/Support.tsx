@@ -166,27 +166,27 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
+      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-6 sm:py-8 md:py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
           {/* Header with back button */}
-          <div className="mb-8 flex items-center gap-4">
+          <div className="mb-4 sm:mb-6 md:mb-8 flex items-center gap-2 sm:gap-4">
             <button
               onClick={() => navigate("/dashboard")}
-              className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+              className="p-1.5 sm:p-2 hover:bg-gray-200 rounded-lg transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-700" />
+              <ArrowLeft className="w-4 h-4 sm:w-5 h-5 text-gray-700" />
             </button>
-            <h1 className="text-4xl font-bold text-gray-900">Support Center</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Support Center</h1>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Support Info Cards */}
-            <div className="lg:col-span-1 space-y-4">
-              <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-start gap-3">
-                  <MessageSquare className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+            {/* Support Info Cards - Hidden on very small screens, visible on sm and up */}
+            <div className="lg:col-span-1 space-y-3 sm:space-y-4 hidden sm:block">
+              <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <MessageSquare className="w-5 h-5 sm:w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5 sm:mt-1" />
                   <div>
-                    <h3 className="font-semibold text-gray-900 text-sm">
+                    <h3 className="font-semibold text-gray-900 text-xs sm:text-sm">
                       Live Chat
                     </h3>
                     <p className="text-xs text-gray-600 mt-1">
@@ -196,11 +196,11 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-start gap-3">
-                  <Mail className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-1" />
+              <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <Mail className="w-5 h-5 sm:w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5 sm:mt-1" />
                   <div>
-                    <h3 className="font-semibold text-gray-900 text-sm">
+                    <h3 className="font-semibold text-gray-900 text-xs sm:text-sm">
                       Email Support
                     </h3>
                     <p className="text-xs text-gray-600 mt-1">
@@ -210,11 +210,11 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                 </div>
               </div>
 
-              <div className="bg-blue-50 rounded-lg border border-blue-200 p-6 shadow-sm">
-                <div className="flex items-start gap-3">
-                  <Clock className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+              <div className="bg-blue-50 rounded-lg border border-blue-200 p-3 sm:p-4 shadow-sm">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <Clock className="w-5 h-5 sm:w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5 sm:mt-1" />
                   <div>
-                    <h3 className="font-semibold text-gray-900 text-sm">
+                    <h3 className="font-semibold text-gray-900 text-xs sm:text-sm">
                       Response Time
                     </h3>
                     <p className="text-xs text-gray-700 mt-1">
@@ -227,7 +227,7 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
 
             {/* Support Form */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-8">
+              <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 sm:p-6 md:p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                   Send us a Message
                 </h2>
