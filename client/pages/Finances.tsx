@@ -49,6 +49,11 @@ export default function Finances() {
   const [totalSpent, setTotalSpent] = useState(0);
   const [totalSaved, setTotalSaved] = useState(0);
 
+  // Redirect to dashboard - Finances page is hidden from customer view
+  useEffect(() => {
+    navigate("/dashboard", { replace: true });
+  }, [navigate]);
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
 
