@@ -245,8 +245,8 @@ export default function CheckoutForm({
           </div>
         </div>
 
-        <div className="mb-4">
-          <Label htmlFor="shipping-email" className="text-gray-700">
+        <div className="mb-3 sm:mb-4">
+          <Label htmlFor="shipping-email" className="text-sm sm:text-gray-700">
             Email Address <span aria-label="required">*</span>
           </Label>
           <Input
@@ -254,14 +254,14 @@ export default function CheckoutForm({
             type="email"
             value={customerInfo.email}
             onChange={(e) => onCustomerChange("email", e.target.value)}
-            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
             required
             aria-required="true"
           />
         </div>
 
-        <div className="mb-4">
-          <Label htmlFor="shipping-phone" className="text-gray-700">
+        <div className="mb-3 sm:mb-4">
+          <Label htmlFor="shipping-phone" className="text-sm sm:text-gray-700">
             Phone Number <span aria-label="required">*</span>
           </Label>
           <Input
@@ -269,14 +269,14 @@ export default function CheckoutForm({
             type="tel"
             value={customerInfo.phone}
             onChange={(e) => onCustomerChange("phone", e.target.value)}
-            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
             required
             aria-required="true"
           />
         </div>
 
-        <div className="mb-4">
-          <Label htmlFor="shipping-street" className="text-gray-700">
+        <div className="mb-3 sm:mb-4">
+          <Label htmlFor="shipping-street" className="text-sm sm:text-gray-700">
             Street Address <span aria-label="required">*</span>
           </Label>
           <Input
@@ -284,14 +284,14 @@ export default function CheckoutForm({
             value={customerInfo.street}
             onChange={(e) => onCustomerChange("street", e.target.value)}
             placeholder="123 Main St"
-            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
             required
             aria-required="true"
           />
         </div>
 
-        <div className="mb-4">
-          <Label htmlFor="shipping-street2" className="text-gray-700">
+        <div className="mb-3 sm:mb-4">
+          <Label htmlFor="shipping-street2" className="text-sm sm:text-gray-700">
             Apt, Suite, etc. (optional)
           </Label>
           <Input
@@ -299,32 +299,32 @@ export default function CheckoutForm({
             value={customerInfo.street2}
             onChange={(e) => onCustomerChange("street2", e.target.value)}
             placeholder="Apt 4B"
-            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
           <div>
-            <Label className="text-gray-700">City *</Label>
+            <Label className="text-sm sm:text-gray-700">City *</Label>
             <Input
               value={customerInfo.city}
               onChange={(e) => onCustomerChange("city", e.target.value)}
-              className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+              className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
               required
             />
           </div>
           <div>
-            <Label className="text-gray-700">Postal Code *</Label>
+            <Label className="text-sm sm:text-gray-700">Postal Code *</Label>
             <Input
               value={customerInfo.postalCode}
               onChange={(e) => onCustomerChange("postalCode", e.target.value)}
-              className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+              className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
               required
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <div>
             <Label className="text-gray-700">Country *</Label>
             <Select
