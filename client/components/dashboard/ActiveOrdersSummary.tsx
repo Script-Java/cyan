@@ -67,13 +67,13 @@ export default function ActiveOrdersSummary({
   };
 
   return (
-    <div className="rounded-xl border-2 p-6 mb-6 overflow-hidden bg-white shadow-md border-gray-200">
+    <div className="rounded-xl border-2 p-4 sm:p-6 mb-6 overflow-hidden bg-white shadow-md border-gray-200">
       <div
-        className="border-b pb-4 mb-6"
+        className="border-b pb-3 sm:pb-4 mb-4 sm:mb-6"
         style={{ borderColor: "rgba(0, 0, 0, 0.1)" }}
       >
         <div className="flex items-center justify-between">
-          <h2 className="flex items-center gap-3 text-lg sm:text-xl font-bold text-gray-900">
+          <h2 className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg md:text-xl font-bold text-gray-900">
             <CheckCircle className="w-6 h-6 text-emerald-500" />
             Active Orders
             <span
