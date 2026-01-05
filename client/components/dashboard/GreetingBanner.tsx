@@ -156,41 +156,41 @@ export default function GreetingBanner({
 
         {/* Hover actions */}
         {isHovering && (
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-4 z-20 transition-opacity duration-200">
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-2 sm:gap-4 z-20 transition-opacity duration-200">
             <button
               title="Change Banner Background"
               onClick={handleChangeBackground}
-              className="p-3 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-md border border-white/40 transition-all"
+              className="p-1.5 sm:p-3 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-md border border-white/40 transition-all"
             >
-              <Edit3 className="w-6 h-6 text-white" />
+              <Edit3 className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
             </button>
             <button
               title="Reset to Default Banner"
               onClick={handleResetBackground}
-              className="p-3 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-md border border-white/40 transition-all"
+              className="p-1.5 sm:p-3 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-md border border-white/40 transition-all"
             >
-              <RotateCcw className="w-6 h-6 text-white" />
+              <RotateCcw className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
             </button>
           </div>
         )}
 
         {/* Content */}
         <div
-          className="absolute left-0 right-0 bottom-0 flex items-start gap-4 z-30"
+          className="absolute left-0 right-0 bottom-0 flex items-start gap-2 sm:gap-4 z-30"
           style={{
             top: "14px",
             marginBottom: "20px",
-            padding: "24px",
+            padding: "12px",
           }}
         >
           {/* Avatar */}
           <div
-            className="relative group cursor-pointer"
+            className="relative group cursor-pointer flex-shrink-0"
             onMouseEnter={() => setIsAvatarHovering(true)}
             onMouseLeave={() => setIsAvatarHovering(false)}
             onClick={handleAvatarClick}
           >
-            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white/20 backdrop-blur-md bg-white/10 flex items-center justify-center flex-shrink-0 shadow-lg">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-white/20 backdrop-blur-md bg-white/10 flex items-center justify-center shadow-lg">
               <img
                 src={currentAvatarUrl || defaultAvatar}
                 alt="Profile"
@@ -200,14 +200,14 @@ export default function GreetingBanner({
             <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-200">
               {isUploadingAvatar ? (
                 <div className="animate-spin">
-                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full" />
+                  <div className="w-4 h-4 sm:w-6 sm:h-6 border-2 border-white/30 border-t-white rounded-full" />
                 </div>
               ) : (
-                <Upload className="w-6 h-6 text-white" />
+                <Upload className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
               )}
             </div>
             {avatarUploadError && (
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-red-500/90 text-white text-xs px-3 py-1 rounded whitespace-nowrap pointer-events-none">
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-red-500/90 text-white text-xs px-2 sm:px-3 py-1 rounded whitespace-nowrap pointer-events-none">
                 {avatarUploadError}
               </div>
             )}
