@@ -275,7 +275,7 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                   <div>
                     <label
                       htmlFor="subject"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
                     >
                       Subject *
                     </label>
@@ -286,16 +286,16 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                       value={formData.subject}
                       onChange={handleInputChange}
                       placeholder="Brief description of your issue"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                      className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                     />
                   </div>
 
                   {/* Category and Priority Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
                       <label
                         htmlFor="category"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
                       >
                         Category
                       </label>
@@ -304,7 +304,7 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                         name="category"
                         value={formData.category}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                       >
                         <option value="general">General Inquiry</option>
                         <option value="order">Order Issue</option>
@@ -318,7 +318,7 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                     <div>
                       <label
                         htmlFor="priority"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
                       >
                         Priority
                       </label>
@@ -327,7 +327,7 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                         name="priority"
                         value={formData.priority}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                       >
                         <option value="low">Low</option>
                         <option value="medium">Medium</option>
