@@ -1,6 +1,5 @@
 import {
   ShoppingBag,
-  TrendingUp,
   Palette,
   CheckCircle2,
   Headphones,
