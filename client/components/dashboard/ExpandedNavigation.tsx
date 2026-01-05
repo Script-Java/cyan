@@ -59,34 +59,34 @@ export default function ExpandedNavigation({
   const route = itemRoutes[expandedItem];
 
   return (
-    <div className="mt-8 animate-in fade-in slide-in-from-top-2 duration-300">
-      <div className="rounded-xl border-2 border-gray-200 bg-white shadow-lg overflow-hidden">
+    <div className="mt-4 sm:mt-6 md:mt-8 animate-in fade-in slide-in-from-top-2 duration-300">
+      <div className="rounded-lg sm:rounded-xl border-2 border-gray-200 bg-white shadow-lg overflow-hidden">
         {/* Header with close button */}
-        <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-gray-50">
-          <h2 className="text-xl font-bold text-gray-900 capitalize">
+        <div className="flex justify-between items-center p-3 sm:p-4 md:p-6 border-b border-gray-200 bg-gray-50 gap-2">
+          <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 capitalize truncate">
             {expandedItem.replace("-", " ")}
           </h2>
-          <div className="flex gap-2">
+          <div className="flex gap-1 sm:gap-2 flex-shrink-0">
             <button
               onClick={() => navigate(route)}
-              className="p-2 hover:bg-gray-200 rounded-lg transition-colors text-gray-600 hover:text-gray-900"
+              className="p-1.5 sm:p-2 hover:bg-gray-200 rounded-lg transition-colors text-gray-600 hover:text-gray-900"
               aria-label="Open in full page"
               title="Open in full page"
             >
-              <ExternalLink className="w-5 h-5" />
+              <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+              className="p-1.5 sm:p-2 hover:bg-gray-200 rounded-lg transition-colors"
               aria-label="Close expanded view"
             >
-              <X className="w-5 h-5 text-gray-600" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
             </button>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-6">
+        {/* Content - Responsive height container for mobile */}
+        <div className="p-3 sm:p-4 md:p-6 overflow-y-auto max-h-[calc(100vh-200px)] sm:max-h-[calc(100vh-250px)]">
           <Suspense fallback={<LoadingSpinner />}>
             <PageComponent />
           </Suspense>
