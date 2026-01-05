@@ -213,10 +213,10 @@ export default function CheckoutForm({
       )}
 
       {/* Shipping Information */}
-      <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6">
-        <h3 className="text-xl font-bold mb-6">Shipping Address</h3>
+      <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-4 sm:p-6">
+        <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Shipping Address</h3>
 
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
           <div>
             <Label htmlFor="shipping-first-name" className="text-gray-700">
               First Name <span aria-label="required">*</span>
