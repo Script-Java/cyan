@@ -6,7 +6,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4 sm:px-6 lg:px-8 mt-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-6 sm:py-8 md:py-12 px-4 sm:px-6 lg:px-8 mt-4 sm:mt-6">
       <div className="max-w-7xl mx-auto">
         <style>{`
           .dashboard-section {
@@ -24,7 +24,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             }
           }
         `}</style>
-        <div className="dashboard-section space-y-6">{children}</div>
+        <div className="dashboard-section space-y-4 sm:space-y-6">{children}</div>
       </div>
     </div>
   );
