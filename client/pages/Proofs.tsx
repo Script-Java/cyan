@@ -411,12 +411,12 @@ export default function Proofs() {
 
                     {/* Proof Details - Expanded */}
                     {expandedProofId === proof.id && (
-                      <div className="border-t border-gray-200 px-6 py-6 bg-gray-50">
+                      <div className="border-t border-gray-200 px-3 sm:px-6 py-4 sm:py-6 bg-gray-50 space-y-4 sm:space-y-6">
                         {/* File Preview Section */}
                         {proof.file_url && (
-                          <div className="mb-6 bg-white rounded border border-gray-200 p-4">
-                            <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                              <Download className="w-4 h-4" />
+                          <div className="bg-white rounded border border-gray-200 p-3 sm:p-4">
+                            <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-2 sm:mb-3 flex items-center gap-2">
+                              <Download className="w-3 h-3 sm:w-4 sm:h-4" />
                               Attached File
                             </h4>
                             {proof.file_url
@@ -426,33 +426,34 @@ export default function Proofs() {
                                 <img
                                   src={proof.file_url}
                                   alt="Proof preview"
-                                  className="w-full max-h-96 object-contain rounded border border-gray-200 mb-3"
+                                  className="w-full max-h-96 object-contain rounded border border-gray-200 mb-2 sm:mb-3"
                                 />
                                 <a
                                   href={proof.file_url}
                                   download={proof.file_name || "proof"}
-                                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition-colors"
+                                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition-colors"
                                 >
-                                  <Download className="w-4 h-4" />
-                                  Download {proof.file_name || "File"}
+                                  <Download className="w-3 h-3 sm:w-4 sm:h-4" />
+                                  <span className="hidden sm:inline">Download</span>
+                                  <span className="sm:hidden">DL</span>
                                 </a>
                               </div>
                             ) : (
                               <a
                                 href={proof.file_url}
                                 download={proof.file_name || "proof"}
-                                className="flex items-center gap-3 p-4 bg-blue-50 border border-blue-200 rounded hover:bg-blue-100 transition-colors"
+                                className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded hover:bg-blue-100 transition-colors"
                               >
-                                <FileIcon className="w-8 h-8 text-blue-600 flex-shrink-0" />
+                                <FileIcon className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 flex-shrink-0" />
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-medium text-blue-900 truncate">
+                                  <p className="text-xs sm:text-sm font-medium text-blue-900 truncate">
                                     {proof.file_name || "Proof file"}
                                   </p>
                                   <p className="text-xs text-blue-700">
                                     Click to download
                                   </p>
                                 </div>
-                                <Download className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                                <Download className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 flex-shrink-0" />
                               </a>
                             )}
                           </div>
@@ -460,20 +461,20 @@ export default function Proofs() {
 
                         {/* Comments Section */}
                         {proof.comments && proof.comments.length > 0 && (
-                          <div className="mb-6">
-                            <h4 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                              <MessageSquare className="w-4 h-4" />
+                          <div>
+                            <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-2 sm:mb-4 flex items-center gap-2">
+                              <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4" />
                               Comments
                             </h4>
-                            <div className="space-y-4">
+                            <div className="space-y-3 sm:space-y-4">
                               {proof.comments.map((comment) => (
                                 <div
                                   key={comment.id}
-                                  className="bg-white rounded border border-gray-200 p-4"
+                                  className="bg-white rounded border border-gray-200 p-3 sm:p-4"
                                 >
                                   <div className="flex items-start justify-between mb-2">
                                     <div className="flex-1">
-                                      <p className="text-sm font-medium text-gray-900">
+                                      <p className="text-xs sm:text-sm font-medium text-gray-900">
                                         {comment.admin_email ? "Admin" : "You"}
                                       </p>
                                       <p className="text-xs text-gray-500">
@@ -481,7 +482,7 @@ export default function Proofs() {
                                       </p>
                                     </div>
                                   </div>
-                                  <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                                  <p className="text-xs sm:text-sm text-gray-700 whitespace-pre-wrap">
                                     {comment.message}
                                   </p>
                                 </div>
@@ -491,8 +492,8 @@ export default function Proofs() {
                         )}
 
                         {/* Add Comment Section */}
-                        <div className="mb-6 bg-white rounded border border-gray-200 p-4">
-                          <label className="block text-sm font-medium text-gray-900 mb-2">
+                        <div className="bg-white rounded border border-gray-200 p-3 sm:p-4">
+                          <label className="block text-xs sm:text-sm font-medium text-gray-900 mb-2">
                             Add a Comment
                           </label>
                           <textarea
@@ -504,22 +505,23 @@ export default function Proofs() {
                               }))
                             }
                             placeholder="Share your thoughts on this proof..."
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
+                            className="w-full px-2 sm:px-3 py-2 border border-gray-300 rounded-md text-xs sm:text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-2 sm:mb-3"
                             rows={3}
                           />
                           <button
                             onClick={() => handleAddComment(proof.id)}
                             disabled={submittingComment[proof.id]}
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 disabled:bg-blue-400 transition-colors"
+                            className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm bg-blue-600 text-white rounded font-medium hover:bg-blue-700 disabled:bg-blue-400 transition-colors"
                           >
-                            <Send className="w-4 h-4" />
-                            Post Comment
+                            <Send className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <span className="hidden sm:inline">Post Comment</span>
+                            <span className="sm:hidden">Post</span>
                           </button>
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="bg-white rounded border border-gray-200 p-4">
-                          <div className="flex gap-3">
+                        <div className="bg-white rounded border border-gray-200 p-3 sm:p-4">
+                          <div className="flex gap-2 sm:gap-3 flex-col sm:flex-row">
                             <button
                               onClick={() => handleApprove(proof.id)}
                               disabled={submittingAction[proof.id]}
