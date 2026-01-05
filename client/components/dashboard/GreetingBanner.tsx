@@ -111,11 +111,12 @@ export default function GreetingBanner({
   return (
     <>
       <div
-        className="relative rounded-2xl overflow-hidden mb-6 max-w-full bg-cover bg-center shadow-xl"
+        className="relative rounded-lg sm:rounded-2xl overflow-hidden mb-4 sm:mb-6 max-w-full bg-cover bg-center shadow-xl"
         style={{
           backgroundImage: `url('${bannerImage}')`,
-          aspectRatio: "5.2 / 1",
-          minHeight: "207px",
+          aspectRatio: "auto",
+          height: `${Math.max(120, window.innerWidth * 0.2)}px`,
+          minHeight: `${window.innerWidth < 640 ? "120px" : "207px"}`,
           paddingRight: "12px",
         }}
         onMouseEnter={() => setIsHovering(true)}
