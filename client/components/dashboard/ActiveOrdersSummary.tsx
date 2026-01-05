@@ -153,15 +153,15 @@ export default function ActiveOrdersSummary({
 
               {/* Expanded Details Section */}
               {expandedOrderId === order.id && (
-                <div className="bg-gray-50 border-t-2 border-gray-200 p-5 space-y-4">
+                <div className="bg-gray-50 border-t-2 border-gray-200 p-3 sm:p-5 space-y-3 sm:space-y-4">
                   {/* Tracking Information */}
                   {(order.tracking_number || order.shipped_date) && (
-                    <div className="bg-white rounded-lg p-4 border-2 border-blue-200 shadow-sm">
-                      <h3 className="font-bold text-sm text-gray-900 mb-3 flex items-center gap-2">
-                        <Truck className="w-4 h-4 text-blue-600" />
+                    <div className="bg-white rounded-lg p-3 sm:p-4 border-2 border-blue-200 shadow-sm">
+                      <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-2 sm:mb-3 flex items-center gap-2">
+                        <Truck className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                         Shipping & Tracking
                       </h3>
-                      <div className="space-y-2 text-sm">
+                      <div className="space-y-2 text-xs sm:text-sm">
                         {order.shipped_date && (
                           <div className="flex justify-between">
                             <span className="text-gray-600">Shipped Date:</span>
@@ -173,12 +173,12 @@ export default function ActiveOrdersSummary({
                           </div>
                         )}
                         {order.tracking_number && (
-                          <div className="flex justify-between items-start">
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
                             <span className="text-gray-600">
                               Tracking Number:
                             </span>
-                            <div className="flex flex-col items-end gap-1">
-                              <span className="font-mono font-semibold text-gray-900">
+                            <div className="flex flex-col items-start sm:items-end gap-1">
+                              <span className="font-mono font-semibold text-gray-900 text-xs sm:text-sm break-all">
                                 {order.tracking_number}
                               </span>
                               {order.tracking_carrier && (
@@ -195,10 +195,11 @@ export default function ActiveOrdersSummary({
                               href={order.tracking_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-xs px-3 py-2 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-300 transition-colors font-semibold shadow-sm"
+                              className="inline-flex items-center gap-1 text-xs px-2 sm:px-3 py-2 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-300 transition-colors font-semibold shadow-sm"
                             >
                               <MapPin className="w-3 h-3" />
-                              Track Package
+                              <span className="hidden sm:inline">Track</span>
+                              <span className="sm:hidden">Track</span>
                             </a>
                           </div>
                         )}
@@ -208,11 +209,11 @@ export default function ActiveOrdersSummary({
 
                   {/* Estimated Delivery */}
                   {order.estimated_delivery_date && (
-                    <div className="bg-white rounded-lg p-4 border-2 border-emerald-200 shadow-sm">
-                      <h3 className="font-bold text-sm text-gray-900 mb-2">
+                    <div className="bg-white rounded-lg p-3 sm:p-4 border-2 border-emerald-200 shadow-sm">
+                      <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-2">
                         Estimated Delivery
                       </h3>
-                      <p className="text-sm text-emerald-700 font-semibold">
+                      <p className="text-xs sm:text-sm text-emerald-700 font-semibold">
                         {new Date(
                           order.estimated_delivery_date,
                         ).toLocaleDateString()}
@@ -221,11 +222,11 @@ export default function ActiveOrdersSummary({
                   )}
 
                   {/* Order Summary */}
-                  <div className="bg-white rounded-lg p-4 border-2 border-gray-200 shadow-sm">
-                    <h3 className="font-bold text-sm text-gray-900 mb-3">
+                  <div className="bg-white rounded-lg p-3 sm:p-4 border-2 border-gray-200 shadow-sm">
+                    <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-2 sm:mb-3">
                       Order Summary
                     </h3>
-                    <div className="space-y-2 text-sm">
+                    <div className="space-y-2 text-xs sm:text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Items:</span>
                         <span className="font-semibold text-gray-900">
