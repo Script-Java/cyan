@@ -817,11 +817,11 @@ export default function CheckoutNew() {
                 {cartItems.map((item, index) => (
                   <div
                     key={index}
-                    className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6"
+                    className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-4 sm:p-6"
                   >
-                    <div className="flex gap-6">
-                      <div className="flex flex-col gap-4 flex-shrink-0">
-                        <div className="w-48 h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center">
+                    <div className="flex gap-3 sm:gap-6 flex-col sm:flex-row">
+                      <div className="flex flex-col gap-3 sm:gap-4 flex-shrink-0">
+                        <div className="w-24 h-24 sm:w-40 md:w-48 sm:h-40 md:h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center">
                           {item.image ? (
                             <img
                               src={item.image}
