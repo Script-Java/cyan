@@ -326,12 +326,12 @@ export default function CheckoutForm({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <div>
-            <Label className="text-gray-700">Country *</Label>
+            <Label className="text-sm sm:text-gray-700">Country *</Label>
             <Select
               value={customerInfo.country}
               onValueChange={(value) => onCustomerChange("country", value)}
             >
-              <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-2">
+              <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-1 sm:mt-2">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-white border-gray-200">
@@ -348,13 +348,13 @@ export default function CheckoutForm({
             </Select>
           </div>
           <div>
-            <Label className="text-gray-700">State/Province *</Label>
+            <Label className="text-sm sm:text-gray-700">State/Province *</Label>
             {customerInfo.country === "US" ? (
               <Select
                 value={customerInfo.state}
                 onValueChange={(value) => onCustomerChange("state", value)}
               >
-                <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-2">
+                <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900 mt-1 sm:mt-2">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-white border-gray-200 max-h-60">
@@ -374,7 +374,7 @@ export default function CheckoutForm({
                 value={customerInfo.state}
                 onChange={(e) => onCustomerChange("state", e.target.value)}
                 placeholder="State/Province"
-                className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-2"
+                className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 mt-1 sm:mt-2"
                 required
               />
             )}
@@ -383,8 +383,8 @@ export default function CheckoutForm({
       </div>
 
       {/* Billing Information */}
-      <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6">
-        <h3 className="text-xl font-bold mb-6">Billing Address</h3>
+      <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-4 sm:p-6">
+        <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Billing Address</h3>
 
         <div className="flex items-center gap-3 mb-6">
           <input
