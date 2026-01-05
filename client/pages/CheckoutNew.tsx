@@ -802,13 +802,13 @@ export default function CheckoutNew() {
       </a>
 
       <main
-        className="pt-24 min-h-screen bg-[#fafafa] text-gray-900 px-10 py-12"
+        className="pt-20 min-h-screen bg-[#fafafa] text-gray-900 px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12"
         id="checkout-main"
         role="main"
         aria-label="Checkout page"
       >
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-bold mb-8">Your Cart</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">Your Cart</h1>
 
           <form onSubmit={handleCheckout}>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
