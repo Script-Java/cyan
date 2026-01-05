@@ -592,12 +592,12 @@ export default function Proofs() {
           {/* Reviewed Proofs Section */}
           {reviewedProofs.length > 0 && (
             <div>
-              <div className="mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">
+              <div className="mb-3 sm:mb-4">
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900">
                   Reviewed Proofs ({reviewedProofs.length})
                 </h2>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {reviewedProofs.map((proof) => (
                   <div
                     key={proof.id}
@@ -610,30 +610,30 @@ export default function Proofs() {
                           expandedProofId === proof.id ? null : proof.id,
                         )
                       }
-                      className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                      className="w-full px-3 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 hover:bg-gray-50 transition-colors text-left"
                     >
-                      <div className="flex items-center gap-4 flex-1 text-left">
-                        <div className="bg-gray-100 p-3 rounded-lg flex-shrink-0">
+                      <div className="flex items-start sm:items-center gap-2 sm:gap-4 flex-1 min-w-0">
+                        <div className="bg-gray-100 p-2 sm:p-3 rounded-lg flex-shrink-0">
                           {getStatusIcon(proof.status)}
                         </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-lg font-semibold text-gray-900">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mb-1 sm:mb-2">
+                            <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                               Order #{proof.order_id}
                             </h3>
                             <span
-                              className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(proof.status)}`}
+                              className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium w-fit ${getStatusColor(proof.status)}`}
                             >
                               {getStatusLabel(proof.status)}
                             </span>
                           </div>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-xs sm:text-sm text-gray-600 truncate">
                             {proof.description || "Design proof"}
                           </p>
                           {proof.file_name && (
-                            <p className="text-xs text-blue-600 mt-1 flex items-center gap-1">
-                              <FileIcon className="w-3 h-3" />
-                              File attached: {proof.file_name}
+                            <p className="text-xs text-blue-600 mt-1 flex items-center gap-1 truncate">
+                              <FileIcon className="w-3 h-3 flex-shrink-0" />
+                              <span className="truncate">File: {proof.file_name}</span>
                             </p>
                           )}
                           <p className="text-xs text-gray-500 mt-1">
