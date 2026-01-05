@@ -227,16 +227,16 @@ export default function GreetingBanner({
           />
 
           {/* Text Content */}
-          <div className="flex-1">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 tracking-tight">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-0.5 sm:mb-1 tracking-tight">
               Greetings, {firstName}
             </h1>
-            <div className="flex items-center gap-2 mb-2">
-              <p className="text-white text-xs sm:text-sm font-medium">
+            <div className="flex items-center gap-2 mb-1 sm:mb-2">
+              <p className="text-white text-xs sm:text-sm font-medium truncate">
                 Sticky Slap Dashboard
               </p>
             </div>
-            <div className="font-mono text-xs text-white drop-shadow-lg">
+            <div className="font-mono text-xs text-white drop-shadow-lg hidden sm:block">
               <p className="opacity-90">
                 &gt; REVIEW YOUR ORDERS BELOW
               </p>
