@@ -17,8 +17,8 @@ interface ExpandedNavigationProps {
 }
 
 const LoadingSpinner = () => (
-  <div className="flex justify-center items-center h-96">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+  <div className="flex justify-center items-center h-24 sm:h-48 md:h-96">
+    <div className="animate-spin rounded-full h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 border-b-2 border-blue-600"></div>
   </div>
 );
 
