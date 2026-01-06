@@ -1474,8 +1474,8 @@ export default function ProductForm() {
             <CollapsibleSection
               title="Customer Design Upload"
               icon={
-                <div className="p-2 bg-blue-600/20 border border-blue-500/30 rounded-lg">
-                  <Upload className="w-5 h-5 text-blue-400" />
+                <div className="p-2 bg-blue-100 border border-blue-300 rounded-lg">
+                  <Upload className="w-5 h-5 text-blue-600" />
                 </div>
               }
               defaultOpen={false}
@@ -1582,8 +1582,8 @@ export default function ProductForm() {
             <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold flex items-center gap-2">
-                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                    <Plus className="w-5 h-5 text-green-400" />
+                  <div className="p-2 bg-green-100 border border-green-300 rounded-lg">
+                    <Plus className="w-5 h-5 text-green-600" />
                   </div>
                   Optional Input Fields
                 </h2>
@@ -1648,8 +1648,8 @@ export default function ProductForm() {
             {/* Additional Information Section */}
             <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                  <ImageIcon className="w-5 h-5 text-green-400" />
+                <div className="p-2 bg-green-100 border border-green-300 rounded-lg">
+                  <ImageIcon className="w-5 h-5 text-green-600" />
                 </div>
                 Additional Information
               </h2>
@@ -1674,8 +1674,8 @@ export default function ProductForm() {
             {/* File Upload Section */}
             <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                  <Upload className="w-5 h-5 text-green-400" />
+                <div className="p-2 bg-green-100 border border-green-300 rounded-lg">
+                  <Upload className="w-5 h-5 text-green-600" />
                 </div>
                 Upload Additional Files
               </h2>
@@ -1683,7 +1683,7 @@ export default function ProductForm() {
               <div className="space-y-4">
                 <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-green-500/50 transition">
                   <label className="cursor-pointer">
-                    <Upload className="w-8 h-8 text-green-400 mx-auto mb-2" />
+                    <Upload className="w-8 h-8 text-green-600 mx-auto mb-2" />
                     <p className="text-gray-700 font-medium">
                       Click to upload files or drag and drop
                     </p>
@@ -1723,8 +1723,8 @@ export default function ProductForm() {
             {/* Condition Logic Section */}
             <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                  <Plus className="w-5 h-5 text-green-400" />
+                <div className="p-2 bg-green-100 border border-green-300 rounded-lg">
+                  <Plus className="w-5 h-5 text-green-600" />
                 </div>
                 Condition Logic
               </h2>
@@ -1760,8 +1760,8 @@ export default function ProductForm() {
             <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold flex items-center gap-2">
-                  <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                    <Plus className="w-5 h-5 text-green-400" />
+                  <div className="p-2 bg-green-100 border border-green-300 rounded-lg">
+                    <Plus className="w-5 h-5 text-green-600" />
                   </div>
                   Tax Configuration
                 </h2>
@@ -1845,8 +1845,8 @@ export default function ProductForm() {
             <CollapsibleSection
               title="SEO Settings"
               icon={
-                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                  <ImageIcon className="w-5 h-5 text-green-400" />
+                <div className="p-2 bg-green-100 border border-green-300 rounded-lg">
+                  <ImageIcon className="w-5 h-5 text-green-600" />
                 </div>
               }
               defaultOpen={false}
@@ -1900,8 +1900,8 @@ export default function ProductForm() {
             {/* Categories Section */}
             <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                  <Plus className="w-5 h-5 text-green-400" />
+                <div className="p-2 bg-green-100 border border-green-300 rounded-lg">
+                  <Plus className="w-5 h-5 text-green-600" />
                 </div>
                 Categories
               </h2>
@@ -1927,8 +1927,8 @@ export default function ProductForm() {
             {/* Product Availability Section */}
             <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                  <Plus className="w-5 h-5 text-green-400" />
+                <div className="p-2 bg-green-100 border border-green-300 rounded-lg">
+                  <Plus className="w-5 h-5 text-green-600" />
                 </div>
                 Product Availability
               </h2>
