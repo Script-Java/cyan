@@ -1054,25 +1054,25 @@ export default function ProductForm() {
                                   updateOption(option.id, "required", checked)
                                 }
                               />
-                              <Label className="text-white/80 font-normal cursor-pointer">
+                              <Label className="text-gray-700 font-normal cursor-pointer">
                                 Required
                               </Label>
                             </div>
                             <button
                               onClick={() => removeOption(option.id)}
-                              className="ml-auto text-red-400 hover:text-red-300 transition"
+                              className="ml-auto text-red-600 hover:text-red-700 transition"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
                           </div>
 
                           {/* Variant Values */}
-                          <div className="bg-white/10 rounded-lg p-4 space-y-3">
+                          <div className="bg-gray-50 rounded-lg p-4 space-y-3">
                             <div
                               onClick={() => toggleOptionValues(option.id)}
-                              className="w-full flex items-center justify-between hover:bg-white/5 rounded p-2 transition cursor-pointer"
+                              className="w-full flex items-center justify-between hover:bg-gray-100 rounded p-2 transition cursor-pointer"
                             >
-                              <h4 className="text-white font-semibold">
+                              <h4 className="text-gray-900 font-semibold">
                                 Option Values
                               </h4>
                               <div className="flex items-center gap-2">
@@ -1100,7 +1100,7 @@ export default function ProductForm() {
                             {expandedOptionValues.has(option.id) && (
                               <>
                                 {option.values.length === 0 ? (
-                                  <p className="text-white/40 text-sm">
+                                  <p className="text-gray-400 text-sm">
                                     Add values for this option
                                   </p>
                                 ) : (
@@ -1108,11 +1108,11 @@ export default function ProductForm() {
                                     {option.values.map((value) => (
                                       <div
                                         key={value.id}
-                                        className="bg-black/40 rounded-lg p-3 space-y-3"
+                                        className="bg-white border border-gray-200 rounded-lg p-3 space-y-3"
                                       >
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                           <div>
-                                            <Label className="text-white/70 text-sm mb-1 block">
+                                            <Label className="text-gray-700 text-sm mb-1 block">
                                               Value Name
                                             </Label>
                                             <Input
@@ -1126,11 +1126,11 @@ export default function ProductForm() {
                                                 )
                                               }
                                               placeholder="e.g., Satin, 5 inches"
-                                              className="bg-white/5 border-white/10 text-white placeholder-white/40 text-sm"
+                                              className="bg-white border-gray-200 text-gray-900 placeholder-gray-400 text-sm"
                                             />
                                           </div>
                                           <div>
-                                            <Label className="text-white/70 text-sm mb-1 block">
+                                            <Label className="text-gray-700 text-sm mb-1 block">
                                               Price Modifier ($)
                                             </Label>
                                             <Input
@@ -1148,9 +1148,9 @@ export default function ProductForm() {
                                                 )
                                               }
                                               placeholder="0.00"
-                                              className="bg-white/5 border-white/10 text-white placeholder-white/40 text-sm"
+                                              className="bg-white border-gray-200 text-gray-900 placeholder-gray-400 text-sm"
                                             />
-                                            <p className="text-white/40 text-xs mt-1">
+                                            <p className="text-gray-400 text-xs mt-1">
                                               Add to base price
                                             </p>
                                           </div>
@@ -1159,7 +1159,7 @@ export default function ProductForm() {
                                         {(option.type === "swatch" ||
                                           option.type === "radio") && (
                                           <div className="space-y-2">
-                                            <Label className="text-white/70 text-sm block">
+                                            <Label className="text-gray-700 text-sm block">
                                               Swatch Image (Optional)
                                             </Label>
                                             {value.image ? (
@@ -1176,15 +1176,15 @@ export default function ProductForm() {
                                                       value.id,
                                                     )
                                                   }
-                                                  className="text-red-400 hover:text-red-300 text-sm"
+                                                  className="text-red-600 hover:text-red-700 text-sm"
                                                 >
                                                   Remove
                                                 </button>
                                               </div>
                                             ) : (
-                                              <label className="flex items-center justify-center gap-2 border border-dashed border-white/20 rounded p-2 cursor-pointer hover:border-white/40 transition">
-                                                <Upload className="w-4 h-4 text-white/60" />
-                                                <span className="text-white/60 text-sm">
+                                              <label className="flex items-center justify-center gap-2 border border-dashed border-gray-300 rounded p-2 cursor-pointer hover:border-gray-400 transition">
+                                                <Upload className="w-4 h-4 text-gray-600" />
+                                                <span className="text-gray-600 text-sm">
                                                   Upload swatch
                                                 </span>
                                                 <input
@@ -1212,7 +1212,7 @@ export default function ProductForm() {
                                                 value.id,
                                               )
                                             }
-                                            className="text-red-400 hover:text-red-300 text-sm flex items-center gap-1"
+                                            className="text-red-600 hover:text-red-700 text-sm flex items-center gap-1"
                                           >
                                             <X className="w-3 h-3" />
                                             Remove Value
@@ -1237,8 +1237,8 @@ export default function ProductForm() {
             <CollapsibleSection
               title="Shared Variants"
               icon={
-                <div className="p-2 bg-purple-600/20 border border-purple-500/30 rounded-lg">
-                  <Plus className="w-5 h-5 text-purple-400" />
+                <div className="p-2 bg-purple-100 border border-purple-300 rounded-lg">
+                  <Plus className="w-5 h-5 text-purple-600" />
                 </div>
               }
               defaultOpen={false}
