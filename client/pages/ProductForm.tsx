@@ -1346,7 +1346,7 @@ export default function ProductForm() {
                                                       selection.optionId,
                                                     )
                                                   }
-                                                  className="text-red-400 hover:text-red-300 text-sm"
+                                                  className="text-red-600 hover:text-red-700 text-sm"
                                                 >
                                                   Remove
                                                 </button>
@@ -1456,7 +1456,7 @@ export default function ProductForm() {
                               onClick={() =>
                                 removeSharedVariant(sharedVariant.id)
                               }
-                              className="text-red-400 hover:text-red-300 transition flex items-center gap-1"
+                              className="text-red-600 hover:text-red-700 transition flex items-center gap-1"
                             >
                               <Trash2 className="w-4 h-4" />
                               Remove
@@ -1626,7 +1626,7 @@ export default function ProductForm() {
                         <SelectTrigger className="bg-white border-gray-200 text-gray-900">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-900 border-gray-200">
+                        <SelectContent className="bg-white border-gray-200">
                           <SelectItem value="text">Text</SelectItem>
                           <SelectItem value="textarea">Textarea</SelectItem>
                           <SelectItem value="date">Date</SelectItem>
@@ -1636,7 +1636,7 @@ export default function ProductForm() {
                     </div>
                     <button
                       onClick={() => removeOptionalField(index)}
-                      className="text-red-400 hover:text-red-300 transition"
+                      className="text-red-600 hover:text-red-700 transition"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -1709,7 +1709,7 @@ export default function ProductForm() {
                         <span className="text-gray-700">{file.name}</span>
                         <button
                           onClick={() => removeFile(file.name)}
-                          className="text-red-400 hover:text-red-300 transition"
+                          className="text-red-600 hover:text-red-700 transition"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -1740,7 +1740,7 @@ export default function ProductForm() {
                   <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 border-gray-200">
+                  <SelectContent className="bg-white border-gray-200">
                     <SelectItem value="all">
                       All conditions must be met
                     </SelectItem>
@@ -1831,7 +1831,7 @@ export default function ProductForm() {
                       </div>
                       <button
                         onClick={() => removeTaxConfig(tax.id)}
-                        className="text-red-400 hover:text-red-300 transition"
+                        className="text-red-600 hover:text-red-700 transition"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
