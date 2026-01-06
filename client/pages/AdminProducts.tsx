@@ -131,19 +131,19 @@ export default function AdminProducts() {
 
   return (
     <AdminLayout>
-      <main className="min-h-screen bg-black py-6">
-        <div className="max-w-6xl mx-auto px-4">
+      <main className="min-h-screen bg-[#fafafa] py-6 px-4">
+        <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-3xl font-bold text-white">Products</h1>
-              <p className="text-white/60 mt-1">
+              <h1 className="text-3xl font-bold text-gray-900">Products</h1>
+              <p className="text-gray-600 mt-1">
                 Manage your product catalog and inventory
               </p>
             </div>
             <Button
               onClick={() => navigate("/admin/products/new")}
-              className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-3 py-2 text-sm"
+              className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-4 py-2 text-sm"
             >
               <Plus className="w-4 h-4" />
               Add Product
@@ -152,7 +152,7 @@ export default function AdminProducts() {
 
           {/* Quick Navigation */}
           <div className="mb-6">
-            <h2 className="text-sm font-semibold text-white/80 mb-3">
+            <h2 className="text-sm font-semibold text-gray-700 mb-3">
               Quick Navigation
             </h2>
             <AdminNavigationGrid />
@@ -161,13 +161,13 @@ export default function AdminProducts() {
           {/* Search */}
           <div className="mb-4">
             <div className="relative">
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-white/40" />
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
               <input
                 type="text"
                 placeholder="Search products by name or SKU..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-green-500/50"
+                className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/50"
               />
             </div>
           </div>
