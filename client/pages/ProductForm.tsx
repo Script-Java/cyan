@@ -749,26 +749,26 @@ export default function ProductForm() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black text-white pb-20 md:pb-0">
-        <div className="border-b border-white/10">
+      <main className="min-h-screen bg-[#fafafa] text-gray-900 pb-20 md:pb-0">
+        <div className="border-b border-gray-200">
           <div className="px-6 lg:px-8 py-6">
             <button
               onClick={() => navigate("/admin/products")}
-              className="flex items-center gap-2 text-white/60 hover:text-white transition mb-4"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition mb-4"
             >
               <ChevronLeft className="w-4 h-4" />
               Back to Products
             </button>
-            <h1 className="text-4xl font-bold text-white">
+            <h1 className="text-4xl font-bold text-gray-900">
               {productId ? "Edit Product" : "Create New Product"}
             </h1>
           </div>
         </div>
 
         {/* Navigation Grid - Desktop/Tablet Only */}
-        <div className="hidden md:block border-b border-white/10 bg-black/50 backdrop-blur-sm">
+        <div className="hidden md:block border-b border-gray-200 bg-gray-50 backdrop-blur-sm">
           <div className="px-6 lg:px-8 py-6">
-            <h2 className="text-sm font-semibold text-white/80 mb-4">
+            <h2 className="text-sm font-semibold text-gray-700 mb-4">
               Quick Navigation
             </h2>
             <AdminNavigationGrid />
@@ -787,27 +787,27 @@ export default function ProductForm() {
             <CollapsibleSection
               title="Basic Information"
               icon={
-                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                  <ImageIcon className="w-5 h-5 text-green-400" />
+                <div className="p-2 bg-green-100 border border-green-300 rounded-lg">
+                  <ImageIcon className="w-5 h-5 text-green-600" />
                 </div>
               }
               defaultOpen={true}
             >
               <div>
-                <Label className="text-white/80 mb-2 block">
+                <Label className="text-gray-700 mb-2 block">
                   Product Name *
                 </Label>
                 <Input
                   value={formData.name}
                   onChange={(e) => handleInputChange("name", e.target.value)}
                   placeholder="Enter product name"
-                  className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                  className="bg-white border-gray-200 text-gray-900 placeholder-gray-400"
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-white/80 mb-2 block">
+                  <Label className="text-gray-700 mb-2 block">
                     Base Price (USD) *
                   </Label>
                   <Input
@@ -822,25 +822,25 @@ export default function ProductForm() {
                       )
                     }
                     placeholder="0.00"
-                    className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                    className="bg-white border-gray-200 text-gray-900 placeholder-gray-400"
                   />
-                  <p className="text-white/40 text-sm mt-1">
+                  <p className="text-gray-400 text-sm mt-1">
                     Variant prices adjust from this base price
                   </p>
                 </div>
                 <div>
-                  <Label className="text-white/80 mb-2 block">SKU</Label>
+                  <Label className="text-gray-700 mb-2 block">SKU</Label>
                   <Input
                     value={formData.sku}
                     onChange={(e) => handleInputChange("sku", e.target.value)}
                     placeholder="e.g., SKU-001"
-                    className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                    className="bg-white border-gray-200 text-gray-900 placeholder-gray-400"
                   />
                 </div>
               </div>
 
               <div>
-                <Label className="text-white/80 mb-2 block">Weight (lb)</Label>
+                <Label className="text-gray-700 mb-2 block">Weight (lb)</Label>
                 <Input
                   type="number"
                   step="0.01"
@@ -853,19 +853,19 @@ export default function ProductForm() {
                     )
                   }
                   placeholder="0.00"
-                  className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                  className="bg-white border-gray-200 text-gray-900 placeholder-gray-400"
                 />
               </div>
 
               <div>
-                <Label className="text-white/80 mb-2 block">Description</Label>
+                <Label className="text-gray-700 mb-2 block">Description</Label>
                 <Textarea
                   value={formData.description}
                   onChange={(e) =>
                     handleInputChange("description", e.target.value)
                   }
                   placeholder="Enter product description"
-                  className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-20"
+                  className="bg-white border-gray-200 text-gray-900 placeholder-gray-400 min-h-20"
                 />
               </div>
             </CollapsibleSection>
@@ -874,19 +874,19 @@ export default function ProductForm() {
             <CollapsibleSection
               title="Product Gallery"
               icon={
-                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                  <ImageIcon className="w-5 h-5 text-green-400" />
+                <div className="p-2 bg-green-100 border border-green-300 rounded-lg">
+                  <ImageIcon className="w-5 h-5 text-green-600" />
                 </div>
               }
               defaultOpen={false}
             >
-              <div className="border-2 border-dashed border-white/20 rounded-lg p-4 text-center cursor-pointer hover:border-green-500/50 transition">
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-green-400 transition">
                 <label className="cursor-pointer">
-                  <Upload className="w-6 h-6 text-green-400 mx-auto mb-1" />
-                  <p className="text-white/80 font-medium text-sm">
+                  <Upload className="w-6 h-6 text-green-600 mx-auto mb-1" />
+                  <p className="text-gray-700 font-medium text-sm">
                     Click to upload or drag and drop
                   </p>
-                  <p className="text-white/40 text-xs mt-0.5">
+                  <p className="text-gray-400 text-xs mt-0.5">
                     PNG, JPG, GIF up to 10MB
                   </p>
                   <input
@@ -904,7 +904,7 @@ export default function ProductForm() {
                   {formData.images.map((image) => (
                     <div
                       key={image.id}
-                      className="relative group bg-white/5 border border-white/10 rounded-lg overflow-hidden"
+                      className="relative group bg-gray-50 border border-gray-200 rounded-lg overflow-hidden"
                     >
                       <img
                         src={image.preview}
@@ -913,7 +913,7 @@ export default function ProductForm() {
                       />
                       <button
                         onClick={() => removeImage(image.id)}
-                        className="absolute top-2 right-2 bg-red-600/80 hover:bg-red-700 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition"
+                        className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -927,8 +927,8 @@ export default function ProductForm() {
             <CollapsibleSection
               title="Product Options & Variants"
               icon={
-                <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
-                  <Plus className="w-5 h-5 text-green-400" />
+                <div className="p-2 bg-green-100 border border-green-300 rounded-lg">
+                  <Plus className="w-5 h-5 text-green-600" />
                 </div>
               }
               defaultOpen={false}
@@ -945,7 +945,7 @@ export default function ProductForm() {
 
               <div className="space-y-3">
                 {formData.options.length === 0 ? (
-                  <p className="text-white/60 text-center py-4 text-sm">
+                  <p className="text-gray-600 text-center py-4 text-sm">
                     No options added yet. Click "Add Option" to get started with
                     variants.
                   </p>
@@ -964,16 +964,16 @@ export default function ProductForm() {
                           moveOption(draggedIndex, index);
                         }
                       }}
-                      className={`bg-white/5 border border-white/10 rounded-lg p-3 space-y-3 transition ${
+                      className={`bg-white border border-gray-200 rounded-lg p-3 space-y-3 transition ${
                         draggedOption === option.id ? "opacity-50" : ""
                       }`}
                     >
                       <div className="flex items-start gap-3">
-                        <GripVertical className="w-5 h-5 text-white/40 mt-1 flex-shrink-0" />
+                        <GripVertical className="w-5 h-5 text-gray-400 mt-1 flex-shrink-0" />
                         <div className="flex-1">
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                             <div>
-                              <Label className="text-white/80 mb-2 block">
+                              <Label className="text-gray-700 mb-2 block">
                                 Option Name
                               </Label>
                               <Input
@@ -986,11 +986,11 @@ export default function ProductForm() {
                                   )
                                 }
                                 placeholder="e.g., Finish, Size, Color"
-                                className="bg-white/10 border-white/10 text-white placeholder-white/40"
+                                className="bg-white border-gray-200 text-gray-900 placeholder-gray-400"
                               />
                             </div>
                             <div>
-                              <Label className="text-white/80 mb-2 block">
+                              <Label className="text-gray-700 mb-2 block">
                                 Type
                               </Label>
                               <Select
@@ -1003,10 +1003,10 @@ export default function ProductForm() {
                                   )
                                 }
                               >
-                                <SelectTrigger className="bg-white/10 border-white/10 text-white">
+                                <SelectTrigger className="bg-white border-gray-200 text-gray-900">
                                   <SelectValue />
                                 </SelectTrigger>
-                                <SelectContent className="bg-gray-900 border-white/10">
+                                <SelectContent className="bg-white border-gray-200">
                                   <SelectItem value="dropdown">
                                     Dropdown
                                   </SelectItem>
@@ -1019,7 +1019,7 @@ export default function ProductForm() {
                               </Select>
                             </div>
                             <div>
-                              <Label className="text-white/80 mb-2 block">
+                              <Label className="text-gray-700 mb-2 block">
                                 Default Value
                               </Label>
                               <Select
@@ -1032,10 +1032,10 @@ export default function ProductForm() {
                                   )
                                 }
                               >
-                                <SelectTrigger className="bg-white/10 border-white/10 text-white">
+                                <SelectTrigger className="bg-white border-gray-200 text-gray-900">
                                   <SelectValue placeholder="Select default" />
                                 </SelectTrigger>
-                                <SelectContent className="bg-gray-900 border-white/10">
+                                <SelectContent className="bg-white border-gray-200">
                                   {option.values.map((val) => (
                                     <SelectItem key={val.id} value={val.id}>
                                       {val.name}
