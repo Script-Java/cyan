@@ -174,16 +174,16 @@ export default function AdminProducts() {
 
           {/* Products List */}
           {isLoading ? (
-            <div className="flex justify-center items-center h-64 bg-white/5 border border-white/10 rounded-lg">
-              <div className="text-white/60">Loading products...</div>
+            <div className="flex justify-center items-center h-64 bg-white border border-gray-200 rounded-lg">
+              <div className="text-gray-600">Loading products...</div>
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-64 bg-white/5 border border-white/10 rounded-lg">
-              <Package className="w-10 h-10 text-white/20 mb-3" />
-              <p className="text-white font-medium mb-1">
+            <div className="flex flex-col items-center justify-center h-64 bg-white border border-gray-200 rounded-lg">
+              <Package className="w-10 h-10 text-gray-300 mb-3" />
+              <p className="text-gray-900 font-medium mb-1">
                 {searchQuery ? "No products found" : "No products yet"}
               </p>
-              <p className="text-white/60 text-sm mb-3">
+              <p className="text-gray-600 text-sm mb-4">
                 {searchQuery
                   ? "Try a different search query"
                   : "Click the Add Product button to get started"}
@@ -191,7 +191,7 @@ export default function AdminProducts() {
               {!searchQuery && (
                 <Button
                   onClick={() => navigate("/admin/products/new")}
-                  className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded text-sm px-3 py-1.5"
+                  className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg text-sm px-4 py-2"
                 >
                   <Plus className="w-4 h-4" />
                   Add Your First Product
@@ -199,12 +199,12 @@ export default function AdminProducts() {
               )}
             </div>
           ) : (
-            <div className="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
+            <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
               {/* Header */}
-              <div className="px-4 py-3 border-b border-white/10 bg-white/5">
-                <p className="text-sm font-semibold text-white">
+              <div className="px-6 py-3 border-b border-gray-200 bg-gray-50">
+                <p className="text-sm font-semibold text-gray-900">
                   Products
-                  <span className="ml-2 text-xs font-normal text-white/60">
+                  <span className="ml-3 text-xs font-normal text-gray-600">
                     {filteredProducts.length}{" "}
                     {filteredProducts.length === 1 ? "item" : "items"}
                   </span>
@@ -215,57 +215,57 @@ export default function AdminProducts() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-white/10 bg-white/5">
-                      <th className="px-4 py-2 text-left font-semibold text-white/80 text-xs">
+                    <tr className="border-b border-gray-200 bg-gray-50">
+                      <th className="px-6 py-3 text-left font-semibold text-gray-900 text-xs">
                         Product Name
                       </th>
-                      <th className="px-4 py-2 text-left font-semibold text-white/80 text-xs hidden sm:table-cell">
+                      <th className="px-6 py-3 text-left font-semibold text-gray-900 text-xs hidden sm:table-cell">
                         SKU
                       </th>
-                      <th className="px-4 py-2 text-left font-semibold text-white/80 text-xs">
+                      <th className="px-6 py-3 text-left font-semibold text-gray-900 text-xs">
                         Price
                       </th>
-                      <th className="px-4 py-2 text-left font-semibold text-white/80 text-xs hidden md:table-cell">
+                      <th className="px-6 py-3 text-left font-semibold text-gray-900 text-xs hidden md:table-cell">
                         Status
                       </th>
-                      <th className="px-4 py-2 text-left font-semibold text-white/80 text-xs hidden lg:table-cell">
+                      <th className="px-6 py-3 text-left font-semibold text-gray-900 text-xs hidden lg:table-cell">
                         Created
                       </th>
-                      <th className="px-4 py-2 text-left font-semibold text-white/80 text-xs">
+                      <th className="px-6 py-3 text-left font-semibold text-gray-900 text-xs">
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/10">
+                  <tbody className="divide-y divide-gray-200">
                     {filteredProducts.map((product) => (
                       <tr
                         key={product.id}
-                        className="hover:bg-white/5 transition-colors"
+                        className="hover:bg-gray-50 transition-colors"
                       >
-                        <td className="px-4 py-2.5 text-white text-sm">
+                        <td className="px-6 py-4 text-gray-900 text-sm font-medium">
                           {product.name}
                         </td>
-                        <td className="px-4 py-2.5 text-white/60 text-sm hidden sm:table-cell">
+                        <td className="px-6 py-4 text-gray-600 text-sm hidden sm:table-cell">
                           {product.sku || "-"}
                         </td>
-                        <td className="px-4 py-2.5 text-white text-sm font-medium">
+                        <td className="px-6 py-4 text-gray-900 text-sm font-medium">
                           {formatPrice(product.base_price)}
                         </td>
-                        <td className="px-4 py-2.5 text-sm hidden md:table-cell">
+                        <td className="px-6 py-4 text-sm hidden md:table-cell">
                           <span
-                            className={`inline-block px-2 py-1 rounded text-xs font-medium ${
+                            className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium ${
                               product.availability
-                                ? "bg-green-500/20 text-green-400"
-                                : "bg-red-500/20 text-red-400"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-red-100 text-red-700"
                             }`}
                           >
                             {product.availability ? "Available" : "Unavailable"}
                           </span>
                         </td>
-                        <td className="px-4 py-2.5 text-white/60 text-xs hidden lg:table-cell">
+                        <td className="px-6 py-4 text-gray-600 text-xs hidden lg:table-cell">
                           {formatDate(product.created_at)}
                         </td>
-                        <td className="px-4 py-2.5 text-sm">
+                        <td className="px-6 py-4 text-sm">
                           <div className="flex gap-2">
                             <button
                               onClick={() =>
@@ -274,7 +274,7 @@ export default function AdminProducts() {
                                   "_blank",
                                 )
                               }
-                              className="text-green-400 hover:text-green-300 transition p-1"
+                              className="text-green-600 hover:text-green-700 transition p-1"
                               title="Preview product page"
                             >
                               <Eye className="w-4 h-4" />
@@ -283,7 +283,7 @@ export default function AdminProducts() {
                               onClick={() =>
                                 navigate(`/admin/products/${product.id}/edit`)
                               }
-                              className="text-blue-400 hover:text-blue-300 transition p-1"
+                              className="text-blue-600 hover:text-blue-700 transition p-1"
                               title="Edit product"
                             >
                               <Edit2 className="w-4 h-4" />
@@ -291,7 +291,7 @@ export default function AdminProducts() {
                             <button
                               onClick={() => handleDeleteProduct(product.id)}
                               disabled={isDeleting === product.id}
-                              className="text-red-400 hover:text-red-300 transition disabled:opacity-50 p-1"
+                              className="text-red-600 hover:text-red-700 transition disabled:opacity-50 p-1"
                               title="Delete product"
                             >
                               <Trash2 className="w-4 h-4" />
