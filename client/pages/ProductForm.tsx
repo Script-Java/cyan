@@ -913,7 +913,7 @@ export default function ProductForm() {
                       />
                       <button
                         onClick={() => removeImage(image.id)}
-                        className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition"
+                        className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-gray-900 p-1 rounded opacity-0 group-hover:opacity-100 transition"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -936,7 +936,7 @@ export default function ProductForm() {
               <div className="flex justify-end mb-4">
                 <Button
                   onClick={addOption}
-                  className="bg-green-600 hover:bg-green-700 text-white gap-2"
+                  className="bg-green-600 hover:bg-green-700 text-gray-900 gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   Add Option
@@ -1082,7 +1082,7 @@ export default function ProductForm() {
                                     addVariantValue(option.id);
                                   }}
                                   size="sm"
-                                  className="bg-blue-600 hover:bg-blue-700 text-white gap-1"
+                                  className="bg-blue-600 hover:bg-blue-700 text-gray-900 gap-1"
                                 >
                                   <Plus className="w-3 h-3" />
                                   Add Value
@@ -1246,21 +1246,21 @@ export default function ProductForm() {
               <div className="flex justify-end mb-4">
                 <Button
                   onClick={addSharedVariant}
-                  className="bg-purple-600 hover:bg-purple-700 text-white gap-2"
+                  className="bg-purple-600 hover:bg-purple-700 text-gray-900 gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   Add Shared Variant
                 </Button>
               </div>
 
-              <p className="text-white/60 text-sm mb-6">
+              <p className="text-gray-600 text-sm mb-6">
                 Create shared variant groups that apply the same set of options
                 across multiple products.
               </p>
 
               <div className="space-y-6">
                 {formData.sharedVariants.length === 0 ? (
-                  <p className="text-white/60 text-center py-8">
+                  <p className="text-gray-600 text-center py-8">
                     No shared variants added yet. Click "Add Shared Variant" to
                     create a reusable variant group.
                   </p>
@@ -1268,12 +1268,12 @@ export default function ProductForm() {
                   formData.sharedVariants.map((sharedVariant) => (
                     <div
                       key={sharedVariant.id}
-                      className="bg-white/5 border border-white/10 rounded-lg p-4 space-y-4"
+                      className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-4"
                     >
                       <div className="flex items-start gap-3">
                         <div className="flex-1 space-y-4 w-full">
                           <div>
-                            <Label className="text-white/80 mb-2 block">
+                            <Label className="text-gray-700 mb-2 block">
                               Shared Variant Name
                             </Label>
                             <Input
@@ -1286,12 +1286,12 @@ export default function ProductForm() {
                                 )
                               }
                               placeholder="e.g., Size & Color Combo"
-                              className="bg-white/10 border-white/10 text-white placeholder-white/40"
+                              className="bg-white border-gray-200 text-gray-900 placeholder-gray-400"
                             />
                           </div>
 
                           <div>
-                            <Label className="text-white/80 mb-2 block">
+                            <Label className="text-gray-700 mb-2 block">
                               Description
                             </Label>
                             <Textarea
@@ -1304,17 +1304,17 @@ export default function ProductForm() {
                                 )
                               }
                               placeholder="Describe this shared variant group..."
-                              className="bg-white/10 border-white/10 text-white placeholder-white/40 min-h-24"
+                              className="bg-white border-gray-200 text-gray-900 placeholder-gray-400 min-h-24"
                             />
                           </div>
 
                           {/* Option Selection */}
                           <div>
-                            <Label className="text-white/80 mb-3 block">
+                            <Label className="text-gray-700 mb-3 block">
                               Group Options & Values
                             </Label>
                             {formData.options.length === 0 ? (
-                              <p className="text-white/40 text-sm">
+                              <p className="text-gray-400 text-sm">
                                 Add options above to include them in this shared
                                 variant group.
                               </p>
@@ -1322,7 +1322,7 @@ export default function ProductForm() {
                               <div className="space-y-4">
                                 {/* Selected Options Display */}
                                 {sharedVariant.optionSelections.length > 0 && (
-                                  <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                                     <div className="grid grid-cols-2 gap-4">
                                       {sharedVariant.optionSelections.map(
                                         (selection) => {
@@ -1335,7 +1335,7 @@ export default function ProductForm() {
                                               className="border-l-2 border-purple-500 pl-3"
                                             >
                                               <div className="flex justify-between items-start mb-2">
-                                                <span className="text-white font-medium">
+                                                <span className="text-gray-900 font-medium">
                                                   {selection.optionName}
                                                 </span>
                                                 <button
@@ -1355,7 +1355,7 @@ export default function ProductForm() {
                                                 {option?.values.map((value) => (
                                                   <label
                                                     key={value.id}
-                                                    className="flex items-center gap-2 text-white/70 text-sm cursor-pointer hover:text-white"
+                                                    className="flex items-center gap-2 text-gray-700 text-sm cursor-pointer hover:text-gray-900"
                                                   >
                                                     <input
                                                       type="checkbox"
@@ -1385,7 +1385,7 @@ export default function ProductForm() {
 
                                 {/* Add Option Dropdown */}
                                 <div>
-                                  <Label className="text-white/80 mb-2 block">
+                                  <Label className="text-gray-700 mb-2 block">
                                     Add Option to Group
                                   </Label>
                                   <select
@@ -1398,7 +1398,7 @@ export default function ProductForm() {
                                         e.target.value = "";
                                       }
                                     }}
-                                    className="w-full bg-white/10 border border-white/10 rounded-lg text-white p-2 cursor-pointer"
+                                    className="w-full bg-white border border-gray-200 rounded-lg text-gray-900 p-2 cursor-pointer"
                                   >
                                     <option value="">
                                       Select an option...
@@ -1425,7 +1425,7 @@ export default function ProductForm() {
                           </div>
 
                           <div>
-                            <Label className="text-white/80 mb-2 block">
+                            <Label className="text-gray-700 mb-2 block">
                               Group Price (USD)
                             </Label>
                             <Input
@@ -1443,9 +1443,9 @@ export default function ProductForm() {
                                 )
                               }
                               placeholder="0.00"
-                              className="bg-white/10 border-white/10 text-white placeholder-white/40"
+                              className="bg-white border-gray-200 text-gray-900 placeholder-gray-400"
                             />
-                            <p className="text-white/40 text-sm mt-1">
+                            <p className="text-gray-400 text-sm mt-1">
                               This price will be applied to the combined option
                               group
                             </p>
@@ -1487,7 +1487,7 @@ export default function ProductForm() {
                     updateCustomerUploadConfig("enabled", checked)
                   }
                 />
-                <Label className="text-white/80 font-normal cursor-pointer">
+                <Label className="text-gray-700 font-normal cursor-pointer">
                   Enable customer design uploads
                 </Label>
               </div>
@@ -1495,7 +1495,7 @@ export default function ProductForm() {
               {formData.customerUploadConfig.enabled && (
                 <>
                   <div>
-                    <Label className="text-white/80 mb-2 block">
+                    <Label className="text-gray-700 mb-2 block">
                       Upload Description
                     </Label>
                     <Input
@@ -1507,15 +1507,15 @@ export default function ProductForm() {
                         )
                       }
                       placeholder="e.g., Upload your custom sticker design"
-                      className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                      className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400"
                     />
-                    <p className="text-white/40 text-sm mt-1">
+                    <p className="text-gray-400 text-sm mt-1">
                       This text will appear on the product page
                     </p>
                   </div>
 
                   <div>
-                    <Label className="text-white/80 mb-2 block">
+                    <Label className="text-gray-700 mb-2 block">
                       Max File Size (MB)
                     </Label>
                     <Input
@@ -1529,15 +1529,15 @@ export default function ProductForm() {
                           e.target.value ? parseInt(e.target.value) : 5,
                         )
                       }
-                      className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                      className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400"
                     />
                   </div>
 
                   <div>
-                    <Label className="text-white/80 mb-2 block">
+                    <Label className="text-gray-700 mb-2 block">
                       Allowed File Formats
                     </Label>
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                       <div className="space-y-2">
                         {["png", "jpg", "jpeg", "gif", "svg"].map((format) => (
                           <label
@@ -1564,9 +1564,9 @@ export default function ProductForm() {
                                   );
                                 }
                               }}
-                              className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
+                              className="w-4 h-4 rounded bg-gray-50 border-gray-200 cursor-pointer"
                             />
-                            <span className="text-white/80 uppercase text-sm">
+                            <span className="text-gray-700 uppercase text-sm">
                               {format}
                             </span>
                           </label>
@@ -1579,7 +1579,7 @@ export default function ProductForm() {
             </CollapsibleSection>
 
             {/* Optional Fields Section */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+            <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold flex items-center gap-2">
                   <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
@@ -1589,7 +1589,7 @@ export default function ProductForm() {
                 </h2>
                 <Button
                   onClick={addOptionalField}
-                  className="bg-green-600 hover:bg-green-700 text-white gap-2"
+                  className="bg-green-600 hover:bg-green-700 text-gray-900 gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   Add Field
@@ -1600,10 +1600,10 @@ export default function ProductForm() {
                 {formData.optionalFields.map((field, index) => (
                   <div
                     key={index}
-                    className="bg-white/5 border border-white/10 rounded-lg p-4 flex gap-4 items-end"
+                    className="bg-gray-50 border border-gray-200 rounded-lg p-4 flex gap-4 items-end"
                   >
                     <div className="flex-1">
-                      <Label className="text-white/80 mb-2 block">
+                      <Label className="text-gray-700 mb-2 block">
                         Field Name
                       </Label>
                       <Input
@@ -1612,21 +1612,21 @@ export default function ProductForm() {
                           updateOptionalField(index, "name", e.target.value)
                         }
                         placeholder="e.g., Gift Message"
-                        className="bg-white/10 border-white/10 text-white placeholder-white/40"
+                        className="bg-white border-gray-200 text-gray-900 placeholder-gray-400"
                       />
                     </div>
                     <div className="flex-1">
-                      <Label className="text-white/80 mb-2 block">Type</Label>
+                      <Label className="text-gray-700 mb-2 block">Type</Label>
                       <Select
                         value={field.type}
                         onValueChange={(value) =>
                           updateOptionalField(index, "type", value)
                         }
                       >
-                        <SelectTrigger className="bg-white/10 border-white/10 text-white">
+                        <SelectTrigger className="bg-white border-gray-200 text-gray-900">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-900 border-white/10">
+                        <SelectContent className="bg-gray-900 border-gray-200">
                           <SelectItem value="text">Text</SelectItem>
                           <SelectItem value="textarea">Textarea</SelectItem>
                           <SelectItem value="date">Date</SelectItem>
@@ -1646,7 +1646,7 @@ export default function ProductForm() {
             </section>
 
             {/* Additional Information Section */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+            <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
                   <ImageIcon className="w-5 h-5 text-green-400" />
@@ -1656,7 +1656,7 @@ export default function ProductForm() {
 
               <div className="space-y-4">
                 <div>
-                  <Label className="text-white/80 mb-2 block">
+                  <Label className="text-gray-700 mb-2 block">
                     Additional Details
                   </Label>
                   <Textarea
@@ -1665,14 +1665,14 @@ export default function ProductForm() {
                       handleInputChange("textArea", e.target.value)
                     }
                     placeholder="Enter any additional product information"
-                    className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-20"
+                    className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 min-h-20"
                   />
                 </div>
               </div>
             </section>
 
             {/* File Upload Section */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+            <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
                   <Upload className="w-5 h-5 text-green-400" />
@@ -1681,13 +1681,13 @@ export default function ProductForm() {
               </h2>
 
               <div className="space-y-4">
-                <div className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center cursor-pointer hover:border-green-500/50 transition">
+                <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-green-500/50 transition">
                   <label className="cursor-pointer">
                     <Upload className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                    <p className="text-white/80 font-medium">
+                    <p className="text-gray-700 font-medium">
                       Click to upload files or drag and drop
                     </p>
-                    <p className="text-white/40 text-sm mt-1">
+                    <p className="text-gray-400 text-sm mt-1">
                       Any file type up to 50MB
                     </p>
                     <input
@@ -1704,9 +1704,9 @@ export default function ProductForm() {
                     {formData.uploadedFiles.map((file) => (
                       <div
                         key={file.name}
-                        className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg p-3"
+                        className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg p-3"
                       >
-                        <span className="text-white/80">{file.name}</span>
+                        <span className="text-gray-700">{file.name}</span>
                         <button
                           onClick={() => removeFile(file.name)}
                           className="text-red-400 hover:text-red-300 transition"
@@ -1721,7 +1721,7 @@ export default function ProductForm() {
             </section>
 
             {/* Condition Logic Section */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+            <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
                   <Plus className="w-5 h-5 text-green-400" />
@@ -1730,17 +1730,17 @@ export default function ProductForm() {
               </h2>
 
               <div>
-                <Label className="text-white/80 mb-2 block">Logic Type</Label>
+                <Label className="text-gray-700 mb-2 block">Logic Type</Label>
                 <Select
                   value={formData.conditionLogic}
                   onValueChange={(value) =>
                     handleInputChange("conditionLogic", value)
                   }
                 >
-                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                  <SelectTrigger className="bg-gray-50 border-gray-200 text-gray-900">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 border-white/10">
+                  <SelectContent className="bg-gray-900 border-gray-200">
                     <SelectItem value="all">
                       All conditions must be met
                     </SelectItem>
@@ -1750,14 +1750,14 @@ export default function ProductForm() {
                     <SelectItem value="none">No conditions</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-white/60 text-sm mt-2">
+                <p className="text-gray-600 text-sm mt-2">
                   Define how conditions interact with this product's options
                 </p>
               </div>
             </section>
 
             {/* Tax Configuration Section */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+            <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold flex items-center gap-2">
                   <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
@@ -1767,7 +1767,7 @@ export default function ProductForm() {
                 </h2>
                 <Button
                   onClick={addTaxConfig}
-                  className="bg-green-600 hover:bg-green-700 text-white gap-2"
+                  className="bg-green-600 hover:bg-green-700 text-gray-900 gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   Add Tax
@@ -1778,11 +1778,11 @@ export default function ProductForm() {
                 {formData.taxes.map((tax) => (
                   <div
                     key={tax.id}
-                    className="bg-white/5 border border-white/10 rounded-lg p-4 space-y-4"
+                    className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-4"
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label className="text-white/80 mb-2 block">
+                        <Label className="text-gray-700 mb-2 block">
                           Tax Name
                         </Label>
                         <Input
@@ -1791,11 +1791,11 @@ export default function ProductForm() {
                             updateTaxConfig(tax.id, "name", e.target.value)
                           }
                           placeholder="e.g., Sales Tax, VAT"
-                          className="bg-white/10 border-white/10 text-white placeholder-white/40"
+                          className="bg-white border-gray-200 text-gray-900 placeholder-gray-400"
                         />
                       </div>
                       <div>
-                        <Label className="text-white/80 mb-2 block">
+                        <Label className="text-gray-700 mb-2 block">
                           Rate (%)
                         </Label>
                         <Input
@@ -1812,7 +1812,7 @@ export default function ProductForm() {
                             )
                           }
                           placeholder="0.00"
-                          className="bg-white/10 border-white/10 text-white placeholder-white/40"
+                          className="bg-white border-gray-200 text-gray-900 placeholder-gray-400"
                         />
                       </div>
                     </div>
@@ -1825,7 +1825,7 @@ export default function ProductForm() {
                             updateTaxConfig(tax.id, "enabled", checked)
                           }
                         />
-                        <Label className="text-white/80 font-normal cursor-pointer">
+                        <Label className="text-gray-700 font-normal cursor-pointer">
                           Enabled
                         </Label>
                       </div>
@@ -1852,35 +1852,35 @@ export default function ProductForm() {
               defaultOpen={false}
             >
               <div>
-                <Label className="text-white/80 mb-2 block">Product URL</Label>
+                <Label className="text-gray-700 mb-2 block">Product URL</Label>
                 <Input
                   value={formData.seo.productUrl}
                   onChange={(e) =>
                     handleSEOChange("productUrl", e.target.value)
                   }
                   placeholder="product-name"
-                  className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400"
                 />
-                <p className="text-white/40 text-sm mt-1">
+                <p className="text-gray-400 text-sm mt-1">
                   Use hyphens to separate words
                 </p>
               </div>
 
               <div>
-                <Label className="text-white/80 mb-2 block">Page Title</Label>
+                <Label className="text-gray-700 mb-2 block">Page Title</Label>
                 <Input
                   value={formData.seo.pageTitle}
                   onChange={(e) => handleSEOChange("pageTitle", e.target.value)}
                   placeholder="Product Name - Your Store"
-                  className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400"
                 />
-                <p className="text-white/40 text-sm mt-1">
+                <p className="text-gray-400 text-sm mt-1">
                   Recommended length: 50-60 characters
                 </p>
               </div>
 
               <div>
-                <Label className="text-white/80 mb-2 block">
+                <Label className="text-gray-700 mb-2 block">
                   Meta Description
                 </Label>
                 <Textarea
@@ -1889,16 +1889,16 @@ export default function ProductForm() {
                     handleSEOChange("metaDescription", e.target.value)
                   }
                   placeholder="Brief description for search engines"
-                  className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-16"
+                  className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 min-h-16"
                 />
-                <p className="text-white/40 text-sm mt-1">
+                <p className="text-gray-400 text-sm mt-1">
                   Recommended length: 150-160 characters
                 </p>
               </div>
             </CollapsibleSection>
 
             {/* Categories Section */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+            <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
                   <Plus className="w-5 h-5 text-green-400" />
@@ -1916,16 +1916,16 @@ export default function ProductForm() {
                       type="checkbox"
                       checked={formData.categories.includes(category)}
                       onChange={() => toggleCategory(category)}
-                      className="w-4 h-4 rounded bg-white/5 border-white/10 cursor-pointer"
+                      className="w-4 h-4 rounded bg-gray-50 border-gray-200 cursor-pointer"
                     />
-                    <span className="text-white/80">{category}</span>
+                    <span className="text-gray-700">{category}</span>
                   </label>
                 ))}
               </div>
             </section>
 
             {/* Product Availability Section */}
-            <section className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+            <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <div className="p-2 bg-green-600/20 border border-green-500/30 rounded-lg">
                   <Plus className="w-5 h-5 text-green-400" />
@@ -1941,12 +1941,12 @@ export default function ProductForm() {
                   }
                 />
                 <div>
-                  <Label className="text-white/80 font-normal cursor-pointer block">
+                  <Label className="text-gray-700 font-normal cursor-pointer block">
                     {formData.availability
                       ? "Product is Available"
                       : "Product is Unavailable"}
                   </Label>
-                  <p className="text-white/40 text-sm mt-1">
+                  <p className="text-gray-400 text-sm mt-1">
                     {formData.availability
                       ? "This product is visible to customers"
                       : "This product is hidden from customers"}
@@ -1960,7 +1960,7 @@ export default function ProductForm() {
               <Button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="bg-green-600 hover:bg-green-700 text-white gap-2 flex-1"
+                className="bg-green-600 hover:bg-green-700 text-gray-900 gap-2 flex-1"
               >
                 {isSaving ? "Saving..." : "Save Product"}
               </Button>
