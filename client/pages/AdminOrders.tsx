@@ -533,28 +533,30 @@ export default function AdminOrders() {
                                             {item.options &&
                                               Object.keys(item.options).length >
                                                 0 && (
-                                                <div className="grid grid-cols-2 gap-3 mb-3">
-                                                  {Object.entries(
-                                                    item.options,
-                                                  ).map(([key, val]) => {
-                                                    const displayKey = key
-                                                      .split('_')
-                                                      .map((word) =>
-                                                        word.charAt(0).toUpperCase() +
-                                                        word.slice(1),
-                                                      )
-                                                      .join(' ');
-                                                    return (
-                                                      <div key={key}>
-                                                        <p className="text-xs text-gray-600 font-medium">
-                                                          {displayKey}
-                                                        </p>
-                                                        <p className="text-sm text-gray-900 font-medium">
-                                                          {formatOptionValue(val)}
-                                                        </p>
-                                                      </div>
-                                                    );
-                                                  })}
+                                                <div>
+                                                  <p className="text-xs text-gray-600 font-medium mb-2">
+                                                    SPECIFICATIONS
+                                                  </p>
+                                                  <div className="flex flex-wrap gap-2">
+                                                    {Object.entries(
+                                                      item.options,
+                                                    ).map(([key, val]) => {
+                                                      const displayValue = formatOptionValue(val);
+                                                      // Check if key is numeric (option ID)
+                                                      // If so, just show the value; otherwise show key: value
+                                                      const isNumericKey = /^\d+$/.test(key);
+                                                      const label = isNumericKey ? displayValue : `${key}: ${displayValue}`;
+
+                                                      return (
+                                                        <span
+                                                          key={key}
+                                                          className="inline-block bg-blue-50 text-blue-900 px-3 py-1 rounded-full text-xs font-medium border border-blue-200"
+                                                        >
+                                                          {label}
+                                                        </span>
+                                                      );
+                                                    })}
+                                                  </div>
                                                 </div>
                                               )}
                                           </div>
