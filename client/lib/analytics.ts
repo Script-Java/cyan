@@ -72,16 +72,23 @@ export async function trackEvent(event: TrackEventPayload): Promise<void> {
       headers.Authorization = `Bearer ${token}`;
     }
 
-    await fetch("/api/analytics/track", {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+    fetch("/api/analytics/track", {
       method: "POST",
       headers,
       body: JSON.stringify(payload),
-    }).catch(() => {
-      // Fail silently - analytics should never break the app
-    });
+      signal: controller.signal,
+    })
+      .catch(() => {
+        // Fail silently - analytics should never block the app
+      })
+      .finally(() => {
+        clearTimeout(timeoutId);
+      });
   } catch (error) {
-    console.error("Analytics tracking error:", error);
-    // Fail silently
+    // Fail silently - don't let analytics errors break the app
   }
 }
 
