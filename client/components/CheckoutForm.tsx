@@ -147,7 +147,12 @@ export default function CheckoutForm({
             onCustomerChange("city", firstAddress.city);
             onCustomerChange("state", firstAddress.state_or_province);
             onCustomerChange("postalCode", firstAddress.postal_code);
-            onCustomerChange("country", firstAddress.country_code);
+
+            // Validate country code against allowed values
+            const validCountryCode = COUNTRIES.some(c => c.code === firstAddress.country_code)
+              ? firstAddress.country_code
+              : "US";
+            onCustomerChange("country", validCountryCode);
           }
         }
       } catch (error) {
