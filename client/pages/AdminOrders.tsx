@@ -16,6 +16,7 @@ import {
   ArrowRight,
   Edit,
   Truck,
+  Loader2,
 } from "lucide-react";
 
 interface OrderItem {
