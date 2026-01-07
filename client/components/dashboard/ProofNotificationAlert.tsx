@@ -44,26 +44,42 @@ export default function ProofNotificationAlert({ onNotificationRead }: Props) {
         return;
       }
 
-      const response = await fetch("/api/admin/proofs", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-      if (!response.ok) {
-        if (response.status === 401) {
-          setNotifications([]);
+      try {
+        const response = await fetch("/api/admin/proofs", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            setNotifications([]);
+          }
+          console.warn("Failed to fetch notifications:", response.status);
+          return;
         }
-        console.error("Failed to fetch notifications:", response.status);
-        return;
-      }
 
-      const data = await response.json();
-      setNotifications(data.proofs || []);
+        const data = await response.json();
+        setNotifications(data.proofs || []);
+      } catch (fetchError) {
+        clearTimeout(timeoutId);
+        if (fetchError instanceof Error && fetchError.name === "AbortError") {
+          console.warn("Notifications fetch timeout");
+        } else {
+          console.warn("Failed to fetch notifications");
+        }
+        setNotifications([]);
+      }
     } catch (error) {
-      console.error("Error fetching notifications:", error);
+      console.warn("Error in fetchNotifications:", error);
       setNotifications([]);
     } finally {
       setIsLoading(false);
