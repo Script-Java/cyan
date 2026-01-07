@@ -175,8 +175,12 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
  */
 export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
   try {
+    console.log("Starting fetch of admin pending orders...");
+
     // Fetch active orders with specific statuses
     const pendingOrders = await getActiveOrders();
+
+    console.log(`Fetched ${pendingOrders?.length || 0} pending orders`);
 
     if (!pendingOrders || pendingOrders.length === 0) {
       return res.json({
@@ -187,34 +191,55 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
     }
 
     // Format orders with customer details and order items
-    const formattedOrders = pendingOrders.map((order: any) => ({
-      id: order.id,
-      customerId: order.customer_id,
-      customerName:
-        order.customers && Array.isArray(order.customers)
-          ? `${order.customers[0]?.first_name || ""} ${order.customers[0]?.last_name || ""}`.trim()
-          : order.customers
-            ? `${order.customers.first_name || ""} ${order.customers.last_name || ""}`.trim()
-            : "Guest",
-      customerEmail:
-        order.customers && Array.isArray(order.customers)
-          ? order.customers[0]?.email || "N/A"
-          : order.customers?.email || "N/A",
-      status: order.status,
-      total: order.total || 0,
-      dateCreated: order.created_at || new Date().toISOString(),
-      shipping_addresses: order.shipping_address
-        ? [order.shipping_address]
-        : [],
-      source: "supabase" as const,
-      orderItems: (order.order_items || []).map((item: any) => ({
-        id: item.id,
-        quantity: item.quantity,
-        product_name: item.product_name,
-        options: item.options,
-        design_file_url: item.design_file_url,
-      })),
-    }));
+    const formattedOrders = pendingOrders.map((order: any) => {
+      try {
+        return {
+          id: order.id,
+          customerId: order.customer_id,
+          customerName:
+            order.customers && Array.isArray(order.customers)
+              ? `${order.customers[0]?.first_name || ""} ${order.customers[0]?.last_name || ""}`.trim()
+              : order.customers
+                ? `${order.customers.first_name || ""} ${order.customers.last_name || ""}`.trim()
+                : "Guest",
+          customerEmail:
+            order.customers && Array.isArray(order.customers)
+              ? order.customers[0]?.email || "N/A"
+              : order.customers?.email || "N/A",
+          status: order.status,
+          total: order.total || 0,
+          dateCreated: order.created_at || new Date().toISOString(),
+          shipping_addresses: order.shipping_address
+            ? [order.shipping_address]
+            : [],
+          source: "supabase" as const,
+          orderItems: (order.order_items || []).map((item: any) => ({
+            id: item.id,
+            quantity: item.quantity,
+            product_name: item.product_name,
+            options: item.options,
+            design_file_url: item.design_file_url,
+          })),
+        };
+      } catch (formatError) {
+        console.error("Error formatting pending order:", { orderId: order.id, formatError });
+        // Return a minimal order object if formatting fails
+        return {
+          id: order.id,
+          customerId: order.customer_id,
+          customerName: "Unknown",
+          customerEmail: "N/A",
+          status: order.status,
+          total: order.total || 0,
+          dateCreated: order.created_at || new Date().toISOString(),
+          shipping_addresses: [],
+          source: "supabase" as const,
+          orderItems: [],
+        };
+      }
+    });
+
+    console.log(`Formatted ${formattedOrders.length} pending orders`);
 
     res.json({
       success: true,
@@ -222,7 +247,10 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
       count: formattedOrders.length,
     });
   } catch (error) {
-    console.error("Get admin pending orders error:", error);
+    console.error("Get admin pending orders error:", {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     const message =
       error instanceof Error ? error.message : "Failed to fetch orders";
     res.status(500).json({ error: message });
