@@ -1478,10 +1478,11 @@ export default function CheckoutNew() {
 
                   <ShippingOptionsSelector
                     selectedOptionId={selectedShippingOptionId}
-                    onSelectionChange={(optionId, cost, deliveryDate) => {
+                    onSelectionChange={(optionId, cost, deliveryDate, optionName) => {
                       setSelectedShippingOptionId(optionId);
                       setShippingCost(cost);
                       setEstimatedDeliveryDate(deliveryDate);
+                      setShippingOptionName(optionName);
                       calculateOrderData(
                         orderData.subtotal,
                         appliedDiscount,
