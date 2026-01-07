@@ -33,6 +33,7 @@ import {
   handleCreateOrder,
   handleAdminGetOrder,
   handleGetPendingOrders,
+  handleGetOrderPublic,
 } from "./routes/orders";
 import { handleGetDesigns, handleGetOrderDesigns } from "./routes/designs";
 import {
