@@ -230,6 +230,32 @@ export default function AdminOrders() {
     });
   };
 
+  const formatOptionValue = (value: any): string => {
+    if (value === null || value === undefined) {
+      return "N/A";
+    }
+    if (typeof value === "string") {
+      return value;
+    }
+    if (typeof value === "number") {
+      return String(value);
+    }
+    if (typeof value === "boolean") {
+      return value ? "Yes" : "No";
+    }
+    if (Array.isArray(value)) {
+      return value.join(", ");
+    }
+    if (typeof value === "object") {
+      try {
+        return JSON.stringify(value);
+      } catch {
+        return "Complex Object";
+      }
+    }
+    return String(value);
+  };
+
   if (!isAuthenticated) {
     return null;
   }
