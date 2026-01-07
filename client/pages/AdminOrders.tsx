@@ -447,48 +447,25 @@ export default function AdminOrders() {
                               order.orderItems.length > 0 && (
                                 <div>
                                   <h4 className="text-sm font-semibold text-gray-900 mb-3">
-                                    Items ({order.orderItems.length})
+                                    Order Items ({order.orderItems.length})
                                   </h4>
-                                  <div className="space-y-3">
+                                  <div className="space-y-4">
                                     {order.orderItems.map((item, idx) => (
                                       <div
                                         key={idx}
-                                        className="bg-gray-50 rounded border border-gray-200 p-3"
+                                        className="bg-white rounded border border-gray-200 p-4"
                                       >
                                         <div className="flex gap-4 items-start">
-                                          <div className="flex-1 min-w-0">
-                                            <p className="text-gray-900 font-medium text-sm">
-                                              {item.product_name || "Product"}
-                                            </p>
-                                            <p className="text-gray-600 text-xs mt-1">
-                                              Qty: {item.quantity || 1}
-                                            </p>
-                                            {item.options &&
-                                              Object.keys(item.options).length >
-                                                0 && (
-                                                <div className="mt-2 text-xs text-gray-600 space-y-1">
-                                                  {Object.entries(
-                                                    item.options,
-                                                  ).map(([key, val]) => (
-                                                    <div key={key}>
-                                                      <span className="text-gray-900">
-                                                        {key}:
-                                                      </span>{" "}
-                                                      {String(val)}
-                                                    </div>
-                                                  ))}
-                                                </div>
-                                              )}
-                                          </div>
+                                          {/* Product Image Thumbnail */}
                                           {item.design_file_url && (
                                             <div className="flex-shrink-0">
-                                              <div className="w-16 h-16 bg-gray-100 border border-gray-200 rounded overflow-hidden flex items-center justify-center">
+                                              <div className="w-24 h-24 bg-gray-100 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center">
                                                 {item.design_file_url.match(
                                                   /\.(jpg|jpeg|png|gif|webp)$/i,
                                                 ) ? (
                                                   <img
                                                     src={item.design_file_url}
-                                                    alt="Design"
+                                                    alt="Design Upload"
                                                     className="w-full h-full object-cover"
                                                     onError={(e) => {
                                                       e.currentTarget.style.display =
@@ -501,13 +478,60 @@ export default function AdminOrders() {
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="flex items-center gap-1 p-1 hover:text-green-700 transition-colors"
+                                                    title="View full design"
                                                   >
-                                                    <ImageIcon className="w-5 h-5 text-gray-600" />
+                                                    <ImageIcon className="w-6 h-6 text-gray-500" />
                                                   </a>
                                                 )}
                                               </div>
                                             </div>
                                           )}
+
+                                          {/* Product Details */}
+                                          <div className="flex-1 min-w-0">
+                                            <h5 className="text-gray-900 font-semibold text-sm mb-2">
+                                              {item.product_name || "Product"}
+                                            </h5>
+
+                                            {/* Quantity */}
+                                            <div className="mb-3">
+                                              <p className="text-xs text-gray-600 font-medium">
+                                                QUANTITY
+                                              </p>
+                                              <p className="text-sm text-gray-900 font-medium">
+                                                {item.quantity || 1} {item.quantity === 1 ? 'unit' : 'units'}
+                                              </p>
+                                            </div>
+
+                                            {/* Product Options */}
+                                            {item.options &&
+                                              Object.keys(item.options).length >
+                                                0 && (
+                                                <div className="grid grid-cols-2 gap-3 mb-3">
+                                                  {Object.entries(
+                                                    item.options,
+                                                  ).map(([key, val]) => {
+                                                    const displayKey = key
+                                                      .split('_')
+                                                      .map((word) =>
+                                                        word.charAt(0).toUpperCase() +
+                                                        word.slice(1),
+                                                      )
+                                                      .join(' ');
+                                                    return (
+                                                      <div key={key}>
+                                                        <p className="text-xs text-gray-600 font-medium">
+                                                          {displayKey}
+                                                        </p>
+                                                        <p className="text-sm text-gray-900 font-medium">
+                                                          {String(val)}
+                                                        </p>
+                                                      </div>
+                                                    );
+                                                  })}
+                                                </div>
+                                              )}
+                                          </div>
                                         </div>
                                       </div>
                                     ))}
