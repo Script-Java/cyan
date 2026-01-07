@@ -249,7 +249,11 @@ export function createServer() {
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        console.warn(`CORS request blocked from origin: ${origin}`);
+        console.warn(`CORS request blocked from origin: ${origin}`, {
+          allowedOrigins,
+          flyAppName: process.env.FLY_APP_NAME,
+          frontendUrl: process.env.FRONTEND_URL,
+        });
         callback(new Error("Not allowed by CORS policy"));
       }
     },
@@ -258,6 +262,11 @@ export function createServer() {
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Admin-Setup-Key"],
   };
+
+  console.log("✅ CORS Configuration initialized:", {
+    allowedOrigins,
+    flyAppName: process.env.FLY_APP_NAME,
+  });
 
   // Middleware
   app.use(cors(corsOptions));
