@@ -214,8 +214,30 @@ export function createServer() {
     process.env.FRONTEND_URL || "http://localhost:5173",
     "https://stickershop.test", // Local testing
     // Add production domains here as environment variables
-    ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : []),
+    ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",").map(o => o.trim()) : []),
   ];
+
+  // Allow fly.dev production URLs (Fly.io deployments)
+  if (process.env.FLY_APP_NAME) {
+    allowedOrigins.push(`https://${process.env.FLY_APP_NAME}.fly.dev`);
+  }
+
+  // Allow www subdomain for production URLs
+  const allowWwwVariants = (url: string) => {
+    if (url.startsWith("https://") && !url.includes("www.")) {
+      const wwwUrl = url.replace("https://", "https://www.");
+      if (!allowedOrigins.includes(wwwUrl)) {
+        allowedOrigins.push(wwwUrl);
+      }
+    }
+  };
+
+  // Add www variants for all https URLs
+  [process.env.FRONTEND_URL, ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : [])].forEach(url => {
+    if (url) {
+      allowWwwVariants(url.trim());
+    }
+  });
 
   const corsOptions = {
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
