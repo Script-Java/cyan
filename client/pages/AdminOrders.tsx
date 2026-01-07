@@ -128,7 +128,7 @@ export default function AdminOrders() {
       setFilteredOrders(data.orders || []);
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") {
-        console.error("Orders fetch timeout after 30 seconds");
+        console.error("Orders fetch timeout after 60 seconds");
       } else {
         console.error("Error fetching orders:", {
           error,
