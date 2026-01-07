@@ -100,6 +100,9 @@ interface SquareCheckoutRequest {
   customerId?: number;
   customerEmail?: string;
   customerName?: string;
+  shipping_option_id?: number;
+  shipping_option_name?: string;
+  estimated_delivery_date?: string;
   policies?: {
     returnAndRefund: boolean;
     privacy: boolean;
