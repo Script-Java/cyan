@@ -545,6 +545,7 @@ export async function createSquarePaymentLink(data: {
         amount: li.base_price_money?.amount,
       })),
       taxAmount: paymentLinkBody.order?.taxes?.[0]?.applied_money?.amount,
+      shippingName: paymentLinkBody.order?.shipping?.name,
       shippingAmount: paymentLinkBody.order?.shipping?.charge?.money?.amount,
       hasPrePopulatedData: Object.keys(paymentLinkBody.pre_populated_data).length > 0,
       frontendData: {
