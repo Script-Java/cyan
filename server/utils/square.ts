@@ -446,8 +446,22 @@ export async function createSquarePaymentLink(data: {
     if (data.shipping && data.shipping > 0) {
       let shippingName = "Shipping";
 
-      // Fetch the shipping option name if ID is provided
-      if (data.shippingOptionId) {
+      // Use provided shipping option name first
+      if (data.shippingOptionName) {
+        shippingName = data.shippingOptionName;
+
+        // Add estimated delivery date to shipping name if provided
+        if (data.estimatedDeliveryDate) {
+          const deliveryDate = new Date(data.estimatedDeliveryDate);
+          const formattedDate = deliveryDate.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+          });
+          shippingName = `${shippingName} - Arrives by ${formattedDate}`;
+        }
+      } else if (data.shippingOptionId) {
+        // Fallback: Fetch the shipping option name if ID is provided but name wasn't passed
         try {
           const { createClient } = await import("@supabase/supabase-js");
           const supabase = createClient(
@@ -463,6 +477,17 @@ export async function createSquarePaymentLink(data: {
 
           if (shippingOption?.name) {
             shippingName = shippingOption.name;
+
+            // Add estimated delivery date if provided
+            if (data.estimatedDeliveryDate) {
+              const deliveryDate = new Date(data.estimatedDeliveryDate);
+              const formattedDate = deliveryDate.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric"
+              });
+              shippingName = `${shippingName} - Arrives by ${formattedDate}`;
+            }
           }
         } catch (err) {
           console.warn("Failed to fetch shipping option name:", err);
