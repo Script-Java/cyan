@@ -178,6 +178,10 @@ export default function AdminOrders() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
+      case "pending_payment":
+        return "text-gray-300 bg-gray-500/20 border border-gray-500/30";
+      case "paid":
+        return "text-emerald-300 bg-emerald-500/20 border border-emerald-500/30";
       case "pending":
         return "text-orange-300 bg-orange-500/20 border border-orange-500/30";
       case "processing":
@@ -197,6 +201,23 @@ export default function AdminOrders() {
       default:
         return "text-gray-600 bg-gray-100 border border-gray-200";
     }
+  };
+
+  const getStatusDisplayLabel = (status: string) => {
+    const statusMap: Record<string, string> = {
+      pending_payment: "Pending Payment",
+      paid: "Awaiting Fulfillment",
+      pending: "Pending",
+      processing: "Processing",
+      printing: "Printing",
+      "preparing for shipping": "Preparing for Shipping",
+      "in transit": "In Transit",
+      shipped: "Shipped",
+      delivered: "Delivered",
+      completed: "Completed",
+      cancelled: "Cancelled",
+    };
+    return statusMap[status] || status.charAt(0).toUpperCase() + status.slice(1);
   };
 
   const formatDate = (dateString: string) => {
