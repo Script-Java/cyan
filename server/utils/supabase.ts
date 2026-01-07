@@ -300,21 +300,22 @@ export async function getPendingOrders(): Promise<any[]> {
 
 export async function getActiveOrders(): Promise<any[]> {
   try {
-    const activeStatuses = ["pending", "processing", "printing", "in transit"];
+    const activeStatuses = ["pending", "processing", "printing", "in transit", "paid", "pending_payment"];
     const { data, error } = await supabase
       .from("orders")
       .select("*, customers(*), order_items(*)")
       .in("status", activeStatuses)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .limit(100); // Limit results for better performance
 
     if (error) {
       console.error("Error fetching active orders:", error);
-      throw error;
+      return []; // Return empty array instead of throwing
     }
 
     return data || [];
   } catch (error) {
     console.error("Error getting active orders:", error);
-    throw error;
+    return []; // Return empty array instead of throwing
   }
 }
