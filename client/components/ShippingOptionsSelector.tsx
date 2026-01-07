@@ -99,8 +99,16 @@ export default function ShippingOptionsSelector({
           error: err,
           message: errorMsg,
           type: err instanceof Error ? err.constructor.name : typeof err,
+          stack: err instanceof Error ? err.stack : "no stack",
         });
-        setError(errorMsg);
+
+        // Provide user-friendly error message based on error type
+        let displayError = errorMsg;
+        if (errorMsg.includes("Failed to fetch") || errorMsg.includes("NetworkError")) {
+          displayError = "Network error: Unable to reach the server. Please check your connection and try again.";
+        }
+
+        setError(displayError);
       } finally {
         setIsLoading(false);
       }
