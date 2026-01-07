@@ -145,6 +145,11 @@ export default function CheckoutNew() {
               addresses: customer.addresses?.length || 0,
             });
 
+            // Validate country code against allowed values
+            const validCountries = ["US", "CA", "GB", "AU"];
+            const countryCode = primaryAddress?.country_code || "US";
+            const validCountryCode = validCountries.includes(countryCode) ? countryCode : "US";
+
             setCustomerInfo({
               email: customer.email || "",
               firstName: customer.firstName || "",
@@ -155,7 +160,7 @@ export default function CheckoutNew() {
               city: primaryAddress?.city || "",
               state: primaryAddress?.state_or_province || "CA",
               postalCode: primaryAddress?.postal_code || "",
-              country: primaryAddress?.country_code || "US",
+              country: validCountryCode,
             });
           }
         } else {
