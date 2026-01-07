@@ -35,16 +35,21 @@ export default function AdminNavbar() {
   const [expandedDropdown, setExpandedDropdown] = useState<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+    let timeoutId: NodeJS.Timeout | null = null;
+
     const fetchPendingOrdersCount = async () => {
       try {
         const token = localStorage.getItem("authToken");
         if (!token) {
-          setPendingOrdersCount(0);
+          if (isMounted) setPendingOrdersCount(0);
           return;
         }
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        timeoutId = setTimeout(() => {
+          controller.abort();
+        }, 10000); // 10 second timeout
 
         try {
           const response = await fetch("/api/admin/pending-orders", {
@@ -56,35 +61,47 @@ export default function AdminNavbar() {
             signal: controller.signal,
           });
 
-          clearTimeout(timeoutId);
+          if (timeoutId) clearTimeout(timeoutId);
 
           if (response.ok) {
             const data = await response.json();
-            setPendingOrdersCount(data.count || data.orders?.length || 0);
+            if (isMounted) {
+              setPendingOrdersCount(data.count || data.orders?.length || 0);
+            }
           } else if (response.status === 401) {
-            setPendingOrdersCount(0);
+            if (isMounted) setPendingOrdersCount(0);
           } else {
             console.warn(`Failed to fetch pending orders: ${response.status}`);
-            setPendingOrdersCount(0);
+            if (isMounted) setPendingOrdersCount(0);
           }
         } catch (fetchError) {
-          clearTimeout(timeoutId);
+          if (timeoutId) clearTimeout(timeoutId);
           if (fetchError instanceof Error && fetchError.name === "AbortError") {
-            console.warn("Pending orders count fetch timeout");
-          } else {
-            console.warn("Failed to fetch pending orders count:", fetchError);
+            console.warn("Pending orders count fetch timeout after 10 seconds");
+          } else if (fetchError instanceof TypeError) {
+            console.warn("Network error fetching pending orders count");
           }
-          setPendingOrdersCount(0);
+          if (isMounted) setPendingOrdersCount(0);
         }
       } catch (error) {
-        console.error("Error in fetchPendingOrdersCount:", error);
-        setPendingOrdersCount(0);
+        console.warn("Error in fetchPendingOrdersCount:", error);
+        if (isMounted) setPendingOrdersCount(0);
       }
     };
 
-    fetchPendingOrdersCount();
-    const interval = setInterval(fetchPendingOrdersCount, 30000);
-    return () => clearInterval(interval);
+    // Initial fetch with a small delay to avoid race conditions
+    const initialFetchTimer = setTimeout(() => {
+      fetchPendingOrdersCount();
+    }, 500);
+
+    const interval = setInterval(fetchPendingOrdersCount, 60000); // Poll every 60 seconds instead of 30
+
+    return () => {
+      isMounted = false;
+      clearTimeout(initialFetchTimer);
+      if (timeoutId) clearTimeout(timeoutId);
+      clearInterval(interval);
+    };
   }, []);
 
   const mainNavItems: NavItem[] = [
