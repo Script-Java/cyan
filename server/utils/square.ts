@@ -272,6 +272,8 @@ export async function createSquarePaymentLink(data: {
   tax?: number;
   shipping?: number;
   shippingOptionId?: number;
+  shippingOptionName?: string;
+  estimatedDeliveryDate?: string;
   items?: Array<{
     product_name: string;
     quantity: number;
