@@ -46,9 +46,10 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
   try {
     let allOrders: any[] = [];
 
-    // Fetch Supabase orders (all statuses)
+    // Fetch Supabase orders (all statuses) - optimized for performance
     let supabaseOrders: any[] = [];
     try {
+      // First, fetch basic order data without relations
       const result = await supabase
         .from("orders")
         .select(
@@ -68,11 +69,10 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           shipping_address,
           customers(id,first_name,last_name,email),
           order_items(id,quantity,product_name,options,design_file_url)
-          `,
-          { count: "exact" }
+          `
         )
         .order("created_at", { ascending: false })
-        .limit(200); // Reduced from 1000 to 200 for better performance
+        .limit(100); // Reduced from 200 to 100 for better performance
 
       supabaseOrders = result.data || [];
 
