@@ -73,6 +73,7 @@ export default function ShippingOptionsSelector({
               defaultOption.id,
               defaultOption.cost,
               estimatedDate,
+              defaultOption.name,
             );
           }
         } catch (fetchErr) {
