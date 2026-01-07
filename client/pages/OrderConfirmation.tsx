@@ -97,34 +97,44 @@ export default function OrderConfirmation() {
           return;
         }
 
-        const headers: Record<string, string> = {};
-        if (authToken) {
-          headers.Authorization = `Bearer ${authToken}`;
+        // Try the public endpoint first (works for both guest and authenticated users)
+        const response = await fetch(`/api/public/orders/${orderId}`);
+
+        if (response.ok) {
+          const data = await response.json();
+          setOrder(data.data);
+          setIsLoading(false);
+          return;
         }
 
-        const response = await fetch(`/api/orders/${orderId}`, {
-          headers,
-        });
+        // If public endpoint fails and user is authenticated, try the protected endpoint
+        if (authToken) {
+          const headers: Record<string, string> = {
+            Authorization: `Bearer ${authToken}`,
+          };
 
-        if (!response.ok) {
-          if (response.status === 401 && !authToken) {
-            // For guest orders, try to fetch without auth
-            setOrder({
-              id: parseInt(orderId),
-              customer_id: 0,
-              total: 0,
-              status: "pending",
-              date_created: new Date().toISOString(),
-              products: [],
-            });
+          const protectedResponse = await fetch(`/api/orders/${orderId}`, {
+            headers,
+          });
+
+          if (protectedResponse.ok) {
+            const data = await protectedResponse.json();
+            setOrder(data.data);
             setIsLoading(false);
             return;
           }
-          throw new Error("Failed to fetch order details");
         }
 
-        const data = await response.json();
-        setOrder(data.data);
+        // If both endpoints fail, show a placeholder
+        console.warn("Failed to fetch order from both endpoints");
+        setOrder({
+          id: parseInt(orderId || "0"),
+          customer_id: 0,
+          total: 0,
+          status: "pending",
+          date_created: new Date().toISOString(),
+          products: [],
+        });
       } catch (err) {
         console.error("Failed to fetch order:", err);
         // Show success page even if we can't fetch details for guest orders
