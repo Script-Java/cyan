@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { supabase, getPendingOrders, getActiveOrders } from "../utils/supabase";
+import { supabase, getPendingOrders, getActiveOrders, getActiveOrdersCount } from "../utils/supabase";
 
 interface OrderItem {
   id?: number;
