@@ -172,7 +172,12 @@ export default function CheckoutForm({
     onCustomerChange("city", address.city);
     onCustomerChange("state", address.state_or_province);
     onCustomerChange("postalCode", address.postal_code);
-    onCustomerChange("country", address.country_code);
+
+    // Validate country code against allowed values
+    const validCountryCode = COUNTRIES.some(c => c.code === address.country_code)
+      ? address.country_code
+      : "US";
+    onCustomerChange("country", validCountryCode);
   };
 
   return (
