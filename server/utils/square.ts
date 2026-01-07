@@ -522,6 +522,8 @@ export async function createSquarePaymentLink(data: {
       hasCustomerEmail: !!data.customerEmail,
       hasCustomerPhone: !!data.customerPhone,
       itemsCount: data.items?.length || 0,
+      shippingOptionName: data.shippingOptionName,
+      estimatedDeliveryDate: data.estimatedDeliveryDate,
     });
 
     // Make direct HTTP call to Square Payment Links API
