@@ -42,12 +42,21 @@ export default function ShippingOptionsSelector({
         const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
         try {
+          console.log("Starting fetch request for shipping options...");
           const response = await fetch(apiUrl, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
             },
             signal: controller.signal,
+          }).catch((err) => {
+            // Network error - provide more details
+            console.error("Network/CORS error details:", {
+              message: err.message,
+              type: err.constructor.name,
+              stack: err.stack,
+            });
+            throw err;
           });
 
           clearTimeout(timeoutId);
