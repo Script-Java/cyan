@@ -352,8 +352,7 @@ export default function AdminOrders() {
                               order.status,
                             )}`}
                           >
-                            {order.status.charAt(0).toUpperCase() +
-                              order.status.slice(1)}
+                            {getStatusDisplayLabel(order.status)}
                           </span>
                         </div>
                         <div className="text-sm text-gray-600 mt-1">
