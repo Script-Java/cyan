@@ -43,22 +43,41 @@ export default function AdminNavbar() {
           return;
         }
 
-        const response = await fetch("/api/admin/pending-orders", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-        if (response.ok) {
-          const data = await response.json();
-          setPendingOrdersCount(data.count || data.orders?.length || 0);
-        } else if (response.status === 401) {
+        try {
+          const response = await fetch("/api/admin/pending-orders", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+          });
+
+          clearTimeout(timeoutId);
+
+          if (response.ok) {
+            const data = await response.json();
+            setPendingOrdersCount(data.count || data.orders?.length || 0);
+          } else if (response.status === 401) {
+            setPendingOrdersCount(0);
+          } else {
+            console.warn(`Failed to fetch pending orders: ${response.status}`);
+            setPendingOrdersCount(0);
+          }
+        } catch (fetchError) {
+          clearTimeout(timeoutId);
+          if (fetchError instanceof Error && fetchError.name === "AbortError") {
+            console.warn("Pending orders count fetch timeout");
+          } else {
+            console.warn("Failed to fetch pending orders count:", fetchError);
+          }
           setPendingOrdersCount(0);
         }
       } catch (error) {
-        console.error("Error fetching pending orders count:", error);
+        console.error("Error in fetchPendingOrdersCount:", error);
         setPendingOrdersCount(0);
       }
     };
