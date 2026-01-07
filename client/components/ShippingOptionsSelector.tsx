@@ -131,7 +131,7 @@ export default function ShippingOptionsSelector({
 
   const handleSelectOption = (option: ShippingOption) => {
     const estimatedDate = calculateEstimatedDeliveryDate(option);
-    onSelectionChange(option.id, option.cost, estimatedDate);
+    onSelectionChange(option.id, option.cost, estimatedDate, option.name);
   };
 
   if (isLoading) {
