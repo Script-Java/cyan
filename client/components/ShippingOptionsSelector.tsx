@@ -19,6 +19,7 @@ interface ShippingOptionsSelectorProps {
     optionId: number,
     cost: number,
     estimatedDeliveryDate: string,
+    shippingOptionName: string,
   ) => void;
 }
 
