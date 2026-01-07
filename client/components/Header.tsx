@@ -355,11 +355,17 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
         <div className="fixed top-0 left-0 h-full w-80 bg-black/95 border-r border-white/10 backdrop-blur-md z-40 overflow-y-auto">
           <div className="p-6">
             <div className="flex items-center justify-between mb-8">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F54e0024038fb466cb5627885e1e1afd9?format=webp&width=800"
-                alt="Sticky Logo"
-                className="h-16 object-contain"
-              />
+              <Link
+                to="/"
+                className="flex items-center hover:opacity-80 transition-opacity"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F54e0024038fb466cb5627885e1e1afd9?format=webp&width=800"
+                  alt="Sticky Logo"
+                  className="h-16 object-contain"
+                />
+              </Link>
               <button
                 onClick={() => setIsMenuOpen(false)}
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
