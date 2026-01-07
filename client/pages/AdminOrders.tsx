@@ -280,6 +280,8 @@ export default function AdminOrders() {
                       className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
                     >
                       <option value="all">All Statuses</option>
+                      <option value="pending_payment">Pending Payment</option>
+                      <option value="paid">Awaiting Fulfillment</option>
                       <option value="pending">Pending</option>
                       <option value="processing">Processing</option>
                       <option value="printing">Printing</option>
