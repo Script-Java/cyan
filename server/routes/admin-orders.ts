@@ -179,7 +179,6 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
 
     // For the navbar badge, we only need the count, not full order details
     // This is much faster than fetching all order data
-    const { getActiveOrdersCount } = await import("../utils/supabase");
     const count = await getActiveOrdersCount();
 
     console.log(`Admin pending orders count: ${count}`);
