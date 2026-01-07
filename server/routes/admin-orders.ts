@@ -68,16 +68,19 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           shipping_address,
           customers(id,first_name,last_name,email),
           order_items(id,quantity,product_name,options,design_file_url)
-          `
+          `,
+          { count: "exact" }
         )
         .order("created_at", { ascending: false })
-        .limit(1000);
+        .limit(200); // Reduced from 1000 to 200 for better performance
 
       supabaseOrders = result.data || [];
 
       if (result.error) {
         console.error("Supabase error:", result.error);
       }
+
+      console.log(`Fetched ${supabaseOrders.length} orders from Supabase`);
     } catch (queryError) {
       console.error("Supabase query exception:", queryError);
     }
