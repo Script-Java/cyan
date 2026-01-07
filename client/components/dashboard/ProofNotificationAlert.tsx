@@ -29,7 +29,8 @@ export default function ProofNotificationAlert({ onNotificationRead }: Props) {
 
   useEffect(() => {
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 30000); // Poll every 30 seconds
+    // Poll every 60 seconds instead of 30 to reduce load on backend
+    const interval = setInterval(fetchNotifications, 60000);
 
     return () => clearInterval(interval);
   }, []);
