@@ -70,6 +70,7 @@ export default function CheckoutNew() {
   const [estimatedDeliveryDate, setEstimatedDeliveryDate] = useState<
     string | null
   >(null);
+  const [shippingOptionName, setShippingOptionName] = useState<string>("");
 
   const [orderData, setOrderData] = useState<OrderData>({
     subtotal: 0,
