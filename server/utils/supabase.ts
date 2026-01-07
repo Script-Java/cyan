@@ -301,21 +301,46 @@ export async function getPendingOrders(): Promise<any[]> {
 export async function getActiveOrders(): Promise<any[]> {
   try {
     const activeStatuses = ["pending", "processing", "printing", "in transit", "paid", "pending_payment"];
+    // Simplified query - only fetch what's needed
     const { data, error } = await supabase
       .from("orders")
-      .select("*, customers(*), order_items(*)")
+      .select("id, customer_id, status, total, created_at")
       .in("status", activeStatuses)
       .order("created_at", { ascending: false })
-      .limit(100); // Limit results for better performance
+      .limit(50); // Reduced limit for better performance
 
     if (error) {
       console.error("Error fetching active orders:", error);
-      return []; // Return empty array instead of throwing
+      return [];
     }
 
     return data || [];
   } catch (error) {
     console.error("Error getting active orders:", error);
-    return []; // Return empty array instead of throwing
+    return [];
+  }
+}
+
+/**
+ * Get count of active orders (for badge/notification)
+ * Much faster than fetching full orders
+ */
+export async function getActiveOrdersCount(): Promise<number> {
+  try {
+    const activeStatuses = ["pending", "processing", "printing", "in transit", "paid", "pending_payment"];
+    const { count, error } = await supabase
+      .from("orders")
+      .select("id", { count: "exact", head: true })
+      .in("status", activeStatuses);
+
+    if (error) {
+      console.error("Error counting active orders:", error);
+      return 0;
+    }
+
+    return count || 0;
+  } catch (error) {
+    console.error("Error getting active orders count:", error);
+    return 0;
   }
 }
