@@ -634,6 +634,8 @@ export default function CheckoutNew() {
         ...(selectedShippingOptionId && {
           shipping_option_id: selectedShippingOptionId,
         }),
+        shipping_option_name: shippingOptionName,
+        estimated_delivery_date: estimatedDeliveryDate,
         policies: {
           returnAndRefund: agreedToPolicy,
           privacy: agreedToPrivacy,
