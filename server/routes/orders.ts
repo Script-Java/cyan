@@ -414,3 +414,104 @@ export const handleGetPendingOrders: RequestHandler = async (req, res) => {
     res.status(500).json({ error: message });
   }
 };
+
+/**
+ * Get order by ID for public access (guest orders after checkout)
+ * No authentication required - used for order confirmation after payment
+ */
+export const handleGetOrderPublic: RequestHandler = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    if (!orderId) {
+      return res.status(400).json({ error: "Order ID required" });
+    }
+
+    const orderIdNum = parseInt(orderId);
+    if (isNaN(orderIdNum)) {
+      return res.status(400).json({ error: "Invalid order ID format" });
+    }
+
+    const { supabase } = await import("../utils/supabase");
+
+    // Get the order from Supabase
+    const { data: order, error: orderError } = await supabase
+      .from("orders")
+      .select(`
+        id,
+        customer_id,
+        status,
+        created_at,
+        total,
+        subtotal,
+        tax,
+        shipping,
+        shipping_address,
+        billing_address,
+        estimated_delivery_date,
+        tracking_number,
+        tracking_carrier,
+        tracking_url,
+        shipped_date,
+        order_items (
+          id,
+          product_id,
+          product_name,
+          quantity,
+          price
+        )
+      `)
+      .eq("id", orderIdNum)
+      .single();
+
+    if (orderError || !order) {
+      console.warn("Order not found for public access:", orderIdNum);
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Fetch digital files if any exist
+    const { data: digitalFilesData } = await supabase
+      .from("digital_files")
+      .select("*")
+      .eq("order_id", orderId);
+
+    const digitalFiles = (digitalFilesData || []).map((file: any) => ({
+      id: file.id,
+      file_name: file.file_name,
+      file_url: file.file_url,
+      file_type: file.file_type,
+      file_size: file.file_size,
+      uploaded_at: file.uploaded_at,
+    }));
+
+    res.json({
+      success: true,
+      data: {
+        id: order.id,
+        customer_id: order.customer_id,
+        status: order.status,
+        date_created: order.created_at,
+        total: order.total,
+        subtotal: order.subtotal,
+        tax: order.tax,
+        shipping: order.shipping,
+        products: order.order_items || [],
+        shipping_addresses: order.shipping_address
+          ? [order.shipping_address]
+          : [],
+        billing_address: order.billing_address,
+        estimated_delivery_date: order.estimated_delivery_date,
+        tracking_number: order.tracking_number,
+        tracking_carrier: order.tracking_carrier,
+        tracking_url: order.tracking_url,
+        shipped_date: order.shipped_date,
+        digital_files: digitalFiles,
+      },
+    });
+  } catch (error) {
+    console.error("Get order public error:", error);
+    const errorMsg =
+      error instanceof Error ? error.message : "Failed to fetch order";
+    res.status(500).json({ error: errorMsg });
+  }
+};
