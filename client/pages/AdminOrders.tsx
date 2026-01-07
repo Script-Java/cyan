@@ -286,12 +286,6 @@ export default function AdminOrders() {
           </div>
         ) : (
           <div className="space-y-4">
-            {isLoading && (
-              <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-700">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span className="text-sm">Loading orders...</span>
-              </div>
-            )}
             {/* Search and Filter */}
             <div className="flex flex-col gap-3">
               <div className="flex gap-3">
