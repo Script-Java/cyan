@@ -73,17 +73,41 @@ export default function AdminDashboard() {
   const fetchPendingOrders = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch("/api/admin/pending-orders", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
 
-      if (response.ok) {
-        const data = await response.json();
-        setPendingOrders(data.orders || []);
-        setPendingOrdersCount(data.count || 0);
+      try {
+        const response = await fetch("/api/admin/pending-orders", {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (response.ok) {
+          const data = await response.json();
+          setPendingOrders(data.orders || []);
+          setPendingOrdersCount(data.count || 0);
+        } else {
+          console.warn(`Failed to fetch pending orders: ${response.status}`);
+          setPendingOrders([]);
+          setPendingOrdersCount(0);
+        }
+      } catch (fetchError) {
+        clearTimeout(timeoutId);
+        if (fetchError instanceof Error && fetchError.name === "AbortError") {
+          console.warn("Pending orders fetch timeout");
+        } else {
+          console.warn("Failed to fetch pending orders");
+        }
+        // Gracefully degrade - set empty values
+        setPendingOrders([]);
+        setPendingOrdersCount(0);
       }
     } catch (error) {
-      console.error("Error fetching pending orders:", error);
+      console.warn("Error in fetchPendingOrders:", error);
+      setPendingOrders([]);
+      setPendingOrdersCount(0);
     }
   };
 
