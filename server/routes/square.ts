@@ -181,8 +181,10 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       });
     }
 
-    // Validate country codes
+    // Validate and sanitize country codes
     const invalidCountries: string[] = [];
+
+    // Fix invalid shipping country code
     if (
       checkoutData.shippingAddress?.country &&
       !isValidCountryCode(checkoutData.shippingAddress.country)
@@ -190,7 +192,10 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       invalidCountries.push(
         `shipping: ${checkoutData.shippingAddress.country}`,
       );
+      checkoutData.shippingAddress.country = "US"; // Default to US if invalid
     }
+
+    // Fix invalid billing country code
     if (
       checkoutData.billingAddress?.country &&
       !isValidCountryCode(checkoutData.billingAddress.country)
@@ -198,14 +203,11 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       invalidCountries.push(
         `billing: ${checkoutData.billingAddress.country}`,
       );
+      checkoutData.billingAddress.country = "US"; // Default to US if invalid
     }
 
     if (invalidCountries.length > 0) {
-      console.error("Invalid country codes:", invalidCountries);
-      return res.status(400).json({
-        success: false,
-        error: `Invalid country code(s): ${invalidCountries.join(", ")}. Please use ISO 3166-1 alpha-2 country codes.`,
-      });
+      console.warn("Invalid country codes detected and auto-corrected to US:", invalidCountries);
     }
 
     // Validate email format
