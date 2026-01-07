@@ -392,6 +392,34 @@ export async function createSquarePaymentLink(data: {
       });
     }
 
+    // Add shipping as a line item so it displays in order summary
+    let shippingLineItemName = "Shipping";
+    if (data.shippingOptionName) {
+      shippingLineItemName = data.shippingOptionName;
+      if (data.estimatedDeliveryDate) {
+        const deliveryDate = new Date(data.estimatedDeliveryDate);
+        const formattedDate = deliveryDate.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        });
+        shippingLineItemName = `${shippingLineItemName} - Arrives by ${formattedDate}`;
+      }
+    }
+
+    if (data.shipping && data.shipping > 0) {
+      lineItems.push({
+        uid: `shipping-${data.orderId}`,
+        name: shippingLineItemName,
+        quantity: "1",
+        base_price_money: {
+          amount: Math.round(data.shipping * 100),
+          currency: data.currency || "USD",
+        },
+        note: "Shipping",
+      });
+    }
+
     // Build the payment link request body with full order details
     const paymentLinkBody: any = {
       idempotency_key: `${data.orderId}-${Date.now()}-${Math.random()}`,
