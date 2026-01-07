@@ -424,6 +424,9 @@ export function createServer() {
   app.get("/api/orders/:orderId", verifyToken, handleGetOrder);
   app.get("/api/admin/orders/pending", verifyToken, requireAdmin, handleGetPendingOrders);
 
+  // ===== Order Routes (Public - for guest order confirmation) =====
+  app.get("/api/public/orders/:orderId", handleGetOrderPublic);
+
   // ===== Design Routes (Protected) =====
   app.get("/api/designs", verifyToken, handleGetDesigns);
   app.get("/api/orders/:orderId/designs", verifyToken, handleGetOrderDesigns);
