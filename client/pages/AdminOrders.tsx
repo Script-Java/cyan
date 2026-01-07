@@ -550,7 +550,7 @@ export default function AdminOrders() {
                                                           {displayKey}
                                                         </p>
                                                         <p className="text-sm text-gray-900 font-medium">
-                                                          {String(val)}
+                                                          {formatOptionValue(val)}
                                                         </p>
                                                       </div>
                                                     );
