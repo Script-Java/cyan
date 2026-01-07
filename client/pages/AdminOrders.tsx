@@ -131,11 +131,8 @@ export default function AdminOrders() {
       if (error instanceof Error && error.name === "AbortError") {
         console.error("Orders fetch timeout after 60 seconds");
       } else {
-        console.error("Error fetching orders:", {
-          error,
-          message: error instanceof Error ? error.message : String(error),
-          stack: error instanceof Error ? error.stack : undefined,
-        });
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        console.error("Error fetching orders:", errorMessage);
       }
 
       // Retry on network errors
