@@ -237,21 +237,10 @@ export default function Products() {
   }, [products, selectedCategory]);
 
   const getCategoryItemCount = (categoryId: string): number => {
-    const categoryMap: Record<string, string[]> = {
-      vinyl: ["vinyl", "vinyl-stickers"],
-      holographic: ["holographic", "holographic-stickers"],
-      glitter: ["glitter", "glitter-stickers"],
-      chrome: ["chrome", "chrome-stickers"],
-      clear: ["clear", "clear-stickers"],
-      sheets: ["sheet", "sticker-sheets"],
-    };
-    const categoryIds = categoryMap[categoryId] || [];
     return products.filter((product) =>
-      categoryIds.some(
-        (cat) =>
-          product.id?.toString().toLowerCase().includes(cat) ||
-          product.name?.toLowerCase().includes(categoryId),
-      ),
+      product.category === categoryId ||
+      product.category?.toLowerCase() === categoryId.toLowerCase() ||
+      product.name?.toLowerCase().includes(categoryId.toLowerCase())
     ).length;
   };
 
