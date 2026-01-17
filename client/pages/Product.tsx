@@ -58,6 +58,8 @@ interface ProductData {
     description: string;
   };
   optional_fields?: Array<{ name: string; type: string }>;
+  show_quantity_panel?: boolean;
+  fixed_quantity?: number | null;
 }
 
 const MOCK_PRODUCTS: Record<string, ProductData> = {
