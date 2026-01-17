@@ -474,44 +474,11 @@ export default function ProductPage() {
           >
             {/* Gallery at top */}
             <div className="mb-4">
-              <ProductGallery images={product.images} productName={product.name} />
-            </div>
-
-            {/* Product Description below gallery */}
-            <div>
-              <h2
-                className="font-bold mb-2 tracking-wide"
-                style={{
-                  fontFamily: '"Bebas Neue", sans-serif',
-                  fontSize: "22px",
-                  letterSpacing: "1px",
-                  textTransform: "uppercase",
-                  color: "rgb(26, 26, 26)",
-                }}
-              >
-                {product.name}
-              </h2>
-
-              <div
-                style={{
-                  color: "rgb(51, 51, 51)",
-                  fontSize: "12px",
-                  lineHeight: "1.5",
-                }}
-              >
-                {product.description ? (
-                  <div
-                    style={{
-                      color: "rgb(51, 51, 51)",
-                    }}
-                    dangerouslySetInnerHTML={{
-                      __html: product.description,
-                    }}
-                  />
-                ) : (
-                  <p>No description available</p>
-                )}
-              </div>
+              <ProductGallery
+                images={product.images.map((img) => img.url)}
+                productName={product.name}
+                productDescription={product.description}
+              />
             </div>
           </div>
 
