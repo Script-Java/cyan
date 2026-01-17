@@ -590,7 +590,7 @@ export default function Product() {
                           <p className="font-medium text-xs text-black">
                             {value.name}
                           </p>
-                          {value.priceModifier && value.priceModifier !== 0 && (
+                          {value.priceModifier !== undefined && value.priceModifier > 0 && (
                             <p className="text-xs text-gray-600 mt-0.5">
                               +${value.priceModifier.toFixed(2)}
                             </p>
