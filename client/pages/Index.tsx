@@ -34,7 +34,7 @@ export default function Index() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
-                  to="/product-page/2"
+                  to="/product-page/00004"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/50"
                 >
                   Start Creating
