@@ -82,6 +82,8 @@ const MOCK_PRODUCTS: Record<string, ProductData> = {
       description: "Upload your design",
     },
     optional_fields: [],
+    show_quantity_panel: true,
+    fixed_quantity: null,
   },
 };
 
