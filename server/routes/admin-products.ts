@@ -297,7 +297,7 @@ export const handleGetAdminProducts: RequestHandler = async (_req, res) => {
   try {
     const { data, error } = await supabase
       .from("admin_products")
-      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, sku, created_at, updated_at")
+      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, sku, created_at, updated_at, show_quantity_panel, fixed_quantity")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -333,7 +333,7 @@ export const handleGetAdminProduct: RequestHandler = async (req, res) => {
 
     const { data, error } = await supabase
       .from("admin_products")
-      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, sku, created_at, updated_at")
+      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, sku, created_at, updated_at, show_quantity_panel, fixed_quantity")
       .eq("id", id)
       .single();
 
@@ -412,7 +412,7 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
     const numericId = parseInt(productId, 10);
     let query = supabase
       .from("admin_products")
-      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, created_at, updated_at")
+      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, created_at, updated_at, show_quantity_panel, fixed_quantity")
       .eq("availability", true);
 
     // Use numeric ID if valid, otherwise treat as SKU
