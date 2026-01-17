@@ -28,14 +28,8 @@ router.get("/gallery", async (req: Request, res: Response) => {
 });
 
 // GET all gallery images (including inactive) - admin only
-router.get("/gallery/admin/all", async (req: Request, res: Response) => {
+router.get("/gallery/admin/all", verifyToken, requireAdmin, async (req: Request, res: Response) => {
   try {
-    // Verify admin authorization via JWT
-    const authHeader = req.headers.authorization;
-    if (!authHeader?.startsWith("Bearer ")) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
     const { data, error } = await supabase
       .from("gallery_images")
       .select("*")
