@@ -202,24 +202,7 @@ export default function CheckoutNew() {
               const productData = await response.json();
               // API returns product data directly for admin/imported products
               const product = productData.product || productData;
-              const selectedOption = Object.keys(item.selectedOptions).find(
-                (optionId) => {
-                  const option = product.options?.find(
-                    (o: any) => o.id === optionId,
-                  );
-                  const sharedVariant = product.shared_variants?.find(
-                    (sv: any) =>
-                      sv.optionSelections.some(
-                        (os: any) =>
-                          os.optionId === optionId &&
-                          os.selectedValueIds.includes(
-                            item.selectedOptions[optionId],
-                          ),
-                      ),
-                  );
-                  return sharedVariant;
-                },
-              );
+
               items.push({
                 product_id: item.productId,
                 product_name: product.name,
