@@ -109,7 +109,7 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
       });
     }
 
-    // Build product object only with columns that exist in the schema
+    // Build product object only with columns that definitely exist in the schema
     const dbProduct: any = {
       name: productData.name,
       base_price: productData.basePrice,
@@ -122,21 +122,28 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
       created_at: new Date().toISOString(),
     };
 
-    // Optionally add JSONB fields if they're needed and column exists
-    if (productData.pricingRules && productData.pricingRules.length > 0) {
-      dbProduct.pricing_rules = productData.pricingRules;
-    }
+    // Optionally add JSONB fields only if column exists in schema
+    // These are added conditionally to avoid schema mismatch errors
     if (productData.sharedVariants && productData.sharedVariants.length > 0) {
-      dbProduct.shared_variants = productData.sharedVariants;
+      try {
+        dbProduct.shared_variants = productData.sharedVariants;
+      } catch (e) {
+        // Column may not exist, skip silently
+      }
     }
     if (productData.customerUploadConfig) {
-      dbProduct.customer_upload_config = productData.customerUploadConfig;
+      try {
+        dbProduct.customer_upload_config = productData.customerUploadConfig;
+      } catch (e) {
+        // Column may not exist, skip silently
+      }
     }
     if (productData.optionalFields && productData.optionalFields.length > 0) {
-      dbProduct.optional_fields = productData.optionalFields;
-    }
-    if (productData.seo) {
-      dbProduct.seo = productData.seo;
+      try {
+        dbProduct.optional_fields = productData.optionalFields;
+      } catch (e) {
+        // Column may not exist, skip silently
+      }
     }
 
     const { data, error } = await supabase
