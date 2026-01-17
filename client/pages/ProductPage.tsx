@@ -550,7 +550,7 @@ export default function ProductPage() {
                 </h2>
 
                 {option.type === "dropdown" && (
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2">
                     {option.values.map((value, index) => (
                       <button
                         key={value.id}
@@ -562,7 +562,7 @@ export default function ProductPage() {
                           setSelectedOptions(newOptions);
                           saveAsDefault(newOptions);
                         }}
-                        className={`relative flex flex-col items-center justify-center border-2 rounded-xl p-4 transition text-center ${
+                        className={`relative flex flex-col items-center justify-center border-2 rounded-lg p-2 transition text-center ${
                           selectedOptions[option.id] === value.id
                             ? "border-purple-500 bg-purple-100 shadow-lg shadow-purple-200/50"
                             : "border-gray-200 hover:border-gray-300 bg-gray-50"
