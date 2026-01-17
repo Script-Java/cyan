@@ -54,6 +54,7 @@ export default function Index() {
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(0);
   const [loadingGallery, setLoadingGallery] = useState(true);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     const fetchGalleryImages = async () => {
