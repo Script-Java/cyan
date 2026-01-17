@@ -85,7 +85,7 @@ export default function AdminGallery() {
     setUploading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("/api/admin/gallery", {
+      const res = await fetch("/api/gallery/admin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
