@@ -468,8 +468,8 @@ export default function ProductPage() {
             className="mb-3 bg-white rounded-lg border border-gray-200 p-3"
             style={{
               backdropFilter: "blur(4px)",
-              backgroundColor: "rgba(245, 245, 245, 0.5)",
-              borderColor: "rgba(235, 235, 235, 0.5)",
+              backgroundColor: "rgb(255, 255, 255)",
+              borderColor: "rgba(220, 220, 220, 0.8)",
             }}
           >
             {/* Gallery at top */}
