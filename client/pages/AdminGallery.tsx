@@ -82,9 +82,20 @@ export default function AdminGallery() {
       return;
     }
 
+    if (!formData.image_alt) {
+      toast.error("Please fill in image alt text for accessibility");
+      return;
+    }
+
     setUploading(true);
     try {
       const token = localStorage.getItem("authToken");
+      if (!token) {
+        toast.error("You must be logged in as an admin to add images");
+        setUploading(false);
+        return;
+      }
+
       const res = await fetch("/api/gallery/admin", {
         method: "POST",
         headers: {
@@ -97,9 +108,19 @@ export default function AdminGallery() {
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to add gallery image");
+      const responseText = await res.text();
+      console.log("Gallery API Response:", { status: res.status, body: responseText });
 
-      const newImage = await res.json();
+      if (!res.ok) {
+        try {
+          const errorData = JSON.parse(responseText);
+          throw new Error(errorData.error || `HTTP ${res.status}: Failed to add gallery image`);
+        } catch {
+          throw new Error(`HTTP ${res.status}: Failed to add gallery image`);
+        }
+      }
+
+      const newImage = JSON.parse(responseText);
       setImages([...images, newImage]);
       setFormData({
         title: "",
@@ -110,7 +131,8 @@ export default function AdminGallery() {
       toast.success("Image added successfully!");
     } catch (error) {
       console.error("Error adding image:", error);
-      toast.error("Failed to add image");
+      const errorMsg = error instanceof Error ? error.message : "Failed to add image";
+      toast.error(errorMsg);
     } finally {
       setUploading(false);
     }
