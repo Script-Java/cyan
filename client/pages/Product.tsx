@@ -157,13 +157,13 @@ export default function Product() {
               description: "Upload your design",
             },
             optional_fields: data.optional_fields || [],
-            show_quantity_panel: data.show_quantity_panel !== false,
+            show_quantity_panel: data.show_quantity_panel === true,
             fixed_quantity: data.fixed_quantity || null,
           };
           setProduct(productData);
 
           // Set quantity based on product settings
-          if (!productData.show_quantity_panel && productData.fixed_quantity) {
+          if (productData.show_quantity_panel === false && productData.fixed_quantity) {
             setQuantity(productData.fixed_quantity);
             setActiveQuantityOption(productData.fixed_quantity);
           }
@@ -220,13 +220,13 @@ export default function Product() {
               description: "Upload your design",
             },
             optional_fields: [],
-            show_quantity_panel: data.show_quantity_panel !== false,
+            show_quantity_panel: data.show_quantity_panel === true,
             fixed_quantity: data.fixed_quantity || null,
           };
           setProduct(productData);
 
           // Set quantity based on product settings
-          if (!productData.show_quantity_panel && productData.fixed_quantity) {
+          if (productData.show_quantity_panel === false && productData.fixed_quantity) {
             setQuantity(productData.fixed_quantity);
             setActiveQuantityOption(productData.fixed_quantity);
           }
