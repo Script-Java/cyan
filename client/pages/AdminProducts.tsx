@@ -171,14 +171,34 @@ export default function AdminProducts() {
               </p>
             </div>
             <div className="flex gap-2">
-              <Button
-                onClick={handleImportProduct}
-                disabled={isImporting}
-                className="bg-blue-600 hover:bg-blue-700 text-white gap-2 font-medium rounded-lg px-4 py-2 text-sm disabled:opacity-50"
-              >
-                <Download className="w-4 h-4" />
-                {isImporting ? "Importing..." : "Import Product"}
-              </Button>
+              <div className="relative">
+                <Button
+                  onClick={() => setImportMenuOpen(!importMenuOpen)}
+                  disabled={isImporting}
+                  className="bg-blue-600 hover:bg-blue-700 text-white gap-2 font-medium rounded-lg px-4 py-2 text-sm disabled:opacity-50"
+                >
+                  <Download className="w-4 h-4" />
+                  {isImporting ? "Importing..." : "Import Product"}
+                </Button>
+                {importMenuOpen && (
+                  <div className="absolute top-full right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                    <button
+                      onClick={() => handleImportProduct(TWO_INCH_STICKERS_PRODUCT)}
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200 last:border-b-0"
+                    >
+                      <div className="font-semibold text-gray-900">2 INCH - 100 CUSTOM STICKERS</div>
+                      <div className="text-xs text-gray-600 mt-1">SKU: 00003 • Price: $0.17</div>
+                    </button>
+                    <button
+                      onClick={() => handleImportProduct(STICKY_SLAP_STICKER_PRODUCT)}
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200 last:border-b-0"
+                    >
+                      <div className="font-semibold text-gray-900">CREATE A STICKER</div>
+                      <div className="text-xs text-gray-600 mt-1">SKU: 00004 • Price: $0.00</div>
+                    </button>
+                  </div>
+                )}
+              </div>
               <Button
                 onClick={() => navigate("/admin/products/new")}
                 className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-4 py-2 text-sm"
