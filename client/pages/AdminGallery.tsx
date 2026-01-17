@@ -141,7 +141,7 @@ export default function AdminGallery() {
   const handleUpdateImage = async (id: string, updates: Partial<GalleryImage>) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`/api/admin/gallery/${id}`, {
+      const res = await fetch(`/api/gallery/admin/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
