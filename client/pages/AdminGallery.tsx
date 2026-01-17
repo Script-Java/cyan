@@ -34,7 +34,7 @@ export default function AdminGallery() {
   const fetchGalleryImages = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("/api/admin/gallery/all", {
+      const res = await fetch("/api/gallery/admin/all", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
