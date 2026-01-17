@@ -76,7 +76,7 @@ const MOCK_PRODUCTS: Record<string, ProductData> = {
     images: [{ url: "/placeholder.svg", name: "Test Product" }],
     availability: true,
     customer_upload_config: {
-      enabled: false,
+      enabled: true,
       maxFileSize: 5,
       allowedFormats: ["pdf", "ai", "png", "jpg"],
       description: "Upload your design",
