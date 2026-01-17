@@ -896,9 +896,9 @@ export default function ProductPage() {
 
             {/* Custom Design Upload */}
             {product.customer_upload_config.enabled && (
-              <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6">
-                <h2 className="text-sm font-bold mb-2">Upload your artwork</h2>
-                <p className="text-gray-600 text-xs mb-4">
+              <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-4">
+                <h2 className="text-xs font-bold mb-1">Upload your artwork</h2>
+                <p className="text-gray-600 text-xs mb-2">
                   {product.customer_upload_config.description}
                 </p>
 
