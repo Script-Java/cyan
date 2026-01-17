@@ -200,7 +200,8 @@ export default function CheckoutNew() {
                 continue;
               }
               const productData = await response.json();
-              const product = productData.product;
+              // API returns product data directly for admin/imported products
+              const product = productData.product || productData;
               const selectedOption = Object.keys(item.selectedOptions).find(
                 (optionId) => {
                   const option = product.options?.find(
