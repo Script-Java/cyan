@@ -193,8 +193,15 @@ export default function AdminProducts() {
                       onClick={() => handleImportProduct(FOUR_INCH_PROMO_STICKER_PRODUCT)}
                       className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200"
                     >
-                      <div className="font-semibold text-gray-900">4'' INCH - CUSTOM STICKER PROMO PER STICKER</div>
+                      <div className="font-semibold text-gray-900">4'' INCH - CUSTOM STICKER PROMO</div>
                       <div className="text-xs text-gray-600 mt-1">Price: $0.40</div>
+                    </button>
+                    <button
+                      onClick={() => handleImportProduct(THOUSAND_STICKERS_PROMO_PRODUCT)}
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200"
+                    >
+                      <div className="font-semibold text-gray-900">1000 STICKERS PROMO</div>
+                      <div className="text-xs text-gray-600 mt-1">SKU: 00006 • Price: $60.00</div>
                     </button>
                     <button
                       onClick={() => handleImportProduct(STICKY_SLAP_STICKER_PRODUCT)}
