@@ -444,7 +444,7 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
       return res.status(404).json({ error: "Product not found or not available" });
     }
 
-    // Ensure proper data types for JSON fields
+    // Ensure proper data types for JSON fields and set defaults for quantity panel settings
     const product = {
       ...data,
       images: Array.isArray(data.images) ? data.images : [],
@@ -457,6 +457,8 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
         description: ""
       },
       optional_fields: Array.isArray(data.optional_fields) ? data.optional_fields : [],
+      show_quantity_panel: data.show_quantity_panel !== false ? true : false,
+      fixed_quantity: data.fixed_quantity ?? null,
     };
 
     res.json({ product });
