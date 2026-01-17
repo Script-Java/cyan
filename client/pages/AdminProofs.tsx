@@ -149,11 +149,15 @@ export default function AdminProofs() {
     }
   };
 
-  const fetchPendingOrders = async () => {
+  const fetchPendingOrders = async (token: string) => {
     try {
       setOrdersLoading(true);
 
-      const response = await fetch("/api/admin/pending-orders");
+      const response = await fetch("/api/admin/pending-orders", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
