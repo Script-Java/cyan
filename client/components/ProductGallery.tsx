@@ -47,71 +47,84 @@ export default function ProductGallery({
 
   return (
     <div className="w-full">
-      {/* Main Gallery */}
-      <div className="relative bg-gray-50 rounded-lg overflow-hidden mb-6">
-        {/* Main Image */}
-        <div className="relative aspect-square overflow-hidden">
-          <img
-            src={currentImage.url}
-            alt={currentImage.name || productName}
-            className="w-full h-full object-cover"
-          />
-
-          {/* Navigation Buttons */}
-          {images.length > 1 && (
-            <>
-              <button
-                onClick={goToPrevious}
-                aria-label="Previous image"
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/30 hover:bg-black/50 text-white transition-colors"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <button
-                onClick={goToNext}
-                aria-label="Next image"
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/30 hover:bg-black/50 text-white transition-colors"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-            </>
-          )}
-
-          {/* Image Counter */}
-          {images.length > 1 && (
-            <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
-              {currentImageIndex + 1} / {images.length}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Thumbnail Gallery */}
-      {images.length > 1 && (
-        <div className="grid grid-cols-4 md:grid-cols-6 gap-2">
-          {images.map((image, index) => (
-            <button
-              key={image.id}
-              onClick={() => goToImage(index)}
-              className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                currentImageIndex === index
-                  ? "border-yellow-400 shadow-lg"
-                  : "border-gray-200 opacity-75 hover:opacity-100"
-              }`}
-              aria-label={`Go to image ${index + 1}`}
-            >
+      {/* Main Gallery - Side by Side Layout */}
+      <div className="flex gap-6">
+        {/* Left: Main Image Section */}
+        <div className="flex-1">
+          <div className="relative bg-gray-200 rounded-lg overflow-hidden">
+            {/* Main Image */}
+            <div className="relative aspect-[4/3] overflow-hidden">
               <img
-                src={image.url}
-                alt={image.name || `${productName} thumbnail ${index + 1}`}
+                src={currentImage.url}
+                alt={currentImage.name || productName}
                 className="w-full h-full object-cover"
               />
-              {currentImageIndex === index && (
-                <div className="absolute inset-0 bg-yellow-400/10 pointer-events-none" />
+
+              {/* Navigation Buttons */}
+              {images.length > 1 && (
+                <>
+                  <button
+                    onClick={goToPrevious}
+                    aria-label="Previous image"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/30 hover:bg-black/50 text-white transition-colors"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <button
+                    onClick={goToNext}
+                    aria-label="Next image"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/30 hover:bg-black/50 text-white transition-colors"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                </>
               )}
-            </button>
-          ))}
+
+              {/* Image Counter - Top Right */}
+              {images.length > 1 && (
+                <div className="absolute top-4 right-4 bg-black/60 text-white px-3 py-1 rounded text-xs font-semibold">
+                  {currentImageIndex + 1} / {images.length}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      )}
+
+        {/* Right: Thumbnail Gallery */}
+        {images.length > 1 && (
+          <div className="w-40">
+            {/* Gallery Label */}
+            <div className="text-xs font-bold text-gray-700 mb-3 tracking-widest">
+              GALLERY
+            </div>
+
+            {/* Thumbnail Grid - 3 columns */}
+            <div className="grid grid-cols-3 gap-3">
+              {images.map((image, index) => (
+                <button
+                  key={image.id}
+                  onClick={() => goToImage(index)}
+                  className={`relative aspect-square rounded overflow-hidden border-2 transition-all ${
+                    currentImageIndex === index
+                      ? "border-yellow-400 shadow-md"
+                      : "border-gray-200 opacity-70 hover:opacity-100"
+                  }`}
+                  aria-label={`Go to image ${index + 1}`}
+                >
+                  <img
+                    src={image.url}
+                    alt={image.name || `${productName} thumbnail ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                  {currentImageIndex === index && (
+                    <div className="absolute inset-0 bg-yellow-400/10 pointer-events-none" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
