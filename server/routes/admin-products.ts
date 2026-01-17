@@ -91,6 +91,8 @@ interface ProductFormData {
   };
   categories: string[];
   availability: boolean;
+  showQuantityPanel: boolean;
+  fixedQuantity: number | null;
 }
 
 export const handleCreateProduct: RequestHandler = async (req, res) => {
