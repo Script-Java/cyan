@@ -130,7 +130,7 @@ router.delete("/gallery/admin/:id", verifyToken, requireAdmin, async (req: Reque
 });
 
 // PATCH - Reorder gallery images
-router.patch("/gallery/admin/reorder", async (req: Request, res: Response) => {
+router.patch("/gallery/admin/reorder", verifyToken, requireAdmin, async (req: Request, res: Response) => {
   try {
     const { images } = req.body;
 
