@@ -111,7 +111,7 @@ router.put("/gallery/admin/:id", verifyToken, requireAdmin, async (req: Request,
 });
 
 // DELETE - Remove gallery image
-router.delete("/gallery/admin/:id", async (req: Request, res: Response) => {
+router.delete("/gallery/admin/:id", verifyToken, requireAdmin, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
