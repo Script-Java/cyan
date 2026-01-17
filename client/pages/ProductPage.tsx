@@ -463,6 +463,11 @@ export default function ProductPage() {
             <ChevronLeft className="w-5 h-5" />
           </button>
 
+          {/* Product Gallery */}
+          <div className="mb-12">
+            <ProductGallery images={product.images} productName={product.name} />
+          </div>
+
           {/* Hero Section with Image and Description */}
           <div className="mb-12">
             <div style={{ display: "flex", gap: "20px", marginBottom: "32px" }}>
