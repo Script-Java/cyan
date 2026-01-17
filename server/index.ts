@@ -706,6 +706,52 @@ export function createServer() {
   // ===== Gallery Routes =====
   app.use("/api", adminGalleryRouter);
 
+  // Gallery image upload (with multer middleware)
+  app.post(
+    "/api/gallery/upload",
+    verifyToken,
+    requireAdmin,
+    upload.single("file"),
+    async (req: any, res: any) => {
+      try {
+        const { v2: cloudinary } = await import("cloudinary");
+        const sharp = await import("sharp");
+
+        cloudinary.config({
+          cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+          api_key: process.env.CLOUDINARY_API_KEY,
+          api_secret: process.env.CLOUDINARY_API_SECRET,
+        });
+
+        if (!req.file) {
+          return res.status(400).json({ error: "No file provided" });
+        }
+
+        // Compress and optimize image
+        const compressedBuffer = await sharp.default(req.file.buffer)
+          .resize(1200, 800, {
+            fit: "inside",
+            withoutEnlargement: true,
+          })
+          .jpeg({ quality: 85, progressive: true })
+          .toBuffer();
+
+        const b64 = compressedBuffer.toString("base64");
+        const dataURI = `data:image/jpeg;base64,${b64}`;
+
+        const result = await cloudinary.uploader.upload(dataURI, {
+          folder: "sticky-slap/gallery",
+          resource_type: "auto",
+        });
+
+        res.json({ imageUrl: result.secure_url });
+      } catch (err) {
+        console.error("Error uploading gallery image:", err);
+        res.status(500).json({ error: "Failed to upload gallery image" });
+      }
+    }
+  );
+
   // ===== Legal Pages Routes =====
   // Public routes
   app.get("/api/legal-pages", handleGetPublishedLegalPages);
