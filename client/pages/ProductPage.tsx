@@ -451,14 +451,14 @@ export default function ProductPage() {
           style={{
             maxWidth: "1824px",
             margin: "0 auto 3px",
-            padding: "32px 32px 200px",
+            padding: "16px 16px 100px",
           }}
           className="px-4 sm:px-6 lg:px-8"
         >
           {/* Back Navigation */}
           <button
             onClick={() => navigate("/products")}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition mb-8"
+            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition mb-4"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
