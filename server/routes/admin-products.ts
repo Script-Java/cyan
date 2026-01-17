@@ -246,6 +246,10 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
       // Text fields
       text_area: productData.textArea || "",
       condition_logic: productData.conditionLogic || "all",
+
+      // Quantity panel settings
+      show_quantity_panel: productData.showQuantityPanel !== false,
+      fixed_quantity: productData.fixedQuantity || null,
     };
 
     const { data, error } = await supabase
