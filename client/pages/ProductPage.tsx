@@ -824,14 +824,14 @@ export default function ProductPage() {
           </div>
 
           {/* Below Grid - Additional Fields and Upload */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
             {/* Additional Fields */}
             {product.optional_fields.length > 0 && (
-              <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6">
-                <h2 className="text-sm font-bold mb-4">
+              <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-4">
+                <h2 className="text-xs font-bold mb-2">
                   ✏️ Additional Instructions (optional)
                 </h2>
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {product.optional_fields.map((field) => (
                     <div key={field.name}>
                       <Label className="text-gray-700 text-xs mb-2 block">
