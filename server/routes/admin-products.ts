@@ -109,7 +109,8 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
       });
     }
 
-    // Build product object only with columns that definitely exist in the schema
+    // Build product object with only the core columns that exist in the schema
+    // Minimal set: name, base_price, description, sku, weight, images, options, availability
     const dbProduct: any = {
       name: productData.name,
       base_price: productData.basePrice,
@@ -122,29 +123,8 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
       created_at: new Date().toISOString(),
     };
 
-    // Optionally add JSONB fields only if column exists in schema
-    // These are added conditionally to avoid schema mismatch errors
-    if (productData.sharedVariants && productData.sharedVariants.length > 0) {
-      try {
-        dbProduct.shared_variants = productData.sharedVariants;
-      } catch (e) {
-        // Column may not exist, skip silently
-      }
-    }
-    if (productData.customerUploadConfig) {
-      try {
-        dbProduct.customer_upload_config = productData.customerUploadConfig;
-      } catch (e) {
-        // Column may not exist, skip silently
-      }
-    }
-    if (productData.optionalFields && productData.optionalFields.length > 0) {
-      try {
-        dbProduct.optional_fields = productData.optionalFields;
-      } catch (e) {
-        // Column may not exist, skip silently
-      }
-    }
+    // Note: Additional columns like shared_variants, customer_upload_config,
+    // optional_fields, seo, etc. will be added once the database schema is updated
 
     const { data, error } = await supabase
       .from("admin_products")
