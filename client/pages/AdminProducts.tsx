@@ -27,6 +27,7 @@ export default function AdminProducts() {
   const [products, setProducts] = useState<AdminProduct[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [isImporting, setIsImporting] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
