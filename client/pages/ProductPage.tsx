@@ -472,47 +472,45 @@ export default function ProductPage() {
               borderColor: "rgba(235, 235, 235, 0.5)",
             }}
           >
-            <div className="grid grid-cols-3 gap-6">
-              {/* Gallery - 2 columns */}
-              <div className="col-span-2">
-                <ProductGallery images={product.images} productName={product.name} />
-              </div>
+            {/* Gallery at top */}
+            <div className="mb-8">
+              <ProductGallery images={product.images} productName={product.name} />
+            </div>
 
-              {/* Product Description - 1 column */}
-              <div className="flex flex-col justify-start">
-                <h2
-                  className="text-3xl font-bold mb-4 tracking-wide"
-                  style={{
-                    fontFamily: '"Bebas Neue", sans-serif',
-                    fontSize: "30px",
-                    letterSpacing: "1.5px",
-                    textTransform: "uppercase",
-                    color: "rgb(26, 26, 26)",
-                  }}
-                >
-                  {product.name}
-                </h2>
+            {/* Product Description below gallery */}
+            <div>
+              <h2
+                className="text-3xl font-bold mb-4 tracking-wide"
+                style={{
+                  fontFamily: '"Bebas Neue", sans-serif',
+                  fontSize: "30px",
+                  letterSpacing: "1.5px",
+                  textTransform: "uppercase",
+                  color: "rgb(26, 26, 26)",
+                }}
+              >
+                {product.name}
+              </h2>
 
-                <div
-                  style={{
-                    color: "rgb(51, 51, 51)",
-                    fontSize: "14px",
-                    lineHeight: "1.6",
-                  }}
-                >
-                  {product.description ? (
-                    <div
-                      style={{
-                        color: "rgb(51, 51, 51)",
-                      }}
-                      dangerouslySetInnerHTML={{
-                        __html: product.description,
-                      }}
-                    />
-                  ) : (
-                    <p>No description available</p>
-                  )}
-                </div>
+              <div
+                style={{
+                  color: "rgb(51, 51, 51)",
+                  fontSize: "14px",
+                  lineHeight: "1.6",
+                }}
+              >
+                {product.description ? (
+                  <div
+                    style={{
+                      color: "rgb(51, 51, 51)",
+                    }}
+                    dangerouslySetInnerHTML={{
+                      __html: product.description,
+                    }}
+                  />
+                ) : (
+                  <p>No description available</p>
+                )}
               </div>
             </div>
           </div>
