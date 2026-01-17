@@ -530,6 +530,99 @@ export const handleImportAdminProduct: RequestHandler = async (req, res) => {
   }
 };
 
+export const handleGetAdminProductPublic: RequestHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ error: "Product ID is required" });
+    }
+
+    const { data, error } = await supabase
+      .from("admin_products")
+      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, created_at, updated_at")
+      .eq("id", parseInt(id))
+      .eq("availability", true)
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      console.error("Database error fetching admin product:", error);
+      return res.status(500).json({ error: "Failed to fetch product" });
+    }
+
+    if (!data) {
+      return res.status(404).json({ error: "Product not found or not available" });
+    }
+
+    res.json({
+      id: data.id,
+      name: data.name,
+      base_price: data.base_price,
+      description: data.description,
+      images: Array.isArray(data.images) ? data.images : [],
+      options: Array.isArray(data.options) ? data.options : [],
+      availability: data.availability,
+    });
+  } catch (error) {
+    console.error("Error fetching admin product:", error);
+    res.status(500).json({
+      error: "Failed to fetch product",
+      details: error instanceof Error ? error.message : "Unknown error occurred",
+    });
+  }
+};
+
+export const handleGetImportedProductPublic: RequestHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ error: "Product ID is required" });
+    }
+
+    const { data, error } = await supabase
+      .from("products")
+      .select("id, name, price, min_price, max_price, description, image_url, options, rating, reviews_count")
+      .eq("id", parseInt(id))
+      .eq("is_active", true)
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      console.error("Database error fetching imported product:", error);
+      return res.status(500).json({ error: "Failed to fetch product" });
+    }
+
+    if (!data) {
+      return res.status(404).json({ error: "Product not found or not available" });
+    }
+
+    res.json({
+      id: data.id,
+      name: data.name,
+      price: data.price,
+      min_price: data.min_price,
+      max_price: data.max_price,
+      description: data.description,
+      image_url: data.image_url,
+      options: Array.isArray(data.options) ? data.options : [],
+      rating: data.rating,
+      reviews_count: data.reviews_count,
+    });
+  } catch (error) {
+    console.error("Error fetching imported product:", error);
+    res.status(500).json({
+      error: "Failed to fetch product",
+      details: error instanceof Error ? error.message : "Unknown error occurred",
+    });
+  }
+};
+
 export const handleGetStorefrontProducts: RequestHandler = async (req, res) => {
   try {
     const { limit = 100, offset = 0 } = req.query;
