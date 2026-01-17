@@ -147,9 +147,11 @@ export default function Index() {
             style={{ maxWidth: "1100px" }}
           >
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="backdrop-blur-xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4 hover:border-green-300 transition-colors">
                 <div className="flex items-center gap-3">
-                  <Truck className="w-8 h-8 text-blue-600 flex-shrink-0" />
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <Rocket className="w-6 h-6 text-green-600" />
+                  </div>
                   <h3 className="font-semibold text-xs sm:text-sm text-gray-900">
                     <span className="block">Free Shipping</span>
                     <span className="block text-gray-600 font-normal">on all orders</span>
@@ -157,9 +159,11 @@ export default function Index() {
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="backdrop-blur-xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4 hover:border-purple-300 transition-colors">
                 <div className="flex items-center gap-3">
-                  <Globe className="w-8 h-8 text-blue-600 flex-shrink-0" />
+                  <div className="p-2 bg-purple-100 rounded-lg">
+                    <Sparkles className="w-6 h-6 text-purple-600" />
+                  </div>
                   <h3 className="font-semibold text-xs sm:text-sm text-gray-900">
                     <span className="block">Made in the US</span>
                     <span className="block text-gray-600 font-normal">premium quality</span>
@@ -167,9 +171,11 @@ export default function Index() {
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="backdrop-blur-xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 hover:border-amber-300 transition-colors">
                 <div className="flex items-center gap-3">
-                  <Award className="w-8 h-8 text-blue-600 flex-shrink-0" />
+                  <div className="p-2 bg-amber-100 rounded-lg">
+                    <Zap className="w-6 h-6 text-amber-600" />
+                  </div>
                   <h3 className="font-semibold text-xs sm:text-sm text-gray-900">
                     <span className="block">Free Proof</span>
                     <span className="block text-gray-600 font-normal">with all orders</span>
