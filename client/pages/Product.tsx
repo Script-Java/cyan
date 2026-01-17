@@ -634,13 +634,12 @@ export default function Product() {
                           <span className="text-gray-700 text-xs mt-0.5 font-medium text-center truncate">
                             {value.name}
                           </span>
-                          <span className="text-purple-600 text-xs font-bold mt-0.5">
-                            $
-                            {(
-                              (value.priceModifier || 0) +
-                              (product.base_price || 0)
-                            ).toFixed(2)}
-                          </span>
+                          {(value.priceModifier ?? 0) > 0 && (
+                            <span className="text-purple-600 text-xs font-bold mt-0.5">
+                              +$
+                              {value.priceModifier?.toFixed(2)}
+                            </span>
+                          )}
                         </button>
                       ))}
                     </div>
