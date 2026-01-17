@@ -317,7 +317,7 @@ export default function Index() {
                     to="/ecwid-store"
                     className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-[#FFD713] text-black rounded-lg font-bold hover:bg-[#ffc500] transition-all text-sm"
                   >
-                    EXPLORE COLLECTION
+                    <p>EXPLORE STICKER DEALS</p>
                   </Link>
                 </div>
               </>
