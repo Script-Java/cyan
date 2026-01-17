@@ -117,8 +117,8 @@ export default function AdminProofs() {
       return;
     }
 
-    fetchProofs();
-    fetchPendingOrders();
+    fetchProofs(token);
+    fetchPendingOrders(token);
   }, [navigate]);
 
   const fetchProofs = async () => {
