@@ -72,21 +72,24 @@ export async function trackEvent(event: TrackEventPayload): Promise<void> {
       headers.Authorization = `Bearer ${token}`;
     }
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+    // Use sendBeacon for page views (more reliable, survives page unload)
+    if (event.event_type === "page_view" && navigator.sendBeacon) {
+      const blob = new Blob([JSON.stringify(payload)], {
+        type: "application/json",
+      });
+      navigator.sendBeacon("/api/analytics/track", blob);
+      return;
+    }
 
+    // For other events, use fetch with keepalive to prevent abort on navigation
     fetch("/api/analytics/track", {
       method: "POST",
       headers,
       body: JSON.stringify(payload),
-      signal: controller.signal,
-    })
-      .catch(() => {
-        // Fail silently - analytics should never block the app
-      })
-      .finally(() => {
-        clearTimeout(timeoutId);
-      });
+      keepalive: true,
+    }).catch(() => {
+      // Fail silently - analytics should never block the app
+    });
   } catch (error) {
     // Fail silently - don't let analytics errors break the app
   }
