@@ -768,13 +768,13 @@ export default function ProductPage() {
                       }
                     }}
                     style={{
-                      marginBottom: "8px",
+                      marginBottom: "4px",
                       width: "100%",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
-                      padding: "12px 16px",
-                      borderRadius: "12px",
+                      padding: "8px 12px",
+                      borderRadius: "8px",
                       border:
                         activeQuantityOption === option.qty
                           ? "2px solid rgb(253, 224, 71)"
