@@ -206,22 +206,41 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
       });
     }
 
-    // Build product object with only the core columns that exist in the schema
-    // Minimal set: name, base_price, description, sku, weight, images, options, availability
+    // Build complete product object with all supported columns
     const dbProduct: any = {
+      // Core fields
       name: productData.name,
-      base_price: productData.basePrice,
+      base_price: productData.basePrice || 0,
       description: productData.description || "",
       sku: productData.sku || "",
       weight: productData.weight || 0,
-      images: productData.images || [],
-      options: productData.options || [],
       availability: productData.availability !== false,
       updated_at: new Date().toISOString(),
-    };
 
-    // Note: Additional columns like shared_variants, customer_upload_config,
-    // optional_fields, seo, etc. will be added once the database schema is updated
+      // JSON fields
+      images: productData.images || [],
+      options: productData.options || [],
+      shared_variants: productData.sharedVariants || [],
+      pricing_rules: productData.pricingRules || [],
+      customer_upload_config: productData.customerUploadConfig || {
+        enabled: false,
+        maxFileSize: 5,
+        allowedFormats: ["png", "jpg", "jpeg", "gif"],
+        description: "",
+      },
+      optional_fields: productData.optionalFields || [],
+      categories: productData.categories || [],
+      taxes: productData.taxes || [],
+      seo: productData.seo || {
+        productUrl: "",
+        pageTitle: "",
+        metaDescription: "",
+      },
+
+      // Text fields
+      text_area: productData.textArea || "",
+      condition_logic: productData.conditionLogic || "all",
+    };
 
     const { data, error } = await supabase
       .from("admin_products")
