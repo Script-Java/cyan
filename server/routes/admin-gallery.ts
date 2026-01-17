@@ -1,5 +1,7 @@
 import { Router, Request, Response } from "express";
 import { createClient } from "@supabase/supabase-js";
+import { v2 as cloudinary } from "cloudinary";
+import sharp from "sharp";
 import { verifyToken, requireAdmin } from "../middleware/auth";
 
 const router = Router();
