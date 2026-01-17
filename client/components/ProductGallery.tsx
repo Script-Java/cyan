@@ -259,7 +259,7 @@ export default function ProductGallerySlideshow({
                   Styling: Black with transparency, white text, rounded
               */}
               {images.length > 1 && (
-                <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+                <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-xs backdrop-blur-sm">
                   {currentIndex + 1} / {images.length}
                 </div>
               )}
@@ -274,14 +274,14 @@ export default function ProductGallerySlideshow({
           <div className="space-y-2">
             
             {/* Product Name Heading */}
-            <h2 className="font-bold text-2xl sm:text-3xl uppercase text-gray-900">
+            <h2 className="font-bold text-lg sm:text-xl uppercase text-gray-900">
               {productName}
             </h2>
             
             {/* Product Description (optional, supports HTML) */}
             {productDescription && (
               <div
-                className="text-sm sm:text-base text-gray-700 leading-relaxed prose prose-sm max-w-none [&_p]:mb-2 [&_strong]:font-bold [&_br]:block [&_br]:mb-1"
+                className="text-xs sm:text-sm text-gray-700 leading-relaxed prose prose-sm max-w-none [&_p]:mb-2 [&_strong]:font-bold [&_br]:block [&_br]:mb-1"
                 dangerouslySetInnerHTML={{ __html: productDescription }}
               />
             )}
@@ -309,7 +309,7 @@ export default function ProductGallerySlideshow({
           <div className="lg:col-span-1 space-y-4">
             
             {/* Section heading */}
-            <h3 className="text-sm font-bold text-gray-600 uppercase tracking-wider">
+            <h3 className="text-xs font-bold text-gray-600 uppercase tracking-wider">
               Gallery
             </h3>
             
