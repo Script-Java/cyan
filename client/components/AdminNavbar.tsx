@@ -146,6 +146,11 @@ export default function AdminNavbar() {
 
   const secondaryNavItems: NavItem[] = [
     {
+      label: "Gallery",
+      icon: <ImageIcon className="w-4 h-4" />,
+      path: "/admin/gallery",
+    },
+    {
       label: "Email Notifications",
       icon: <Mail className="w-4 h-4" />,
       path: "/admin/email-notifications",
