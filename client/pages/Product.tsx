@@ -686,6 +686,36 @@ export default function Product() {
                 </div>
               ))}
 
+            {/* Manual Quantity Input */}
+            <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg p-3">
+              <label className="text-xs font-bold block mb-2">
+                <svg
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="w-4 h-4 inline mr-1"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
+                  />
+                </svg>
+                Quantity
+              </label>
+              <Input
+                type="number"
+                min="1"
+                value={quantity}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value) || 1;
+                  setQuantity(Math.max(1, value));
+                }}
+                className="bg-white border-gray-200 text-black placeholder-gray-500 text-sm"
+              />
+              <p className="text-gray-500 text-xs mt-1">Enter desired quantity</p>
+            </div>
           </div>
 
           {/* Price Summary Section */}
