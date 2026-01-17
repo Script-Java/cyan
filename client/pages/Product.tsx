@@ -797,6 +797,32 @@ export default function Product() {
             )}
           </div>
 
+          {/* Price Summary Section */}
+          <div className="backdrop-blur-xl bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-300 rounded-lg p-4 mb-4 shadow-lg">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Selected Quantity */}
+              <div className="bg-white rounded-lg p-3 text-center border border-purple-200">
+                <p className="text-gray-600 text-xs font-semibold uppercase mb-1">Selected Quantity</p>
+                <p className="text-3xl font-bold text-purple-600">{quantity.toLocaleString()}</p>
+                <p className="text-gray-500 text-xs mt-1">units</p>
+              </div>
+
+              {/* Price Per Unit */}
+              <div className="bg-white rounded-lg p-3 text-center border border-blue-200">
+                <p className="text-gray-600 text-xs font-semibold uppercase mb-1">Price Per Unit</p>
+                <p className="text-3xl font-bold text-blue-600">${parseFloat(calculatePrice()).toFixed(2)}</p>
+                <p className="text-gray-500 text-xs mt-1">each</p>
+              </div>
+
+              {/* Total Price */}
+              <div className="bg-white rounded-lg p-3 text-center border-2 border-green-400">
+                <p className="text-gray-600 text-xs font-semibold uppercase mb-1">Total Price</p>
+                <p className="text-3xl font-bold text-green-600">${(parseFloat(calculatePrice()) * quantity).toFixed(2)}</p>
+                <p className="text-gray-500 text-xs mt-1">for your order</p>
+              </div>
+            </div>
+          </div>
+
           {/* Below Grid - Additional Fields and Upload */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
             {/* Additional Fields */}
