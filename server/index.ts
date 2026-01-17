@@ -507,6 +507,12 @@ export function createServer() {
     requireAdmin,
     handleDeleteAdminProduct,
   );
+  app.post(
+    "/api/admin/products/import",
+    verifyToken,
+    requireAdmin,
+    handleImportAdminProduct,
+  );
 
   // ===== Store Credit Routes (Protected - admin only) =====
   app.get(
