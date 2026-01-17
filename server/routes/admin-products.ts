@@ -200,7 +200,8 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
       });
     }
 
-    const dbProduct = {
+    // Build product object only with columns that exist in the schema
+    const dbProduct: any = {
       name: productData.name,
       base_price: productData.basePrice,
       description: productData.description || "",
@@ -208,28 +209,26 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
       weight: productData.weight || 0,
       images: productData.images || [],
       options: productData.options || [],
-      pricing_rules: productData.pricingRules || [],
-      shared_variants: productData.sharedVariants || [],
-      customer_upload_config: productData.customerUploadConfig || {
-        enabled: false,
-        maxFileSize: 5,
-        allowedFormats: ["png", "jpg", "jpeg", "gif"],
-        description: "",
-      },
-      optional_fields: productData.optionalFields || [],
-      text_area: productData.textArea || "",
-      condition_logic: productData.conditionLogic || "all",
-      taxes: productData.taxes || [],
-      seo: productData.seo || {
-        productUrl: "",
-        pageTitle: "",
-        metaDescription: "",
-      },
-      // NOTE: categories field excluded - migrate database to add this column
-      // categories: productData.categories || [],
       availability: productData.availability !== false,
       updated_at: new Date().toISOString(),
     };
+
+    // Optionally add JSONB fields if they're needed and column exists
+    if (productData.pricingRules && productData.pricingRules.length > 0) {
+      dbProduct.pricing_rules = productData.pricingRules;
+    }
+    if (productData.sharedVariants && productData.sharedVariants.length > 0) {
+      dbProduct.shared_variants = productData.sharedVariants;
+    }
+    if (productData.customerUploadConfig) {
+      dbProduct.customer_upload_config = productData.customerUploadConfig;
+    }
+    if (productData.optionalFields && productData.optionalFields.length > 0) {
+      dbProduct.optional_fields = productData.optionalFields;
+    }
+    if (productData.seo) {
+      dbProduct.seo = productData.seo;
+    }
 
     const { data, error } = await supabase
       .from("admin_products")
