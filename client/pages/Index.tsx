@@ -186,80 +186,130 @@ export default function Index() {
             className="mx-auto px-4 sm:px-6 lg:px-8"
             style={{ maxWidth: "1100px" }}
           >
-            {/* Gallery Grid at Top */}
             {loadingGallery ? (
               <div className="text-center py-12">
                 <p className="text-gray-600 text-sm">Loading gallery...</p>
               </div>
             ) : galleryImages.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-                {galleryImages.map((image) => (
-                  <div
-                    key={image.id}
-                    className="rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow"
-                  >
-                    <img
-                      src={image.image_url}
-                      alt={image.image_alt}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-4 bg-white">
-                      <h3 className="font-bold text-sm mb-1">{image.title}</h3>
-                      {image.description && (
-                        <p className="text-xs text-gray-600 line-clamp-2">
-                          {image.description}
-                        </p>
-                      )}
+              <>
+                {/* Two Column Layout */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                  {/* Left: Main Carousel */}
+                  <div className="lg:col-span-2">
+                    <div className="relative bg-gray-100 rounded-lg overflow-hidden mb-4">
+                      {/* Main Image */}
+                      <img
+                        src={galleryImages[currentImageIndex].image_url}
+                        alt={galleryImages[currentImageIndex].image_alt}
+                        className="w-full h-96 object-cover"
+                      />
+
+                      {/* Counter */}
+                      <div className="absolute top-4 right-4 bg-black/70 text-white px-3 py-1 rounded text-xs font-semibold">
+                        {currentImageIndex + 1}/{galleryImages.length}
+                      </div>
+
+                      {/* Navigation Arrows */}
+                      <button
+                        onClick={handlePrevImage}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black p-2 rounded-full transition-all"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={handleNextImage}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black p-2 rounded-full transition-all"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    {/* Pagination Dots */}
+                    <div className="flex justify-center gap-2 mb-6">
+                      {galleryImages.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className={`w-2 h-2 rounded-full transition-all ${
+                            index === currentImageIndex
+                              ? "bg-[#FFD713] w-6"
+                              : "bg-gray-300 hover:bg-gray-400"
+                          }`}
+                        />
+                      ))}
                     </div>
                   </div>
-                ))}
-              </div>
+
+                  {/* Right: Gallery Thumbnails */}
+                  <div>
+                    <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider">Gallery</h3>
+                    <div className="grid grid-cols-3 gap-2">
+                      {galleryImages.map((image, index) => (
+                        <button
+                          key={image.id}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className={`relative rounded-lg overflow-hidden border-2 transition-all ${
+                            index === currentImageIndex
+                              ? "border-[#FFD713]"
+                              : "border-gray-200 hover:border-gray-300"
+                          }`}
+                        >
+                          <img
+                            src={image.image_url}
+                            alt={image.image_alt}
+                            className="w-full h-24 object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Title and Description Below */}
+                <div className="mb-8">
+                  <h2 className="text-2xl sm:text-3xl font-bold mb-2 uppercase">
+                    Featured Collection
+                  </h2>
+                  <p className="text-sm sm:text-base text-gray-600 mb-6">
+                    Sticky Slap - Custom Stickers That Stick
+                  </p>
+                  <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+                    We specialize in high-quality custom sticker printing with a vibrant 8-color setup for bold, precise designs.
+                  </p>
+
+                  {/* Features List */}
+                  <div className="space-y-2 mb-6">
+                    <div className="flex items-start gap-3">
+                      <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-gray-700">
+                        <span className="font-semibold">Durability:</span> 4–5 years outdoors unlaminated, 5–8 years laminated
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-gray-700">
+                        <span className="font-semibold">Fast Turnaround:</span> Orders ship within 2 business days after artwork approval
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-gray-700">
+                        Whether it's branding, promo drops, or stag tags — <span className="font-semibold">Sticky Slap makes stickers that go hard and last long.</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <Link
+                    to="/ecwid-store"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-[#FFD713] text-black rounded-lg font-bold hover:bg-[#ffc500] transition-all text-sm"
+                  >
+                    EXPLORE COLLECTION
+                  </Link>
+                </div>
+              </>
             ) : null}
-
-            {/* Description, Benefits, and CTA Below */}
-            <div className="mb-8">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-                Featured Collection
-              </h2>
-              <p className="text-sm sm:text-base text-gray-600 mb-6">
-                Explore our curated selection of premium materials and finishes. Each
-                product is carefully chosen for its quality, durability, and versatility.
-              </p>
-
-              {/* Benefits List */}
-              <div className="space-y-3 mb-8">
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-sm">High Quality</h3>
-                    <p className="text-xs sm:text-sm text-gray-600">Premium materials and vibrant colors</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-sm">Fast Shipping</h3>
-                    <p className="text-xs sm:text-sm text-gray-600">Ships within 2 business days</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold text-sm">Bulk Discounts</h3>
-                    <p className="text-xs sm:text-sm text-gray-600">Save more on larger orders</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <Link
-                to="/ecwid-store"
-                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-[#FFD713] text-black rounded-lg font-bold hover:bg-[#ffc500] transition-all text-sm"
-              >
-                EXPLORE COLLECTION
-              </Link>
-            </div>
           </div>
         </section>
 
