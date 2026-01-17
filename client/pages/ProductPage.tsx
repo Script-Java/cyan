@@ -903,12 +903,12 @@ export default function ProductPage() {
                 </p>
 
                 {designPreview ? (
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <div className="relative bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
                       <img
                         src={designPreview}
                         alt="Design preview"
-                        className="w-full h-40 object-contain p-4"
+                        className="w-full h-24 object-contain p-2"
                       />
                       <button
                         onClick={removeDesign}
