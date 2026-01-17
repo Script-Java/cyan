@@ -188,7 +188,7 @@ export default function ProductGallerySlideshow({
               MAIN IMAGE CONTAINER
               Includes: Large display image with navigation arrows and counter
           */}
-          <div className="relative mb-6">
+          <div className="relative mb-3">
             
             {/* Image wrapper with frosted glass effect */}
             <div className="relative bg-white/60 rounded-xl overflow-hidden backdrop-blur-sm border border-gray-200/50">
