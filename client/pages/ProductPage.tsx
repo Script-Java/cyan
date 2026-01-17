@@ -609,7 +609,7 @@ export default function ProductPage() {
                 )}
 
                 {option.type === "swatch" && (
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-1.5">
                     {option.values.map((value) => (
                       <button
                         key={value.id}
@@ -621,7 +621,7 @@ export default function ProductPage() {
                           setSelectedOptions(newOptions);
                           saveAsDefault(newOptions);
                         }}
-                        className={`relative border-2 rounded-lg overflow-hidden transition flex flex-col items-center justify-center p-2 ${
+                        className={`relative border-2 rounded overflow-hidden transition flex flex-col items-center justify-center p-1 ${
                           selectedOptions[option.id] === value.id
                             ? "border-purple-500"
                             : "border-gray-200 hover:border-gray-300"
@@ -631,16 +631,16 @@ export default function ProductPage() {
                           <img
                             src={value.image.preview || value.image.url}
                             alt={value.name}
-                            className="w-12 h-12 object-contain"
+                            className="w-10 h-10 object-contain"
                           />
                         ) : (
-                          <div className="w-full h-12 bg-gray-100 flex items-center justify-center">
-                            <span className="text-gray-600 text-xs text-center px-1">
+                          <div className="w-full h-10 bg-gray-100 flex items-center justify-center">
+                            <span className="text-gray-600 text-xs text-center px-1 truncate">
                               {value.name}
                             </span>
                           </div>
                         )}
-                        <span className="text-gray-700 text-xs mt-1 font-medium text-center">
+                        <span className="text-gray-700 text-xs mt-0.5 font-medium text-center truncate">
                           {value.name}
                         </span>
                         <span className="text-purple-600 text-xs font-bold mt-0.5">
@@ -670,10 +670,10 @@ export default function ProductPage() {
 
             {/* Quantity Selection Column */}
             <div
-              className="rounded-2xl border transition"
+              className="rounded-lg border transition"
               style={{
                 margin: "0 0 0 0",
-                padding: "14px 12px",
+                padding: "10px 8px",
                 backdropFilter: "blur(12px)",
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
                 borderColor: "rgba(255, 255, 255, 0.1)",
@@ -683,10 +683,10 @@ export default function ProductPage() {
               }}
             >
               <h2
-                className="font-bold mb-2 flex items-center gap-2"
+                className="font-bold mb-1.5 flex items-center gap-1 text-xs"
                 style={{
                   fontFamily: "Rubik, sans-serif",
-                  fontSize: "14px",
+                  fontSize: "12px",
                   fontWeight: "700",
                   color: "rgb(0, 0, 0)",
                   lineHeight: "20px",
