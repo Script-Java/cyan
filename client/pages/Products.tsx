@@ -250,11 +250,18 @@ export default function Products() {
   }, [products, selectedCategory, categoryMap]);
 
   const getCategoryItemCount = (categoryId: string): number => {
-    return products.filter((product) =>
-      product.category === categoryId ||
-      product.category?.toLowerCase() === categoryId.toLowerCase() ||
-      product.name?.toLowerCase().includes(categoryId.toLowerCase())
-    ).length;
+    return products.filter((product) => {
+      // Get the category ID that matches the product's group
+      const productCategoryId = Object.entries(categoryMap).find(
+        ([name]) => name === product.category
+      )?.[1];
+
+      // Count if the category ID matches or if product name contains category
+      return (
+        productCategoryId === categoryId ||
+        product.name?.toLowerCase().includes(categoryId.toLowerCase())
+      );
+    }).length;
   };
 
   return (
