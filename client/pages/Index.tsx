@@ -146,7 +146,12 @@ export default function Index() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-4 hover:bg-white/60 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="text-3xl flex-shrink-0">📦</div>
+                  <img
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzs3Xd4HOW1P/Azs6veu1Ws3iVLtrqs6goGg23A2IQU0m/qTW4qyc395SaQnpuQRgo3kJsEMJiWQGjGtuQiW+5FvduSrN7ranfn/z+HmwpTWQ9711tFVOq4uPaknCvvveUKMzQp0eZMRYBfIqIaIqokIiOj9jVbqCEHPfMPb2kdmZiK1vvcsQs/d+yvCKBNaQS8lYjl42kk6Mz5Xk9FcVCVx5N5C5OPJ1sQpGtH1s="
+                    width="46"
+                    alt="Shipping icon"
+                    style={{ cursor: "nwse-resize" }}
+                  />
                   <h3 className="font-semibold text-sm text-gray-900">
                     <span className="block">Free ground shipping</span>
                     <span className="block text-xs text-gray-500 font-normal">on all orders</span>
