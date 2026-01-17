@@ -151,7 +151,7 @@ export default function Product() {
             options: data.options || [],
             availability: data.availability ?? true,
             customer_upload_config: data.customer_upload_config || {
-              enabled: false,
+              enabled: true,
               maxFileSize: 5,
               allowedFormats: ["pdf", "ai", "png", "jpg"],
               description: "Upload your design",
