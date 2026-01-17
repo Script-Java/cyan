@@ -134,7 +134,8 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
         pageTitle: "",
         metaDescription: "",
       },
-      categories: productData.categories || [],
+      // NOTE: categories field excluded - migrate database to add this column
+      // categories: productData.categories || [],
       availability: productData.availability !== false,
       created_at: new Date().toISOString(),
     };
