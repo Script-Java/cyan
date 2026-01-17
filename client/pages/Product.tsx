@@ -742,7 +742,12 @@ export default function Product() {
                   }
                 }}
                 disabled={!!product.fixed_quantity}
-                className="bg-white border-gray-200 text-black placeholder-gray-500 text-sm disabled:bg-gray-200 disabled:cursor-not-allowed"
+                readOnly={!!product.fixed_quantity}
+                className={`text-sm ${
+                  product.fixed_quantity
+                    ? "bg-gray-100 border-gray-300 text-gray-700 cursor-not-allowed opacity-70"
+                    : "bg-white border-gray-200 text-black placeholder-gray-500"
+                }`}
               />
               <p className="text-gray-500 text-xs mt-1">
                 {product.fixed_quantity
