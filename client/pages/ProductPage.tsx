@@ -458,7 +458,7 @@ export default function ProductPage() {
           {/* Back Navigation */}
           <button
             onClick={() => navigate("/products")}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition mb-4"
+            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition mb-2"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
