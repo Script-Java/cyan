@@ -386,17 +386,21 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Product ID is required" });
     }
 
-    const id = parseInt(productId, 10);
-    if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid product ID format" });
-    }
-
-    const { data, error } = await supabase
+    // Try parsing as numeric ID first
+    const numericId = parseInt(productId, 10);
+    let query = supabase
       .from("admin_products")
       .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, created_at, updated_at")
-      .eq("id", id)
-      .eq("availability", true)
-      .single();
+      .eq("availability", true);
+
+    // Use numeric ID if valid, otherwise treat as SKU
+    if (!isNaN(numericId)) {
+      query = query.eq("id", numericId);
+    } else {
+      query = query.eq("sku", productId);
+    }
+
+    const { data, error } = await query.single();
 
     if (error) {
       if (error.code === "PGRST116") {
