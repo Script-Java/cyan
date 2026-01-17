@@ -488,36 +488,36 @@ export default function ProductPage() {
             {product.options.map((option) => (
               <div
                 key={option.id}
-                className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl"
-                style={{ marginRight: "0px", padding: "14px 12px 14px 12px" }}
+                className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg"
+                style={{ marginRight: "0px", padding: "10px 8px 10px 8px" }}
               >
-                <h2 className="text-xs font-bold mb-2 flex items-center gap-2">
+                <h2 className="text-xs font-bold mb-1.5 flex items-center gap-1">
                   {option.name === "Shape" && (
                     <img
                       src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1763135086/StickerShuttle_DieCutIcon_r0vire.png"
                       alt={option.name}
-                      className="w-6 h-6"
+                      className="w-5 h-5"
                     />
                   )}
                   {option.name === "Material" && (
                     <img
                       src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1763228661/StickerShuttle_KissCutIcon_pynbqq.png"
                       alt={option.name}
-                      className="w-6 h-6"
+                      className="w-5 h-5"
                     />
                   )}
                   {option.name === "Size" && (
                     <img
                       src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1763135086/StickerShuttle_CircleIcon_igib6i.png"
                       alt={option.name}
-                      className="w-6 h-6"
+                      className="w-5 h-5"
                     />
                   )}
-                  Select a {option.name}
+                  <span className="truncate">Select a {option.name}</span>
                 </h2>
 
                 {option.type === "dropdown" && (
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-1.5">
                     {option.values.map((value, index) => (
                       <button
                         key={value.id}
@@ -529,7 +529,7 @@ export default function ProductPage() {
                           setSelectedOptions(newOptions);
                           saveAsDefault(newOptions);
                         }}
-                        className={`relative flex flex-col items-center justify-center border-2 rounded-lg p-2 transition text-center ${
+                        className={`relative flex flex-col items-center justify-center border-2 rounded p-1.5 transition text-center ${
                           selectedOptions[option.id] === value.id
                             ? "border-purple-500 bg-purple-100 shadow-lg shadow-purple-200/50"
                             : "border-gray-200 hover:border-gray-300 bg-gray-50"
@@ -540,14 +540,14 @@ export default function ProductPage() {
                           <img
                             src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F1b04ce3e2b7342ff891113ccedd6beda?format=webp&width=800"
                             alt="Satin"
-                            className="w-10 h-10 object-contain mb-1"
+                            className="w-8 h-8 object-contain mb-0.5"
                           />
                         ) : (
                           value.image && (
                             <img
                               src={value.image.preview || value.image.url}
                               alt={value.name}
-                              className="w-10 h-10 object-contain mb-1"
+                              className="w-8 h-8 object-contain mb-0.5"
                             />
                           )
                         )}
