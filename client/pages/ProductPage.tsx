@@ -603,7 +603,7 @@ export default function ProductPage() {
                 )}
 
                 {option.type === "radio" && (
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-1">
                     {option.values.map((value) => (
                       <button
                         key={value.id}
@@ -615,7 +615,7 @@ export default function ProductPage() {
                           setSelectedOptions(newOptions);
                           saveAsDefault(newOptions);
                         }}
-                        className={`border-2 rounded-lg p-2 transition text-center text-xs ${
+                        className={`border-2 rounded-lg p-1 transition text-center text-xs ${
                           selectedOptions[option.id] === value.id
                             ? "border-purple-500 bg-purple-100"
                             : "border-gray-200 hover:border-gray-300 bg-gray-50"
@@ -625,7 +625,7 @@ export default function ProductPage() {
                           <img
                             src={value.image.preview || value.image.url}
                             alt={value.name}
-                            className="w-10 h-10 object-cover mx-auto mb-1 rounded"
+                            className="w-8 h-8 object-cover mx-auto mb-0.5 rounded"
                           />
                         )}
                         <p className="font-medium text-xs text-black">
