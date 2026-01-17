@@ -479,18 +479,25 @@ export const handleImportAdminProduct: RequestHandler = async (req, res) => {
     }
 
     const dbProduct: any = {
+      // Core fields
       name,
       base_price: basePrice || 0,
       sku: sku || "",
       description: description || "",
-      images: images || [],
-      options: options || [],
       availability: availability !== false,
       created_at: new Date().toISOString(),
-    };
 
-    // NOTE: Additional columns like customer_upload_config, categories, etc.
-    // will be added once the database schema is updated
+      // JSON fields
+      images: images || [],
+      options: options || [],
+      customer_upload_config: customerUploadConfig || {
+        enabled: false,
+        maxFileSize: 5,
+        allowedFormats: ["png", "jpg", "jpeg", "gif"],
+        description: "",
+      },
+      categories: categories || [],
+    };
 
     const { data, error } = await supabase
       .from("admin_products")
