@@ -705,8 +705,8 @@ export default function ProductPage() {
             <div
               className="rounded-2xl border transition"
               style={{
-                margin: "0 -5px 3px 0",
-                padding: "24px",
+                margin: "0 0 0 0",
+                padding: "14px 12px",
                 backdropFilter: "blur(12px)",
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
                 borderColor: "rgba(255, 255, 255, 0.1)",
@@ -716,13 +716,13 @@ export default function ProductPage() {
               }}
             >
               <h2
-                className="font-bold mb-4 flex items-center gap-2"
+                className="font-bold mb-2 flex items-center gap-2"
                 style={{
                   fontFamily: "Rubik, sans-serif",
-                  fontSize: "18px",
+                  fontSize: "14px",
                   fontWeight: "700",
                   color: "rgb(0, 0, 0)",
-                  lineHeight: "28px",
+                  lineHeight: "20px",
                 }}
               >
                 <svg
