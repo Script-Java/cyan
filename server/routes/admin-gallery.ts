@@ -77,7 +77,7 @@ router.post("/gallery/admin", verifyToken, requireAdmin, async (req: Request, re
 });
 
 // PUT - Update gallery image
-router.put("/gallery/admin/:id", async (req: Request, res: Response) => {
+router.put("/gallery/admin/:id", verifyToken, requireAdmin, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { title, description, image_url, image_alt, order_index, is_active } =
