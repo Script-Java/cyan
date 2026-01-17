@@ -725,12 +725,12 @@ export default function Product() {
               <div className="bg-white rounded-lg p-3 text-center border border-purple-200">
                 <p className="text-gray-600 text-xs font-semibold uppercase mb-1">Selected Quantity</p>
                 <p className="text-3xl font-bold text-purple-600">{quantity.toLocaleString()}</p>
-                <p className="text-gray-500 text-xs mt-1">units</p>
+                <p className="text-gray-500 text-xs mt-1"><p>stickers </p></p>
               </div>
 
               {/* Price Per Unit */}
               <div className="bg-white rounded-lg p-3 text-center border border-blue-200">
-                <p className="text-gray-600 text-xs font-semibold uppercase mb-1">Price Per Unit</p>
+                <p className="text-gray-600 text-xs font-semibold uppercase mb-1"><p>Price Per sticker </p></p>
                 <p className="text-3xl font-bold text-blue-600">${parseFloat(calculatePrice()).toFixed(2)}</p>
                 <p className="text-gray-500 text-xs mt-1">each</p>
               </div>
