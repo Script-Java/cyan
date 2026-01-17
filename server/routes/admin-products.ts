@@ -313,7 +313,13 @@ export const handleGetAdminProducts: RequestHandler = async (_req, res) => {
         .json({ error: "Failed to fetch products", details: error.message });
     }
 
-    res.json({ products: data || [] });
+    const products = (data || []).map(product => ({
+      ...product,
+      show_quantity_panel: product.show_quantity_panel !== false ? true : false,
+      fixed_quantity: product.fixed_quantity ?? null,
+    }));
+
+    res.json({ products });
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).json({
