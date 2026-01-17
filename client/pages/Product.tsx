@@ -709,12 +709,19 @@ export default function Product() {
                 min="1"
                 value={quantity}
                 onChange={(e) => {
-                  const value = parseInt(e.target.value) || 1;
-                  setQuantity(Math.max(1, value));
+                  if (!product.fixed_quantity) {
+                    const value = parseInt(e.target.value) || 1;
+                    setQuantity(Math.max(1, value));
+                  }
                 }}
-                className="bg-white border-gray-200 text-black placeholder-gray-500 text-sm"
+                disabled={!!product.fixed_quantity}
+                className="bg-white border-gray-200 text-black placeholder-gray-500 text-sm disabled:bg-gray-200 disabled:cursor-not-allowed"
               />
-              <p className="text-gray-500 text-xs mt-1">Enter desired quantity</p>
+              <p className="text-gray-500 text-xs mt-1">
+                {product.fixed_quantity
+                  ? "✓ Fixed quantity - cannot be changed"
+                  : "Enter desired quantity"}
+              </p>
             </div>
           </div>
 
