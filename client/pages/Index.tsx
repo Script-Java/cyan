@@ -147,7 +147,7 @@ export default function Index() {
               <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-4 hover:bg-white/60 transition-colors">
                 <div className="flex items-center gap-3">
                   <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAIABJREFUeJzs3Xd4HOW1P/Azs6veu1Ws3iVLtrqs6goGg23A2IQU0m/qTW4qyc395SaQnpuQRgo3kJsEMJiWQGjGtuQiW+5FvduSrN7ranfn/z+HmwpTWQ9711tFVOq4uPaknCvvveUKMzQp0eZMRYBfIqIaIqokIiOj9jVbqCEHPfMPb2kdmZiK1vvcsQs/d+yvCKBNaQS8lYjl42kk6Mz5Xk9FcVCVx5N5C5OPJ1sQpGtH1s="
+                    src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Faafc179699d44dcf9866ed923d2b9ca1"
                     width="46"
                     alt="Shipping icon"
                     style={{ cursor: "nwse-resize" }}
