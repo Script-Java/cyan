@@ -190,6 +190,13 @@ export default function AdminProducts() {
                       <div className="text-xs text-gray-600 mt-1">SKU: 00003 • Price: $0.17</div>
                     </button>
                     <button
+                      onClick={() => handleImportProduct(THREE_INCH_100_STICKERS_PRODUCT)}
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200"
+                    >
+                      <div className="font-semibold text-gray-900">3'' INCH - 100 STICKERS</div>
+                      <div className="text-xs text-gray-600 mt-1">SKU: 00007 • Price: $17.00</div>
+                    </button>
+                    <button
                       onClick={() => handleImportProduct(FOUR_INCH_PROMO_STICKER_PRODUCT)}
                       className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200"
                     >
