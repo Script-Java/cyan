@@ -522,9 +522,9 @@ export default function ProductPage() {
               <div
                 key={option.id}
                 className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl"
-                style={{ marginRight: "15px", padding: "24px 20px 24px 18px" }}
+                style={{ marginRight: "0px", padding: "14px 12px 14px 12px" }}
               >
-                <h2 className="text-sm font-bold mb-4 flex items-center gap-2">
+                <h2 className="text-xs font-bold mb-2 flex items-center gap-2">
                   {option.name === "Shape" && (
                     <img
                       src="https://res.cloudinary.com/dxcnvqk6b/image/upload/v1763135086/StickerShuttle_DieCutIcon_r0vire.png"
