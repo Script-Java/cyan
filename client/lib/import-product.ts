@@ -21,6 +21,149 @@ export async function importAdminProduct(productData: any) {
   return await response.json();
 }
 
+// The "4'' INCH - CUSTOM STICKER PROMO PER STICKER" product data from Ecwid CSV (ID: 785894063)
+export const FOUR_INCH_PROMO_STICKER_PRODUCT = {
+  name: "4'' INCH - CUSTOM STICKER PROMO PER STICKER",
+  basePrice: 0.40,
+  sku: "00005",
+  description:
+    '<p><strong>Sticky Slap</strong> — Custom Stickers That Stick</p><p> We specialize in high-quality <strong>custom sticker printing</strong> with a vibrant <strong>8-color setup</strong> for bold, precise designs.<br> 🌦️ <strong>Durability:</strong> 4–5 years outdoors unlaminated, 5–8 years laminated<br> ⏱️ <strong>Fast Turnaround:</strong> Orders ship within <strong>2 business days after artwork approval</strong><br> Whether it\'s branding, promo drops, or slap tags — <strong>Sticky Slap makes stickers that go hard and last long.</strong></p>',
+  images: [
+    {
+      id: "main",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5219128001.jpg",
+      name: "Main Image",
+    },
+    {
+      id: "img1",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146842637.jpg",
+      name: "Gallery Image 1",
+    },
+    {
+      id: "img2",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146851512.jpg",
+      name: "Gallery Image 2",
+    },
+    {
+      id: "img3",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146842642.jpg",
+      name: "Gallery Image 3",
+    },
+    {
+      id: "img4",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146851517.jpg",
+      name: "Gallery Image 4",
+    },
+    {
+      id: "img5",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146842647.jpg",
+      name: "Gallery Image 5",
+    },
+    {
+      id: "img6",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5039521789.webp",
+      name: "Gallery Image 6",
+    },
+    {
+      id: "img7",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5039453243.webp",
+      name: "Gallery Image 7",
+    },
+  ],
+  options: [
+    {
+      id: "sticker-cut-shape",
+      name: "STICKER CUT SHAPE",
+      type: "dropdown",
+      required: false,
+      displayOrder: 1,
+      values: [
+        {
+          id: "scs-1",
+          name: "DIE CUT (CUSTOM SHAPE)",
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "sticker-size",
+      name: "STICKER SIZE",
+      type: "dropdown",
+      required: false,
+      displayOrder: 2,
+      values: [
+        {
+          id: "ss-1",
+          name: "4 x 4",
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "sticker-amounts",
+      name: "STICKER AMOUNTS",
+      type: "dropdown",
+      required: false,
+      displayOrder: 3,
+      values: [
+        {
+          id: "sa-1",
+          name: "100",
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "sticker-design",
+      name: "UPLOAD STICKER DESIGN",
+      type: "text",
+      required: true,
+      displayOrder: 4,
+      values: [],
+    },
+    {
+      id: "border-cut",
+      name: "STICKER BOARDER CUT",
+      type: "dropdown",
+      required: true,
+      displayOrder: 5,
+      values: [
+        {
+          id: "bc-1",
+          name: "WHITE BOARDER CUT",
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "vinyl-finish",
+      name: "VINYL FINISH",
+      type: "dropdown",
+      required: true,
+      displayOrder: 6,
+      values: [
+        {
+          id: "vf-1",
+          name: "SATIN & LAMINATION",
+          priceModifier: 0,
+        },
+        {
+          id: "vf-2",
+          name: "GLOSS & LAMINATION",
+          priceModifier: 0,
+        },
+      ],
+    },
+  ],
+  availability: true,
+  customerUploadConfig: {
+    enabled: true,
+    maxFileSize: 50,
+    allowedFormats: ["png", "jpg", "jpeg", "gif", "pdf", "ai", "psd"],
+    description: "Upload your artwork for custom stickers",
+  },
+};
+
 // The "2 INCH - 100 CUSTOM STICKERS" product data from Ecwid CSV (SKU: 00003)
 export const TWO_INCH_STICKERS_PRODUCT = {
   name: "2 INCH - 100 CUSTOM STICKERS",
