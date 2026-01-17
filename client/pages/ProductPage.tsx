@@ -968,13 +968,13 @@ export default function ProductPage() {
           </div>
 
           {/* Add to Cart Button - Full Width */}
-          <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6">
+          <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-4">
             <Button
               onClick={handleAddToCart}
               disabled={isAddingToCart || !product.availability || !designFile}
-              className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-4 text-lg font-semibold gap-2 rounded-xl"
+              className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-2 text-sm font-semibold gap-2 rounded-lg"
             >
-              <Upload className="w-5 h-5" />
+              <Upload className="w-4 h-4" />
               {isAddingToCart
                 ? "Adding to Cart..."
                 : !designFile
@@ -984,7 +984,7 @@ export default function ProductPage() {
                     : "Add to Cart"}
             </Button>
 
-            <p className="text-center text-gray-600 text-xs mt-3">
+            <p className="text-center text-gray-600 text-xs mt-2">
               Items will be added to your cart for review before checkout
             </p>
           </div>
