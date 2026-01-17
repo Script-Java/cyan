@@ -166,17 +166,17 @@ export default function ProductGallerySlideshow({
     // - mb-12: Bottom margin for spacing below component
     // - border border-gray-200/50: Subtle border for definition
     // - shadow-sm: Light shadow for depth
-    <div className="w-full bg-gray-100/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 mb-12 border border-gray-200/50 shadow-sm">
-      
+    <div className="w-full bg-gray-100/50 backdrop-blur-sm rounded-2xl p-3 sm:p-4 mb-6 border border-gray-200/50 shadow-sm">
+
       {/* ====================================================================
           MAIN LAYOUT GRID
           ====================================================================
           Responsive grid structure:
           - Mobile (< 1024px): Single column (gallery spans full width)
           - Desktop (>= 1024px): 3 columns (gallery: 2 cols, thumbnails: 1 col)
-          - gap-6: Spacing between main content and thumbnails
+          - gap-3: Spacing between main content and thumbnails
       */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         
         {/* ====================================================================
             MAIN GALLERY SECTION (Left side on desktop)
