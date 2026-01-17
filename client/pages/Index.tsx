@@ -1,51 +1,123 @@
 import Header from "@/components/Header";
-import { Gallery } from "@/components/Gallery";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Zap } from "lucide-react";
+import { ArrowRight, Sparkles, Check, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
+
+interface GalleryImage {
+  id: string;
+  title: string;
+  description: string;
+  image_url: string;
+  image_alt: string;
+  order_index: number;
+}
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+const faqItems: FAQItem[] = [
+  {
+    question: "What makes Sticky Slap custom stickers special?",
+    answer:
+      "Sticky Slap is dedicated to creating premium quality custom stickers with vibrant colors, durable finishes, and fast shipping. We use the highest quality materials and printing techniques to ensure your stickers look amazing and last for years.",
+  },
+  {
+    question: "How long does shipping take?",
+    answer:
+      "We offer free ground shipping on all orders within the US. Most orders ship within 2-3 business days and arrive within 5-7 business days. Rush shipping options are available for expedited delivery.",
+  },
+  {
+    question: "Can I get a proof before my order ships?",
+    answer:
+      "Absolutely! With every Sticky Slap order, you'll receive a free online proof to review before production. This ensures your design looks exactly how you want it.",
+  },
+  {
+    question: "What are the different vinyl finish options?",
+    answer:
+      "We offer SATIN & LAMINATION for a subtle, professional look and GLOSS & LAMINATION for a vibrant, eye-catching finish. Both options include protective lamination for durability.",
+  },
+  {
+    question: "Are Sticky Slap stickers waterproof?",
+    answer:
+      "Yes! All Sticky Slap stickers are waterproof and UV-resistant, making them perfect for laptops, water bottles, outdoor use, and more.",
+  },
+  {
+    question: "Can I use my own design?",
+    answer:
+      "Of course! You can upload your own design or use our design tools. Just make sure your file meets our specifications for best results.",
+  },
+];
 
 export default function Index() {
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+  const [expandedFAQ, setExpandedFAQ] = useState<number | null>(0);
+  const [loadingGallery, setLoadingGallery] = useState(true);
+
+  useEffect(() => {
+    const fetchGalleryImages = async () => {
+      try {
+        const res = await fetch("/api/gallery");
+        if (res.ok) {
+          const data = await res.json();
+          setGalleryImages(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch gallery images:", error);
+      } finally {
+        setLoadingGallery(false);
+      }
+    };
+
+    fetchGalleryImages();
+  }, []);
+
   return (
     <>
       <Header />
-      <main className="pt-20 bg-[#fafafa] text-gray-900 min-h-screen">
+      <main className="pt-16 bg-white text-gray-900 min-h-screen">
         {/* Hero Section */}
-        <section className="relative bg-[#fafafa] text-gray-900 overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-32">
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <div className="inline-flex items-center gap-2 bg-blue-50 backdrop-blur border border-blue-200 rounded-full px-4 py-2 mb-6">
+        <section className="relative bg-white text-gray-900 overflow-hidden pt-8 pb-12 sm:pt-12 sm:pb-16">
+          <div
+            className="relative mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
+            style={{ maxWidth: "1100px" }}
+          >
+            <div className="text-center max-w-2xl mx-auto mb-8">
+              <div className="inline-flex items-center gap-2 bg-blue-50 backdrop-blur border border-blue-200 rounded-full px-3 py-1.5 mb-4">
                 <Sparkles className="w-4 h-4 text-blue-600" />
-                <span className="text-sm font-medium text-gray-900">
+                <span className="text-xs font-medium text-gray-900">
                   Premium Custom Stickers
                 </span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
                 Design Your Own
                 <span className="block bg-gradient-to-r from-[#FFD713] to-[#FFA500] bg-clip-text text-transparent">
                   Custom Stickers
                 </span>
               </h1>
 
-              <p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-sm sm:text-base text-gray-600 mb-6 leading-relaxed">
                 Express yourself with high-quality, custom stickers. Perfect for
                 laptops, water bottles, walls, and more. Fast shipping, amazing
                 designs.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link
                   to="/product-page/00004"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/50"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-lg shadow-green-500/30 hover:shadow-xl hover:shadow-green-500/40 text-sm"
                 >
                   Start Creating
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   to="/ecwid-store"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gray-100 border border-gray-300 text-gray-900 rounded-lg font-bold hover:bg-gray-200 transition-all"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 border border-gray-300 text-gray-900 rounded-lg font-bold hover:bg-gray-200 transition-all text-sm"
                 >
                   Shop Now
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             </div>
@@ -54,47 +126,40 @@ export default function Index() {
 
         {/* Benefits Section */}
         <section
-          className="bg-[#fafafa]"
-          style={{ margin: "-5px 0 14px", padding: "20px 0 28px" }}
+          className="bg-white"
+          style={{ padding: "16px 0 20px" }}
         >
           <div
             className="mx-auto px-4 sm:px-6 lg:px-8"
-            style={{ maxWidth: "1964px" }}
+            style={{ maxWidth: "1100px" }}
           >
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-2xl p-6">
-                <div className="flex items-center gap-4">
-                  <div className="text-4xl flex-shrink-0">📦</div>
-                  <h3 className="font-semibold text-gray-900">
-                    <span className="block">Free ground shipping</span>
-                    <span className="block text-gray-600">on all orders</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl flex-shrink-0">📦</div>
+                  <h3 className="font-semibold text-xs sm:text-sm text-gray-900">
+                    <span className="block">Free Shipping</span>
+                    <span className="block text-gray-600 font-normal">on all orders</span>
                   </h3>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-2xl p-6">
-                <div className="flex items-center gap-4">
-                  <div
-                    className="text-4xl flex-shrink-0 animate-spin"
-                    style={{ animationDuration: "4s" }}
-                  >
-                    🌍
-                  </div>
-                  <h3 className="font-semibold text-gray-900">
-                    <span className="block">Out for this world quality</span>
-                    <span className="block text-gray-600">
-                      , made in the US
-                    </span>
+              <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl flex-shrink-0">🌍</div>
+                  <h3 className="font-semibold text-xs sm:text-sm text-gray-900">
+                    <span className="block">Made in the US</span>
+                    <span className="block text-gray-600 font-normal">premium quality</span>
                   </h3>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-2xl p-6">
-                <div className="flex items-center gap-4">
-                  <div className="text-4xl flex-shrink-0">🖼️</div>
-                  <h3 className="font-semibold text-gray-900">
-                    <span className="block">Free Online Proof</span>
-                    <span className="block text-gray-600">with all orders</span>
+              <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl flex-shrink-0">🖼️</div>
+                  <h3 className="font-semibold text-xs sm:text-sm text-gray-900">
+                    <span className="block">Free Proof</span>
+                    <span className="block text-gray-600 font-normal">with all orders</span>
                   </h3>
                 </div>
               </div>
@@ -102,296 +167,184 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Gallery Section 1 */}
-        <Gallery
-          cards={[
-            {
-              href: "https://example.com/artist-1",
-              imageSrc: "https://stickerapp.com/media/1300x1300/2404cad58e/daniel-harisberger-aka-toastytuesday-thank-you-card-profile-pic.png/m/1200x0/filters:quality(60)",
-              imageAlt: "Artist of the month profile picture",
-              label: "Artist of the month",
-              handle: "@toastytuesday",
-              description:
-                "Say hello to Daniel Harisberger, the multi-talented creative behind mischievous characters, fantastic stories, and pretty much anything that moves on a screen.",
-              spanClass: "col-span-1 md:col-span-8",
-            },
-            {
-              href: "https://example.com/artist-2",
-              imageSrc: "https://stickerapp.com/media/1042x1042/282fd085e2/artist-of-the-month-redhalftone-header-collage.png/m/1200x0/filters:quality(60)",
-              imageAlt: "Artist Interview with vibrant artwork",
-              label: "Artist Interview",
-              handle: "@redhalftone",
-              description:
-                "Meet Lisa Champ, the artist fueled by bold colors and pop-art.",
-              spanClass: "col-span-1 md:col-span-4",
-            },
-          ]}
-          showHeaderImage={true}
-          headerImageSrc="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=100 100w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=200 200w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=400 400w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=800 800w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=1200 1200w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=1600 1600w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=2000 2000w"
-        />
-
-        {/* Gallery Section 2 */}
-        <Gallery
-          cards={[
-            {
-              href: "https://stickerapp.com/blog/artist-interview/broderson-tattoos",
-              imageSrc: "https://stickerapp.com/media/2000x2000/520a88d8f9/tattoo-broderson-side.png/m/1200x0/filters:quality(60)",
-              imageAlt: "Tattoo artist broderson sketching a snake tattoo on back",
-              label: "Artist Interview",
-              handle: "@broderson",
-              description: "Collab made in heaven with tattoo artist Broder.",
-              spanClass: "col-span-1 md:col-span-4",
-            },
-            {
-              href: "https://stickerapp.com/blog/artist-interview/jumbo-press",
-              imageSrc: "https://stickerapp.com/media/1137x1137/0d6d396ab0/jumbo-press-stickerapp-collab.png/m/1200x0/filters:quality(60)",
-              imageAlt: "Jumbo Press collaboration sticker design",
-              label: "Case study",
-              handle: "Jumbo Press",
-              description:
-                "Read about our collab and why Jumbo Press choose custom sticker packs.",
-              spanClass: "col-span-1 md:col-span-4",
-            },
-            {
-              href: "https://stickerapp.com/blog/artist-interview/toto-le-voyou",
-              imageSrc: "https://stickerapp.com/media/1080x1080/b2842af27c/portrait-toto-le-voyou-illustration.jpg/m/1200x0/filters:quality(60)",
-              imageAlt: "Black and white drawing of Toto le voyou with spiky hair and mustache",
-              label: "Artist interview",
-              handle: "@toto_le_voyou",
-              description:
-                "Get to know tattoo artist Toto le voyou and how he use stickers for his customers.",
-              spanClass: "col-span-1 md:col-span-4",
-            },
-          ]}
-          showFooterImage={true}
-          footerImageSrc="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=100 100w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=200 200w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=400 400w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=800 800w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=1200 1200w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=1600 1600w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a?width=2000 2000w"
-        />
-
-        {/* CTA Section */}
-        <section className="py-16 sm:py-24 bg-white hidden">
+        {/* Featured Collection Gallery */}
+        <section className="bg-white py-12 sm:py-16">
           <div
-            className="mx-auto px-4 sm:px-6 lg:px-8 text-center relative rounded-3xl border border-gray-200"
-            style={{
-              maxWidth: "1156px",
-              padding: "0 32px 28px",
-              boxShadow:
-                "0 20px 60px rgba(0, 0, 0, 0.08), inset 0 0 1px rgba(0, 0, 0, 0.06)",
-            }}
+            className="mx-auto px-4 sm:px-6 lg:px-8"
+            style={{ maxWidth: "1100px" }}
           >
-            <div
-              className="absolute bg-blue-100 rounded-2xl"
-              style={{
-                opacity: 0.1,
-                left: "-209px",
-                top: "511px",
-                width: "887px",
-                bottom: "0px",
-                right: "0px",
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  top: "24px",
-                  left: "32px",
-                  fontSize: "18px",
-                }}
-              >
-                ⭐
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  top: "16px",
-                  left: "25%",
-                  fontSize: "14px",
-                  color: "rgba(59, 130, 246, 0.6)",
-                }}
-              >
-                ✨
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  top: "24px",
-                  right: "32px",
-                  fontSize: "14px",
-                  color: "rgba(168, 85, 247, 0.5)",
-                }}
-              >
-                ✨
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "24px",
-                  fontSize: "14px",
-                  color: "rgba(249, 115, 22, 0.5)",
-                }}
-              >
-                ⭐
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: "24px",
-                  color: "rgba(168, 85, 247, 0.5)",
-                }}
-              >
-                ✨
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  top: "33.3333%",
-                  left: "48px",
-                  fontSize: "12px",
-                  color: "rgba(249, 115, 22, 0.5)",
-                }}
-              >
-                ⭐
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  top: "66.6667%",
-                  right: "48px",
-                  fontSize: "14px",
-                  color: "rgba(59, 130, 246, 0.5)",
-                }}
-              >
-                ✨
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "24px",
-                  left: "33.3333%",
-                  fontSize: "14px",
-                  color: "rgba(59, 130, 246, 0.5)",
-                }}
-              >
-                ✨
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "32px",
-                  left: "64px",
-                  fontSize: "12px",
-                  color: "rgba(59, 130, 246, 0.5)",
-                }}
-              >
-                ⭐
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "16px",
-                  right: "33.3333%",
-                  color: "rgba(59, 130, 246, 0.5)",
-                }}
-              >
-                ⭐
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "24px",
-                  right: "64px",
-                  fontSize: "14px",
-                  color: "rgba(168, 85, 247, 0.5)",
-                }}
-              >
-                ✨
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  top: "48px",
-                  left: "50%",
-                  fontSize: "12px",
-                  color: "rgba(249, 115, 22, 0.5)",
-                }}
-              >
-                ⭐
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "48px",
-                  left: "50%",
-                  fontSize: "14px",
-                  color: "rgba(168, 85, 247, 0.5)",
-                }}
-              >
-                ✨
+            <div className="mb-8">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+                Featured Collection
+              </h2>
+              <p className="text-sm sm:text-base text-gray-600 mb-6">
+                Explore our curated selection of premium materials and finishes. Each
+                product is carefully chosen for its quality, durability, and versatility.
+              </p>
+
+              {/* Benefits List */}
+              <div className="space-y-3 mb-8">
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-sm">High Quality</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">Premium materials and vibrant colors</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-sm">Fast Shipping</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">Ships within 2 business days</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-sm">Bulk Discounts</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">Save more on larger orders</p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div
-              className="relative z-10"
-              style={{ marginBottom: "22px", paddingTop: "34px" }}
-            >
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-                Ready to Create?
+
+            {/* Gallery Grid */}
+            {loadingGallery ? (
+              <div className="text-center py-12">
+                <p className="text-gray-600 text-sm">Loading gallery...</p>
+              </div>
+            ) : galleryImages.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                {galleryImages.map((image) => (
+                  <div
+                    key={image.id}
+                    className="rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow"
+                  >
+                    <img
+                      src={image.image_url}
+                      alt={image.image_alt}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4 bg-white">
+                      <h3 className="font-bold text-sm mb-1">{image.title}</h3>
+                      {image.description && (
+                        <p className="text-xs text-gray-600 line-clamp-2">
+                          {image.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+
+            <div className="text-center">
+              <Link
+                to="/ecwid-store"
+                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-[#FFD713] text-black rounded-lg font-bold hover:bg-[#ffc500] transition-all text-sm"
+              >
+                EXPLORE COLLECTION
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="bg-white py-12 sm:py-16 border-t border-gray-200">
+          <div
+            className="mx-auto px-4 sm:px-6 lg:px-8"
+            style={{ maxWidth: "1100px" }}
+          >
+            <div className="mb-8">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+                Frequently Asked Questions
               </h2>
-              <p className="text-xl text-gray-600 mb-8">
-                Join thousands of customers who've created amazing custom
-                stickers
+              <p className="text-sm sm:text-base text-gray-600">
+                Learn more about Sticky Slap custom stickers and our services
               </p>
             </div>
-            <div className="flex gap-4 justify-center items-center flex-wrap">
-              <Link
-                to="/signup"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/50"
-              >
-                Get Started Now
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  backgroundColor: "#FFD713",
-                  borderColor: "#FFD713",
-                  borderRadius: "8px",
-                  borderWidth: "1px",
-                  fontWeight: "700",
-                  gap: "8px",
-                  justifyContent: "center",
-                  transitionDuration: "0.15s",
-                  transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
-                  marginRight: "-1px",
-                  padding: "16px 147px 18px 128px",
-                  color: "#000000",
-                }}
-              >
-                <a
-                  href="/login"
-                  style={{ textDecoration: "none", color: "inherit" }}
+
+            <div className="space-y-3">
+              {faqItems.map((item, index) => (
+                <div
+                  key={index}
+                  className="border border-gray-200 rounded-lg overflow-hidden"
                 >
-                  Login
-                </a>
-              </div>
+                  <button
+                    onClick={() =>
+                      setExpandedFAQ(expandedFAQ === index ? null : index)
+                    }
+                    className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <h3 className="font-semibold text-sm sm:text-base text-left">
+                      {item.question}
+                    </h3>
+                    <ChevronDown
+                      className={`w-5 h-5 flex-shrink-0 transition-transform ${
+                        expandedFAQ === index ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {expandedFAQ === index && (
+                    <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
+                      <p className="text-sm text-gray-700 leading-relaxed">
+                        {item.answer}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-12 sm:py-16 bg-gray-50">
+          <div
+            className="mx-auto px-4 sm:px-6 lg:px-8 text-center"
+            style={{ maxWidth: "1100px" }}
+          >
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+              Ready to Create?
+            </h2>
+            <p className="text-sm sm:text-base text-gray-600 mb-6">
+              Join thousands of customers who've created amazing custom stickers with
+              Sticky Slap
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                to="/product-page/00004"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-lg shadow-green-500/30 text-sm"
+              >
+                Start Creating
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                to="/ecwid-store"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border-2 border-gray-300 text-gray-900 rounded-lg font-bold hover:bg-gray-50 transition-all text-sm"
+              >
+                Shop Now
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </section>
 
         {/* Footer */}
         <footer
-          className="bg-white text-gray-600"
-          style={{ marginBottom: "-4px", padding: "48px 0 200px", borderTop: "1px solid #e5e7eb" }}
+          className="bg-white text-gray-600 border-t border-gray-200"
+          style={{ padding: "32px 0" }}
         >
           <div
             className="mx-auto px-4 sm:px-6 lg:px-8"
-            style={{ maxWidth: "2026px" }}
+            style={{ maxWidth: "1100px" }}
           >
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6">
               <div>
-                <h4 className="font-bold text-gray-900 mb-4">Shop</h4>
-                <ul className="space-y-2 text-sm">
+                <h4 className="font-bold text-gray-900 mb-3 text-sm">Shop</h4>
+                <ul className="space-y-2 text-xs">
                   <li>
                     <a href="#" className="hover:text-gray-900 transition-colors">
                       Vinyl Stickers
@@ -407,87 +360,51 @@ export default function Index() {
                       Chrome
                     </a>
                   </li>
-                  <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
-                      Glitter
-                    </a>
-                  </li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold text-gray-900 mb-4">Company</h4>
-                <ul className="space-y-2 text-sm">
+                <h4 className="font-bold text-gray-900 mb-3 text-sm">Company</h4>
+                <ul className="space-y-2 text-xs">
                   <li>
                     <a href="#" className="hover:text-gray-900 transition-colors">
                       About
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="/blogs"
-                      className="hover:text-gray-900 transition-colors"
-                    >
+                    <a href="/blogs" className="hover:text-gray-900 transition-colors">
                       Blog
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="/support"
-                      className="hover:text-gray-900 transition-colors"
-                    >
+                    <a href="/support" className="hover:text-gray-900 transition-colors">
                       Contact
                     </a>
                   </li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold text-gray-900 mb-4">Legal</h4>
-                <ul className="space-y-2 text-sm">
+                <h4 className="font-bold text-gray-900 mb-3 text-sm">Legal</h4>
+                <ul className="space-y-2 text-xs">
                   <li>
-                    <a
-                      href="/legal-pages"
-                      className="hover:text-gray-900 transition-colors font-medium text-blue-600"
-                    >
-                      All Legal Pages
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/privacy"
-                      className="hover:text-gray-900 transition-colors"
-                    >
+                    <a href="/privacy" className="hover:text-gray-900 transition-colors">
                       Privacy
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="/terms"
-                      className="hover:text-gray-900 transition-colors"
-                    >
+                    <a href="/terms" className="hover:text-gray-900 transition-colors">
                       Terms
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="/shipping"
-                      className="hover:text-gray-900 transition-colors"
-                    >
+                    <a href="/shipping" className="hover:text-gray-900 transition-colors">
                       Shipping
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/returns"
-                      className="hover:text-gray-900 transition-colors"
-                    >
-                      Returns
                     </a>
                   </li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-bold text-gray-900 mb-4">Follow</h4>
-                <ul className="space-y-2 text-sm">
+                <h4 className="font-bold text-gray-900 mb-3 text-sm">Follow</h4>
+                <ul className="space-y-2 text-xs">
                   <li>
                     <a href="#" className="hover:text-gray-900 transition-colors">
                       Instagram
@@ -503,28 +420,15 @@ export default function Index() {
                       TikTok
                     </a>
                   </li>
-                  <li>
-                    <a href="#" className="hover:text-gray-900 transition-colors">
-                      YouTube
-                    </a>
-                  </li>
                 </ul>
               </div>
             </div>
+
+            <div className="border-t border-gray-200 pt-6 text-center text-xs">
+              <p>Built with ❤️ by © Sticky Slap LLC</p>
+            </div>
           </div>
         </footer>
-        <div
-          style={{
-            fontWeight: "400",
-            textAlign: "left",
-            paddingBottom: "20px",
-            paddingLeft: "32px",
-            fontSize: "12px",
-            color: "rgba(107, 114, 128, 0.7)",
-          }}
-        >
-          Built with ❤️ by © Sticky Slap LLC
-        </div>
       </main>
     </>
   );
