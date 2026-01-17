@@ -91,6 +91,7 @@ export default function App() {
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify" element={<VerifyEmail />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/deals" element={<Deals />} />
             <Route path="/product/:productId" element={<Product />} />
             <Route path="/product-page/:productId" element={<ProductPage />} />
             <Route path="/cart" element={<Cart />} />
