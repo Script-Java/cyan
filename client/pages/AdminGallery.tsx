@@ -72,36 +72,36 @@ export default function AdminGallery() {
       };
       reader.readAsDataURL(file);
 
-      // Upload to Cloudinary
+      // Upload to server endpoint which will handle Cloudinary upload
       const formDataToUpload = new FormData();
       formDataToUpload.append("file", file);
-      formDataToUpload.append("upload_preset", "sticky_slap_gallery");
 
-      const cloudinaryRes = await fetch(
-        "https://api.cloudinary.com/v1_1/dabgothkm/image/upload",
-        {
-          method: "POST",
-          body: formDataToUpload,
-        }
-      );
+      const token = localStorage.getItem("authToken");
+      const uploadRes = await fetch("/api/gallery/upload", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formDataToUpload,
+      });
 
-      if (!cloudinaryRes.ok) {
-        toast.error("Failed to upload image to cloud storage");
-        return;
+      if (!uploadRes.ok) {
+        const error = await uploadRes.json();
+        throw new Error(error.error || "Failed to upload image");
       }
 
-      const cloudinaryData = await cloudinaryRes.json();
-      const cloudinaryUrl = cloudinaryData.secure_url;
+      const uploadData = await uploadRes.json();
 
       // Update with the permanent Cloudinary URL
       setFormData((prev) => ({
         ...prev,
-        image_url: cloudinaryUrl,
+        image_url: uploadData.imageUrl,
       }));
       toast.success("Image uploaded successfully!");
     } catch (error) {
       console.error("Error uploading image:", error);
-      toast.error("Failed to upload image");
+      const errorMsg = error instanceof Error ? error.message : "Failed to upload image";
+      toast.error(errorMsg);
     }
   };
 
