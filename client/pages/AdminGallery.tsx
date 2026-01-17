@@ -33,7 +33,7 @@ export default function AdminGallery() {
 
   const fetchGalleryImages = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("authToken");
       const res = await fetch("/api/gallery/admin/all", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -84,7 +84,7 @@ export default function AdminGallery() {
 
     setUploading(true);
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("authToken");
       const res = await fetch("/api/gallery/admin", {
         method: "POST",
         headers: {
@@ -120,7 +120,7 @@ export default function AdminGallery() {
     if (!confirm("Are you sure you want to delete this image?")) return;
 
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("authToken");
       const res = await fetch(`/api/gallery/admin/${id}`, {
         method: "DELETE",
         headers: {
@@ -140,7 +140,7 @@ export default function AdminGallery() {
 
   const handleUpdateImage = async (id: string, updates: Partial<GalleryImage>) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("authToken");
       const res = await fetch(`/api/gallery/admin/${id}`, {
         method: "PUT",
         headers: {
