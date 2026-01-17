@@ -22,6 +22,7 @@ export async function importAdminProduct(productData: any) {
 }
 
 // The "CREATE A STICKER" product data from Ecwid CSV
+// NOTE: categories excluded until database migration is applied
 export const STICKY_SLAP_STICKER_PRODUCT = {
   name: "CREATE A STICKER",
   basePrice: 0.0,
@@ -130,7 +131,6 @@ export const STICKY_SLAP_STICKER_PRODUCT = {
       values: [],
     },
   ],
-  categories: ["Sticky Slap Stickers"],
   availability: true,
   customerUploadConfig: {
     enabled: true,
