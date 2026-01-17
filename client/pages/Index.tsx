@@ -149,7 +149,7 @@ export default function Index() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex items-center gap-3">
-                  <div className="text-3xl flex-shrink-0">📦</div>
+                  <Truck className="w-8 h-8 text-blue-600 flex-shrink-0" />
                   <h3 className="font-semibold text-xs sm:text-sm text-gray-900">
                     <span className="block">Free Shipping</span>
                     <span className="block text-gray-600 font-normal">on all orders</span>
@@ -159,7 +159,7 @@ export default function Index() {
 
               <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex items-center gap-3">
-                  <div className="text-3xl flex-shrink-0">🌍</div>
+                  <Globe className="w-8 h-8 text-blue-600 flex-shrink-0" />
                   <h3 className="font-semibold text-xs sm:text-sm text-gray-900">
                     <span className="block">Made in the US</span>
                     <span className="block text-gray-600 font-normal">premium quality</span>
@@ -169,7 +169,7 @@ export default function Index() {
 
               <div className="backdrop-blur-xl bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex items-center gap-3">
-                  <div className="text-3xl flex-shrink-0">🖼️</div>
+                  <Award className="w-8 h-8 text-blue-600 flex-shrink-0" />
                   <h3 className="font-semibold text-xs sm:text-sm text-gray-900">
                     <span className="block">Free Proof</span>
                     <span className="block text-gray-600 font-normal">with all orders</span>
