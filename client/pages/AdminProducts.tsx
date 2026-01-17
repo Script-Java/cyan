@@ -5,7 +5,7 @@ import AdminLayout from "@/components/AdminLayout";
 import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { importAdminProduct, STICKY_SLAP_STICKER_PRODUCT, TWO_INCH_STICKERS_PRODUCT, FOUR_INCH_PROMO_STICKER_PRODUCT, THOUSAND_STICKERS_PROMO_PRODUCT, THREE_INCH_100_STICKERS_PRODUCT } from "@/lib/import-product";
+import { importAdminProduct, STICKY_SLAP_STICKER_PRODUCT, TWO_INCH_STICKERS_PRODUCT, FOUR_INCH_PROMO_STICKER_PRODUCT, FIVE_INCH_PROMO_STICKER_PRODUCT, THOUSAND_STICKERS_PROMO_PRODUCT, THREE_INCH_100_STICKERS_PRODUCT } from "@/lib/import-product";
 
 interface AdminProduct {
   id: string;
