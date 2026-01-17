@@ -146,39 +146,39 @@ export default function Index() {
             className="mx-auto px-4 sm:px-6 lg:px-8"
             style={{ maxWidth: "1100px" }}
           >
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="backdrop-blur-xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4 hover:border-green-300 transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <Rocket className="w-6 h-6 text-green-600" />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="backdrop-blur-xl bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-5 hover:border-green-400 hover:shadow-lg transition-all">
+                <div className="flex flex-col items-center text-center">
+                  <div className="p-3 bg-green-100 rounded-full mb-3">
+                    <Box className="w-7 h-7 text-green-600" strokeWidth={1.5} />
                   </div>
-                  <h3 className="font-semibold text-xs sm:text-sm text-gray-900">
+                  <h3 className="font-bold text-sm text-gray-900">
                     <span className="block">Free Shipping</span>
-                    <span className="block text-gray-600 font-normal">on all orders</span>
+                    <span className="block text-xs text-gray-600 font-normal mt-1">on all orders</span>
                   </h3>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4 hover:border-purple-300 transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-100 rounded-lg">
-                    <Sparkles className="w-6 h-6 text-purple-600" />
+              <div className="backdrop-blur-xl bg-gradient-to-br from-red-50 to-pink-50 border-2 border-red-200 rounded-xl p-5 hover:border-red-400 hover:shadow-lg transition-all">
+                <div className="flex flex-col items-center text-center">
+                  <div className="p-3 bg-red-100 rounded-full mb-3">
+                    <Heart className="w-7 h-7 text-red-600" strokeWidth={1.5} fill="currentColor" />
                   </div>
-                  <h3 className="font-semibold text-xs sm:text-sm text-gray-900">
+                  <h3 className="font-bold text-sm text-gray-900">
                     <span className="block">Made in the US</span>
-                    <span className="block text-gray-600 font-normal">premium quality</span>
+                    <span className="block text-xs text-gray-600 font-normal mt-1">premium quality</span>
                   </h3>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 hover:border-amber-300 transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-amber-100 rounded-lg">
-                    <Zap className="w-6 h-6 text-amber-600" />
+              <div className="backdrop-blur-xl bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-blue-200 rounded-xl p-5 hover:border-blue-400 hover:shadow-lg transition-all">
+                <div className="flex flex-col items-center text-center">
+                  <div className="p-3 bg-blue-100 rounded-full mb-3">
+                    <Eye className="w-7 h-7 text-blue-600" strokeWidth={1.5} />
                   </div>
-                  <h3 className="font-semibold text-xs sm:text-sm text-gray-900">
+                  <h3 className="font-bold text-sm text-gray-900">
                     <span className="block">Free Proof</span>
-                    <span className="block text-gray-600 font-normal">with all orders</span>
+                    <span className="block text-xs text-gray-600 font-normal mt-1">with all orders</span>
                   </h3>
                 </div>
               </div>
