@@ -704,31 +704,7 @@ export function createServer() {
   );
 
   // ===== Gallery Routes =====
-  // Public route to get gallery images
-  app.get("/api/gallery", (req, res) => adminGalleryRouter.stack[0].handle(req, res));
-
-  // Admin routes (Protected - Admin only)
-  app.get("/api/admin/gallery/all", verifyToken, requireAdmin, (req, res) => {
-    // Redirect to the router handler
-    const route = adminGalleryRouter.stack.find((r: any) => r.route?.path === "/gallery/admin/all");
-    if (route) route.handle(req, res);
-  });
-  app.post("/api/admin/gallery", verifyToken, requireAdmin, (req, res) => {
-    const route = adminGalleryRouter.stack.find((r: any) => r.route?.path === "/gallery/admin");
-    if (route) route.handle(req, res);
-  });
-  app.put("/api/admin/gallery/:id", verifyToken, requireAdmin, (req, res) => {
-    const route = adminGalleryRouter.stack.find((r: any) => r.route?.path === "/gallery/admin/:id");
-    if (route) route.handle(req, res, (err: any) => res.status(400).json({ error: err?.message }));
-  });
-  app.delete("/api/admin/gallery/:id", verifyToken, requireAdmin, (req, res) => {
-    const route = adminGalleryRouter.stack.find((r: any) => r.route?.path === "/gallery/admin/:id");
-    if (route) route.handle(req, res);
-  });
-  app.patch("/api/admin/gallery/reorder", verifyToken, requireAdmin, (req, res) => {
-    const route = adminGalleryRouter.stack.find((r: any) => r.route?.path === "/gallery/admin/reorder");
-    if (route) route.handle(req, res);
-  });
+  app.use("/api", adminGalleryRouter);
 
   // ===== Legal Pages Routes =====
   // Public routes
