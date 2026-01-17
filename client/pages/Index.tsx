@@ -157,7 +157,7 @@ export default function Index() {
               <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-4 hover:bg-white/60 transition-colors">
                 <div className="flex items-center gap-3">
                   <img
-                    src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F76d0f01eb9a64be29f953c8dee6911e4?format=webp&width=800"
+                    src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F389300f52ff64546871c24bf11cbbd2f"
                     alt="Digital creation icon"
                     className="w-8 h-8 flex-shrink-0 animate-spin"
                     style={{ animationDuration: "4s" }}
