@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Check, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Sparkles, Check, ChevronDown, ChevronLeft, ChevronRight, Truck, Globe, Award } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface GalleryImage {
