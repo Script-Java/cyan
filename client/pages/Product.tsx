@@ -528,7 +528,7 @@ export default function Product() {
                   </h2>
 
                   {option.type === "dropdown" && (
-                    <div className="grid grid-cols-2 gap-1.5">
+                    <div className="grid grid-cols-1 gap-2">
                       {option.values.map((value, index) => (
                         <button
                           key={value.id}
@@ -539,7 +539,7 @@ export default function Product() {
                             };
                             setSelectedOptions(newOptions);
                           }}
-                          className={`relative flex flex-col items-center justify-center border-2 rounded p-1.5 transition text-center ${
+                          className={`relative flex flex-row items-center justify-start gap-3 border-2 rounded p-2 transition text-left ${
                             selectedOptions[option.id] === value.id
                               ? "border-purple-500 bg-purple-100 shadow-lg shadow-purple-200/50"
                               : "border-gray-200 hover:border-gray-300 bg-gray-50"
