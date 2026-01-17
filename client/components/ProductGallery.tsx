@@ -166,7 +166,7 @@ export default function ProductGallerySlideshow({
     // - mb-12: Bottom margin for spacing below component
     // - border border-gray-200/50: Subtle border for definition
     // - shadow-sm: Light shadow for depth
-    <div className="w-full bg-gray-100/50 backdrop-blur-sm rounded-2xl p-3 sm:p-4 mb-6 border border-gray-200/50 shadow-sm">
+    <div className="w-full bg-white backdrop-blur-sm rounded-2xl p-3 sm:p-4 mb-6 border border-gray-200 shadow-sm">
 
       {/* ====================================================================
           MAIN LAYOUT GRID
