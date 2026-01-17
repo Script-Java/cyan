@@ -181,17 +181,24 @@ export default function AdminProducts() {
                   {isImporting ? "Importing..." : "Import Product"}
                 </Button>
                 {importMenuOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                  <div className="absolute top-full right-0 mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
                     <button
                       onClick={() => handleImportProduct(TWO_INCH_STICKERS_PRODUCT)}
-                      className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200 last:border-b-0"
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200"
                     >
                       <div className="font-semibold text-gray-900">2 INCH - 100 CUSTOM STICKERS</div>
                       <div className="text-xs text-gray-600 mt-1">SKU: 00003 • Price: $0.17</div>
                     </button>
                     <button
+                      onClick={() => handleImportProduct(FOUR_INCH_PROMO_STICKER_PRODUCT)}
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200"
+                    >
+                      <div className="font-semibold text-gray-900">4'' INCH - CUSTOM STICKER PROMO PER STICKER</div>
+                      <div className="text-xs text-gray-600 mt-1">Price: $0.40</div>
+                    </button>
+                    <button
                       onClick={() => handleImportProduct(STICKY_SLAP_STICKER_PRODUCT)}
-                      className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200 last:border-b-0"
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50"
                     >
                       <div className="font-semibold text-gray-900">CREATE A STICKER</div>
                       <div className="text-xs text-gray-600 mt-1">SKU: 00004 • Price: $0.00</div>
