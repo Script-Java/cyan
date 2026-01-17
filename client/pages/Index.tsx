@@ -177,7 +177,7 @@ export default function Index() {
               <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-4 hover:bg-white/60 transition-colors">
                 <div className="flex items-center gap-3">
                   <img
-                    src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F43ff74c9c6de40978d8c0e5b50e2c1f6"
+                    src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F1e97651d4cac412f8e78e6aa02358bfe"
                     width="46"
                     alt="Proof icon"
                     style={{ cursor: "nwse-resize" }}
