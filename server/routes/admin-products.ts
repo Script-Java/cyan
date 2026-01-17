@@ -359,7 +359,13 @@ export const handleGetAdminProduct: RequestHandler = async (req, res) => {
         .json({ error: "Failed to fetch product", details: error.message, code: error.code });
     }
 
-    res.json({ product: data });
+    const product = {
+      ...data,
+      show_quantity_panel: data.show_quantity_panel !== false ? true : false,
+      fixed_quantity: data.fixed_quantity ?? null,
+    };
+
+    res.json({ product });
   } catch (error) {
     console.error("Error fetching product:", error);
     res.status(500).json({
