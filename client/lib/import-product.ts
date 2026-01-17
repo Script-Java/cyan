@@ -21,6 +21,173 @@ export async function importAdminProduct(productData: any) {
   return await response.json();
 }
 
+// The "3'' INCH - 100 STICKERS" product data from Ecwid CSV (ID: 766087668)
+export const THREE_INCH_100_STICKERS_PRODUCT = {
+  name: "3'' INCH - 100 STICKERS",
+  basePrice: 17.0,
+  sku: "00007",
+  description:
+    '<p><strong>Sticky Slap</strong> — Custom Stickers That Stick</p><p> We specialize in high-quality <strong>custom sticker printing</strong> with a vibrant <strong>8-color setup</strong> for bold, precise designs.<br> 🌦️ <strong>Durability:</strong> 4–5 years outdoors unlaminated, 5–8 years laminated<br> ⏱️ <strong>Fast Turnaround:</strong> Orders ship within <strong>2 business days after artwork approval</strong><br> Whether it\'s branding, promo drops, or slap tags — <strong>Sticky Slap makes stickers that go hard and last long.</strong></p>',
+  images: [
+    {
+      id: "main",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5039413105.webp",
+      name: "Main Image",
+    },
+    {
+      id: "img1",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146842518.jpg",
+      name: "Gallery Image 1",
+    },
+    {
+      id: "img2",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146842503.jpg",
+      name: "Gallery Image 2",
+    },
+    {
+      id: "img3",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146836542.jpg",
+      name: "Gallery Image 3",
+    },
+    {
+      id: "img4",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146842508.jpg",
+      name: "Gallery Image 4",
+    },
+    {
+      id: "img5",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146836527.jpg",
+      name: "Gallery Image 5",
+    },
+    {
+      id: "img6",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146836532.jpg",
+      name: "Gallery Image 6",
+    },
+    {
+      id: "img7",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146803688.jpg",
+      name: "Gallery Image 7",
+    },
+    {
+      id: "img8",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5146842528.jpg",
+      name: "Gallery Image 8",
+    },
+  ],
+  options: [
+    {
+      id: "sticker-cut-shape",
+      name: "STICKER CUT SHAPE",
+      type: "dropdown",
+      required: false,
+      displayOrder: 1,
+      values: [
+        {
+          id: "scs-1",
+          name: "DIE CUT (CUSTOM SHAPE)",
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "vinyl-finish",
+      name: "VINYL FINISH",
+      type: "dropdown",
+      required: false,
+      displayOrder: 2,
+      values: [
+        {
+          id: "vf-1",
+          name: "SATIN",
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "sticker-size",
+      name: "STICKER SIZE",
+      type: "dropdown",
+      required: false,
+      displayOrder: 3,
+      values: [
+        {
+          id: "ss-1",
+          name: '3" x 3"',
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "sticker-amounts",
+      name: "STICKER AMOUNTS",
+      type: "dropdown",
+      required: false,
+      displayOrder: 4,
+      values: [
+        {
+          id: "sa-1",
+          name: "100",
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "sticker-design",
+      name: "ARTWORK",
+      type: "text",
+      required: true,
+      displayOrder: 5,
+      values: [],
+    },
+    {
+      id: "border-cut",
+      name: "STICKER BOARDER CUT",
+      type: "dropdown",
+      required: true,
+      displayOrder: 6,
+      values: [
+        {
+          id: "bc-1",
+          name: "FULL BLEED CUT",
+          priceModifier: 0,
+        },
+        {
+          id: "bc-2",
+          name: "WHITE BOARDER CUT",
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "easy-peel-tab",
+      name: "EASY PEEL TAB",
+      type: "dropdown",
+      required: true,
+      displayOrder: 7,
+      values: [
+        {
+          id: "ept-1",
+          name: "NO",
+          priceModifier: 0,
+        },
+        {
+          id: "ept-2",
+          name: "YES",
+          priceModifier: 1.7,
+        },
+      ],
+    },
+  ],
+  availability: true,
+  customerUploadConfig: {
+    enabled: true,
+    maxFileSize: 50,
+    allowedFormats: ["png", "jpg", "jpeg", "gif", "pdf", "ai", "psd"],
+    description: "Upload your artwork for custom stickers",
+  },
+};
+
 // The "1000 STICKERS PROMO" product data from Ecwid CSV (ID: 778901112)
 export const THOUSAND_STICKERS_PROMO_PRODUCT = {
   name: "1000 STICKERS PROMO",
