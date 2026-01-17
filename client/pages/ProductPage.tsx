@@ -770,7 +770,7 @@ export default function ProductPage() {
                     <div
                       style={{
                         display: "flex",
-                        gap: "12px",
+                        gap: "8px",
                         alignItems: "center",
                       }}
                     >
@@ -779,6 +779,7 @@ export default function ProductPage() {
                           fontFamily: "Rubik, sans-serif",
                           fontWeight: "600",
                           color: "rgb(0, 0, 0)",
+                          fontSize: "13px",
                         }}
                       >
                         ${option.price.toFixed(2)}
@@ -791,14 +792,14 @@ export default function ProductPage() {
           </div>
 
           {/* Below Grid - Additional Fields and Upload */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
             {/* Additional Fields */}
             {product.optional_fields.length > 0 && (
-              <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-4">
-                <h2 className="text-xs font-bold mb-2">
+              <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg p-3">
+                <h2 className="text-xs font-bold mb-1.5">
                   ✏️ Additional Instructions (optional)
                 </h2>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {product.optional_fields.map((field) => (
                     <div key={field.name}>
                       <Label className="text-gray-700 text-xs mb-1 block">
