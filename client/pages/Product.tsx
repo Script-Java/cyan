@@ -250,7 +250,13 @@ export default function Product() {
         setError("Product not found");
         setIsLoading(false);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load product");
+        const errorMessage = err instanceof Error ? err.message : "Failed to load product";
+        console.error("Product fetch error:", {
+          productId,
+          error: errorMessage,
+          details: err,
+        });
+        setError(errorMessage);
       } finally {
         setIsLoading(false);
       }
