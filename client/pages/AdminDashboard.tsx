@@ -200,6 +200,14 @@ export default function AdminDashboard() {
       color: "bg-sky-100 hover:bg-sky-200",
       textColor: "text-sky-600",
     },
+    {
+      title: "Gallery",
+      description: "Manage featured gallery",
+      icon: <ImageIcon className="w-5 h-5" />,
+      path: "/admin/gallery",
+      color: "bg-rose-100 hover:bg-rose-200",
+      textColor: "text-rose-600",
+    },
   ];
 
   if (!isAuthenticated) {
