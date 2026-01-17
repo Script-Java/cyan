@@ -560,7 +560,7 @@ export default function ProductPage() {
                           </p>
                         )}
                         {index === 0 && (
-                          <span className="absolute top-2 right-2 text-xs font-bold text-purple-600">
+                          <span className="absolute top-1 right-1 text-xxs font-bold text-white bg-purple-600 px-1.5 py-0.5 rounded" style={{ fontSize: "10px" }}>
                             Popular
                           </span>
                         )}
