@@ -128,6 +128,31 @@ export default function AdminProducts() {
     }).format(price);
   };
 
+  const handleImportProduct = async () => {
+    setIsImporting(true);
+    try {
+      const result = await importAdminProduct(STICKY_SLAP_STICKER_PRODUCT);
+      toast({
+        title: "Success",
+        description: `Product "${result.product.name}" imported successfully`,
+      });
+      // Refresh products list
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        fetchProducts(token);
+      }
+    } catch (error) {
+      console.error("Import error:", error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to import product",
+        variant: "destructive",
+      });
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
   if (!isAuthenticated) {
     return null;
   }
