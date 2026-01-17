@@ -446,7 +446,7 @@ export default function ProductPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#fafafa] text-black">
+      <main className="min-h-screen bg-white text-black">
         <div
           style={{
             maxWidth: "1100px",
