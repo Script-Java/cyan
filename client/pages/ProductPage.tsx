@@ -923,11 +923,11 @@ export default function ProductPage() {
                     </p>
                   </div>
                 ) : (
-                  <label className="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-green-600 rounded-lg p-8 cursor-pointer hover:border-green-700 transition bg-green-50">
+                  <label className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-green-600 rounded-lg p-3 cursor-pointer hover:border-green-700 transition bg-green-50">
                     <img
                       src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Fcee606b598864f7a983db9ee1358acf5?format=webp&width=800"
                       alt="Upload"
-                      className="w-16 h-16"
+                      className="w-10 h-10"
                     />
                     <div className="text-center">
                       <p className="text-black font-medium text-sm">
