@@ -8,7 +8,7 @@ const supabaseUrl = process.env.SUPABASE_URL || "";
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// GET all gallery images
+// GET all gallery images (public)
 router.get("/gallery", async (req: Request, res: Response) => {
   try {
     const { data, error } = await supabase
