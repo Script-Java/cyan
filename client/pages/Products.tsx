@@ -280,43 +280,64 @@ export default function Products() {
   return (
     <>
       <Header />
-      <main className="pt-20 min-h-screen bg-black text-white">
-        <div
-          className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4"
-          style={{ padding: "16px 16px 200px" }}
-        >
+      <main className="pt-16 bg-white text-gray-900 min-h-screen">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Category Section */}
           {!selectedCategory && (
-            <div className="mb-8">
-              <h2 className="text-xl font-bold text-white mb-0.5 text-center">
-                CHOOSE{" "}
-                <span
-                  className="inline-block text-black px-1.5 py-0.25 rounded font-bold text-base"
-                  style={{ backgroundColor: "#FFD713" }}
-                >
-                  STICKER
+            <div className="mb-12">
+              <h1 className="text-4xl sm:text-5xl font-bold text-center mb-2">
+                Shop Our Premium
+                <span className="block bg-gradient-to-r from-[#FFD713] to-[#FFA500] bg-clip-text text-transparent">
+                  Sticker Collection
                 </span>
-              </h2>
-              <p className="text-center text-white/60 mb-4 text-xs">TYPE:</p>
+              </h1>
+              <p className="text-center text-gray-600 text-lg mb-8">
+                Choose from our wide range of high-quality stickers
+              </p>
+
+              {/* Category Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                {categories.map((category) => (
+                  <Link
+                    key={category.id}
+                    to={`/products?category=${category.id}`}
+                    className="group text-center hover:opacity-80 transition-opacity"
+                  >
+                    <div className="bg-gray-100 rounded-lg p-4 mb-3 group-hover:bg-gray-200 transition-colors h-32 flex items-center justify-center overflow-hidden">
+                      <img
+                        src={category.image}
+                        alt={category.name}
+                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                    <h3 className="font-semibold text-sm text-gray-900 mb-1">
+                      {category.name}
+                    </h3>
+                    <p className="text-xs text-gray-600">
+                      {getCategoryItemCount(category.id)} items
+                    </p>
+                  </Link>
+                ))}
+              </div>
             </div>
           )}
 
           {/* Category Filter Indicator */}
           {selectedCategory && (
-            <div className="mb-4 flex items-center justify-between gap-4">
+            <div className="mb-8 flex items-center justify-between gap-4">
               <div>
-                <h2 className="text-xl font-bold text-white">
+                <h2 className="text-3xl font-bold text-gray-900">
                   {categories.find((c) => c.id === selectedCategory)?.name ||
                     "Products"}
                 </h2>
-                <p className="text-white/60 mt-0.5 text-xs">
+                <p className="text-gray-600 mt-1">
                   {filteredProducts.length} product
                   {filteredProducts.length !== 1 ? "s" : ""} available
                 </p>
               </div>
               <Link
                 to="/products"
-                className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-xs font-medium whitespace-nowrap"
+                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors text-sm font-medium whitespace-nowrap text-gray-900"
               >
                 View All
               </Link>
@@ -328,15 +349,15 @@ export default function Products() {
             <div className="flex justify-center items-center py-12">
               <div className="text-center">
                 <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-3"></div>
-                <p className="text-white/60 text-sm">Loading products...</p>
+                <p className="text-gray-600 text-sm">Loading products...</p>
               </div>
             </div>
           )}
 
           {/* Error State */}
           {error && products.length === 0 && !isLoading && (
-            <div className="bg-red-600/20 border border-red-500/30 rounded-lg p-4 mb-6">
-              <p className="text-red-200 text-sm">Error: {error}</p>
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <p className="text-red-800 text-sm">Error: {error}</p>
               <button
                 onClick={fetchProducts}
                 className="mt-2 px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-xs"
@@ -349,7 +370,7 @@ export default function Products() {
           {/* No Products Found */}
           {!isLoading && selectedCategory && filteredProducts.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-white/60 text-sm mb-4">
+              <p className="text-gray-600 text-sm mb-4">
                 No products found in this category.
               </p>
               <Link
@@ -363,36 +384,33 @@ export default function Products() {
 
           {/* Products Grid */}
           {!isLoading && filteredProducts.length > 0 && (
-            <div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2.5"
-              style={{ margin: "0 -1px 32px 0" }}
-            >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {filteredProducts.map((product) => (
                 <div
                   key={product.id}
-                  className="group rounded-lg overflow-hidden bg-white/5 hover:bg-white/10 transition-all duration-300 flex flex-col"
+                  className="group rounded-lg overflow-hidden bg-white border border-gray-200 hover:border-gray-300 transition-all duration-300 flex flex-col shadow-sm hover:shadow-md"
                 >
                   {/* Product Image */}
-                  <div className="relative bg-white/10 aspect-square overflow-hidden flex items-center justify-center">
+                  <div className="relative bg-gray-100 aspect-square overflow-hidden flex items-center justify-center">
                     <img
                       src={product.image}
                       alt={product.name}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                     {product.badge && (
-                      <div className="absolute top-2 right-2 bg-blue-600 text-white px-2 py-0.5 rounded-full text-xs font-bold">
+                      <div className="absolute top-3 right-3 bg-blue-600 text-white px-2.5 py-1 rounded-full text-xs font-bold">
                         {product.badge}
                       </div>
                     )}
                   </div>
 
                   {/* Product Info */}
-                  <div className="p-2 flex flex-col flex-grow">
-                    <h3 className="font-bold text-white text-sm mb-1 group-hover:text-blue-400 transition-colors line-clamp-2">
+                  <div className="p-3 flex flex-col flex-grow">
+                    <h3 className="font-bold text-gray-900 text-sm mb-1 group-hover:text-blue-600 transition-colors line-clamp-2">
                       {product.name}
                     </h3>
 
-                    <p className="text-xs text-white/60 mb-2 flex-grow line-clamp-2">
+                    <p className="text-xs text-gray-600 mb-2 flex-grow line-clamp-2">
                       {product.description}
                     </p>
 
@@ -405,20 +423,20 @@ export default function Products() {
                             className={`w-3 h-3 ${
                               i < Math.floor(product.rating || 0)
                                 ? "fill-yellow-400 text-yellow-400"
-                                : "text-white/20"
+                                : "text-gray-300"
                             }`}
                           />
                         ))}
                       </div>
-                      <span className="text-xs text-white/60">
+                      <span className="text-xs text-gray-600">
                         {product.rating || 0} ({product.reviews || 0})
                       </span>
                     </div>
 
                     {/* Price */}
-                    <div className="mb-2">
-                      <span className="text-xs text-white/60">from</span>
-                      <p className="text-lg font-bold text-white">
+                    <div className="mb-3">
+                      <span className="text-xs text-gray-600">from</span>
+                      <p className="text-lg font-bold text-gray-900">
                         {getPriceDisplay(product)}
                       </p>
                     </div>
@@ -431,7 +449,7 @@ export default function Products() {
                             expandedProduct === product.id ? null : product.id,
                           )
                         }
-                        className="mb-2 flex items-center gap-1 text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors"
+                        className="mb-2 flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors"
                       >
                         View {product.variations.length} Options
                         <ChevronDown
@@ -456,36 +474,36 @@ export default function Products() {
                   {expandedProduct === product.id &&
                     product.variations &&
                     product.variations.length > 0 && (
-                      <div className="p-2 bg-white/5 space-y-1">
-                        <h4 className="font-semibold text-xs text-white mb-2">
+                      <div className="p-3 bg-gray-50 border-t border-gray-200 space-y-1">
+                        <h4 className="font-semibold text-xs text-gray-900 mb-2">
                           Options:
                         </h4>
                         {product.variations.slice(0, 8).map((variation) => (
                           <div
                             key={variation.id}
-                            className="flex items-center justify-between text-xs bg-white/10 rounded p-1.5"
+                            className="flex items-center justify-between text-xs bg-white border border-gray-200 rounded p-1.5"
                           >
                             <div>
                               {variation.attributes &&
                               Object.keys(variation.attributes).length > 0 ? (
-                                <div className="text-white/80">
+                                <div className="text-gray-800">
                                   {Object.entries(variation.attributes)
                                     .map(([key, val]) => `${val}`)
                                     .join(" • ")}
                                 </div>
                               ) : (
-                                <span className="text-white/60">
+                                <span className="text-gray-600">
                                   {variation.id}
                                 </span>
                               )}
                             </div>
-                            <span className="font-semibold text-white">
+                            <span className="font-semibold text-gray-900">
                               ${variation.price.toFixed(2)}
                             </span>
                           </div>
                         ))}
                         {product.variations.length > 8 && (
-                          <p className="text-xs text-white/40 text-center pt-1">
+                          <p className="text-xs text-gray-500 text-center pt-1">
                             +{product.variations.length - 8} more
                           </p>
                         )}
@@ -498,13 +516,12 @@ export default function Products() {
 
           {/* CTA Section */}
           <div
-            className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg text-center"
-            style={{ margin: "26px 0 4px", padding: "14px 16px 10px" }}
+            className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100 rounded-lg text-center mt-12 p-8"
           >
-            <h2 className="text-xl font-bold text-white mb-2">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
               Can't find what you're looking for?
             </h2>
-            <p className="text-sm text-white/80 mb-4">
+            <p className="text-gray-700 text-sm mb-4 max-w-2xl mx-auto">
               Contact our team for custom bulk orders and special requests.
             </p>
             <button className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all text-sm">
@@ -518,9 +535,8 @@ export default function Products() {
               fontWeight: "400",
               textAlign: "left",
               paddingTop: "40px",
-              paddingLeft: "0px",
               fontSize: "12px",
-              color: "rgba(255, 255, 255, 0.5)",
+              color: "rgba(0, 0, 0, 0.5)",
             }}
           >
             Built with ❤️ by © Sticky Slap LLC
