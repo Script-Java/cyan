@@ -443,3 +443,70 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
     });
   }
 };
+
+export const handleImportAdminProduct: RequestHandler = async (req, res) => {
+  try {
+    const {
+      name,
+      basePrice,
+      sku,
+      description,
+      images,
+      options,
+      categories,
+      availability,
+      customerUploadConfig,
+    } = req.body;
+
+    if (!name?.trim()) {
+      return res.status(400).json({ error: "Product name is required" });
+    }
+
+    const dbProduct = {
+      name,
+      base_price: basePrice || 0,
+      sku: sku || "",
+      description: description || "",
+      images: images || [],
+      options: options || [],
+      categories: categories || [],
+      availability: availability !== false,
+      customer_upload_config: customerUploadConfig || {
+        enabled: false,
+        maxFileSize: 5,
+        allowedFormats: ["png", "jpg", "jpeg", "gif"],
+        description: "",
+      },
+      created_at: new Date().toISOString(),
+    };
+
+    const { data, error } = await supabase
+      .from("admin_products")
+      .insert([dbProduct])
+      .select();
+
+    if (error) {
+      console.error("Database error creating product:", {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+      });
+      return res.status(500).json({
+        error: "Failed to create product",
+        details: error.message,
+      });
+    }
+
+    res.json({
+      success: true,
+      product: data?.[0],
+    });
+  } catch (error) {
+    console.error("Error importing product:", error);
+    res.status(500).json({
+      error: "Failed to import product",
+      details:
+        error instanceof Error ? error.message : "Unknown error occurred",
+    });
+  }
+};
