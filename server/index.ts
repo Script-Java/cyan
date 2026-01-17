@@ -454,6 +454,8 @@ export function createServer() {
 
   // ===== Admin Products Routes (Public - for customer-facing product pages) =====
   app.get("/api/public/products/:productId", handleGetPublicProduct);
+  app.get("/api/public/products/admin/:id", handleGetAdminProductPublic);
+  app.get("/api/public/products/imported/:id", handleGetImportedProductPublic);
 
   // ===== Ecwid Products Routes (Public) =====
   // Note: Order matters! More specific routes first
