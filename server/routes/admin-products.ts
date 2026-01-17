@@ -279,9 +279,15 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
+    const product = {
+      ...data[0],
+      show_quantity_panel: data[0].show_quantity_panel !== false ? true : false,
+      fixed_quantity: data[0].fixed_quantity ?? null,
+    };
+
     res.json({
       message: "Product updated successfully",
-      product: data[0],
+      product,
     });
   } catch (error) {
     console.error("Error updating product:", error);
