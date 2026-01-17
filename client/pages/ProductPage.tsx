@@ -921,13 +921,13 @@ export default function ProductPage() {
             )}
 
             {/* Order Notes */}
-            <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-4">
-              <h2 className="text-xs font-bold mb-2">📝 Order Notes (optional)</h2>
+            <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg p-3">
+              <h2 className="text-xs font-bold mb-1.5">📝 Order Notes (optional)</h2>
               <Textarea
                 value={orderNotes}
                 onChange={(e) => setOrderNotes(e.target.value)}
-                placeholder="Add any special requests, instructions, or notes for your order..."
-                className="bg-white border-gray-300 text-black placeholder-gray-500 min-h-12 text-xs"
+                placeholder="Add any special requests or notes..."
+                className="bg-white border-gray-300 text-black placeholder-gray-500 min-h-10 text-xs"
               />
               <p className="text-gray-600 text-xs mt-1">
                 Let us know about any special requirements or customizations
@@ -936,24 +936,24 @@ export default function ProductPage() {
           </div>
 
           {/* Add to Cart Button - Full Width */}
-          <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-4">
+          <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg p-3">
             <Button
               onClick={handleAddToCart}
               disabled={isAddingToCart || !product.availability || !designFile}
-              className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-2 text-sm font-semibold gap-2 rounded-lg"
+              className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-1.5 text-xs font-semibold gap-2 rounded"
             >
-              <Upload className="w-4 h-4" />
+              <Upload className="w-3 h-3" />
               {isAddingToCart
                 ? "Adding to Cart..."
                 : !designFile
-                  ? "Upload Artwork to Continue"
+                  ? "Upload Artwork"
                   : !product.availability
                     ? "Out of Stock"
                     : "Add to Cart"}
             </Button>
 
-            <p className="text-center text-gray-600 text-xs mt-2">
-              Items will be added to your cart for review before checkout
+            <p className="text-center text-gray-600 text-xs mt-1.5">
+              Items will be added to your cart
             </p>
           </div>
         </div>
