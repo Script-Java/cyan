@@ -169,21 +169,30 @@ export async function createSupabaseOrder(
   orderData: OrderData,
 ): Promise<{ id: number; success: boolean }> {
   try {
+    // Build order object with only columns that exist in the schema
+    const orderToInsert: any = {
+      customer_id: orderData.customer_id,
+      status: orderData.status || "paid",
+      total: orderData.total,
+      subtotal: orderData.subtotal || 0,
+      tax: orderData.tax || 0,
+      shipping: orderData.shipping || 0,
+      items: orderData.items || [],
+    };
+
+    // Add optional fields if they exist and column exists in schema
+    if (orderData.bigcommerce_order_id) {
+      orderToInsert.bigcommerce_order_id = orderData.bigcommerce_order_id;
+    }
+    if (orderData.estimated_delivery_date) {
+      orderToInsert.estimated_delivery_date = orderData.estimated_delivery_date;
+    }
+
+    // Note: billing_address and shipping_address will be added once database schema is updated
+
     const { data, error } = await supabase
       .from("orders")
-      .insert({
-        customer_id: orderData.customer_id,
-        status: orderData.status || "paid",
-        total: orderData.total,
-        subtotal: orderData.subtotal || 0,
-        tax: orderData.tax || 0,
-        shipping: orderData.shipping || 0,
-        billing_address: orderData.billing_address,
-        shipping_address: orderData.shipping_address,
-        items: orderData.items || [],
-        bigcommerce_order_id: orderData.bigcommerce_order_id,
-        estimated_delivery_date: orderData.estimated_delivery_date || null,
-      })
+      .insert(orderToInsert)
       .select("id")
       .single();
 
