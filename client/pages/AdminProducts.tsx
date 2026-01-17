@@ -169,13 +169,23 @@ export default function AdminProducts() {
                 Manage your product catalog and inventory
               </p>
             </div>
-            <Button
-              onClick={() => navigate("/admin/products/new")}
-              className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-4 py-2 text-sm"
-            >
-              <Plus className="w-4 h-4" />
-              Add Product
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={handleImportProduct}
+                disabled={isImporting}
+                className="bg-blue-600 hover:bg-blue-700 text-white gap-2 font-medium rounded-lg px-4 py-2 text-sm disabled:opacity-50"
+              >
+                <Download className="w-4 h-4" />
+                {isImporting ? "Importing..." : "Import Product"}
+              </Button>
+              <Button
+                onClick={() => navigate("/admin/products/new")}
+                className="bg-green-600 hover:bg-green-700 text-white gap-2 font-medium rounded-lg px-4 py-2 text-sm"
+              >
+                <Plus className="w-4 h-4" />
+                Add Product
+              </Button>
+            </div>
           </div>
 
           {/* Quick Navigation */}
