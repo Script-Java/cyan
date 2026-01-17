@@ -494,7 +494,6 @@ export default function ProductPage() {
                 </h2>
 
                 <div
-                  className="prose prose-sm max-w-none text-gray-700"
                   style={{
                     color: "rgb(51, 51, 51)",
                     fontSize: "14px",
@@ -503,6 +502,9 @@ export default function ProductPage() {
                 >
                   {product.description ? (
                     <div
+                      style={{
+                        color: "rgb(51, 51, 51)",
+                      }}
                       dangerouslySetInnerHTML={{
                         __html: product.description,
                       }}
