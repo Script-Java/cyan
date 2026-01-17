@@ -55,6 +55,15 @@ export default function Products() {
     string | number | null
   >(null);
 
+  const categoryMap = {
+    "Vinyl Stickers": "vinyl",
+    "Holographic Stickers": "holographic",
+    "Glitter Stickers": "glitter",
+    "Chrome Stickers": "chrome",
+    "Clear Stickers": "clear",
+    "Sticker Sheets": "sheets",
+  };
+
   const categories: Category[] = [
     {
       id: "vinyl",
