@@ -138,47 +138,38 @@ export default function Index() {
         </section>
 
         {/* Benefits Section */}
-        <section
-          className="bg-white"
-          style={{ padding: "16px 0 20px" }}
-        >
+        <section className="bg-white">
           <div
             className="mx-auto px-4 sm:px-6 lg:px-8"
-            style={{ maxWidth: "1100px" }}
+            style={{ maxWidth: "1100px", padding: "16px 0 20px" }}
           >
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="backdrop-blur-xl bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-5 hover:border-green-400 hover:shadow-lg transition-all">
-                <div className="flex flex-col items-center text-center">
-                  <div className="p-3 bg-green-100 rounded-full mb-3">
-                    <Box className="w-7 h-7 text-green-600" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-bold text-sm text-gray-900">
-                    <span className="block">Free Shipping</span>
-                    <span className="block text-xs text-gray-600 font-normal mt-1">on all orders</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-4 hover:bg-white/60 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl flex-shrink-0">📦</div>
+                  <h3 className="font-semibold text-sm text-gray-900">
+                    <span className="block">Free ground shipping</span>
+                    <span className="block text-xs text-gray-500 font-normal">on all orders</span>
                   </h3>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-gradient-to-br from-red-50 to-pink-50 border-2 border-red-200 rounded-xl p-5 hover:border-red-400 hover:shadow-lg transition-all">
-                <div className="flex flex-col items-center text-center">
-                  <div className="p-3 bg-red-100 rounded-full mb-3">
-                    <Heart className="w-7 h-7 text-red-600" strokeWidth={1.5} fill="currentColor" />
-                  </div>
-                  <h3 className="font-bold text-sm text-gray-900">
-                    <span className="block">Made in the US</span>
-                    <span className="block text-xs text-gray-600 font-normal mt-1">premium quality</span>
+              <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-4 hover:bg-white/60 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl flex-shrink-0 animate-spin" style={{ animationDuration: "4s" }}>🌍</div>
+                  <h3 className="font-semibold text-sm text-gray-900">
+                    <span className="block">Out for this world quality</span>
+                    <span className="block text-xs text-gray-500 font-normal">, made in the US</span>
                   </h3>
                 </div>
               </div>
 
-              <div className="backdrop-blur-xl bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-blue-200 rounded-xl p-5 hover:border-blue-400 hover:shadow-lg transition-all">
-                <div className="flex flex-col items-center text-center">
-                  <div className="p-3 bg-blue-100 rounded-full mb-3">
-                    <Eye className="w-7 h-7 text-blue-600" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-bold text-sm text-gray-900">
-                    <span className="block">Free Proof</span>
-                    <span className="block text-xs text-gray-600 font-normal mt-1">with all orders</span>
+              <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-4 hover:bg-white/60 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl flex-shrink-0">🖼️</div>
+                  <h3 className="font-semibold text-sm text-gray-900">
+                    <span className="block">Free Online Proof</span>
+                    <span className="block text-xs text-gray-500 font-normal">with all orders</span>
                   </h3>
                 </div>
               </div>
