@@ -156,7 +156,12 @@ export default function Index() {
 
               <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-4 hover:bg-white/60 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="text-3xl flex-shrink-0 animate-spin" style={{ animationDuration: "4s" }}>🌍</div>
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F76d0f01eb9a64be29f953c8dee6911e4?format=webp&width=800"
+                    alt="Digital creation icon"
+                    className="w-8 h-8 flex-shrink-0 animate-spin"
+                    style={{ animationDuration: "4s" }}
+                  />
                   <h3 className="font-semibold text-sm text-gray-900">
                     <span className="block">Out for this world quality</span>
                     <span className="block text-xs text-gray-500 font-normal">, made in the US</span>
