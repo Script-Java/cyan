@@ -50,7 +50,7 @@ export default function Deals() {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch("/api/imported-products?limit=100");
+      const response = await fetch("/api/storefront/products?limit=100");
       if (!response.ok) {
         throw new Error("Failed to fetch products");
       }
