@@ -60,20 +60,49 @@ export default function AdminGallery() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // For now, we'll use a URL-based approach
-    // In production, you'd upload to Cloudinary or similar
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-      const imageUrl = event.target?.result as string;
+    try {
+      // Show preview while uploading
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const previewUrl = event.target?.result as string;
+        setFormData((prev) => ({
+          ...prev,
+          image_url: previewUrl,
+        }));
+      };
+      reader.readAsDataURL(file);
 
-      // Here you would upload to Cloudinary
-      // For demo, we'll use the data URL
+      // Upload to Cloudinary
+      const formDataToUpload = new FormData();
+      formDataToUpload.append("file", file);
+      formDataToUpload.append("upload_preset", "sticky_slap_gallery");
+
+      const cloudinaryRes = await fetch(
+        "https://api.cloudinary.com/v1_1/dabgothkm/image/upload",
+        {
+          method: "POST",
+          body: formDataToUpload,
+        }
+      );
+
+      if (!cloudinaryRes.ok) {
+        toast.error("Failed to upload image to cloud storage");
+        return;
+      }
+
+      const cloudinaryData = await cloudinaryRes.json();
+      const cloudinaryUrl = cloudinaryData.secure_url;
+
+      // Update with the permanent Cloudinary URL
       setFormData((prev) => ({
         ...prev,
-        image_url: imageUrl,
+        image_url: cloudinaryUrl,
       }));
-    };
-    reader.readAsDataURL(file);
+      toast.success("Image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Failed to upload image");
+    }
   };
 
   const handleAddImage = async () => {
