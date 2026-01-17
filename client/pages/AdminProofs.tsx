@@ -121,12 +121,16 @@ export default function AdminProofs() {
     fetchPendingOrders(token);
   }, [navigate]);
 
-  const fetchProofs = async () => {
+  const fetchProofs = async (token: string) => {
     try {
       setIsLoading(true);
       setError("");
 
-      const response = await fetch("/api/admin/proofs");
+      const response = await fetch("/api/admin/proofs", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
