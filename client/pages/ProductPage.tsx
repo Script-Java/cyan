@@ -834,7 +834,7 @@ export default function ProductPage() {
                 <div className="space-y-2">
                   {product.optional_fields.map((field) => (
                     <div key={field.name}>
-                      <Label className="text-gray-700 text-xs mb-2 block">
+                      <Label className="text-gray-700 text-xs mb-1 block">
                         {field.name}
                       </Label>
                       {field.type === "textarea" ? (
@@ -847,7 +847,7 @@ export default function ProductPage() {
                             }))
                           }
                           placeholder={`Enter any special requests or instructions here...`}
-                          className="bg-gray-50 border-gray-200 text-black placeholder-gray-500 min-h-20 text-xs"
+                          className="bg-gray-50 border-gray-200 text-black placeholder-gray-500 min-h-12 text-xs"
                         />
                       ) : field.type === "date" ? (
                         <Input
