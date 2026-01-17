@@ -11,6 +11,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Products from "./pages/Products";
+import Deals from "./pages/Deals";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import EcwidStore from "./pages/EcwidStore";
