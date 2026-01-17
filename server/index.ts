@@ -469,6 +469,9 @@ export function createServer() {
     handleDeleteAllProducts,
   );
 
+  // ===== Storefront Products Routes (Public - merged admin + imported) =====
+  app.get("/api/storefront/products", handleGetStorefrontProducts);
+
   // ===== Payments Routes (Public) =====
   app.get("/api/payments/methods", handleGetPaymentMethods);
   app.post("/api/payments/process", paymentLimiter, handleProcessPayment);
