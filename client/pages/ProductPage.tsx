@@ -465,7 +465,7 @@ export default function ProductPage() {
 
           {/* Product Gallery with Description */}
           <div
-            className="mb-12 bg-white rounded-lg border border-gray-200 p-8"
+            className="mb-6 bg-white rounded-lg border border-gray-200 p-4"
             style={{
               backdropFilter: "blur(4px)",
               backgroundColor: "rgba(245, 245, 245, 0.5)",
@@ -473,18 +473,18 @@ export default function ProductPage() {
             }}
           >
             {/* Gallery at top */}
-            <div className="mb-8">
+            <div className="mb-4">
               <ProductGallery images={product.images} productName={product.name} />
             </div>
 
             {/* Product Description below gallery */}
             <div>
               <h2
-                className="text-3xl font-bold mb-4 tracking-wide"
+                className="font-bold mb-2 tracking-wide"
                 style={{
                   fontFamily: '"Bebas Neue", sans-serif',
-                  fontSize: "30px",
-                  letterSpacing: "1.5px",
+                  fontSize: "22px",
+                  letterSpacing: "1px",
                   textTransform: "uppercase",
                   color: "rgb(26, 26, 26)",
                 }}
@@ -495,8 +495,8 @@ export default function ProductPage() {
               <div
                 style={{
                   color: "rgb(51, 51, 51)",
-                  fontSize: "14px",
-                  lineHeight: "1.6",
+                  fontSize: "12px",
+                  lineHeight: "1.5",
                 }}
               >
                 {product.description ? (
