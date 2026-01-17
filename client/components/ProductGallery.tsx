@@ -192,12 +192,12 @@ export default function ProductGallerySlideshow({
             
             {/* Image wrapper with frosted glass effect */}
             <div className="relative bg-white/60 rounded-xl overflow-hidden backdrop-blur-sm border border-gray-200/50">
-              
+
               {/* ============================================================
                   MAIN IMAGE
                   Properties:
                   - w-full: Takes 100% of container width
-                  - h-96: Fixed height (384px) - adjust as needed
+                  - h-80: Fixed height (320px) - reduced for compact layout
                   - object-cover: Fills container while maintaining aspect ratio
                   - loading="eager": Load immediately (hero image)
                   - decoding="async": Non-blocking decode
@@ -206,7 +206,7 @@ export default function ProductGallerySlideshow({
               <img
                 src={images[currentIndex]}
                 alt={`${productName} - ${currentIndex + 1}`}
-                className="w-full h-96 sm:h-96 object-cover"
+                className="w-full h-80 sm:h-80 object-cover"
                 loading="eager"
                 decoding="async"
                 style={{
