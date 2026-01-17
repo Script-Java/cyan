@@ -114,6 +114,8 @@ interface ProductFormData {
   };
   categories: string[];
   availability: boolean;
+  showQuantityPanel: boolean;
+  fixedQuantity: number | null;
 }
 
 export default function ProductForm() {
@@ -156,6 +158,8 @@ export default function ProductForm() {
     },
     categories: [],
     availability: true,
+    showQuantityPanel: true,
+    fixedQuantity: null,
   });
 
   const [productGroups] = useState([
@@ -269,6 +273,8 @@ export default function ProductForm() {
         },
         categories: product.categories || [],
         availability: product.availability !== false,
+        showQuantityPanel: product.show_quantity_panel !== false,
+        fixedQuantity: product.fixed_quantity || null,
       });
     } catch (error) {
       console.error("Error fetching product:", error);
@@ -865,6 +871,47 @@ export default function ProductForm() {
                   placeholder="Enter product description"
                   className="bg-white border-gray-200 text-gray-900 placeholder-gray-400 min-h-20"
                 />
+              </div>
+
+              <div className="border-t border-gray-200 pt-4 mt-4">
+                <div className="mb-4">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-gray-700">Show Quantity Selection Panel</Label>
+                    <Switch
+                      checked={formData.showQuantityPanel}
+                      onCheckedChange={(checked) =>
+                        handleInputChange("showQuantityPanel", checked)
+                      }
+                    />
+                  </div>
+                  <p className="text-gray-400 text-sm mt-1">
+                    Allow customers to select quantity tiers on the product page
+                  </p>
+                </div>
+
+                {!formData.showQuantityPanel && (
+                  <div>
+                    <Label className="text-gray-700 mb-2 block">
+                      Fixed Quantity (Optional)
+                    </Label>
+                    <Input
+                      type="number"
+                      min="1"
+                      value={formData.fixedQuantity || ""}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "fixedQuantity",
+                          e.target.value ? parseInt(e.target.value) : null,
+                        )
+                      }
+                      placeholder="e.g., 100"
+                      className="bg-white border-gray-200 text-gray-900 placeholder-gray-400"
+                    />
+                    <p className="text-gray-400 text-sm mt-1">
+                      If set, customers will order this fixed quantity
+                    </p>
+                  </div>
+                )}
               </div>
             </CollapsibleSection>
 
