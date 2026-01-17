@@ -864,19 +864,19 @@ export default function ProductPage() {
 
             {/* Custom Design Upload */}
             {product.customer_upload_config.enabled && (
-              <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-4">
+              <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg p-3">
                 <h2 className="text-xs font-bold mb-1">Upload your artwork</h2>
-                <p className="text-gray-600 text-xs mb-2">
+                <p className="text-gray-600 text-xs mb-1.5">
                   {product.customer_upload_config.description}
                 </p>
 
                 {designPreview ? (
-                  <div className="space-y-2">
-                    <div className="relative bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
+                  <div className="space-y-1.5">
+                    <div className="relative bg-gray-50 border border-gray-200 rounded overflow-hidden">
                       <img
                         src={designPreview}
                         alt="Design preview"
-                        className="w-full h-24 object-contain p-2"
+                        className="w-full h-20 object-contain p-1.5"
                       />
                       <button
                         onClick={removeDesign}
@@ -891,17 +891,17 @@ export default function ProductPage() {
                     </p>
                   </div>
                 ) : (
-                  <label className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-green-600 rounded-lg p-3 cursor-pointer hover:border-green-700 transition bg-green-50">
+                  <label className="flex flex-col items-center justify-center gap-1.5 border-2 border-dashed border-green-600 rounded p-2 cursor-pointer hover:border-green-700 transition bg-green-50">
                     <img
                       src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Fcee606b598864f7a983db9ee1358acf5?format=webp&width=800"
                       alt="Upload"
-                      className="w-10 h-10"
+                      className="w-8 h-8"
                     />
                     <div className="text-center">
-                      <p className="text-black font-medium text-sm">
-                        Drag or click to upload your file
+                      <p className="text-black font-medium text-xs">
+                        Drag or click to upload
                       </p>
-                      <p className="text-gray-600 text-xs mt-1">
+                      <p className="text-gray-600 text-xs mt-0.5">
                         All formats supported. Max file size:{" "}
                         {product.customer_upload_config.maxFileSize}MB | 1 file
                         per order
