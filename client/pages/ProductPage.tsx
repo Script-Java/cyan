@@ -449,11 +449,11 @@ export default function ProductPage() {
       <main className="min-h-screen bg-[#fafafa] text-black">
         <div
           style={{
-            maxWidth: "1824px",
+            maxWidth: "1100px",
             margin: "0 auto 3px",
-            padding: "16px 16px 100px",
+            padding: "12px 12px 80px",
           }}
-          className="px-4 sm:px-6 lg:px-8"
+          className="px-3 sm:px-4 lg:px-6"
         >
           {/* Back Navigation */}
           <button
