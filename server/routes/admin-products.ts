@@ -550,7 +550,7 @@ export const handleGetAdminProductPublic: RequestHandler = async (req, res) => {
 
     const { data, error } = await supabase
       .from("admin_products")
-      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, created_at, updated_at")
+      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, created_at, updated_at, show_quantity_panel, fixed_quantity")
       .eq("id", parseInt(id))
       .eq("availability", true)
       .single();
@@ -575,6 +575,8 @@ export const handleGetAdminProductPublic: RequestHandler = async (req, res) => {
       images: Array.isArray(data.images) ? data.images : [],
       options: Array.isArray(data.options) ? data.options : [],
       availability: data.availability,
+      show_quantity_panel: data.show_quantity_panel,
+      fixed_quantity: data.fixed_quantity,
     });
   } catch (error) {
     console.error("Error fetching admin product:", error);
