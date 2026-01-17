@@ -485,10 +485,11 @@ export const handleImportAdminProduct: RequestHandler = async (req, res) => {
       created_at: new Date().toISOString(),
     };
 
-    // Only include categories if it was provided (column may not exist in all schemas)
-    if (categories && categories.length > 0) {
-      dbProduct.categories = categories;
-    }
+    // NOTE: categories field excluded - migrate database to add this column
+    // Once migration is applied, uncomment the lines below:
+    // if (categories && categories.length > 0) {
+    //   dbProduct.categories = categories;
+    // }
 
     const { data, error } = await supabase
       .from("admin_products")
