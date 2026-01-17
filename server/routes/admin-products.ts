@@ -462,14 +462,13 @@ export const handleImportAdminProduct: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Product name is required" });
     }
 
-    const dbProduct = {
+    const dbProduct: any = {
       name,
       base_price: basePrice || 0,
       sku: sku || "",
       description: description || "",
       images: images || [],
       options: options || [],
-      categories: categories || [],
       availability: availability !== false,
       customer_upload_config: customerUploadConfig || {
         enabled: false,
@@ -479,6 +478,11 @@ export const handleImportAdminProduct: RequestHandler = async (req, res) => {
       },
       created_at: new Date().toISOString(),
     };
+
+    // Only include categories if it was provided (column may not exist in all schemas)
+    if (categories && categories.length > 0) {
+      dbProduct.categories = categories;
+    }
 
     const { data, error } = await supabase
       .from("admin_products")
