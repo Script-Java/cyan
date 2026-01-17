@@ -16,6 +16,7 @@ import {
   Plus,
   Menu,
   X,
+  Image as ImageIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
