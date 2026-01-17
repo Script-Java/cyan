@@ -45,7 +45,7 @@ router.get("/gallery/admin/all", verifyToken, requireAdmin, async (req: Request,
 });
 
 // POST - Create new gallery image
-router.post("/gallery/admin", async (req: Request, res: Response) => {
+router.post("/gallery/admin", verifyToken, requireAdmin, async (req: Request, res: Response) => {
   try {
     const { title, description, image_url, image_alt, order_index } = req.body;
 
