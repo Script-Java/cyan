@@ -163,4 +163,42 @@ router.patch("/gallery/admin/reorder", verifyToken, requireAdmin, async (req: Re
   }
 });
 
+// POST - Upload gallery image to Cloudinary
+router.post("/gallery/upload", verifyToken, requireAdmin, async (req: Request, res: Response) => {
+  try {
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+
+    const file = (req as any).file;
+    if (!file) {
+      return res.status(400).json({ error: "No file provided" });
+    }
+
+    // Compress and optimize image
+    const compressedBuffer = await sharp(file.buffer)
+      .resize(1200, 800, {
+        fit: "inside",
+        withoutEnlargement: true,
+      })
+      .jpeg({ quality: 85, progressive: true })
+      .toBuffer();
+
+    const b64 = compressedBuffer.toString("base64");
+    const dataURI = `data:image/jpeg;base64,${b64}`;
+
+    const result = await cloudinary.uploader.upload(dataURI, {
+      folder: "sticky-slap/gallery",
+      resource_type: "auto",
+    });
+
+    res.json({ imageUrl: result.secure_url });
+  } catch (error) {
+    console.error("Error uploading gallery image:", error);
+    res.status(500).json({ error: "Failed to upload gallery image" });
+  }
+});
+
 export default router;
