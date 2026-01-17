@@ -463,32 +463,55 @@ export default function ProductPage() {
             <ChevronLeft className="w-5 h-5" />
           </button>
 
-          {/* Product Gallery */}
-          <div className="mb-12">
-            <ProductGallery images={product.images} productName={product.name} />
-          </div>
+          {/* Product Gallery with Description */}
+          <div
+            className="mb-12 bg-white rounded-lg border border-gray-200 p-8"
+            style={{
+              backdropFilter: "blur(4px)",
+              backgroundColor: "rgba(245, 245, 245, 0.5)",
+              borderColor: "rgba(235, 235, 235, 0.5)",
+            }}
+          >
+            <div className="grid grid-cols-3 gap-6">
+              {/* Gallery - 2 columns */}
+              <div className="col-span-2">
+                <ProductGallery images={product.images} productName={product.name} />
+              </div>
 
-          {/* Hero Section with Image and Description */}
-          <div className="mb-12">
-            <div style={{ display: "flex", gap: "20px", marginBottom: "32px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  lineHeight: "normal",
-                  width: "50%",
-                  marginLeft: "0px",
-                }}
-              />
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  lineHeight: "normal",
-                  width: "50%",
-                  marginLeft: "20px",
-                }}
-              />
+              {/* Product Description - 1 column */}
+              <div className="flex flex-col justify-start">
+                <h2
+                  className="text-3xl font-bold mb-4 tracking-wide"
+                  style={{
+                    fontFamily: '"Bebas Neue", sans-serif',
+                    fontSize: "30px",
+                    letterSpacing: "1.5px",
+                    textTransform: "uppercase",
+                    color: "rgb(26, 26, 26)",
+                  }}
+                >
+                  {product.name}
+                </h2>
+
+                <div
+                  className="prose prose-sm max-w-none text-gray-700"
+                  style={{
+                    color: "rgb(51, 51, 51)",
+                    fontSize: "14px",
+                    lineHeight: "1.6",
+                  }}
+                >
+                  {product.description ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: product.description,
+                      }}
+                    />
+                  ) : (
+                    <p>No description available</p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 
