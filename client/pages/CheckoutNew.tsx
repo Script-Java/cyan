@@ -182,9 +182,17 @@ export default function CheckoutNew() {
           const items = [];
           for (const item of customItems) {
             try {
-              const response = await fetch(
-                `/api/public/products/${item.productId}`,
-              );
+              // Construct the correct API endpoint based on productId format
+              let productUrl = `/api/public/products/${item.productId}`;
+              if (item.productId.startsWith("admin_")) {
+                const adminId = item.productId.split("_")[1];
+                productUrl = `/api/public/products/admin/${adminId}`;
+              } else if (item.productId.startsWith("imported_")) {
+                const importedId = item.productId.split("_")[1];
+                productUrl = `/api/public/products/imported/${importedId}`;
+              }
+
+              const response = await fetch(productUrl);
               if (!response.ok) {
                 console.warn(
                   `Failed to fetch product ${item.productId}: HTTP ${response.status}`,
