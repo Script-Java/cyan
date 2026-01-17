@@ -529,3 +529,84 @@ export const handleImportAdminProduct: RequestHandler = async (req, res) => {
     });
   }
 };
+
+export const handleGetStorefrontProducts: RequestHandler = async (req, res) => {
+  try {
+    const { limit = 100, offset = 0 } = req.query;
+
+    // Fetch admin products (with group assignments)
+    const { data: adminProducts, error: adminError } = await supabase
+      .from("admin_products")
+      .select("id, name, base_price as price, sku, images, categories, availability")
+      .eq("availability", true)
+      .order("created_at", { ascending: false })
+      .range(
+        parseInt(offset as string) || 0,
+        (parseInt(offset as string) || 0) + (parseInt(limit as string) || 100) - 1,
+      );
+
+    if (adminError) {
+      console.error("Error fetching admin products:", adminError);
+      return res.status(500).json({ error: "Failed to fetch admin products" });
+    }
+
+    // Format admin products
+    const formattedAdminProducts = (adminProducts || []).map((product: any) => ({
+      id: `admin_${product.id}`,
+      name: product.name,
+      price: product.price || 0,
+      sku: product.sku || "",
+      image_url: product.images?.[0]?.url || null,
+      group: product.categories?.[0] || null,
+      source: "admin",
+      availability: product.availability,
+    }));
+
+    // Fetch imported products
+    const { data: importedProducts, error: importedError } = await supabase
+      .from("products")
+      .select("id, name, price, min_price, max_price, sku, image_url, rating, reviews_count")
+      .eq("is_active", true)
+      .order("created_at", { ascending: false })
+      .range(
+        parseInt(offset as string) || 0,
+        (parseInt(offset as string) || 0) + (parseInt(limit as string) || 100) - 1,
+      );
+
+    if (importedError) {
+      console.error("Error fetching imported products:", importedError);
+      return res.status(500).json({ error: "Failed to fetch imported products" });
+    }
+
+    // Format imported products
+    const formattedImportedProducts = (importedProducts || []).map((product: any) => ({
+      id: `imported_${product.id}`,
+      name: product.name,
+      price: product.min_price || product.price || 0,
+      min_price: product.min_price,
+      max_price: product.max_price,
+      sku: product.sku || "",
+      image_url: product.image_url || null,
+      group: null,
+      source: "imported",
+      rating: product.rating || 0,
+      reviews_count: product.reviews_count || 0,
+    }));
+
+    // Combine and return
+    const allProducts = [...formattedAdminProducts, ...formattedImportedProducts];
+
+    res.json({
+      items: allProducts,
+      count: allProducts.length,
+      limit: parseInt(limit as string) || 100,
+      offset: parseInt(offset as string) || 0,
+    });
+  } catch (error) {
+    console.error("Error fetching storefront products:", error);
+    res.status(500).json({
+      error:
+        error instanceof Error ? error.message : "Failed to fetch products",
+    });
+  }
+};
