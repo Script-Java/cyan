@@ -237,30 +237,40 @@ export const handleTrackEvent: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    let userId: number | null = null;
-    if (token) {
-      const { data: userData } = await supabase.auth.getUser(token);
-      userId = userData.user?.id ? parseInt(userData.user.id) : null;
-    }
+    // Respond immediately - don't block on database insert
+    res.json({ success: true });
 
-    const { error } = await supabase.from("analytics_events").insert({
-      event_type,
-      event_name,
-      user_id: userId,
-      session_id,
-      page_path,
-      referrer,
-      device_type,
-      browser,
-      country,
-      data,
-    });
+    // Process event asynchronously in background
+    (async () => {
+      try {
+        let userId: number | null = null;
+        if (token) {
+          const { data: userData } = await supabase.auth.getUser(token);
+          userId = userData.user?.id ? parseInt(userData.user.id) : null;
+        }
 
-    if (error) throw error;
+        const { error } = await supabase.from("analytics_events").insert({
+          event_type,
+          event_name,
+          user_id: userId,
+          session_id,
+          page_path,
+          referrer,
+          device_type,
+          browser,
+          country,
+          data,
+        });
 
-    return res.json({ success: true });
+        if (error) {
+          console.error("Error tracking event:", error);
+        }
+      } catch (error) {
+        console.error("Error processing analytics event:", error);
+      }
+    })();
   } catch (error) {
-    console.error("Error tracking event:", error);
-    return res.status(500).json({ error: "Failed to track event" });
+    console.error("Error in analytics handler:", error);
+    return res.status(400).json({ error: "Invalid request" });
   }
 };
