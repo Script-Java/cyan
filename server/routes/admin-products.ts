@@ -537,7 +537,7 @@ export const handleGetStorefrontProducts: RequestHandler = async (req, res) => {
     // Fetch admin products (with group assignments)
     const { data: adminProducts, error: adminError } = await supabase
       .from("admin_products")
-      .select("id, name, base_price as price, sku, images, categories, availability")
+      .select("id, name, base_price, sku, images, categories, availability")
       .eq("availability", true)
       .order("created_at", { ascending: false })
       .range(
@@ -554,7 +554,7 @@ export const handleGetStorefrontProducts: RequestHandler = async (req, res) => {
     const formattedAdminProducts = (adminProducts || []).map((product: any) => ({
       id: `admin_${product.id}`,
       name: product.name,
-      price: product.price || 0,
+      price: product.base_price || 0,
       sku: product.sku || "",
       image_url: product.images?.[0]?.url || null,
       group: product.categories?.[0] || null,
