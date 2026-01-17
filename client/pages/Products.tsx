@@ -236,14 +236,18 @@ export default function Products() {
       return products;
     }
     return products.filter((product) => {
-      // Match by assigned group or by category name
+      // Get the category ID that matches the product's group
+      const categoryId = Object.entries(categoryMap).find(
+        ([name]) => name === product.category
+      )?.[1];
+
+      // Match if the category ID matches the selected category, or if product name contains category
       return (
-        product.category === selectedCategory ||
-        product.category?.toLowerCase() === selectedCategory.toLowerCase() ||
+        categoryId === selectedCategory ||
         product.name?.toLowerCase().includes(selectedCategory.toLowerCase())
       );
     });
-  }, [products, selectedCategory]);
+  }, [products, selectedCategory, categoryMap]);
 
   const getCategoryItemCount = (categoryId: string): number => {
     return products.filter((product) =>
