@@ -150,6 +150,7 @@ import {
   handleDeleteAdminProduct,
   handleGetPublicProduct,
   handleImportAdminProduct,
+  handleGetStorefrontProducts,
 } from "./routes/admin-products";
 import {
   handleCreateLabel,
