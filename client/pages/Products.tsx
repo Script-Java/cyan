@@ -227,34 +227,11 @@ export default function Products() {
       return products;
     }
     return products.filter((product) => {
-      const categoryMap: Record<string, string[]> = {
-        vinyl: ["vinyl", "vinyl-stickers"],
-        holographic: ["holographic", "holographic-stickers"],
-        glitter: ["glitter", "glitter-stickers"],
-        chrome: ["chrome", "chrome-stickers"],
-        clear: ["clear", "clear-stickers"],
-        sheets: ["sheet", "sticker-sheets"],
-      };
-      const categoryIds = categoryMap[selectedCategory] || [];
+      // Match by assigned group or by category name
       return (
-        categoryIds.some(
-          (cat) =>
-            product.id?.toString().toLowerCase().includes(cat) ||
-            product.name?.toLowerCase().includes(selectedCategory) ||
-            product.category?.toLowerCase().includes(selectedCategory),
-        ) ||
-        (selectedCategory === "vinyl" &&
-          product.id?.toString().includes("vinyl")) ||
-        (selectedCategory === "holographic" &&
-          product.id?.toString().includes("holographic")) ||
-        (selectedCategory === "glitter" &&
-          product.id?.toString().includes("glitter")) ||
-        (selectedCategory === "chrome" &&
-          product.id?.toString().includes("chrome")) ||
-        (selectedCategory === "clear" &&
-          product.id?.toString().includes("clear")) ||
-        (selectedCategory === "sheets" &&
-          product.id?.toString().includes("sheet"))
+        product.category === selectedCategory ||
+        product.category?.toLowerCase() === selectedCategory.toLowerCase() ||
+        product.name?.toLowerCase().includes(selectedCategory.toLowerCase())
       );
     });
   }, [products, selectedCategory]);
