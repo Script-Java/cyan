@@ -110,7 +110,7 @@ export default function Products() {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch("/api/imported-products?limit=100");
+      const response = await fetch("/api/storefront/products?limit=100");
       if (!response.ok) {
         throw new Error("Failed to fetch products");
       }
@@ -134,6 +134,7 @@ export default function Products() {
               product.description ||
               "Premium sticker product from our collection",
             sku: product.sku,
+            category: product.group,
             variations: product.variations || [],
             options: product.options || [],
           };
