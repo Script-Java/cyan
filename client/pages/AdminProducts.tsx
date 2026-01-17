@@ -128,10 +128,11 @@ export default function AdminProducts() {
     }).format(price);
   };
 
-  const handleImportProduct = async () => {
+  const handleImportProduct = async (product: any) => {
     setIsImporting(true);
+    setImportMenuOpen(false);
     try {
-      const result = await importAdminProduct(STICKY_SLAP_STICKER_PRODUCT);
+      const result = await importAdminProduct(product);
       toast({
         title: "Success",
         description: `Product "${result.product.name}" imported successfully`,
