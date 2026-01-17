@@ -1895,30 +1895,39 @@ export default function ProductForm() {
               </div>
             </CollapsibleSection>
 
-            {/* Categories Section */}
+            {/* Product Group Section */}
             <section className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <div className="p-2 bg-green-100 border border-green-300 rounded-lg">
                   <Plus className="w-5 h-5 text-green-600" />
                 </div>
-                Categories
+                Product Group
               </h2>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {allCategories.map((category) => (
-                  <label
-                    key={category}
-                    className="flex items-center gap-3 cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={formData.categories.includes(category)}
-                      onChange={() => toggleCategory(category)}
-                      className="w-4 h-4 rounded bg-gray-50 border-gray-200 cursor-pointer"
-                    />
-                    <span className="text-gray-700">{category}</span>
-                  </label>
-                ))}
+              <div className="flex flex-col gap-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Assign this product to a group (optional)
+                </label>
+                <select
+                  value={formData.categories[0] || ""}
+                  onChange={(e) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      categories: e.target.value ? [e.target.value] : [],
+                    }));
+                  }}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">No Group Assigned</option>
+                  {productGroups.map((group) => (
+                    <option key={group} value={group}>
+                      {group}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-xs text-gray-600 mt-2">
+                  Products in the same group will appear together on the storefront
+                </p>
               </div>
             </section>
 
