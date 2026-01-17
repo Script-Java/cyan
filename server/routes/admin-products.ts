@@ -333,7 +333,7 @@ export const handleGetAdminProduct: RequestHandler = async (req, res) => {
 
     const { data, error } = await supabase
       .from("admin_products")
-      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, sku, created_at, updated_at, show_quantity_panel, fixed_quantity")
+      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, sku, created_at, updated_at")
       .eq("id", id)
       .single();
 
