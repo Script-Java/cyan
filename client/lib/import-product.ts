@@ -391,6 +391,154 @@ export const THOUSAND_STICKERS_PROMO_PRODUCT = {
   },
 };
 
+// The "5'' INCH - CUSTOM STICKER PROMO PER STICKER" product data from Ecwid CSV (ID: 765564751)
+export const FIVE_INCH_PROMO_STICKER_PRODUCT = {
+  name: "5'' INCH - CUSTOM STICKER PROMO PER STICKER",
+  basePrice: 0.40,
+  sku: "00008",
+  description:
+    '<p><strong>Sticky Slap</strong> — Custom Stickers That Stick</p><p> We specialize in high-quality <strong>custom sticker printing</strong> with a vibrant <strong>8-color setup</strong> for bold, precise designs.<br> 🌦️ <strong>Durability:</strong> 4–5 years outdoors unlaminated, 5–8 years laminated<br> ⏱️ <strong>Fast Turnaround:</strong> Orders ship within <strong>2 business days after artwork approval</strong><br> Whether it\'s branding, promo drops, or slap tags — <strong>Sticky Slap makes stickers that go hard and last long.</strong></p>',
+  images: [
+    {
+      id: "main",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5034065522.png",
+      name: "Main Image",
+    },
+    {
+      id: "img1",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5034065527.jpg",
+      name: "Gallery Image 1",
+    },
+    {
+      id: "img2",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5034065532.jpg",
+      name: "Gallery Image 2",
+    },
+    {
+      id: "img3",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5034065537.jpg",
+      name: "Gallery Image 3",
+    },
+    {
+      id: "img4",
+      url: "https://d2j6dbq0eux0bg.cloudfront.net/images/120154275/5034065542.jpg",
+      name: "Gallery Image 4",
+    },
+  ],
+  options: [
+    {
+      id: "sticker-cut-shape",
+      name: "STICKER CUT SHAPE",
+      type: "dropdown",
+      required: false,
+      displayOrder: 1,
+      values: [
+        {
+          id: "scs-1",
+          name: "DIE CUT (CUSTOM SHAPE)",
+          priceModifier: 0,
+        },
+        {
+          id: "scs-2",
+          name: "CIRCLE SHAPE",
+          priceModifier: 0,
+        },
+        {
+          id: "scs-3",
+          name: "SQUARE SHAPE",
+          priceModifier: 0,
+        },
+        {
+          id: "scs-4",
+          name: "OVAL",
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "vinyl-finish",
+      name: "VINYL FINISH",
+      type: "dropdown",
+      required: false,
+      displayOrder: 2,
+      values: [
+        {
+          id: "vf-1",
+          name: "SATIN & LAMINATION",
+          priceModifier: 0,
+        },
+        {
+          id: "vf-2",
+          name: "GLOSS & LAMINATION",
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "sticker-size",
+      name: "STICKER SIZE",
+      type: "dropdown",
+      required: false,
+      displayOrder: 3,
+      values: [
+        {
+          id: "ss-1",
+          name: "5' x 5'",
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "sticker-amounts",
+      name: "STICKER AMOUNTS",
+      type: "dropdown",
+      required: false,
+      displayOrder: 4,
+      values: [
+        {
+          id: "sa-1",
+          name: "100",
+          priceModifier: 0,
+        },
+      ],
+    },
+    {
+      id: "sticker-design",
+      name: "ARTWORK",
+      type: "text",
+      required: true,
+      displayOrder: 5,
+      values: [],
+    },
+    {
+      id: "border-cut",
+      name: "STICKER BOARDER CUT",
+      type: "dropdown",
+      required: true,
+      displayOrder: 6,
+      values: [
+        {
+          id: "bc-1",
+          name: "FULL BLEED CUT",
+          priceModifier: 0,
+        },
+        {
+          id: "bc-2",
+          name: "WHITE BOARDER CUT",
+          priceModifier: 0,
+        },
+      ],
+    },
+  ],
+  availability: true,
+  customerUploadConfig: {
+    enabled: true,
+    maxFileSize: 50,
+    allowedFormats: ["png", "jpg", "jpeg", "gif", "pdf", "ai", "psd"],
+    description: "Upload your artwork for custom stickers",
+  },
+};
+
 // The "4'' INCH - CUSTOM STICKER PROMO PER STICKER" product data from Ecwid CSV (ID: 785894063)
 export const FOUR_INCH_PROMO_STICKER_PRODUCT = {
   name: "4'' INCH - CUSTOM STICKER PROMO PER STICKER",
