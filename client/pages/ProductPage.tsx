@@ -465,7 +465,7 @@ export default function ProductPage() {
 
           {/* Product Gallery with Description */}
           <div
-            className="mb-6 bg-white rounded-lg border border-gray-200 p-4"
+            className="mb-3 bg-white rounded-lg border border-gray-200 p-3"
             style={{
               backdropFilter: "blur(4px)",
               backgroundColor: "rgba(245, 245, 245, 0.5)",
@@ -473,7 +473,7 @@ export default function ProductPage() {
             }}
           >
             {/* Gallery at top */}
-            <div className="mb-4">
+            <div className="mb-2">
               <ProductGallery
                 images={product.images.map((img) => img.url)}
                 productName={product.name}
