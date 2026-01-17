@@ -492,8 +492,8 @@ export default function Product() {
             </div>
           </div>
 
-          {/* Main Content Grid - 4 Columns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
+          {/* Main Content Grid - 3 Columns */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
             {/* Product Options - Each in Own Column */}
             {product.options &&
               product.options.map((option) => (
