@@ -157,8 +157,16 @@ export default function Product() {
               description: "Upload your design",
             },
             optional_fields: data.optional_fields || [],
+            show_quantity_panel: data.show_quantity_panel !== false,
+            fixed_quantity: data.fixed_quantity || null,
           };
           setProduct(productData);
+
+          // Set quantity based on product settings
+          if (!productData.show_quantity_panel && productData.fixed_quantity) {
+            setQuantity(productData.fixed_quantity);
+            setActiveQuantityOption(productData.fixed_quantity);
+          }
 
           if (productData.optional_fields) {
             const initialFields: { [key: string]: string } = {};
