@@ -687,7 +687,7 @@ export default function Product() {
               ))}
 
             {/* Quantity Selection Column */}
-            {product.show_quantity_panel === true && (
+            {product.show_quantity_panel === true && !product.fixed_quantity && (
               <div
                 className="rounded-lg border transition"
                 style={{
