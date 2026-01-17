@@ -175,6 +175,7 @@ import {
   handleUpdateBlog,
   handleUploadBlogImage,
 } from "./routes/blogs";
+import adminGalleryRouter from "./routes/admin-gallery";
 import {
   handleGetPublishedLegalPages,
   handleGetAllLegalPages,
