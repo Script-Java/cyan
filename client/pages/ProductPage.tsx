@@ -697,8 +697,8 @@ export default function ProductPage() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                   style={{
-                    width: "20px",
-                    height: "20px",
+                    width: "16px",
+                    height: "16px",
                     stroke: "rgb(0, 0, 0)",
                   }}
                 >
@@ -735,13 +735,13 @@ export default function ProductPage() {
                       }
                     }}
                     style={{
-                      marginBottom: "4px",
+                      marginBottom: "3px",
                       width: "100%",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
-                      padding: "8px 12px",
-                      borderRadius: "8px",
+                      padding: "6px 8px",
+                      borderRadius: "6px",
                       border:
                         activeQuantityOption === option.qty
                           ? "2px solid rgb(253, 224, 71)"
@@ -759,10 +759,10 @@ export default function ProductPage() {
                     <span
                       style={{
                         fontFamily: "Rubik, sans-serif",
-                        fontSize: "18px",
+                        fontSize: "14px",
                         fontWeight: "500",
                         color: "rgb(0, 0, 0)",
-                        lineHeight: "28px",
+                        lineHeight: "20px",
                       }}
                     >
                       {option.qty.toLocaleString()}
