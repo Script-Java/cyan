@@ -448,20 +448,11 @@ export const handleImportAdminProduct: RequestHandler = async (req, res) => {
       images: images || [],
       options: options || [],
       availability: availability !== false,
-      customer_upload_config: customerUploadConfig || {
-        enabled: false,
-        maxFileSize: 5,
-        allowedFormats: ["png", "jpg", "jpeg", "gif"],
-        description: "",
-      },
       created_at: new Date().toISOString(),
     };
 
-    // NOTE: categories field excluded - migrate database to add this column
-    // Once migration is applied, uncomment the lines below:
-    // if (categories && categories.length > 0) {
-    //   dbProduct.categories = categories;
-    // }
+    // NOTE: Additional columns like customer_upload_config, categories, etc.
+    // will be added once the database schema is updated
 
     const { data, error } = await supabase
       .from("admin_products")
