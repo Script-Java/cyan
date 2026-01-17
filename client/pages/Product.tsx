@@ -64,6 +64,53 @@ export default function Product() {
           return;
         }
 
+        // Handle new admin/imported product IDs (admin_11, imported_5, etc.)
+        if (productId?.startsWith("admin_")) {
+          const adminId = productId.split("_")[1];
+          const response = await fetch(`/api/public/products/admin/${adminId}`);
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch admin product");
+          }
+
+          const data = await response.json();
+          setProduct({
+            id: parseInt(adminId),
+            name: data.name,
+            description: data.description,
+            price: data.base_price || data.price,
+            image_url: data.images?.[0]?.url,
+            type: "sticker",
+            status: data.availability ? "ACTIVE" : "INACTIVE",
+            options: data.options || [],
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        if (productId?.startsWith("imported_")) {
+          const importedId = productId.split("_")[1];
+          const response = await fetch(`/api/public/products/imported/${importedId}`);
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch imported product");
+          }
+
+          const data = await response.json();
+          setProduct({
+            id: parseInt(importedId),
+            name: data.name,
+            description: data.description,
+            price: data.min_price || data.price,
+            image_url: data.image_url,
+            type: "sticker",
+            status: "ACTIVE",
+            options: data.options || [],
+          });
+          setIsLoading(false);
+          return;
+        }
+
         const bcProductId = productId && PRODUCT_ID_MAP[productId];
 
         if (!bcProductId) {
