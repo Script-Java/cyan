@@ -173,6 +173,37 @@ export default function Index() {
             className="mx-auto px-4 sm:px-6 lg:px-8"
             style={{ maxWidth: "1100px" }}
           >
+            {/* Gallery Grid at Top */}
+            {loadingGallery ? (
+              <div className="text-center py-12">
+                <p className="text-gray-600 text-sm">Loading gallery...</p>
+              </div>
+            ) : galleryImages.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+                {galleryImages.map((image) => (
+                  <div
+                    key={image.id}
+                    className="rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow"
+                  >
+                    <img
+                      src={image.image_url}
+                      alt={image.image_alt}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4 bg-white">
+                      <h3 className="font-bold text-sm mb-1">{image.title}</h3>
+                      {image.description && (
+                        <p className="text-xs text-gray-600 line-clamp-2">
+                          {image.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+
+            {/* Description, Benefits, and CTA Below */}
             <div className="mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold mb-2">
                 Featured Collection
@@ -207,36 +238,6 @@ export default function Index() {
                 </div>
               </div>
             </div>
-
-            {/* Gallery Grid */}
-            {loadingGallery ? (
-              <div className="text-center py-12">
-                <p className="text-gray-600 text-sm">Loading gallery...</p>
-              </div>
-            ) : galleryImages.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                {galleryImages.map((image) => (
-                  <div
-                    key={image.id}
-                    className="rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow"
-                  >
-                    <img
-                      src={image.image_url}
-                      alt={image.image_alt}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-4 bg-white">
-                      <h3 className="font-bold text-sm mb-1">{image.title}</h3>
-                      {image.description && (
-                        <p className="text-xs text-gray-600 line-clamp-2">
-                          {image.description}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : null}
 
             <div className="text-center">
               <Link
