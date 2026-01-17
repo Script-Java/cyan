@@ -545,30 +545,34 @@ export default function Product() {
                               : "border-gray-200 hover:border-gray-300 bg-gray-50"
                           }`}
                         >
-                          {option.name === "Material" &&
-                          value.name?.toLowerCase() === "satin" ? (
-                            <img
-                              src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F1b04ce3e2b7342ff891113ccedd6beda?format=webp&width=800"
-                              alt="Satin"
-                              className="w-8 h-8 object-contain mb-0.5"
-                            />
-                          ) : (
-                            value.image && (
+                          <div className="flex-shrink-0">
+                            {option.name === "Material" &&
+                            value.name?.toLowerCase() === "satin" ? (
                               <img
-                                src={value.image.preview || value.image.url}
-                                alt={value.name}
-                                className="w-8 h-8 object-contain mb-0.5"
+                                src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2F1b04ce3e2b7342ff891113ccedd6beda?format=webp&width=800"
+                                alt="Satin"
+                                className="w-10 h-10 object-contain"
                               />
-                            )
-                          )}
-                          <p className="font-medium text-xs text-black">
-                            {value.name}
-                          </p>
-                          {value.priceModifier !== undefined && value.priceModifier > 0 && (
-                            <p className="text-xs text-gray-600 mt-0.5">
-                              +${value.priceModifier.toFixed(2)}
+                            ) : (
+                              value.image && (
+                                <img
+                                  src={value.image.preview || value.image.url}
+                                  alt={value.name}
+                                  className="w-10 h-10 object-contain"
+                                />
+                              )
+                            )}
+                          </div>
+                          <div className="flex-grow flex flex-col items-start justify-center">
+                            <p className="font-medium text-sm text-black">
+                              {value.name}
                             </p>
-                          )}
+                            {value.priceModifier !== undefined && value.priceModifier > 0 && (
+                              <p className="text-xs text-gray-600 mt-0.5">
+                                +${value.priceModifier.toFixed(2)}
+                              </p>
+                            )}
+                          </div>
                           {index === 0 && (
                             <span
                               className="absolute top-1 right-1 text-xxs font-bold text-white bg-purple-600 px-1.5 py-0.5 rounded"
