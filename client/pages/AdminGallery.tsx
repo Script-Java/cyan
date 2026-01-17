@@ -121,7 +121,7 @@ export default function AdminGallery() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`/api/admin/gallery/${id}`, {
+      const res = await fetch(`/api/gallery/admin/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
