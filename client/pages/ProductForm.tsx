@@ -158,15 +158,13 @@ export default function ProductForm() {
     availability: true,
   });
 
-  const [allCategories] = useState([
-    "Electronics",
-    "Clothing",
-    "Home & Garden",
-    "Sports",
-    "Books",
-    "Toys",
-    "Food",
-    "Health & Beauty",
+  const [productGroups] = useState([
+    "Vinyl Stickers",
+    "Holographic Stickers",
+    "Glitter Stickers",
+    "Chrome Stickers",
+    "Clear Stickers",
+    "Sticker Sheets",
   ]);
 
   useEffect(() => {
