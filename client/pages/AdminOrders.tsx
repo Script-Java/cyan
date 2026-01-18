@@ -561,35 +561,61 @@ export default function AdminOrders() {
                                             </div>
 
                                             {/* Product Options */}
-                                            {item.options &&
-                                              Object.keys(item.options).length >
-                                                0 && (
-                                                <div>
-                                                  <p className="text-xs text-gray-600 font-medium mb-2">
-                                                    SPECIFICATIONS
-                                                  </p>
-                                                  <div className="flex flex-wrap gap-2">
-                                                    {Object.entries(
-                                                      item.options,
-                                                    ).map(([key, val]) => {
-                                                      const displayValue = formatOptionValue(val);
-                                                      // Check if key is numeric (option ID)
-                                                      // If so, just show the value; otherwise show key: value
-                                                      const isNumericKey = /^\d+$/.test(key);
-                                                      const label = isNumericKey ? displayValue : `${key}: ${displayValue}`;
+                                            {item.options && (
+                                              <div>
+                                                <p className="text-xs text-gray-600 font-medium mb-2">
+                                                  SPECIFICATIONS
+                                                </p>
+                                                <div className="flex flex-wrap gap-2">
+                                                  {Array.isArray(item.options) ? (
+                                                    item.options.length > 0 ? (
+                                                      item.options.map(
+                                                        (option: any, idx: number) => {
+                                                          const optionName = option.option_id || "";
+                                                          const optionValue =
+                                                            option.option_value || "";
 
-                                                      return (
-                                                        <span
-                                                          key={key}
-                                                          className="inline-block bg-blue-50 text-blue-900 px-3 py-1 rounded-full text-xs font-medium border border-blue-200"
-                                                        >
-                                                          {label}
-                                                        </span>
-                                                      );
-                                                    })}
-                                                  </div>
+                                                          if (!optionName || !optionValue) {
+                                                            return null;
+                                                          }
+
+                                                          return (
+                                                            <span
+                                                              key={idx}
+                                                              className="inline-block bg-blue-50 text-blue-900 px-3 py-1 rounded-full text-xs font-medium border border-blue-200"
+                                                            >
+                                                              {optionName}:{" "}
+                                                              {optionValue}
+                                                            </span>
+                                                          );
+                                                        }
+                                                      )
+                                                    ) : null
+                                                  ) : (
+                                                    Object.entries(item.options).map(
+                                                      ([key, val]) => {
+                                                        const displayValue =
+                                                          formatOptionValue(val);
+                                                        const isNumericKey =
+                                                          /^\d+$/.test(key);
+                                                        const label = isNumericKey
+                                                          ? displayValue
+                                                          : `${key}: ${displayValue}`;
+
+                                                        return (
+                                                          <span
+                                                            key={key}
+                                                            className="inline-block bg-blue-50 text-blue-900 px-3 py-1 rounded-full text-xs font-medium border border-blue-200"
+                                                          >
+                                                            {label}
+                                                          </span>
+                                                        );
+                                                      }
+                                                    )
+                                                  )}
                                                 </div>
-                                              )}
+                                              </div>
+                                            )}
                                           </div>
                                         </div>
                                       </div>
