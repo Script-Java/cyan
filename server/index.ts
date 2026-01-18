@@ -435,6 +435,7 @@ export function createServer() {
   // ===== Design Routes (Protected) =====
   app.get("/api/designs", verifyToken, handleGetDesigns);
   app.get("/api/orders/:orderId/designs", verifyToken, handleGetOrderDesigns);
+  app.post("/api/designs/upload", verifyToken, handleUploadDesignFile);
 
   // ===== Cart Routes (Public) =====
   app.post("/api/cart", handleCreateCart);
