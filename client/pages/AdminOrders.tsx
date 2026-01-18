@@ -57,6 +57,12 @@ interface PendingOrder {
   }>;
 }
 
+// Generate order number in format SY-5XXXX where XXXX starts from 4002
+const generateOrderNumber = (orderId: number): string => {
+  const orderNumber = 4001 + orderId;
+  return `SY-5${orderNumber}`;
+};
+
 export default function AdminOrders() {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
