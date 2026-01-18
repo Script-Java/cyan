@@ -208,10 +208,14 @@ export async function createSupabaseOrder(
       orderToInsert.estimated_delivery_date = orderData.estimated_delivery_date;
     }
     if (orderData.shipping_address) {
-      orderToInsert.shipping_address = orderData.shipping_address;
+      orderToInsert.shipping_address = normalizeAddressFormat(
+        orderData.shipping_address,
+      );
     }
     if (orderData.billing_address) {
-      orderToInsert.billing_address = orderData.billing_address;
+      orderToInsert.billing_address = normalizeAddressFormat(
+        orderData.billing_address,
+      );
     }
 
     const { data, error } = await supabase
