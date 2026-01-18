@@ -32,7 +32,6 @@ export const handleGetAllCustomers: RequestHandler = async (req, res) => {
         first_name,
         last_name,
         phone,
-        company,
         store_credit,
         created_at,
         updated_at,
