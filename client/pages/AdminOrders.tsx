@@ -65,6 +65,7 @@ interface PendingOrder {
     country_iso2: string;
     phone?: string;
   }>;
+  proofs?: ProofStatus[];
 }
 
 // Generate order number in format SY-5XXXX where XXXX starts from 4002
