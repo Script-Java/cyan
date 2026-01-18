@@ -165,6 +165,26 @@ interface OrderData {
   estimated_delivery_date?: string;
 }
 
+/**
+ * Normalize address format from camelCase to snake_case for database storage
+ * Handles both formats to be flexible with different input sources
+ */
+function normalizeAddressFormat(address: any): any {
+  if (!address) return null;
+
+  return {
+    first_name: address.first_name || address.firstName || "",
+    last_name: address.last_name || address.lastName || "",
+    street_1: address.street_1 || address.street || "",
+    street_2: address.street_2 || address.street2 || undefined,
+    city: address.city || "",
+    state_or_province: address.state_or_province || address.state || "",
+    postal_code: address.postal_code || address.postalCode || "",
+    country_iso2: address.country_iso2 || address.country || "",
+    phone: address.phone || undefined,
+  };
+}
+
 export async function createSupabaseOrder(
   orderData: OrderData,
 ): Promise<{ id: number; success: boolean }> {
