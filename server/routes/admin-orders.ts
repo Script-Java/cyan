@@ -9,6 +9,14 @@ interface OrderItem {
   design_file_url?: string;
 }
 
+interface ProofStatus {
+  id: string;
+  status: "pending" | "approved" | "revisions_requested";
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface OrderWithCustomer {
   id: number;
   customerId: number;
