@@ -187,8 +187,12 @@ export async function createSupabaseOrder(
     if (orderData.estimated_delivery_date) {
       orderToInsert.estimated_delivery_date = orderData.estimated_delivery_date;
     }
-
-    // Note: billing_address and shipping_address will be added once database schema is updated
+    if (orderData.shipping_address) {
+      orderToInsert.shipping_address = orderData.shipping_address;
+    }
+    if (orderData.billing_address) {
+      orderToInsert.billing_address = orderData.billing_address;
+    }
 
     const { data, error } = await supabase
       .from("orders")
