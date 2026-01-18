@@ -107,10 +107,10 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           tax: order.tax || 0,
           shipping: order.shipping || 0,
           dateCreated: order.created_at || new Date().toISOString(),
-          tracking_number: order.tracking_number,
-          tracking_carrier: order.tracking_carrier,
-          tracking_url: order.tracking_url,
-          shipped_date: order.shipped_date,
+          tracking_number: order.tracking_number || null,
+          tracking_carrier: order.tracking_carrier || null,
+          tracking_url: order.tracking_url || null,
+          shipped_date: order.shipped_date || null,
           shipping_addresses: order.shipping_address
             ? [order.shipping_address]
             : [],
