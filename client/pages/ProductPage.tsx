@@ -926,35 +926,38 @@ export default function ProductPage() {
           </div>
 
           {/* Add to Cart Button & Checkout */}
-          <div className="space-y-3">
-            <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg p-3">
-              <Button
-                onClick={handleAddToCart}
-                disabled={isAddingToCart || !product.availability}
-                className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-1.5 text-xs font-semibold gap-2 rounded"
-              >
-                <Upload className="w-3 h-3" />
-                {isAddingToCart
-                  ? "Adding to Cart..."
-                  : !product.availability
-                    ? "Out of Stock"
-                    : "Add to Cart"}
-              </Button>
+          <div className="space-y-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Add to Cart Button */}
+              <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg p-3">
+                <Button
+                  onClick={handleAddToCart}
+                  disabled={isAddingToCart || !product.availability}
+                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-1.5 text-xs font-semibold gap-2 rounded"
+                >
+                  <Upload className="w-3 h-3" />
+                  {isAddingToCart
+                    ? "Adding..."
+                    : !product.availability
+                      ? "Out of Stock"
+                      : "Add to Cart"}
+                </Button>
+              </div>
 
-              <p className="text-center text-gray-600 text-xs mt-1.5">
-                Continue adding products or proceed to checkout when ready
-              </p>
+              {/* Go to Checkout Button */}
+              <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg p-3">
+                <Button
+                  onClick={() => navigate("/checkout-new")}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-1.5 text-xs font-semibold gap-2 rounded"
+                >
+                  🛒 Checkout
+                </Button>
+              </div>
             </div>
 
-            {/* Go to Checkout Button */}
-            <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg p-3">
-              <Button
-                onClick={() => navigate("/checkout-new")}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-1.5 text-xs font-semibold gap-2 rounded"
-              >
-                🛒 Go to Checkout
-              </Button>
-            </div>
+            <p className="text-center text-gray-600 text-xs">
+              Continue adding products or proceed to checkout when ready
+            </p>
           </div>
         </div>
 
