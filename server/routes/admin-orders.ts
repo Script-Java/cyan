@@ -131,6 +131,13 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
             options: item.options,
             design_file_url: item.design_file_url,
           })),
+          proofs: (order.proofs || []).map((proof: any) => ({
+            id: proof.id,
+            status: proof.status,
+            description: proof.description,
+            createdAt: proof.created_at,
+            updatedAt: proof.updated_at,
+          })),
         };
       } catch (formatError) {
         console.error("Error formatting order:", { orderId: order.id, formatError });
