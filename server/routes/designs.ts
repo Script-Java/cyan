@@ -259,3 +259,84 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch order designs" });
   }
 };
+
+/**
+ * Upload a design file to Supabase Storage
+ * Accepts base64-encoded file data and returns a public URL
+ * Used during checkout to store customer artwork files
+ */
+export const handleUploadDesignFile: RequestHandler = async (req, res) => {
+  try {
+    const { fileData, fileName, fileType } = req.body;
+
+    if (!fileData || !fileName) {
+      return res.status(400).json({
+        error: "File data and file name are required",
+      });
+    }
+
+    // Validate file size (50MB max)
+    const buffer = Buffer.from(fileData, "base64");
+    if (buffer.length > 50 * 1024 * 1024) {
+      return res.status(400).json({
+        error: "File size exceeds 50MB limit",
+      });
+    }
+
+    // Generate unique filename with timestamp
+    const timestamp = Date.now();
+    const randomId = Math.random().toString(36).substring(7);
+    const sanitizedFileName = fileName
+      .replace(/[^a-zA-Z0-9.-]/g, "_")
+      .substring(0, 100);
+    const uniqueFileName = `${timestamp}-${randomId}-${sanitizedFileName}`;
+    const bucketPath = `customer-designs/${uniqueFileName}`;
+
+    // Upload to Supabase Storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("designs")
+      .upload(bucketPath, buffer, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: fileType || "application/octet-stream",
+      });
+
+    if (uploadError || !uploadData) {
+      console.error("Error uploading design file:", uploadError);
+      return res.status(500).json({
+        error: "Failed to upload design file",
+        details: uploadError?.message,
+      });
+    }
+
+    // Get public URL
+    const { data: publicUrlData } = supabase.storage
+      .from("designs")
+      .getPublicUrl(bucketPath);
+
+    if (!publicUrlData?.publicUrl) {
+      return res.status(500).json({
+        error: "Failed to generate public URL",
+      });
+    }
+
+    console.log("Design file uploaded successfully:", {
+      fileName,
+      path: bucketPath,
+      url: publicUrlData.publicUrl,
+    });
+
+    res.json({
+      success: true,
+      fileUrl: publicUrlData.publicUrl,
+      fileName: sanitizedFileName,
+      size: buffer.length,
+      uploadedAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Upload design file error:", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to upload design";
+    res.status(500).json({ error: message });
+  }
+};
