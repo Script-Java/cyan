@@ -7,7 +7,6 @@ interface Customer {
   firstName: string;
   lastName: string;
   phone?: string;
-  company?: string;
   storeCredit: number;
   createdAt: string;
   updatedAt: string;
