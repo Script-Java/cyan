@@ -462,6 +462,14 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
             {/* Mobile Navigation */}
             <nav className="space-y-2">
               <Link
+                to="/deals"
+                className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-white font-medium text-sm border border-white/20"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <BarChart3 className="w-5 h-5 text-[#EC4899]" />
+                Deals
+              </Link>
+              <Link
                 to="/blogs"
                 className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-white font-medium text-sm border border-white/20"
                 onClick={() => setIsMenuOpen(false)}
