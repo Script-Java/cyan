@@ -339,14 +339,7 @@ export default function ProductPage() {
 
     saveAsDefault(selectedOptions);
 
-    if (product?.customer_upload_config.enabled && !designFile) {
-      toast({
-        title: "Design Required",
-        description: "Please upload your design to continue",
-        variant: "destructive",
-      });
-      return;
-    }
+    // Design file is now optional - allow adding to cart without it
 
     setIsAddingToCart(true);
     try {
