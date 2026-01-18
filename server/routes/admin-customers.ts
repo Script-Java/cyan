@@ -206,7 +206,7 @@ export const handleSearchCustomers: RequestHandler = async (req, res) => {
       `,
       )
       .or(
-        `email.ilike.${searchTerm},first_name.ilike.${searchTerm},last_name.ilike.${searchTerm},company.ilike.${searchTerm}`,
+        `email.ilike.${searchTerm},first_name.ilike.${searchTerm},last_name.ilike.${searchTerm}`,
       );
 
     if (error) {
