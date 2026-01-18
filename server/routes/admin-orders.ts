@@ -50,6 +50,7 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
     let supabaseOrders: any[] = [];
     try {
       // First, fetch basic order data without relations
+      // Note: Using generic * to get all columns and handle missing ones gracefully
       const result = await supabase
         .from("orders")
         .select(
@@ -62,10 +63,7 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           tax,
           shipping,
           created_at,
-          tracking_number,
-          tracking_carrier,
-          tracking_url,
-          shipped_date,
+          updated_at,
           shipping_address,
           customers(id,first_name,last_name,email),
           order_items(id,quantity,product_name,options,design_file_url)
