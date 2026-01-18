@@ -517,32 +517,94 @@ export default function AdminOrders() {
                                         <div className="flex gap-4 items-start">
                                           {/* Product Image Thumbnail */}
                                           {item.design_file_url && (
-                                            <div className="flex-shrink-0">
-                                              <div className="w-24 h-24 bg-gray-100 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center">
-                                                {item.design_file_url.match(
-                                                  /\.(jpg|jpeg|png|gif|webp)$/i,
+                                            <div className="flex-shrink-0 flex flex-col gap-2">
+                                              <div className="w-24 h-24 bg-gray-100 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center relative group">
+                                                {item.design_file_url.startsWith(
+                                                  "data:",
                                                 ) ? (
-                                                  <img
-                                                    src={item.design_file_url}
-                                                    alt="Design Upload"
-                                                    className="w-full h-full object-cover"
-                                                    onError={(e) => {
-                                                      e.currentTarget.style.display =
-                                                        "none";
-                                                    }}
-                                                  />
+                                                  <>
+                                                    {item.design_file_url.match(
+                                                      /^data:image\/(jpg|jpeg|png|gif|webp)/i,
+                                                    ) ? (
+                                                      <img
+                                                        src={item.design_file_url}
+                                                        alt="Design Upload"
+                                                        className="w-full h-full object-cover"
+                                                        onError={(e) => {
+                                                          e.currentTarget.style.display =
+                                                            "none";
+                                                        }}
+                                                      />
+                                                    ) : (
+                                                      <div className="flex flex-col items-center justify-center w-full h-full">
+                                                        <FileText className="w-6 h-6 text-gray-400 mb-1" />
+                                                        <span className="text-xs text-gray-500 text-center px-1">
+                                                          File
+                                                        </span>
+                                                      </div>
+                                                    )}
+                                                  </>
                                                 ) : (
+                                                  <>
+                                                    {item.design_file_url.match(
+                                                      /\.(jpg|jpeg|png|gif|webp)$/i,
+                                                    ) ? (
+                                                      <img
+                                                        src={item.design_file_url}
+                                                        alt="Design Upload"
+                                                        className="w-full h-full object-cover"
+                                                        onError={(e) => {
+                                                          e.currentTarget.style.display =
+                                                            "none";
+                                                        }}
+                                                      />
+                                                    ) : (
+                                                      <FileText className="w-6 h-6 text-gray-400" />
+                                                    )}
+                                                  </>
+                                                )}
+                                                {/* Hover overlay for preview */}
+                                                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center gap-1 transition-all opacity-0 group-hover:opacity-100">
                                                   <a
                                                     href={item.design_file_url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="flex items-center gap-1 p-1 hover:text-green-700 transition-colors"
+                                                    className="p-1.5 bg-white rounded hover:bg-gray-100 transition-colors"
                                                     title="View full design"
                                                   >
-                                                    <ImageIcon className="w-6 h-6 text-gray-500" />
+                                                    <ImageIcon className="w-4 h-4 text-gray-700" />
                                                   </a>
-                                                )}
+                                                </div>
                                               </div>
+                                              {/* Download button */}
+                                              <button
+                                                onClick={() => {
+                                                  if (
+                                                    item.design_file_url.startsWith(
+                                                      "data:",
+                                                    )
+                                                  ) {
+                                                    const link =
+                                                      document.createElement(
+                                                        "a",
+                                                      );
+                                                    link.href =
+                                                      item.design_file_url;
+                                                    link.download = `design-${item.id || "file"}`;
+                                                    link.click();
+                                                  } else {
+                                                    window.open(
+                                                      item.design_file_url,
+                                                      "_blank",
+                                                    );
+                                                  }
+                                                }}
+                                                className="inline-flex items-center justify-center gap-1 px-2 py-1 text-xs font-medium bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded transition-colors"
+                                                title="Download design file"
+                                              >
+                                                <Download className="w-3 h-3" />
+                                                Download
+                                              </button>
                                             </div>
                                           )}
 
