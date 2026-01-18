@@ -393,11 +393,8 @@ export default function ProductPage() {
 
       toast({
         title: "Success",
-        description: "Product added to cart",
+        description: "Product added to cart! You can continue shopping or proceed to checkout.",
       });
-      setTimeout(() => {
-        navigate("/checkout-new");
-      }, 500);
     } catch (error) {
       console.error("Error adding to cart:", error);
       toast({
