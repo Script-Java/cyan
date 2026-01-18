@@ -17,6 +17,8 @@ import {
   Edit,
   Truck,
   Loader2,
+  Download,
+  FileText,
 } from "lucide-react";
 
 interface OrderItem {
