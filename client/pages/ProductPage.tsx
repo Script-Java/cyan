@@ -933,7 +933,7 @@ export default function ProductPage() {
                 <Button
                   onClick={handleAddToCart}
                   disabled={isAddingToCart || !product.availability}
-                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-1.5 text-xs font-semibold gap-2 rounded"
+                  className="w-full bg-white/60 hover:bg-white/80 border border-gray-300 text-black py-1.5 text-xs font-semibold gap-2 rounded transition-all disabled:bg-gray-100 disabled:text-gray-400"
                 >
                   <Upload className="w-3 h-3" />
                   {isAddingToCart
@@ -948,7 +948,7 @@ export default function ProductPage() {
               <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg p-3">
                 <Button
                   onClick={() => navigate("/checkout-new")}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-1.5 text-xs font-semibold gap-2 rounded"
+                  className="w-full bg-white/60 hover:bg-white/80 border border-gray-300 text-black py-1.5 text-xs font-semibold gap-2 rounded transition-all"
                 >
                   🛒 Checkout
                 </Button>
