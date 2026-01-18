@@ -155,6 +155,7 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           source: "supabase" as const,
           orderItems: [],
           shipping_addresses: [],
+          proofs: [],
         };
       }
     });
