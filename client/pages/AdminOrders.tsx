@@ -821,6 +821,58 @@ export default function AdminOrders() {
                                 </p>
                               )}
                             </div>
+
+                            {/* Artwork Proofs Status */}
+                            {order.proofs && order.proofs.length > 0 && (
+                              <div className="bg-blue-50 rounded border border-blue-200 p-3">
+                                <h4 className="text-sm font-semibold text-blue-900 mb-3">
+                                  Artwork Proofs
+                                </h4>
+                                <div className="space-y-3">
+                                  {order.proofs.map((proof, idx) => (
+                                    <div
+                                      key={idx}
+                                      className="bg-white rounded border border-blue-100 p-3"
+                                    >
+                                      <div className="flex items-center justify-between mb-2">
+                                        <div className="flex items-center gap-2">
+                                          {proof.status === "approved" && (
+                                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
+                                              ✓ Approved
+                                            </span>
+                                          )}
+                                          {proof.status === "revisions_requested" && (
+                                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
+                                              ⟳ Revisions Requested
+                                            </span>
+                                          )}
+                                          {proof.status === "pending" && (
+                                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-700 text-xs font-semibold rounded-full">
+                                              ⏳ Pending Review
+                                            </span>
+                                          )}
+                                        </div>
+                                        <p className="text-xs text-gray-500">
+                                          {new Date(
+                                            proof.updatedAt || proof.createdAt
+                                          ).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            day: "numeric",
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                          })}
+                                        </p>
+                                      </div>
+                                      {proof.description && (
+                                        <p className="text-sm text-gray-700 mb-2">
+                                          {proof.description}
+                                        </p>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
