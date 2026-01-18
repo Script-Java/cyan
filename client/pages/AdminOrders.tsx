@@ -183,7 +183,7 @@ export default function AdminOrders() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending_payment":
-        return "text-gray-300 bg-gray-500/20 border border-gray-500/30";
+        return "text-amber-300 bg-amber-500/20 border border-amber-500/30";
       case "paid":
         return "text-emerald-300 bg-emerald-500/20 border border-emerald-500/30";
       case "pending":
@@ -205,6 +205,24 @@ export default function AdminOrders() {
       default:
         return "text-gray-600 bg-gray-100 border border-gray-200";
     }
+  };
+
+  const getPaymentStatusColor = (status: string) => {
+    if (status === "pending_payment") {
+      return "text-orange-600 bg-orange-50 border border-orange-200";
+    } else if (status === "paid") {
+      return "text-green-600 bg-green-50 border border-green-200";
+    }
+    return "";
+  };
+
+  const getPaymentStatusLabel = (status: string) => {
+    if (status === "pending_payment") {
+      return "Awaiting Payment";
+    } else if (status === "paid") {
+      return "Payment Confirmed";
+    }
+    return null;
   };
 
   const getStatusDisplayLabel = (status: string) => {
