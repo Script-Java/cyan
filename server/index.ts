@@ -35,7 +35,7 @@ import {
   handleGetPendingOrders,
   handleGetOrderPublic,
 } from "./routes/orders";
-import { handleGetDesigns, handleGetOrderDesigns } from "./routes/designs";
+import { handleGetDesigns, handleGetOrderDesigns, handleUploadDesignFile } from "./routes/designs";
 import {
   handleCreateCart,
   handleGetCart,
