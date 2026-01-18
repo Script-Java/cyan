@@ -104,13 +104,16 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
                   <Menu className="w-6 h-6 text-white" />
                 </button>
               ) : (
-                <button className="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center gap-2">
+                <Link
+                  to="/"
+                  className="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center gap-2"
+                >
                   <img
                     src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Ff84956aaeddb4872bf448e0f5fbc3371?format=webp&width=800"
-                    alt="Profile"
+                    alt="Home"
                     className="w-10 h-10 rounded-full border border-white/20"
                   />
-                </button>
+                </Link>
               )}
             </div>
 
