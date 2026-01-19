@@ -191,8 +191,11 @@ export const handleCheckout: RequestHandler = async (req, res) => {
     if (supabaseOrder.success) {
       const itemsWithPrices = checkoutData.products.map((item) => ({
         product_id: item.product_id,
+        product_name: item.product_name || "Custom Product",
         quantity: item.quantity,
-        price: item.price_inc_tax || 0.25,
+        price: item.price || item.price_inc_tax || 0.25,
+        design_file_url: item.design_file_url || null,
+        options: item.options || null,
       }));
       await createOrderItems(supabaseOrder.id, itemsWithPrices);
     }
