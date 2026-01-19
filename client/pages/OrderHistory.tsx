@@ -859,6 +859,15 @@ export default function OrderHistory() {
                             </div>
                           )}
 
+                          {order.shipping !== undefined && order.shipping > 0 && (
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">Shipping:</span>
+                              <span className="font-medium text-gray-900">
+                                {formatCurrency(order.shipping)}
+                              </span>
+                            </div>
+                          )}
+
                           <div className="pt-2 border-t-2 border-gray-300 flex justify-between">
                             <span className="font-bold text-gray-900">
                               Order Total:
