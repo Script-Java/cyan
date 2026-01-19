@@ -515,8 +515,8 @@ export default function OrderHistory() {
                       {/* Digital Files */}
                       {order.digital_files &&
                         order.digital_files.length > 0 && (
-                          <div className="mb-4 sm:mb-6">
-                            <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-3 sm:mb-4">
+                          <div className="bg-white rounded-lg border-2 border-blue-200 p-3 sm:p-4 shadow-sm">
+                            <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-2 sm:mb-3">
                               📁 Digital Files
                             </h4>
                             <div className="space-y-2">
@@ -526,7 +526,7 @@ export default function OrderHistory() {
                                   href={file.file_url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex items-center justify-between bg-white p-3 sm:p-4 rounded border border-blue-200 hover:border-blue-400 hover:bg-blue-50 transition-colors gap-2"
+                                  className="flex items-center justify-between bg-gray-50 p-2 sm:p-3 rounded border border-blue-100 hover:border-blue-400 hover:bg-blue-50 transition-colors gap-2"
                                 >
                                   <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                                     <Package className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 flex-shrink-0" />
