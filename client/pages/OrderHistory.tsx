@@ -392,7 +392,7 @@ export default function OrderHistory() {
                       <div className="flex-1">
                         <div className="flex items-center gap-2 sm:gap-3 mb-2 flex-wrap">
                           <h3 className="text-base sm:text-lg font-semibold text-gray-900">
-                            Order #{order.id}
+                            {formatOrderNumber(order.id)}
                           </h3>
                           <span
                             className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}
