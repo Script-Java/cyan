@@ -595,7 +595,8 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
           id,
           product_id,
           quantity,
-          price
+          price,
+          options
         )
       `)
       .eq("id", orderIdNum)
