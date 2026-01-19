@@ -70,7 +70,13 @@ interface SquareCheckoutRequest {
     quantity: number;
     price?: number;
     design_file_url?: string;
-    options?: Array<{ option_id: string; option_value: string }>;
+    options?: Array<{
+      option_id?: string | number;
+      option_name?: string;
+      option_value?: string;
+      modifier_price?: number;
+      price?: number;
+    }>;
   }>;
   phone?: string;
   shippingAddress: {
