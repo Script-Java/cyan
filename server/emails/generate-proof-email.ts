@@ -1,3 +1,5 @@
+import { formatOrderNumber } from "../utils/order";
+
 export function generateProofEmailHtml(params: {
   customerName: string;
   orderId: number;
@@ -14,6 +16,8 @@ export function generateProofEmailHtml(params: {
     approvalLink,
     revisionLink,
   } = params;
+
+  const formattedOrderNumber = formatOrderNumber(orderId);
 
   const imageHtml = proofFileUrl
     ? `
@@ -150,7 +154,7 @@ export function generateProofEmailHtml(params: {
     <div class="content">
       <p>Hi <strong>${customerName}</strong>,</p>
 
-      <p>Great news! Your design proof for <strong>Order #${orderId}</strong> is ready for review.</p>
+      <p>Great news! Your design proof for <strong>Order ${formattedOrderNumber}</strong> is ready for review.</p>
 
       <!-- Proof Description -->
       <div class="proof-box">
