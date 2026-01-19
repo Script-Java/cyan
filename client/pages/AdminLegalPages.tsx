@@ -10,13 +10,6 @@ import {
   FileText,
   Eye,
   EyeOff,
-  Package,
-  BarChart3,
-  DollarSign,
-  Users,
-  BookOpen,
-  Truck,
-  MessageSquare,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
