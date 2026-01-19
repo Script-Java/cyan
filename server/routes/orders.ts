@@ -619,7 +619,7 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
 
     // Fetch customer info separately
     let customerEmail: string | null = null;
-    let customerName: string | null = null;
+    let customerName = "";
 
     if (order.customer_id) {
       const { data: customer, error: customerError } = await supabase
