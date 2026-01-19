@@ -22,33 +22,62 @@ export function useAdminNotifications() {
         const token = localStorage.getItem("authToken");
 
         if (!token) {
+          setIsLoading(false);
           return;
         }
 
+        let openTickets = 0;
+        let pendingOrders = 0;
+        let rejectedProofs = 0;
+
         // Fetch support tickets count
-        const ticketsResponse = await fetch("/api/admin/tickets", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const ticketsData = ticketsResponse.ok ? await ticketsResponse.json() : [];
-        const openTickets = (ticketsData || []).filter(
-          (t: any) => t.status === "open" || t.status === "in-progress"
-        ).length;
+        try {
+          const ticketsResponse = await fetch("/api/admin/tickets", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (ticketsResponse.ok) {
+            const ticketsText = await ticketsResponse.text();
+            const ticketsData = ticketsText ? JSON.parse(ticketsText) : [];
+            openTickets = (Array.isArray(ticketsData) ? ticketsData : ticketsData.tickets || []).filter(
+              (t: any) => t.status === "open" || t.status === "in-progress"
+            ).length;
+          }
+        } catch (err) {
+          console.warn("Error fetching tickets:", err);
+        }
 
         // Fetch pending orders count
-        const ordersResponse = await fetch("/api/admin/pending-orders", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const ordersData = ordersResponse.ok ? await ordersResponse.json() : { count: 0 };
-        const pendingOrders = ordersData.count || 0;
+        try {
+          const ordersResponse = await fetch("/api/admin/pending-orders", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (ordersResponse.ok) {
+            const ordersText = await ordersResponse.text();
+            const ordersData = ordersText ? JSON.parse(ordersText) : { count: 0 };
+            pendingOrders = ordersData.count || 0;
+          }
+        } catch (err) {
+          console.warn("Error fetching pending orders:", err);
+        }
 
         // Fetch proofs with revisions requested count
-        const proofsResponse = await fetch("/api/admin/proofs", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const proofsData = proofsResponse.ok ? await proofsResponse.json() : { proofs: [] };
-        const rejectedProofs = (proofsData.proofs || []).filter(
-          (p: any) => p.status === "revisions_requested"
-        ).length;
+        try {
+          const proofsResponse = await fetch("/api/admin/proofs", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (proofsResponse.ok) {
+            const proofsText = await proofsResponse.text();
+            const proofsData = proofsText ? JSON.parse(proofsText) : { proofs: [] };
+            rejectedProofs = (proofsData.proofs || []).filter(
+              (p: any) => p.status === "revisions_requested"
+            ).length;
+          }
+        } catch (err) {
+          console.warn("Error fetching proofs:", err);
+        }
 
         setNotifications({
           openTickets,
@@ -57,7 +86,7 @@ export function useAdminNotifications() {
         });
         setError(null);
       } catch (err) {
-        console.error("Error fetching notifications:", err);
+        console.error("Error in fetchNotifications:", err);
         setError(err instanceof Error ? err.message : "Failed to fetch notifications");
       } finally {
         setIsLoading(false);
