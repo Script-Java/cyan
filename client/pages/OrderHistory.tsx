@@ -719,6 +719,128 @@ export default function OrderHistory() {
                           <DollarSign className="w-4 h-4 text-gray-600" />
                           Order Summary
                         </h3>
+
+                        {/* Items Breakdown */}
+                        <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-gray-200">
+                          <p className="text-xs font-semibold text-gray-700 mb-2">
+                            Items Breakdown:
+                          </p>
+                          {order.items && order.items.length > 0 ? (
+                            <div className="space-y-3">
+                              {order.items.map((item) => {
+                                // Base price is always $0.40 for stickers
+                                const basePrice = 0.40;
+
+                                // Calculate total option price by summing all individual option prices
+                                let totalOptionPrice = 0;
+                                if (item.options) {
+                                  if (Array.isArray(item.options)) {
+                                    totalOptionPrice = item.options.reduce((sum, option) => {
+                                      const optionPrice = option.price || option.modifier_price || 0;
+                                      return sum + optionPrice;
+                                    }, 0);
+                                  } else {
+                                    // Handle object format
+                                    Object.values(item.options).forEach((val: any) => {
+                                      const optionPrice = typeof val === "object" ? (val.price || val.modifier_price || 0) : 0;
+                                      totalOptionPrice += optionPrice;
+                                    });
+                                  }
+                                }
+
+                                const pricePerUnit = basePrice + totalOptionPrice;
+                                const itemTotal = pricePerUnit * item.quantity;
+
+                                return (
+                                  <div
+                                    key={item.id}
+                                    className="bg-gray-50 p-2 rounded border border-gray-100 text-xs"
+                                  >
+                                    {/* Product Name */}
+                                    <p className="font-semibold text-gray-900 mb-1">
+                                      {item.product_name}
+                                    </p>
+
+                                    {/* Cost Breakdown Box */}
+                                    <div className="bg-blue-50 border border-blue-200 rounded p-2 mb-2">
+                                      <p className="text-blue-900 font-medium text-xs">How We Calculated ${formatPrice(pricePerUnit)} Per Sticker:</p>
+                                      <div className="text-blue-800 text-xs mt-2 space-y-1">
+                                        <div className="flex justify-between">
+                                          <span>📌 Base sticker price:</span>
+                                          <span className="font-semibold">$0.40</span>
+                                        </div>
+                                        {item.options && (
+                                          <>
+                                            <div className="border-t border-blue-300 pt-1 mt-1">
+                                              <p className="font-semibold text-blue-900 mb-1">Selected Options Cost:</p>
+                                              <div className="space-y-1 pl-2">
+                                                {Array.isArray(item.options) ? (
+                                                  item.options.map((option: any, idx: number) => {
+                                                    const optionPrice = option.price || option.modifier_price || 0;
+                                                    const optionName = option.option_name || option.name || option.option_id || `Option ${idx + 1}`;
+                                                    const optionValue = option.option_value || option.value || "";
+                                                    return (
+                                                      <div key={idx} className="flex justify-between">
+                                                        <span>➕ {optionName} {optionValue && `(${optionValue})`}:</span>
+                                                        <span className="font-semibold">+${formatPrice(optionPrice)}</span>
+                                                      </div>
+                                                    );
+                                                  })
+                                                ) : (
+                                                  Object.entries(item.options).map(([key, val]: [string, any]) => {
+                                                    const optionPrice = typeof val === "object" ? val.price || val.modifier_price || 0 : 0;
+                                                    const displayValue = typeof val === "object" ? val.value || val.name : val;
+                                                    const formattedKey = formatOptionKey(key);
+                                                    return (
+                                                      <div key={key} className="flex justify-between">
+                                                        <span>➕ {formattedKey} {displayValue && `(${formatOptionValue(displayValue)})`}:</span>
+                                                        <span className="font-semibold">+${formatPrice(optionPrice)}</span>
+                                                      </div>
+                                                    );
+                                                  })
+                                                )}
+                                              </div>
+                                            </div>
+                                            <div className="border-t border-blue-300 pt-1 mt-1 flex justify-between font-bold">
+                                              <span>= Final per sticker cost:</span>
+                                              <span className="text-blue-900">${formatPrice(pricePerUnit)}</span>
+                                            </div>
+                                          </>
+                                        )}
+                                      </div>
+                                    </div>
+
+                                    {/* Item pricing summary */}
+                                    <div className="space-y-1 text-xs">
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600">Adjusted Cost per Sticker:</span>
+                                        <span className="text-gray-900 font-medium">
+                                          ${formatPrice(pricePerUnit)}
+                                        </span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600">Quantity:</span>
+                                        <span className="text-gray-900 font-medium">× {item.quantity}</span>
+                                      </div>
+                                      <div className="pt-2 border-t border-gray-300 flex justify-between font-semibold">
+                                        <span className="text-gray-900">Item Total:</span>
+                                        <span className="text-emerald-600">
+                                          ${formatPrice(itemTotal)}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          ) : (
+                            <p className="text-xs text-gray-600">
+                              {order.itemCount} item{order.itemCount !== 1 ? "s" : ""}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Price Breakdown */}
                         <div className="space-y-2 text-xs sm:text-sm">
                           <div className="flex justify-between">
                             <span className="text-gray-600">Subtotal:</span>
@@ -726,6 +848,7 @@ export default function OrderHistory() {
                               {formatCurrency(order.subtotal || 0)}
                             </span>
                           </div>
+
                           {order.tax !== undefined && order.tax > 0 && (
                             <div className="flex justify-between">
                               <span className="text-gray-600">Tax:</span>
@@ -734,6 +857,7 @@ export default function OrderHistory() {
                               </span>
                             </div>
                           )}
+
                           <div className="pt-2 border-t-2 border-gray-300 flex justify-between">
                             <span className="font-bold text-gray-900">
                               Order Total:
@@ -741,6 +865,28 @@ export default function OrderHistory() {
                             <span className="font-bold text-lg text-emerald-600">
                               {formatCurrency(order.total)}
                             </span>
+                          </div>
+                        </div>
+
+                        {/* Summary Stats */}
+                        <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200 grid grid-cols-2 gap-2">
+                          <div className="bg-gray-50 p-2 rounded text-center">
+                            <p className="text-xs text-gray-600">Items</p>
+                            <p className="text-sm font-bold text-gray-900">
+                              {order.itemCount}
+                            </p>
+                          </div>
+                          <div className="bg-emerald-50 p-2 rounded text-center">
+                            <p className="text-xs text-gray-600">Order Date</p>
+                            <p className="text-xs font-medium text-emerald-700">
+                              {new Date(order.dateCreated).toLocaleDateString(
+                                "en-US",
+                                {
+                                  month: "short",
+                                  day: "numeric",
+                                },
+                              )}
+                            </p>
                           </div>
                         </div>
                       </div>
