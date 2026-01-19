@@ -548,62 +548,65 @@ export default function ActiveOrdersSummary({
                                     </span>
                                   </div>
 
-                                  {/* Per-Option Costs */}
+                                  {/* Selected Options Summary */}
                                   {item.options && (
-                                    <div className="pt-1 space-y-1">
-                                      {Array.isArray(item.options) ? (
-                                        item.options.map((option: any, idx: number) => {
-                                          const optionPrice = option.price || option.modifier_price || 0;
-                                          const optionName =
-                                            option.option_name ||
-                                            option.name ||
-                                            option.option_id ||
-                                            `Option ${idx + 1}`;
-                                          const optionValue =
-                                            option.option_value || option.value || "";
+                                    <div className="pt-2 border-t border-gray-300 space-y-1">
+                                      <p className="text-xs font-semibold text-gray-700 mb-1">
+                                        Selected Options:
+                                      </p>
+                                      <div className="space-y-1 pl-2 border-l-2 border-blue-200">
+                                        {Array.isArray(item.options) ? (
+                                          item.options.map((option: any, idx: number) => {
+                                            const optionPrice = option.price || option.modifier_price || 0;
+                                            const optionName =
+                                              option.option_name ||
+                                              option.name ||
+                                              option.option_id ||
+                                              `Option ${idx + 1}`;
+                                            const optionValue =
+                                              option.option_value || option.value || "";
 
-                                          if (optionPrice > 0) {
                                             return (
                                               <div
                                                 key={idx}
                                                 className="flex justify-between text-xs"
                                               >
-                                                <span className="text-gray-600">
+                                                <span className="text-gray-700">
                                                   {optionName}
-                                                  {optionValue && ` (${optionValue})`}:
+                                                  {optionValue && ` (${optionValue})`}
                                                 </span>
-                                                <span className="text-blue-600 font-medium">
-                                                  +${formatPrice(optionPrice)}
-                                                </span>
+                                                {optionPrice > 0 && (
+                                                  <span className="text-blue-600 font-medium">
+                                                    +${formatPrice(optionPrice)}
+                                                  </span>
+                                                )}
                                               </div>
                                             );
-                                          }
-                                          return null;
-                                        })
-                                      ) : (
-                                        Object.entries(item.options).map(([key, val]: [string, any]) => {
-                                          const optionPrice = typeof val === "object" ? val.price || val.modifier_price : 0;
-                                          const displayValue =
-                                            typeof val === "object" ? val.value || val.name : val;
+                                          })
+                                        ) : (
+                                          Object.entries(item.options).map(([key, val]: [string, any]) => {
+                                            const optionPrice = typeof val === "object" ? val.price || val.modifier_price : 0;
+                                            const displayValue =
+                                              typeof val === "object" ? val.value || val.name : val;
 
-                                          if (optionPrice > 0) {
                                             return (
                                               <div
                                                 key={key}
                                                 className="flex justify-between text-xs"
                                               >
-                                                <span className="text-gray-600">
-                                                  {key} ({formatOptionValue(displayValue)}):
+                                                <span className="text-gray-700">
+                                                  {key}: {formatOptionValue(displayValue)}
                                                 </span>
-                                                <span className="text-blue-600 font-medium">
-                                                  +${formatPrice(optionPrice)}
-                                                </span>
+                                                {optionPrice > 0 && (
+                                                  <span className="text-blue-600 font-medium">
+                                                    +${formatPrice(optionPrice)}
+                                                  </span>
+                                                )}
                                               </div>
                                             );
-                                          }
-                                          return null;
-                                        })
-                                      )}
+                                          })
+                                        )}
+                                      </div>
                                     </div>
                                   )}
 
