@@ -618,15 +618,16 @@ export default function OrderHistory() {
 
                       {/* Shipments and Tracking */}
                       {order.shipments && order.shipments.length > 0 ? (
-                        <div>
-                          <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-3 sm:mb-4">
-                            Shipments & Tracking
-                          </h4>
-                          <div className="space-y-3 sm:space-y-4">
+                        <div className="bg-white rounded-lg border-2 border-blue-200 p-3 sm:p-4 shadow-sm">
+                          <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-2 sm:mb-3 flex items-center gap-2">
+                            <Truck className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
+                            Shipping & Tracking
+                          </h3>
+                          <div className="space-y-3">
                             {order.shipments.map((shipment) => (
                               <div
                                 key={shipment.id}
-                                className="bg-white p-3 sm:p-4 rounded border border-gray-200"
+                                className="bg-gray-50 p-3 rounded border border-gray-200"
                               >
                                 <div className="flex items-start justify-between mb-3 gap-2">
                                   <div className="flex items-center gap-2">
