@@ -7,7 +7,31 @@ import {
   ChevronUp,
   Truck,
   MapPin,
+  User,
+  Mail,
+  Phone,
+  Image as ImageIcon,
+  ArrowRight,
+  DollarSign,
 } from "lucide-react";
+
+interface OrderItem {
+  id: number;
+  product_id: number;
+  product_name: string;
+  quantity: number;
+  price_inc_tax: number;
+  price_ex_tax: number;
+}
+
+interface DigitalFile {
+  id: string;
+  file_name: string;
+  file_url: string;
+  file_type?: string;
+  file_size?: number;
+  uploaded_at: string;
+}
 
 interface Order {
   id: number;
@@ -15,12 +39,26 @@ interface Order {
   status: string;
   dateCreated: string;
   total: number;
+  subtotal?: number;
+  tax?: number;
   itemCount: number;
+  items?: OrderItem[];
   tracking_number?: string;
   tracking_carrier?: string;
   tracking_url?: string;
   shipped_date?: string;
   estimated_delivery_date?: string;
+  digital_files?: DigitalFile[];
+  shippingAddress?: {
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
 }
 
 interface ActiveOrdersSummaryProps {
