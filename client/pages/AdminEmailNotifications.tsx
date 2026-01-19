@@ -14,7 +14,6 @@ import {
   Activity,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
-import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -168,11 +167,6 @@ export default function AdminEmailNotifications() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Quick Navigation */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <AdminNavigationGrid />
         </div>
 
         {/* Content */}
