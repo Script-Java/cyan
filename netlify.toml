@@ -1,7 +1,8 @@
 [build]
-  command = "npm run build:client"
+  command = "npm run build"
   publish = "dist/spa"
   environment = { NODE_VERSION = "20" }
+  functions = "netlify/functions"
 
 [[redirects]]
   from = "/api/*"
