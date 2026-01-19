@@ -631,9 +631,9 @@ export default function AccountSettings() {
                 </div>
 
                 {/* Shipping Address Section */}
-                <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                  <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                    <MapPin className="w-5 h-5" />
+                <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2">
+                    <MapPin className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
                     Shipping Address
                   </h2>
 
