@@ -125,6 +125,14 @@ export default function ActiveOrdersSummary({
     return 0;
   };
 
+  // Helper function to format option display value
+  const formatOptionValue = (value: any): string => {
+    if (typeof value === "string") return value;
+    if (typeof value === "number") return String(value);
+    if (typeof value === "boolean") return value ? "Yes" : "No";
+    return "";
+  };
+
   return (
     <div className="rounded-xl border-2 p-4 sm:p-6 mb-6 overflow-hidden bg-white shadow-md border-gray-200">
       <div
