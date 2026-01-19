@@ -410,7 +410,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     await sendOrderConfirmationEmail({
       customerEmail: checkoutData.customerEmail,
       customerName: checkoutData.customerName || "Valued Customer",
-      orderNumber: String(supabaseOrder.id),
+      orderNumber: formatOrderNumber(supabaseOrder.id),
       orderDate: new Date().toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
