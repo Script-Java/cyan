@@ -109,6 +109,7 @@ export default function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/order-history" element={<OrderHistory />} />
             <Route path="/order-history/:orderId" element={<OrderDetails />} />
+            <Route path="/order-status" element={<OrderStatus />} />
             <Route path="/finances" element={<Finances />} />
             <Route path="/designs" element={<Designs />} />
             <Route path="/proofs" element={<Proofs />} />
