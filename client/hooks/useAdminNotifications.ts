@@ -26,13 +26,13 @@ export function useAdminNotifications() {
         }
 
         // Fetch support tickets count
-        const ticketsResponse = await fetch("/api/admin/support-tickets", {
+        const ticketsResponse = await fetch("/api/admin/tickets", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        const ticketsData = ticketsResponse.ok ? await ticketsResponse.json() : { tickets: [] };
-        const openTickets = ticketsData.tickets?.filter(
+        const ticketsData = ticketsResponse.ok ? await ticketsResponse.json() : [];
+        const openTickets = (ticketsData || []).filter(
           (t: any) => t.status === "open" || t.status === "in-progress"
-        ).length || 0;
+        ).length;
 
         // Fetch pending orders count
         const ordersResponse = await fetch("/api/admin/pending-orders", {
@@ -41,14 +41,14 @@ export function useAdminNotifications() {
         const ordersData = ordersResponse.ok ? await ordersResponse.json() : { count: 0 };
         const pendingOrders = ordersData.count || 0;
 
-        // Fetch rejected proofs count
-        const proofsResponse = await fetch("/api/admin/proofs?status=rejected", {
+        // Fetch proofs with revisions requested count
+        const proofsResponse = await fetch("/api/admin/proofs", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const proofsData = proofsResponse.ok ? await proofsResponse.json() : { proofs: [] };
-        const rejectedProofs = proofsData.proofs?.filter(
+        const rejectedProofs = (proofsData.proofs || []).filter(
           (p: any) => p.status === "revisions_requested"
-        ).length || 0;
+        ).length;
 
         setNotifications({
           openTickets,
