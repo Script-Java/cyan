@@ -403,42 +403,70 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
   try {
     const { orderId, itemId, options } = req.body;
 
-    if (!orderId || !itemId) {
-      return res.status(400).json({ error: "Order ID and Item ID are required" });
+    console.log("Update order item options - received:", { orderId, itemId, optionsCount: options?.length });
+
+    if (!orderId) {
+      return res.status(400).json({ error: "Order ID is required" });
     }
 
     if (!Array.isArray(options)) {
       return res.status(400).json({ error: "Options must be an array" });
     }
 
+    // Convert orderId to number if needed
+    const numOrderId = typeof orderId === "string" ? parseInt(orderId, 10) : orderId;
+
     // Fetch the order to get current order_items
     const { data: order, error: fetchError } = await supabase
       .from("orders")
-      .select("order_items")
-      .eq("id", orderId)
+      .select("order_items, id")
+      .eq("id", numOrderId)
       .single();
 
-    if (fetchError || !order) {
+    if (fetchError) {
       console.error("Error fetching order:", fetchError);
       return res.status(404).json({ error: "Order not found" });
     }
 
+    if (!order) {
+      console.error("Order not found for ID:", numOrderId);
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    console.log("Found order with items:", order.order_items?.length || 0);
+
     // Update the specific item's options
-    const updatedItems = (order.order_items || []).map((item: any) => {
-      if (item.id === itemId) {
+    // itemId can be the actual item ID or the array index
+    const updatedItems = (order.order_items || []).map((item: any, idx: number) => {
+      // Match by either database ID or array index
+      const isMatch = item.id === itemId || idx === itemId || String(idx) === String(itemId);
+
+      if (isMatch) {
+        console.log("Updating item at index:", idx);
         // Update the options with new prices
         const updatedOptions = Array.isArray(item.options)
-          ? item.options.map((opt: any, idx: number) => {
-              const newOption = options.find((o: any, i: number) => i === idx);
-              return newOption
-                ? { ...opt, price: newOption.price, modifier_price: newOption.price }
-                : opt;
+          ? item.options.map((opt: any, optIdx: number) => {
+              const newOption = options[optIdx];
+              if (newOption) {
+                return {
+                  ...opt,
+                  price: newOption.price || 0,
+                  modifier_price: newOption.price || 0
+                };
+              }
+              return opt;
             })
-          : Object.entries(item.options || {}).reduce((acc: any, [key, val]: [string, any], idx: number) => {
-              const newOption = options.find((o: any, i: number) => i === idx);
-              acc[key] = newOption
-                ? { ...val, price: newOption.price, modifier_price: newOption.price }
-                : val;
+          : Object.entries(item.options || {}).reduce((acc: any, [key, val]: [string, any], optIdx: number) => {
+              const newOption = options[optIdx];
+              if (newOption) {
+                acc[key] = {
+                  ...val,
+                  price: newOption.price || 0,
+                  modifier_price: newOption.price || 0
+                };
+              } else {
+                acc[key] = val;
+              }
               return acc;
             }, {});
 
@@ -454,7 +482,7 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
         order_items: updatedItems,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", orderId)
+      .eq("id", numOrderId)
       .select()
       .single();
 
@@ -463,6 +491,7 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
       return res.status(500).json({ error: "Failed to update order item options" });
     }
 
+    console.log("Successfully updated order items");
     res.json({
       success: true,
       message: "Option costs updated successfully",
