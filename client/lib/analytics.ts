@@ -121,9 +121,10 @@ export function trackPurchase(
   amount: number,
   itemCount: number,
 ): void {
+  const { formatOrderNumber } = require("./order-number");
   trackEvent({
     event_type: "purchase",
-    event_name: `Purchase - Order #${orderId}`,
+    event_name: `Purchase - Order ${formatOrderNumber(orderId)}`,
     data: {
       orderId,
       amount,
