@@ -377,6 +377,37 @@ export default function OrderStatus() {
                                   dangerouslySetInnerHTML={{ __html: item.product_description }}
                                 />
                               )}
+
+                              {/* Product Options */}
+                              {item.options && item.options.length > 0 && (
+                                <div className="mt-4 pt-4 border-t border-green-100">
+                                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">
+                                    Selected Options
+                                  </p>
+                                  <div className="space-y-2">
+                                    {item.options.map((option, optionIndex) => (
+                                      <div
+                                        key={optionIndex}
+                                        className="flex items-start justify-between text-sm bg-white rounded px-3 py-2"
+                                      >
+                                        <div className="flex-1">
+                                          <p className="font-semibold text-gray-900">
+                                            {option.option_name || "Option"}
+                                          </p>
+                                          <p className="text-gray-600">
+                                            {option.option_value}
+                                          </p>
+                                        </div>
+                                        {option.modifier_price && option.modifier_price > 0 && (
+                                          <p className="font-bold text-gray-900 ml-3">
+                                            +{formatCurrency(option.modifier_price)}
+                                          </p>
+                                        )}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </div>
 
