@@ -4,6 +4,7 @@ import { CheckCircle2, AlertCircle, Loader2, Image as ImageIcon } from "lucide-r
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { formatOrderNumber } from "@/lib/order-number";
 
 interface Proof {
   id: string;
@@ -216,7 +217,7 @@ export default function ProofApproval() {
           <div className="p-6 sm:p-8 border-t">
             <div className="mb-6">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Design Proof Ready</h1>
-              <p className="text-gray-600">Order #{proof.order_id}</p>
+              <p className="text-gray-600">Order {formatOrderNumber(proof.order_id)}</p>
             </div>
 
             {/* Description */}
