@@ -72,6 +72,7 @@ interface Order {
   shipments: Shipment[];
   subtotal?: number;
   tax?: number;
+  shipping?: number;
   items?: OrderItem[];
   estimated_delivery_date?: string;
   tracking_number?: string;
