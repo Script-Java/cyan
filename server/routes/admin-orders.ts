@@ -394,3 +394,84 @@ export const handleUpdateShippingAddress: RequestHandler = async (req, res) => {
     res.status(500).json({ error: message });
   }
 };
+
+/**
+ * Update order item option costs
+ * Allows admins to edit the price of individual options for an order item
+ */
+export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => {
+  try {
+    const { orderId, itemId, options } = req.body;
+
+    if (!orderId || !itemId) {
+      return res.status(400).json({ error: "Order ID and Item ID are required" });
+    }
+
+    if (!Array.isArray(options)) {
+      return res.status(400).json({ error: "Options must be an array" });
+    }
+
+    // Fetch the order to get current order_items
+    const { data: order, error: fetchError } = await supabase
+      .from("orders")
+      .select("order_items")
+      .eq("id", orderId)
+      .single();
+
+    if (fetchError || !order) {
+      console.error("Error fetching order:", fetchError);
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Update the specific item's options
+    const updatedItems = (order.order_items || []).map((item: any) => {
+      if (item.id === itemId) {
+        // Update the options with new prices
+        const updatedOptions = Array.isArray(item.options)
+          ? item.options.map((opt: any, idx: number) => {
+              const newOption = options.find((o: any, i: number) => i === idx);
+              return newOption
+                ? { ...opt, price: newOption.price, modifier_price: newOption.price }
+                : opt;
+            })
+          : Object.entries(item.options || {}).reduce((acc: any, [key, val]: [string, any], idx: number) => {
+              const newOption = options.find((o: any, i: number) => i === idx);
+              acc[key] = newOption
+                ? { ...val, price: newOption.price, modifier_price: newOption.price }
+                : val;
+              return acc;
+            }, {});
+
+        return { ...item, options: updatedOptions };
+      }
+      return item;
+    });
+
+    // Update the order in Supabase
+    const { data, error } = await supabase
+      .from("orders")
+      .update({
+        order_items: updatedItems,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", orderId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error updating order item options:", error);
+      return res.status(500).json({ error: "Failed to update order item options" });
+    }
+
+    res.json({
+      success: true,
+      message: "Option costs updated successfully",
+      order: data,
+    });
+  } catch (error) {
+    console.error("Update order item options error:", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to update option costs";
+    res.status(500).json({ error: message });
+  }
+};
