@@ -18,6 +18,14 @@ import {
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 
+interface OrderItemOption {
+  option_id?: string | number;
+  option_name?: string;
+  option_value?: string;
+  modifier_price?: number;
+  price?: number;
+}
+
 interface OrderItem {
   id: number;
   product_id: number;
@@ -26,6 +34,7 @@ interface OrderItem {
   product_name?: string;
   product_sku?: string;
   product_description?: string;
+  options?: OrderItemOption[] | null;
   line_total?: number;
 }
 
