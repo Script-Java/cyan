@@ -609,8 +609,28 @@ export default function ActiveOrdersSummary({
                                     </div>
                                   )}
 
+                                  {/* Adjusted Price Summary */}
+                                  <div className="pt-2 border-t border-gray-300 space-y-1">
+                                    <div className="flex justify-between">
+                                      <span className="text-gray-600">
+                                        Adjusted Cost per Sticker:
+                                      </span>
+                                      <span className="text-gray-900 font-medium">
+                                        ${formatPrice(pricePerUnit)}
+                                      </span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                      <span className="text-gray-600">
+                                        Quantity:
+                                      </span>
+                                      <span className="text-gray-900 font-medium">
+                                        × {item.quantity}
+                                      </span>
+                                    </div>
+                                  </div>
+
                                   {/* Summary Total */}
-                                  <div className="pt-1 border-t border-gray-300 flex justify-between font-semibold">
+                                  <div className="pt-2 border-t border-gray-300 flex justify-between font-semibold">
                                     <span className="text-gray-900">
                                       Item Total:
                                     </span>
