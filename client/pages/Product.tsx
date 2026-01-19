@@ -475,10 +475,10 @@ export default function Product() {
         <div
           style={{
             maxWidth: "1100px",
-            margin: "0 auto 3px",
-            padding: "12px 12px 80px",
+            margin: "58px auto 3px",
+            padding: "8px 12px 80px",
           }}
-          className="px-3 sm:px-4 lg:px-6 pt-32"
+          className="px-3 sm:px-4 lg:px-6"
         >
           {/* Back Navigation */}
           <button
