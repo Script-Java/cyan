@@ -1017,8 +1017,8 @@ export default function AccountSettings() {
 
             {/* Delete Account Tab */}
             {activeTab === "delete" && (
-              <div className="bg-white rounded-xl p-8 shadow-sm border border-red-200 hover:shadow-md transition-shadow">
-                <h2 className="text-xl font-bold text-red-900 mb-4">
+              <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 shadow-sm border border-red-200 hover:shadow-md transition-shadow">
+                <h2 className="text-lg sm:text-xl font-bold text-red-900 mb-4">
                   Delete Account
                 </h2>
 
