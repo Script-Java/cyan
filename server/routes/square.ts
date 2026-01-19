@@ -28,8 +28,14 @@ interface SquarePaymentRequest {
     product_name: string;
     quantity: number;
     price: number;
-    options?: any;
     design_file_url?: string;
+    options?: Array<{
+      option_id?: string | number;
+      option_name?: string;
+      option_value?: string;
+      modifier_price?: number;
+      price?: number;
+    }>;
   }>;
   shippingAddress: {
     firstName: string;
