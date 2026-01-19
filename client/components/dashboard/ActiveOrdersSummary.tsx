@@ -144,6 +144,14 @@ export default function ActiveOrdersSummary({
     return "";
   };
 
+  // Helper function to format option key names (e.g., "vinyl_finish" -> "Vinyl Finish")
+  const formatOptionKey = (key: string): string => {
+    return key
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+
   return (
     <div className="rounded-xl border-2 p-4 sm:p-6 mb-6 overflow-hidden bg-white shadow-md border-gray-200">
       <div
