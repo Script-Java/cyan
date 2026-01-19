@@ -1,5 +1,6 @@
 import { ShoppingBag, Calendar, DollarSign, Package } from "lucide-react";
 import { format } from "date-fns";
+import { formatOrderNumber } from "@/lib/order-number";
 
 interface Order {
   id: number;
