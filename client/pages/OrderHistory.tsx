@@ -750,35 +750,49 @@ export default function OrderHistory() {
                                         <p className="text-xs font-semibold text-gray-700">
                                           Options:
                                         </p>
-                                        <div className="flex flex-wrap gap-1">
+                                        <div className="space-y-1">
                                           {Array.isArray(item.options) ? (
                                             item.options.map((option: any, idx: number) => {
                                               const optionName =
                                                 option.option_id || option.name || `Option ${idx + 1}`;
                                               const optionValue =
                                                 option.option_value || option.value || "";
+                                              const optionPrice = option.price || option.modifier_price || 0;
                                               return (
-                                                <span
+                                                <div
                                                   key={idx}
-                                                  className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
+                                                  className="flex justify-between items-center text-xs"
                                                 >
-                                                  {optionName}: {optionValue}
-                                                </span>
+                                                  <span className="text-gray-700">
+                                                    {optionName} {optionValue && `(${optionValue})`}
+                                                  </span>
+                                                  {optionPrice > 0 && (
+                                                    <span className="text-blue-600 font-medium">
+                                                      +${formatPrice(optionPrice)}
+                                                    </span>
+                                                  )}
+                                                </div>
                                               );
                                             })
                                           ) : (
-                                            Object.entries(item.options).map(([key, value]) => {
-                                              const displayValue = formatOptionValue(value);
-                                              const label = /^\d+$/.test(key)
-                                                ? displayValue
-                                                : `${key}: ${displayValue}`;
+                                            Object.entries(item.options).map(([key, value]: [string, any]) => {
+                                              const optionPrice = typeof value === "object" ? value.price || value.modifier_price : 0;
+                                              const displayValue = typeof value === "object" ? value.value || value.name : value;
+                                              const formattedKey = formatOptionKey(key);
                                               return (
-                                                <span
+                                                <div
                                                   key={key}
-                                                  className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
+                                                  className="flex justify-between items-center text-xs"
                                                 >
-                                                  {label}
-                                                </span>
+                                                  <span className="text-gray-700">
+                                                    {formattedKey} {displayValue && `(${formatOptionValue(displayValue)})`}
+                                                  </span>
+                                                  {optionPrice > 0 && (
+                                                    <span className="text-blue-600 font-medium">
+                                                      +${formatPrice(optionPrice)}
+                                                    </span>
+                                                  )}
+                                                </div>
                                               );
                                             })
                                           )}
