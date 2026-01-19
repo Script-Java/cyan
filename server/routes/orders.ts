@@ -171,6 +171,7 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
         total: order.total,
         subtotal: order.subtotal || 0,
         tax: order.tax || 0,
+        shipping: order.shipping || 0,
         dateCreated: order.created_at,
         source: "supabase",
         itemCount: order.order_items?.length || 0,
