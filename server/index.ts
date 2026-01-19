@@ -634,6 +634,7 @@ export function createServer() {
   app.get("/api/email-preview/order-status-update", handleOrderStatusUpdatePreview);
   app.get("/api/admin/pending-orders", verifyToken, requireAdmin, handleGetAdminPendingOrders);
   app.get("/api/admin/orders/test", verifyToken, requireAdmin, handleTestAdminOrders);
+  app.get("/api/admin/orders/debug", verifyToken, requireAdmin, handleDebugOrders);
   app.get("/api/admin/all-orders", verifyToken, requireAdmin, handleGetAllAdminOrders);
   app.put(
     "/api/admin/orders/:orderId/status",
