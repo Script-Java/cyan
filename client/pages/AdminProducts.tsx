@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Package, Search, Plus, Edit2, Trash2, Eye, Download } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
-import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { importAdminProduct, STICKY_SLAP_STICKER_PRODUCT, TWO_INCH_STICKERS_PRODUCT, FOUR_INCH_PROMO_STICKER_PRODUCT, FIVE_INCH_PROMO_STICKER_PRODUCT, THOUSAND_STICKERS_PROMO_PRODUCT, THREE_INCH_100_STICKERS_PRODUCT } from "@/lib/import-product";
@@ -235,14 +234,6 @@ export default function AdminProducts() {
                 Add Product
               </Button>
             </div>
-          </div>
-
-          {/* Quick Navigation */}
-          <div className="mb-6">
-            <h2 className="text-sm font-semibold text-gray-700 mb-3">
-              Quick Navigation
-            </h2>
-            <AdminNavigationGrid />
           </div>
 
           {/* Search */}
