@@ -406,26 +406,43 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
     console.log("Update order item options - received:", { orderId, itemId, optionsCount: options?.length });
 
     if (!orderId) {
+      console.error("Missing orderId in request body");
       return res.status(400).json({ error: "Order ID is required" });
     }
 
     if (!Array.isArray(options)) {
+      console.error("Options is not an array:", typeof options, options);
       return res.status(400).json({ error: "Options must be an array" });
     }
 
     // Convert orderId to number if needed
     const numOrderId = typeof orderId === "string" ? parseInt(orderId, 10) : orderId;
+    console.log("Converted orderId to:", numOrderId, "type:", typeof numOrderId);
 
     // Fetch the order to get current order_items
-    const { data: order, error: fetchError } = await supabase
+    console.log("Fetching order from Supabase with id:", numOrderId);
+    const { data: order, error: fetchError, count } = await supabase
       .from("orders")
-      .select("order_items, id")
+      .select("order_items, id", { count: "estimated" })
       .eq("id", numOrderId)
       .single();
 
+    console.log("Supabase query result:", {
+      hasData: !!order,
+      hasError: !!fetchError,
+      fetchError,
+      orderId: order?.id,
+      itemCount: order?.order_items?.length,
+    });
+
     if (fetchError) {
-      console.error("Error fetching order:", fetchError);
-      return res.status(404).json({ error: "Order not found" });
+      console.error("Error fetching order from Supabase:", {
+        message: fetchError.message,
+        details: fetchError.details,
+        hint: fetchError.hint,
+        code: fetchError.code,
+      });
+      return res.status(404).json({ error: "Order not found - database error" });
     }
 
     if (!order) {
