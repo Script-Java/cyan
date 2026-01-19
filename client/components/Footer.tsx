@@ -8,27 +8,7 @@ export default function Footer() {
         className="mx-auto px-4 sm:px-6 lg:px-8"
         style={{ maxWidth: "1100px" }}
       >
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6">
-          <div>
-            <h4 className="font-bold text-gray-900 mb-3 text-sm">Shop</h4>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <a href="#" className="hover:text-gray-900 transition-colors">
-                  Vinyl Stickers
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-gray-900 transition-colors">
-                  Holographic
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-gray-900 transition-colors">
-                  Chrome
-                </a>
-              </li>
-            </ul>
-          </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-6">
           <div>
             <h4 className="font-bold text-gray-900 mb-3 text-sm">Company</h4>
             <ul className="space-y-2 text-xs">
