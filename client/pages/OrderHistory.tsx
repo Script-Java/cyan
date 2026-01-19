@@ -476,11 +476,11 @@ export default function OrderHistory() {
                       {/* Design Thumbnails */}
                       {order.digital_files &&
                         order.digital_files.length > 0 && (
-                          <div className="mb-6">
-                            <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                              <ImageIcon className="w-4 h-4 text-blue-600" />
+                          <div>
+                            <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-2 sm:mb-3 flex items-center gap-2">
+                              <ImageIcon className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                               Design Files
-                            </h4>
+                            </h3>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                               {order.digital_files.map((file) => (
                                 <a
