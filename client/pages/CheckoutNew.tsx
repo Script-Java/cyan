@@ -621,9 +621,7 @@ export default function CheckoutNew() {
           product_name: item.product_name,
           quantity: item.quantity,
           price: item.price,
-          design_file_url: item.design_file_id
-            ? getDesignFile(item.design_file_id)
-            : item.design_file_url,
+          design_file_url: item.design_file_url,
           options: getOptionsForPayload(item),
         })),
         phone: customerInfo.phone,
