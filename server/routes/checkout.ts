@@ -41,8 +41,18 @@ interface CheckoutRequest {
   }>;
   products: Array<{
     product_id: number;
+    product_name?: string;
     quantity: number;
     price_inc_tax?: number;
+    price?: number;
+    design_file_url?: string;
+    options?: Array<{
+      option_id?: string | number;
+      option_name?: string;
+      option_value?: string;
+      modifier_price?: number;
+      price?: number;
+    }>;
   }>;
   order_total?: number;
   subtotal_inc_tax?: number;
