@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 interface OrderItem {
   id: number;
@@ -172,342 +171,361 @@ export default function OrderStatus() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-50 py-6 sm:py-8">
-        <div className="max-w-2xl mx-auto px-3 sm:px-4">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-              Track Your Order
-            </h1>
-            <p className="text-gray-600 text-lg">
-              Enter your order number and email to see the current status,
-              tracking information, and estimated delivery date.
-            </p>
-          </div>
+      <main className="min-h-screen bg-white text-gray-900 pt-16">
+        {/* Hero Section */}
+        <section className="relative bg-white overflow-hidden py-12 sm:py-16">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: "1100px" }}>
+            <div className="text-center max-w-3xl mx-auto">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
+                Track Your Order
+                <span className="block bg-gradient-to-r from-[#FFD713] to-[#FFA500] bg-clip-text text-transparent">
+                  Status & Delivery
+                </span>
+              </h1>
 
-          {/* Search Form */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8 mb-8 shadow-sm">
-            <form onSubmit={handleSearch} className="space-y-4">
-              <div>
-                <label
-                  htmlFor="orderNumber"
-                  className="block text-sm font-medium text-gray-900 mb-2"
-                >
-                  Order Number
-                </label>
-                <input
-                  id="orderNumber"
-                  type="text"
-                  placeholder="e.g., 12345"
-                  value={orderNumber}
-                  onChange={(e) => setOrderNumber(e.target.value)}
-                  disabled={isLoading}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  You can find this in your order confirmation email
-                </p>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-900 mb-2"
-                >
-                  Email Address
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="your@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={isLoading}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Must match the email address used for the order
-                </p>
-              </div>
-
-              <div className="flex gap-3 pt-2">
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 flex items-center justify-center gap-2"
-                >
-                  <Search className="w-5 h-5" />
-                  {isLoading ? "Searching..." : "Find Order"}
-                </Button>
-                {orderData && (
-                  <Button
-                    type="button"
-                    onClick={handleReset}
-                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-900 font-medium py-3 flex items-center justify-center gap-2"
-                  >
-                    <X className="w-5 h-5" />
-                    New Search
-                  </Button>
-                )}
-              </div>
-            </form>
-          </div>
-
-          {/* Error Message */}
-          {error && (
-            <div className="mb-8 bg-red-50 border border-red-200 rounded-lg p-4 flex gap-3">
-              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-red-900">{error}</p>
-                {error === "Email does not match this order" && (
-                  <p className="text-xs text-red-700 mt-1">
-                    Please check that you entered the correct email address
-                    associated with this order.
-                  </p>
-                )}
-                {error === "Order not found" && (
-                  <p className="text-xs text-red-700 mt-1">
-                    Please verify your order number and try again.
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* No Search Yet */}
-          {!hasSearched && !orderData && !error && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
-              <Package className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-              <h2 className="text-lg font-semibold text-blue-900 mb-2">
-                Ready to Track?
-              </h2>
-              <p className="text-blue-800">
-                Enter your order number and email above to get started.
+              <p className="text-sm sm:text-base text-gray-600 mb-8 leading-relaxed">
+                Enter your order number and email to see the current status,
+                tracking information, and estimated delivery date.
               </p>
             </div>
-          )}
+          </div>
+        </section>
 
-          {/* Order Found */}
-          {orderData && (
-            <div className="space-y-6">
-              {/* Status Overview */}
-              <div className={`rounded-lg p-6 ${getStatusColor(orderData.status)}`}>
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="flex items-center gap-3 mb-2">
-                      {getStatusIcon(orderData.status)}
-                      <h2 className="text-2xl font-bold">Order Status</h2>
-                    </div>
-                    <p className="text-base font-medium capitalize">
-                      {orderData.status.replace(/_/g, " ")}
+        {/* Main Content */}
+        <section className="bg-white py-8 sm:py-12">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: "1100px" }}>
+            {/* Search Form */}
+            <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-6 sm:p-8 mb-8 shadow-sm">
+              <form onSubmit={handleSearch} className="space-y-4">
+                <div>
+                  <label
+                    htmlFor="orderNumber"
+                    className="block text-sm font-semibold text-gray-900 mb-2"
+                  >
+                    Order Number
+                  </label>
+                  <input
+                    id="orderNumber"
+                    type="text"
+                    placeholder="e.g., 12345"
+                    value={orderNumber}
+                    onChange={(e) => setOrderNumber(e.target.value)}
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-50 text-gray-900 placeholder-gray-500"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    You can find this in your order confirmation email
+                  </p>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-semibold text-gray-900 mb-2"
+                  >
+                    Email Address
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-50 text-gray-900 placeholder-gray-500"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Must match the email address used for the order
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all shadow-lg shadow-green-500/30 hover:shadow-xl hover:shadow-green-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Search className="w-5 h-5" />
+                    {isLoading ? "Searching..." : "Find Order"}
+                  </button>
+                  {orderData && (
+                    <button
+                      type="button"
+                      onClick={handleReset}
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 border border-gray-300 text-gray-900 rounded-lg font-bold hover:bg-gray-200 transition-all"
+                    >
+                      <X className="w-5 h-5" />
+                      New Search
+                    </button>
+                  )}
+                </div>
+              </form>
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="mb-8 bg-red-50 border border-red-200 rounded-lg p-4 flex gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-red-900">{error}</p>
+                  {error === "Email does not match this order" && (
+                    <p className="text-xs text-red-700 mt-1">
+                      Please check that you entered the correct email address
+                      associated with this order.
                     </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-gray-600 mb-1">Order #</p>
-                    <p className="text-xl font-bold text-gray-900">
-                      {orderData.id}
+                  )}
+                  {error === "Order not found" && (
+                    <p className="text-xs text-red-700 mt-1">
+                      Please verify your order number and try again.
                     </p>
-                  </div>
+                  )}
                 </div>
               </div>
+            )}
 
-              {/* Tracking Information */}
-              {orderData.trackingNumber && (
-                <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <Truck className="w-5 h-5 text-blue-600" />
-                    Tracking Information
-                  </h3>
-                  <div className="space-y-4">
+            {/* No Search Yet */}
+            {!hasSearched && !orderData && !error && (
+              <div className="backdrop-blur-sm bg-blue-50/40 border border-blue-200/50 rounded-xl p-8 sm:p-12 text-center">
+                <Package className="w-12 h-12 text-blue-500 mx-auto mb-4" />
+                <h2 className="text-lg font-bold text-gray-900 mb-2">
+                  Ready to Track?
+                </h2>
+                <p className="text-gray-600">
+                  Enter your order number and email above to get started.
+                </p>
+              </div>
+            )}
+
+            {/* Order Found */}
+            {orderData && (
+              <div className="space-y-6">
+                {/* Status Overview */}
+                <div className={`rounded-lg p-6 sm:p-8 ${getStatusColor(orderData.status)}`}>
+                  <div className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="text-sm text-gray-600 mb-2">
-                        Tracking Number
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <p className="font-mono text-base font-semibold text-gray-900 break-all">
-                          {orderData.trackingNumber}
-                        </p>
-                        {orderData.trackingUrl && (
-                          <a
-                            href={orderData.trackingUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="ml-auto flex-shrink-0"
-                            title="Open tracking in external carrier website"
-                          >
-                            <ExternalLink className="w-5 h-5 text-blue-600 hover:text-blue-700" />
-                          </a>
-                        )}
+                      <div className="flex items-center gap-3 mb-2">
+                        {getStatusIcon(orderData.status)}
+                        <h2 className="text-2xl sm:text-3xl font-bold">
+                          Order Status
+                        </h2>
                       </div>
+                      <p className="text-base font-semibold capitalize">
+                        {orderData.status.replace(/_/g, " ")}
+                      </p>
                     </div>
-
-                    {orderData.trackingCarrier && (
-                      <div>
-                        <p className="text-sm text-gray-600 mb-1">Carrier</p>
-                        <p className="text-base font-medium text-gray-900 capitalize">
-                          {orderData.trackingCarrier}
-                        </p>
-                      </div>
-                    )}
-
-                    {orderData.shippedDate && (
-                      <div>
-                        <p className="text-sm text-gray-600 mb-1">
-                          Shipped Date
-                        </p>
-                        <div className="flex items-center gap-2 text-base text-gray-900 font-medium">
-                          <Calendar className="w-4 h-4 text-gray-400" />
-                          {formatDate(orderData.shippedDate)}
-                        </div>
-                      </div>
-                    )}
-
-                    {orderData.estimatedDeliveryDate && (
-                      <div className="pt-3 border-t border-gray-200">
-                        <p className="text-sm text-gray-600 mb-1">
-                          Estimated Delivery
-                        </p>
-                        <div className="flex items-center gap-2 text-lg text-blue-600 font-semibold">
-                          <Calendar className="w-5 h-5" />
-                          {formatDate(orderData.estimatedDeliveryDate)}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* Shipping Address */}
-              {orderData.shippingAddress && (
-                <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-blue-600" />
-                    Shipping Address
-                  </h3>
-                  <div className="text-gray-900 space-y-1">
-                    <p className="font-medium">{orderData.customerName}</p>
-                    {orderData.shippingAddress.street && (
-                      <p>{orderData.shippingAddress.street}</p>
-                    )}
-                    {orderData.shippingAddress.city && (
-                      <p>
-                        {orderData.shippingAddress.city},{" "}
-                        {orderData.shippingAddress.state}{" "}
-                        {orderData.shippingAddress.postalCode}
+                    <div className="text-right">
+                      <p className="text-xs text-gray-600 mb-1">Order #</p>
+                      <p className="text-2xl font-bold">
+                        {orderData.id}
                       </p>
-                    )}
-                    {orderData.shippingAddress.country && (
-                      <p>{orderData.shippingAddress.country}</p>
-                    )}
+                    </div>
                   </div>
                 </div>
-              )}
 
-              {/* Order Items */}
-              {orderData.products && orderData.products.length > 0 && (
-                <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <Package className="w-5 h-5 text-blue-600" />
-                    Order Items
-                  </h3>
-                  <div className="space-y-3">
-                    {orderData.products.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex justify-between items-start border-b border-gray-100 pb-3 last:border-b-0"
-                      >
-                        <div className="flex-1">
-                          <p className="font-medium text-gray-900">
-                            {item.product_name}
+                {/* Tracking Information */}
+                {orderData.trackingNumber && (
+                  <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-6 sm:p-8 shadow-sm">
+                    <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                      <Truck className="w-5 h-5 text-green-500" />
+                      Tracking Information
+                    </h3>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm text-gray-600 mb-2 font-semibold">
+                          Tracking Number
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-mono text-base font-bold text-gray-900 break-all">
+                            {orderData.trackingNumber}
                           </p>
-                          <p className="text-sm text-gray-600">
-                            Quantity: {item.quantity}
+                          {orderData.trackingUrl && (
+                            <a
+                              href={orderData.trackingUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="ml-auto flex-shrink-0 inline-flex items-center justify-center w-9 h-9 bg-green-50 hover:bg-green-100 rounded-lg transition-colors"
+                              title="Open tracking in external carrier website"
+                            >
+                              <ExternalLink className="w-5 h-5 text-green-600" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+
+                      {orderData.trackingCarrier && (
+                        <div className="pt-4 border-t border-gray-200">
+                          <p className="text-sm text-gray-600 mb-1 font-semibold">
+                            Carrier
+                          </p>
+                          <p className="text-base font-medium text-gray-900 capitalize">
+                            {orderData.trackingCarrier}
                           </p>
                         </div>
-                        <p className="font-semibold text-gray-900 flex-shrink-0 ml-4">
-                          {formatCurrency(item.price_inc_tax)}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                      )}
 
-              {/* Digital Files */}
-              {orderData.digitalFiles && orderData.digitalFiles.length > 0 && (
-                <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <ImageIcon className="w-5 h-5 text-blue-600" />
-                    Design Files
-                  </h3>
-                  <div className="space-y-3">
-                    {orderData.digitalFiles.map((file) => (
-                      <a
-                        key={file.id}
-                        href={file.file_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded transition-colors gap-3"
-                      >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <Package className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                          <div className="min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">
-                              {file.file_name}
-                            </p>
-                            {file.file_size && (
-                              <p className="text-xs text-gray-600">
-                                {(file.file_size / 1024 / 1024).toFixed(2)} MB
-                              </p>
-                            )}
+                      {orderData.shippedDate && (
+                        <div className="pt-4 border-t border-gray-200">
+                          <p className="text-sm text-gray-600 mb-2 font-semibold">
+                            Shipped Date
+                          </p>
+                          <div className="flex items-center gap-2 text-base text-gray-900 font-medium">
+                            <Calendar className="w-4 h-4 text-gray-400" />
+                            {formatDate(orderData.shippedDate)}
                           </div>
                         </div>
-                        <ExternalLink className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                      </a>
-                    ))}
+                      )}
+
+                      {orderData.estimatedDeliveryDate && (
+                        <div className="pt-4 border-t border-gray-200">
+                          <p className="text-sm text-gray-600 mb-2 font-semibold">
+                            Estimated Delivery
+                          </p>
+                          <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 rounded-lg">
+                            <Calendar className="w-5 h-5 text-green-600" />
+                            <span className="text-lg font-bold text-green-700">
+                              {formatDate(orderData.estimatedDeliveryDate)}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Shipping Address */}
+                {orderData.shippingAddress && (
+                  <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-6 sm:p-8 shadow-sm">
+                    <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                      <MapPin className="w-5 h-5 text-green-500" />
+                      Shipping Address
+                    </h3>
+                    <div className="text-gray-900 space-y-1">
+                      <p className="font-semibold">{orderData.customerName}</p>
+                      {orderData.shippingAddress.street && (
+                        <p className="text-gray-600">{orderData.shippingAddress.street}</p>
+                      )}
+                      {orderData.shippingAddress.city && (
+                        <p className="text-gray-600">
+                          {orderData.shippingAddress.city},{" "}
+                          {orderData.shippingAddress.state}{" "}
+                          {orderData.shippingAddress.postalCode}
+                        </p>
+                      )}
+                      {orderData.shippingAddress.country && (
+                        <p className="text-gray-600">
+                          {orderData.shippingAddress.country}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Order Items */}
+                {orderData.products && orderData.products.length > 0 && (
+                  <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-6 sm:p-8 shadow-sm">
+                    <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                      <Package className="w-5 h-5 text-green-500" />
+                      Order Items
+                    </h3>
+                    <div className="space-y-3">
+                      {orderData.products.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex justify-between items-start border-b border-gray-200 pb-3 last:border-b-0"
+                        >
+                          <div className="flex-1">
+                            <p className="font-semibold text-gray-900">
+                              {item.product_name}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Quantity: {item.quantity}
+                            </p>
+                          </div>
+                          <p className="font-bold text-gray-900 flex-shrink-0 ml-4">
+                            {formatCurrency(item.price_inc_tax)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Digital Files */}
+                {orderData.digitalFiles && orderData.digitalFiles.length > 0 && (
+                  <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-6 sm:p-8 shadow-sm">
+                    <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                      <ImageIcon className="w-5 h-5 text-green-500" />
+                      Design Files
+                    </h3>
+                    <div className="space-y-3">
+                      {orderData.digitalFiles.map((file) => (
+                        <a
+                          key={file.id}
+                          href={file.file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-between p-4 bg-gray-50/50 hover:bg-green-50/50 border border-gray-200 hover:border-green-200 rounded-lg transition-colors gap-3"
+                        >
+                          <div className="flex items-center gap-3 min-w-0">
+                            <Package className="w-5 h-5 text-green-600 flex-shrink-0" />
+                            <div className="min-w-0">
+                              <p className="text-sm font-medium text-gray-900 truncate">
+                                {file.file_name}
+                              </p>
+                              {file.file_size && (
+                                <p className="text-xs text-gray-600">
+                                  {(file.file_size / 1024 / 1024).toFixed(2)} MB
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          <ExternalLink className="w-5 h-5 text-green-600 flex-shrink-0" />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Order Summary */}
+                <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-6 sm:p-8 shadow-sm">
+                  <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <DollarSign className="w-5 h-5 text-green-500" />
+                    Order Total
+                  </h3>
+                  <div className="space-y-3">
+                    {orderData.subtotal !== undefined && (
+                      <div className="flex justify-between text-gray-600">
+                        <span className="font-medium">Subtotal</span>
+                        <span>{formatCurrency(orderData.subtotal)}</span>
+                      </div>
+                    )}
+                    {orderData.tax !== undefined && (
+                      <div className="flex justify-between text-gray-600">
+                        <span className="font-medium">Tax</span>
+                        <span>{formatCurrency(orderData.tax)}</span>
+                      </div>
+                    )}
+                    {orderData.shipping !== undefined && (
+                      <div className="flex justify-between text-gray-600">
+                        <span className="font-medium">Shipping</span>
+                        <span>{formatCurrency(orderData.shipping)}</span>
+                      </div>
+                    )}
+                    <div className="pt-3 border-t border-gray-300 flex justify-between text-lg font-bold text-gray-900">
+                      <span>Total</span>
+                      <span>{formatCurrency(orderData.total)}</span>
+                    </div>
                   </div>
                 </div>
-              )}
 
-              {/* Order Summary */}
-              <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <DollarSign className="w-5 h-5 text-blue-600" />
-                  Order Total
-                </h3>
-                <div className="space-y-3">
-                  {orderData.subtotal !== undefined && (
-                    <div className="flex justify-between text-gray-600">
-                      <span>Subtotal</span>
-                      <span>{formatCurrency(orderData.subtotal)}</span>
-                    </div>
-                  )}
-                  {orderData.tax !== undefined && (
-                    <div className="flex justify-between text-gray-600">
-                      <span>Tax</span>
-                      <span>{formatCurrency(orderData.tax)}</span>
-                    </div>
-                  )}
-                  {orderData.shipping !== undefined && (
-                    <div className="flex justify-between text-gray-600">
-                      <span>Shipping</span>
-                      <span>{formatCurrency(orderData.shipping)}</span>
-                    </div>
-                  )}
-                  <div className="pt-3 border-t border-gray-200 flex justify-between text-lg font-bold text-gray-900">
-                    <span>Total</span>
-                    <span>{formatCurrency(orderData.total)}</span>
-                  </div>
+                {/* Order Date */}
+                <div className="text-center text-sm text-gray-600 pb-4">
+                  Order placed on <span className="font-semibold">{formatDate(orderData.dateCreated)}</span>
                 </div>
               </div>
-
-              {/* Order Date */}
-              <div className="text-center text-sm text-gray-600 pb-4">
-                Order placed on {formatDate(orderData.dateCreated)}
-              </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        </section>
       </main>
     </>
   );
