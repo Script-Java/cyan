@@ -182,7 +182,7 @@ export default function OrderStatus() {
               </h1>
 
               <p className="text-sm sm:text-base text-gray-600 mb-8 leading-relaxed">
-                Enter your order number and email to see the current status,
+                Enter your order number to see the current status,
                 tracking information, and estimated delivery date.
               </p>
             </div>
