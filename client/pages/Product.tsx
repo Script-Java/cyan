@@ -411,9 +411,7 @@ export default function Product() {
       localStorage.setItem("cart", JSON.stringify(existingCart));
 
       toast.success("Product added to cart");
-      setTimeout(() => {
-        navigate("/checkout-new");
-      }, 500);
+      setShowCheckoutDialog(true);
     } catch (error) {
       console.error("Error adding to cart:", error);
       toast.error("Failed to add product to cart");
