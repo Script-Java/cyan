@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
+import { formatOrderNumber } from "@/lib/order-number";
 
 interface SupportFormData {
   name: string;
