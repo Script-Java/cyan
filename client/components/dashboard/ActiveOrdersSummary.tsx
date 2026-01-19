@@ -600,10 +600,12 @@ export default function ActiveOrdersSummary({
                                             const optionPrice = typeof val === "object" ? val.price || val.modifier_price : 0;
                                             const displayValue =
                                               typeof val === "object" ? val.value || val.name : val;
+                                            const formattedKey = formatOptionKey(key);
 
                                             return (
                                               <div key={key} className="text-xs text-gray-700">
-                                                {key}: {formatOptionValue(displayValue)}
+                                                {formattedKey}
+                                                {displayValue && ` (${formatOptionValue(displayValue)})`}
                                                 {optionPrice > 0 && (
                                                   <span className="text-blue-600 font-medium ml-1">
                                                     +${formatPrice(optionPrice)}
