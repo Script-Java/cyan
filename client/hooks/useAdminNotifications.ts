@@ -39,8 +39,12 @@ export function useAdminNotifications() {
           if (ticketsResponse.ok) {
             const ticketsText = await ticketsResponse.text();
             const ticketsData = ticketsText ? JSON.parse(ticketsText) : [];
-            openTickets = (Array.isArray(ticketsData) ? ticketsData : ticketsData.tickets || []).filter(
-              (t: any) => t.status === "open" || t.status === "in-progress"
+            openTickets = (
+              Array.isArray(ticketsData)
+                ? ticketsData
+                : ticketsData.tickets || []
+            ).filter(
+              (t: any) => t.status === "open" || t.status === "in-progress",
             ).length;
           }
         } catch (err) {
@@ -55,7 +59,9 @@ export function useAdminNotifications() {
 
           if (ordersResponse.ok) {
             const ordersText = await ordersResponse.text();
-            const ordersData = ordersText ? JSON.parse(ordersText) : { count: 0 };
+            const ordersData = ordersText
+              ? JSON.parse(ordersText)
+              : { count: 0 };
             pendingOrders = ordersData.count || 0;
           }
         } catch (err) {
@@ -70,9 +76,11 @@ export function useAdminNotifications() {
 
           if (proofsResponse.ok) {
             const proofsText = await proofsResponse.text();
-            const proofsData = proofsText ? JSON.parse(proofsText) : { proofs: [] };
+            const proofsData = proofsText
+              ? JSON.parse(proofsText)
+              : { proofs: [] };
             rejectedProofs = (proofsData.proofs || []).filter(
-              (p: any) => p.status === "revisions_requested"
+              (p: any) => p.status === "revisions_requested",
             ).length;
           }
         } catch (err) {
@@ -87,7 +95,9 @@ export function useAdminNotifications() {
         setError(null);
       } catch (err) {
         console.error("Error in fetchNotifications:", err);
-        setError(err instanceof Error ? err.message : "Failed to fetch notifications");
+        setError(
+          err instanceof Error ? err.message : "Failed to fetch notifications",
+        );
       } finally {
         setIsLoading(false);
       }

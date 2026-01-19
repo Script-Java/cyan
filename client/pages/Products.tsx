@@ -238,7 +238,7 @@ export default function Products() {
     return products.filter((product) => {
       // Get the category ID that matches the product's group
       const categoryId = Object.entries(categoryMap).find(
-        ([name]) => name === product.category
+        ([name]) => name === product.category,
       )?.[1];
 
       // Match if the category ID matches the selected category, or if product name contains category
@@ -253,7 +253,7 @@ export default function Products() {
     return products.filter((product) => {
       // Get the category ID that matches the product's group
       const productCategoryId = Object.entries(categoryMap).find(
-        ([name]) => name === product.category
+        ([name]) => name === product.category,
       )?.[1];
 
       // Count if the category ID matches or if product name contains category
@@ -475,7 +475,6 @@ export default function Products() {
               ))}
             </div>
           )}
-
         </div>
       </main>
     </>

@@ -310,7 +310,9 @@ export default function Proofs() {
             </button>
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Proofs</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                  Proofs
+                </h1>
                 <p className="text-xs sm:text-sm text-gray-600 mt-1 sm:mt-2">
                   Review and approve design proofs for your orders
                 </p>
@@ -395,7 +397,9 @@ export default function Proofs() {
                           {proof.file_name && (
                             <p className="text-xs text-blue-600 mt-1 flex items-center gap-1 truncate">
                               <FileIcon className="w-3 h-3 flex-shrink-0" />
-                              <span className="truncate">File: {proof.file_name}</span>
+                              <span className="truncate">
+                                File: {proof.file_name}
+                              </span>
                             </p>
                           )}
                           <p className="text-xs text-gray-500 mt-1">
@@ -435,7 +439,9 @@ export default function Proofs() {
                                   className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition-colors"
                                 >
                                   <Download className="w-3 h-3 sm:w-4 sm:h-4" />
-                                  <span className="hidden sm:inline">Download</span>
+                                  <span className="hidden sm:inline">
+                                    Download
+                                  </span>
                                   <span className="sm:hidden">DL</span>
                                 </a>
                               </div>
@@ -515,7 +521,9 @@ export default function Proofs() {
                             className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm bg-blue-600 text-white rounded font-medium hover:bg-blue-700 disabled:bg-blue-400 transition-colors"
                           >
                             <Send className="w-3 h-3 sm:w-4 sm:h-4" />
-                            <span className="hidden sm:inline">Post Comment</span>
+                            <span className="hidden sm:inline">
+                              Post Comment
+                            </span>
                             <span className="sm:hidden">Post</span>
                           </button>
                         </div>
@@ -548,7 +556,9 @@ export default function Proofs() {
                               className="flex-1 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 disabled:bg-orange-400 transition-colors"
                             >
                               <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5" />
-                              <span className="hidden sm:inline">Request Revisions</span>
+                              <span className="hidden sm:inline">
+                                Request Revisions
+                              </span>
                               <span className="sm:hidden">Revise</span>
                             </button>
                           </div>
@@ -576,7 +586,9 @@ export default function Proofs() {
                                 disabled={submittingAction[proof.id]}
                                 className="w-full px-3 sm:px-4 py-2 text-xs sm:text-sm bg-orange-600 text-white rounded font-medium hover:bg-orange-700 disabled:bg-orange-400 transition-colors"
                               >
-                                <span className="hidden sm:inline">Confirm Request for Revisions</span>
+                                <span className="hidden sm:inline">
+                                  Confirm Request for Revisions
+                                </span>
                                 <span className="sm:hidden">Confirm</span>
                               </button>
                             </div>
@@ -634,7 +646,9 @@ export default function Proofs() {
                           {proof.file_name && (
                             <p className="text-xs text-blue-600 mt-1 flex items-center gap-1 truncate">
                               <FileIcon className="w-3 h-3 flex-shrink-0" />
-                              <span className="truncate">File: {proof.file_name}</span>
+                              <span className="truncate">
+                                File: {proof.file_name}
+                              </span>
                             </p>
                           )}
                           <p className="text-xs text-gray-500 mt-1">
@@ -674,7 +688,9 @@ export default function Proofs() {
                                   className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition-colors"
                                 >
                                   <Download className="w-3 h-3 sm:w-4 sm:h-4" />
-                                  <span className="hidden sm:inline">Download</span>
+                                  <span className="hidden sm:inline">
+                                    Download
+                                  </span>
                                   <span className="sm:hidden">DL</span>
                                 </a>
                               </div>

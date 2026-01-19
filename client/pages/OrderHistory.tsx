@@ -42,15 +42,17 @@ interface OrderItem {
   price?: number;
   option_price?: number;
   total_price?: number;
-  options?: Record<string, any> | Array<{
-    option_id?: string;
-    option_name?: string;
-    name?: string;
-    option_value?: string;
-    value?: string;
-    price?: number;
-    modifier_price?: number;
-  }>;
+  options?:
+    | Record<string, any>
+    | Array<{
+        option_id?: string;
+        option_name?: string;
+        name?: string;
+        option_value?: string;
+        value?: string;
+        price?: number;
+        modifier_price?: number;
+      }>;
   design_file_url?: string;
 }
 
@@ -627,8 +629,12 @@ export default function OrderHistory() {
                                           Artwork file that was uploaded
                                         </p>
                                         <div className="flex gap-2">
-                                          {item.design_file_url.startsWith("data:") ||
-                                          item.design_file_url.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                                          {item.design_file_url.startsWith(
+                                            "data:",
+                                          ) ||
+                                          item.design_file_url.match(
+                                            /\.(jpg|jpeg|png|gif|webp)$/i,
+                                          ) ? (
                                             <a
                                               href={item.design_file_url}
                                               target="_blank"
@@ -674,51 +680,82 @@ export default function OrderHistory() {
                                           Options:
                                         </p>
                                         <div className="space-y-1">
-                                          {Array.isArray(item.options) ? (
-                                            item.options.map((option: any, idx: number) => {
-                                              const optionName =
-                                                option.option_id || option.name || `Option ${idx + 1}`;
-                                              const optionValue =
-                                                option.option_value || option.value || "";
-                                              const optionPrice = option.price || option.modifier_price || 0;
-                                              return (
-                                                <div
-                                                  key={idx}
-                                                  className="flex justify-between items-center text-xs"
-                                                >
-                                                  <span className="text-gray-700">
-                                                    {optionName} {optionValue && `(${optionValue})`}
-                                                  </span>
-                                                  {optionPrice > 0 && (
-                                                    <span className="text-blue-600 font-medium">
-                                                      +${formatPrice(optionPrice)}
-                                                    </span>
-                                                  )}
-                                                </div>
-                                              );
-                                            })
-                                          ) : (
-                                            Object.entries(item.options).map(([key, value]: [string, any]) => {
-                                              const optionPrice = typeof value === "object" ? value.price || value.modifier_price : 0;
-                                              const displayValue = typeof value === "object" ? value.value || value.name : value;
-                                              const formattedKey = formatOptionKey(key);
-                                              return (
-                                                <div
-                                                  key={key}
-                                                  className="flex justify-between items-center text-xs"
-                                                >
-                                                  <span className="text-gray-700">
-                                                    {formattedKey} {displayValue && `(${formatOptionValue(displayValue)})`}
-                                                  </span>
-                                                  {optionPrice > 0 && (
-                                                    <span className="text-blue-600 font-medium">
-                                                      +${formatPrice(optionPrice)}
-                                                    </span>
-                                                  )}
-                                                </div>
-                                              );
-                                            })
-                                          )}
+                                          {Array.isArray(item.options)
+                                            ? item.options.map(
+                                                (option: any, idx: number) => {
+                                                  const optionName =
+                                                    option.option_id ||
+                                                    option.name ||
+                                                    `Option ${idx + 1}`;
+                                                  const optionValue =
+                                                    option.option_value ||
+                                                    option.value ||
+                                                    "";
+                                                  const optionPrice =
+                                                    option.price ||
+                                                    option.modifier_price ||
+                                                    0;
+                                                  return (
+                                                    <div
+                                                      key={idx}
+                                                      className="flex justify-between items-center text-xs"
+                                                    >
+                                                      <span className="text-gray-700">
+                                                        {optionName}{" "}
+                                                        {optionValue &&
+                                                          `(${optionValue})`}
+                                                      </span>
+                                                      {optionPrice > 0 && (
+                                                        <span className="text-blue-600 font-medium">
+                                                          +$
+                                                          {formatPrice(
+                                                            optionPrice,
+                                                          )}
+                                                        </span>
+                                                      )}
+                                                    </div>
+                                                  );
+                                                },
+                                              )
+                                            : Object.entries(item.options).map(
+                                                ([key, value]: [
+                                                  string,
+                                                  any,
+                                                ]) => {
+                                                  const optionPrice =
+                                                    typeof value === "object"
+                                                      ? value.price ||
+                                                        value.modifier_price
+                                                      : 0;
+                                                  const displayValue =
+                                                    typeof value === "object"
+                                                      ? value.value ||
+                                                        value.name
+                                                      : value;
+                                                  const formattedKey =
+                                                    formatOptionKey(key);
+                                                  return (
+                                                    <div
+                                                      key={key}
+                                                      className="flex justify-between items-center text-xs"
+                                                    >
+                                                      <span className="text-gray-700">
+                                                        {formattedKey}{" "}
+                                                        {displayValue &&
+                                                          `(${formatOptionValue(displayValue)})`}
+                                                      </span>
+                                                      {optionPrice > 0 && (
+                                                        <span className="text-blue-600 font-medium">
+                                                          +$
+                                                          {formatPrice(
+                                                            optionPrice,
+                                                          )}
+                                                        </span>
+                                                      )}
+                                                    </div>
+                                                  );
+                                                },
+                                              )}
                                         </div>
                                       </div>
                                     )}
@@ -726,17 +763,25 @@ export default function OrderHistory() {
                                     {/* Item pricing summary */}
                                     <div className="space-y-1 text-xs">
                                       <div className="flex justify-between">
-                                        <p className="text-gray-600">Per Sticker:</p>
+                                        <p className="text-gray-600">
+                                          Per Sticker:
+                                        </p>
                                         <span className="text-gray-900 font-medium">
                                           ${formatPrice(pricePerUnit)}
                                         </span>
                                       </div>
                                       <div className="flex justify-between">
-                                        <span className="text-gray-600">Quantity:</span>
-                                        <span className="text-gray-900 font-medium">× {item.quantity}</span>
+                                        <span className="text-gray-600">
+                                          Quantity:
+                                        </span>
+                                        <span className="text-gray-900 font-medium">
+                                          × {item.quantity}
+                                        </span>
                                       </div>
                                       <div className="pt-2 border-t border-gray-300 flex justify-between font-semibold">
-                                        <span className="text-gray-900">Item Total:</span>
+                                        <span className="text-gray-900">
+                                          Item Total:
+                                        </span>
                                         <span className="text-emerald-600">
                                           ${formatPrice(itemTotal)}
                                         </span>
@@ -748,7 +793,8 @@ export default function OrderHistory() {
                             </div>
                           ) : (
                             <p className="text-xs text-gray-600">
-                              {order.itemCount} item{order.itemCount !== 1 ? "s" : ""}
+                              {order.itemCount} item
+                              {order.itemCount !== 1 ? "s" : ""}
                             </p>
                           )}
                         </div>
@@ -771,14 +817,15 @@ export default function OrderHistory() {
                             </div>
                           )}
 
-                          {order.shipping !== undefined && order.shipping > 0 && (
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Shipping:</span>
-                              <span className="font-medium text-gray-900">
-                                {formatCurrency(order.shipping)}
-                              </span>
-                            </div>
-                          )}
+                          {order.shipping !== undefined &&
+                            order.shipping > 0 && (
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Shipping:</span>
+                                <span className="font-medium text-gray-900">
+                                  {formatCurrency(order.shipping)}
+                                </span>
+                              </div>
+                            )}
 
                           <div className="pt-2 border-t-2 border-gray-300 flex justify-between">
                             <span className="font-bold text-gray-900">
@@ -855,7 +902,9 @@ export default function OrderHistory() {
                                 {shipment.trackingNumber && (
                                   <div className="mb-2 text-xs sm:text-sm">
                                     <div className="flex justify-between">
-                                      <span className="text-gray-600">Tracking Number:</span>
+                                      <span className="text-gray-600">
+                                        Tracking Number:
+                                      </span>
                                       <div className="flex flex-col items-end gap-1">
                                         <span className="font-mono font-semibold text-gray-900 text-xs sm:text-sm break-all">
                                           {shipment.trackingNumber}

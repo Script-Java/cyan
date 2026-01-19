@@ -1,5 +1,10 @@
 import { RequestHandler } from "express";
-import { supabase, getPendingOrders, getActiveOrders, getActiveOrdersCount } from "../utils/supabase";
+import {
+  supabase,
+  getPendingOrders,
+  getActiveOrders,
+  getActiveOrdersCount,
+} from "../utils/supabase";
 
 interface OrderItem {
   id?: number;
@@ -81,12 +86,14 @@ export const handleDebugOrders: RequestHandler = async (req, res) => {
     // Try to fetch with order_items
     const { data: orderWithItems, error: itemsError } = await supabase
       .from("orders")
-      .select(`
+      .select(
+        `
         id,
         status,
         total,
         order_items(id, product_name, options)
-      `)
+      `,
+      )
       .eq("id", firstOrderId)
       .single();
 
@@ -145,7 +152,7 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           customers(id,first_name,last_name,email),
           order_items(id,quantity,product_name,options,design_file_url),
           proofs(id,status,description,created_at,updated_at)
-          `
+          `,
         )
         .order("created_at", { ascending: false })
         .limit(100); // Reduced from 200 to 100 for better performance
@@ -164,15 +171,17 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
     // Format Supabase orders
     const formattedSupabaseOrders = supabaseOrders.map((order: any) => {
       try {
-        const customerName = order.customers && Array.isArray(order.customers)
-          ? `${order.customers[0]?.first_name || ""} ${order.customers[0]?.last_name || ""}`.trim()
-          : order.customers
-            ? `${order.customers.first_name || ""} ${order.customers.last_name || ""}`.trim()
-            : "Guest";
+        const customerName =
+          order.customers && Array.isArray(order.customers)
+            ? `${order.customers[0]?.first_name || ""} ${order.customers[0]?.last_name || ""}`.trim()
+            : order.customers
+              ? `${order.customers.first_name || ""} ${order.customers.last_name || ""}`.trim()
+              : "Guest";
 
-        const customerEmail = order.customers && Array.isArray(order.customers)
-          ? order.customers[0]?.email || "N/A"
-          : order.customers?.email || "N/A";
+        const customerEmail =
+          order.customers && Array.isArray(order.customers)
+            ? order.customers[0]?.email || "N/A"
+            : order.customers?.email || "N/A";
 
         return {
           id: order.id,
@@ -209,7 +218,10 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           })),
         };
       } catch (formatError) {
-        console.error("Error formatting order:", { orderId: order.id, formatError });
+        console.error("Error formatting order:", {
+          orderId: order.id,
+          formatError,
+        });
         return {
           id: order.id,
           customerId: order.customer_id,
@@ -231,7 +243,8 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
 
     // Return Supabase orders sorted by date
     allOrders = formattedSupabaseOrders.sort(
-      (a, b) => new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime()
+      (a, b) =>
+        new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime(),
     );
 
     res.json({
@@ -459,7 +472,10 @@ export const handleUpdateShippingAddress: RequestHandler = async (req, res) => {
  * Update order item option costs
  * Allows admins to edit the price of individual options for an order item
  */
-export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => {
+export const handleUpdateOrderItemOptions: RequestHandler = async (
+  req,
+  res,
+) => {
   try {
     const { orderId, itemId, options } = req.body;
 
@@ -480,9 +496,15 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
     }
 
     // Convert orderId to number
-    const numOrderId = typeof orderId === "string" ? parseInt(orderId, 10) : orderId;
+    const numOrderId =
+      typeof orderId === "string" ? parseInt(orderId, 10) : orderId;
 
-    console.log("Fetching order_items with orderId:", numOrderId, "itemId:", itemId);
+    console.log(
+      "Fetching order_items with orderId:",
+      numOrderId,
+      "itemId:",
+      itemId,
+    );
 
     // Query the order_items table directly instead of through the orders relation
     const { data: allItems, error: itemsError } = await supabase
@@ -498,10 +520,12 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
         optionsCount: i.options ? Object.keys(i.options).length : 0,
       })),
       error: itemsError,
-      itemsError: itemsError ? {
-        message: itemsError.message,
-        code: itemsError.code,
-      } : null,
+      itemsError: itemsError
+        ? {
+            message: itemsError.message,
+            code: itemsError.code,
+          }
+        : null,
     });
 
     if (itemsError) {
@@ -545,7 +569,12 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
     }
 
     if (!itemToUpdate) {
-      console.error("Item not found with ID:", itemId, "Available items:", allItems.map((i: any) => i.id));
+      console.error(
+        "Item not found with ID:",
+        itemId,
+        "Available items:",
+        allItems.map((i: any) => i.id),
+      );
       return res.status(404).json({ error: "Item not found in this order" });
     }
 
@@ -579,7 +608,7 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
             : val;
           return acc;
         },
-        {}
+        {},
       );
     }
 

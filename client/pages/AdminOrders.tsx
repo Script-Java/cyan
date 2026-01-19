@@ -134,12 +134,18 @@ export default function AdminOrders() {
 
       if (!response.ok) {
         const errorData = await response.text().catch(() => "");
-        console.error(`Failed to fetch orders: ${response.status} ${response.statusText}`, errorData);
+        console.error(
+          `Failed to fetch orders: ${response.status} ${response.statusText}`,
+          errorData,
+        );
 
         // Retry on server errors, but not on auth errors
         if (response.status >= 500 && retryCount < 2) {
           console.log(`Retrying orders fetch (attempt ${retryCount + 2})...`);
-          setTimeout(() => fetchOrders(retryCount + 1), 1000 * (retryCount + 1));
+          setTimeout(
+            () => fetchOrders(retryCount + 1),
+            1000 * (retryCount + 1),
+          );
           return;
         }
 
@@ -154,13 +160,16 @@ export default function AdminOrders() {
       if (error instanceof Error && error.name === "AbortError") {
         console.error("Orders fetch timeout after 60 seconds");
       } else {
-        const errorMessage = error instanceof Error ? error.message : String(error);
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
         console.error("Error fetching orders:", errorMessage);
       }
 
       // Retry on network errors
       if (retryCount < 2) {
-        console.log(`Retrying orders fetch (attempt ${retryCount + 2}) after network error...`);
+        console.log(
+          `Retrying orders fetch (attempt ${retryCount + 2}) after network error...`,
+        );
         setTimeout(() => fetchOrders(retryCount + 1), 1000 * (retryCount + 1));
         return;
       }
@@ -256,7 +265,9 @@ export default function AdminOrders() {
       completed: "Completed",
       cancelled: "Cancelled",
     };
-    return statusMap[status] || status.charAt(0).toUpperCase() + status.slice(1);
+    return (
+      statusMap[status] || status.charAt(0).toUpperCase() + status.slice(1)
+    );
   };
 
   const formatDate = (dateString: string) => {
@@ -328,49 +339,49 @@ export default function AdminOrders() {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
                   />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Filter className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                    <select
-                      value={filterStatus}
-                      onChange={(e) => setFilterStatus(e.target.value)}
-                      className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
-                    >
-                      <option value="all">All Statuses</option>
-                      <option value="pending_payment">Pending Payment</option>
-                      <option value="paid">Awaiting Fulfillment</option>
-                      <option value="pending">Pending</option>
-                      <option value="processing">Processing</option>
-                      <option value="printing">Printing</option>
-                      <option value="preparing for shipping">
-                        Preparing for Shipping
-                      </option>
-                      <option value="in transit">In Transit</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="delivered">Delivered</option>
-                      <option value="completed">Completed</option>
-                      <option value="cancelled">Cancelled</option>
-                    </select>
-                  </div>
                 </div>
-
-                {/* Hide Recent Orders Toggle */}
-                <div className="flex items-center gap-3 px-3 py-2 bg-white border border-gray-200 rounded-lg w-fit">
-                  <input
-                    type="checkbox"
-                    id="hideRecentOrders"
-                    checked={hideRecentOrders}
-                    onChange={(e) => setHideRecentOrders(e.target.checked)}
-                    className="w-4 h-4 rounded border border-gray-300 bg-white cursor-pointer accent-green-500"
-                  />
-                  <label
-                    htmlFor="hideRecentOrders"
-                    className="text-sm text-gray-700 cursor-pointer font-medium"
+                <div className="flex items-center gap-2">
+                  <Filter className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <select
+                    value={filterStatus}
+                    onChange={(e) => setFilterStatus(e.target.value)}
+                    className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
                   >
-                    Hide orders from past 7 days
-                  </label>
+                    <option value="all">All Statuses</option>
+                    <option value="pending_payment">Pending Payment</option>
+                    <option value="paid">Awaiting Fulfillment</option>
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="printing">Printing</option>
+                    <option value="preparing for shipping">
+                      Preparing for Shipping
+                    </option>
+                    <option value="in transit">In Transit</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
                 </div>
               </div>
+
+              {/* Hide Recent Orders Toggle */}
+              <div className="flex items-center gap-3 px-3 py-2 bg-white border border-gray-200 rounded-lg w-fit">
+                <input
+                  type="checkbox"
+                  id="hideRecentOrders"
+                  checked={hideRecentOrders}
+                  onChange={(e) => setHideRecentOrders(e.target.checked)}
+                  className="w-4 h-4 rounded border border-gray-300 bg-white cursor-pointer accent-green-500"
+                />
+                <label
+                  htmlFor="hideRecentOrders"
+                  className="text-sm text-gray-700 cursor-pointer font-medium"
+                >
+                  Hide orders from past 7 days
+                </label>
+              </div>
+            </div>
 
             {/* Orders List */}
             {filteredOrders.length > 0 ? (
@@ -388,535 +399,571 @@ export default function AdminOrders() {
 
                 {/* Orders */}
                 <div className="divide-y divide-gray-200">
-                {filteredOrders.map((order) => (
-                  <div key={order.id}>
-                    {/* Order Row */}
-                    <button
-                      onClick={() =>
-                        setExpandedOrderId(
-                          expandedOrderId === order.id ? null : order.id,
-                        )
-                      }
-                      className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors text-left"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 flex-wrap">
-                          <span className="font-semibold text-gray-900">
-                            {generateOrderNumber(order.id)}
-                          </span>
-                          <span
-                            className={`px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                              order.status,
-                            )}`}
-                          >
-                            {getStatusDisplayLabel(order.status)}
-                          </span>
-                          {getPaymentStatusLabel(order.status) && (
+                  {filteredOrders.map((order) => (
+                    <div key={order.id}>
+                      {/* Order Row */}
+                      <button
+                        onClick={() =>
+                          setExpandedOrderId(
+                            expandedOrderId === order.id ? null : order.id,
+                          )
+                        }
+                        className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors text-left"
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-3 flex-wrap">
+                            <span className="font-semibold text-gray-900">
+                              {generateOrderNumber(order.id)}
+                            </span>
                             <span
-                              className={`px-2.5 py-1 rounded-full text-xs font-medium ${getPaymentStatusColor(
+                              className={`px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(
                                 order.status,
                               )}`}
                             >
-                              {getPaymentStatusLabel(order.status)}
+                              {getStatusDisplayLabel(order.status)}
                             </span>
-                          )}
+                            {getPaymentStatusLabel(order.status) && (
+                              <span
+                                className={`px-2.5 py-1 rounded-full text-xs font-medium ${getPaymentStatusColor(
+                                  order.status,
+                                )}`}
+                              >
+                                {getPaymentStatusLabel(order.status)}
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-sm text-gray-600 mt-1">
+                            {order.customerName} •{" "}
+                            <span className="text-gray-500">
+                              {order.customerEmail}
+                            </span>
+                          </div>
+                          <div className="text-xs text-gray-500 mt-1">
+                            {formatDate(order.dateCreated)}
+                          </div>
                         </div>
-                        <div className="text-sm text-gray-600 mt-1">
-                          {order.customerName} •{" "}
-                          <span className="text-gray-500">
-                            {order.customerEmail}
+                        <div className="flex items-center gap-4 flex-shrink-0 ml-4">
+                          <span className="font-semibold text-green-600 text-right">
+                            ${order.total.toFixed(2)}
                           </span>
+                          <ChevronDown
+                            className={`w-5 h-5 text-gray-600 transition-transform ${
+                              expandedOrderId === order.id ? "rotate-180" : ""
+                            }`}
+                          />
                         </div>
-                        <div className="text-xs text-gray-500 mt-1">
-                          {formatDate(order.dateCreated)}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4 flex-shrink-0 ml-4">
-                        <span className="font-semibold text-green-600 text-right">
-                          ${order.total.toFixed(2)}
-                        </span>
-                        <ChevronDown
-                          className={`w-5 h-5 text-gray-600 transition-transform ${
-                            expandedOrderId === order.id ? "rotate-180" : ""
-                          }`}
-                        />
-                      </div>
-                    </button>
+                      </button>
 
-                    {/* Order Details */}
-                    {expandedOrderId === order.id && (
-                      <div className="px-6 py-4 bg-white border-t border-gray-200 space-y-4">
-                            {/* Action Buttons */}
-                            <div className="flex gap-2 flex-wrap">
-                              <button
-                                onClick={() => setEditingOrderId(order.id)}
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 hover:bg-green-200 border border-green-300 rounded-lg text-green-700 hover:text-green-800 transition-colors text-sm font-medium"
-                              >
-                                <Edit className="w-4 h-4" />
-                                Edit Status & Tracking
-                              </button>
-                              <button
-                                onClick={() =>
-                                  setShippingLabelOrderId(order.id)
-                                }
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 border border-blue-300 rounded-lg text-blue-700 hover:text-blue-800 transition-colors text-sm font-medium"
-                              >
-                                <Truck className="w-4 h-4" />
-                                Purchase Shipping Label
-                              </button>
-                            </div>
-                            {/* Price Breakdown */}
-                            <div>
-                              <h4 className="text-sm font-semibold text-gray-900 mb-3">
-                                Price Breakdown
-                              </h4>
-                              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                <div className="bg-gray-50 rounded border border-gray-200 p-3">
-                                  <p className="text-xs text-gray-600">
-                                    Subtotal
-                                  </p>
-                                  <p className="text-sm font-semibold text-gray-900">
-                                    $
-                                    {(
-                                      order.subtotal || order.total * 0.8
-                                    ).toFixed(2)}
-                                  </p>
-                                </div>
-                                <div className="bg-gray-50 rounded border border-gray-200 p-3">
-                                  <p className="text-xs text-gray-600">Tax</p>
-                                  <p className="text-sm font-semibold text-gray-900">
-                                    $
-                                    {(order.tax || order.total * 0.1).toFixed(
-                                      2,
-                                    )}
-                                  </p>
-                                </div>
-                                <div className="bg-gray-50 rounded border border-gray-200 p-3">
-                                  <p className="text-xs text-gray-600">
-                                    Shipping
-                                  </p>
-                                  <p className="text-sm font-semibold text-gray-900">
-                                    ${(order.shipping || 0).toFixed(2)}
-                                  </p>
-                                </div>
-                                <div className="bg-green-50 border border-green-200 rounded p-3">
-                                  <p className="text-xs text-gray-600">Total</p>
-                                  <p className="text-sm font-semibold text-green-700">
-                                    ${order.total.toFixed(2)}
-                                  </p>
-                                </div>
+                      {/* Order Details */}
+                      {expandedOrderId === order.id && (
+                        <div className="px-6 py-4 bg-white border-t border-gray-200 space-y-4">
+                          {/* Action Buttons */}
+                          <div className="flex gap-2 flex-wrap">
+                            <button
+                              onClick={() => setEditingOrderId(order.id)}
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 hover:bg-green-200 border border-green-300 rounded-lg text-green-700 hover:text-green-800 transition-colors text-sm font-medium"
+                            >
+                              <Edit className="w-4 h-4" />
+                              Edit Status & Tracking
+                            </button>
+                            <button
+                              onClick={() => setShippingLabelOrderId(order.id)}
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 border border-blue-300 rounded-lg text-blue-700 hover:text-blue-800 transition-colors text-sm font-medium"
+                            >
+                              <Truck className="w-4 h-4" />
+                              Purchase Shipping Label
+                            </button>
+                          </div>
+                          {/* Price Breakdown */}
+                          <div>
+                            <h4 className="text-sm font-semibold text-gray-900 mb-3">
+                              Price Breakdown
+                            </h4>
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                              <div className="bg-gray-50 rounded border border-gray-200 p-3">
+                                <p className="text-xs text-gray-600">
+                                  Subtotal
+                                </p>
+                                <p className="text-sm font-semibold text-gray-900">
+                                  $
+                                  {(
+                                    order.subtotal || order.total * 0.8
+                                  ).toFixed(2)}
+                                </p>
+                              </div>
+                              <div className="bg-gray-50 rounded border border-gray-200 p-3">
+                                <p className="text-xs text-gray-600">Tax</p>
+                                <p className="text-sm font-semibold text-gray-900">
+                                  ${(order.tax || order.total * 0.1).toFixed(2)}
+                                </p>
+                              </div>
+                              <div className="bg-gray-50 rounded border border-gray-200 p-3">
+                                <p className="text-xs text-gray-600">
+                                  Shipping
+                                </p>
+                                <p className="text-sm font-semibold text-gray-900">
+                                  ${(order.shipping || 0).toFixed(2)}
+                                </p>
+                              </div>
+                              <div className="bg-green-50 border border-green-200 rounded p-3">
+                                <p className="text-xs text-gray-600">Total</p>
+                                <p className="text-sm font-semibold text-green-700">
+                                  ${order.total.toFixed(2)}
+                                </p>
                               </div>
                             </div>
+                          </div>
 
-                            {/* Items */}
-                            {order.orderItems &&
-                              order.orderItems.length > 0 && (
-                                <div>
-                                  <h4 className="text-sm font-semibold text-gray-900 mb-3">
-                                    Order Items ({order.orderItems.length})
-                                  </h4>
-                                  <div className="space-y-4">
-                                    {order.orderItems.map((item, idx) => (
-                                      <div
-                                        key={idx}
-                                        className="bg-white rounded border border-gray-200 p-4"
-                                      >
-                                        <div className="flex gap-4 items-start">
-                                          {/* Product Image Thumbnail */}
-                                          {item.design_file_url && (
-                                            <div className="flex-shrink-0 flex flex-col gap-2">
-                                              <div className="w-24 h-24 bg-gray-100 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center relative group">
-                                                {item.design_file_url.startsWith(
-                                                  "data:",
+                          {/* Items */}
+                          {order.orderItems && order.orderItems.length > 0 && (
+                            <div>
+                              <h4 className="text-sm font-semibold text-gray-900 mb-3">
+                                Order Items ({order.orderItems.length})
+                              </h4>
+                              <div className="space-y-4">
+                                {order.orderItems.map((item, idx) => (
+                                  <div
+                                    key={idx}
+                                    className="bg-white rounded border border-gray-200 p-4"
+                                  >
+                                    <div className="flex gap-4 items-start">
+                                      {/* Product Image Thumbnail */}
+                                      {item.design_file_url && (
+                                        <div className="flex-shrink-0 flex flex-col gap-2">
+                                          <div className="w-24 h-24 bg-gray-100 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center relative group">
+                                            {item.design_file_url.startsWith(
+                                              "data:",
+                                            ) ? (
+                                              <>
+                                                {item.design_file_url.match(
+                                                  /^data:image\/(jpg|jpeg|png|gif|webp)/i,
                                                 ) ? (
-                                                  <>
-                                                    {item.design_file_url.match(
-                                                      /^data:image\/(jpg|jpeg|png|gif|webp)/i,
-                                                    ) ? (
-                                                      <img
-                                                        src={item.design_file_url}
-                                                        alt="Design Upload"
-                                                        className="w-full h-full object-cover"
-                                                        onError={(e) => {
-                                                          e.currentTarget.style.display =
-                                                            "none";
-                                                        }}
-                                                      />
-                                                    ) : (
-                                                      <div className="flex flex-col items-center justify-center w-full h-full">
-                                                        <FileText className="w-6 h-6 text-gray-400 mb-1" />
-                                                        <span className="text-xs text-gray-500 text-center px-1">
-                                                          File
-                                                        </span>
-                                                      </div>
-                                                    )}
-                                                  </>
+                                                  <img
+                                                    src={item.design_file_url}
+                                                    alt="Design Upload"
+                                                    className="w-full h-full object-cover"
+                                                    onError={(e) => {
+                                                      e.currentTarget.style.display =
+                                                        "none";
+                                                    }}
+                                                  />
                                                 ) : (
-                                                  <>
-                                                    {item.design_file_url.match(
-                                                      /\.(jpg|jpeg|png|gif|webp)$/i,
-                                                    ) ? (
-                                                      <img
-                                                        src={item.design_file_url}
-                                                        alt="Design Upload"
-                                                        className="w-full h-full object-cover"
-                                                        onError={(e) => {
-                                                          e.currentTarget.style.display =
-                                                            "none";
-                                                        }}
-                                                      />
-                                                    ) : (
-                                                      <FileText className="w-6 h-6 text-gray-400" />
-                                                    )}
-                                                  </>
+                                                  <div className="flex flex-col items-center justify-center w-full h-full">
+                                                    <FileText className="w-6 h-6 text-gray-400 mb-1" />
+                                                    <span className="text-xs text-gray-500 text-center px-1">
+                                                      File
+                                                    </span>
+                                                  </div>
                                                 )}
-                                                {/* Hover overlay for preview */}
-                                                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center gap-1 transition-all opacity-0 group-hover:opacity-100">
-                                                  <a
-                                                    href={item.design_file_url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="p-1.5 bg-white rounded hover:bg-gray-100 transition-colors"
-                                                    title="View full design"
-                                                  >
-                                                    <ImageIcon className="w-4 h-4 text-gray-700" />
-                                                  </a>
-                                                </div>
-                                              </div>
-                                              {/* Download button */}
+                                              </>
+                                            ) : (
+                                              <>
+                                                {item.design_file_url.match(
+                                                  /\.(jpg|jpeg|png|gif|webp)$/i,
+                                                ) ? (
+                                                  <img
+                                                    src={item.design_file_url}
+                                                    alt="Design Upload"
+                                                    className="w-full h-full object-cover"
+                                                    onError={(e) => {
+                                                      e.currentTarget.style.display =
+                                                        "none";
+                                                    }}
+                                                  />
+                                                ) : (
+                                                  <FileText className="w-6 h-6 text-gray-400" />
+                                                )}
+                                              </>
+                                            )}
+                                            {/* Hover overlay for preview */}
+                                            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center gap-1 transition-all opacity-0 group-hover:opacity-100">
+                                              <a
+                                                href={item.design_file_url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="p-1.5 bg-white rounded hover:bg-gray-100 transition-colors"
+                                                title="View full design"
+                                              >
+                                                <ImageIcon className="w-4 h-4 text-gray-700" />
+                                              </a>
+                                            </div>
+                                          </div>
+                                          {/* Download button */}
+                                          <button
+                                            onClick={() => {
+                                              if (
+                                                item.design_file_url.startsWith(
+                                                  "data:",
+                                                )
+                                              ) {
+                                                const link =
+                                                  document.createElement("a");
+                                                link.href =
+                                                  item.design_file_url;
+                                                link.download = `design-${item.id || "file"}`;
+                                                link.click();
+                                              } else {
+                                                window.open(
+                                                  item.design_file_url,
+                                                  "_blank",
+                                                );
+                                              }
+                                            }}
+                                            className="inline-flex items-center justify-center gap-1 px-2 py-1 text-xs font-medium bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded transition-colors"
+                                            title="Download design file"
+                                          >
+                                            <Download className="w-3 h-3" />
+                                            Download
+                                          </button>
+                                        </div>
+                                      )}
+
+                                      {/* Product Details */}
+                                      <div className="flex-1 min-w-0">
+                                        <h5 className="text-gray-900 font-semibold text-sm mb-2">
+                                          {item.product_name || "Product"}
+                                        </h5>
+
+                                        {/* Quantity */}
+                                        <div className="mb-3">
+                                          <p className="text-xs text-gray-600 font-medium">
+                                            QUANTITY
+                                          </p>
+                                          <p className="text-sm text-gray-900 font-medium">
+                                            {item.quantity || 1}{" "}
+                                            {item.quantity === 1
+                                              ? "unit"
+                                              : "units"}
+                                          </p>
+                                        </div>
+
+                                        {/* Product Options */}
+                                        {item.options && (
+                                          <div>
+                                            <div className="flex items-center justify-between mb-2">
+                                              <p className="text-xs text-gray-600 font-medium">
+                                                SPECIFICATIONS
+                                              </p>
                                               <button
                                                 onClick={() => {
-                                                  if (
-                                                    item.design_file_url.startsWith(
-                                                      "data:",
+                                                  console.log(
+                                                    "Edit costs clicked - Full context:",
+                                                    {
+                                                      orderId: order.id,
+                                                      orderIdType:
+                                                        typeof order.id,
+                                                      item,
+                                                      itemId: item.id ?? idx,
+                                                      itemIdType: typeof (
+                                                        item.id ?? idx
+                                                      ),
+                                                    },
+                                                  );
+                                                  setEditingOptionItemId({
+                                                    orderId: order.id,
+                                                    itemId: item.id ?? idx,
+                                                    productName:
+                                                      item.product_name ||
+                                                      "Product",
+                                                    options: Array.isArray(
+                                                      item.options,
                                                     )
-                                                  ) {
-                                                    const link =
-                                                      document.createElement(
-                                                        "a",
-                                                      );
-                                                    link.href =
-                                                      item.design_file_url;
-                                                    link.download = `design-${item.id || "file"}`;
-                                                    link.click();
-                                                  } else {
-                                                    window.open(
-                                                      item.design_file_url,
-                                                      "_blank",
-                                                    );
-                                                  }
+                                                      ? item.options
+                                                      : Object.entries(
+                                                          item.options,
+                                                        ).map(([key, val]) => ({
+                                                          option_id: key,
+                                                          option_value:
+                                                            formatOptionValue(
+                                                              val,
+                                                            ),
+                                                          price:
+                                                            typeof val ===
+                                                            "object"
+                                                              ? val.price || 0
+                                                              : 0,
+                                                        })),
+                                                  });
                                                 }}
-                                                className="inline-flex items-center justify-center gap-1 px-2 py-1 text-xs font-medium bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded transition-colors"
-                                                title="Download design file"
+                                                className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-green-100 hover:bg-green-200 text-green-700 border border-green-300 rounded transition-colors"
                                               >
-                                                <Download className="w-3 h-3" />
-                                                Download
+                                                <Edit className="w-3 h-3" />
+                                                Edit Costs
                                               </button>
                                             </div>
-                                          )}
+                                            <div className="flex flex-wrap gap-2">
+                                              {Array.isArray(item.options)
+                                                ? item.options.length > 0
+                                                  ? item.options.map(
+                                                      (
+                                                        option: any,
+                                                        idx: number,
+                                                      ) => {
+                                                        const optionName =
+                                                          option.option_id ||
+                                                          "";
+                                                        const optionValue =
+                                                          option.option_value ||
+                                                          "";
+                                                        const optionPrice =
+                                                          option.price ||
+                                                          option.modifier_price ||
+                                                          0;
 
-                                          {/* Product Details */}
-                                          <div className="flex-1 min-w-0">
-                                            <h5 className="text-gray-900 font-semibold text-sm mb-2">
-                                              {item.product_name || "Product"}
-                                            </h5>
-
-                                            {/* Quantity */}
-                                            <div className="mb-3">
-                                              <p className="text-xs text-gray-600 font-medium">
-                                                QUANTITY
-                                              </p>
-                                              <p className="text-sm text-gray-900 font-medium">
-                                                {item.quantity || 1} {item.quantity === 1 ? 'unit' : 'units'}
-                                              </p>
-                                            </div>
-
-                                            {/* Product Options */}
-                                            {item.options && (
-                                              <div>
-                                                <div className="flex items-center justify-between mb-2">
-                                                  <p className="text-xs text-gray-600 font-medium">
-                                                    SPECIFICATIONS
-                                                  </p>
-                                                  <button
-                                                    onClick={() => {
-                                                      console.log("Edit costs clicked - Full context:", {
-                                                        orderId: order.id,
-                                                        orderIdType: typeof order.id,
-                                                        item,
-                                                        itemId: item.id ?? idx,
-                                                        itemIdType: typeof (item.id ?? idx),
-                                                      });
-                                                      setEditingOptionItemId({
-                                                        orderId: order.id,
-                                                        itemId: item.id ?? idx,
-                                                        productName: item.product_name || "Product",
-                                                        options: Array.isArray(item.options)
-                                                          ? item.options
-                                                          : Object.entries(item.options).map(([key, val]) => ({
-                                                              option_id: key,
-                                                              option_value: formatOptionValue(val),
-                                                              price: typeof val === "object" ? val.price || 0 : 0,
-                                                            })),
-                                                      });
-                                                    }}
-                                                    className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-green-100 hover:bg-green-200 text-green-700 border border-green-300 rounded transition-colors"
-                                                  >
-                                                    <Edit className="w-3 h-3" />
-                                                    Edit Costs
-                                                  </button>
-                                                </div>
-                                                <div className="flex flex-wrap gap-2">
-                                                  {Array.isArray(item.options) ? (
-                                                    item.options.length > 0 ? (
-                                                      item.options.map(
-                                                        (option: any, idx: number) => {
-                                                          const optionName = option.option_id || "";
-                                                          const optionValue =
-                                                            option.option_value || "";
-                                                          const optionPrice = option.price || option.modifier_price || 0;
-
-                                                          if (!optionName || !optionValue) {
-                                                            return null;
-                                                          }
-
-                                                          return (
-                                                            <span
-                                                              key={idx}
-                                                              className="inline-block bg-blue-50 text-blue-900 px-3 py-1 rounded-full text-xs font-medium border border-blue-200"
-                                                            >
-                                                              {optionName}: {optionValue}
-                                                              {optionPrice > 0 && (
-                                                                <span className="ml-1 font-semibold">
-                                                                  (+${optionPrice.toFixed(2)})
-                                                                </span>
-                                                              )}
-                                                            </span>
-                                                          );
+                                                        if (
+                                                          !optionName ||
+                                                          !optionValue
+                                                        ) {
+                                                          return null;
                                                         }
-                                                      )
-                                                    ) : null
-                                                  ) : (
-                                                    Object.entries(item.options).map(
-                                                      ([key, val]) => {
-                                                        const displayValue =
-                                                          formatOptionValue(val);
-                                                        const isNumericKey =
-                                                          /^\d+$/.test(key);
-                                                        const label = isNumericKey
-                                                          ? displayValue
-                                                          : `${key}: ${displayValue}`;
-                                                        const optionPrice = typeof val === "object" ? val.price || 0 : 0;
 
                                                         return (
                                                           <span
-                                                            key={key}
+                                                            key={idx}
                                                             className="inline-block bg-blue-50 text-blue-900 px-3 py-1 rounded-full text-xs font-medium border border-blue-200"
                                                           >
-                                                            {label}
-                                                            {optionPrice > 0 && (
+                                                            {optionName}:{" "}
+                                                            {optionValue}
+                                                            {optionPrice >
+                                                              0 && (
                                                               <span className="ml-1 font-semibold">
-                                                                (+${optionPrice.toFixed(2)})
+                                                                (+$
+                                                                {optionPrice.toFixed(
+                                                                  2,
+                                                                )}
+                                                                )
                                                               </span>
                                                             )}
                                                           </span>
                                                         );
-                                                      }
+                                                      },
                                                     )
-                                                  )}
-                                                </div>
-                                              </div>
-                                            )}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
+                                                  : null
+                                                : Object.entries(
+                                                    item.options,
+                                                  ).map(([key, val]) => {
+                                                    const displayValue =
+                                                      formatOptionValue(val);
+                                                    const isNumericKey =
+                                                      /^\d+$/.test(key);
+                                                    const label = isNumericKey
+                                                      ? displayValue
+                                                      : `${key}: ${displayValue}`;
+                                                    const optionPrice =
+                                                      typeof val === "object"
+                                                        ? val.price || 0
+                                                        : 0;
 
-                            {/* Tracking Information */}
-                            <div className="bg-gray-50 rounded border border-gray-200 p-3">
-                              <h4 className="text-sm font-semibold text-gray-900 mb-2">
-                                Tracking Information
-                              </h4>
-                              {order.tracking_number ? (
-                                <div className="space-y-2">
+                                                    return (
+                                                      <span
+                                                        key={key}
+                                                        className="inline-block bg-blue-50 text-blue-900 px-3 py-1 rounded-full text-xs font-medium border border-blue-200"
+                                                      >
+                                                        {label}
+                                                        {optionPrice > 0 && (
+                                                          <span className="ml-1 font-semibold">
+                                                            (+$
+                                                            {optionPrice.toFixed(
+                                                              2,
+                                                            )}
+                                                            )
+                                                          </span>
+                                                        )}
+                                                      </span>
+                                                    );
+                                                  })}
+                                            </div>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Tracking Information */}
+                          <div className="bg-gray-50 rounded border border-gray-200 p-3">
+                            <h4 className="text-sm font-semibold text-gray-900 mb-2">
+                              Tracking Information
+                            </h4>
+                            {order.tracking_number ? (
+                              <div className="space-y-2">
+                                <div>
+                                  <p className="text-xs text-gray-600">
+                                    Tracking Number
+                                  </p>
+                                  <p className="text-sm font-mono text-gray-900">
+                                    {order.tracking_number}
+                                  </p>
+                                </div>
+                                {order.tracking_carrier && (
                                   <div>
                                     <p className="text-xs text-gray-600">
-                                      Tracking Number
+                                      Carrier
                                     </p>
-                                    <p className="text-sm font-mono text-gray-900">
-                                      {order.tracking_number}
+                                    <p className="text-sm text-gray-900">
+                                      {order.tracking_carrier}
                                     </p>
                                   </div>
-                                  {order.tracking_carrier && (
-                                    <div>
-                                      <p className="text-xs text-gray-600">
-                                        Carrier
-                                      </p>
-                                      <p className="text-sm text-gray-900">
-                                        {order.tracking_carrier}
-                                      </p>
-                                    </div>
-                                  )}
-                                  {order.tracking_url && (
-                                    <div>
-                                      <a
-                                        href={order.tracking_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-sm text-blue-600 hover:text-blue-700 transition-colors break-all"
-                                      >
-                                        Track Package →
-                                      </a>
-                                    </div>
-                                  )}
-                                  {order.shipped_date && (
-                                    <div>
-                                      <p className="text-xs text-gray-600">
-                                        Shipped
-                                      </p>
-                                      <p className="text-sm text-gray-900">
-                                        {formatDate(order.shipped_date)}
-                                      </p>
-                                    </div>
-                                  )}
-                                </div>
-                              ) : (
-                                <p className="text-sm text-gray-600">
-                                  No tracking information yet
-                                </p>
-                              )}
-                            </div>
-
-                            {/* Customer Info */}
-                            <div className="bg-gray-50 rounded border border-gray-200 p-3">
-                              <h4 className="text-sm font-semibold text-gray-900 mb-2">
-                                Customer
-                              </h4>
-                              <p className="text-sm text-gray-900">
-                                {order.customerName}
-                              </p>
-                              <p className="text-sm text-gray-600">
-                                {order.customerEmail}
-                              </p>
-                            </div>
-
-                            {/* Shipping Address */}
-                            <div className="bg-gray-50 rounded border border-gray-200 p-3">
-                              <div className="flex items-center justify-between mb-3">
-                                <h4 className="text-sm font-semibold text-gray-900">
-                                  Shipping Address
-                                </h4>
-                                <button
-                                  onClick={() =>
-                                    setEditingShippingAddressOrderId(order.id)
-                                  }
-                                  className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 hover:bg-blue-200 border border-blue-300 rounded text-blue-700 hover:text-blue-800 transition-colors text-xs font-medium"
-                                >
-                                  <Edit className="w-3 h-3" />
-                                  {order.shipping_addresses &&
-                                  order.shipping_addresses.length > 0
-                                    ? "Edit"
-                                    : "Add"}
-                                </button>
-                              </div>
-                              {order.shipping_addresses &&
-                              order.shipping_addresses.length > 0 ? (
-                                order.shipping_addresses.map((address, idx) => (
-                                  <div key={idx} className="text-sm">
-                                    <p className="text-gray-900">
-                                      {address.first_name} {address.last_name}
-                                    </p>
-                                    <p className="text-gray-600">
-                                      {address.street_1}
-                                    </p>
-                                    {address.street_2 && (
-                                      <p className="text-gray-600">
-                                        {address.street_2}
-                                      </p>
-                                    )}
-                                    <p className="text-gray-600">
-                                      {address.city},{" "}
-                                      {address.state_or_province}{" "}
-                                      {address.postal_code}
-                                    </p>
-                                    <p className="text-gray-600">
-                                      {address.country_iso2}
-                                    </p>
-                                    {address.phone && (
-                                      <p className="text-gray-600 mt-1">
-                                        {address.phone}
-                                      </p>
-                                    )}
-                                  </div>
-                                ))
-                              ) : (
-                                <p className="text-sm text-gray-600">
-                                  No shipping address yet. Click "Add" to add
-                                  one.
-                                </p>
-                              )}
-                            </div>
-
-                            {/* Artwork Proofs Status */}
-                            {order.proofs && order.proofs.length > 0 && (
-                              <div className="bg-blue-50 rounded border border-blue-200 p-3">
-                                <h4 className="text-sm font-semibold text-blue-900 mb-3">
-                                  Artwork Proofs
-                                </h4>
-                                <div className="space-y-3">
-                                  {order.proofs.map((proof, idx) => (
-                                    <div
-                                      key={idx}
-                                      className="bg-white rounded border border-blue-100 p-3"
+                                )}
+                                {order.tracking_url && (
+                                  <div>
+                                    <a
+                                      href={order.tracking_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-sm text-blue-600 hover:text-blue-700 transition-colors break-all"
                                     >
-                                      <div className="flex items-center justify-between mb-2">
-                                        <div className="flex items-center gap-2">
-                                          {proof.status === "approved" && (
-                                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
-                                              ✓ Approved
-                                            </span>
-                                          )}
-                                          {proof.status === "revisions_requested" && (
-                                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
-                                              ⟳ Revisions Requested
-                                            </span>
-                                          )}
-                                          {proof.status === "pending" && (
-                                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-700 text-xs font-semibold rounded-full">
-                                              ⏳ Pending Review
-                                            </span>
-                                          )}
-                                        </div>
-                                        <p className="text-xs text-gray-500">
-                                          {new Date(
-                                            proof.updatedAt || proof.createdAt
-                                          ).toLocaleDateString("en-US", {
-                                            month: "short",
-                                            day: "numeric",
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                          })}
-                                        </p>
-                                      </div>
-                                      {proof.description && (
-                                        <p className="text-sm text-gray-700 mb-2">
-                                          {proof.description}
-                                        </p>
-                                      )}
-                                    </div>
-                                  ))}
-                                </div>
+                                      Track Package →
+                                    </a>
+                                  </div>
+                                )}
+                                {order.shipped_date && (
+                                  <div>
+                                    <p className="text-xs text-gray-600">
+                                      Shipped
+                                    </p>
+                                    <p className="text-sm text-gray-900">
+                                      {formatDate(order.shipped_date)}
+                                    </p>
+                                  </div>
+                                )}
                               </div>
+                            ) : (
+                              <p className="text-sm text-gray-600">
+                                No tracking information yet
+                              </p>
                             )}
                           </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+
+                          {/* Customer Info */}
+                          <div className="bg-gray-50 rounded border border-gray-200 p-3">
+                            <h4 className="text-sm font-semibold text-gray-900 mb-2">
+                              Customer
+                            </h4>
+                            <p className="text-sm text-gray-900">
+                              {order.customerName}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {order.customerEmail}
+                            </p>
+                          </div>
+
+                          {/* Shipping Address */}
+                          <div className="bg-gray-50 rounded border border-gray-200 p-3">
+                            <div className="flex items-center justify-between mb-3">
+                              <h4 className="text-sm font-semibold text-gray-900">
+                                Shipping Address
+                              </h4>
+                              <button
+                                onClick={() =>
+                                  setEditingShippingAddressOrderId(order.id)
+                                }
+                                className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 hover:bg-blue-200 border border-blue-300 rounded text-blue-700 hover:text-blue-800 transition-colors text-xs font-medium"
+                              >
+                                <Edit className="w-3 h-3" />
+                                {order.shipping_addresses &&
+                                order.shipping_addresses.length > 0
+                                  ? "Edit"
+                                  : "Add"}
+                              </button>
+                            </div>
+                            {order.shipping_addresses &&
+                            order.shipping_addresses.length > 0 ? (
+                              order.shipping_addresses.map((address, idx) => (
+                                <div key={idx} className="text-sm">
+                                  <p className="text-gray-900">
+                                    {address.first_name} {address.last_name}
+                                  </p>
+                                  <p className="text-gray-600">
+                                    {address.street_1}
+                                  </p>
+                                  {address.street_2 && (
+                                    <p className="text-gray-600">
+                                      {address.street_2}
+                                    </p>
+                                  )}
+                                  <p className="text-gray-600">
+                                    {address.city}, {address.state_or_province}{" "}
+                                    {address.postal_code}
+                                  </p>
+                                  <p className="text-gray-600">
+                                    {address.country_iso2}
+                                  </p>
+                                  {address.phone && (
+                                    <p className="text-gray-600 mt-1">
+                                      {address.phone}
+                                    </p>
+                                  )}
+                                </div>
+                              ))
+                            ) : (
+                              <p className="text-sm text-gray-600">
+                                No shipping address yet. Click "Add" to add one.
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Artwork Proofs Status */}
+                          {order.proofs && order.proofs.length > 0 && (
+                            <div className="bg-blue-50 rounded border border-blue-200 p-3">
+                              <h4 className="text-sm font-semibold text-blue-900 mb-3">
+                                Artwork Proofs
+                              </h4>
+                              <div className="space-y-3">
+                                {order.proofs.map((proof, idx) => (
+                                  <div
+                                    key={idx}
+                                    className="bg-white rounded border border-blue-100 p-3"
+                                  >
+                                    <div className="flex items-center justify-between mb-2">
+                                      <div className="flex items-center gap-2">
+                                        {proof.status === "approved" && (
+                                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
+                                            ✓ Approved
+                                          </span>
+                                        )}
+                                        {proof.status ===
+                                          "revisions_requested" && (
+                                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
+                                            ⟳ Revisions Requested
+                                          </span>
+                                        )}
+                                        {proof.status === "pending" && (
+                                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-700 text-xs font-semibold rounded-full">
+                                            ⏳ Pending Review
+                                          </span>
+                                        )}
+                                      </div>
+                                      <p className="text-xs text-gray-500">
+                                        {new Date(
+                                          proof.updatedAt || proof.createdAt,
+                                        ).toLocaleDateString("en-US", {
+                                          month: "short",
+                                          day: "numeric",
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                        })}
+                                      </p>
+                                    </div>
+                                    {proof.description && (
+                                      <p className="text-sm text-gray-700 mb-2">
+                                        {proof.description}
+                                      </p>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
+              </div>
             ) : (
               <div className="bg-white border border-gray-200 rounded-lg p-8 sm:p-12 text-center">
                 <Package className="w-12 h-12 text-gray-300 mx-auto mb-3" />
@@ -950,9 +997,7 @@ export default function AdminOrders() {
                   </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-lg p-4">
-                  <p className="text-xs text-gray-600 mb-1">
-                    Avg Order Value
-                  </p>
+                  <p className="text-xs text-gray-600 mb-1">Avg Order Value</p>
                   <p className="text-2xl font-bold text-blue-600">
                     $
                     {(
@@ -965,8 +1010,8 @@ export default function AdminOrders() {
                 </div>
               </div>
             )}
-            </div>
-          )}
+          </div>
+        )}
       </div>
 
       {/* Order Status Editor Modal */}

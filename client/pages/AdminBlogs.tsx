@@ -113,7 +113,9 @@ export default function AdminBlogs() {
             <div className="max-w-6xl mx-auto">
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">Blog Posts</h1>
+                  <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">
+                    Blog Posts
+                  </h1>
                   <p className="text-gray-600">
                     Manage your blog posts and content
                   </p>
@@ -245,7 +247,9 @@ export default function AdminBlogs() {
                           <Eye className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => navigate(`/admin/edit-blog/${blog.id}`)}
+                          onClick={() =>
+                            navigate(`/admin/edit-blog/${blog.id}`)
+                          }
                           className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 hover:text-blue-600 transition-colors"
                           title="Edit blog"
                         >

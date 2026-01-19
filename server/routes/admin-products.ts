@@ -163,13 +163,11 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
         details: error.details,
         hint: error.hint,
       });
-      return res
-        .status(500)
-        .json({
-          error: "Failed to create product",
-          details: error.message,
-          code: error.code
-        });
+      return res.status(500).json({
+        error: "Failed to create product",
+        details: error.message,
+        code: error.code,
+      });
     }
 
     res.json({
@@ -266,13 +264,11 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
         hint: error.hint,
         productId: id,
       });
-      return res
-        .status(500)
-        .json({
-          error: "Failed to update product",
-          details: error.message,
-          code: error.code
-        });
+      return res.status(500).json({
+        error: "Failed to update product",
+        details: error.message,
+        code: error.code,
+      });
     }
 
     if (!data || data.length === 0) {
@@ -303,7 +299,9 @@ export const handleGetAdminProducts: RequestHandler = async (_req, res) => {
   try {
     const { data, error } = await supabase
       .from("admin_products")
-      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, sku, created_at, updated_at, show_quantity_panel, fixed_quantity")
+      .select(
+        "id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, sku, created_at, updated_at, show_quantity_panel, fixed_quantity",
+      )
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -313,7 +311,7 @@ export const handleGetAdminProducts: RequestHandler = async (_req, res) => {
         .json({ error: "Failed to fetch products", details: error.message });
     }
 
-    const products = (data || []).map(product => ({
+    const products = (data || []).map((product) => ({
       ...product,
       show_quantity_panel: product.show_quantity_panel !== false ? true : false,
       fixed_quantity: product.fixed_quantity ?? null,
@@ -345,7 +343,9 @@ export const handleGetAdminProduct: RequestHandler = async (req, res) => {
 
     const { data, error } = await supabase
       .from("admin_products")
-      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, sku, created_at, updated_at, show_quantity_panel, fixed_quantity")
+      .select(
+        "id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, sku, created_at, updated_at, show_quantity_panel, fixed_quantity",
+      )
       .eq("id", id)
       .single();
 
@@ -362,7 +362,11 @@ export const handleGetAdminProduct: RequestHandler = async (req, res) => {
       });
       return res
         .status(500)
-        .json({ error: "Failed to fetch product", details: error.message, code: error.code });
+        .json({
+          error: "Failed to fetch product",
+          details: error.message,
+          code: error.code,
+        });
     }
 
     const product = {
@@ -430,7 +434,9 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
     const numericId = parseInt(productId, 10);
     let query = supabase
       .from("admin_products")
-      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, created_at, updated_at, show_quantity_panel, fixed_quantity")
+      .select(
+        "id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, created_at, updated_at, show_quantity_panel, fixed_quantity",
+      )
       .eq("availability", true);
 
     // Use numeric ID if valid, otherwise treat as SKU
@@ -455,11 +461,17 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
       });
       return res
         .status(500)
-        .json({ error: "Failed to fetch product", details: error.message, code: error.code });
+        .json({
+          error: "Failed to fetch product",
+          details: error.message,
+          code: error.code,
+        });
     }
 
     if (!data) {
-      return res.status(404).json({ error: "Product not found or not available" });
+      return res
+        .status(404)
+        .json({ error: "Product not found or not available" });
     }
 
     // Ensure proper data types for JSON fields and set defaults for quantity panel settings
@@ -467,14 +479,21 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
       ...data,
       images: Array.isArray(data.images) ? data.images : [],
       options: Array.isArray(data.options) ? data.options : [],
-      shared_variants: Array.isArray(data.shared_variants) ? data.shared_variants : [],
-      customer_upload_config: typeof data.customer_upload_config === 'object' ? data.customer_upload_config : {
-        enabled: false,
-        maxFileSize: 5,
-        allowedFormats: ["pdf", "png", "jpg"],
-        description: ""
-      },
-      optional_fields: Array.isArray(data.optional_fields) ? data.optional_fields : [],
+      shared_variants: Array.isArray(data.shared_variants)
+        ? data.shared_variants
+        : [],
+      customer_upload_config:
+        typeof data.customer_upload_config === "object"
+          ? data.customer_upload_config
+          : {
+              enabled: false,
+              maxFileSize: 5,
+              allowedFormats: ["pdf", "png", "jpg"],
+              description: "",
+            },
+      optional_fields: Array.isArray(data.optional_fields)
+        ? data.optional_fields
+        : [],
       show_quantity_panel: data.show_quantity_panel !== false ? true : false,
       fixed_quantity: data.fixed_quantity ?? null,
     };
@@ -570,7 +589,9 @@ export const handleGetAdminProductPublic: RequestHandler = async (req, res) => {
 
     const { data, error } = await supabase
       .from("admin_products")
-      .select("id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, created_at, updated_at, show_quantity_panel, fixed_quantity")
+      .select(
+        "id, name, base_price, description, images, options, shared_variants, customer_upload_config, optional_fields, availability, created_at, updated_at, show_quantity_panel, fixed_quantity",
+      )
       .eq("id", parseInt(id))
       .eq("availability", true)
       .single();
@@ -584,7 +605,9 @@ export const handleGetAdminProductPublic: RequestHandler = async (req, res) => {
     }
 
     if (!data) {
-      return res.status(404).json({ error: "Product not found or not available" });
+      return res
+        .status(404)
+        .json({ error: "Product not found or not available" });
     }
 
     res.json({
@@ -602,12 +625,16 @@ export const handleGetAdminProductPublic: RequestHandler = async (req, res) => {
     console.error("Error fetching admin product:", error);
     res.status(500).json({
       error: "Failed to fetch product",
-      details: error instanceof Error ? error.message : "Unknown error occurred",
+      details:
+        error instanceof Error ? error.message : "Unknown error occurred",
     });
   }
 };
 
-export const handleGetImportedProductPublic: RequestHandler = async (req, res) => {
+export const handleGetImportedProductPublic: RequestHandler = async (
+  req,
+  res,
+) => {
   try {
     const { id } = req.params;
 
@@ -617,7 +644,9 @@ export const handleGetImportedProductPublic: RequestHandler = async (req, res) =
 
     const { data, error } = await supabase
       .from("products")
-      .select("id, name, price, min_price, max_price, description, image_url, options, rating, reviews_count")
+      .select(
+        "id, name, price, min_price, max_price, description, image_url, options, rating, reviews_count",
+      )
       .eq("id", parseInt(id))
       .eq("is_active", true)
       .single();
@@ -631,7 +660,9 @@ export const handleGetImportedProductPublic: RequestHandler = async (req, res) =
     }
 
     if (!data) {
-      return res.status(404).json({ error: "Product not found or not available" });
+      return res
+        .status(404)
+        .json({ error: "Product not found or not available" });
     }
 
     res.json({
@@ -650,7 +681,8 @@ export const handleGetImportedProductPublic: RequestHandler = async (req, res) =
     console.error("Error fetching imported product:", error);
     res.status(500).json({
       error: "Failed to fetch product",
-      details: error instanceof Error ? error.message : "Unknown error occurred",
+      details:
+        error instanceof Error ? error.message : "Unknown error occurred",
     });
   }
 };
@@ -667,7 +699,9 @@ export const handleGetStorefrontProducts: RequestHandler = async (req, res) => {
       .order("created_at", { ascending: false })
       .range(
         parseInt(offset as string) || 0,
-        (parseInt(offset as string) || 0) + (parseInt(limit as string) || 100) - 1,
+        (parseInt(offset as string) || 0) +
+          (parseInt(limit as string) || 100) -
+          1,
       );
 
     if (adminError) {
@@ -676,50 +710,63 @@ export const handleGetStorefrontProducts: RequestHandler = async (req, res) => {
     }
 
     // Format admin products
-    const formattedAdminProducts = (adminProducts || []).map((product: any) => ({
-      id: `admin_${product.id}`,
-      name: product.name,
-      price: product.base_price || 0,
-      sku: product.sku || "",
-      image_url: product.images?.[0]?.url || null,
-      group: product.categories?.[0] || null,
-      source: "admin",
-      availability: product.availability,
-    }));
+    const formattedAdminProducts = (adminProducts || []).map(
+      (product: any) => ({
+        id: `admin_${product.id}`,
+        name: product.name,
+        price: product.base_price || 0,
+        sku: product.sku || "",
+        image_url: product.images?.[0]?.url || null,
+        group: product.categories?.[0] || null,
+        source: "admin",
+        availability: product.availability,
+      }),
+    );
 
     // Fetch imported products
     const { data: importedProducts, error: importedError } = await supabase
       .from("products")
-      .select("id, name, price, min_price, max_price, sku, image_url, rating, reviews_count")
+      .select(
+        "id, name, price, min_price, max_price, sku, image_url, rating, reviews_count",
+      )
       .eq("is_active", true)
       .order("created_at", { ascending: false })
       .range(
         parseInt(offset as string) || 0,
-        (parseInt(offset as string) || 0) + (parseInt(limit as string) || 100) - 1,
+        (parseInt(offset as string) || 0) +
+          (parseInt(limit as string) || 100) -
+          1,
       );
 
     if (importedError) {
       console.error("Error fetching imported products:", importedError);
-      return res.status(500).json({ error: "Failed to fetch imported products" });
+      return res
+        .status(500)
+        .json({ error: "Failed to fetch imported products" });
     }
 
     // Format imported products
-    const formattedImportedProducts = (importedProducts || []).map((product: any) => ({
-      id: `imported_${product.id}`,
-      name: product.name,
-      price: product.min_price || product.price || 0,
-      min_price: product.min_price,
-      max_price: product.max_price,
-      sku: product.sku || "",
-      image_url: product.image_url || null,
-      group: null,
-      source: "imported",
-      rating: product.rating || 0,
-      reviews_count: product.reviews_count || 0,
-    }));
+    const formattedImportedProducts = (importedProducts || []).map(
+      (product: any) => ({
+        id: `imported_${product.id}`,
+        name: product.name,
+        price: product.min_price || product.price || 0,
+        min_price: product.min_price,
+        max_price: product.max_price,
+        sku: product.sku || "",
+        image_url: product.image_url || null,
+        group: null,
+        source: "imported",
+        rating: product.rating || 0,
+        reviews_count: product.reviews_count || 0,
+      }),
+    );
 
     // Combine and return
-    const allProducts = [...formattedAdminProducts, ...formattedImportedProducts];
+    const allProducts = [
+      ...formattedAdminProducts,
+      ...formattedImportedProducts,
+    ];
 
     res.json({
       items: allProducts,

@@ -383,12 +383,10 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
       .single();
 
     if (orderError || !order) {
-      return res
-        .status(404)
-        .json({
-          error:
-            "Order not found. Only Supabase orders are supported for proofs.",
-        });
+      return res.status(404).json({
+        error:
+          "Order not found. Only Supabase orders are supported for proofs.",
+      });
     }
 
     // Use customer ID from order lookup
@@ -484,10 +482,17 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
 
     if (customerError) {
       console.error("Error fetching customer for email:", customerError);
-    } else if (customer && customer.email && process.env.RESEND_API_KEY && resend) {
+    } else if (
+      customer &&
+      customer.email &&
+      process.env.RESEND_API_KEY &&
+      resend
+    ) {
       try {
         // Generate approval and revision links
-        const baseUrl = process.env.FRONTEND_URL || "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev";
+        const baseUrl =
+          process.env.FRONTEND_URL ||
+          "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev";
         const approvalLink = `${baseUrl}/proofs/${proof.id}/approve`;
         const revisionLink = `${baseUrl}/proofs/${proof.id}/request-revisions`;
 

@@ -178,7 +178,9 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
             >
               <ArrowLeft className="w-4 h-4 sm:w-5 h-5 text-gray-700" />
             </button>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Support Center</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
+              Support Center
+            </h1>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
@@ -234,7 +236,10 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                   Send us a Message
                 </h2>
 
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-4 sm:space-y-6"
+                >
                   {/* Name and Email Row */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
@@ -397,7 +402,9 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                     {isSubmitting ? (
                       <>
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        <span className="text-sm sm:text-base">Submitting...</span>
+                        <span className="text-sm sm:text-base">
+                          Submitting...
+                        </span>
                       </>
                     ) : (
                       <>

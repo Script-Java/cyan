@@ -509,9 +509,7 @@ export default function AdminShipping() {
                 Shipping Cost <span className="text-red-600">*</span>
               </Label>
               <div className="relative">
-                <span className="absolute left-3 top-2.5 text-gray-600">
-                  $
-                </span>
+                <span className="absolute left-3 top-2.5 text-gray-600">$</span>
                 <Input
                   type="number"
                   name="cost"

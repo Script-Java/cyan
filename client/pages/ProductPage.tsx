@@ -120,7 +120,7 @@ export default function ProductPage() {
     try {
       localStorage.setItem(
         `product_defaults_${productId}`,
-        JSON.stringify(options)
+        JSON.stringify(options),
       );
     } catch (error) {
       console.error("Failed to save default options:", error);
@@ -401,7 +401,8 @@ export default function ProductPage() {
           console.error("Error uploading design file:", error);
           toast({
             title: "Warning",
-            description: "Design file upload failed. Try again or continue without uploading.",
+            description:
+              "Design file upload failed. Try again or continue without uploading.",
             variant: "destructive",
           });
         }
@@ -426,7 +427,8 @@ export default function ProductPage() {
 
       toast({
         title: "Success",
-        description: "Product added to cart! You can continue shopping or proceed to checkout.",
+        description:
+          "Product added to cart! You can continue shopping or proceed to checkout.",
       });
     } catch (error) {
       console.error("Error adding to cart:", error);
@@ -583,7 +585,10 @@ export default function ProductPage() {
                           </p>
                         )}
                         {index === 0 && (
-                          <span className="absolute top-1 right-1 text-xxs font-bold text-white bg-purple-600 px-1.5 py-0.5 rounded" style={{ fontSize: "10px" }}>
+                          <span
+                            className="absolute top-1 right-1 text-xxs font-bold text-white bg-purple-600 px-1.5 py-0.5 rounded"
+                            style={{ fontSize: "10px" }}
+                          >
                             Popular
                           </span>
                         )}
@@ -667,7 +672,10 @@ export default function ProductPage() {
                           {value.name}
                         </span>
                         <span className="text-purple-600 text-xs font-bold mt-0.5">
-                          ${calculatePriceForValue(option.id, value.id).toFixed(2)}
+                          $
+                          {calculatePriceForValue(option.id, value.id).toFixed(
+                            2,
+                          )}
                         </span>
                       </button>
                     ))}
@@ -750,10 +758,13 @@ export default function ProductPage() {
                             JSON.stringify({
                               ...savedDefaults,
                               quantity: option.qty,
-                            })
+                            }),
                           );
                         } catch (error) {
-                          console.error("Failed to save default quantity:", error);
+                          console.error(
+                            "Failed to save default quantity:",
+                            error,
+                          );
                         }
                       }
                     }}
@@ -945,7 +956,9 @@ export default function ProductPage() {
 
             {/* Order Notes */}
             <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg p-3">
-              <h2 className="text-xs font-bold mb-1.5">📝 Order Notes (optional)</h2>
+              <h2 className="text-xs font-bold mb-1.5">
+                📝 Order Notes (optional)
+              </h2>
               <Textarea
                 value={orderNotes}
                 onChange={(e) => setOrderNotes(e.target.value)}

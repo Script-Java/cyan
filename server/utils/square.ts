@@ -1,11 +1,77 @@
 // Valid ISO 3166-1 alpha-2 country codes
 const VALID_COUNTRY_CODES = new Set([
-  "US", "GB", "CA", "AU", "DE", "FR", "IT", "ES", "NL", "BE", "CH", "AT",
-  "SE", "NO", "DK", "FI", "PL", "CZ", "SK", "HU", "RO", "BG", "GR", "PT",
-  "IE", "NZ", "SG", "HK", "JP", "KR", "TW", "CN", "IN", "BR", "MX", "AR",
-  "CO", "PE", "CL", "ZA", "KE", "NG", "EG", "IL", "AE", "SA", "QA", "TH",
-  "MY", "ID", "PH", "VN", "TW", "GR", "CY", "MT", "LU", "IS", "HR", "SI",
-  "LV", "LT", "EE", "GE", "KZ", "UA", "BY", "RU", "TR", "LB", "JO", "AE",
+  "US",
+  "GB",
+  "CA",
+  "AU",
+  "DE",
+  "FR",
+  "IT",
+  "ES",
+  "NL",
+  "BE",
+  "CH",
+  "AT",
+  "SE",
+  "NO",
+  "DK",
+  "FI",
+  "PL",
+  "CZ",
+  "SK",
+  "HU",
+  "RO",
+  "BG",
+  "GR",
+  "PT",
+  "IE",
+  "NZ",
+  "SG",
+  "HK",
+  "JP",
+  "KR",
+  "TW",
+  "CN",
+  "IN",
+  "BR",
+  "MX",
+  "AR",
+  "CO",
+  "PE",
+  "CL",
+  "ZA",
+  "KE",
+  "NG",
+  "EG",
+  "IL",
+  "AE",
+  "SA",
+  "QA",
+  "TH",
+  "MY",
+  "ID",
+  "PH",
+  "VN",
+  "TW",
+  "GR",
+  "CY",
+  "MT",
+  "LU",
+  "IS",
+  "HR",
+  "SI",
+  "LV",
+  "LT",
+  "EE",
+  "GE",
+  "KZ",
+  "UA",
+  "BY",
+  "RU",
+  "TR",
+  "LB",
+  "JO",
+  "AE",
 ]);
 
 /**
@@ -49,15 +115,11 @@ export function sanitizeInput(input: string | undefined): string {
 /**
  * Validate address field
  */
-export function isValidAddress(
-  address: string | undefined,
-): boolean {
+export function isValidAddress(address: string | undefined): boolean {
   if (!address) return false;
   // Address should be 1-255 characters, no dangerous characters
   return (
-    address.length > 0 &&
-    address.length <= 255 &&
-    !/[<>"{};]/.test(address)
+    address.length > 0 && address.length <= 255 && !/[<>"{};]/.test(address)
   );
 }
 
@@ -401,7 +463,7 @@ export async function createSquarePaymentLink(data: {
         const formattedDate = deliveryDate.toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",
-          year: "numeric"
+          year: "numeric",
         });
         shippingLineItemName = `${shippingLineItemName} - Arrives by ${formattedDate}`;
       }
@@ -484,7 +546,7 @@ export async function createSquarePaymentLink(data: {
           const formattedDate = deliveryDate.toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",
-            year: "numeric"
+            year: "numeric",
           });
           shippingName = `${shippingName} - Arrives by ${formattedDate}`;
         }
@@ -494,7 +556,7 @@ export async function createSquarePaymentLink(data: {
           const { createClient } = await import("@supabase/supabase-js");
           const supabase = createClient(
             process.env.SUPABASE_URL || "",
-            process.env.SUPABASE_SERVICE_KEY || ""
+            process.env.SUPABASE_SERVICE_KEY || "",
           );
 
           const { data: shippingOption } = await supabase
@@ -512,7 +574,7 @@ export async function createSquarePaymentLink(data: {
               const formattedDate = deliveryDate.toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
-                year: "numeric"
+                year: "numeric",
               });
               shippingName = `${shippingName} - Arrives by ${formattedDate}`;
             }
@@ -577,15 +639,15 @@ export async function createSquarePaymentLink(data: {
       taxAmount: paymentLinkBody.order?.taxes?.[0]?.applied_money?.amount,
       shippingName: paymentLinkBody.order?.shipping?.name,
       shippingAmount: paymentLinkBody.order?.shipping?.charge?.money?.amount,
-      hasPrePopulatedData: Object.keys(paymentLinkBody.pre_populated_data).length > 0,
+      hasPrePopulatedData:
+        Object.keys(paymentLinkBody.pre_populated_data).length > 0,
       frontendData: {
         subtotal: data.subtotal,
         tax: data.tax,
         shipping: data.shipping,
         total: data.amount,
       },
-      expectedTotal:
-        (data.subtotal + data.tax + data.shipping) * 100,
+      expectedTotal: (data.subtotal + data.tax + data.shipping) * 100,
       sentTotal: data.amount * 100,
     });
 

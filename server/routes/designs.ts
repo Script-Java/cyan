@@ -312,7 +312,7 @@ export const handleUploadDesignFile: RequestHandler = async (req, res) => {
           (error, result) => {
             if (error) reject(error);
             else resolve(result);
-          }
+          },
         );
 
         stream.end(buffer);
@@ -343,7 +343,8 @@ export const handleUploadDesignFile: RequestHandler = async (req, res) => {
       console.error("Error uploading to Cloudinary:", uploadError);
       return res.status(500).json({
         error: "Failed to upload design file",
-        details: uploadError instanceof Error ? uploadError.message : "Unknown error",
+        details:
+          uploadError instanceof Error ? uploadError.message : "Unknown error",
       });
     }
   } catch (error) {

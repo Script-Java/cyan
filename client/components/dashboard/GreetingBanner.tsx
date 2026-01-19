@@ -235,9 +235,7 @@ export default function GreetingBanner({
               </p>
             </div>
             <div className="font-mono text-xs text-white drop-shadow-lg hidden sm:block">
-              <p className="opacity-90">
-                &gt; REVIEW YOUR ORDERS BELOW
-              </p>
+              <p className="opacity-90">&gt; REVIEW YOUR ORDERS BELOW</p>
             </div>
           </div>
         </div>

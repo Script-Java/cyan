@@ -258,7 +258,9 @@ export default function OrderDetails() {
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">
                   Order Status
                 </h2>
-                <div className={`inline-block px-4 py-2 rounded-lg border ${getStatusColor(order.status)}`}>
+                <div
+                  className={`inline-block px-4 py-2 rounded-lg border ${getStatusColor(order.status)}`}
+                >
                   <span className="font-medium">{order.status}</span>
                 </div>
               </div>
@@ -332,7 +334,10 @@ export default function OrderDetails() {
                   </h2>
                   <div className="space-y-4">
                     {order.shipments.map((shipment) => (
-                      <div key={shipment.id} className="border border-gray-200 rounded-lg p-4">
+                      <div
+                        key={shipment.id}
+                        className="border border-gray-200 rounded-lg p-4"
+                      >
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-2">
                             <Truck className="w-5 h-5 text-blue-600" />
@@ -416,7 +421,8 @@ export default function OrderDetails() {
                   <div className="text-sm text-gray-600 space-y-1">
                     <p>{order.shippingAddress.street}</p>
                     <p>
-                      {order.shippingAddress.city}, {order.shippingAddress.state}{" "}
+                      {order.shippingAddress.city},{" "}
+                      {order.shippingAddress.state}{" "}
                       {order.shippingAddress.postalCode}
                     </p>
                     <p>{order.shippingAddress.country}</p>

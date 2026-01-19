@@ -32,7 +32,7 @@ export default function OptionCostEditor({
     options.map((opt) => ({
       ...opt,
       price: opt.price || opt.modifier_price || 0,
-    }))
+    })),
   );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -91,7 +91,8 @@ export default function OptionCostEditor({
           data: responseData,
         });
         throw new Error(
-          responseData.error || `Failed to update option costs (${response.status})`
+          responseData.error ||
+            `Failed to update option costs (${response.status})`,
         );
       }
 
@@ -114,7 +115,9 @@ export default function OptionCostEditor({
         {/* Header */}
         <div className="sticky top-0 flex items-center justify-between p-6 border-b border-gray-200 bg-white">
           <div>
-            <h2 className="text-lg font-bold text-gray-900">Edit Option Costs</h2>
+            <h2 className="text-lg font-bold text-gray-900">
+              Edit Option Costs
+            </h2>
             <p className="text-sm text-gray-600 mt-1">{productName}</p>
           </div>
           <button
@@ -199,7 +202,10 @@ export default function OptionCostEditor({
                 Total Additional Cost:
               </p>
               <p className="text-2xl font-bold text-blue-600">
-                ${editedOptions.reduce((sum, opt) => sum + (opt.price || 0), 0).toFixed(2)}
+                $
+                {editedOptions
+                  .reduce((sum, opt) => sum + (opt.price || 0), 0)
+                  .toFixed(2)}
               </p>
             </div>
           )}

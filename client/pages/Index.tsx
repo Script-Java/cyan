@@ -1,6 +1,13 @@
 import Header from "@/components/Header";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Check, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowRight,
+  Sparkles,
+  Check,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface GalleryImage {
@@ -76,13 +83,13 @@ export default function Index() {
 
   const handlePrevImage = () => {
     setCurrentImageIndex((prev) =>
-      prev === 0 ? galleryImages.length - 1 : prev - 1
+      prev === 0 ? galleryImages.length - 1 : prev - 1,
     );
   };
 
   const handleNextImage = () => {
     setCurrentImageIndex((prev) =>
-      prev === galleryImages.length - 1 ? 0 : prev + 1
+      prev === galleryImages.length - 1 ? 0 : prev + 1,
     );
   };
 
@@ -154,7 +161,9 @@ export default function Index() {
                   />
                   <h3 className="font-semibold text-sm text-gray-900">
                     <span className="block">Free ground shipping</span>
-                    <span className="block text-xs text-gray-500 font-normal">on all orders</span>
+                    <span className="block text-xs text-gray-500 font-normal">
+                      on all orders
+                    </span>
                   </h3>
                 </div>
               </div>
@@ -169,7 +178,9 @@ export default function Index() {
                   />
                   <h3 className="font-semibold text-sm text-gray-900">
                     <span className="block">Out for this world quality</span>
-                    <span className="block text-xs text-gray-500 font-normal">, made in the US</span>
+                    <span className="block text-xs text-gray-500 font-normal">
+                      , made in the US
+                    </span>
                   </h3>
                 </div>
               </div>
@@ -184,7 +195,9 @@ export default function Index() {
                   />
                   <h3 className="font-semibold text-sm text-gray-900">
                     <span className="block">Free Online Proof</span>
-                    <span className="block text-xs text-gray-500 font-normal">with all orders</span>
+                    <span className="block text-xs text-gray-500 font-normal">
+                      with all orders
+                    </span>
                   </h3>
                 </div>
               </div>
@@ -254,7 +267,9 @@ export default function Index() {
 
                   {/* Right: Gallery Thumbnails */}
                   <div>
-                    <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider">Gallery</h3>
+                    <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider">
+                      Gallery
+                    </h3>
                     <div className="grid grid-cols-3 gap-2">
                       {galleryImages.map((image, index) => (
                         <button
@@ -286,7 +301,8 @@ export default function Index() {
                     Sticky Slap - Custom Stickers That Stick
                   </p>
                   <p className="text-sm text-gray-700 mb-4 leading-relaxed">
-                    We specialize in high-quality custom sticker printing with a vibrant 8-color setup for bold, precise designs.
+                    We specialize in high-quality custom sticker printing with a
+                    vibrant 8-color setup for bold, precise designs.
                   </p>
 
                   {/* Features List */}
@@ -294,19 +310,25 @@ export default function Index() {
                     <div className="flex items-start gap-3">
                       <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <span className="text-sm text-gray-700">
-                        <span className="font-semibold">Durability:</span> 4–5 years outdoors unlaminated, 5–8 years laminated
+                        <span className="font-semibold">Durability:</span> 4–5
+                        years outdoors unlaminated, 5–8 years laminated
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <span className="text-sm text-gray-700">
-                        <span className="font-semibold">Fast Turnaround:</span> Orders ship within 2 business days after artwork approval
+                        <span className="font-semibold">Fast Turnaround:</span>{" "}
+                        Orders ship within 2 business days after artwork
+                        approval
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <span className="text-sm text-gray-700">
-                        Whether it's branding, promo drops, or stag tags — <span className="font-semibold">Sticky Slap makes stickers that go hard and last long.</span>
+                        Whether it's branding, promo drops, or stag tags —{" "}
+                        <span className="font-semibold">
+                          Sticky Slap makes stickers that go hard and last long.
+                        </span>
                       </span>
                     </div>
                   </div>
@@ -385,8 +407,8 @@ export default function Index() {
               Ready to Create?
             </h2>
             <p className="text-sm sm:text-base text-gray-600 mb-6">
-              Join thousands of customers who've created amazing custom stickers with
-              Sticky Slap
+              Join thousands of customers who've created amazing custom stickers
+              with Sticky Slap
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">

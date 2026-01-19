@@ -102,14 +102,14 @@ export default function Product() {
   const [product, setProduct] = useState<ProductData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedOptions, setSelectedOptions] = useState<
-    { [optionId: string]: string }
-  >({});
+  const [selectedOptions, setSelectedOptions] = useState<{
+    [optionId: string]: string;
+  }>({});
   const [designFile, setDesignFile] = useState<File | null>(null);
   const [designPreview, setDesignPreview] = useState<string | null>(null);
-  const [optionalFields, setOptionalFields] = useState<
-    { [fieldName: string]: string }
-  >({});
+  const [optionalFields, setOptionalFields] = useState<{
+    [fieldName: string]: string;
+  }>({});
   const [orderNotes, setOrderNotes] = useState("");
   const [quantity, setQuantity] = useState(100);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
@@ -155,7 +155,9 @@ export default function Product() {
             description: data.description,
             base_price: data.base_price || data.price,
             price: data.base_price || data.price,
-            images: data.images || [{ url: data.image_url || "/placeholder.svg" }],
+            images: data.images || [
+              { url: data.image_url || "/placeholder.svg" },
+            ],
             type: "sticker",
             status: data.availability ? "ACTIVE" : "INACTIVE",
             options: data.options || [],
@@ -173,7 +175,10 @@ export default function Product() {
           setProduct(productData);
 
           // Set quantity based on product settings
-          if (productData.show_quantity_panel === false && productData.fixed_quantity) {
+          if (
+            productData.show_quantity_panel === false &&
+            productData.fixed_quantity
+          ) {
             setQuantity(productData.fixed_quantity);
             setActiveQuantityOption(productData.fixed_quantity);
           }
@@ -204,7 +209,9 @@ export default function Product() {
 
         if (productId?.startsWith("imported_")) {
           const importedId = productId.split("_")[1];
-          const response = await fetch(`/api/public/products/imported/${importedId}`);
+          const response = await fetch(
+            `/api/public/products/imported/${importedId}`,
+          );
 
           if (!response.ok) {
             throw new Error("Failed to fetch imported product");
@@ -236,7 +243,10 @@ export default function Product() {
           setProduct(productData);
 
           // Set quantity based on product settings
-          if (productData.show_quantity_panel === false && productData.fixed_quantity) {
+          if (
+            productData.show_quantity_panel === false &&
+            productData.fixed_quantity
+          ) {
             setQuantity(productData.fixed_quantity);
             setActiveQuantityOption(productData.fixed_quantity);
           }
@@ -260,7 +270,8 @@ export default function Product() {
         setError("Product not found");
         setIsLoading(false);
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Failed to load product";
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to load product";
         console.error("Product fetch error:", {
           productId,
           error: errorMessage,
@@ -279,25 +290,21 @@ export default function Product() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const allowedFormats =
-      product?.customer_upload_config?.allowedFormats || [
-        "pdf",
-        "ai",
-        "png",
-        "jpg",
-      ];
+    const allowedFormats = product?.customer_upload_config?.allowedFormats || [
+      "pdf",
+      "ai",
+      "png",
+      "jpg",
+    ];
     if (
-      !allowedFormats.includes(
-        file.name.split(".").pop()?.toLowerCase() || "",
-      )
+      !allowedFormats.includes(file.name.split(".").pop()?.toLowerCase() || "")
     ) {
-      toast.error(
-        `Invalid File Format. Allowed: ${allowedFormats.join(", ")}`,
-      );
+      toast.error(`Invalid File Format. Allowed: ${allowedFormats.join(", ")}`);
       return;
     }
 
-    const maxSize = (product?.customer_upload_config?.maxFileSize || 5) * 1024 * 1024;
+    const maxSize =
+      (product?.customer_upload_config?.maxFileSize || 5) * 1024 * 1024;
     if (file.size > maxSize) {
       toast.error(
         `File Too Large. Max: ${product?.customer_upload_config?.maxFileSize}MB`,
@@ -380,8 +387,7 @@ export default function Product() {
       const tierInfo = quantityTiers.find((t) => t.qty === quantity);
       const savePercentage = tierInfo?.discountPercent || 0;
 
-      const discountedPricePerUnit =
-        basePrice * (1 - savePercentage / 100);
+      const discountedPricePerUnit = basePrice * (1 - savePercentage / 100);
       const totalPrice = discountedPricePerUnit * quantity;
 
       // Upload design file to server if provided
@@ -421,7 +427,9 @@ export default function Product() {
           design_file_url = uploadData.fileUrl;
         } catch (error) {
           console.error("Error uploading design file:", error);
-          toast.error("Design file upload failed. Try again or continue without uploading.");
+          toast.error(
+            "Design file upload failed. Try again or continue without uploading.",
+          );
         }
       }
 
@@ -443,22 +451,27 @@ export default function Product() {
       localStorage.setItem("cart", JSON.stringify(existingCart));
 
       // Calculate total items in cart
-      const totalItems = existingCart.reduce((sum: number, item: any) => sum + item.quantity, 0);
+      const totalItems = existingCart.reduce(
+        (sum: number, item: any) => sum + item.quantity,
+        0,
+      );
 
       // Dispatch storage event to update header cart badge
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: 'cart',
-        newValue: JSON.stringify(existingCart),
-        storageArea: localStorage,
-      }));
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "cart",
+          newValue: JSON.stringify(existingCart),
+          storageArea: localStorage,
+        }),
+      );
 
       toast.success(
         totalItems === 1
           ? "1 item added to cart"
           : `${totalItems} items added to cart`,
         {
-          description: `You now have ${totalItems} item${totalItems !== 1 ? "s" : ""} in your cart`
-        }
+          description: `You now have ${totalItems} item${totalItems !== 1 ? "s" : ""} in your cart`,
+        },
       );
       setShowCheckoutDialog(true);
     } catch (error) {
@@ -628,11 +641,12 @@ export default function Product() {
                             <p className="font-medium text-sm text-black">
                               {value.name}
                             </p>
-                            {value.priceModifier !== undefined && value.priceModifier > 0 && (
-                              <p className="text-xs text-gray-600 mt-0.5">
-                                +${value.priceModifier.toFixed(2)}
-                              </p>
-                            )}
+                            {value.priceModifier !== undefined &&
+                              value.priceModifier > 0 && (
+                                <p className="text-xs text-gray-600 mt-0.5">
+                                  +${value.priceModifier.toFixed(2)}
+                                </p>
+                              )}
                           </div>
                           {index === 0 && (
                             <span
@@ -675,11 +689,12 @@ export default function Product() {
                           <p className="font-medium text-xs text-black">
                             {value.name}
                           </p>
-                          {value.priceModifier !== undefined && value.priceModifier > 0 && (
-                            <p className="text-xs text-gray-600 mt-0.5">
-                              +${value.priceModifier.toFixed(2)}
-                            </p>
-                          )}
+                          {value.priceModifier !== undefined &&
+                            value.priceModifier > 0 && (
+                              <p className="text-xs text-gray-600 mt-0.5">
+                                +${value.priceModifier.toFixed(2)}
+                              </p>
+                            )}
                         </button>
                       ))}
                     </div>
@@ -817,22 +832,34 @@ export default function Product() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Selected Quantity */}
               <div className="bg-white rounded-lg p-3 text-center border border-purple-200">
-                <p className="text-gray-600 text-xs font-semibold uppercase mb-1">Selected Quantity</p>
-                <p className="text-3xl font-bold text-purple-600">{quantity.toLocaleString()}</p>
+                <p className="text-gray-600 text-xs font-semibold uppercase mb-1">
+                  Selected Quantity
+                </p>
+                <p className="text-3xl font-bold text-purple-600">
+                  {quantity.toLocaleString()}
+                </p>
                 <p className="text-gray-500 text-xs mt-1">stickers</p>
               </div>
 
               {/* Price Per Unit */}
               <div className="bg-white rounded-lg p-3 text-center border border-blue-200">
-                <p className="text-gray-600 text-xs font-semibold uppercase mb-1">Price Per sticker</p>
-                <p className="text-3xl font-bold text-blue-600">${parseFloat(calculatePrice()).toFixed(2)}</p>
+                <p className="text-gray-600 text-xs font-semibold uppercase mb-1">
+                  Price Per sticker
+                </p>
+                <p className="text-3xl font-bold text-blue-600">
+                  ${parseFloat(calculatePrice()).toFixed(2)}
+                </p>
                 <p className="text-gray-500 text-xs mt-1">each</p>
               </div>
 
               {/* Total Price */}
               <div className="bg-white rounded-lg p-3 text-center border-2 border-green-400">
-                <p className="text-gray-600 text-xs font-semibold uppercase mb-1">Total Price</p>
-                <p className="text-3xl font-bold text-green-600">${(parseFloat(calculatePrice()) * quantity).toFixed(2)}</p>
+                <p className="text-gray-600 text-xs font-semibold uppercase mb-1">
+                  Total Price
+                </p>
+                <p className="text-3xl font-bold text-green-600">
+                  ${(parseFloat(calculatePrice()) * quantity).toFixed(2)}
+                </p>
                 <p className="text-gray-500 text-xs mt-1">for your order</p>
               </div>
             </div>
@@ -1029,7 +1056,8 @@ export default function Product() {
               Item Added to Cart!
             </DialogTitle>
             <DialogDescription className="text-center">
-              Your artwork has been successfully added. What would you like to do next?
+              Your artwork has been successfully added. What would you like to
+              do next?
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-3 mt-6">

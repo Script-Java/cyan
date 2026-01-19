@@ -315,7 +315,9 @@ export default function OrderConfirmation() {
               <Card>
                 <CardHeader>
                   <CardTitle>Order Summary</CardTitle>
-                  <CardDescription>{formatOrderNumber(order.id)}</CardDescription>
+                  <CardDescription>
+                    {formatOrderNumber(order.id)}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="border-b pb-4">

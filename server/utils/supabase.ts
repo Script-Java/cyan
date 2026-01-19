@@ -12,7 +12,8 @@ if (!supabaseServiceKey) {
 
 // Use a placeholder key during build/initialization if no key is provided
 // This prevents errors during module evaluation
-const buildTimeKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1idWlsZC1wbGFjZWhvbGRlciJ9.dummy";
+const buildTimeKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1idWlsZC1wbGFjZWhvbGRlciJ9.dummy";
 const keyToUse = supabaseServiceKey || buildTimeKey;
 
 export const supabase = createClient(supabaseUrl, keyToUse);
@@ -299,7 +300,9 @@ export async function getCustomerOrders(customerId: number): Promise<any[]> {
   try {
     const { data, error } = await supabase
       .from("orders")
-      .select("*, customers(id, first_name, last_name, email, phone), order_items(*)")
+      .select(
+        "*, customers(id, first_name, last_name, email, phone), order_items(*)",
+      )
       .eq("customer_id", customerId)
       .order("created_at", { ascending: false });
 
@@ -337,7 +340,14 @@ export async function getPendingOrders(): Promise<any[]> {
 
 export async function getActiveOrders(): Promise<any[]> {
   try {
-    const activeStatuses = ["pending", "processing", "printing", "in transit", "paid", "pending_payment"];
+    const activeStatuses = [
+      "pending",
+      "processing",
+      "printing",
+      "in transit",
+      "paid",
+      "pending_payment",
+    ];
     // Simplified query - only fetch what's needed
     const { data, error } = await supabase
       .from("orders")
@@ -364,7 +374,14 @@ export async function getActiveOrders(): Promise<any[]> {
  */
 export async function getActiveOrdersCount(): Promise<number> {
   try {
-    const activeStatuses = ["pending", "processing", "printing", "in transit", "paid", "pending_payment"];
+    const activeStatuses = [
+      "pending",
+      "processing",
+      "printing",
+      "in transit",
+      "paid",
+      "pending_payment",
+    ];
     const { count, error } = await supabase
       .from("orders")
       .select("id", { count: "exact", head: true })

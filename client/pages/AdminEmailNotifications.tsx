@@ -88,7 +88,8 @@ const EMAIL_TEMPLATES: EmailTemplate[] = [
 export default function AdminEmailNotifications() {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState<EmailTemplate | null>(null);
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<EmailTemplate | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -133,7 +134,8 @@ export default function AdminEmailNotifications() {
   };
 
   const categoryDescriptions = {
-    account: "Emails for user account management, verification, and password recovery",
+    account:
+      "Emails for user account management, verification, and password recovery",
     order: "Emails related to order processing, tracking, and status updates",
     support: "Emails for customer support and ticket responses",
   };
@@ -176,7 +178,9 @@ export default function AdminEmailNotifications() {
             <div className="lg:col-span-1">
               <div className="bg-white rounded-lg shadow">
                 <div className="p-6 border-b border-gray-200">
-                  <h2 className="text-lg font-semibold text-gray-900">Templates</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    Templates
+                  </h2>
                 </div>
 
                 {/* Category Filter */}
@@ -203,7 +207,7 @@ export default function AdminEmailNotifications() {
                     <>
                       {["order", "account", "support"].map((category) => {
                         const categoryTemplates = EMAIL_TEMPLATES.filter(
-                          (t) => t.category === category
+                          (t) => t.category === category,
                         );
                         if (categoryTemplates.length === 0) return null;
 
@@ -212,10 +216,18 @@ export default function AdminEmailNotifications() {
                             {/* Category Header */}
                             <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
                               <h3 className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
-                                {categoryLabels[category as keyof typeof categoryLabels]}
+                                {
+                                  categoryLabels[
+                                    category as keyof typeof categoryLabels
+                                  ]
+                                }
                               </h3>
                               <p className="text-xs text-gray-500 mt-1">
-                                {categoryDescriptions[category as keyof typeof categoryDescriptions]}
+                                {
+                                  categoryDescriptions[
+                                    category as keyof typeof categoryDescriptions
+                                  ]
+                                }
                               </p>
                             </div>
 
@@ -225,7 +237,9 @@ export default function AdminEmailNotifications() {
                                 key={template.id}
                                 onClick={() => handlePreview(template)}
                                 className={`w-full text-left p-4 hover:bg-blue-50 transition-colors border-b border-gray-100 last:border-0 ${
-                                  selectedTemplate?.id === template.id ? "bg-blue-50" : ""
+                                  selectedTemplate?.id === template.id
+                                    ? "bg-blue-50"
+                                    : ""
                                 }`}
                               >
                                 <div className="flex items-start gap-3">
@@ -258,10 +272,18 @@ export default function AdminEmailNotifications() {
                       {/* Category Header for Filtered View */}
                       <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
                         <h3 className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
-                          {categoryLabels[filterCategory as keyof typeof categoryLabels]}
+                          {
+                            categoryLabels[
+                              filterCategory as keyof typeof categoryLabels
+                            ]
+                          }
                         </h3>
                         <p className="text-xs text-gray-500 mt-1">
-                          {categoryDescriptions[filterCategory as keyof typeof categoryDescriptions]}
+                          {
+                            categoryDescriptions[
+                              filterCategory as keyof typeof categoryDescriptions
+                            ]
+                          }
                         </p>
                       </div>
 
@@ -271,7 +293,9 @@ export default function AdminEmailNotifications() {
                           key={template.id}
                           onClick={() => handlePreview(template)}
                           className={`w-full text-left p-4 hover:bg-blue-50 transition-colors border-b border-gray-100 last:border-0 ${
-                            selectedTemplate?.id === template.id ? "bg-blue-50" : ""
+                            selectedTemplate?.id === template.id
+                              ? "bg-blue-50"
+                              : ""
                           }`}
                         >
                           <div className="flex items-start gap-3">
@@ -312,7 +336,9 @@ export default function AdminEmailNotifications() {
                     </h3>
                     <div className="flex items-center gap-2">
                       <Button
-                        onClick={() => handleCopyUrl(selectedTemplate.previewUrl)}
+                        onClick={() =>
+                          handleCopyUrl(selectedTemplate.previewUrl)
+                        }
                         variant="outline"
                         size="sm"
                         className="flex items-center gap-2"
@@ -359,8 +385,9 @@ export default function AdminEmailNotifications() {
                   {/* Preview Footer */}
                   <div className="bg-gray-50 border-t border-gray-200 p-4">
                     <p className="text-xs text-gray-500">
-                      This is a preview of the email template. To edit this template or send test emails,
-                      contact the development team.
+                      This is a preview of the email template. To edit this
+                      template or send test emails, contact the development
+                      team.
                     </p>
                   </div>
                 </div>
@@ -368,7 +395,9 @@ export default function AdminEmailNotifications() {
                 <div className="bg-white rounded-lg shadow p-8 text-center h-[600px] flex items-center justify-center">
                   <div>
                     <Mail className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <p className="text-gray-500">Select an email template from the list to see preview</p>
+                    <p className="text-gray-500">
+                      Select an email template from the list to see preview
+                    </p>
                   </div>
                 </div>
               )}
@@ -377,14 +406,18 @@ export default function AdminEmailNotifications() {
 
           {/* Template Information */}
           <div className="mt-6 bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-6">Email Notification Categories</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">
+              Email Notification Categories
+            </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Account & Authentication */}
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                  <h4 className="font-semibold text-gray-900">Account & Authentication</h4>
+                  <h4 className="font-semibold text-gray-900">
+                    Account & Authentication
+                  </h4>
                 </div>
                 <p className="text-sm text-gray-600 mb-3">
                   Emails for user account management and security
@@ -399,7 +432,9 @@ export default function AdminEmailNotifications() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                  <h4 className="font-semibold text-gray-900">Order Management</h4>
+                  <h4 className="font-semibold text-gray-900">
+                    Order Management
+                  </h4>
                 </div>
                 <p className="text-sm text-gray-600 mb-3">
                   Emails related to order processing and tracking
@@ -416,7 +451,9 @@ export default function AdminEmailNotifications() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <h4 className="font-semibold text-gray-900">Support & Feedback</h4>
+                  <h4 className="font-semibold text-gray-900">
+                    Support & Feedback
+                  </h4>
                 </div>
                 <p className="text-sm text-gray-600 mb-3">
                   Emails for customer support interactions
@@ -431,16 +468,44 @@ export default function AdminEmailNotifications() {
             {/* Important Note */}
             <div className="mt-6 pt-6 border-t border-gray-200">
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h4 className="font-semibold text-blue-900 mb-2">All Buttons Point to Correct Routes</h4>
+                <h4 className="font-semibold text-blue-900 mb-2">
+                  All Buttons Point to Correct Routes
+                </h4>
                 <p className="text-sm text-blue-800">
-                  Every button in these email templates has been configured with the correct customer-facing URLs:
+                  Every button in these email templates has been configured with
+                  the correct customer-facing URLs:
                 </p>
                 <ul className="text-sm text-blue-800 mt-2 space-y-1 ml-4">
-                  <li>• <strong>Verify Email</strong> → <code className="bg-white px-2 py-1 rounded">/verify?token=...</code></li>
-                  <li>• <strong>Reset Password</strong> → <code className="bg-white px-2 py-1 rounded">/reset-password?token=...</code></li>
-                  <li>• <strong>View Order</strong> → <code className="bg-white px-2 py-1 rounded">/order-history/:id</code></li>
-                  <li>• <strong>View Ticket</strong> → <code className="bg-white px-2 py-1 rounded">/my-tickets/:id</code></li>
-                  <li>• <strong>Approve Proof</strong> → <code className="bg-white px-2 py-1 rounded">/proofs/:id/approve</code></li>
+                  <li>
+                    • <strong>Verify Email</strong> →{" "}
+                    <code className="bg-white px-2 py-1 rounded">
+                      /verify?token=...
+                    </code>
+                  </li>
+                  <li>
+                    • <strong>Reset Password</strong> →{" "}
+                    <code className="bg-white px-2 py-1 rounded">
+                      /reset-password?token=...
+                    </code>
+                  </li>
+                  <li>
+                    • <strong>View Order</strong> →{" "}
+                    <code className="bg-white px-2 py-1 rounded">
+                      /order-history/:id
+                    </code>
+                  </li>
+                  <li>
+                    • <strong>View Ticket</strong> →{" "}
+                    <code className="bg-white px-2 py-1 rounded">
+                      /my-tickets/:id
+                    </code>
+                  </li>
+                  <li>
+                    • <strong>Approve Proof</strong> →{" "}
+                    <code className="bg-white px-2 py-1 rounded">
+                      /proofs/:id/approve
+                    </code>
+                  </li>
                 </ul>
               </div>
             </div>

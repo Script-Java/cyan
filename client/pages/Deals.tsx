@@ -287,13 +287,18 @@ export default function Deals() {
     <>
       <Header />
       <main className="pt-20 min-h-screen bg-white text-gray-900">
-        <div className="max-w-full mx-auto px-2 sm:px-3 lg:px-4" style={{ padding: "16px 16px 50px" }}>
+        <div
+          className="max-w-full mx-auto px-2 sm:px-3 lg:px-4"
+          style={{ padding: "16px 16px 50px" }}
+        >
           {/* Header Section */}
           <div className="mb-6 text-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               Deals &amp; Offers
             </h1>
-            <p className="text-sm text-gray-600">Discover our best deals on premium stickers</p>
+            <p className="text-sm text-gray-600">
+              Discover our best deals on premium stickers
+            </p>
           </div>
 
           {/* Loading State */}

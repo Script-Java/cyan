@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { CheckCircle2, AlertCircle, Loader2, Image as ImageIcon } from "lucide-react";
+import {
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+  Image as ImageIcon,
+} from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -31,7 +36,9 @@ export default function ProofApproval() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [actionType, setActionType] = useState<"approve" | "revise" | null>(null);
+  const [actionType, setActionType] = useState<"approve" | "revise" | null>(
+    null,
+  );
   const [revisionNotes, setRevisionNotes] = useState("");
 
   useEffect(() => {
@@ -56,7 +63,8 @@ export default function ProofApproval() {
       const data: ProofDetailResponse = await response.json();
       setProof(data.proof);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to load proof";
+      const message =
+        err instanceof Error ? err.message : "Failed to load proof";
       setError(message);
       toast.error(message);
     } finally {
@@ -87,7 +95,8 @@ export default function ProofApproval() {
         navigate("/proofs");
       }, 2000);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to approve proof";
+      const message =
+        err instanceof Error ? err.message : "Failed to approve proof";
       toast.error(message);
     } finally {
       setIsSubmitting(false);
@@ -123,7 +132,10 @@ export default function ProofApproval() {
         navigate("/proofs");
       }, 2000);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to submit revision request";
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Failed to submit revision request";
       toast.error(message);
     } finally {
       setIsSubmitting(false);
@@ -150,9 +162,15 @@ export default function ProofApproval() {
             <div className="flex items-start gap-4">
               <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Proof</h1>
-                <p className="text-gray-600 mb-6">{error || "The proof you're looking for doesn't exist."}</p>
-                <Button onClick={() => navigate("/proofs")}>Back to Proofs</Button>
+                <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                  Error Loading Proof
+                </h1>
+                <p className="text-gray-600 mb-6">
+                  {error || "The proof you're looking for doesn't exist."}
+                </p>
+                <Button onClick={() => navigate("/proofs")}>
+                  Back to Proofs
+                </Button>
               </div>
             </div>
           </div>
@@ -169,7 +187,9 @@ export default function ProofApproval() {
           <div className="bg-white rounded-lg shadow p-6 sm:p-8 text-center">
             <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-4" />
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              {actionType === "approve" ? "Design Approved!" : "Revisions Requested"}
+              {actionType === "approve"
+                ? "Design Approved!"
+                : "Revisions Requested"}
             </h1>
             <p className="text-gray-600 mb-6">
               {actionType === "approve"
@@ -216,29 +236,42 @@ export default function ProofApproval() {
           {/* Proof Details */}
           <div className="p-6 sm:p-8 border-t">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Design Proof Ready</h1>
-              <p className="text-gray-600">Order {formatOrderNumber(proof.order_id)}</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Design Proof Ready
+              </h1>
+              <p className="text-gray-600">
+                Order {formatOrderNumber(proof.order_id)}
+              </p>
             </div>
 
             {/* Description */}
             {proof.description && (
-              <div className={`rounded-lg border p-4 mb-6 ${statusColors[proof.status]}`}>
-                <h3 className="font-semibold text-gray-900 mb-2">Proof Details:</h3>
-                <p className="text-gray-700 whitespace-pre-wrap">{proof.description}</p>
+              <div
+                className={`rounded-lg border p-4 mb-6 ${statusColors[proof.status]}`}
+              >
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  Proof Details:
+                </h3>
+                <p className="text-gray-700 whitespace-pre-wrap">
+                  {proof.description}
+                </p>
               </div>
             )}
 
             {/* Status Badge */}
             <div className="mb-8">
-              <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-                proof.status === "approved"
-                  ? "bg-green-100 text-green-800"
-                  : proof.status === "revisions_requested"
-                    ? "bg-orange-100 text-orange-800"
-                    : "bg-yellow-100 text-yellow-800"
-              }`}>
+              <span
+                className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                  proof.status === "approved"
+                    ? "bg-green-100 text-green-800"
+                    : proof.status === "revisions_requested"
+                      ? "bg-orange-100 text-orange-800"
+                      : "bg-yellow-100 text-yellow-800"
+                }`}
+              >
                 {proof.status === "approved" && "✓ Approved"}
-                {proof.status === "revisions_requested" && "Revisions Requested"}
+                {proof.status === "revisions_requested" &&
+                  "Revisions Requested"}
                 {proof.status === "pending" && "⏳ Pending Review"}
                 {proof.status === "denied" && "❌ Denied"}
               </span>
@@ -279,7 +312,9 @@ export default function ProofApproval() {
             {/* Revision Request Form */}
             {actionType === "revise" && proof.status === "pending" && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">What changes would you like?</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  What changes would you like?
+                </h3>
                 <textarea
                   value={revisionNotes}
                   onChange={(e) => setRevisionNotes(e.target.value)}
@@ -319,8 +354,10 @@ export default function ProofApproval() {
             {proof.status !== "pending" && (
               <div className="bg-gray-50 rounded-lg p-6 text-center">
                 <p className="text-gray-600 mb-4">
-                  {proof.status === "approved" && "You have already approved this design."}
-                  {proof.status === "revisions_requested" && "Revisions have been requested for this design."}
+                  {proof.status === "approved" &&
+                    "You have already approved this design."}
+                  {proof.status === "revisions_requested" &&
+                    "Revisions have been requested for this design."}
                   {proof.status === "denied" && "This design has been denied."}
                 </p>
                 <Button onClick={() => navigate("/proofs")} variant="outline">

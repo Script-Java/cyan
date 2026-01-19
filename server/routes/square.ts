@@ -151,7 +151,11 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     if (checkoutData.amount === undefined || checkoutData.amount === null) {
       missingFields.push("amount");
     }
-    if (!checkoutData.items || !Array.isArray(checkoutData.items) || checkoutData.items.length === 0) {
+    if (
+      !checkoutData.items ||
+      !Array.isArray(checkoutData.items) ||
+      checkoutData.items.length === 0
+    ) {
       missingFields.push("items");
     }
     if (!checkoutData.customerEmail) {
@@ -216,14 +220,15 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       checkoutData.billingAddress?.country &&
       !isValidCountryCode(checkoutData.billingAddress.country)
     ) {
-      invalidCountries.push(
-        `billing: ${checkoutData.billingAddress.country}`,
-      );
+      invalidCountries.push(`billing: ${checkoutData.billingAddress.country}`);
       checkoutData.billingAddress.country = "US"; // Default to US if invalid
     }
 
     if (invalidCountries.length > 0) {
-      console.warn("Invalid country codes detected and auto-corrected to US:", invalidCountries);
+      console.warn(
+        "Invalid country codes detected and auto-corrected to US:",
+        invalidCountries,
+      );
     }
 
     // Validate email format
@@ -464,8 +469,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     console.error("Error details:", {
       message: errorMessage,
       errorType: error instanceof Error ? error.constructor.name : typeof error,
-      errorStack:
-        error instanceof Error ? error.stack : "No stack available",
+      errorStack: error instanceof Error ? error.stack : "No stack available",
     });
     res.status(400).json({
       success: false,

@@ -67,7 +67,6 @@ export default function AdminFinance() {
     }
   };
 
-
   if (!isAuthenticated || isLoading) {
     return null;
   }
@@ -79,7 +78,9 @@ export default function AdminFinance() {
         <div className="border-b border-gray-200 bg-white">
           <div className="px-4 sm:px-10 py-8">
             <div className="max-w-6xl mx-auto">
-              <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">Finance</h1>
+              <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">
+                Finance
+              </h1>
               <p className="text-gray-600">
                 Revenue, transactions, and financial performance
               </p>

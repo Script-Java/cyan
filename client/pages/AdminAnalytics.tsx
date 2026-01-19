@@ -179,7 +179,9 @@ export default function AdminAnalytics() {
             <div className="max-w-7xl mx-auto">
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">Analytics</h1>
+                  <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">
+                    Analytics
+                  </h1>
                   <p className="text-gray-600">
                     Last 30 days performance overview
                   </p>
@@ -299,51 +301,51 @@ export default function AdminAnalytics() {
                 <h2 className="text-sm font-semibold text-gray-900 mb-4">
                   Traffic Overview
                 </h2>
-              <div className="space-y-3">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-gray-700 text-xs font-medium">
-                      Active Users
-                    </span>
-                    <span className="text-gray-900 font-bold">
-                      {analytics.activeUsers}
-                    </span>
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-gray-700 text-xs font-medium">
+                        Active Users
+                      </span>
+                      <span className="text-gray-900 font-bold">
+                        {analytics.activeUsers}
+                      </span>
+                    </div>
+                    <div className="bg-gray-200 h-2 rounded-full overflow-hidden">
+                      <div
+                        className="bg-green-500 h-full"
+                        style={{
+                          width:
+                            Math.min((analytics.activeUsers / 100) * 100, 100) +
+                            "%",
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div className="bg-gray-200 h-2 rounded-full overflow-hidden">
-                    <div
-                      className="bg-green-500 h-full"
-                      style={{
-                        width:
-                          Math.min((analytics.activeUsers / 100) * 100, 100) +
-                          "%",
-                      }}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-gray-700 text-xs font-medium">
-                      Page Views
-                    </span>
-                    <span className="text-gray-900 font-bold">
-                      {analytics.totalPageViews}
-                    </span>
-                  </div>
-                  <div className="bg-gray-200 h-2 rounded-full overflow-hidden">
-                    <div
-                      className="bg-blue-500 h-full"
-                      style={{
-                        width:
-                          Math.min(
-                            (analytics.totalPageViews / 5000) * 100,
-                            100,
-                          ) + "%",
-                      }}
-                    />
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-gray-700 text-xs font-medium">
+                        Page Views
+                      </span>
+                      <span className="text-gray-900 font-bold">
+                        {analytics.totalPageViews}
+                      </span>
+                    </div>
+                    <div className="bg-gray-200 h-2 rounded-full overflow-hidden">
+                      <div
+                        className="bg-blue-500 h-full"
+                        style={{
+                          width:
+                            Math.min(
+                              (analytics.totalPageViews / 5000) * 100,
+                              100,
+                            ) + "%",
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
               {/* Customer Metrics */}
               <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">

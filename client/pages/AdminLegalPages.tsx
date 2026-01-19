@@ -138,7 +138,9 @@ export default function AdminLegalPages() {
             <div className="max-w-6xl mx-auto">
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">Legal Pages</h1>
+                  <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">
+                    Legal Pages
+                  </h1>
                   <p className="text-gray-600">
                     Manage your legal, privacy, and policy pages
                   </p>

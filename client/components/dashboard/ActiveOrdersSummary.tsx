@@ -26,15 +26,17 @@ interface OrderItem {
   price?: number;
   option_price?: number;
   total_price?: number;
-  options?: Record<string, any> | Array<{
-    option_id?: string;
-    option_name?: string;
-    name?: string;
-    option_value?: string;
-    value?: string;
-    price?: number;
-    modifier_price?: number;
-  }>;
+  options?:
+    | Record<string, any>
+    | Array<{
+        option_id?: string;
+        option_name?: string;
+        name?: string;
+        option_value?: string;
+        value?: string;
+        price?: number;
+        modifier_price?: number;
+      }>;
   design_file_url?: string;
 }
 
@@ -128,9 +130,7 @@ export default function ActiveOrdersSummary({
   };
 
   // Helper function to get item price (fallback to different field names)
-  const getItemPrice = (
-    item: OrderItem,
-  ): number => {
+  const getItemPrice = (item: OrderItem): number => {
     if (typeof item.price_inc_tax === "number") return item.price_inc_tax;
     if (typeof item.price_ex_tax === "number") return item.price_ex_tax;
     if (typeof item.price === "number") return item.price;
@@ -250,7 +250,9 @@ export default function ActiveOrdersSummary({
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       {order.customerName && (
                         <div>
-                          <p className="text-xs text-gray-600 mb-1">Full Name</p>
+                          <p className="text-xs text-gray-600 mb-1">
+                            Full Name
+                          </p>
                           <p className="text-xs sm:text-sm font-medium text-gray-900">
                             {order.customerName}
                           </p>
@@ -468,37 +470,44 @@ export default function ActiveOrdersSummary({
                                   Options:
                                 </p>
                                 <div className="flex flex-wrap gap-1">
-                                  {Array.isArray(item.options) ? (
-                                    item.options.map((option: any, idx: number) => {
-                                      const optionName =
-                                        option.option_id || option.name || `Option ${idx + 1}`;
-                                      const optionValue =
-                                        option.option_value || option.value || "";
-                                      return (
-                                        <span
-                                          key={idx}
-                                          className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
-                                        >
-                                          {optionName}: {optionValue}
-                                        </span>
-                                      );
-                                    })
-                                  ) : (
-                                    Object.entries(item.options).map(([key, value]) => {
-                                      const displayValue = formatOptionValue(value);
-                                      const label = /^\d+$/.test(key)
-                                        ? displayValue
-                                        : `${key}: ${displayValue}`;
-                                      return (
-                                        <span
-                                          key={key}
-                                          className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
-                                        >
-                                          {label}
-                                        </span>
-                                      );
-                                    })
-                                  )}
+                                  {Array.isArray(item.options)
+                                    ? item.options.map(
+                                        (option: any, idx: number) => {
+                                          const optionName =
+                                            option.option_id ||
+                                            option.name ||
+                                            `Option ${idx + 1}`;
+                                          const optionValue =
+                                            option.option_value ||
+                                            option.value ||
+                                            "";
+                                          return (
+                                            <span
+                                              key={idx}
+                                              className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
+                                            >
+                                              {optionName}: {optionValue}
+                                            </span>
+                                          );
+                                        },
+                                      )
+                                    : Object.entries(item.options).map(
+                                        ([key, value]) => {
+                                          const displayValue =
+                                            formatOptionValue(value);
+                                          const label = /^\d+$/.test(key)
+                                            ? displayValue
+                                            : `${key}: ${displayValue}`;
+                                          return (
+                                            <span
+                                              key={key}
+                                              className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
+                                            >
+                                              {label}
+                                            </span>
+                                          );
+                                        },
+                                      )}
                                 </div>
                               </div>
                             )}
@@ -544,51 +553,74 @@ export default function ActiveOrdersSummary({
                                       Options:
                                     </p>
                                     <div className="space-y-1">
-                                      {Array.isArray(item.options) ? (
-                                        item.options.map((option: any, idx: number) => {
-                                          const optionName =
-                                            option.option_id || option.name || `Option ${idx + 1}`;
-                                          const optionValue =
-                                            option.option_value || option.value || "";
-                                          const optionPrice = option.price || option.modifier_price || 0;
-                                          return (
-                                            <div
-                                              key={idx}
-                                              className="flex justify-between items-center text-xs"
-                                            >
-                                              <span className="text-gray-700">
-                                                {optionName} {optionValue && `(${optionValue})`}
-                                              </span>
-                                              {optionPrice > 0 && (
-                                                <span className="text-blue-600 font-medium">
-                                                  +${formatPrice(optionPrice)}
-                                                </span>
-                                              )}
-                                            </div>
-                                          );
-                                        })
-                                      ) : (
-                                        Object.entries(item.options).map(([key, value]: [string, any]) => {
-                                          const optionPrice = typeof value === "object" ? value.price || value.modifier_price : 0;
-                                          const displayValue = typeof value === "object" ? value.value || value.name : value;
-                                          const formattedKey = formatOptionKey(key);
-                                          return (
-                                            <div
-                                              key={key}
-                                              className="flex justify-between items-center text-xs"
-                                            >
-                                              <span className="text-gray-700">
-                                                {formattedKey} {displayValue && `(${formatOptionValue(displayValue)})`}
-                                              </span>
-                                              {optionPrice > 0 && (
-                                                <span className="text-blue-600 font-medium">
-                                                  +${formatPrice(optionPrice)}
-                                                </span>
-                                              )}
-                                            </div>
-                                          );
-                                        })
-                                      )}
+                                      {Array.isArray(item.options)
+                                        ? item.options.map(
+                                            (option: any, idx: number) => {
+                                              const optionName =
+                                                option.option_id ||
+                                                option.name ||
+                                                `Option ${idx + 1}`;
+                                              const optionValue =
+                                                option.option_value ||
+                                                option.value ||
+                                                "";
+                                              const optionPrice =
+                                                option.price ||
+                                                option.modifier_price ||
+                                                0;
+                                              return (
+                                                <div
+                                                  key={idx}
+                                                  className="flex justify-between items-center text-xs"
+                                                >
+                                                  <span className="text-gray-700">
+                                                    {optionName}{" "}
+                                                    {optionValue &&
+                                                      `(${optionValue})`}
+                                                  </span>
+                                                  {optionPrice > 0 && (
+                                                    <span className="text-blue-600 font-medium">
+                                                      +$
+                                                      {formatPrice(optionPrice)}
+                                                    </span>
+                                                  )}
+                                                </div>
+                                              );
+                                            },
+                                          )
+                                        : Object.entries(item.options).map(
+                                            ([key, value]: [string, any]) => {
+                                              const optionPrice =
+                                                typeof value === "object"
+                                                  ? value.price ||
+                                                    value.modifier_price
+                                                  : 0;
+                                              const displayValue =
+                                                typeof value === "object"
+                                                  ? value.value || value.name
+                                                  : value;
+                                              const formattedKey =
+                                                formatOptionKey(key);
+                                              return (
+                                                <div
+                                                  key={key}
+                                                  className="flex justify-between items-center text-xs"
+                                                >
+                                                  <span className="text-gray-700">
+                                                    {formattedKey}{" "}
+                                                    {displayValue &&
+                                                      `(${formatOptionValue(displayValue)})`}
+                                                  </span>
+                                                  {optionPrice > 0 && (
+                                                    <span className="text-blue-600 font-medium">
+                                                      +$
+                                                      {formatPrice(optionPrice)}
+                                                    </span>
+                                                  )}
+                                                </div>
+                                              );
+                                            },
+                                          )}
                                     </div>
                                   </div>
                                 )}
@@ -596,19 +628,25 @@ export default function ActiveOrdersSummary({
                                 {/* Cost Breakdown */}
                                 <div className="space-y-1 text-xs">
                                   <div className="flex justify-between">
-                                    <span className="text-gray-600">Cost per Sticker:</span>
+                                    <span className="text-gray-600">
+                                      Cost per Sticker:
+                                    </span>
                                     <span className="text-gray-900 font-medium">
                                       ${formatPrice(pricePerUnit)}
                                     </span>
                                   </div>
                                   <div className="flex justify-between">
-                                    <span className="text-gray-600">Quantity:</span>
+                                    <span className="text-gray-600">
+                                      Quantity:
+                                    </span>
                                     <span className="text-gray-900 font-medium">
                                       × {item.quantity}
                                     </span>
                                   </div>
                                   <div className="pt-2 border-t border-gray-300 flex justify-between font-semibold">
-                                    <span className="text-gray-900">Item Total:</span>
+                                    <span className="text-gray-900">
+                                      Item Total:
+                                    </span>
                                     <span className="text-emerald-600">
                                       ${formatPrice(itemTotal)}
                                     </span>
@@ -620,7 +658,8 @@ export default function ActiveOrdersSummary({
                         </div>
                       ) : (
                         <p className="text-xs text-gray-600">
-                          {order.itemCount} item{order.itemCount !== 1 ? "s" : ""}
+                          {order.itemCount} item
+                          {order.itemCount !== 1 ? "s" : ""}
                         </p>
                       )}
                     </div>

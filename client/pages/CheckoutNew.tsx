@@ -31,7 +31,9 @@ interface CartItem {
     name: string;
     values: Array<{ id: string; name: string }>;
   }>;
-  product_options?: Array<{ option_id?: number; option_value?: string } | string>;
+  product_options?: Array<
+    { option_id?: number; option_value?: string } | string
+  >;
 }
 
 interface OrderData {
@@ -149,7 +151,9 @@ export default function CheckoutNew() {
             // Validate country code against allowed values
             const validCountries = ["US", "CA", "GB", "AU"];
             const countryCode = primaryAddress?.country_code || "US";
-            const validCountryCode = validCountries.includes(countryCode) ? countryCode : "US";
+            const validCountryCode = validCountries.includes(countryCode)
+              ? countryCode
+              : "US";
 
             setCustomerInfo({
               email: customer.email || "",
@@ -165,7 +169,10 @@ export default function CheckoutNew() {
             });
           }
         } else {
-          console.warn("Failed to load customer info, status:", response.status);
+          console.warn(
+            "Failed to load customer info, status:",
+            response.status,
+          );
         }
       } catch (err) {
         console.warn("Failed to load customer info:", err);
@@ -311,9 +318,12 @@ export default function CheckoutNew() {
 
           setCartItems(enrichedItems);
 
-          const subtotal = enrichedItems.reduce((sum: number, item: CartItem) => {
-            return sum + (item.price || 0.25) * item.quantity;
-          }, 0);
+          const subtotal = enrichedItems.reduce(
+            (sum: number, item: CartItem) => {
+              return sum + (item.price || 0.25) * item.quantity;
+            },
+            0,
+          );
 
           calculateOrderData(subtotal, 0);
         } catch (parseError) {
@@ -413,23 +423,28 @@ export default function CheckoutNew() {
       localStorage.setItem("cart", JSON.stringify(updatedCart));
 
       // Calculate total remaining items
-      const totalItems = updatedCart.reduce((sum: number, item: any) => sum + item.quantity, 0);
+      const totalItems = updatedCart.reduce(
+        (sum: number, item: any) => sum + item.quantity,
+        0,
+      );
 
       // Dispatch storage event to update header cart badge
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: 'cart',
-        newValue: JSON.stringify(updatedCart),
-        oldValue: JSON.stringify(customItems),
-        storageArea: localStorage,
-      }));
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "cart",
+          newValue: JSON.stringify(updatedCart),
+          oldValue: JSON.stringify(customItems),
+          storageArea: localStorage,
+        }),
+      );
 
       // Show toast with updated count
       toast.success(
         totalItems === 0
           ? "Item removed from cart"
           : totalItems === 1
-          ? "1 item removed - 1 item remaining"
-          : `Item removed - ${totalItems} items remaining in cart`
+            ? "1 item removed - 1 item remaining"
+            : `Item removed - ${totalItems} items remaining in cart`,
       );
     } else {
       toast.success("Item removed from cart");
@@ -566,7 +581,15 @@ export default function CheckoutNew() {
     // Handle product_options from API carts
     if (item.product_options && item.product_options.length > 0) {
       return item.product_options.map(
-        (opt: { option_id?: number; option_value?: string; modifier_price?: number } | string) => {
+        (
+          opt:
+            | {
+                option_id?: number;
+                option_value?: string;
+                modifier_price?: number;
+              }
+            | string,
+        ) => {
           if (typeof opt === "string") {
             return {
               option_id: "custom",
@@ -578,9 +601,14 @@ export default function CheckoutNew() {
           // Look up the modifier_price from the product options definition
           let modifierPrice = (opt as any).modifier_price || 0;
           if (!modifierPrice && item.options && opt.option_id) {
-            const optionDef = item.options.find((o: any) => o.id === opt.option_id);
+            const optionDef = item.options.find(
+              (o: any) => o.id === opt.option_id,
+            );
             if (optionDef && optionDef.values) {
-              const valueDef = optionDef.values.find((v: any) => v.id === opt.option_value || v.name === opt.option_value);
+              const valueDef = optionDef.values.find(
+                (v: any) =>
+                  v.id === opt.option_value || v.name === opt.option_value,
+              );
               modifierPrice = valueDef?.priceModifier || 0;
             }
           }
@@ -588,7 +616,9 @@ export default function CheckoutNew() {
           return {
             option_id: opt.option_id || "custom",
             option_name: (() => {
-              const optDef = item.options?.find((o: any) => o.id === opt.option_id);
+              const optDef = item.options?.find(
+                (o: any) => o.id === opt.option_id,
+              );
               return optDef?.name || undefined;
             })(),
             option_value: opt.option_value || "",
@@ -713,7 +743,7 @@ export default function CheckoutNew() {
         } catch (parseError) {
           console.error("Failed to parse checkout response:", parseError);
           throw new Error(
-            `Server error (${response.status}): Could not parse response`
+            `Server error (${response.status}): Could not parse response`,
           );
         }
 
@@ -730,7 +760,7 @@ export default function CheckoutNew() {
         clearTimeout(timeoutId);
         if (fetchErr instanceof Error && fetchErr.name === "AbortError") {
           throw new Error(
-            "Request timeout: Checkout is taking too long. Please try again."
+            "Request timeout: Checkout is taking too long. Please try again.",
           );
         }
         // Network errors
@@ -740,7 +770,7 @@ export default function CheckoutNew() {
             stack: fetchErr.stack,
           });
           throw new Error(
-            `Network error: ${fetchErr.message}. Please check your connection and try again.`
+            `Network error: ${fetchErr.message}. Please check your connection and try again.`,
           );
         }
         throw fetchErr;
@@ -849,7 +879,9 @@ export default function CheckoutNew() {
         aria-label="Checkout page"
       >
         <div className="max-w-7xl mx-auto pt-[15px]">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">Your Cart</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">
+            Your Cart
+          </h1>
 
           <form onSubmit={handleCheckout}>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -972,7 +1004,9 @@ export default function CheckoutNew() {
                           </h4>
                           <div className="space-y-2 text-sm">
                             <div className="flex items-center justify-between">
-                              <span className="text-gray-600">Price per sticker</span>
+                              <span className="text-gray-600">
+                                Price per sticker
+                              </span>
                               <span className="font-medium">
                                 ${(item.price || 0.25).toFixed(2)}
                               </span>
@@ -996,7 +1030,8 @@ export default function CheckoutNew() {
                                       const optionValue = option?.values?.find(
                                         (val: any) => val.id === valueId,
                                       );
-                                      const displayValue = optionValue?.name || valueId;
+                                      const displayValue =
+                                        optionValue?.name || valueId;
 
                                       return (
                                         <div
@@ -1022,7 +1057,12 @@ export default function CheckoutNew() {
                                 <>
                                   {item.product_options.map(
                                     (
-                                      opt: { option_id?: number; option_value?: string } | string,
+                                      opt:
+                                        | {
+                                            option_id?: number;
+                                            option_value?: string;
+                                          }
+                                        | string,
                                       idx: number,
                                     ) => {
                                       // Handle both simple string options and structured options
@@ -1033,9 +1073,12 @@ export default function CheckoutNew() {
 
                                       // Try to find the option name from the options array
                                       const optionName =
-                                        typeof opt !== "string" && opt.option_id && item.options
+                                        typeof opt !== "string" &&
+                                        opt.option_id &&
+                                        item.options
                                           ? item.options.find(
-                                              (o: any) => o.id === opt.option_id,
+                                              (o: any) =>
+                                                o.id === opt.option_id,
                                             )?.name
                                           : null;
 
@@ -1092,7 +1135,8 @@ export default function CheckoutNew() {
                           aria-describedby="discount-help"
                         />
                         <span id="discount-help" className="sr-only">
-                          Enter your discount code to apply savings to your order
+                          Enter your discount code to apply savings to your
+                          order
                         </span>
                       </div>
                       <Button
@@ -1142,57 +1186,74 @@ export default function CheckoutNew() {
                                 {policy.guarantee_days}-Day Money-Back Guarantee
                               </p>
                               <p className="text-gray-600">
-                                We offer a {policy.guarantee_days}-day money-back guarantee on all orders. If you're not satisfied with your custom stickers for any reason, you can request a full refund within {policy.guarantee_days} days of your purchase.
+                                We offer a {policy.guarantee_days}-day
+                                money-back guarantee on all orders. If you're
+                                not satisfied with your custom stickers for any
+                                reason, you can request a full refund within{" "}
+                                {policy.guarantee_days} days of your purchase.
                               </p>
                             </div>
 
-                            {policy.return_conditions && policy.return_conditions.length > 0 && (
-                              <div>
-                                <p className="font-semibold text-gray-900 mb-2">
-                                  Return Conditions
-                                </p>
-                                <ul className="text-gray-600 space-y-1">
-                                  {policy.return_conditions.map((condition: string, index: number) => (
-                                    <li key={index}>• {condition}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
+                            {policy.return_conditions &&
+                              policy.return_conditions.length > 0 && (
+                                <div>
+                                  <p className="font-semibold text-gray-900 mb-2">
+                                    Return Conditions
+                                  </p>
+                                  <ul className="text-gray-600 space-y-1">
+                                    {policy.return_conditions.map(
+                                      (condition: string, index: number) => (
+                                        <li key={index}>• {condition}</li>
+                                      ),
+                                    )}
+                                  </ul>
+                                </div>
+                              )}
 
-                            {policy.how_to_return && policy.how_to_return.length > 0 && (
-                              <div>
-                                <p className="font-semibold text-gray-900 mb-2">
-                                  How to Return
-                                </p>
-                                <ol className="text-gray-600 space-y-1">
-                                  {policy.how_to_return.map((step: string, index: number) => (
-                                    <li key={index}>{index + 1}. {step}</li>
-                                  ))}
-                                </ol>
-                              </div>
-                            )}
+                            {policy.how_to_return &&
+                              policy.how_to_return.length > 0 && (
+                                <div>
+                                  <p className="font-semibold text-gray-900 mb-2">
+                                    How to Return
+                                  </p>
+                                  <ol className="text-gray-600 space-y-1">
+                                    {policy.how_to_return.map(
+                                      (step: string, index: number) => (
+                                        <li key={index}>
+                                          {index + 1}. {step}
+                                        </li>
+                                      ),
+                                    )}
+                                  </ol>
+                                </div>
+                              )}
 
                             <div>
                               <p className="font-semibold text-gray-900 mb-2">
                                 Defective or Damaged Items
                               </p>
                               <p className="text-gray-600">
-                                If your stickers arrive damaged or defective, we'll replace them at no cost to you within {policy.defective_items_days} days of delivery.
+                                If your stickers arrive damaged or defective,
+                                we'll replace them at no cost to you within{" "}
+                                {policy.defective_items_days} days of delivery.
                               </p>
                             </div>
 
-                            {policy.non_returnable_items && policy.non_returnable_items.length > 0 && (
-                              <div>
-                                <p className="font-semibold text-gray-900 mb-2">
-                                  Non-Returnable Items
-                                </p>
-                                <ul className="text-gray-600 space-y-1">
-                                  {policy.non_returnable_items.map((item: string, index: number) => (
-                                    <li key={index}>• {item}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
+                            {policy.non_returnable_items &&
+                              policy.non_returnable_items.length > 0 && (
+                                <div>
+                                  <p className="font-semibold text-gray-900 mb-2">
+                                    Non-Returnable Items
+                                  </p>
+                                  <ul className="text-gray-600 space-y-1">
+                                    {policy.non_returnable_items.map(
+                                      (item: string, index: number) => (
+                                        <li key={index}>• {item}</li>
+                                      ),
+                                    )}
+                                  </ul>
+                                </div>
+                              )}
 
                             <div>
                               <p className="font-semibold text-gray-900 mb-2">
@@ -1215,7 +1276,9 @@ export default function CheckoutNew() {
                             </div>
                           </>
                         ) : (
-                          <p className="text-gray-500 text-sm">Loading policy...</p>
+                          <p className="text-gray-500 text-sm">
+                            Loading policy...
+                          </p>
                         )}
                       </div>
                     </div>
@@ -1246,10 +1309,17 @@ export default function CheckoutNew() {
                   </div>
 
                   {!agreedToPolicy && (
-                    <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2" role="alert">
-                      <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                    <div
+                      className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2"
+                      role="alert"
+                    >
+                      <AlertCircle
+                        className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5"
+                        aria-hidden="true"
+                      />
                       <p className="text-xs text-amber-800">
-                        You must agree to the Return & Refund Policy to complete your purchase.
+                        You must agree to the Return & Refund Policy to complete
+                        your purchase.
                       </p>
                     </div>
                   )}
@@ -1298,7 +1368,11 @@ export default function CheckoutNew() {
                         htmlFor="agreeToGDPR"
                         className="text-gray-600 text-sm flex-1 cursor-pointer"
                       >
-                        <span className="font-medium">GDPR Compliance:</span> I consent to the collection, processing, and storage of my personal data in accordance with GDPR regulations. I understand my rights including data access, correction, deletion, and portability.
+                        <span className="font-medium">GDPR Compliance:</span> I
+                        consent to the collection, processing, and storage of my
+                        personal data in accordance with GDPR regulations. I
+                        understand my rights including data access, correction,
+                        deletion, and portability.
                       </label>
                     </div>
 
@@ -1315,7 +1389,13 @@ export default function CheckoutNew() {
                         htmlFor="agreeToCCPA"
                         className="text-gray-600 text-sm flex-1 cursor-pointer"
                       >
-                        <span className="font-medium">CCPA Rights (California residents):</span> I acknowledge my rights to know what personal information is collected, the purposes of use, and my right to delete or opt-out of the sale of personal information.
+                        <span className="font-medium">
+                          CCPA Rights (California residents):
+                        </span>{" "}
+                        I acknowledge my rights to know what personal
+                        information is collected, the purposes of use, and my
+                        right to delete or opt-out of the sale of personal
+                        information.
                       </label>
                     </div>
 
@@ -1350,7 +1430,9 @@ export default function CheckoutNew() {
                         type="checkbox"
                         id="agreeToShippingPolicy"
                         checked={agreedToShippingPolicy}
-                        onChange={(e) => setAgreedToShippingPolicy(e.target.checked)}
+                        onChange={(e) =>
+                          setAgreedToShippingPolicy(e.target.checked)
+                        }
                         className="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-2 focus:ring-green-500 mt-1 flex-shrink-0 cursor-pointer"
                       />
                       <label
@@ -1371,22 +1453,44 @@ export default function CheckoutNew() {
 
                     {/* Data Handling Transparency */}
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-gray-700">
-                      <p className="font-semibold text-gray-900 mb-2">How We Handle Your Data</p>
+                      <p className="font-semibold text-gray-900 mb-2">
+                        How We Handle Your Data
+                      </p>
                       <ul className="space-y-2 text-xs">
-                        <li>✓ Your personal information is encrypted and transmitted securely using SSL/TLS</li>
-                        <li>✓ Payment information is processed by Square and never stored on our servers</li>
-                        <li>✓ We do not sell or share your personal data with third parties for marketing</li>
-                        <li>✓ You can request access, correction, or deletion of your data at any time</li>
-                        <li>✓ We retain your data only as long as necessary for order fulfillment and legal compliance</li>
+                        <li>
+                          ✓ Your personal information is encrypted and
+                          transmitted securely using SSL/TLS
+                        </li>
+                        <li>
+                          ✓ Payment information is processed by Square and never
+                          stored on our servers
+                        </li>
+                        <li>
+                          ✓ We do not sell or share your personal data with
+                          third parties for marketing
+                        </li>
+                        <li>
+                          ✓ You can request access, correction, or deletion of
+                          your data at any time
+                        </li>
+                        <li>
+                          ✓ We retain your data only as long as necessary for
+                          order fulfillment and legal compliance
+                        </li>
                       </ul>
                     </div>
                   </div>
 
-                  {(!agreedToPrivacy || !agreedToGDPR || !agreedToCCPA || !agreedToTerms || !agreedToShippingPolicy) && (
+                  {(!agreedToPrivacy ||
+                    !agreedToGDPR ||
+                    !agreedToCCPA ||
+                    !agreedToTerms ||
+                    !agreedToShippingPolicy) && (
                     <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2">
                       <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
                       <p className="text-xs text-amber-800">
-                        You must agree to all policies and terms to complete your purchase.
+                        You must agree to all policies and terms to complete
+                        your purchase.
                       </p>
                     </div>
                   )}
@@ -1398,7 +1502,9 @@ export default function CheckoutNew() {
                     </h4>
                     <div className="space-y-3">
                       <div>
-                        <p className="text-xs text-gray-600 mb-1">Email Support</p>
+                        <p className="text-xs text-gray-600 mb-1">
+                          Email Support
+                        </p>
                         <a
                           href="mailto:sticky@stickyslap.com"
                           className="text-blue-600 hover:text-blue-700 font-medium text-sm break-all"
@@ -1407,7 +1513,9 @@ export default function CheckoutNew() {
                         </a>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600 mb-1">Create a Support Ticket</p>
+                        <p className="text-xs text-gray-600 mb-1">
+                          Create a Support Ticket
+                        </p>
                         <a
                           href="/support"
                           className="text-blue-600 hover:text-blue-700 font-medium text-sm"
@@ -1416,7 +1524,9 @@ export default function CheckoutNew() {
                         </a>
                       </div>
                       <div className="pt-2 border-t border-gray-200">
-                        <p className="text-xs text-gray-500">We typically respond within 24 hours</p>
+                        <p className="text-xs text-gray-500">
+                          We typically respond within 24 hours
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -1515,7 +1625,12 @@ export default function CheckoutNew() {
 
                   <ShippingOptionsSelector
                     selectedOptionId={selectedShippingOptionId}
-                    onSelectionChange={(optionId, cost, deliveryDate, optionName) => {
+                    onSelectionChange={(
+                      optionId,
+                      cost,
+                      deliveryDate,
+                      optionName,
+                    ) => {
                       setSelectedShippingOptionId(optionId);
                       setShippingCost(cost);
                       setEstimatedDeliveryDate(deliveryDate);
@@ -1568,13 +1683,27 @@ export default function CheckoutNew() {
                       {/* PCI DSS Compliance Badge */}
                       <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
                         <div className="flex-shrink-0">
-                          <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          <svg
+                            className="w-5 h-5 text-green-600"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clipRule="evenodd"
+                            />
                           </svg>
                         </div>
                         <div>
-                          <p className="text-sm font-semibold text-green-900">PCI DSS Level 1 Compliant</p>
-                          <p className="text-xs text-green-700">Your payment information is processed securely by Square Payment Systems, certified to PCI DSS Level 1 standards.</p>
+                          <p className="text-sm font-semibold text-green-900">
+                            PCI DSS Level 1 Compliant
+                          </p>
+                          <p className="text-xs text-green-700">
+                            Your payment information is processed securely by
+                            Square Payment Systems, certified to PCI DSS Level 1
+                            standards.
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -1582,7 +1711,15 @@ export default function CheckoutNew() {
                     <>
                       <Button
                         type="submit"
-                        disabled={isSubmitting || !agreedToPolicy || !agreedToPrivacy || !agreedToGDPR || !agreedToCCPA || !agreedToTerms || !agreedToShippingPolicy}
+                        disabled={
+                          isSubmitting ||
+                          !agreedToPolicy ||
+                          !agreedToPrivacy ||
+                          !agreedToGDPR ||
+                          !agreedToCCPA ||
+                          !agreedToTerms ||
+                          !agreedToShippingPolicy
+                        }
                         className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-6 text-lg font-bold rounded-lg mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isSubmitting ? (
@@ -1598,7 +1735,14 @@ export default function CheckoutNew() {
                       {/* PCI DSS Compliance Notice */}
                       <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
                         <p className="text-xs text-blue-800">
-                          🔒 <span className="font-semibold">Payment Security:</span> Your payment information will be processed securely by Square Payment Systems, which is PCI DSS Level 1 certified. We never store your credit card information on our servers.
+                          🔒{" "}
+                          <span className="font-semibold">
+                            Payment Security:
+                          </span>{" "}
+                          Your payment information will be processed securely by
+                          Square Payment Systems, which is PCI DSS Level 1
+                          certified. We never store your credit card information
+                          on our servers.
                         </p>
                       </div>
                     </>

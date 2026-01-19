@@ -865,7 +865,9 @@ export default function ProductForm() {
               <div className="border-t border-gray-200 pt-4 mt-4">
                 <div className="mb-4">
                   <div className="flex items-center justify-between">
-                    <Label className="text-gray-700">Show Quantity Selection Panel</Label>
+                    <Label className="text-gray-700">
+                      Show Quantity Selection Panel
+                    </Label>
                     <Switch
                       checked={formData.showQuantityPanel}
                       onCheckedChange={(checked) =>
@@ -1962,7 +1964,8 @@ export default function ProductForm() {
                   ))}
                 </select>
                 <p className="text-xs text-gray-600 mt-2">
-                  Products in the same group will appear together on the storefront
+                  Products in the same group will appear together on the
+                  storefront
                 </p>
               </div>
             </section>

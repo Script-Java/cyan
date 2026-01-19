@@ -1,10 +1,26 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Package, Search, Plus, Edit2, Trash2, Eye, Download } from "lucide-react";
+import {
+  Package,
+  Search,
+  Plus,
+  Edit2,
+  Trash2,
+  Eye,
+  Download,
+} from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { importAdminProduct, STICKY_SLAP_STICKER_PRODUCT, TWO_INCH_STICKERS_PRODUCT, FOUR_INCH_PROMO_STICKER_PRODUCT, FIVE_INCH_PROMO_STICKER_PRODUCT, THOUSAND_STICKERS_PROMO_PRODUCT, THREE_INCH_100_STICKERS_PRODUCT } from "@/lib/import-product";
+import {
+  importAdminProduct,
+  STICKY_SLAP_STICKER_PRODUCT,
+  TWO_INCH_STICKERS_PRODUCT,
+  FOUR_INCH_PROMO_STICKER_PRODUCT,
+  FIVE_INCH_PROMO_STICKER_PRODUCT,
+  THOUSAND_STICKERS_PROMO_PRODUCT,
+  THREE_INCH_100_STICKERS_PRODUCT,
+} from "@/lib/import-product";
 
 interface AdminProduct {
   id: string;
@@ -145,7 +161,8 @@ export default function AdminProducts() {
       console.error("Import error:", error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to import product",
+        description:
+          error instanceof Error ? error.message : "Failed to import product",
         variant: "destructive",
       });
     } finally {
@@ -182,46 +199,82 @@ export default function AdminProducts() {
                 {importMenuOpen && (
                   <div className="absolute top-full right-0 mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
                     <button
-                      onClick={() => handleImportProduct(TWO_INCH_STICKERS_PRODUCT)}
+                      onClick={() =>
+                        handleImportProduct(TWO_INCH_STICKERS_PRODUCT)
+                      }
                       className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200"
                     >
-                      <div className="font-semibold text-gray-900">2 INCH - 100 CUSTOM STICKERS</div>
-                      <div className="text-xs text-gray-600 mt-1">SKU: 00003 • Price: $0.17</div>
+                      <div className="font-semibold text-gray-900">
+                        2 INCH - 100 CUSTOM STICKERS
+                      </div>
+                      <div className="text-xs text-gray-600 mt-1">
+                        SKU: 00003 • Price: $0.17
+                      </div>
                     </button>
                     <button
-                      onClick={() => handleImportProduct(THREE_INCH_100_STICKERS_PRODUCT)}
+                      onClick={() =>
+                        handleImportProduct(THREE_INCH_100_STICKERS_PRODUCT)
+                      }
                       className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200"
                     >
-                      <div className="font-semibold text-gray-900">3'' INCH - 100 STICKERS</div>
-                      <div className="text-xs text-gray-600 mt-1">SKU: 00007 • Price: $17.00</div>
+                      <div className="font-semibold text-gray-900">
+                        3'' INCH - 100 STICKERS
+                      </div>
+                      <div className="text-xs text-gray-600 mt-1">
+                        SKU: 00007 • Price: $17.00
+                      </div>
                     </button>
                     <button
-                      onClick={() => handleImportProduct(FOUR_INCH_PROMO_STICKER_PRODUCT)}
+                      onClick={() =>
+                        handleImportProduct(FOUR_INCH_PROMO_STICKER_PRODUCT)
+                      }
                       className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200"
                     >
-                      <div className="font-semibold text-gray-900">4'' INCH - CUSTOM STICKER PROMO</div>
-                      <div className="text-xs text-gray-600 mt-1">Price: $0.40</div>
+                      <div className="font-semibold text-gray-900">
+                        4'' INCH - CUSTOM STICKER PROMO
+                      </div>
+                      <div className="text-xs text-gray-600 mt-1">
+                        Price: $0.40
+                      </div>
                     </button>
                     <button
-                      onClick={() => handleImportProduct(FIVE_INCH_PROMO_STICKER_PRODUCT)}
+                      onClick={() =>
+                        handleImportProduct(FIVE_INCH_PROMO_STICKER_PRODUCT)
+                      }
                       className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200"
                     >
-                      <div className="font-semibold text-gray-900">5'' INCH - CUSTOM STICKER PROMO</div>
-                      <div className="text-xs text-gray-600 mt-1">SKU: 00008 • Price: $0.40</div>
+                      <div className="font-semibold text-gray-900">
+                        5'' INCH - CUSTOM STICKER PROMO
+                      </div>
+                      <div className="text-xs text-gray-600 mt-1">
+                        SKU: 00008 • Price: $0.40
+                      </div>
                     </button>
                     <button
-                      onClick={() => handleImportProduct(THOUSAND_STICKERS_PROMO_PRODUCT)}
+                      onClick={() =>
+                        handleImportProduct(THOUSAND_STICKERS_PROMO_PRODUCT)
+                      }
                       className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-200"
                     >
-                      <div className="font-semibold text-gray-900">1000 STICKERS PROMO</div>
-                      <div className="text-xs text-gray-600 mt-1">SKU: 00006 • Price: $60.00</div>
+                      <div className="font-semibold text-gray-900">
+                        1000 STICKERS PROMO
+                      </div>
+                      <div className="text-xs text-gray-600 mt-1">
+                        SKU: 00006 • Price: $60.00
+                      </div>
                     </button>
                     <button
-                      onClick={() => handleImportProduct(STICKY_SLAP_STICKER_PRODUCT)}
+                      onClick={() =>
+                        handleImportProduct(STICKY_SLAP_STICKER_PRODUCT)
+                      }
                       className="w-full text-left px-4 py-3 hover:bg-gray-50"
                     >
-                      <div className="font-semibold text-gray-900">CREATE A STICKER</div>
-                      <div className="text-xs text-gray-600 mt-1">SKU: 00004 • Price: $0.00</div>
+                      <div className="font-semibold text-gray-900">
+                        CREATE A STICKER
+                      </div>
+                      <div className="text-xs text-gray-600 mt-1">
+                        SKU: 00004 • Price: $0.00
+                      </div>
                     </button>
                   </div>
                 )}

@@ -22,8 +22,10 @@ export const handleProofEmailPreview: RequestHandler = async (req, res) => {
     const sampleHtml = generateProofEmailHtml({
       customerName: "John Doe",
       orderId: 12345,
-      proofDescription: "Custom sticker design with your company logo and tagline.\n\nThe design features:\n- Vibrant color scheme\n- High-resolution graphics\n- Print-ready format\n\nPlease review and let us know if any changes are needed!",
-      proofFileUrl: "https://images.unsplash.com/photo-1557821552-17105176677c?w=600&h=400&fit=crop",
+      proofDescription:
+        "Custom sticker design with your company logo and tagline.\n\nThe design features:\n- Vibrant color scheme\n- High-resolution graphics\n- Print-ready format\n\nPlease review and let us know if any changes are needed!",
+      proofFileUrl:
+        "https://images.unsplash.com/photo-1557821552-17105176677c?w=600&h=400&fit=crop",
       approvalLink: `${baseUrl}/proofs/sample_proof_123/approve`,
       revisionLink: `${baseUrl}/proofs/sample_proof_123/request-revisions`,
     });
@@ -40,7 +42,9 @@ export const handleProofEmailPreview: RequestHandler = async (req, res) => {
 
         if (result.error) {
           console.error("Error sending preview email:", result.error);
-          return res.status(500).json({ error: "Failed to send email", details: result.error });
+          return res
+            .status(500)
+            .json({ error: "Failed to send email", details: result.error });
         }
 
         return res.json({
@@ -52,7 +56,8 @@ export const handleProofEmailPreview: RequestHandler = async (req, res) => {
         console.error("Error sending email:", emailError);
         return res.status(500).json({
           error: "Failed to send email",
-          details: emailError instanceof Error ? emailError.message : "Unknown error",
+          details:
+            emailError instanceof Error ? emailError.message : "Unknown error",
         });
       }
     }
@@ -188,8 +193,10 @@ export const handleOrderStatusUpdatePreview: RequestHandler = (req, res) => {
     orderNumber: formatOrderNumber(1),
     previousStatus: "Order Confirmed",
     currentStatus: "Processing",
-    statusMessage: "Your order is now being prepared for production. Our team is working on bringing your design to life with precision and care.",
-    nextSteps: "Your custom stickers will be carefully printed and inspected for quality. Once approved, they will be packaged and shipped to you. You'll receive a notification as soon as your order ships.",
+    statusMessage:
+      "Your order is now being prepared for production. Our team is working on bringing your design to life with precision and care.",
+    nextSteps:
+      "Your custom stickers will be carefully printed and inspected for quality. Once approved, they will be packaged and shipped to you. You'll receive a notification as soon as your order ships.",
     orderLink: `${baseUrl}/order-history/12345`,
   });
   res.setHeader("Content-Type", "text/html; charset=utf-8");
@@ -211,10 +218,14 @@ export const handleSendProofEmailPreview: RequestHandler = async (req, res) => {
     const sampleHtml = generateProofEmailHtml({
       customerName: "John Doe",
       orderId: 12345,
-      proofDescription: "Custom sticker design with your company logo and tagline.\n\nThe design features:\n- Vibrant color scheme\n- High-resolution graphics\n- Print-ready format\n\nPlease review and let us know if any changes are needed!",
-      proofFileUrl: "https://images.unsplash.com/photo-1557821552-17105176677c?w=600&h=400&fit=crop",
-      approvalLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/proofs/preview123/approve",
-      revisionLink: "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/proofs/preview123/request-revisions",
+      proofDescription:
+        "Custom sticker design with your company logo and tagline.\n\nThe design features:\n- Vibrant color scheme\n- High-resolution graphics\n- Print-ready format\n\nPlease review and let us know if any changes are needed!",
+      proofFileUrl:
+        "https://images.unsplash.com/photo-1557821552-17105176677c?w=600&h=400&fit=crop",
+      approvalLink:
+        "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/proofs/preview123/approve",
+      revisionLink:
+        "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev/proofs/preview123/request-revisions",
     });
 
     const result = await resend.emails.send({

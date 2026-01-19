@@ -82,7 +82,10 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
           });
         }
       } catch (filesError) {
-        console.warn("Failed to fetch digital files for Ecwid orders:", filesError);
+        console.warn(
+          "Failed to fetch digital files for Ecwid orders:",
+          filesError,
+        );
       }
     }
 
@@ -90,7 +93,11 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
     const formattedEcwidOrders = ecwidOrders.map((order: any) => ({
       id: order.id,
       customerId: order.customerId,
-      status: order.status || order.fulfillmentStatus || order.paymentStatus || "processing",
+      status:
+        order.status ||
+        order.fulfillmentStatus ||
+        order.paymentStatus ||
+        "processing",
       total: order.total,
       subtotal: order.subtotal || 0,
       tax: order.tax || 0,
@@ -128,7 +135,8 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       tracking_carrier: order.shipments?.[0]?.shipping_provider,
       shipped_date: order.shipments?.[0]?.date_flag_list?.shipped_on,
       shippingAddress: order.shipping_addresses?.[0],
-      customerName: `${order.billing_address?.first_name || ""} ${order.billing_address?.last_name || ""}`.trim(),
+      customerName:
+        `${order.billing_address?.first_name || ""} ${order.billing_address?.last_name || ""}`.trim(),
       customerEmail: order.customer_email,
       customerPhone: order.billing_address?.phone,
       digital_files: [],
@@ -184,7 +192,8 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
         shipped_date: order.shipped_date,
         digital_files: filesMap.get(order.id) || [],
         shippingAddress: order.shipping_address,
-        customerName: `${customerInfo.first_name || ""} ${customerInfo.last_name || ""}`.trim(),
+        customerName:
+          `${customerInfo.first_name || ""} ${customerInfo.last_name || ""}`.trim(),
         customerEmail: customerInfo.email,
         customerPhone: customerInfo.phone,
       };
@@ -264,7 +273,10 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
             }));
           }
         } catch (filesError) {
-          console.warn("Failed to fetch digital files for Ecwid order:", filesError);
+          console.warn(
+            "Failed to fetch digital files for Ecwid order:",
+            filesError,
+          );
         }
 
         return res.json({
@@ -470,7 +482,8 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
     // Get the order from Supabase
     const { data: order, error: orderError } = await supabase
       .from("orders")
-      .select(`
+      .select(
+        `
         id,
         customer_id,
         status,
@@ -493,7 +506,8 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
           quantity,
           price
         )
-      `)
+      `,
+      )
       .eq("id", orderIdNum)
       .single();
 
@@ -583,7 +597,8 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
     // Get the order from Supabase
     const { data: order, error: orderError } = await supabase
       .from("orders")
-      .select(`
+      .select(
+        `
         id,
         customer_id,
         status,
@@ -602,19 +617,28 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
           options,
           design_file_url
         )
-      `)
+      `,
+      )
       .eq("id", orderIdNum)
       .single();
 
     if (orderError || !order) {
-      console.warn("Order not found in Supabase:", orderIdNum, "Error:", orderError);
+      console.warn(
+        "Order not found in Supabase:",
+        orderIdNum,
+        "Error:",
+        orderError,
+      );
       return res.status(404).json({
         success: false,
         error: "Order not found",
       });
     }
 
-    console.log("Order found:", { id: order.id, customer_id: order.customer_id });
+    console.log("Order found:", {
+      id: order.id,
+      customer_id: order.customer_id,
+    });
 
     // Fetch customer info for display
     let customerEmail = "";
@@ -630,7 +654,10 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
       if (customer) {
         customerEmail = customer.email || "";
         customerName = customer.name || "";
-        console.log("Customer found:", { email: customerEmail, name: customerName });
+        console.log("Customer found:", {
+          email: customerEmail,
+          name: customerName,
+        });
       }
     }
 
@@ -651,7 +678,9 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
               queryId = parseInt(numericPart, 10);
             }
 
-            console.log(`Fetching product with ID: ${queryId} (original: ${item.product_id})`);
+            console.log(
+              `Fetching product with ID: ${queryId} (original: ${item.product_id})`,
+            );
 
             const { data: product, error: productError } = await supabase
               .from("admin_products")
@@ -681,7 +710,7 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
           design_file_url: item.design_file_url || null,
           line_total: (item.price || 0) * (item.quantity || 0),
         };
-      })
+      }),
     );
 
     // Fetch digital files if any exist

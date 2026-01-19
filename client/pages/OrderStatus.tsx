@@ -181,7 +181,10 @@ export default function OrderStatus() {
       <main className="min-h-screen bg-white text-gray-900 pt-16">
         {/* Hero Section */}
         <section className="relative bg-white overflow-hidden py-12 sm:py-16">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: "1100px" }}>
+          <div
+            className="mx-auto px-4 sm:px-6 lg:px-8"
+            style={{ maxWidth: "1100px" }}
+          >
             <div className="text-center max-w-3xl mx-auto">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
                 Track Your Order
@@ -191,8 +194,8 @@ export default function OrderStatus() {
               </h1>
 
               <p className="text-sm sm:text-base text-gray-600 mb-8 leading-relaxed">
-                Enter your order number to see the current status,
-                tracking information, and estimated delivery date.
+                Enter your order number to see the current status, tracking
+                information, and estimated delivery date.
               </p>
             </div>
           </div>
@@ -200,7 +203,10 @@ export default function OrderStatus() {
 
         {/* Main Content */}
         <section className="bg-white py-8 sm:py-12">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8" style={{ maxWidth: "1100px" }}>
+          <div
+            className="mx-auto px-4 sm:px-6 lg:px-8"
+            style={{ maxWidth: "1100px" }}
+          >
             {/* Search Form */}
             <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-6 sm:p-8 mb-8 shadow-sm">
               <form onSubmit={handleSearch} className="space-y-4">
@@ -280,7 +286,9 @@ export default function OrderStatus() {
             {orderData && (
               <div className="space-y-6">
                 {/* Status Overview */}
-                <div className={`rounded-lg p-6 sm:p-8 ${getStatusColor(orderData.status)}`}>
+                <div
+                  className={`rounded-lg p-6 sm:p-8 ${getStatusColor(orderData.status)}`}
+                >
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="flex items-center gap-3 mb-2">
@@ -302,43 +310,43 @@ export default function OrderStatus() {
                   </div>
                 </div>
 
-
-
                 {/* Digital Files */}
-                {orderData.digitalFiles && orderData.digitalFiles.length > 0 && (
-                  <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-6 sm:p-8 shadow-sm">
-                    <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-                      <ImageIcon className="w-5 h-5 text-green-500" />
-                      Design Files
-                    </h3>
-                    <div className="space-y-3">
-                      {orderData.digitalFiles.map((file) => (
-                        <a
-                          key={file.id}
-                          href={file.file_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-between p-4 bg-gray-50/50 hover:bg-green-50/50 border border-gray-200 hover:border-green-200 rounded-lg transition-colors gap-3"
-                        >
-                          <div className="flex items-center gap-3 min-w-0">
-                            <Package className="w-5 h-5 text-green-600 flex-shrink-0" />
-                            <div className="min-w-0">
-                              <p className="text-sm font-medium text-gray-900 truncate">
-                                {file.file_name}
-                              </p>
-                              {file.file_size && (
-                                <p className="text-xs text-gray-600">
-                                  {(file.file_size / 1024 / 1024).toFixed(2)} MB
+                {orderData.digitalFiles &&
+                  orderData.digitalFiles.length > 0 && (
+                    <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-6 sm:p-8 shadow-sm">
+                      <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <ImageIcon className="w-5 h-5 text-green-500" />
+                        Design Files
+                      </h3>
+                      <div className="space-y-3">
+                        {orderData.digitalFiles.map((file) => (
+                          <a
+                            key={file.id}
+                            href={file.file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between p-4 bg-gray-50/50 hover:bg-green-50/50 border border-gray-200 hover:border-green-200 rounded-lg transition-colors gap-3"
+                          >
+                            <div className="flex items-center gap-3 min-w-0">
+                              <Package className="w-5 h-5 text-green-600 flex-shrink-0" />
+                              <div className="min-w-0">
+                                <p className="text-sm font-medium text-gray-900 truncate">
+                                  {file.file_name}
                                 </p>
-                              )}
+                                {file.file_size && (
+                                  <p className="text-xs text-gray-600">
+                                    {(file.file_size / 1024 / 1024).toFixed(2)}{" "}
+                                    MB
+                                  </p>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                          <ExternalLink className="w-5 h-5 text-green-600 flex-shrink-0" />
-                        </a>
-                      ))}
+                            <ExternalLink className="w-5 h-5 text-green-600 flex-shrink-0" />
+                          </a>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
                 {/* Order Summary */}
                 <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-6 sm:p-8 shadow-sm">
@@ -350,10 +358,15 @@ export default function OrderStatus() {
                   {/* Items Cost */}
                   {orderData.products && orderData.products.length > 0 && (
                     <div className="mb-6">
-                      <h4 className="font-semibold text-gray-900 mb-3">Item Costs</h4>
+                      <h4 className="font-semibold text-gray-900 mb-3">
+                        Item Costs
+                      </h4>
                       <div className="space-y-4 bg-gray-50 rounded-lg p-4">
                         {orderData.products.map((item) => (
-                          <div key={item.id} className="border-b border-gray-200 pb-4 last:border-b-0 last:pb-0">
+                          <div
+                            key={item.id}
+                            className="border-b border-gray-200 pb-4 last:border-b-0 last:pb-0"
+                          >
                             <div className="flex gap-3 items-start mb-3">
                               {/* Design Thumbnail */}
                               {item.design_file_url && (
@@ -370,7 +383,8 @@ export default function OrderStatus() {
                               <div className="flex-1">
                                 <div className="flex justify-between text-sm mb-1">
                                   <span className="text-gray-700 font-medium">
-                                    {item.product_name || `Product ${item.product_id}`}
+                                    {item.product_name ||
+                                      `Product ${item.product_id}`}
                                   </span>
                                   <span className="font-semibold text-gray-900">
                                     {formatCurrency(item.line_total || 0)}
@@ -386,15 +400,25 @@ export default function OrderStatus() {
                             {item.options && item.options.length > 0 && (
                               <div className="ml-3 mt-2 pt-2 border-t border-gray-300 space-y-1">
                                 {item.options.map((option, optionIndex) => (
-                                  <div key={optionIndex} className="flex justify-between text-xs text-gray-600">
+                                  <div
+                                    key={optionIndex}
+                                    className="flex justify-between text-xs text-gray-600"
+                                  >
                                     <span>
-                                      <span className="font-semibold">{option.option_name}:</span> {option.option_value}
+                                      <span className="font-semibold">
+                                        {option.option_name}:
+                                      </span>{" "}
+                                      {option.option_value}
                                     </span>
-                                    {option.modifier_price && option.modifier_price > 0 && (
-                                      <span className="text-gray-700 font-semibold">
-                                        +{formatCurrency(option.modifier_price)}
-                                      </span>
-                                    )}
+                                    {option.modifier_price &&
+                                      option.modifier_price > 0 && (
+                                        <span className="text-gray-700 font-semibold">
+                                          +
+                                          {formatCurrency(
+                                            option.modifier_price,
+                                          )}
+                                        </span>
+                                      )}
                                   </div>
                                 ))}
                               </div>
@@ -410,31 +434,43 @@ export default function OrderStatus() {
                     {orderData.subtotal !== undefined && (
                       <div className="flex justify-between text-gray-600">
                         <span className="font-medium">Subtotal (Items)</span>
-                        <span className="font-semibold">{formatCurrency(orderData.subtotal)}</span>
+                        <span className="font-semibold">
+                          {formatCurrency(orderData.subtotal)}
+                        </span>
                       </div>
                     )}
                     {orderData.tax !== undefined && orderData.tax > 0 && (
                       <div className="flex justify-between text-gray-600">
                         <span className="font-medium">Sales Tax</span>
-                        <span className="font-semibold">{formatCurrency(orderData.tax)}</span>
+                        <span className="font-semibold">
+                          {formatCurrency(orderData.tax)}
+                        </span>
                       </div>
                     )}
-                    {orderData.shipping !== undefined && orderData.shipping > 0 && (
-                      <div className="flex justify-between text-gray-600">
-                        <span className="font-medium">Shipping</span>
-                        <span className="font-semibold">{formatCurrency(orderData.shipping)}</span>
-                      </div>
-                    )}
-                    {orderData.shipping === 0 && orderData.shipping !== undefined && (
-                      <div className="flex justify-between text-gray-600">
-                        <span className="font-medium">Shipping</span>
-                        <span className="font-semibold text-green-600">Free</span>
-                      </div>
-                    )}
+                    {orderData.shipping !== undefined &&
+                      orderData.shipping > 0 && (
+                        <div className="flex justify-between text-gray-600">
+                          <span className="font-medium">Shipping</span>
+                          <span className="font-semibold">
+                            {formatCurrency(orderData.shipping)}
+                          </span>
+                        </div>
+                      )}
+                    {orderData.shipping === 0 &&
+                      orderData.shipping !== undefined && (
+                        <div className="flex justify-between text-gray-600">
+                          <span className="font-medium">Shipping</span>
+                          <span className="font-semibold text-green-600">
+                            Free
+                          </span>
+                        </div>
+                      )}
 
                     {/* Final Total */}
                     <div className="pt-3 border-t border-gray-300 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4 flex justify-between">
-                      <span className="text-lg font-bold text-gray-900">Final Total</span>
+                      <span className="text-lg font-bold text-gray-900">
+                        Final Total
+                      </span>
                       <span className="text-2xl font-bold text-green-600">
                         {formatCurrency(orderData.total)}
                       </span>
@@ -444,7 +480,10 @@ export default function OrderStatus() {
 
                 {/* Order Date */}
                 <div className="text-center text-sm text-gray-600 pb-4">
-                  Order placed on <span className="font-semibold">{formatDate(orderData.dateCreated)}</span>
+                  Order placed on{" "}
+                  <span className="font-semibold">
+                    {formatDate(orderData.dateCreated)}
+                  </span>
                 </div>
               </div>
             )}

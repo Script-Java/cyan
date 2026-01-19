@@ -481,7 +481,9 @@ export default function AccountSettings() {
                 >
                   <div className="flex items-center gap-1 sm:gap-2">
                     <User className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                    <span className="hidden sm:inline">Personal Information</span>
+                    <span className="hidden sm:inline">
+                      Personal Information
+                    </span>
                     <span className="sm:hidden">Personal</span>
                   </div>
                 </button>

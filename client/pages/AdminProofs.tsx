@@ -614,7 +614,9 @@ export default function AdminProofs() {
                 {uploadedFile && (
                   <div className="backdrop-blur-xl bg-gray-50 border border-gray-300 rounded-xl p-4">
                     <div className="flex items-start justify-between mb-4">
-                      <h4 className="font-medium text-gray-900">File Preview</h4>
+                      <h4 className="font-medium text-gray-900">
+                        File Preview
+                      </h4>
                       <button
                         onClick={handleRemoveFile}
                         className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -734,7 +736,9 @@ export default function AdminProofs() {
                                   Design Thumbnail
                                 </p>
                                 <div
-                                  className={"rounded-lg border border-gray-300 overflow-hidden bg-gray-100 flex items-center justify-center\""}
+                                  className={
+                                    'rounded-lg border border-gray-300 overflow-hidden bg-gray-100 flex items-center justify-center"'
+                                  }
                                   style={{ maxHeight: "120px" }}
                                 >
                                   <img
