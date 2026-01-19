@@ -32,12 +32,21 @@ interface OrderWithCustomer {
 /**
  * Test endpoint to verify admin orders endpoint is working
  */
-export const handleTestAdminOrders: RequestHandler = async (_req, res) => {
+export const handleTestAdminOrders: RequestHandler = async (req, res) => {
   try {
+    const token = req.headers.authorization;
+    const hasToken = !!token;
+
+    res.set("Content-Type", "application/json");
     res.json({
       status: "ok",
       timestamp: new Date().toISOString(),
       message: "Admin orders endpoint is accessible",
+      auth: {
+        hasToken,
+        isAdmin: req.isAdmin || false,
+        customerId: req.customerId || null,
+      },
     });
   } catch (error) {
     res.status(500).json({ error: "Test failed" });
