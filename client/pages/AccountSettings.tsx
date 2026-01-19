@@ -1056,7 +1056,7 @@ export default function AccountSettings() {
                     value={deleteConfirmation}
                     onChange={(e) => setDeleteConfirmation(e.target.value)}
                     placeholder='Type "Delete my account" to confirm'
-                    className="w-full px-4 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white transition-colors"
+                    className="w-full px-4 py-2 border border-red-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
                   />
 
                   <button
