@@ -125,25 +125,47 @@ const quickAccessLinks = [
 
 export default function AdminQuickAccess() {
   const navigate = useNavigate();
+  const { notifications } = useAdminNotifications();
+
+  const getNotificationBadge = (title: string) => {
+    if (title === "Support" && notifications.openTickets > 0) {
+      return notifications.openTickets;
+    }
+    if (title === "Orders" && notifications.pendingOrders > 0) {
+      return notifications.pendingOrders;
+    }
+    if (title === "Proofs" && notifications.rejectedProofs > 0) {
+      return notifications.rejectedProofs;
+    }
+    return null;
+  };
 
   return (
     <div>
       <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Access</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-        {quickAccessLinks.map((link) => (
-          <button
-            key={link.path}
-            onClick={() => navigate(link.path)}
-            className={`flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-gray-200 transition-all duration-200 hover:scale-105 active:scale-95 ${link.color}`}
-          >
-            <div className={`${link.textColor}`}>{link.icon}</div>
-            <div className="text-center">
-              <p className="text-xs font-semibold text-gray-900 line-clamp-1">
-                {link.title}
-              </p>
-            </div>
-          </button>
-        ))}
+        {quickAccessLinks.map((link) => {
+          const badge = getNotificationBadge(link.title);
+          return (
+            <button
+              key={link.path}
+              onClick={() => navigate(link.path)}
+              className={`relative flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-gray-200 transition-all duration-200 hover:scale-105 active:scale-95 ${link.color}`}
+            >
+              <div className={`${link.textColor}`}>{link.icon}</div>
+              <div className="text-center">
+                <p className="text-xs font-semibold text-gray-900 line-clamp-1">
+                  {link.title}
+                </p>
+              </div>
+              {badge !== null && (
+                <div className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                  {badge > 99 ? "99+" : badge}
+                </div>
+              )}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
