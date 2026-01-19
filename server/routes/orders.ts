@@ -157,22 +157,34 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       });
     }
 
-    // Format Supabase orders with digital files
-    const formattedSupabaseOrders = supabaseOrders.map((order: any) => ({
-      id: order.id,
-      customerId: order.customer_id,
-      status: order.status || "paid",
-      total: order.total,
-      dateCreated: order.created_at,
-      source: "supabase",
-      itemCount: order.order_items?.length || 0,
-      estimated_delivery_date: order.estimated_delivery_date,
-      tracking_number: order.tracking_number,
-      tracking_carrier: order.tracking_carrier,
-      tracking_url: order.tracking_url,
-      shipped_date: order.shipped_date,
-      digital_files: filesMap.get(order.id) || [],
-    }));
+    // Format Supabase orders with digital files and customer info
+    const formattedSupabaseOrders = supabaseOrders.map((order: any) => {
+      // Fetch customer info for this order
+      const customerInfo = order.customers || {};
+
+      return {
+        id: order.id,
+        customerId: order.customer_id,
+        status: order.status || "paid",
+        total: order.total,
+        subtotal: order.subtotal || 0,
+        tax: order.tax || 0,
+        dateCreated: order.created_at,
+        source: "supabase",
+        itemCount: order.order_items?.length || 0,
+        items: order.order_items || [],
+        estimated_delivery_date: order.estimated_delivery_date,
+        tracking_number: order.tracking_number,
+        tracking_carrier: order.tracking_carrier,
+        tracking_url: order.tracking_url,
+        shipped_date: order.shipped_date,
+        digital_files: filesMap.get(order.id) || [],
+        shippingAddress: order.shipping_address,
+        customerName: `${customerInfo.first_name || ""} ${customerInfo.last_name || ""}`.trim(),
+        customerEmail: customerInfo.email,
+        customerPhone: customerInfo.phone,
+      };
+    });
 
     // Combine and sort by date
     const allOrders = [
