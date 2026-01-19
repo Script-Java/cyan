@@ -543,7 +543,7 @@ export default function AccountSettings() {
                     onSubmit={handlePersonalInfoSubmit}
                     className="space-y-4"
                   >
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-semibold text-gray-800 mb-2">
                           First Name
@@ -714,7 +714,7 @@ export default function AccountSettings() {
 
                   {/* Address Form */}
                   <form onSubmit={handleAddressSubmit} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-semibold text-gray-800 mb-2">
                           First Name
@@ -788,7 +788,7 @@ export default function AccountSettings() {
                       />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-semibold text-gray-800 mb-2">
                           City
@@ -826,7 +826,7 @@ export default function AccountSettings() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-semibold text-gray-800 mb-2">
                           Postal Code
