@@ -632,21 +632,27 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
     // Enrich order items with product details
     const enrichedItems = await Promise.all(
       (order.order_items || []).map(async (item: any) => {
-        let productName = "Product";
+        let productName = `Product #${item.product_id}`;
         let productSku = "";
         let productDescription = "";
 
         if (item.product_id) {
-          const { data: product } = await supabase
-            .from("admin_products")
-            .select("name, sku, description")
-            .eq("id", item.product_id)
-            .single();
+          try {
+            const { data: product, error: productError } = await supabase
+              .from("admin_products")
+              .select("name, sku, description")
+              .eq("id", item.product_id)
+              .single();
 
-          if (product) {
-            productName = product.name || "Product";
-            productSku = product.sku || "";
-            productDescription = product.description || "";
+            if (product && product.name) {
+              productName = product.name;
+              productSku = product.sku || "";
+              productDescription = product.description || "";
+            } else if (productError) {
+              console.warn(`Failed to fetch product ${item.product_id}:`, productError);
+            }
+          } catch (err) {
+            console.warn(`Error fetching product ${item.product_id}:`, err);
           }
         }
 
