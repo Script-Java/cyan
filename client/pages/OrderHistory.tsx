@@ -656,25 +656,28 @@ export default function OrderHistory() {
                                 </div>
 
                                 {shipment.trackingNumber && (
-                                  <div className="mb-3 p-2 sm:p-3 bg-blue-50 rounded border border-blue-100">
-                                    <p className="text-xs text-gray-600 mb-1">
-                                      Tracking:
-                                    </p>
-                                    <p className="font-mono text-xs sm:text-sm font-semibold text-blue-900 break-all">
-                                      {shipment.trackingNumber}
-                                    </p>
+                                  <div className="mb-2 text-xs sm:text-sm">
+                                    <div className="flex justify-between">
+                                      <span className="text-gray-600">Tracking Number:</span>
+                                      <div className="flex flex-col items-end gap-1">
+                                        <span className="font-mono font-semibold text-gray-900 text-xs sm:text-sm break-all">
+                                          {shipment.trackingNumber}
+                                        </span>
+                                        {shipment.shippingProvider && (
+                                          <span className="text-xs text-gray-500">
+                                            {shipment.shippingProvider}
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
                                   </div>
                                 )}
 
                                 {shipment.comments && (
-                                  <div className="p-2 sm:p-3 bg-gray-100 rounded text-xs sm:text-sm text-gray-700">
+                                  <div className="mt-2 p-2 sm:p-3 bg-gray-100 rounded text-xs sm:text-sm text-gray-700">
                                     {shipment.comments}
                                   </div>
                                 )}
-
-                                <p className="text-xs text-gray-600 mt-2">
-                                  Items: {shipment.itemsCount}
-                                </p>
                               </div>
                             ))}
                           </div>
