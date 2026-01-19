@@ -550,19 +550,10 @@ export default function ActiveOrdersSummary({
                                 <div className="space-y-1 text-xs">
                                   <div className="flex justify-between">
                                     <span className="text-gray-600">
-                                      Cost per Sticker:
+                                      Base Cost per Sticker:
                                     </span>
                                     <span className="text-gray-900 font-medium">
                                       ${formatPrice(unitPrice)}
-                                    </span>
-                                  </div>
-
-                                  <div className="flex justify-between">
-                                    <span className="text-gray-600">
-                                      Quantity:
-                                    </span>
-                                    <span className="text-gray-900 font-medium">
-                                      × {item.quantity}
                                     </span>
                                   </div>
 
