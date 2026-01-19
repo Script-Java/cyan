@@ -34,6 +34,7 @@ import {
   handleAdminGetOrder,
   handleGetPendingOrders,
   handleGetOrderPublic,
+  handleGetOrderStatus,
 } from "./routes/orders";
 import { handleGetDesigns, handleGetOrderDesigns, handleUploadDesignFile } from "./routes/designs";
 import {
