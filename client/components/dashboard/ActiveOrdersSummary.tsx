@@ -606,6 +606,10 @@ export default function ActiveOrdersSummary({
                                           })
                                         )}
                                       </div>
+                                      <div className="pt-1 mt-1 border-t border-blue-200 flex justify-between text-xs font-semibold">
+                                        <span className="text-gray-700">Total Option Cost:</span>
+                                        <span className="text-blue-600">+${formatPrice(totalOptionPrice)}</span>
+                                      </div>
                                     </div>
                                   )}
 
