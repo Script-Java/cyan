@@ -105,6 +105,24 @@ export default function ActiveOrdersSummary({
     setExpandedOrderId(expandedOrderId === orderId ? null : orderId);
   };
 
+  // Helper function to safely format prices
+  const formatPrice = (price: number | undefined): string => {
+    if (typeof price === "number") {
+      return price.toFixed(2);
+    }
+    return "0.00";
+  };
+
+  // Helper function to get item price (fallback to different field names)
+  const getItemPrice = (
+    item: OrderItem,
+  ): number => {
+    if (typeof item.price_inc_tax === "number") return item.price_inc_tax;
+    if (typeof item.price_ex_tax === "number") return item.price_ex_tax;
+    if (typeof item.price === "number") return item.price;
+    return 0;
+  };
+
   return (
     <div className="rounded-xl border-2 p-4 sm:p-6 mb-6 overflow-hidden bg-white shadow-md border-gray-200">
       <div
