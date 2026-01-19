@@ -731,9 +731,8 @@ export default function OrderHistory() {
                             <div className="space-y-3">
                               {order.items.map((item) => {
                                 // Get the actual price per unit from order data
-                                const totalItemPrice = getItemPrice(item);
-                                const pricePerUnit = item.quantity > 0 ? totalItemPrice / item.quantity : 0;
-                                const itemTotal = totalItemPrice;
+                                const pricePerUnit = getItemPrice(item);
+                                const itemTotal = pricePerUnit * item.quantity;
 
                                 return (
                                   <div
