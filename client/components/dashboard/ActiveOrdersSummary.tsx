@@ -559,9 +559,9 @@ export default function ActiveOrdersSummary({
 
                                   {/* Selected Options Summary */}
                                   {item.options && (
-                                    <div className="pt-2 border-t border-gray-300 space-y-1">
+                                    <div className="pt-1 border-t border-gray-300 space-y-1">
                                       <p className="text-xs font-semibold text-gray-700 mb-1">
-                                        Selected Options:
+                                        Selected Options & Adjustments:
                                       </p>
                                       <div className="space-y-1 pl-2 border-l-2 border-blue-200">
                                         {Array.isArray(item.options) ? (
