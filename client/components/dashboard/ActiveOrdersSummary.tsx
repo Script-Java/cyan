@@ -20,8 +20,9 @@ interface OrderItem {
   product_id: number;
   product_name: string;
   quantity: number;
-  price_inc_tax: number;
-  price_ex_tax: number;
+  price_inc_tax?: number;
+  price_ex_tax?: number;
+  price?: number;
 }
 
 interface DigitalFile {
