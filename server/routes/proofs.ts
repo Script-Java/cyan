@@ -508,7 +508,7 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
         const emailResult = await resend.emails.send({
           from: PROOF_EMAIL_FROM,
           to: customer.email,
-          subject: `Your Design Proof is Ready - Order #${orderId}`,
+          subject: `Your Design Proof is Ready - Order ${formatOrderNumber(orderId)}`,
           html: emailHtml,
         });
 
