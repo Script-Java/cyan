@@ -310,6 +310,13 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
                     ) : (
                       <>
                         <Link
+                          to="/order-status"
+                          className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
+                          onClick={() => setIsProfileMenuOpen(false)}
+                        >
+                          Track Order
+                        </Link>
+                        <Link
                           to="/login"
                           className="block w-full px-4 py-2 text-left hover:bg-white/10 transition-colors text-white font-medium text-sm border-b border-white/10"
                           onClick={() => setIsProfileMenuOpen(false)}
