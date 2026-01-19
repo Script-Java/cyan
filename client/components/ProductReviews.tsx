@@ -338,7 +338,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white text-xs font-semibold gap-2"
+                className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white text-xs font-semibold gap-2 shadow-md"
               >
                 {isSubmitting ? (
                   <>
@@ -366,7 +366,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
                   setUploadedImages([]);
                   setImagePreviewUrls([]);
                 }}
-                className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 text-xs font-semibold"
+                className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 text-xs font-semibold"
               >
                 Cancel
               </Button>
