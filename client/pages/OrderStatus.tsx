@@ -207,14 +207,14 @@ export default function OrderStatus() {
                   <input
                     id="orderNumber"
                     type="text"
-                    placeholder="e.g., 12345"
+                    placeholder="e.g., SY-54011"
                     value={orderNumber}
                     onChange={(e) => setOrderNumber(e.target.value)}
                     disabled={isLoading}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-50 text-gray-900 placeholder-gray-500"
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    You can find this in your order confirmation email
+                    Format: SY-XXXXX (found in your order confirmation email)
                   </p>
                 </div>
 
