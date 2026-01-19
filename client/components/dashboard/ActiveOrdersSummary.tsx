@@ -537,6 +537,62 @@ export default function ActiveOrdersSummary({
                                   {item.product_name}
                                 </p>
 
+                                {/* Product Options Display */}
+                                {item.options && (
+                                  <div className="pt-2 border-t border-gray-300 space-y-1 mb-2">
+                                    <p className="text-xs font-semibold text-gray-700">
+                                      Options:
+                                    </p>
+                                    <div className="space-y-1">
+                                      {Array.isArray(item.options) ? (
+                                        item.options.map((option: any, idx: number) => {
+                                          const optionName =
+                                            option.option_id || option.name || `Option ${idx + 1}`;
+                                          const optionValue =
+                                            option.option_value || option.value || "";
+                                          const optionPrice = option.price || option.modifier_price || 0;
+                                          return (
+                                            <div
+                                              key={idx}
+                                              className="flex justify-between items-center text-xs"
+                                            >
+                                              <span className="text-gray-700">
+                                                {optionName} {optionValue && `(${optionValue})`}
+                                              </span>
+                                              {optionPrice > 0 && (
+                                                <span className="text-blue-600 font-medium">
+                                                  +${formatPrice(optionPrice)}
+                                                </span>
+                                              )}
+                                            </div>
+                                          );
+                                        })
+                                      ) : (
+                                        Object.entries(item.options).map(([key, value]: [string, any]) => {
+                                          const optionPrice = typeof value === "object" ? value.price || value.modifier_price : 0;
+                                          const displayValue = typeof value === "object" ? value.value || value.name : value;
+                                          const formattedKey = formatOptionKey(key);
+                                          return (
+                                            <div
+                                              key={key}
+                                              className="flex justify-between items-center text-xs"
+                                            >
+                                              <span className="text-gray-700">
+                                                {formattedKey} {displayValue && `(${formatOptionValue(displayValue)})`}
+                                              </span>
+                                              {optionPrice > 0 && (
+                                                <span className="text-blue-600 font-medium">
+                                                  +${formatPrice(optionPrice)}
+                                                </span>
+                                              )}
+                                            </div>
+                                          );
+                                        })
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
+
                                 {/* Cost Breakdown */}
                                 <div className="space-y-1 text-xs">
                                   <div className="flex justify-between">
