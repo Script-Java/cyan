@@ -488,39 +488,104 @@ export default function ActiveOrdersSummary({
                     </div>
                   )}
 
-                  {/* Order Totals */}
+                  {/* Order Totals - Detailed */}
                   <div className="bg-white rounded-lg border-2 border-gray-200 p-3 sm:p-4 shadow-sm">
-                    <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-2 sm:mb-3">
+                    <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
+                      <DollarSign className="w-4 h-4 text-gray-600" />
                       Order Summary
                     </h3>
-                    <div className="space-y-2 text-xs sm:text-sm">
-                      {order.subtotal !== undefined && (
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Subtotal:</span>
-                          <span className="font-medium">
-                            ${formatPrice(order.subtotal)}
-                          </span>
+
+                    {/* Item Breakdown */}
+                    <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-gray-200">
+                      <p className="text-xs font-semibold text-gray-700 mb-2">
+                        Items Breakdown:
+                      </p>
+                      {order.items && order.items.length > 0 ? (
+                        <div className="space-y-1">
+                          {order.items.map((item, idx) => (
+                            <div
+                              key={item.id}
+                              className="flex justify-between text-xs"
+                            >
+                              <div>
+                                <span className="text-gray-600">
+                                  {item.product_name}
+                                </span>
+                                <span className="text-gray-500 ml-1">
+                                  × {item.quantity}
+                                </span>
+                              </div>
+                              <span className="text-gray-700 font-medium">
+                                ${formatPrice(getItemPrice(item) * item.quantity)}
+                              </span>
+                            </div>
+                          ))}
                         </div>
+                      ) : (
+                        <p className="text-xs text-gray-600">
+                          {order.itemCount} item{order.itemCount !== 1 ? "s" : ""}
+                        </p>
                       )}
-                      {order.tax !== undefined && (
+                    </div>
+
+                    {/* Price Breakdown */}
+                    <div className="space-y-2 text-xs sm:text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Subtotal:</span>
+                        <span className="font-medium text-gray-900">
+                          ${formatPrice(order.subtotal || 0)}
+                        </span>
+                      </div>
+
+                      {order.tax !== undefined && order.tax > 0 && (
                         <div className="flex justify-between">
                           <span className="text-gray-600">Tax:</span>
-                          <span className="font-medium">
+                          <span className="font-medium text-gray-900">
                             ${formatPrice(order.tax)}
                           </span>
                         </div>
                       )}
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Items:</span>
-                        <span className="font-semibold text-gray-900">
-                          {order.itemCount}
+
+                      {/* Shipping */}
+                      {order.shipping !== undefined && order.shipping > 0 && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Shipping:</span>
+                          <span className="font-medium text-gray-900">
+                            ${formatPrice(order.shipping)}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Divider */}
+                      <div className="pt-2 border-t-2 border-gray-300 flex justify-between">
+                        <span className="font-bold text-gray-900">
+                          Order Total:
                         </span>
-                      </div>
-                      <div className="pt-2 border-t border-gray-200 flex justify-between">
-                        <span className="font-bold text-gray-900">Total:</span>
-                        <span className="font-bold text-emerald-600">
+                        <span className="font-bold text-lg text-emerald-600">
                           ${formatPrice(order.total)}
                         </span>
+                      </div>
+                    </div>
+
+                    {/* Summary Stats */}
+                    <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200 grid grid-cols-2 gap-2">
+                      <div className="bg-gray-50 p-2 rounded text-center">
+                        <p className="text-xs text-gray-600">Items</p>
+                        <p className="text-sm font-bold text-gray-900">
+                          {order.itemCount}
+                        </p>
+                      </div>
+                      <div className="bg-emerald-50 p-2 rounded text-center">
+                        <p className="text-xs text-gray-600">Order Date</p>
+                        <p className="text-xs font-medium text-emerald-700">
+                          {new Date(order.dateCreated).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                            },
+                          )}
+                        </p>
                       </div>
                     </div>
                   </div>
