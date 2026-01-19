@@ -469,45 +469,47 @@ export default function AccountSettings() {
             )}
 
             {/* Tabs */}
-            <div className="mb-8 border-b border-gray-200">
-              <div className="flex gap-8">
+            <div className="mb-6 sm:mb-8 border-b border-gray-200 overflow-x-auto">
+              <div className="flex gap-2 sm:gap-4 md:gap-8 min-w-min">
                 <button
                   onClick={() => setActiveTab("personal")}
-                  className={`py-4 px-2 border-b-2 font-medium transition-colors ${
+                  className={`py-3 sm:py-4 px-2 sm:px-3 md:px-4 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
                     activeTab === "personal"
                       ? "border-blue-600 text-blue-600"
                       : "border-transparent text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  <div className="flex items-center gap-2">
-                    <User className="w-5 h-5" />
-                    Personal Information
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <User className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                    <span className="hidden sm:inline">Personal Information</span>
+                    <span className="sm:hidden">Personal</span>
                   </div>
                 </button>
                 <button
                   onClick={() => setActiveTab("social")}
-                  className={`py-4 px-2 border-b-2 font-medium transition-colors ${
+                  className={`py-3 sm:py-4 px-2 sm:px-3 md:px-4 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
                     activeTab === "social"
                       ? "border-blue-600 text-blue-600"
                       : "border-transparent text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  <div className="flex items-center gap-2">
-                    <Share2 className="w-5 h-5" />
-                    Social Media
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <Share2 className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                    <span>Social Media</span>
                   </div>
                 </button>
                 <button
                   onClick={() => setActiveTab("delete")}
-                  className={`py-4 px-2 border-b-2 font-medium transition-colors ${
+                  className={`py-3 sm:py-4 px-2 sm:px-3 md:px-4 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
                     activeTab === "delete"
                       ? "border-red-600 text-red-600"
                       : "border-transparent text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  <div className="flex items-center gap-2">
-                    <Trash2 className="w-5 h-5" />
-                    Delete Account
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <Trash2 className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                    <span className="hidden sm:inline">Delete Account</span>
+                    <span className="sm:hidden">Delete</span>
                   </div>
                 </button>
               </div>
