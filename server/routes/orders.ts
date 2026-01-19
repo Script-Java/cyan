@@ -577,7 +577,7 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
 
     const { supabase } = await import("../utils/supabase");
 
-    // Get the order from Supabase with customer info
+    // Get the order from Supabase
     const { data: order, error: orderError } = await supabase
       .from("orders")
       .select(`
@@ -596,11 +596,6 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
         tracking_carrier,
         tracking_url,
         shipped_date,
-        customers (
-          email,
-          first_name,
-          last_name
-        ),
         order_items (
           id,
           product_id,
@@ -620,15 +615,27 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
       });
     }
 
-    console.log("Order found:", {
-      id: order.id,
-      status: order.status,
-      customerId: order.customer_id,
-      customerData: (order.customers as any),
-    });
+    console.log("Order found:", { id: order.id, customer_id: order.customer_id });
 
-    // Verify email matches
-    const customerEmail = (order.customers as any)?.email;
+    // Fetch customer info separately
+    let customerEmail: string | null = null;
+    let customerName: string | null = null;
+
+    if (order.customer_id) {
+      const { data: customer, error: customerError } = await supabase
+        .from("customers")
+        .select("email, first_name, last_name")
+        .eq("id", order.customer_id)
+        .single();
+
+      if (customerError) {
+        console.warn(`Customer not found for customer_id ${order.customer_id}:`, customerError);
+      } else if (customer) {
+        customerEmail = customer.email;
+        customerName = `${customer.first_name || ""} ${customer.last_name || ""}`.trim();
+        console.log("Customer found:", { email: customerEmail, name: customerName });
+      }
+    }
     if (
       !customerEmail ||
       customerEmail.toLowerCase() !== (email as string).toLowerCase()
