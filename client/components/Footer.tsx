@@ -77,32 +77,77 @@ export default function Footer() {
             </form>
 
             {/* Social Icons */}
-            <div className="flex gap-4 mt-8 pt-6 border-t border-gray-700">
+            <div className="flex gap-6 mt-8 pt-6 border-t border-gray-700">
               <a
                 href="#"
-                className="hover:text-yellow-400 transition-colors"
+                className="text-white hover:text-yellow-400 transition-colors"
                 aria-label="Instagram"
               >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm4.846-10.424c-.795 0-1.44-.645-1.44-1.44s.645-1.44 1.44-1.44 1.438.645 1.438 1.44-.643 1.44-1.438 1.44z" />
+                <svg className="w-6 h-6" stroke="currentColor" strokeWidth="1.5" fill="none" viewBox="0 0 24 24">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37Z" />
+                  <circle cx="17.5" cy="6.5" r="1.5" />
                 </svg>
               </a>
               <a
                 href="#"
-                className="hover:text-yellow-400 transition-colors"
-                aria-label="Twitter"
+                className="text-white hover:text-yellow-400 transition-colors"
+                aria-label="Facebook"
               >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M23.953 4.57a10 10 0 002.856-3.915 10 10 0 01-2.856.973v1.237h-.001c-.676-.67-1.606-1.089-2.637-1.089-2.5 0-4.5 2.04-4.5 4.5 0 .34.034.678.1 1.022-3.728-.221-7.123-1.971-9.359-4.646-.39.67-.609 1.45-.609 2.28 0 1.56.8 2.94 2.022 3.756-.746-.025-1.476-.228-2.1-.567v.057c0 2.18 1.551 4.001 3.605 4.422-.377.103-.771.16-1.175.16-.287 0-.568-.028-.842-.082.593 1.85 2.323 3.196 4.368 3.233-1.537 1.206-3.475 1.927-5.578 1.927-.363 0-.719-.021-1.068-.063 2.036 1.306 4.455 2.064 7.029 2.064 8.436 0 13.034-6.993 13.034-13.034 0-.199-.005-.397-.014-.596.894-.645 1.671-1.453 2.282-2.372z" />
+                <svg className="w-6 h-6" stroke="currentColor" strokeWidth="1.5" fill="none" viewBox="0 0 24 24">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M15 11H13V19H11V11H9V9H11V7.5C11 5.6 12 4 14.3 4C15 4 15.6 4.1 16 4.2V6.4H14.8C14 6.4 13.8 6.8 13.8 7.5V9H16L15.5 11Z" fill="white" />
                 </svg>
               </a>
               <a
                 href="#"
-                className="hover:text-yellow-400 transition-colors"
+                className="text-white hover:text-yellow-400 transition-colors"
+                aria-label="YouTube"
+              >
+                <svg className="w-6 h-6" stroke="currentColor" strokeWidth="1.5" fill="none" viewBox="0 0 24 24">
+                  <path d="M21.5 7.5C21.2 6.4 20.4 5.5 19.3 5.3C17.4 5 12 5 12 5C12 5 6.6 5 4.7 5.3C3.6 5.5 2.8 6.4 2.5 7.5C2 9.4 2 13 2 13C2 13 2 16.6 2.5 18.5C2.8 19.6 3.6 20.5 4.7 20.7C6.6 21 12 21 12 21C12 21 17.4 21 19.3 20.7C20.4 20.5 21.2 19.6 21.5 18.5C22 16.6 22 13 22 13C22 13 22 9.4 21.5 7.5Z" fill="white" />
+                  <path d="M10 16.5L16 13L10 9.5V16.5Z" fill="black" />
+                </svg>
+              </a>
+              <a
+                href="#"
+                className="text-white hover:text-yellow-400 transition-colors"
+                aria-label="LinkedIn"
+              >
+                <svg className="w-6 h-6" stroke="currentColor" strokeWidth="1.5" fill="none" viewBox="0 0 24 24">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M8 9C8 8.45 8.45 8 9 8C9.55 8 10 8.45 10 9C10 9.55 9.55 10 9 10C8.45 10 8 9.55 8 9Z" fill="white" />
+                  <path d="M8 11H10V17H8V11Z" fill="white" />
+                  <path d="M13 11V17H15V14C15 12.9 15.9 12 17 12C18.1 12 19 12.9 19 14V17H21V14C21 12.3 19.7 11 18 11C17.1 11 16.3 11.5 15.8 12.2V11H13Z" fill="white" />
+                </svg>
+              </a>
+              <a
+                href="#"
+                className="text-white hover:text-yellow-400 transition-colors"
+                aria-label="X (Twitter)"
+              >
+                <svg className="w-6 h-6" stroke="currentColor" strokeWidth="1.5" fill="white" viewBox="0 0 24 24">
+                  <path d="M3.621 3.621L20.379 20.379M20.379 3.621L3.621 20.379" fill="none" />
+                </svg>
+              </a>
+              <a
+                href="#"
+                className="text-white hover:text-yellow-400 transition-colors"
+                aria-label="Pinterest"
+              >
+                <svg className="w-6 h-6" stroke="currentColor" strokeWidth="1.5" fill="white" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" fill="white" />
+                  <circle cx="12" cy="12" r="10" fill="none" />
+                  <path d="M9 12.5C9 10.8 10.3 9.5 12 9.5C13.7 9.5 15 10.8 15 12.5C15 14.2 13.7 15.5 12 15.5C11 15.5 10.2 14.9 9.8 14.1" fill="none" stroke="white" strokeWidth="1.5" />
+                </svg>
+              </a>
+              <a
+                href="#"
+                className="text-white hover:text-yellow-400 transition-colors"
                 aria-label="TikTok"
               >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19.498 3.75H15.75V2.25a.75.75 0 00-1.5 0v1.5h-4.5V2.25a.75.75 0 00-1.5 0v1.5H2.25a.75.75 0 00-.75.75v16.5a.75.75 0 00.75.75h17.25a.75.75 0 00.75-.75V4.5a.75.75 0 00-.75-.75zm-.75 16.5H3v-15h15.75v15zM8.25 8.25a.75.75 0 10-1.5 0 .75.75 0 001.5 0zm3 0a.75.75 0 10-1.5 0 .75.75 0 001.5 0zm3 0a.75.75 0 10-1.5 0 .75.75 0 001.5 0zm-6 3a.75.75 0 10-1.5 0 .75.75 0 001.5 0zm3 0a.75.75 0 10-1.5 0 .75.75 0 001.5 0zm3 0a.75.75 0 10-1.5 0 .75.75 0 001.5 0zm-6 3a.75.75 0 10-1.5 0 .75.75 0 001.5 0zm3 0a.75.75 0 10-1.5 0 .75.75 0 001.5 0zm3 0a.75.75 0 10-1.5 0 .75.75 0 001.5 0z" />
+                <svg className="w-6 h-6" stroke="currentColor" strokeWidth="1.5" fill="white" viewBox="0 0 24 24">
+                  <path d="M16 3H14C13.4 3 13 3.4 13 4V13C13 14.1 12.1 15 11 15C9.9 15 9 14.1 9 13V3H7V13C7 15.2 8.8 17 11 17C13.2 17 15 15.2 15 13V8.5C16 9.3 17.2 10 18.5 10V8C17 8 15.6 7.2 14.9 6V4C14.9 3.4 14.5 3 14 3M16 8V16C17.7 16 19 14.7 19 13V8C17.3 8 16 9.3 16 11" fill="white" />
                 </svg>
               </a>
             </div>
