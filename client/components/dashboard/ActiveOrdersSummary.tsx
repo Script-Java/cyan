@@ -380,7 +380,7 @@ export default function ActiveOrdersSummary({
                               </p>
                             </div>
                             <p className="text-xs sm:text-sm font-semibold text-gray-900 flex-shrink-0">
-                              ${item.price_inc_tax.toFixed(2)}
+                              ${formatPrice(getItemPrice(item))}
                             </p>
                           </div>
                         ))}
