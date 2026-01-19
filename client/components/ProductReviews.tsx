@@ -177,7 +177,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
   );
 
   return (
-    <div className="backdrop-blur-xl bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-lg p-4 mt-4 shadow-lg">
+    <div className="backdrop-blur-xl bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-300 rounded-lg p-4 mt-4 shadow-lg">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
