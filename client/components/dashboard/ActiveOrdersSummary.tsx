@@ -548,17 +548,66 @@ export default function ActiveOrdersSummary({
                                     </span>
                                   </div>
 
-                                  {optionPrice > 0 && (
-                                    <div className="flex justify-between">
-                                      <span className="text-gray-600">
-                                        Option Price:
-                                      </span>
-                                      <span className="text-blue-700 font-medium">
-                                        +${formatPrice(optionPrice)}
-                                      </span>
+                                  {/* Per-Option Costs */}
+                                  {item.options && (
+                                    <div className="pt-1 space-y-1">
+                                      {Array.isArray(item.options) ? (
+                                        item.options.map((option: any, idx: number) => {
+                                          const optionPrice = option.price || option.modifier_price || 0;
+                                          const optionName =
+                                            option.option_name ||
+                                            option.name ||
+                                            option.option_id ||
+                                            `Option ${idx + 1}`;
+                                          const optionValue =
+                                            option.option_value || option.value || "";
+
+                                          if (optionPrice > 0) {
+                                            return (
+                                              <div
+                                                key={idx}
+                                                className="flex justify-between text-xs"
+                                              >
+                                                <span className="text-gray-600">
+                                                  {optionName}
+                                                  {optionValue && ` (${optionValue})`}:
+                                                </span>
+                                                <span className="text-blue-600 font-medium">
+                                                  +${formatPrice(optionPrice)}
+                                                </span>
+                                              </div>
+                                            );
+                                          }
+                                          return null;
+                                        })
+                                      ) : (
+                                        Object.entries(item.options).map(([key, val]: [string, any]) => {
+                                          const optionPrice = typeof val === "object" ? val.price || val.modifier_price : 0;
+                                          const displayValue =
+                                            typeof val === "object" ? val.value || val.name : val;
+
+                                          if (optionPrice > 0) {
+                                            return (
+                                              <div
+                                                key={key}
+                                                className="flex justify-between text-xs"
+                                              >
+                                                <span className="text-gray-600">
+                                                  {key} ({formatOptionValue(displayValue)}):
+                                                </span>
+                                                <span className="text-blue-600 font-medium">
+                                                  +${formatPrice(optionPrice)}
+                                                </span>
+                                              </div>
+                                            );
+                                          }
+                                          return null;
+                                        })
+                                      )}
                                     </div>
                                   )}
 
+                                  {/* Summary Total */}
                                   <div className="pt-1 border-t border-gray-300 flex justify-between font-semibold">
                                     <span className="text-gray-900">
                                       Item Total:
