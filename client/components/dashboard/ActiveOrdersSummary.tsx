@@ -194,7 +194,7 @@ export default function ActiveOrdersSummary({
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                       <p className="font-bold text-sm text-gray-900">
-                        Order #{order.id}
+                        {formatOrderNumber(order.id)}
                       </p>
                       <span
                         className={`text-xs font-semibold px-2 sm:px-3 py-1 rounded-full border-2 w-fit ${getStatusBadgeColor(order.status)}`}
