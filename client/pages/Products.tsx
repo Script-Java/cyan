@@ -281,31 +281,6 @@ export default function Products() {
               <p className="text-center text-gray-600 text-lg mb-8">
                 Choose from our wide range of high-quality stickers
               </p>
-
-              {/* Category Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-                {categories.map((category) => (
-                  <Link
-                    key={category.id}
-                    to={`/products?category=${category.id}`}
-                    className="group text-center hover:opacity-80 transition-opacity"
-                  >
-                    <div className="bg-gray-100 rounded-lg p-4 mb-3 group-hover:bg-gray-200 transition-colors h-32 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={category.image}
-                        alt={category.name}
-                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                      />
-                    </div>
-                    <h3 className="font-semibold text-sm text-gray-900 mb-1">
-                      {category.name}
-                    </h3>
-                    <p className="text-xs text-gray-600">
-                      {getCategoryItemCount(category.id)} items
-                    </p>
-                  </Link>
-                ))}
-              </div>
             </div>
           )}
 
