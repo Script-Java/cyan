@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import { formatOrderNumber, parseOrderNumber } from "@/lib/order-number";
 
 interface OrderItemOption {
   option_id?: string | number;
@@ -295,7 +296,7 @@ export default function OrderStatus() {
                     <div className="text-right">
                       <p className="text-xs text-gray-600 mb-1">Order #</p>
                       <p className="text-2xl font-bold">
-                        {orderData.id}
+                        {formatOrderNumber(orderData.id)}
                       </p>
                     </div>
                   </div>
