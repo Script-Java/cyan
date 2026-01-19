@@ -152,6 +152,13 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
                 </>
               )}
               <Link
+                to="/order-status"
+                className="px-4 py-2 backdrop-blur-md bg-white/5 border border-white/10 text-white rounded-lg transition-all duration-200 text-sm font-semibold hover:bg-white/10 hover:shadow-lg"
+                title="Track your order"
+              >
+                Track Order
+              </Link>
+              <Link
                 to="/deals"
                 className="px-4 py-2 backdrop-blur-md bg-white/5 border border-white/10 text-white rounded-lg transition-all duration-200 text-sm font-semibold hover:bg-white/10 hover:shadow-lg"
               >
