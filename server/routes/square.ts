@@ -348,6 +348,8 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     let baseUrl = "http://localhost:8080";
     if (process.env.BASE_URL) {
       baseUrl = process.env.BASE_URL;
+    } else if (process.env.NETLIFY_SITE_NAME) {
+      baseUrl = `https://${process.env.NETLIFY_SITE_NAME}.netlify.app`;
     } else if (process.env.VERCEL_URL) {
       baseUrl = `https://${process.env.VERCEL_URL}`;
     } else if (process.env.FLY_APP_NAME) {
