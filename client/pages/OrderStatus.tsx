@@ -1,0 +1,512 @@
+import { useEffect, useState } from "react";
+import {
+  Package,
+  Truck,
+  Calendar,
+  DollarSign,
+  AlertCircle,
+  Search,
+  X,
+  MapPin,
+  Mail,
+  Image as ImageIcon,
+  CheckCircle,
+  Clock,
+  ExternalLink,
+} from "lucide-react";
+import Header from "@/components/Header";
+import { Button } from "@/components/ui/button";
+
+interface OrderItem {
+  id: number;
+  product_id: number;
+  product_name: string;
+  quantity: number;
+  price_inc_tax: number;
+}
+
+interface DigitalFile {
+  id: string;
+  file_name: string;
+  file_url: string;
+  file_type?: string;
+  file_size?: number;
+  uploaded_at: string;
+}
+
+interface OrderData {
+  id: number;
+  status: string;
+  dateCreated: string;
+  total: number;
+  subtotal?: number;
+  tax?: number;
+  shipping?: number;
+  customerName?: string;
+  customerEmail?: string;
+  products: OrderItem[];
+  shippingAddress?: {
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  estimatedDeliveryDate?: string;
+  trackingNumber?: string;
+  trackingCarrier?: string;
+  trackingUrl?: string;
+  shippedDate?: string;
+  digitalFiles?: DigitalFile[];
+}
+
+export default function OrderStatus() {
+  const [orderNumber, setOrderNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [orderData, setOrderData] = useState<OrderData | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "pending":
+        return "text-orange-600 bg-orange-50 border border-orange-200";
+      case "processing":
+        return "text-yellow-600 bg-yellow-50 border border-yellow-200";
+      case "printing":
+        return "text-purple-600 bg-purple-50 border border-purple-200";
+      case "preparing for shipping":
+        return "text-indigo-600 bg-indigo-50 border border-indigo-200";
+      case "in transit":
+        return "text-blue-600 bg-blue-50 border border-blue-200";
+      case "shipped":
+        return "text-emerald-600 bg-emerald-50 border border-emerald-200";
+      case "delivered":
+        return "text-cyan-600 bg-cyan-50 border border-cyan-200";
+      case "completed":
+        return "text-green-600 bg-green-50 border border-green-200";
+      case "cancelled":
+        return "text-red-600 bg-red-50 border border-red-200";
+      default:
+        return "text-gray-600 bg-gray-50 border border-gray-200";
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "delivered":
+      case "completed":
+        return <CheckCircle className="w-5 h-5" />;
+      case "in transit":
+      case "shipped":
+        return <Truck className="w-5 h-5" />;
+      default:
+        return <Clock className="w-5 h-5" />;
+    }
+  };
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setOrderData(null);
+    setHasSearched(true);
+
+    if (!orderNumber.trim() || !email.trim()) {
+      setError("Please enter both order number and email");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      const response = await fetch(
+        `/api/public/order-status?orderNumber=${encodeURIComponent(orderNumber)}&email=${encodeURIComponent(email)}`,
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Unable to find order");
+      }
+
+      const data = await response.json();
+      if (data.success) {
+        setOrderData(data.data);
+      } else {
+        setError(data.error || "Unable to find order");
+      }
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to look up order";
+      setError(message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleReset = () => {
+    setOrderNumber("");
+    setEmail("");
+    setOrderData(null);
+    setError("");
+    setHasSearched(false);
+  };
+
+  return (
+    <>
+      <Header />
+      <main className="min-h-screen bg-gray-50 py-6 sm:py-8">
+        <div className="max-w-2xl mx-auto px-3 sm:px-4">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+              Track Your Order
+            </h1>
+            <p className="text-gray-600 text-lg">
+              Enter your order number and email to see the current status,
+              tracking information, and estimated delivery date.
+            </p>
+          </div>
+
+          {/* Search Form */}
+          <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8 mb-8 shadow-sm">
+            <form onSubmit={handleSearch} className="space-y-4">
+              <div>
+                <label
+                  htmlFor="orderNumber"
+                  className="block text-sm font-medium text-gray-900 mb-2"
+                >
+                  Order Number
+                </label>
+                <input
+                  id="orderNumber"
+                  type="text"
+                  placeholder="e.g., 12345"
+                  value={orderNumber}
+                  onChange={(e) => setOrderNumber(e.target.value)}
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  You can find this in your order confirmation email
+                </p>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-900 mb-2"
+                >
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Must match the email address used for the order
+                </p>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 flex items-center justify-center gap-2"
+                >
+                  <Search className="w-5 h-5" />
+                  {isLoading ? "Searching..." : "Find Order"}
+                </Button>
+                {orderData && (
+                  <Button
+                    type="button"
+                    onClick={handleReset}
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-900 font-medium py-3 flex items-center justify-center gap-2"
+                  >
+                    <X className="w-5 h-5" />
+                    New Search
+                  </Button>
+                )}
+              </div>
+            </form>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-8 bg-red-50 border border-red-200 rounded-lg p-4 flex gap-3">
+              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-red-900">{error}</p>
+                {error === "Email does not match this order" && (
+                  <p className="text-xs text-red-700 mt-1">
+                    Please check that you entered the correct email address
+                    associated with this order.
+                  </p>
+                )}
+                {error === "Order not found" && (
+                  <p className="text-xs text-red-700 mt-1">
+                    Please verify your order number and try again.
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* No Search Yet */}
+          {!hasSearched && !orderData && !error && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
+              <Package className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+              <h2 className="text-lg font-semibold text-blue-900 mb-2">
+                Ready to Track?
+              </h2>
+              <p className="text-blue-800">
+                Enter your order number and email above to get started.
+              </p>
+            </div>
+          )}
+
+          {/* Order Found */}
+          {orderData && (
+            <div className="space-y-6">
+              {/* Status Overview */}
+              <div className={`rounded-lg p-6 ${getStatusColor(orderData.status)}`}>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="flex items-center gap-3 mb-2">
+                      {getStatusIcon(orderData.status)}
+                      <h2 className="text-2xl font-bold">Order Status</h2>
+                    </div>
+                    <p className="text-base font-medium capitalize">
+                      {orderData.status.replace(/_/g, " ")}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-gray-600 mb-1">Order #</p>
+                    <p className="text-xl font-bold text-gray-900">
+                      {orderData.id}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tracking Information */}
+              {orderData.trackingNumber && (
+                <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <Truck className="w-5 h-5 text-blue-600" />
+                    Tracking Information
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-sm text-gray-600 mb-2">
+                        Tracking Number
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-mono text-base font-semibold text-gray-900 break-all">
+                          {orderData.trackingNumber}
+                        </p>
+                        {orderData.trackingUrl && (
+                          <a
+                            href={orderData.trackingUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ml-auto flex-shrink-0"
+                            title="Open tracking in external carrier website"
+                          >
+                            <ExternalLink className="w-5 h-5 text-blue-600 hover:text-blue-700" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+
+                    {orderData.trackingCarrier && (
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1">Carrier</p>
+                        <p className="text-base font-medium text-gray-900 capitalize">
+                          {orderData.trackingCarrier}
+                        </p>
+                      </div>
+                    )}
+
+                    {orderData.shippedDate && (
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1">
+                          Shipped Date
+                        </p>
+                        <div className="flex items-center gap-2 text-base text-gray-900 font-medium">
+                          <Calendar className="w-4 h-4 text-gray-400" />
+                          {formatDate(orderData.shippedDate)}
+                        </div>
+                      </div>
+                    )}
+
+                    {orderData.estimatedDeliveryDate && (
+                      <div className="pt-3 border-t border-gray-200">
+                        <p className="text-sm text-gray-600 mb-1">
+                          Estimated Delivery
+                        </p>
+                        <div className="flex items-center gap-2 text-lg text-blue-600 font-semibold">
+                          <Calendar className="w-5 h-5" />
+                          {formatDate(orderData.estimatedDeliveryDate)}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Shipping Address */}
+              {orderData.shippingAddress && (
+                <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-blue-600" />
+                    Shipping Address
+                  </h3>
+                  <div className="text-gray-900 space-y-1">
+                    <p className="font-medium">{orderData.customerName}</p>
+                    {orderData.shippingAddress.street && (
+                      <p>{orderData.shippingAddress.street}</p>
+                    )}
+                    {orderData.shippingAddress.city && (
+                      <p>
+                        {orderData.shippingAddress.city},{" "}
+                        {orderData.shippingAddress.state}{" "}
+                        {orderData.shippingAddress.postalCode}
+                      </p>
+                    )}
+                    {orderData.shippingAddress.country && (
+                      <p>{orderData.shippingAddress.country}</p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Order Items */}
+              {orderData.products && orderData.products.length > 0 && (
+                <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <Package className="w-5 h-5 text-blue-600" />
+                    Order Items
+                  </h3>
+                  <div className="space-y-3">
+                    {orderData.products.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex justify-between items-start border-b border-gray-100 pb-3 last:border-b-0"
+                      >
+                        <div className="flex-1">
+                          <p className="font-medium text-gray-900">
+                            {item.product_name}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Quantity: {item.quantity}
+                          </p>
+                        </div>
+                        <p className="font-semibold text-gray-900 flex-shrink-0 ml-4">
+                          {formatCurrency(item.price_inc_tax)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Digital Files */}
+              {orderData.digitalFiles && orderData.digitalFiles.length > 0 && (
+                <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <ImageIcon className="w-5 h-5 text-blue-600" />
+                    Design Files
+                  </h3>
+                  <div className="space-y-3">
+                    {orderData.digitalFiles.map((file) => (
+                      <a
+                        key={file.id}
+                        href={file.file_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded transition-colors gap-3"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <Package className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">
+                              {file.file_name}
+                            </p>
+                            {file.file_size && (
+                              <p className="text-xs text-gray-600">
+                                {(file.file_size / 1024 / 1024).toFixed(2)} MB
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <ExternalLink className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Order Summary */}
+              <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <DollarSign className="w-5 h-5 text-blue-600" />
+                  Order Total
+                </h3>
+                <div className="space-y-3">
+                  {orderData.subtotal !== undefined && (
+                    <div className="flex justify-between text-gray-600">
+                      <span>Subtotal</span>
+                      <span>{formatCurrency(orderData.subtotal)}</span>
+                    </div>
+                  )}
+                  {orderData.tax !== undefined && (
+                    <div className="flex justify-between text-gray-600">
+                      <span>Tax</span>
+                      <span>{formatCurrency(orderData.tax)}</span>
+                    </div>
+                  )}
+                  {orderData.shipping !== undefined && (
+                    <div className="flex justify-between text-gray-600">
+                      <span>Shipping</span>
+                      <span>{formatCurrency(orderData.shipping)}</span>
+                    </div>
+                  )}
+                  <div className="pt-3 border-t border-gray-200 flex justify-between text-lg font-bold text-gray-900">
+                    <span>Total</span>
+                    <span>{formatCurrency(orderData.total)}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Order Date */}
+              <div className="text-center text-sm text-gray-600 pb-4">
+                Order placed on {formatDate(orderData.dateCreated)}
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+    </>
+  );
+}
