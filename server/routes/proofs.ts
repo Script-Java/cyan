@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { generateProofEmailHtml } from "../emails/generate-proof-email";
+import { formatOrderNumber } from "../utils/order";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
