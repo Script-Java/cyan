@@ -729,28 +729,10 @@ export default function OrderHistory() {
                           {order.items && order.items.length > 0 ? (
                             <div className="space-y-3">
                               {order.items.map((item) => {
-                                // Base price is always $0.40 for stickers
-                                const basePrice = 0.40;
-
-                                // Calculate total option price by summing all individual option prices
-                                let totalOptionPrice = 0;
-                                if (item.options) {
-                                  if (Array.isArray(item.options)) {
-                                    totalOptionPrice = item.options.reduce((sum, option) => {
-                                      const optionPrice = option.price || option.modifier_price || 0;
-                                      return sum + optionPrice;
-                                    }, 0);
-                                  } else {
-                                    // Handle object format
-                                    Object.values(item.options).forEach((val: any) => {
-                                      const optionPrice = typeof val === "object" ? (val.price || val.modifier_price || 0) : 0;
-                                      totalOptionPrice += optionPrice;
-                                    });
-                                  }
-                                }
-
-                                const pricePerUnit = basePrice + totalOptionPrice;
-                                const itemTotal = pricePerUnit * item.quantity;
+                                // Get the actual price per unit from order data
+                                const totalItemPrice = getItemPrice(item);
+                                const pricePerUnit = item.quantity > 0 ? totalItemPrice / item.quantity : 0;
+                                const itemTotal = totalItemPrice;
 
                                 return (
                                   <div
