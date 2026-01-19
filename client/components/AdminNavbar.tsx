@@ -40,6 +40,8 @@ export default function AdminNavbar() {
     let timeoutId: NodeJS.Timeout | null = null;
 
     const fetchPendingOrdersCount = async () => {
+      if (!isMounted) return;
+
       try {
         const token = localStorage.getItem("authToken");
         if (!token) {
@@ -64,28 +66,55 @@ export default function AdminNavbar() {
 
           if (timeoutId) clearTimeout(timeoutId);
 
-          if (response.ok) {
+          if (!response.ok) {
+            console.warn(
+              `Failed to fetch pending orders: ${response.status} ${response.statusText}`
+            );
+            if (response.status === 401) {
+              // Unauthorized - clear auth
+              if (isMounted) {
+                localStorage.removeItem("authToken");
+                setPendingOrdersCount(0);
+              }
+            } else {
+              // Other error - try to parse error message
+              try {
+                const errorData = await response.json();
+                console.warn("Server error:", errorData);
+              } catch (e) {
+                // Response wasn't JSON
+              }
+              if (isMounted) setPendingOrdersCount(0);
+            }
+            return;
+          }
+
+          try {
             const data = await response.json();
             if (isMounted) {
-              setPendingOrdersCount(data.count || data.orders?.length || 0);
+              setPendingOrdersCount(data.count ?? data.orders?.length ?? 0);
             }
-          } else if (response.status === 401) {
-            if (isMounted) setPendingOrdersCount(0);
-          } else {
-            console.warn(`Failed to fetch pending orders: ${response.status}`);
+          } catch (parseError) {
+            console.error("Failed to parse pending orders response:", parseError);
             if (isMounted) setPendingOrdersCount(0);
           }
         } catch (fetchError) {
           if (timeoutId) clearTimeout(timeoutId);
-          if (fetchError instanceof Error && fetchError.name === "AbortError") {
-            console.warn("Pending orders count fetch timeout after 10 seconds");
-          } else if (fetchError instanceof TypeError) {
-            console.warn("Network error fetching pending orders count");
+
+          if (fetchError instanceof Error) {
+            if (fetchError.name === "AbortError") {
+              console.warn("Pending orders count fetch timeout after 10 seconds");
+            } else {
+              console.warn("Network error fetching pending orders count:", fetchError.message);
+            }
+          } else {
+            console.warn("Unknown error fetching pending orders count");
           }
+
           if (isMounted) setPendingOrdersCount(0);
         }
       } catch (error) {
-        console.warn("Error in fetchPendingOrdersCount:", error);
+        console.error("Unexpected error in fetchPendingOrdersCount:", error);
         if (isMounted) setPendingOrdersCount(0);
       }
     };
@@ -95,7 +124,7 @@ export default function AdminNavbar() {
       fetchPendingOrdersCount();
     }, 500);
 
-    const interval = setInterval(fetchPendingOrdersCount, 60000); // Poll every 60 seconds instead of 30
+    const interval = setInterval(fetchPendingOrdersCount, 60000); // Poll every 60 seconds
 
     return () => {
       isMounted = false;
