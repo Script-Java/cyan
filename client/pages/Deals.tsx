@@ -384,7 +384,7 @@ export default function Deals() {
               color: "rgba(0, 0, 0, 0.5)",
             }}
           >
-            Built with ❤️ by © Sticky Slap LLC
+            <p>© Sticky Slap LLC</p>
           </div>
         </div>
       </main>
