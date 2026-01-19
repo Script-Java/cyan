@@ -134,10 +134,10 @@ export default function DashboardNavigation({
                 />
               </div>
               <div className="text-center">
-                <h4 className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">
+                <h4 className="text-xs sm:text-sm font-bold text-gray-900 leading-tight line-clamp-2">
                   {item.title}
                 </h4>
-                <p className="text-xs text-gray-600 hidden sm:block">
+                <p className="text-xs text-gray-600 hidden md:block line-clamp-1">
                   {item.description}
                 </p>
               </div>
