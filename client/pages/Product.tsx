@@ -114,6 +114,7 @@ export default function Product() {
   const [activeQuantityOption, setActiveQuantityOption] = useState<
     number | null
   >(100);
+  const [showCheckoutDialog, setShowCheckoutDialog] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
