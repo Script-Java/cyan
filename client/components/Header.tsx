@@ -100,6 +100,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("focus", handleFocus);
     };
   }, [fetchStoreCredit]);
 
