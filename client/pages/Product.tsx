@@ -478,7 +478,7 @@ export default function Product() {
             margin: "0 auto 3px",
             padding: "12px 12px 80px",
           }}
-          className="px-3 sm:px-4 lg:px-6 pt-20"
+          className="px-3 sm:px-4 lg:px-6 pt-32"
         >
           {/* Back Navigation */}
           <button
