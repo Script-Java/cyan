@@ -13,14 +13,6 @@ import {
   Calendar,
   TrendingUp,
   ArrowUpDown,
-  Package,
-  Eye,
-  BarChart3,
-  Settings,
-  BookOpen,
-  FileText,
-  Truck,
-  MessageSquare,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
