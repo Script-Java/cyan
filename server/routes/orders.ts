@@ -609,52 +609,6 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
 
     if (orderError || !order) {
       console.warn("Order not found in Supabase:", orderIdNum, "Error:", orderError);
-
-      // Try to find the order in Ecwid as a fallback
-      try {
-        console.log("Attempting to find order in Ecwid...");
-        const ecwidOrders = await ecwidAPI.searchOrders({
-          keyword: String(orderIdNum),
-        });
-
-        if (ecwidOrders && ecwidOrders.length > 0) {
-          const ecwidOrder = ecwidOrders.find(o => o.id === orderIdNum || o.number === orderIdNum);
-          if (ecwidOrder && ecwidOrder.email?.toLowerCase() === (email as string).toLowerCase()) {
-            // Return Ecwid order data
-            return res.json({
-              success: true,
-              data: {
-                id: ecwidOrder.id,
-                status: ecwidOrder.fulfillmentStatus || ecwidOrder.status || "processing",
-                dateCreated: ecwidOrder.createDate,
-                total: ecwidOrder.total,
-                subtotal: ecwidOrder.subtotal || 0,
-                tax: ecwidOrder.tax || 0,
-                shipping: ecwidOrder.shippingCost || 0,
-                customerName: ecwidOrder.customerName || "",
-                customerEmail: ecwidOrder.email,
-                products: (ecwidOrder.items || []).map((item: any) => ({
-                  id: item.id,
-                  product_id: item.productId,
-                  product_name: item.name,
-                  quantity: item.quantity,
-                  price_inc_tax: item.price,
-                })),
-                shippingAddress: ecwidOrder.shippingAddress,
-                trackingNumber: ecwidOrder.trackingNumber,
-                trackingCarrier: ecwidOrder.trackingCarrier,
-                trackingUrl: ecwidOrder.trackingUrl,
-                shippedDate: ecwidOrder.shippedDate,
-                estimatedDeliveryDate: null,
-                digitalFiles: [],
-              },
-            });
-          }
-        }
-      } catch (ecwidError) {
-        console.warn("Error searching Ecwid orders:", ecwidError);
-      }
-
       return res.status(404).json({
         success: false,
         error: "Order not found",
