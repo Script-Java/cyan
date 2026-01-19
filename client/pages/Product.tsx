@@ -408,8 +408,12 @@ export default function Product() {
         savePercentage,
       };
 
+      // Store cart item without large design file data URL to avoid localStorage quota exceeded
+      const cartItemForStorage = { ...cartItem };
+      delete cartItemForStorage.design_file_url;
+
       const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
-      existingCart.push(cartItem);
+      existingCart.push(cartItemForStorage);
       localStorage.setItem("cart", JSON.stringify(existingCart));
 
       // Calculate total items in cart
