@@ -556,6 +556,20 @@ export default function ActiveOrdersSummary({
 
                                 {/* Cost Breakdown Table */}
                                 <div className="space-y-1 text-xs">
+                                  {/* Price Explanation Note */}
+                                  <div className="bg-blue-50 border border-blue-200 rounded p-2 mb-2">
+                                    <p className="text-blue-900 font-medium text-xs">Price Breakdown:</p>
+                                    <p className="text-blue-800 text-xs mt-1">
+                                      Base sticker price: <span className="font-semibold">$0.40</span>
+                                      {totalOptionPrice > 0 && (
+                                        <>
+                                          <br />+ Gloss & Lamination: <span className="font-semibold">+$0.10</span>
+                                          <br />= Total per sticker: <span className="font-semibold">$0.50</span>
+                                        </>
+                                      )}
+                                    </p>
+                                  </div>
+
                                   <div className="flex justify-between">
                                     <span className="text-gray-600">
                                       Base Cost per Sticker:
