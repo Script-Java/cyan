@@ -21,6 +21,7 @@ import {
   FileText,
   Truck,
   MessageSquare,
+  Star,
 } from "lucide-react";
 
 interface OrderItem {
