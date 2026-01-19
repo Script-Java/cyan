@@ -623,13 +623,13 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
     if (order.customer_id) {
       const { data: customer, error: customerError } = await supabase
         .from("customers")
-        .select("email, first_name, last_name")
+        .select("email, name")
         .eq("id", order.customer_id)
         .single();
 
       if (customer) {
         customerEmail = customer.email || "";
-        customerName = `${customer.first_name || ""} ${customer.last_name || ""}`.trim();
+        customerName = customer.name || "";
         console.log("Customer found:", { email: customerEmail, name: customerName });
       }
     }
