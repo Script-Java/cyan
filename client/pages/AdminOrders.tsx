@@ -26,7 +26,7 @@ interface OrderItem {
   id?: number;
   quantity?: number;
   product_name?: string;
-  options?: Record<string, any>;
+  options?: Record<string, any> | Array<any>;
   design_file_url?: string;
 }
 
