@@ -297,50 +297,55 @@ export const handleUploadDesignFile: RequestHandler = async (req, res) => {
     const sanitizedFileName = fileName
       .replace(/[^a-zA-Z0-9.-]/g, "_")
       .substring(0, 100);
-    const uniqueFileName = `${timestamp}-${randomId}-${sanitizedFileName}`;
-    const bucketPath = `customer-designs/${uniqueFileName}`;
+    const publicId = `sticker-designs/${timestamp}-${randomId}`;
 
-    // Upload to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from("designs")
-      .upload(bucketPath, buffer, {
-        cacheControl: "3600",
-        upsert: false,
-        contentType: fileType || "application/octet-stream",
+    // Upload to Cloudinary
+    try {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            public_id: publicId,
+            resource_type: "auto",
+            folder: "sticker-designs",
+            tags: ["design-upload", "customer"],
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+
+        stream.end(buffer);
       });
 
-    if (uploadError || !uploadData) {
-      console.error("Error uploading design file:", uploadError);
+      const result = uploadResult as any;
+
+      if (!result?.secure_url) {
+        return res.status(500).json({
+          error: "Failed to upload design file to cloud storage",
+        });
+      }
+
+      console.log("Design file uploaded successfully to Cloudinary:", {
+        fileName,
+        publicId,
+        url: result.secure_url,
+      });
+
+      res.json({
+        success: true,
+        fileUrl: result.secure_url,
+        fileName: sanitizedFileName,
+        size: buffer.length,
+        uploadedAt: new Date().toISOString(),
+      });
+    } catch (uploadError) {
+      console.error("Error uploading to Cloudinary:", uploadError);
       return res.status(500).json({
         error: "Failed to upload design file",
-        details: uploadError?.message,
+        details: uploadError instanceof Error ? uploadError.message : "Unknown error",
       });
     }
-
-    // Get public URL
-    const { data: publicUrlData } = supabase.storage
-      .from("designs")
-      .getPublicUrl(bucketPath);
-
-    if (!publicUrlData?.publicUrl) {
-      return res.status(500).json({
-        error: "Failed to generate public URL",
-      });
-    }
-
-    console.log("Design file uploaded successfully:", {
-      fileName,
-      path: bucketPath,
-      url: publicUrlData.publicUrl,
-    });
-
-    res.json({
-      success: true,
-      fileUrl: publicUrlData.publicUrl,
-      fileName: sanitizedFileName,
-      size: buffer.length,
-      uploadedAt: new Date().toISOString(),
-    });
   } catch (error) {
     console.error("Upload design file error:", error);
     const message =
