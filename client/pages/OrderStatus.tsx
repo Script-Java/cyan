@@ -381,16 +381,32 @@ export default function OrderStatus() {
                       <div className="space-y-4 bg-gray-50 rounded-lg p-4">
                         {orderData.products.map((item) => (
                           <div key={item.id} className="border-b border-gray-200 pb-4 last:border-b-0 last:pb-0">
-                            <div className="flex justify-between text-sm mb-2">
-                              <span className="text-gray-700 font-medium">
-                                {item.product_name || `Product ${item.product_id}`}
-                              </span>
-                              <span className="font-semibold text-gray-900">
-                                {formatCurrency(item.line_total || 0)}
-                              </span>
-                            </div>
-                            <div className="text-xs text-gray-600 mb-2">
-                              {item.quantity} × {formatCurrency(item.price)}
+                            <div className="flex gap-3 items-start mb-3">
+                              {/* Design Thumbnail */}
+                              {item.design_file_url && (
+                                <div className="flex-shrink-0">
+                                  <img
+                                    src={item.design_file_url}
+                                    alt={item.product_name || "Product Design"}
+                                    className="w-16 h-16 rounded border border-gray-300 object-cover"
+                                  />
+                                </div>
+                              )}
+
+                              {/* Product Details */}
+                              <div className="flex-1">
+                                <div className="flex justify-between text-sm mb-1">
+                                  <span className="text-gray-700 font-medium">
+                                    {item.product_name || `Product ${item.product_id}`}
+                                  </span>
+                                  <span className="font-semibold text-gray-900">
+                                    {formatCurrency(item.line_total || 0)}
+                                  </span>
+                                </div>
+                                <div className="text-xs text-gray-600 mb-2">
+                                  {item.quantity} × {formatCurrency(item.price)}
+                                </div>
+                              </div>
                             </div>
 
                             {/* Options Summary */}
