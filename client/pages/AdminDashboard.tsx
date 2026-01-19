@@ -3,25 +3,14 @@ import { useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
 import ProofNotificationAlert from "@/components/dashboard/ProofNotificationAlert";
 import {
-  BarChart3,
-  Users,
   TrendingUp,
-  Eye,
-  DollarSign,
   Settings,
   ChevronRight,
   ChevronDown,
   Package,
   Calendar,
-  Mail,
   Upload,
-  Image as ImageIcon,
   ArrowRight,
-  BookOpen,
-  FileText,
-  Truck,
-  MessageSquare,
-  Star,
 } from "lucide-react";
 
 interface OrderItem {
