@@ -87,7 +87,9 @@ export default function App() {
         <Sonner />
         <BrowserRouter>
           <PageTracker />
-          <Routes>
+          <div className="flex flex-col min-h-screen">
+            <div className="flex-1">
+              <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
@@ -182,8 +184,10 @@ export default function App() {
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="/:pageType" element={<LegalPage />} />
             <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Footer />
+              </Routes>
+            </div>
+            <Footer />
+          </div>
         </BrowserRouter>
       </QueryClientProvider>
     </TooltipProvider>
