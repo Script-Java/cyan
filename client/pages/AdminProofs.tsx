@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import AdminLayout from "@/components/AdminLayout";
 import { toast } from "sonner";
+import { formatOrderNumber } from "@/lib/order-number";
 
 interface ProofComment {
   id: string;
