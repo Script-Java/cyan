@@ -100,9 +100,9 @@ export default function DashboardNavigation({
   };
 
   return (
-    <div className="mb-8">
+    <div className="mb-6 sm:mb-8">
       {/* All Items in One Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 gap-2 sm:gap-3">
         {allItems.map((item: any) => {
           const Icon = item.icon;
           const isExpanded = expandedItem === item.id;
