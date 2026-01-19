@@ -93,6 +93,7 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       total: order.total,
       subtotal: order.subtotal || 0,
       tax: order.tax || 0,
+      shipping: order.shippingCost || 0,
       dateCreated: order.createDate,
       source: "ecwid",
       itemCount: order.items?.length || 0,
