@@ -18,6 +18,7 @@ import {
   updateCustomerStoreCredit,
 } from "../utils/supabase";
 import { sendOrderConfirmationEmail } from "../utils/email";
+import { formatOrderNumber } from "../utils/order";
 
 interface SquarePaymentRequest {
   sourceId: string;
