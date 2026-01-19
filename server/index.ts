@@ -467,6 +467,16 @@ export function createServer() {
   app.get("/api/public/products/imported/:id", handleGetImportedProductPublic);
   app.get("/api/public/products/:productId", handleGetPublicProduct);
 
+  // ===== Product Reviews Routes (Public) =====
+  app.post("/api/reviews", handleSubmitReview);
+  app.get("/api/reviews/:productId", handleGetProductReviews);
+  app.post("/api/reviews/:reviewId/helpful", handleMarkReviewHelpful);
+
+  // ===== Admin Reviews Routes (Protected - Admin only) =====
+  app.get("/api/admin/reviews", verifyToken, requireAdmin, handleGetAdminReviews);
+  app.patch("/api/admin/reviews/:reviewId/status", verifyToken, requireAdmin, handleUpdateReviewStatus);
+  app.delete("/api/admin/reviews/:reviewId", verifyToken, requireAdmin, handleDeleteReview);
+
   // ===== Ecwid Products Routes (Public) =====
   // Note: Order matters! More specific routes first
   app.get("/api/ecwid-products/search", handleSearchEcwidProducts);
