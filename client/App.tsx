@@ -183,6 +183,7 @@ export default function App() {
             <Route path="/:pageType" element={<LegalPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <Footer />
         </BrowserRouter>
       </QueryClientProvider>
     </TooltipProvider>
