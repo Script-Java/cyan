@@ -103,7 +103,25 @@ export default function Cart() {
 
       const data = await response.json();
       setCart(data.data);
-      toast.success("Item removed from cart");
+
+      // Calculate remaining items
+      const remainingItems = data.data?.line_items || [];
+      const totalItems = remainingItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
+
+      // Dispatch storage event to update header cart badge (for consistency)
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'cart',
+        newValue: JSON.stringify(remainingItems),
+        storageArea: localStorage,
+      }));
+
+      toast.success(
+        totalItems === 0
+          ? "Item removed from cart"
+          : totalItems === 1
+          ? "1 item removed - 1 item remaining"
+          : `Item removed - ${totalItems} items remaining in cart`
+      );
     } catch (err) {
       console.error("Failed to remove item:", err);
       toast.error("Failed to remove item");
