@@ -380,7 +380,7 @@ export default function Proofs() {
                         <div className="flex-1 min-w-0">
                           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mb-1 sm:mb-2">
                             <h3 className="text-base sm:text-lg font-semibold text-gray-900">
-                              Order #{proof.order_id}
+                              Order {formatOrderNumber(proof.order_id)}
                             </h3>
                             <span
                               className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium w-fit ${getStatusColor(proof.status)}`}
@@ -620,7 +620,7 @@ export default function Proofs() {
                         <div className="flex-1 min-w-0">
                           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mb-1 sm:mb-2">
                             <h3 className="text-base sm:text-lg font-semibold text-gray-900">
-                              Order #{proof.order_id}
+                              Order {formatOrderNumber(proof.order_id)}
                             </h3>
                             <span
                               className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium w-fit ${getStatusColor(proof.status)}`}
