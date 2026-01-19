@@ -506,7 +506,7 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
     const { data: digitalFilesData } = await supabase
       .from("digital_files")
       .select("*")
-      .eq("order_id", orderId);
+      .eq("order_id", orderIdNum);
 
     const digitalFiles = (digitalFilesData || []).map((file: any) => ({
       id: file.id,
