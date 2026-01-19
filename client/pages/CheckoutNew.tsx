@@ -574,10 +574,25 @@ export default function CheckoutNew() {
               modifier_price: 0,
             };
           }
+
+          // Look up the modifier_price from the product options definition
+          let modifierPrice = (opt as any).modifier_price || 0;
+          if (!modifierPrice && item.options && opt.option_id) {
+            const optionDef = item.options.find((o: any) => o.id === opt.option_id);
+            if (optionDef && optionDef.values) {
+              const valueDef = optionDef.values.find((v: any) => v.id === opt.option_value || v.name === opt.option_value);
+              modifierPrice = valueDef?.priceModifier || 0;
+            }
+          }
+
           return {
             option_id: opt.option_id || "custom",
+            option_name: (() => {
+              const optDef = item.options?.find((o: any) => o.id === opt.option_id);
+              return optDef?.name || undefined;
+            })(),
             option_value: opt.option_value || "",
-            modifier_price: (opt as any).modifier_price || 0,
+            modifier_price: modifierPrice,
           };
         },
       );
