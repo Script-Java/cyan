@@ -617,11 +617,9 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
 
     console.log("Order found:", { id: order.id, customer_id: order.customer_id });
 
-    // Fetch customer info separately
-    let customerEmail: string | null = null;
+    // Fetch customer info for display
+    let customerEmail = "";
     let customerName = "";
-
-    console.log("Customer ID on order:", order.customer_id);
 
     if (order.customer_id) {
       const { data: customer, error: customerError } = await supabase
@@ -630,34 +628,11 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
         .eq("id", order.customer_id)
         .single();
 
-      if (customerError) {
-        console.warn(`Customer not found for customer_id ${order.customer_id}:`, customerError);
-      } else if (customer) {
-        customerEmail = customer.email;
+      if (customer) {
+        customerEmail = customer.email || "";
         customerName = `${customer.first_name || ""} ${customer.last_name || ""}`.trim();
         console.log("Customer found:", { email: customerEmail, name: customerName });
       }
-    } else {
-      console.warn("No customer_id associated with order");
-    }
-
-    console.log("Email verification:", {
-      providedEmail: email,
-      customerEmail: customerEmail,
-      match: customerEmail?.toLowerCase() === (email as string).toLowerCase(),
-    });
-
-    if (
-      !customerEmail ||
-      customerEmail.toLowerCase() !== (email as string).toLowerCase()
-    ) {
-      console.warn(
-        `Email mismatch for order ${orderIdNum}: provided ${email}, expected ${customerEmail}`,
-      );
-      return res.status(403).json({
-        success: false,
-        error: "Email does not match this order",
-      });
     }
 
     // Fetch digital files if any exist
