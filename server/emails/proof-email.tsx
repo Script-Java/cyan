@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatOrderNumber } from '../utils/order';
 
 interface ProofEmailProps {
   customerName: string;
@@ -17,6 +18,7 @@ export function ProofEmail({
   approvalLink,
   revisionLink,
 }: ProofEmailProps) {
+  const formattedOrderNumber = formatOrderNumber(orderId);
   return (
     <div
       style={{
@@ -87,7 +89,7 @@ export function ProofEmail({
             lineHeight: '1.6',
           }}
         >
-          Great news! Your design proof for <strong>Order #{orderId}</strong> is ready for review.
+          Great news! Your design proof for <strong>Order {formattedOrderNumber}</strong> is ready for review.
         </p>
 
         {/* Proof Description */}
