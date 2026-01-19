@@ -35,6 +35,7 @@ interface OrderItem {
   product_sku?: string;
   product_description?: string;
   options?: OrderItemOption[] | null;
+  design_file_url?: string | null;
   line_total?: number;
 }
 
