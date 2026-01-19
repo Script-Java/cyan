@@ -528,7 +528,10 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
         subtotal: order.subtotal,
         tax: order.tax,
         shipping: order.shipping,
-        products: order.order_items || [],
+        products: (order.order_items || []).map((item: any) => ({
+          ...item,
+          name: item.product_name,
+        })),
         shipping_addresses: order.shipping_address
           ? [order.shipping_address]
           : [],
