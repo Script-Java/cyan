@@ -1027,6 +1027,21 @@ export default function AdminOrders() {
           }}
         />
       )}
+
+      {/* Option Cost Editor Modal */}
+      {editingOptionItemId !== null && (
+        <OptionCostEditor
+          orderId={editingOptionItemId.orderId}
+          itemId={editingOptionItemId.itemId}
+          productName={editingOptionItemId.productName}
+          options={editingOptionItemId.options}
+          onClose={() => setEditingOptionItemId(null)}
+          onSuccess={() => {
+            setEditingOptionItemId(null);
+            fetchOrders();
+          }}
+        />
+      )}
     </AdminLayout>
   );
 }
