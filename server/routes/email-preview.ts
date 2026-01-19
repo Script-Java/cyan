@@ -129,7 +129,7 @@ export const handleShippingConfirmationPreview: RequestHandler = (req, res) => {
   const baseUrl = `${req.protocol}://${req.get("host")}`;
   const html = generateShippingConfirmationEmail({
     customerName: "John Smith",
-    orderNumber: "SS-2024-001",
+    orderNumber: formatOrderNumber(1),
     trackingNumber: "1Z999AA10123456784",
     carrier: "UPS",
     trackingUrl: "https://www.ups.com/track?tracknum=1Z999AA10123456784",
@@ -184,7 +184,7 @@ export const handleOrderStatusUpdatePreview: RequestHandler = (req, res) => {
   const baseUrl = `${req.protocol}://${req.get("host")}`;
   const html = generateOrderStatusUpdateEmail({
     customerName: "John Smith",
-    orderNumber: "SS-2024-001",
+    orderNumber: formatOrderNumber(1),
     previousStatus: "Order Confirmed",
     currentStatus: "Processing",
     statusMessage: "Your order is now being prepared for production. Our team is working on bringing your design to life with precision and care.",
