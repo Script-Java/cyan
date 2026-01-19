@@ -606,19 +606,107 @@ export default function OrderHistory() {
                                 key={item.id}
                                 className="bg-gray-50 p-3 rounded border border-gray-200 space-y-2"
                               >
-                                <div className="flex justify-between items-start">
-                                  <div className="flex-1">
-                                    <p className="text-xs sm:text-sm font-medium text-gray-900">
-                                      {item.product_name}
-                                    </p>
-                                    <p className="text-xs text-gray-600 mt-1">
-                                      Qty: {item.quantity}
+                                {/* Design File Thumbnail */}
+                                {item.design_file_url && (
+                                  <div className="flex gap-2 mb-2">
+                                    {item.design_file_url.startsWith("data:") ||
+                                    item.design_file_url.match(
+                                      /\.(jpg|jpeg|png|gif|webp)$/i,
+                                    ) ? (
+                                      <a
+                                        href={item.design_file_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex-shrink-0"
+                                      >
+                                        <img
+                                          src={item.design_file_url}
+                                          alt="Design Upload"
+                                          className="h-16 w-16 sm:h-20 sm:w-20 object-cover rounded border border-gray-300 hover:border-blue-400 transition-colors"
+                                        />
+                                      </a>
+                                    ) : (
+                                      <a
+                                        href={item.design_file_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex-shrink-0 h-16 w-16 sm:h-20 sm:w-20 flex items-center justify-center rounded border border-gray-300 hover:border-blue-400 transition-colors bg-gray-100"
+                                      >
+                                        <Package className="w-6 h-6 text-gray-400" />
+                                      </a>
+                                    )}
+                                    <div className="flex-1">
+                                      <p className="text-xs sm:text-sm font-medium text-gray-900">
+                                        {item.product_name}
+                                      </p>
+                                      <p className="text-xs text-gray-600">
+                                        Qty: {item.quantity}
+                                      </p>
+                                      <p className="text-xs sm:text-sm font-semibold text-emerald-600 mt-1">
+                                        ${formatPrice(getItemPrice(item))}
+                                      </p>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Item without design file */}
+                                {!item.design_file_url && (
+                                  <div className="flex justify-between items-start">
+                                    <div className="flex-1">
+                                      <p className="text-xs sm:text-sm font-medium text-gray-900">
+                                        {item.product_name}
+                                      </p>
+                                      <p className="text-xs text-gray-600 mt-1">
+                                        Qty: {item.quantity}
+                                      </p>
+                                    </div>
+                                    <p className="text-xs sm:text-sm font-semibold text-emerald-600 flex-shrink-0">
+                                      ${formatPrice(getItemPrice(item))}
                                     </p>
                                   </div>
-                                  <p className="text-xs sm:text-sm font-semibold text-emerald-600 flex-shrink-0">
-                                    {formatCurrency(item.price_inc_tax)}
-                                  </p>
-                                </div>
+                                )}
+
+                                {/* Product Options */}
+                                {item.options && (
+                                  <div className="pt-2 border-t border-gray-300 space-y-1">
+                                    <p className="text-xs font-semibold text-gray-700">
+                                      Options:
+                                    </p>
+                                    <div className="flex flex-wrap gap-1">
+                                      {Array.isArray(item.options) ? (
+                                        item.options.map((option: any, idx: number) => {
+                                          const optionName =
+                                            option.option_id || option.name || `Option ${idx + 1}`;
+                                          const optionValue =
+                                            option.option_value || option.value || "";
+                                          return (
+                                            <span
+                                              key={idx}
+                                              className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
+                                            >
+                                              {optionName}: {optionValue}
+                                            </span>
+                                          );
+                                        })
+                                      ) : (
+                                        Object.entries(item.options).map(([key, value]) => {
+                                          const displayValue = formatOptionValue(value);
+                                          const label = /^\d+$/.test(key)
+                                            ? displayValue
+                                            : `${key}: ${displayValue}`;
+                                          return (
+                                            <span
+                                              key={key}
+                                              className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
+                                            >
+                                              {label}
+                                            </span>
+                                          );
+                                        })
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             ))}
                           </div>
