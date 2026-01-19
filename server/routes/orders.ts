@@ -91,13 +91,22 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       customerId: order.customerId,
       status: order.status || order.fulfillmentStatus || order.paymentStatus || "processing",
       total: order.total,
+      subtotal: order.subtotal || 0,
+      tax: order.tax || 0,
       dateCreated: order.createDate,
       source: "ecwid",
       itemCount: order.items?.length || 0,
+      items: order.items || [],
       tracking_number: order.shippingTrackingCode,
       tracking_carrier: order.shippingCarrier,
+      tracking_url: order.trackingUrl,
+      shipped_date: order.shippingDate,
       estimated_delivery_date: order.estimatedDeliveryDate,
       digital_files: ecwidDigitalFilesMap.get(order.id) || [],
+      shippingAddress: order.shippingPerson,
+      customerName: order.customerName,
+      customerEmail: order.email,
+      customerPhone: order.customerPhone,
     }));
 
     // Format BigCommerce orders
