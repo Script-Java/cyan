@@ -444,6 +444,62 @@ export function createServer() {
   app.get("/api/public/orders/:orderId", handleGetOrderPublic);
   app.get("/api/public/order-status", handleGetOrderStatus);
 
+  // ===== Debug endpoint (development only) =====
+  if (process.env.NODE_ENV !== "production") {
+    app.get("/api/debug/orders-list", async (req, res) => {
+      try {
+        const { createClient } = await import("@supabase/supabase-js");
+        const supabase = createClient(
+          process.env.SUPABASE_URL || "",
+          process.env.SUPABASE_SERVICE_KEY || ""
+        );
+
+        const { data: orders, error } = await supabase
+          .from("orders")
+          .select(`
+            id,
+            created_at,
+            status,
+            total,
+            customer_id
+          `)
+          .order("id", { ascending: true });
+
+        if (error) {
+          return res.status(500).json({ error: error.message });
+        }
+
+        // Fetch customer info for each order
+        const ordersWithCustomers = await Promise.all(
+          (orders || []).map(async (order) => {
+            if (!order.customer_id) return { ...order, customer_email: null };
+
+            const { data: customer } = await supabase
+              .from("customers")
+              .select("email")
+              .eq("id", order.customer_id)
+              .single();
+
+            return {
+              id: order.id,
+              display_number: `SY-5${4001 + order.id}`,
+              created_at: order.created_at,
+              status: order.status,
+              total: order.total,
+              customer_id: order.customer_id,
+              customer_email: customer?.email,
+            };
+          })
+        );
+
+        res.json({ orders: ordersWithCustomers });
+      } catch (error) {
+        console.error("Debug orders list error:", error);
+        res.status(500).json({ error: String(error) });
+      }
+    });
+  }
+
   // ===== Design Routes (Protected) =====
   app.get("/api/designs", verifyToken, handleGetDesigns);
   app.get("/api/orders/:orderId/designs", verifyToken, handleGetOrderDesigns);
