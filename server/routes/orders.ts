@@ -555,12 +555,12 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
  */
 export const handleGetOrderStatus: RequestHandler = async (req, res) => {
   try {
-    const { orderNumber, email } = req.query;
+    const { orderNumber } = req.query;
 
-    if (!orderNumber || !email) {
+    if (!orderNumber) {
       return res.status(400).json({
         success: false,
-        error: "Order number and email are required",
+        error: "Order number is required",
       });
     }
 
