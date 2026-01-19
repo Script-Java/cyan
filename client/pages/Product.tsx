@@ -415,6 +415,13 @@ export default function Product() {
       // Calculate total items in cart
       const totalItems = existingCart.reduce((sum: number, item: any) => sum + item.quantity, 0);
 
+      // Dispatch storage event to update header cart badge
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'cart',
+        newValue: JSON.stringify(existingCart),
+        storageArea: localStorage,
+      }));
+
       toast.success(
         totalItems === 1
           ? "1 item added to cart"
