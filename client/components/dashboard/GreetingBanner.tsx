@@ -123,11 +123,9 @@ export default function GreetingBanner({
       >
         {/* Overlay with dark background */}
         <div
-          className="absolute bg-black/30 left-0 right-0 bottom-0"
+          className="absolute bg-black/30 left-0 right-0 bottom-0 top-0"
           style={{
-            top: "2px",
             marginBottom: "auto",
-            width: "1280px",
           }}
         />
 
