@@ -157,13 +157,6 @@ export default function LegalPage() {
           )}
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-black/50 border-t border-white/10 py-8 mt-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white/50 text-sm">
-          <p>© 2024 Your Company. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }
