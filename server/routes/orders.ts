@@ -515,3 +515,135 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
     res.status(500).json({ error: errorMsg });
   }
 };
+
+/**
+ * Look up order by order number and email for public order status page
+ * No authentication required - customers use order number and email to check status
+ */
+export const handleGetOrderStatus: RequestHandler = async (req, res) => {
+  try {
+    const { orderNumber, email } = req.query;
+
+    if (!orderNumber || !email) {
+      return res.status(400).json({
+        success: false,
+        error: "Order number and email are required",
+      });
+    }
+
+    const orderIdNum = parseInt(orderNumber as string);
+    if (isNaN(orderIdNum)) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid order number format",
+      });
+    }
+
+    const { supabase } = await import("../utils/supabase");
+
+    // Get the order from Supabase with customer info
+    const { data: order, error: orderError } = await supabase
+      .from("orders")
+      .select(`
+        id,
+        customer_id,
+        status,
+        created_at,
+        total,
+        subtotal,
+        tax,
+        shipping,
+        shipping_address,
+        billing_address,
+        estimated_delivery_date,
+        tracking_number,
+        tracking_carrier,
+        tracking_url,
+        shipped_date,
+        customers (
+          email,
+          first_name,
+          last_name
+        ),
+        order_items (
+          id,
+          product_id,
+          product_name,
+          quantity,
+          price_inc_tax
+        )
+      `)
+      .eq("id", orderIdNum)
+      .single();
+
+    if (orderError || !order) {
+      console.warn("Order not found:", orderIdNum);
+      return res.status(404).json({
+        success: false,
+        error: "Order not found",
+      });
+    }
+
+    // Verify email matches
+    const customerEmail = (order.customers as any)?.email;
+    if (
+      !customerEmail ||
+      customerEmail.toLowerCase() !== (email as string).toLowerCase()
+    ) {
+      console.warn(
+        `Email mismatch for order ${orderIdNum}: provided ${email}, expected ${customerEmail}`,
+      );
+      return res.status(403).json({
+        success: false,
+        error: "Email does not match this order",
+      });
+    }
+
+    // Fetch digital files if any exist
+    const { data: digitalFilesData } = await supabase
+      .from("digital_files")
+      .select("*")
+      .eq("order_id", orderIdNum);
+
+    const digitalFiles = (digitalFilesData || []).map((file: any) => ({
+      id: file.id,
+      file_name: file.file_name,
+      file_url: file.file_url,
+      file_type: file.file_type,
+      file_size: file.file_size,
+      uploaded_at: file.uploaded_at,
+    }));
+
+    res.json({
+      success: true,
+      data: {
+        id: order.id,
+        status: order.status,
+        dateCreated: order.created_at,
+        total: order.total,
+        subtotal: order.subtotal,
+        tax: order.tax,
+        shipping: order.shipping,
+        customerName: `${(order.customers as any)?.first_name || ""} ${(order.customers as any)?.last_name || ""}`.trim(),
+        customerEmail: customerEmail,
+        products: order.order_items || [],
+        shippingAddress: order.shipping_address,
+        billingAddress: order.billing_address,
+        estimatedDeliveryDate: order.estimated_delivery_date,
+        trackingNumber: order.tracking_number,
+        trackingCarrier: order.tracking_carrier,
+        trackingUrl: order.tracking_url,
+        shippedDate: order.shipped_date,
+        digitalFiles: digitalFiles,
+      },
+    });
+  } catch (error) {
+    console.error("Get order status error:", error);
+    const errorMsg =
+      error instanceof Error ? error.message : "Failed to fetch order status";
+    res.status(500).json({
+      success: false,
+      error: errorMsg,
+    });
+  }
+};
