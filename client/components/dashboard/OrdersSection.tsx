@@ -90,7 +90,7 @@ export default function OrdersSection({ orders }: OrdersSectionProps) {
                         </div>
                         <div>
                           <p className="text-gray-900 font-semibold">
-                            Order #{order.id}
+                            {formatOrderNumber(order.id)}
                           </p>
                           <p className="text-gray-600 text-sm flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
