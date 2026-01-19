@@ -112,7 +112,7 @@ export default function DashboardNavigation({
               onClick={
                 item.isLogout ? onLogout : () => handleItemClick(item.id)
               }
-              className="p-4 rounded-xl border-2 transition-all duration-300 flex flex-col gap-3 items-center text-center hover:shadow-lg hover:scale-105 bg-white shadow-md hover:shadow-xl border-gray-200 group"
+              className="p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl border-2 transition-all duration-300 flex flex-col gap-2 sm:gap-3 items-center text-center hover:shadow-lg hover:scale-105 bg-white shadow-md hover:shadow-xl border-gray-200 group"
               style={{
                 opacity: item.isLogout ? 0.9 : 1,
                 borderColor: isExpanded ? item.color : "rgb(229, 231, 235)",
