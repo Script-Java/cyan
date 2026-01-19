@@ -610,7 +610,7 @@ export function createServer() {
   app.get("/api/email-preview/password-reset", handlePasswordResetPreview);
   app.get("/api/email-preview/support-reply", handleSupportTicketReplyPreview);
   app.get("/api/email-preview/order-status-update", handleOrderStatusUpdatePreview);
-  app.get("/api/admin/pending-orders", verifyToken, requireAdmin, adminLimiter, handleGetAdminPendingOrders);
+  app.get("/api/admin/pending-orders", verifyToken, requireAdmin, handleGetAdminPendingOrders);
   app.get("/api/admin/orders/test", verifyToken, requireAdmin, handleTestAdminOrders);
   app.get("/api/admin/all-orders", verifyToken, requireAdmin, handleGetAllAdminOrders);
   app.put(
