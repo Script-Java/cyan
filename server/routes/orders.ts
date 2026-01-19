@@ -659,11 +659,6 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
         products: order.order_items || [],
         shippingAddress: order.shipping_address,
         billingAddress: order.billing_address,
-        estimatedDeliveryDate: order.estimated_delivery_date,
-        trackingNumber: order.tracking_number,
-        trackingCarrier: order.tracking_carrier,
-        trackingUrl: order.tracking_url,
-        shippedDate: order.shipped_date,
         digitalFiles: digitalFiles,
       },
     });
