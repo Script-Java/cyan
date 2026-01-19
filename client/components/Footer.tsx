@@ -72,7 +72,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-200 pt-6 text-center text-xs">
-          <p>Built with ❤️ by © Sticky Slap LLC</p>
+          <p>© Sticky Slap LLC. 2026</p>
         </div>
       </div>
     </footer>
