@@ -405,14 +405,14 @@ export default function OrderStatus() {
                         >
                           <div className="flex-1">
                             <p className="font-semibold text-gray-900">
-                              {item.product_name}
+                              Product ID: {item.product_id}
                             </p>
                             <p className="text-sm text-gray-600">
                               Quantity: {item.quantity}
                             </p>
                           </div>
                           <p className="font-bold text-gray-900 flex-shrink-0 ml-4">
-                            {formatCurrency(item.price_inc_tax)}
+                            {formatCurrency(item.price)}
                           </p>
                         </div>
                       ))}
