@@ -18,6 +18,7 @@ import {
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { formatOrderNumber } from "@/lib/order-number";
 
 interface ProofComment {
   id: string;
