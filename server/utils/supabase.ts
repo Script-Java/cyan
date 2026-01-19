@@ -299,7 +299,7 @@ export async function getCustomerOrders(customerId: number): Promise<any[]> {
   try {
     const { data, error } = await supabase
       .from("orders")
-      .select("*")
+      .select("*, customers(id, first_name, last_name, email, phone), order_items(*)")
       .eq("customer_id", customerId)
       .order("created_at", { ascending: false });
 
