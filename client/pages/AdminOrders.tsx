@@ -643,9 +643,31 @@ export default function AdminOrders() {
                                             {/* Product Options */}
                                             {item.options && (
                                               <div>
-                                                <p className="text-xs text-gray-600 font-medium mb-2">
-                                                  SPECIFICATIONS
-                                                </p>
+                                                <div className="flex items-center justify-between mb-2">
+                                                  <p className="text-xs text-gray-600 font-medium">
+                                                    SPECIFICATIONS
+                                                  </p>
+                                                  <button
+                                                    onClick={() =>
+                                                      setEditingOptionItemId({
+                                                        orderId: order.id,
+                                                        itemId: item.id || idx,
+                                                        productName: item.product_name || "Product",
+                                                        options: Array.isArray(item.options)
+                                                          ? item.options
+                                                          : Object.entries(item.options).map(([key, val]) => ({
+                                                              option_id: key,
+                                                              option_value: formatOptionValue(val),
+                                                              price: typeof val === "object" ? val.price || 0 : 0,
+                                                            })),
+                                                      })
+                                                    }
+                                                    className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-green-100 hover:bg-green-200 text-green-700 border border-green-300 rounded transition-colors"
+                                                  >
+                                                    <Edit className="w-3 h-3" />
+                                                    Edit Costs
+                                                  </button>
+                                                </div>
                                                 <div className="flex flex-wrap gap-2">
                                                   {Array.isArray(item.options) ? (
                                                     item.options.length > 0 ? (
@@ -654,6 +676,7 @@ export default function AdminOrders() {
                                                           const optionName = option.option_id || "";
                                                           const optionValue =
                                                             option.option_value || "";
+                                                          const optionPrice = option.price || option.modifier_price || 0;
 
                                                           if (!optionName || !optionValue) {
                                                             return null;
@@ -664,8 +687,12 @@ export default function AdminOrders() {
                                                               key={idx}
                                                               className="inline-block bg-blue-50 text-blue-900 px-3 py-1 rounded-full text-xs font-medium border border-blue-200"
                                                             >
-                                                              {optionName}:{" "}
-                                                              {optionValue}
+                                                              {optionName}: {optionValue}
+                                                              {optionPrice > 0 && (
+                                                                <span className="ml-1 font-semibold">
+                                                                  (+${optionPrice.toFixed(2)})
+                                                                </span>
+                                                              )}
                                                             </span>
                                                           );
                                                         }
@@ -681,6 +708,7 @@ export default function AdminOrders() {
                                                         const label = isNumericKey
                                                           ? displayValue
                                                           : `${key}: ${displayValue}`;
+                                                        const optionPrice = typeof val === "object" ? val.price || 0 : 0;
 
                                                         return (
                                                           <span
@@ -688,6 +716,11 @@ export default function AdminOrders() {
                                                             className="inline-block bg-blue-50 text-blue-900 px-3 py-1 rounded-full text-xs font-medium border border-blue-200"
                                                           >
                                                             {label}
+                                                            {optionPrice > 0 && (
+                                                              <span className="ml-1 font-semibold">
+                                                                (+${optionPrice.toFixed(2)})
+                                                              </span>
+                                                            )}
                                                           </span>
                                                         );
                                                       }
