@@ -382,14 +382,14 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
           <p className="text-gray-500 text-xs mt-2">Loading reviews...</p>
         </div>
       ) : reviews.length === 0 ? (
-        <div className="text-center py-8 bg-white rounded-lg border border-gray-200">
-          <p className="text-gray-600 text-sm mb-3">No reviews yet. Be the first to share your experience!</p>
+        <div className="text-center py-8 bg-white rounded-lg border-2 border-green-200 shadow-md">
+          <p className="text-gray-600 text-sm mb-3 font-medium">No reviews yet. Be the first to share your experience!</p>
           {!showForm && (
             <Button
               onClick={() => setShowForm(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+              className="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold"
             >
-              Write First Review
+              ✍️ Write First Review
             </Button>
           )}
         </div>
