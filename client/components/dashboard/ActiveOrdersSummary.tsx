@@ -522,7 +522,8 @@ export default function ActiveOrdersSummary({
                       {order.items && order.items.length > 0 ? (
                         <div className="space-y-3">
                           {order.items.map((item) => {
-                            const unitPrice = getItemPrice(item);
+                            // Base price is always $0.40 for stickers
+                            const basePrice = 0.40;
 
                             // Calculate total option price by summing all individual option prices
                             let totalOptionPrice = 0;
@@ -541,7 +542,7 @@ export default function ActiveOrdersSummary({
                               }
                             }
 
-                            const pricePerUnit = unitPrice + totalOptionPrice;
+                            const pricePerUnit = basePrice + totalOptionPrice;
                             const itemTotal = pricePerUnit * item.quantity;
 
                             return (
