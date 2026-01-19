@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   BarChart3,
   Users,
@@ -13,6 +14,7 @@ import {
   MessageSquare,
   Star,
 } from "lucide-react";
+import { useAdminNotifications } from "@/hooks/useAdminNotifications";
 
 const quickAccessLinks = [
   {
