@@ -188,7 +188,7 @@ export default function ActiveOrdersSummary({
                 </div>
                 <div className="flex items-center justify-between sm:flex-col sm:items-end gap-2 sm:gap-3">
                   <p className="font-bold text-sm sm:text-base text-emerald-600">
-                    ${order.total.toFixed(2)}
+                    ${formatPrice(order.total)}
                   </p>
                   <button
                     onClick={(e) => {
