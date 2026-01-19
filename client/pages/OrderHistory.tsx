@@ -36,8 +36,21 @@ interface OrderItem {
   product_id: number;
   product_name: string;
   quantity: number;
-  price_inc_tax: number;
-  price_ex_tax: number;
+  price_inc_tax?: number;
+  price_ex_tax?: number;
+  price?: number;
+  option_price?: number;
+  total_price?: number;
+  options?: Record<string, any> | Array<{
+    option_id?: string;
+    option_name?: string;
+    name?: string;
+    option_value?: string;
+    value?: string;
+    price?: number;
+    modifier_price?: number;
+  }>;
+  design_file_url?: string;
 }
 
 interface DigitalFile {
