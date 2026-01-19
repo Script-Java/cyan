@@ -885,12 +885,12 @@ export default function AccountSettings() {
 
             {/* Social Media Tab */}
             {activeTab === "social" && (
-              <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">
+              <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">
                   Social Media Handles
                 </h2>
 
-                <p className="text-gray-600 mb-6">
+                <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
                   Add your social media profiles to your account. This helps
                   customers and collaborators find you online.
                 </p>
