@@ -30,11 +30,19 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [cartItemCount, setCartItemCount] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const ecwidScriptLoaded = useRef(false);
   const { storeCredit, fetchStoreCredit } = useStoreCredit();
   const isAdminPage = location.pathname.startsWith("/admin");
+
+  // Update cart count when items are added
+  const updateCartCount = () => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const totalItems = cart.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0);
+    setCartItemCount(totalItems);
+  };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
