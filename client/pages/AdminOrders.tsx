@@ -648,10 +648,11 @@ export default function AdminOrders() {
                                                     SPECIFICATIONS
                                                   </p>
                                                   <button
-                                                    onClick={() =>
+                                                    onClick={() => {
+                                                      console.log("Edit costs clicked - item:", { item, idx, itemId: item.id });
                                                       setEditingOptionItemId({
                                                         orderId: order.id,
-                                                        itemId: item.id || idx,
+                                                        itemId: item.id ?? idx,
                                                         productName: item.product_name || "Product",
                                                         options: Array.isArray(item.options)
                                                           ? item.options
@@ -660,8 +661,8 @@ export default function AdminOrders() {
                                                               option_value: formatOptionValue(val),
                                                               price: typeof val === "object" ? val.price || 0 : 0,
                                                             })),
-                                                      })
-                                                    }
+                                                      });
+                                                    }}
                                                     className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-green-100 hover:bg-green-200 text-green-700 border border-green-300 rounded transition-colors"
                                                   >
                                                     <Edit className="w-3 h-3" />
