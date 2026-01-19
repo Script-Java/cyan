@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AdminLayout from "@/components/AdminLayout";
-import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import { toast } from "sonner";
 
 interface ProofComment {
