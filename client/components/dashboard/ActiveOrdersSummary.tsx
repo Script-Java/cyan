@@ -14,6 +14,7 @@ import {
   ArrowRight,
   DollarSign,
 } from "lucide-react";
+import { formatOrderNumber } from "@/lib/order-number";
 
 interface OrderItem {
   id: number;
