@@ -202,29 +202,6 @@ export default function AdminAnalytics() {
         {/* Main Content */}
         <main className="min-h-screen text-gray-900 px-4 sm:px-10 py-12">
           <div className="max-w-7xl mx-auto">
-            {/* Quick Access Links */}
-            <div className="mb-8">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Quick Access
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-                {quickAccessLinks.map((link) => (
-                  <button
-                    key={link.path}
-                    onClick={() => navigate(link.path)}
-                    className={`flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-gray-200 transition-all duration-200 hover:scale-105 active:scale-95 ${link.color}`}
-                  >
-                    <div className={`${link.textColor}`}>{link.icon}</div>
-                    <div className="text-center">
-                      <p className="text-xs font-semibold text-gray-900 line-clamp-1">
-                        {link.title}
-                      </p>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {/* Key Metrics */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               {/* Revenue */}
