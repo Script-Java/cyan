@@ -327,23 +327,67 @@ export default function OrderStatus() {
                       <Package className="w-5 h-5 text-green-500" />
                       Order Items
                     </h3>
-                    <div className="space-y-3">
+                    <div className="space-y-6">
                       {orderData.products.map((item) => (
                         <div
                           key={item.id}
-                          className="flex justify-between items-start border-b border-gray-200 pb-3 last:border-b-0"
+                          className="bg-gray-50/50 rounded-lg p-4 border border-gray-200"
                         >
-                          <div className="flex-1">
-                            <p className="font-semibold text-gray-900">
-                              Product ID: {item.product_id}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              Quantity: {item.quantity}
-                            </p>
+                          {/* Product Header */}
+                          <div className="mb-4">
+                            <h4 className="text-base font-bold text-gray-900">
+                              {item.product_name || `Product ${item.product_id}`}
+                            </h4>
+                            {item.product_sku && (
+                              <p className="text-sm text-gray-600 mt-1">
+                                SKU: <span className="font-mono font-semibold">{item.product_sku}</span>
+                              </p>
+                            )}
+                            {item.product_description && (
+                              <p className="text-sm text-gray-600 mt-2">
+                                {item.product_description}
+                              </p>
+                            )}
                           </div>
-                          <p className="font-bold text-gray-900 flex-shrink-0 ml-4">
-                            {formatCurrency(item.price)}
-                          </p>
+
+                          {/* Pricing Grid */}
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-white rounded-lg p-4">
+                            <div>
+                              <p className="text-xs font-semibold text-gray-500 uppercase">
+                                Quantity
+                              </p>
+                              <p className="text-lg font-bold text-gray-900 mt-1">
+                                {item.quantity}
+                              </p>
+                            </div>
+
+                            <div>
+                              <p className="text-xs font-semibold text-gray-500 uppercase">
+                                Unit Price
+                              </p>
+                              <p className="text-lg font-bold text-gray-900 mt-1">
+                                {formatCurrency(item.price)}
+                              </p>
+                            </div>
+
+                            <div>
+                              <p className="text-xs font-semibold text-gray-500 uppercase">
+                                Subtotal
+                              </p>
+                              <p className="text-lg font-bold text-green-600 mt-1">
+                                {formatCurrency(item.line_total || 0)}
+                              </p>
+                            </div>
+
+                            <div className="col-span-2 sm:col-span-1">
+                              <p className="text-xs font-semibold text-gray-500 uppercase">
+                                Per Sticker
+                              </p>
+                              <p className="text-lg font-bold text-gray-900 mt-1">
+                                {formatCurrency(item.price)}
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       ))}
                     </div>
