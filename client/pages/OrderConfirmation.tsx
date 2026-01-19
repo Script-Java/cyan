@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useStoreCredit } from "@/hooks/useStoreCredit";
 import { trackPurchase } from "@/lib/analytics";
+import { formatOrderNumber } from "@/lib/order-number";
 
 interface OrderDetails {
   id: number;
