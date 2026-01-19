@@ -567,16 +567,11 @@ export default function ActiveOrdersSummary({
                                               option.option_value || option.value || "";
 
                                             return (
-                                              <div
-                                                key={idx}
-                                                className="flex justify-between text-xs"
-                                              >
-                                                <span className="text-gray-700">
-                                                  {optionName}
-                                                  {optionValue && ` (${optionValue})`}
-                                                </span>
+                                              <div key={idx} className="text-xs text-gray-700">
+                                                {optionName}
+                                                {optionValue && ` (${optionValue})`}
                                                 {optionPrice > 0 && (
-                                                  <span className="text-blue-600 font-medium">
+                                                  <span className="text-blue-600 font-medium ml-1">
                                                     +${formatPrice(optionPrice)}
                                                   </span>
                                                 )}
@@ -590,15 +585,10 @@ export default function ActiveOrdersSummary({
                                               typeof val === "object" ? val.value || val.name : val;
 
                                             return (
-                                              <div
-                                                key={key}
-                                                className="flex justify-between text-xs"
-                                              >
-                                                <span className="text-gray-700">
-                                                  {key}: {formatOptionValue(displayValue)}
-                                                </span>
+                                              <div key={key} className="text-xs text-gray-700">
+                                                {key}: {formatOptionValue(displayValue)}
                                                 {optionPrice > 0 && (
-                                                  <span className="text-blue-600 font-medium">
+                                                  <span className="text-blue-600 font-medium ml-1">
                                                     +${formatPrice(optionPrice)}
                                                   </span>
                                                 )}
