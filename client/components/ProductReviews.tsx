@@ -208,9 +208,9 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
         {!showForm && (
           <Button
             onClick={() => setShowForm(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm"
+            className="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold shadow-md"
           >
-            Write a Review
+            ✍️ Write a Review
           </Button>
         )}
       </div>
