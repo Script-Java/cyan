@@ -30,40 +30,64 @@ export default function EcwidStore() {
     `;
     document.head.appendChild(style);
 
+    // Initialize Ecwid configuration before loading the script
+    if (!window.ec) {
+      (window as any).ec = {};
+    }
+    (window as any).ec.config = {
+      store_id: ECWID_STORE_ID,
+      language: "en",
+    };
+
     // Load and initialize Ecwid script
     const script1 = document.createElement("script");
     script1.src = `https://app.ecwid.com/script.js?${ECWID_STORE_ID}&data_platform=code&data_date=2025-11-28`;
     script1.setAttribute("data-cfasync", "false");
     script1.async = true;
-    document.body.appendChild(script1);
 
     script1.onload = () => {
-      // Initialize product browser
-      const script2 = document.createElement("script");
-      script2.type = "text/javascript";
+      // Wait a moment for Ecwid to fully initialize
+      const waitForEcwid = () => {
+        if ((window as any).ec && (window as any).ec.ready) {
+          // Initialize product browser
+          const script2 = document.createElement("script");
+          script2.type = "text/javascript";
 
-      // Build command with optional search
-      let command = `xProductBrowser("categoriesPerRow=3","views=grid(20,3) list(60) table(60)","categoryView=grid","searchView=list"`;
+          // Build command with optional search
+          let command = `xProductBrowser("categoriesPerRow=3","views=grid(20,3) list(60) table(60)","categoryView=grid","searchView=list"`;
 
-      // Add search query if provided
-      if (searchQuery) {
-        command += `,"defaultSearch=${encodeURIComponent(searchQuery)}"`;
-      }
+          // Add search query if provided
+          if (searchQuery) {
+            command += `,"defaultSearch=${encodeURIComponent(searchQuery)}"`;
+          }
 
-      command += `,"id=my-store-${ECWID_STORE_ID}");`;
-      script2.textContent = command;
-      document.body.appendChild(script2);
+          command += `,"id=my-store-${ECWID_STORE_ID}");`;
+          script2.textContent = command;
+          document.body.appendChild(script2);
 
-      // Ensure the store container is visible after Ecwid loads
-      setTimeout(() => {
-        const storeContainer = document.getElementById(
-          `my-store-${ECWID_STORE_ID}`,
-        );
-        if (storeContainer) {
-          storeContainer.style.display = "block";
+          // Ensure the store container is visible after Ecwid loads
+          setTimeout(() => {
+            const storeContainer = document.getElementById(
+              `my-store-${ECWID_STORE_ID}`,
+            );
+            if (storeContainer) {
+              storeContainer.style.display = "block";
+            }
+          }, 500);
+        } else {
+          // Retry after a short delay
+          setTimeout(waitForEcwid, 100);
         }
-      }, 500);
+      };
+
+      waitForEcwid();
     };
+
+    script1.onerror = () => {
+      console.error("Failed to load Ecwid script");
+    };
+
+    document.body.appendChild(script1);
 
     return () => {
       // Cleanup scripts if needed
