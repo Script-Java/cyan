@@ -149,7 +149,19 @@ export default function Cart() {
 
       const data = await response.json();
       setCart(data.data);
-      toast.success("Cart updated");
+
+      // Calculate new total items
+      const updatedItems = data.data?.line_items || [];
+      const totalItems = updatedItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
+
+      // Dispatch storage event to update header cart badge
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'cart',
+        newValue: JSON.stringify(updatedItems),
+        storageArea: localStorage,
+      }));
+
+      toast.success(`Cart updated - ${totalItems} item${totalItems !== 1 ? "s" : ""} in cart`);
     } catch (err) {
       console.error("Failed to update quantity:", err);
       toast.error("Failed to update quantity");
