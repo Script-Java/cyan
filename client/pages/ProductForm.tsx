@@ -11,7 +11,6 @@ import {
   GripVertical,
 } from "lucide-react";
 import Header from "@/components/Header";
-import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import MobileAdminPanel from "@/components/MobileAdminPanel";
 import CollapsibleSection from "@/components/forms/CollapsibleSection";
 import { Button } from "@/components/ui/button";
@@ -766,16 +765,6 @@ export default function ProductForm() {
             <h1 className="text-4xl font-bold text-gray-900">
               {productId ? "Edit Product" : "Create New Product"}
             </h1>
-          </div>
-        </div>
-
-        {/* Navigation Grid - Desktop/Tablet Only */}
-        <div className="hidden md:block border-b border-gray-200 bg-gray-50 backdrop-blur-sm">
-          <div className="px-6 lg:px-8 py-6">
-            <h2 className="text-sm font-semibold text-gray-700 mb-4">
-              Quick Navigation
-            </h2>
-            <AdminNavigationGrid />
           </div>
         </div>
 
