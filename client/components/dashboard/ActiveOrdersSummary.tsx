@@ -498,31 +498,71 @@ export default function ActiveOrdersSummary({
                       Order Summary
                     </h3>
 
-                    {/* Item Breakdown */}
+                    {/* Item Breakdown - Detailed */}
                     <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-gray-200">
                       <p className="text-xs font-semibold text-gray-700 mb-2">
                         Items Breakdown:
                       </p>
                       {order.items && order.items.length > 0 ? (
-                        <div className="space-y-1">
-                          {order.items.map((item, idx) => (
-                            <div
-                              key={item.id}
-                              className="flex justify-between text-xs"
-                            >
-                              <div>
-                                <span className="text-gray-600">
+                        <div className="space-y-3">
+                          {order.items.map((item) => {
+                            const unitPrice = getItemPrice(item);
+                            const optionPrice = item.option_price || 0;
+                            const itemTotal = (unitPrice + optionPrice) * item.quantity;
+
+                            return (
+                              <div
+                                key={item.id}
+                                className="bg-gray-50 p-2 rounded border border-gray-100 text-xs"
+                              >
+                                {/* Product Name */}
+                                <p className="font-semibold text-gray-900 mb-1">
                                   {item.product_name}
-                                </span>
-                                <span className="text-gray-500 ml-1">
-                                  × {item.quantity}
-                                </span>
+                                </p>
+
+                                {/* Cost Breakdown Table */}
+                                <div className="space-y-1 text-xs">
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">
+                                      Cost per Sticker:
+                                    </span>
+                                    <span className="text-gray-900 font-medium">
+                                      ${formatPrice(unitPrice)}
+                                    </span>
+                                  </div>
+
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-600">
+                                      Quantity:
+                                    </span>
+                                    <span className="text-gray-900 font-medium">
+                                      × {item.quantity}
+                                    </span>
+                                  </div>
+
+                                  {optionPrice > 0 && (
+                                    <div className="flex justify-between">
+                                      <span className="text-gray-600">
+                                        Option Price:
+                                      </span>
+                                      <span className="text-blue-700 font-medium">
+                                        +${formatPrice(optionPrice)}
+                                      </span>
+                                    </div>
+                                  )}
+
+                                  <div className="pt-1 border-t border-gray-300 flex justify-between font-semibold">
+                                    <span className="text-gray-900">
+                                      Item Total:
+                                    </span>
+                                    <span className="text-emerald-600">
+                                      ${formatPrice(itemTotal)}
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
-                              <span className="text-gray-700 font-medium">
-                                ${formatPrice(getItemPrice(item) * item.quantity)}
-                              </span>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       ) : (
                         <p className="text-xs text-gray-600">
