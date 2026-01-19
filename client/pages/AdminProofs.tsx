@@ -936,7 +936,7 @@ export default function AdminProofs() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1 sm:mb-2 flex-wrap">
                             <h3 className="text-base sm:text-lg font-semibold text-gray-900">
-                              Order #{proof.order_id}
+                              Order {formatOrderNumber(proof.order_id)}
                             </h3>
                             <span
                               className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium flex-shrink-0 ${getStatusColor(proof.status)}`}
