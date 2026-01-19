@@ -646,6 +646,12 @@ export function createServer() {
     requireAdmin,
     handleUpdateShippingAddress,
   );
+  app.post(
+    "/api/admin/update-order-item-options",
+    verifyToken,
+    requireAdmin,
+    handleUpdateOrderItemOptions,
+  );
 
   // ===== Shipping Routes (Protected - admin only) =====
   app.post("/api/shipping/label", verifyToken, requireAdmin, handleCreateLabel);
