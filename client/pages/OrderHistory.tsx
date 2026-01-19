@@ -744,54 +744,47 @@ export default function OrderHistory() {
                                       {item.product_name}
                                     </p>
 
-                                    {/* Cost Breakdown Box */}
-                                    <div className="bg-blue-50 border border-blue-200 rounded p-2 mb-2">
-                                      <p className="text-blue-900 font-medium text-xs">How We Calculated ${formatPrice(pricePerUnit)} Per Sticker:</p>
-                                      <div className="text-blue-800 text-xs mt-2 space-y-1">
-                                        <div className="flex justify-between">
-                                          <span>📌 Base sticker price:</span>
-                                          <span className="font-semibold">$0.40</span>
+                                    {/* Product Options Display */}
+                                    {item.options && (
+                                      <div className="pt-2 border-t border-gray-300 space-y-1 mb-2">
+                                        <p className="text-xs font-semibold text-gray-700">
+                                          Options:
+                                        </p>
+                                        <div className="flex flex-wrap gap-1">
+                                          {Array.isArray(item.options) ? (
+                                            item.options.map((option: any, idx: number) => {
+                                              const optionName =
+                                                option.option_id || option.name || `Option ${idx + 1}`;
+                                              const optionValue =
+                                                option.option_value || option.value || "";
+                                              return (
+                                                <span
+                                                  key={idx}
+                                                  className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
+                                                >
+                                                  {optionName}: {optionValue}
+                                                </span>
+                                              );
+                                            })
+                                          ) : (
+                                            Object.entries(item.options).map(([key, value]) => {
+                                              const displayValue = formatOptionValue(value);
+                                              const label = /^\d+$/.test(key)
+                                                ? displayValue
+                                                : `${key}: ${displayValue}`;
+                                              return (
+                                                <span
+                                                  key={key}
+                                                  className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
+                                                >
+                                                  {label}
+                                                </span>
+                                              );
+                                            })
+                                          )}
                                         </div>
-                                        {item.options && (
-                                          <>
-                                            <div className="border-t border-blue-300 pt-1 mt-1">
-                                              <p className="font-semibold text-blue-900 mb-1">Selected Options Cost:</p>
-                                              <div className="space-y-1 pl-2">
-                                                {Array.isArray(item.options) ? (
-                                                  item.options.map((option: any, idx: number) => {
-                                                    const optionPrice = option.price || option.modifier_price || 0;
-                                                    const optionName = option.option_name || option.name || option.option_id || `Option ${idx + 1}`;
-                                                    const optionValue = option.option_value || option.value || "";
-                                                    return (
-                                                      <div key={idx} className="flex justify-between">
-                                                        <span>➕ {optionName} {optionValue && `(${optionValue})`}:</span>
-                                                        <span className="font-semibold">+${formatPrice(optionPrice)}</span>
-                                                      </div>
-                                                    );
-                                                  })
-                                                ) : (
-                                                  Object.entries(item.options).map(([key, val]: [string, any]) => {
-                                                    const optionPrice = typeof val === "object" ? val.price || val.modifier_price || 0 : 0;
-                                                    const displayValue = typeof val === "object" ? val.value || val.name : val;
-                                                    const formattedKey = formatOptionKey(key);
-                                                    return (
-                                                      <div key={key} className="flex justify-between">
-                                                        <span>➕ {formattedKey} {displayValue && `(${formatOptionValue(displayValue)})`}:</span>
-                                                        <span className="font-semibold">+${formatPrice(optionPrice)}</span>
-                                                      </div>
-                                                    );
-                                                  })
-                                                )}
-                                              </div>
-                                            </div>
-                                            <div className="border-t border-blue-300 pt-1 mt-1 flex justify-between font-bold">
-                                              <span>= Final per sticker cost:</span>
-                                              <span className="text-blue-900">${formatPrice(pricePerUnit)}</span>
-                                            </div>
-                                          </>
-                                        )}
                                       </div>
-                                    </div>
+                                    )}
 
                                     {/* Item pricing summary */}
                                     <div className="space-y-1 text-xs">
