@@ -236,7 +236,7 @@ export default function OrderConfirmation() {
               Thank you for your purchase
             </p>
             <p className="text-lg text-gray-500">
-              Order #{order.id} • placed on{" "}
+              {formatOrderNumber(order.id)} • placed on{" "}
               {new Date(order.date_created).toLocaleDateString()}
             </p>
           </div>
