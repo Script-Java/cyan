@@ -244,6 +244,11 @@ export function createServer() {
       : []),
   ];
 
+  // Allow Netlify deployments
+  if (process.env.NETLIFY_SITE_NAME) {
+    allowedOrigins.push(`https://${process.env.NETLIFY_SITE_NAME}.netlify.app`);
+  }
+
   // Allow fly.dev production URLs (Fly.io deployments)
   if (process.env.FLY_APP_NAME) {
     allowedOrigins.push(`https://${process.env.FLY_APP_NAME}.fly.dev`);
