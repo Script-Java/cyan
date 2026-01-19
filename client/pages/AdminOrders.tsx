@@ -91,6 +91,12 @@ export default function AdminOrders() {
   >(null);
   const [editingShippingAddressOrderId, setEditingShippingAddressOrderId] =
     useState<number | null>(null);
+  const [editingOptionItemId, setEditingOptionItemId] = useState<{
+    orderId: number;
+    itemId: number;
+    productName: string;
+    options: any[];
+  } | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
