@@ -588,14 +588,17 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
       .from("order_items")
       .update({
         options: updatedOptions,
-        updated_at: new Date().toISOString(),
       })
       .eq("id", itemToUpdate.id)
       .select()
       .single();
 
     if (updateError) {
-      console.error("Error updating order item:", updateError);
+      console.error("Error updating order item:", {
+        message: updateError.message,
+        code: updateError.code,
+        details: updateError.details,
+      });
       return res.status(500).json({
         error: "Failed to update order item",
         details: updateError.message,
