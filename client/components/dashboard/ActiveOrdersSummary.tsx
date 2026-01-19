@@ -346,7 +346,7 @@ export default function ActiveOrdersSummary({
                                 </p>
                                 {file.file_size && (
                                   <p className="text-xs text-gray-600">
-                                    {(file.file_size / 1024 / 1024).toFixed(2)}{" "}
+                                    {formatPrice(file.file_size / 1024 / 1024)}{" "}
                                     MB
                                   </p>
                                 )}
