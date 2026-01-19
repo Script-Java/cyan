@@ -503,19 +503,38 @@ export default function OrderStatus() {
                   {orderData.products && orderData.products.length > 0 && (
                     <div className="mb-6">
                       <h4 className="font-semibold text-gray-900 mb-3">Item Costs</h4>
-                      <div className="space-y-2 bg-gray-50 rounded-lg p-4">
+                      <div className="space-y-4 bg-gray-50 rounded-lg p-4">
                         {orderData.products.map((item) => (
-                          <div key={item.id} className="flex justify-between text-sm">
-                            <span className="text-gray-700">
-                              {item.product_name || `Product ${item.product_id}`}
-                              <br />
-                              <span className="text-xs text-gray-500">
-                                {item.quantity} × {formatCurrency(item.price)}
+                          <div key={item.id} className="border-b border-gray-200 pb-4 last:border-b-0 last:pb-0">
+                            <div className="flex justify-between text-sm mb-2">
+                              <span className="text-gray-700 font-medium">
+                                {item.product_name || `Product ${item.product_id}`}
                               </span>
-                            </span>
-                            <span className="font-semibold text-gray-900">
-                              {formatCurrency(item.line_total || 0)}
-                            </span>
+                              <span className="font-semibold text-gray-900">
+                                {formatCurrency(item.line_total || 0)}
+                              </span>
+                            </div>
+                            <div className="text-xs text-gray-600 mb-2">
+                              {item.quantity} × {formatCurrency(item.price)}
+                            </div>
+
+                            {/* Options Summary */}
+                            {item.options && item.options.length > 0 && (
+                              <div className="ml-3 mt-2 pt-2 border-t border-gray-300 space-y-1">
+                                {item.options.map((option, optionIndex) => (
+                                  <div key={optionIndex} className="flex justify-between text-xs text-gray-600">
+                                    <span>
+                                      <span className="font-semibold">{option.option_name}:</span> {option.option_value}
+                                    </span>
+                                    {option.modifier_price && option.modifier_price > 0 && (
+                                      <span className="text-gray-700 font-semibold">
+                                        +{formatCurrency(option.modifier_price)}
+                                      </span>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
