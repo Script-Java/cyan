@@ -919,9 +919,6 @@ export default function Product() {
               </div>
             )}
 
-            {/* Product Benefits */}
-            <ProductBenefits />
-
             {/* Order Notes */}
             <div className="backdrop-blur-xl bg-gray-50 border border-gray-200 rounded-lg p-3">
               <h2 className="text-xs font-bold mb-1.5">
