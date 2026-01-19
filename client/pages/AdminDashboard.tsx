@@ -108,7 +108,7 @@ export default function AdminDashboard() {
 
   return (
     <AdminLayout>
-      <main className="py-6">
+      <div className="py-6">
         <div className="max-w-6xl mx-auto px-4">
           {/* Header */}
           <div className="mb-6">
@@ -303,7 +303,7 @@ export default function AdminDashboard() {
             </div>
           )}
         </div>
-      </main>
+      </div>
     </AdminLayout>
   );
 }
