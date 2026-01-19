@@ -517,10 +517,10 @@ export default function AccountSettings() {
 
             {/* Personal Information Tab */}
             {activeTab === "personal" && customer && (
-              <div className="space-y-8 animate-fadeIn">
+              <div className="space-y-6 sm:space-y-8 animate-fadeIn">
                 {/* Personal Info Form */}
-                <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                  <h2 className="text-xl font-bold text-gray-900 mb-6">
+                <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">
                     Personal Information
                   </h2>
 
