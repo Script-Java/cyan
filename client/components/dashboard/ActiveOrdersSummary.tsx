@@ -398,7 +398,7 @@ export default function ActiveOrdersSummary({
                         <div className="flex justify-between">
                           <span className="text-gray-600">Subtotal:</span>
                           <span className="font-medium">
-                            ${order.subtotal.toFixed(2)}
+                            ${formatPrice(order.subtotal)}
                           </span>
                         </div>
                       )}
@@ -406,7 +406,7 @@ export default function ActiveOrdersSummary({
                         <div className="flex justify-between">
                           <span className="text-gray-600">Tax:</span>
                           <span className="font-medium">
-                            ${order.tax.toFixed(2)}
+                            ${formatPrice(order.tax)}
                           </span>
                         </div>
                       )}
@@ -419,7 +419,7 @@ export default function ActiveOrdersSummary({
                       <div className="pt-2 border-t border-gray-200 flex justify-between">
                         <span className="font-bold text-gray-900">Total:</span>
                         <span className="font-bold text-emerald-600">
-                          ${order.total.toFixed(2)}
+                          ${formatPrice(order.total)}
                         </span>
                       </div>
                     </div>
