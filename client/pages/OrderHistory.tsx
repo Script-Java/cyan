@@ -620,10 +620,47 @@ export default function OrderHistory() {
                                     key={item.id}
                                     className="bg-gray-50 p-2 rounded border border-gray-100 text-xs"
                                   >
-                                    {/* Product Name */}
-                                    <p className="font-semibold text-gray-900 mb-1">
-                                      {item.product_name}
-                                    </p>
+                                    {/* Design Thumbnail */}
+                                    {item.design_file_url && (
+                                      <div className="mb-2 flex gap-2">
+                                        {item.design_file_url.startsWith("data:") ||
+                                        item.design_file_url.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                                          <a
+                                            href={item.design_file_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex-shrink-0"
+                                          >
+                                            <img
+                                              src={item.design_file_url}
+                                              alt="Design Upload"
+                                              className="h-12 w-12 object-cover rounded border border-gray-300 hover:border-blue-400 transition-colors"
+                                            />
+                                          </a>
+                                        ) : (
+                                          <a
+                                            href={item.design_file_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded border border-gray-300 bg-gray-100"
+                                          >
+                                            <Package className="w-4 h-4 text-gray-400" />
+                                          </a>
+                                        )}
+                                        <div className="flex-1">
+                                          <p className="font-semibold text-gray-900">
+                                            {item.product_name}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {/* Product Name (if no design file) */}
+                                    {!item.design_file_url && (
+                                      <p className="font-semibold text-gray-900 mb-1">
+                                        {item.product_name}
+                                      </p>
+                                    )}
 
                                     {/* Product Options Display */}
                                     {item.options && (
