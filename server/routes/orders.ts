@@ -629,6 +629,37 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
       }
     }
 
+    // Enrich order items with product details
+    const enrichedItems = await Promise.all(
+      (order.order_items || []).map(async (item: any) => {
+        let productName = "Product";
+        let productSku = "";
+        let productDescription = "";
+
+        if (item.product_id) {
+          const { data: product } = await supabase
+            .from("admin_products")
+            .select("name, sku, description")
+            .eq("id", item.product_id)
+            .single();
+
+          if (product) {
+            productName = product.name || "Product";
+            productSku = product.sku || "";
+            productDescription = product.description || "";
+          }
+        }
+
+        return {
+          ...item,
+          product_name: productName,
+          product_sku: productSku,
+          product_description: productDescription,
+          line_total: (item.price || 0) * (item.quantity || 0),
+        };
+      })
+    );
+
     // Fetch digital files if any exist
     const { data: digitalFilesData } = await supabase
       .from("digital_files")
