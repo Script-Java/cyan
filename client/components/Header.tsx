@@ -72,16 +72,28 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
       fetchStoreCredit();
     }
 
+    // Update cart count on mount
+    updateCartCount();
+
     const handleVisibilityChange = () => {
       if (!document.hidden && token) {
         fetchStoreCredit();
       }
     };
 
+    // Listen for storage changes (from other tabs/windows or localStorage updates)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "cart") {
+        updateCartCount();
+      }
+    };
+
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("storage", handleStorageChange);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("storage", handleStorageChange);
     };
   }, [fetchStoreCredit]);
 
