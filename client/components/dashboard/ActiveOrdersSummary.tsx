@@ -558,14 +558,53 @@ export default function ActiveOrdersSummary({
                                 <div className="space-y-1 text-xs">
                                   {/* Price Explanation Note */}
                                   <div className="bg-blue-50 border border-blue-200 rounded p-2 mb-2">
-                                    <p className="text-blue-900 font-medium text-xs">Why Base Cost Per Sticker is ${formatPrice(pricePerUnit)}:</p>
-                                    <div className="text-blue-800 text-xs mt-1 space-y-1">
-                                      <div>📌 Base sticker price: <span className="font-semibold">$0.40</span></div>
-                                      {totalOptionPrice > 0 && (
+                                    <p className="text-blue-900 font-medium text-xs">How We Calculated ${formatPrice(pricePerUnit)} Per Sticker:</p>
+                                    <div className="text-blue-800 text-xs mt-2 space-y-1">
+                                      <div className="flex justify-between">
+                                        <span>📌 Base sticker price:</span>
+                                        <span className="font-semibold">$0.40</span>
+                                      </div>
+                                      {item.options && (
                                         <>
-                                          <div>➕ Gloss & Lamination finish: <span className="font-semibold">+$0.10</span></div>
-                                          <div className="pt-1 border-t border-blue-300 mt-1">
-                                            <strong>= Final cost per sticker: ${formatPrice(pricePerUnit)}</strong>
+                                          <div className="border-t border-blue-300 pt-1 mt-1">
+                                            <p className="font-semibold text-blue-900 mb-1">Selected Options Cost:</p>
+                                            <div className="space-y-1 pl-2">
+                                              {Array.isArray(item.options) ? (
+                                                item.options.map((option: any, idx: number) => {
+                                                  const optionPrice = option.price || option.modifier_price || 0;
+                                                  const optionName = option.option_name || option.name || option.option_id || `Option ${idx + 1}`;
+                                                  const optionValue = option.option_value || option.value || "";
+                                                  if (optionPrice > 0) {
+                                                    return (
+                                                      <div key={idx} className="flex justify-between">
+                                                        <span>➕ {optionName} {optionValue && `(${optionValue})`}:</span>
+                                                        <span className="font-semibold">+${formatPrice(optionPrice)}</span>
+                                                      </div>
+                                                    );
+                                                  }
+                                                  return null;
+                                                })
+                                              ) : (
+                                                Object.entries(item.options).map(([key, val]: [string, any]) => {
+                                                  const optionPrice = typeof val === "object" ? val.price || val.modifier_price : 0;
+                                                  const displayValue = typeof val === "object" ? val.value || val.name : val;
+                                                  const formattedKey = formatOptionKey(key);
+                                                  if (optionPrice > 0) {
+                                                    return (
+                                                      <div key={key} className="flex justify-between">
+                                                        <span>➕ {formattedKey} {displayValue && `(${formatOptionValue(displayValue)})`}:</span>
+                                                        <span className="font-semibold">+${formatPrice(optionPrice)}</span>
+                                                      </div>
+                                                    );
+                                                  }
+                                                  return null;
+                                                })
+                                              )}
+                                            </div>
+                                          </div>
+                                          <div className="border-t border-blue-300 pt-1 mt-1 flex justify-between font-bold">
+                                            <span>= Final per sticker cost:</span>
+                                            <span className="text-blue-900">${formatPrice(pricePerUnit)}</span>
                                           </div>
                                         </>
                                       )}
