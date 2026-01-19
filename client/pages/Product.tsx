@@ -396,10 +396,16 @@ export default function Product() {
         });
       }
 
+      // Store design file in sessionStorage if provided, otherwise use null
+      let designFileId: string | null = null;
+      if (design_file_url) {
+        designFileId = storeDesignFile(design_file_url, designFile?.name);
+      }
+
       const cartItem = {
         productId: productId!,
         selectedOptions,
-        design_file_url,
+        design_file_id: designFileId,
         optionalFields,
         orderNotes,
         quantity,
@@ -409,12 +415,8 @@ export default function Product() {
         savePercentage,
       };
 
-      // Store cart item without large design file data URL to avoid localStorage quota exceeded
-      const cartItemForStorage = { ...cartItem };
-      delete cartItemForStorage.design_file_url;
-
       const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
-      existingCart.push(cartItemForStorage);
+      existingCart.push(cartItem);
       localStorage.setItem("cart", JSON.stringify(existingCart));
 
       // Calculate total items in cart
