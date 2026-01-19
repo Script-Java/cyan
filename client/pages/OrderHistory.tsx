@@ -121,6 +121,34 @@ export default function OrderHistory() {
     }).format(amount);
   };
 
+  const formatPrice = (price: number | undefined): string => {
+    if (typeof price === "number") {
+      return price.toFixed(2);
+    }
+    return "0.00";
+  };
+
+  const getItemPrice = (item: OrderItem): number => {
+    if (typeof item.price_inc_tax === "number") return item.price_inc_tax;
+    if (typeof item.price_ex_tax === "number") return item.price_ex_tax;
+    if (typeof item.price === "number") return item.price;
+    return 0;
+  };
+
+  const formatOptionValue = (value: any): string => {
+    if (typeof value === "string") return value;
+    if (typeof value === "number") return String(value);
+    if (typeof value === "boolean") return value ? "Yes" : "No";
+    return "";
+  };
+
+  const formatOptionKey = (key: string): string => {
+    return key
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+
   // Filter orders based on search query
   const filteredOrders = orders.filter((order) => {
     if (!searchQuery.trim()) return true;
