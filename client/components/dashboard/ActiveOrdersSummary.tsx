@@ -192,9 +192,223 @@ export default function ActiveOrdersSummary({
               {/* Expanded Details Section */}
               {expandedOrderId === order.id && (
                 <div className="bg-gray-50 border-t-2 border-gray-200 p-3 sm:p-5 space-y-3 sm:space-y-4">
+                  {/* Customer Information & Shipping Address */}
+                  <div className="bg-white rounded-lg border-2 border-blue-200 p-3 sm:p-4 shadow-sm">
+                    <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-2 sm:mb-3 flex items-center gap-2">
+                      <User className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
+                      Customer & Shipping Information
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                      {order.customerName && (
+                        <div>
+                          <p className="text-xs text-gray-600 mb-1">Full Name</p>
+                          <p className="text-xs sm:text-sm font-medium text-gray-900">
+                            {order.customerName}
+                          </p>
+                        </div>
+                      )}
+                      {order.customerEmail && (
+                        <div>
+                          <p className="text-xs text-gray-600 mb-1 flex items-center gap-1">
+                            <Mail className="w-3 h-3" />
+                            Email
+                          </p>
+                          <p className="text-xs sm:text-sm font-medium text-blue-600 break-all">
+                            {order.customerEmail}
+                          </p>
+                        </div>
+                      )}
+                      {order.customerPhone && (
+                        <div>
+                          <p className="text-xs text-gray-600 mb-1 flex items-center gap-1">
+                            <Phone className="w-3 h-3" />
+                            Phone
+                          </p>
+                          <p className="text-xs sm:text-sm font-medium text-gray-900">
+                            {order.customerPhone}
+                          </p>
+                        </div>
+                      )}
+                      {order.estimated_delivery_date && (
+                        <div>
+                          <p className="text-xs text-gray-600 mb-1 flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            Est. Delivery
+                          </p>
+                          <p className="text-xs sm:text-sm font-medium text-blue-600">
+                            {new Date(
+                              order.estimated_delivery_date,
+                            ).toLocaleDateString()}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    {order.shippingAddress && (
+                      <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200">
+                        <p className="text-xs text-gray-600 mb-2 flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          Shipping Address
+                        </p>
+                        <div className="text-xs sm:text-sm text-gray-900 space-y-1">
+                          {order.shippingAddress.street && (
+                            <p>{order.shippingAddress.street}</p>
+                          )}
+                          <p>
+                            {order.shippingAddress.city},{" "}
+                            {order.shippingAddress.state}{" "}
+                            {order.shippingAddress.postalCode}
+                          </p>
+                          {order.shippingAddress.country && (
+                            <p>{order.shippingAddress.country}</p>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Design File Thumbnails */}
+                  {order.digital_files && order.digital_files.length > 0 && (
+                    <div>
+                      <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-2 sm:mb-3 flex items-center gap-2">
+                        <ImageIcon className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
+                        Design Files
+                      </h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+                        {order.digital_files.map((file) => (
+                          <a
+                            key={file.id}
+                            href={file.file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="relative group overflow-hidden rounded-lg border-2 border-gray-200 hover:border-blue-400 transition-colors h-20 sm:h-24"
+                          >
+                            {file.file_type?.includes("image") ? (
+                              <img
+                                src={file.file_url}
+                                alt={file.file_name}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                <Package className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
+                              </div>
+                            )}
+                            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all flex items-end justify-center opacity-0 group-hover:opacity-100">
+                              <p className="text-white text-xs font-medium mb-1 px-1 text-center truncate">
+                                {file.file_name}
+                              </p>
+                            </div>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Digital Files List */}
+                  {order.digital_files && order.digital_files.length > 0 && (
+                    <div className="bg-white rounded-lg border-2 border-blue-200 p-3 sm:p-4 shadow-sm">
+                      <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-2 sm:mb-3">
+                        📁 Digital Files
+                      </h4>
+                      <div className="space-y-2">
+                        {order.digital_files.map((file) => (
+                          <a
+                            key={file.id}
+                            href={file.file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between bg-gray-50 p-2 sm:p-3 rounded border border-blue-100 hover:border-blue-400 hover:bg-blue-50 transition-colors gap-2"
+                          >
+                            <div className="flex items-center gap-2 min-w-0">
+                              <Package className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600 flex-shrink-0" />
+                              <div className="min-w-0">
+                                <p className="text-xs sm:text-sm font-medium text-blue-900 truncate">
+                                  {file.file_name}
+                                </p>
+                                {file.file_size && (
+                                  <p className="text-xs text-gray-600">
+                                    {(file.file_size / 1024 / 1024).toFixed(2)}{" "}
+                                    MB
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600 flex-shrink-0" />
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Order Items */}
+                  {order.items && order.items.length > 0 && (
+                    <div className="bg-white rounded-lg border-2 border-gray-200 p-3 sm:p-4 shadow-sm">
+                      <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-2 sm:mb-3">
+                        Order Items
+                      </h4>
+                      <div className="space-y-2">
+                        {order.items.map((item) => (
+                          <div
+                            key={item.id}
+                            className="flex justify-between items-start sm:items-center bg-gray-50 p-2 rounded border border-gray-200 gap-2"
+                          >
+                            <div className="flex-1">
+                              <p className="text-xs sm:text-sm font-medium text-gray-900">
+                                {item.product_name}
+                              </p>
+                              <p className="text-xs text-gray-600">
+                                Qty: {item.quantity}
+                              </p>
+                            </div>
+                            <p className="text-xs sm:text-sm font-semibold text-gray-900 flex-shrink-0">
+                              ${item.price_inc_tax.toFixed(2)}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Order Totals */}
+                  <div className="bg-white rounded-lg border-2 border-gray-200 p-3 sm:p-4 shadow-sm">
+                    <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-2 sm:mb-3">
+                      Order Summary
+                    </h3>
+                    <div className="space-y-2 text-xs sm:text-sm">
+                      {order.subtotal !== undefined && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Subtotal:</span>
+                          <span className="font-medium">
+                            ${order.subtotal.toFixed(2)}
+                          </span>
+                        </div>
+                      )}
+                      {order.tax !== undefined && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Tax:</span>
+                          <span className="font-medium">
+                            ${order.tax.toFixed(2)}
+                          </span>
+                        </div>
+                      )}
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Items:</span>
+                        <span className="font-semibold text-gray-900">
+                          {order.itemCount}
+                        </span>
+                      </div>
+                      <div className="pt-2 border-t border-gray-200 flex justify-between">
+                        <span className="font-bold text-gray-900">Total:</span>
+                        <span className="font-bold text-emerald-600">
+                          ${order.total.toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Tracking Information */}
                   {(order.tracking_number || order.shipped_date) && (
-                    <div className="bg-white rounded-lg p-3 sm:p-4 border-2 border-blue-200 shadow-sm">
+                    <div className="bg-white rounded-lg border-2 border-blue-200 p-3 sm:p-4 shadow-sm">
                       <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-2 sm:mb-3 flex items-center gap-2">
                         <Truck className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                         Shipping & Tracking
@@ -236,55 +450,13 @@ export default function ActiveOrdersSummary({
                               className="inline-flex items-center gap-1 text-xs px-2 sm:px-3 py-2 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-300 transition-colors font-semibold shadow-sm"
                             >
                               <MapPin className="w-3 h-3" />
-                              <span className="hidden sm:inline">Track</span>
-                              <span className="sm:hidden">Track</span>
+                              <span>Track</span>
                             </a>
                           </div>
                         )}
                       </div>
                     </div>
                   )}
-
-                  {/* Estimated Delivery */}
-                  {order.estimated_delivery_date && (
-                    <div className="bg-white rounded-lg p-3 sm:p-4 border-2 border-emerald-200 shadow-sm">
-                      <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-2">
-                        Estimated Delivery
-                      </h3>
-                      <p className="text-xs sm:text-sm text-emerald-700 font-semibold">
-                        {new Date(
-                          order.estimated_delivery_date,
-                        ).toLocaleDateString()}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Order Summary */}
-                  <div className="bg-white rounded-lg p-3 sm:p-4 border-2 border-gray-200 shadow-sm">
-                    <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-2 sm:mb-3">
-                      Order Summary
-                    </h3>
-                    <div className="space-y-2 text-xs sm:text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Items:</span>
-                        <span className="font-semibold text-gray-900">
-                          {order.itemCount}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Order Date:</span>
-                        <span className="font-semibold text-gray-900">
-                          {new Date(order.dateCreated).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <div className="pt-2 border-t border-gray-200 flex justify-between">
-                        <span className="font-bold text-gray-900">Total:</span>
-                        <span className="font-bold text-emerald-600">
-                          ${order.total.toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               )}
             </div>
