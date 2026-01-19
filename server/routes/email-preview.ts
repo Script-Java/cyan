@@ -6,6 +6,7 @@ import { generateShippingConfirmationEmail } from "../emails/shipping-confirmati
 import { generatePasswordResetEmail } from "../emails/password-reset";
 import { generateSupportTicketReplyEmail } from "../emails/support-ticket-reply";
 import { generateOrderStatusUpdateEmail } from "../emails/order-status-update";
+import { formatOrderNumber } from "../utils/order";
 import { Resend } from "resend";
 
 const resend = process.env.RESEND_API_KEY
