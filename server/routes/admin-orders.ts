@@ -198,6 +198,10 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
 
     console.log(`Admin pending orders count: ${count}`);
 
+    // Set explicit content type and ensure proper JSON response
+    res.set("Content-Type", "application/json");
+    res.set("Cache-Control", "no-cache, no-store, must-revalidate");
+
     res.json({
       success: true,
       orders: [],
@@ -209,6 +213,7 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
       stack: error instanceof Error ? error.stack : undefined,
     });
     // Don't fail - just return 0 count
+    res.set("Content-Type", "application/json");
     res.json({
       success: true,
       orders: [],
