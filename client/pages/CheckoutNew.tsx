@@ -411,6 +411,28 @@ export default function CheckoutNew() {
         (_: any, i: number) => i !== index,
       );
       localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+      // Calculate total remaining items
+      const totalItems = updatedCart.reduce((sum: number, item: any) => sum + item.quantity, 0);
+
+      // Dispatch storage event to update header cart badge
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'cart',
+        newValue: JSON.stringify(updatedCart),
+        oldValue: JSON.stringify(customItems),
+        storageArea: localStorage,
+      }));
+
+      // Show toast with updated count
+      toast.success(
+        totalItems === 0
+          ? "Item removed from cart"
+          : totalItems === 1
+          ? "1 item removed - 1 item remaining"
+          : `Item removed - ${totalItems} items remaining in cart`
+      );
+    } else {
+      toast.success("Item removed from cart");
     }
 
     const newSubtotal = updatedItems.reduce((sum, item) => {
@@ -418,7 +440,6 @@ export default function CheckoutNew() {
     }, 0);
 
     calculateOrderData(newSubtotal, appliedDiscount, appliedStoreCredit);
-    toast.success("Item removed from cart");
   };
 
   const handleApplyStoreCredit = (amount: number) => {
