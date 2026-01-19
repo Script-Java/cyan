@@ -44,6 +44,7 @@ interface Order {
   total: number;
   subtotal?: number;
   tax?: number;
+  shipping?: number;
   itemCount: number;
   items?: OrderItem[];
   tracking_number?: string;
