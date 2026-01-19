@@ -76,10 +76,20 @@ export default function OptionCostEditor({
         body: JSON.stringify(payload),
       });
 
-      const responseData = await response.json().catch(() => ({}));
+      const responseData = await response.json().catch((e) => {
+        console.error("Failed to parse response:", e);
+        return {};
+      });
+
+      console.log("Response status:", response.status);
+      console.log("Response data:", JSON.stringify(responseData, null, 2));
 
       if (!response.ok) {
-        console.error("Update failed:", { status: response.status, data: responseData });
+        console.error("Update failed:", {
+          status: response.status,
+          statusText: response.statusText,
+          data: responseData,
+        });
         throw new Error(
           responseData.error || `Failed to update option costs (${response.status})`
         );
