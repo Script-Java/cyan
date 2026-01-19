@@ -559,7 +559,7 @@ export default function ActiveOrdersSummary({
                                   {/* Price Explanation Note */}
                                   <div className="bg-blue-50 border border-blue-200 rounded p-2 mb-2">
                                     <p className="text-blue-900 font-medium text-xs">Why Base Cost Per Sticker is ${formatPrice(pricePerUnit)}:</p>
-                                    <p className="text-blue-800 text-xs mt-1 space-y-1">
+                                    <div className="text-blue-800 text-xs mt-1 space-y-1">
                                       <div>📌 Base sticker price: <span className="font-semibold">$0.40</span></div>
                                       {totalOptionPrice > 0 && (
                                         <>
@@ -569,7 +569,7 @@ export default function ActiveOrdersSummary({
                                           </div>
                                         </>
                                       )}
-                                    </p>
+                                    </div>
                                   </div>
 
                                   <div className="flex justify-between">
