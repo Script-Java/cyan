@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
+import AdminQuickAccess from "@/components/AdminQuickAccess";
 import MobileAdminPanel from "@/components/MobileAdminPanel";
 
 interface SupportTicket {
