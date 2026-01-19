@@ -362,23 +362,55 @@ export default function ProductPage() {
       const discountedPricePerUnit = basePrice * (1 - savePercentage / 100);
       const totalPrice = discountedPricePerUnit * quantity;
 
-      // Store design file in sessionStorage if present
-      let designFileId: string | null = null;
+      // Upload design file to server if provided
+      let design_file_url: string | undefined;
       if (designFile) {
-        const reader = new FileReader();
-        const design_file_url = await new Promise<string>((resolve) => {
-          reader.onload = (event) => {
-            resolve(event.target?.result as string);
-          };
-          reader.readAsDataURL(designFile);
-        });
-        designFileId = storeDesignFile(design_file_url, designFile.name);
+        try {
+          const reader = new FileReader();
+          const fileData = await new Promise<string>((resolve) => {
+            reader.onload = (event) => {
+              const result = event.target?.result as string;
+              // Extract base64 part
+              const base64 = result.split(",")[1];
+              resolve(base64);
+            };
+            reader.readAsDataURL(designFile);
+          });
+
+          const token = localStorage.getItem("authToken");
+          const uploadResponse = await fetch("/api/designs/upload", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token && { Authorization: `Bearer ${token}` }),
+            },
+            body: JSON.stringify({
+              fileData,
+              fileName: designFile.name,
+              fileType: designFile.type,
+            }),
+          });
+
+          if (!uploadResponse.ok) {
+            throw new Error("Failed to upload design file");
+          }
+
+          const uploadData = await uploadResponse.json();
+          design_file_url = uploadData.fileUrl;
+        } catch (error) {
+          console.error("Error uploading design file:", error);
+          toast({
+            title: "Warning",
+            description: "Design file upload failed. Try again or continue without uploading.",
+            variant: "destructive",
+          });
+        }
       }
 
       const cartItem = {
         productId: productId!,
         selectedOptions,
-        design_file_id: designFileId,
+        design_file_url,
         optionalFields,
         orderNotes,
         quantity,
