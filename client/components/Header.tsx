@@ -363,13 +363,18 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
                 )}
               </div>
 
-              {/* Desktop Cart Icon */}
+              {/* Desktop Cart Icon with Badge */}
               <Link
                 to="/checkout-new"
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                title="Go to Checkout"
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors relative"
+                title={`Go to Checkout (${cartItemCount} item${cartItemCount !== 1 ? "s" : ""})`}
               >
                 <ShoppingCart className="w-7 h-7 text-[#FFD713]" />
+                {cartItemCount > 0 && (
+                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartItemCount > 9 ? "9+" : cartItemCount}
+                  </span>
+                )}
               </Link>
 
               {/* Desktop Cart Widget */}
