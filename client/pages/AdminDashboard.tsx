@@ -194,6 +194,14 @@ export default function AdminDashboard() {
       textColor: "text-red-600",
     },
     {
+      title: "Reviews",
+      description: "Moderate customer reviews",
+      icon: <Star className="w-5 h-5" />,
+      path: "/admin/reviews",
+      color: "bg-yellow-100 hover:bg-yellow-200",
+      textColor: "text-yellow-600",
+    },
+    {
       title: "Email Templates",
       description: "View & manage email notifications",
       icon: <Mail className="w-5 h-5" />,
