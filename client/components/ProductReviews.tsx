@@ -217,7 +217,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
 
       {/* Review Form */}
       {showForm && (
-        <form onSubmit={handleSubmitReview} className="mb-6 p-4 bg-white rounded-lg border-2 border-green-200 shadow-md">
+        <form onSubmit={handleSubmitReview} className="mb-6 p-4 bg-white rounded-lg border-2 border-purple-200 shadow-md">
           <div className="space-y-4">
             {/* Name and Email */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
