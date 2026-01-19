@@ -52,7 +52,8 @@ export default function Support() {
         const orderData: PrefillOrderData = JSON.parse(prefillData);
 
         // Pre-fill the form with order information
-        const orderSummary = `Order #${orderData.orderId} - ${orderData.orderDate}
+        const formattedOrderNumber = formatOrderNumber(orderData.orderId);
+        const orderSummary = `Order ${formattedOrderNumber} - ${orderData.orderDate}
 Status: ${orderData.orderStatus}
 Amount: $${orderData.orderAmount.toFixed(2)}
 Product(s): ${orderData.productTypes || "N/A"}
@@ -63,11 +64,11 @@ Issue: `;
 
         setFormData((prev) => ({
           ...prev,
-          subject: `Issue with Order #${orderData.orderId}`,
+          subject: `Issue with Order ${formattedOrderNumber}`,
           category: "order",
           orderId: orderData.orderId,
           orderDetails: `
-Order ID: ${orderData.orderId}
+Order ID: ${formattedOrderNumber}
 Order Date: ${orderData.orderDate}
 Order Amount: $${orderData.orderAmount.toFixed(2)}
 Status: ${orderData.orderStatus}
