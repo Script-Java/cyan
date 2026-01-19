@@ -412,7 +412,17 @@ export default function Product() {
       existingCart.push(cartItem);
       localStorage.setItem("cart", JSON.stringify(existingCart));
 
-      toast.success("Product added to cart");
+      // Calculate total items in cart
+      const totalItems = existingCart.reduce((sum: number, item: any) => sum + item.quantity, 0);
+
+      toast.success(
+        totalItems === 1
+          ? "1 item added to cart"
+          : `${totalItems} items added to cart`,
+        {
+          description: `You now have ${totalItems} item${totalItems !== 1 ? "s" : ""} in your cart`
+        }
+      );
       setShowCheckoutDialog(true);
     } catch (error) {
       console.error("Error adding to cart:", error);
