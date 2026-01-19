@@ -555,27 +555,29 @@ export default function OrderHistory() {
 
                       {/* Order Items */}
                       {order.items && order.items.length > 0 && (
-                        <div className="mb-4 sm:mb-6">
-                          <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-3 sm:mb-4">
+                        <div className="bg-white rounded-lg border-2 border-gray-200 p-3 sm:p-4 shadow-sm">
+                          <h4 className="text-xs sm:text-sm font-semibold text-gray-900 mb-2 sm:mb-3">
                             Order Items
                           </h4>
-                          <div className="space-y-2 sm:space-y-3">
+                          <div className="space-y-3 sm:space-y-4">
                             {order.items.map((item) => (
                               <div
                                 key={item.id}
-                                className="flex justify-between items-start sm:items-center bg-white p-3 rounded border border-gray-200 gap-2"
+                                className="bg-gray-50 p-3 rounded border border-gray-200 space-y-2"
                               >
-                                <div className="flex-1">
-                                  <p className="text-xs sm:text-sm font-medium text-gray-900">
-                                    {item.product_name}
-                                  </p>
-                                  <p className="text-xs text-gray-600">
-                                    Qty: {item.quantity}
+                                <div className="flex justify-between items-start">
+                                  <div className="flex-1">
+                                    <p className="text-xs sm:text-sm font-medium text-gray-900">
+                                      {item.product_name}
+                                    </p>
+                                    <p className="text-xs text-gray-600 mt-1">
+                                      Qty: {item.quantity}
+                                    </p>
+                                  </div>
+                                  <p className="text-xs sm:text-sm font-semibold text-emerald-600 flex-shrink-0">
+                                    {formatCurrency(item.price_inc_tax)}
                                   </p>
                                 </div>
-                                <p className="text-xs sm:text-sm font-semibold text-gray-900 flex-shrink-0">
-                                  {formatCurrency(item.price_inc_tax)}
-                                </p>
                               </div>
                             ))}
                           </div>
