@@ -383,7 +383,7 @@ export async function createSquarePaymentLink(data: {
       // Fallback: create a single line item
       lineItems.push({
         uid: "item-0",
-        name: "Order #" + data.orderId,
+        name: "Order " + formatOrderNumber(data.orderId),
         quantity: "1",
         base_price_money: {
           amount: amountInCents,
