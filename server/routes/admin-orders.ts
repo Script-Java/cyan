@@ -421,16 +421,20 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
 
     // Fetch the order to get current order_items
     console.log("Fetching order from Supabase with id:", numOrderId);
-    const { data: order, error: fetchError, count } = await supabase
+    const { data: order, error: fetchError } = await supabase
       .from("orders")
-      .select("order_items, id", { count: "estimated" })
+      .select("order_items, id")
       .eq("id", numOrderId)
       .single();
 
     console.log("Supabase query result:", {
       hasData: !!order,
       hasError: !!fetchError,
-      fetchError,
+      fetchError: fetchError ? {
+        message: fetchError.message,
+        code: fetchError.code,
+        details: fetchError.details,
+      } : null,
       orderId: order?.id,
       itemCount: order?.order_items?.length,
     });
