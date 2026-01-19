@@ -423,7 +423,12 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
     console.log("Fetching order from Supabase with id:", numOrderId);
     const { data: order, error: fetchError } = await supabase
       .from("orders")
-      .select("order_items, id")
+      .select(
+        `
+        id,
+        order_items(id,quantity,product_name,options,design_file_url)
+        `
+      )
       .eq("id", numOrderId)
       .single();
 
