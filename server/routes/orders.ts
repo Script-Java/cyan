@@ -621,6 +621,8 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
     let customerEmail: string | null = null;
     let customerName = "";
 
+    console.log("Customer ID on order:", order.customer_id);
+
     if (order.customer_id) {
       const { data: customer, error: customerError } = await supabase
         .from("customers")
@@ -635,7 +637,16 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
         customerName = `${customer.first_name || ""} ${customer.last_name || ""}`.trim();
         console.log("Customer found:", { email: customerEmail, name: customerName });
       }
+    } else {
+      console.warn("No customer_id associated with order");
     }
+
+    console.log("Email verification:", {
+      providedEmail: email,
+      customerEmail: customerEmail,
+      match: customerEmail?.toLowerCase() === (email as string).toLowerCase(),
+    });
+
     if (
       !customerEmail ||
       customerEmail.toLowerCase() !== (email as string).toLowerCase()
