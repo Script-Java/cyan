@@ -54,6 +54,66 @@ export const handleTestAdminOrders: RequestHandler = async (req, res) => {
 };
 
 /**
+ * Debug endpoint to test Supabase order structure
+ */
+export const handleDebugOrders: RequestHandler = async (req, res) => {
+  try {
+    console.log("=== DEBUG ORDERS ENDPOINT ===");
+
+    // Fetch first order
+    const { data: orders, error: ordersError } = await supabase
+      .from("orders")
+      .select("id, status, total")
+      .limit(1);
+
+    console.log("Orders query result:", { orders, error: ordersError });
+
+    if (!orders || orders.length === 0) {
+      return res.json({
+        message: "No orders found",
+        error: ordersError,
+      });
+    }
+
+    const firstOrderId = orders[0].id;
+    console.log("First order ID:", firstOrderId, "Type:", typeof firstOrderId);
+
+    // Try to fetch with order_items
+    const { data: orderWithItems, error: itemsError } = await supabase
+      .from("orders")
+      .select(`
+        id,
+        status,
+        total,
+        order_items(id, product_name, options)
+      `)
+      .eq("id", firstOrderId)
+      .single();
+
+    console.log("Order with items result:", {
+      data: orderWithItems,
+      error: itemsError,
+    });
+
+    res.json({
+      firstOrder: orders[0],
+      orderWithItems,
+      itemsError,
+      debug: {
+        orderId: firstOrderId,
+        orderIdType: typeof firstOrderId,
+      },
+    });
+  } catch (error) {
+    console.error("Debug endpoint error:", error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : "Unknown error",
+      stack: error instanceof Error ? error.stack : undefined,
+    });
+  }
+};
+
+/**
  * Get all orders from Supabase and Ecwid (admin only)
  * Fetches all orders regardless of status
  * Returns orders with customer details and tracking info
