@@ -629,11 +629,11 @@ export default function OrderHistory() {
                                 key={shipment.id}
                                 className="bg-gray-50 p-3 rounded border border-gray-200"
                               >
-                                <div className="flex items-start justify-between mb-3 gap-2">
-                                  <div className="flex items-center gap-2">
+                                <div className="flex items-start justify-between mb-2 gap-2">
+                                  <div className="flex items-center gap-2 min-w-0">
                                     {getShipmentStatusIcon(shipment.status)}
-                                    <div>
-                                      <p className="text-xs sm:text-sm font-semibold text-gray-900">
+                                    <div className="min-w-0">
+                                      <p className="text-xs sm:text-sm font-semibold text-gray-900 truncate">
                                         {shipment.shippingProvider ||
                                           "Shipment"}{" "}
                                         -{" "}
@@ -644,7 +644,7 @@ export default function OrderHistory() {
                                       </p>
                                     </div>
                                   </div>
-                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                                  <span className="px-2 sm:px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 flex-shrink-0">
                                     {shipment.status
                                       .replace(/_/g, " ")
                                       .charAt(0)
