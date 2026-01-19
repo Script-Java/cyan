@@ -467,6 +467,11 @@ export default function AdminSupport() {
             </div>
           </div>
 
+          {/* Quick Access Links */}
+          <div className="mb-8">
+            <AdminQuickAccess />
+          </div>
+
           {/* Tickets Table */}
           {loading ? (
             <div className="bg-white border border-gray-200 rounded-lg p-8 text-center">
