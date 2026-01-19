@@ -320,7 +320,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
                   <ImageIcon className="w-5 h-5 text-blue-600" />
                   <div className="text-center">
                     <p className="text-black font-medium text-xs">Click to upload photos</p>
-                    <p className="text-gray-600 text-xs mt-0.5">JPG, PNG (max 5MB)</p>
+                    <p className="text-gray-600 text-xs mt-0.5">JPG, PNG (max 15MB)</p>
                   </div>
                   <input
                     type="file"
