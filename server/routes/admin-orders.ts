@@ -463,7 +463,11 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
   try {
     const { orderId, itemId, options } = req.body;
 
-    console.log("Update order item options - received:", { orderId, itemId, optionsCount: options?.length });
+    console.log("Update order item options - received:", {
+      orderId,
+      itemId,
+      optionsCount: options?.length,
+    });
 
     if (!orderId) {
       console.error("Missing orderId in request body");
@@ -471,117 +475,119 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
     }
 
     if (!Array.isArray(options)) {
-      console.error("Options is not an array:", typeof options, options);
+      console.error("Options is not an array:", typeof options);
       return res.status(400).json({ error: "Options must be an array" });
     }
 
-    // Convert orderId to number if needed
+    // Convert orderId to number
     const numOrderId = typeof orderId === "string" ? parseInt(orderId, 10) : orderId;
-    console.log("Converted orderId to:", numOrderId, "type:", typeof numOrderId);
+    const numItemId = typeof itemId === "string" ? parseInt(itemId, 10) : itemId;
 
-    // Fetch the order to get current order_items
-    console.log("Fetching order from Supabase with id:", numOrderId);
-    const { data: order, error: fetchError } = await supabase
-      .from("orders")
-      .select(
-        `
-        id,
-        order_items(id,quantity,product_name,options,design_file_url)
-        `
-      )
-      .eq("id", numOrderId)
-      .single();
+    console.log("Fetching order_items with orderId:", numOrderId);
 
-    console.log("Supabase query result:", {
-      hasData: !!order,
-      hasError: !!fetchError,
-      fetchError: fetchError ? {
-        message: fetchError.message,
-        code: fetchError.code,
-        details: fetchError.details,
+    // Query the order_items table directly instead of through the orders relation
+    const { data: allItems, error: itemsError } = await supabase
+      .from("order_items")
+      .select("*")
+      .eq("order_id", numOrderId);
+
+    console.log("Order items query:", {
+      count: allItems?.length,
+      error: itemsError,
+      itemsError: itemsError ? {
+        message: itemsError.message,
+        code: itemsError.code,
       } : null,
-      orderId: order?.id,
-      itemCount: order?.order_items?.length,
     });
 
-    if (fetchError) {
-      console.error("Error fetching order from Supabase:", {
-        message: fetchError.message,
-        details: fetchError.details,
-        hint: fetchError.hint,
-        code: fetchError.code,
+    if (itemsError) {
+      console.error("Error fetching order items:", itemsError);
+      return res.status(500).json({
+        error: "Failed to fetch order items",
+        details: itemsError.message,
       });
-      return res.status(404).json({ error: "Order not found - database error" });
     }
 
-    if (!order) {
-      console.error("Order not found for ID:", numOrderId);
-      return res.status(404).json({ error: "Order not found" });
+    if (!allItems || allItems.length === 0) {
+      console.error("No items found for order:", numOrderId);
+      return res.status(404).json({ error: "No items found for this order" });
     }
 
-    console.log("Found order with items:", order.order_items?.length || 0);
+    // Find the item to update (by ID or index)
+    let itemToUpdate = null;
+    let itemIndex = -1;
 
-    // Update the specific item's options
-    // itemId can be the actual item ID or the array index
-    const updatedItems = (order.order_items || []).map((item: any, idx: number) => {
-      // Match by either database ID or array index
-      const isMatch = item.id === itemId || idx === itemId || String(idx) === String(itemId);
-
-      if (isMatch) {
-        console.log("Updating item at index:", idx);
-        // Update the options with new prices
-        const updatedOptions = Array.isArray(item.options)
-          ? item.options.map((opt: any, optIdx: number) => {
-              const newOption = options[optIdx];
-              if (newOption) {
-                return {
-                  ...opt,
-                  price: newOption.price || 0,
-                  modifier_price: newOption.price || 0
-                };
-              }
-              return opt;
-            })
-          : Object.entries(item.options || {}).reduce((acc: any, [key, val]: [string, any], optIdx: number) => {
-              const newOption = options[optIdx];
-              if (newOption) {
-                acc[key] = {
-                  ...val,
-                  price: newOption.price || 0,
-                  modifier_price: newOption.price || 0
-                };
-              } else {
-                acc[key] = val;
-              }
-              return acc;
-            }, {});
-
-        return { ...item, options: updatedOptions };
+    for (let i = 0; i < allItems.length; i++) {
+      if (allItems[i].id === numItemId || i === numItemId) {
+        itemToUpdate = allItems[i];
+        itemIndex = i;
+        break;
       }
-      return item;
-    });
+    }
 
-    // Update the order in Supabase
-    const { data, error } = await supabase
-      .from("orders")
+    if (!itemToUpdate) {
+      console.error("Item not found with ID:", numItemId);
+      return res.status(404).json({ error: "Item not found in this order" });
+    }
+
+    console.log("Found item to update at index:", itemIndex);
+
+    // Update the options with new prices
+    let updatedOptions = itemToUpdate.options || {};
+
+    if (Array.isArray(updatedOptions)) {
+      updatedOptions = updatedOptions.map((opt: any, idx: number) => {
+        const newOption = options[idx];
+        if (newOption) {
+          return {
+            ...opt,
+            price: newOption.price || 0,
+            modifier_price: newOption.price || 0,
+          };
+        }
+        return opt;
+      });
+    } else if (typeof updatedOptions === "object") {
+      updatedOptions = Object.entries(updatedOptions).reduce(
+        (acc: any, [key, val]: [string, any], idx: number) => {
+          const newOption = options[idx];
+          acc[key] = newOption
+            ? {
+                ...(typeof val === "object" ? val : { value: val }),
+                price: newOption.price || 0,
+                modifier_price: newOption.price || 0,
+              }
+            : val;
+          return acc;
+        },
+        {}
+      );
+    }
+
+    // Update the item in Supabase
+    const { data: updatedItem, error: updateError } = await supabase
+      .from("order_items")
       .update({
-        order_items: updatedItems,
+        options: updatedOptions,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", numOrderId)
+      .eq("id", itemToUpdate.id)
       .select()
       .single();
 
-    if (error) {
-      console.error("Error updating order item options:", error);
-      return res.status(500).json({ error: "Failed to update order item options" });
+    if (updateError) {
+      console.error("Error updating order item:", updateError);
+      return res.status(500).json({
+        error: "Failed to update order item",
+        details: updateError.message,
+      });
     }
 
-    console.log("Successfully updated order items");
+    console.log("Successfully updated order item");
     res.json({
       success: true,
       message: "Option costs updated successfully",
-      order: data,
+      item: updatedItem,
     });
   } catch (error) {
     console.error("Update order item options error:", error);
