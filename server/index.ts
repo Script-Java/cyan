@@ -197,6 +197,14 @@ import {
   handleGetMigrationStatus,
   handleCSVCustomerImport,
 } from "./routes/ecwid-migration";
+import {
+  handleSubmitReview,
+  handleGetProductReviews,
+  handleMarkReviewHelpful,
+  handleGetAdminReviews,
+  handleUpdateReviewStatus,
+  handleDeleteReview,
+} from "./routes/reviews";
 import { verifyToken, optionalVerifyToken, requireAdmin } from "./middleware/auth";
 import {
   apiLimiter,
