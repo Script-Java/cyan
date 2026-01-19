@@ -363,22 +363,23 @@ export default function ProductPage() {
       const discountedPricePerUnit = basePrice * (1 - savePercentage / 100);
       const totalPrice = discountedPricePerUnit * quantity;
 
-      // Convert design file to base64 data URL if present
-      let design_file_url: string | undefined;
+      // Store design file in sessionStorage if present
+      let designFileId: string | null = null;
       if (designFile) {
         const reader = new FileReader();
-        design_file_url = await new Promise((resolve) => {
+        const design_file_url = await new Promise<string>((resolve) => {
           reader.onload = (event) => {
             resolve(event.target?.result as string);
           };
           reader.readAsDataURL(designFile);
         });
+        designFileId = storeDesignFile(design_file_url, designFile.name);
       }
 
       const cartItem = {
         productId: productId!,
         selectedOptions,
-        design_file_url,
+        design_file_id: designFileId,
         optionalFields,
         orderNotes,
         quantity,
