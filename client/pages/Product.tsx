@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import ProductGallery from "@/components/ProductGallery";
 import ProductBenefits from "@/components/ProductBenefits";
+import ProductReviews from "@/components/ProductReviews";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { ChevronLeft, Upload, X, AlertCircle, Check } from "lucide-react";
 import { useState, useEffect } from "react";
