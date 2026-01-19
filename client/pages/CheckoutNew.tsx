@@ -828,7 +828,7 @@ export default function CheckoutNew() {
         role="main"
         aria-label="Checkout page"
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto pt-[15px]">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">Your Cart</h1>
 
           <form onSubmit={handleCheckout}>
