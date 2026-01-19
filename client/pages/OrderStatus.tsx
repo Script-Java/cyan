@@ -357,9 +357,10 @@ export default function OrderStatus() {
                                 </div>
                               )}
                               {item.product_description && (
-                                <p className="text-base text-gray-700 leading-relaxed">
-                                  {item.product_description}
-                                </p>
+                                <div
+                                  className="text-base text-gray-700 leading-relaxed prose prose-sm max-w-none"
+                                  dangerouslySetInnerHTML={{ __html: item.product_description }}
+                                />
                               )}
                             </div>
                           </div>
