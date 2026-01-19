@@ -692,7 +692,7 @@ export default function OrderHistory() {
                       )}
 
                       {/* Support Ticket Button */}
-                      <div className="mt-6 pt-6 border-t border-gray-200">
+                      <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200">
                         <button
                           onClick={() => {
                             const ticketData = {
@@ -716,9 +716,9 @@ export default function OrderHistory() {
                             );
                             navigate("/support");
                           }}
-                          className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+                          className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm hover:shadow-md text-xs sm:text-sm"
                         >
-                          <MessageSquare className="w-4 h-4" />
+                          <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4" />
                           Create Support Ticket
                         </button>
                         <p className="text-xs text-gray-600 mt-2 text-center">
