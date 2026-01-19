@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
-import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import { Settings, Save } from "lucide-react";
 
 export default function AdminSettings() {
@@ -79,14 +78,6 @@ export default function AdminSettings() {
             <p className="text-white/60 mt-1">
               Configure your store details and preferences
             </p>
-          </div>
-
-          {/* Quick Navigation */}
-          <div className="mb-6">
-            <h2 className="text-sm font-semibold text-white/80 mb-3">
-              Quick Navigation
-            </h2>
-            <AdminNavigationGrid />
           </div>
 
           {/* Success Message */}
