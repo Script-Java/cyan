@@ -348,32 +348,6 @@ export default function Deals() {
                     <h3 className="font-bold text-gray-900 text-xs mb-0.5 group-hover:text-blue-600 transition-colors line-clamp-2">
                       {product.name}
                     </h3>
-
-                    {/* Rating */}
-                    <div className="flex items-center gap-0.5 mb-1">
-                      <div className="flex gap-0.25">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-2.5 h-2.5 ${
-                              i < Math.floor(product.rating || 0)
-                                ? "fill-yellow-400 text-yellow-400"
-                                : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-xs text-gray-600">
-                        {product.reviews || 0}
-                      </span>
-                    </div>
-
-                    {/* Price */}
-                    <div className="mb-1">
-                      <p className="text-sm font-bold text-gray-900">
-                        {getPriceDisplay(product)}
-                      </p>
-                    </div>
                   </div>
 
                   {/* CTA Button */}
