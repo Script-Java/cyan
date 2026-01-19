@@ -649,7 +649,13 @@ export default function AdminOrders() {
                                                   </p>
                                                   <button
                                                     onClick={() => {
-                                                      console.log("Edit costs clicked - item:", { item, idx, itemId: item.id });
+                                                      console.log("Edit costs clicked - Full context:", {
+                                                        orderId: order.id,
+                                                        orderIdType: typeof order.id,
+                                                        item,
+                                                        itemId: item.id ?? idx,
+                                                        itemIdType: typeof (item.id ?? idx),
+                                                      });
                                                       setEditingOptionItemId({
                                                         orderId: order.id,
                                                         itemId: item.id ?? idx,
