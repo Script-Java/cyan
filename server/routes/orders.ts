@@ -613,12 +613,19 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
       .single();
 
     if (orderError || !order) {
-      console.warn("Order not found:", orderIdNum);
+      console.warn("Order not found:", orderIdNum, "Error:", orderError);
       return res.status(404).json({
         success: false,
         error: "Order not found",
       });
     }
+
+    console.log("Order found:", {
+      id: order.id,
+      status: order.status,
+      customerId: order.customer_id,
+      customerData: (order.customers as any),
+    });
 
     // Verify email matches
     const customerEmail = (order.customers as any)?.email;
