@@ -263,9 +263,9 @@ export default function Deals() {
       product.max_price &&
       product.min_price !== product.max_price
     ) {
-      return `$${product.min_price.toFixed(2)} - $${product.max_price.toFixed(2)}`;
+      return `$${product.min_price.toFixed(2)} - $${product.max_price.toFixed(2)} per sticker`;
     }
-    return `$${(product.price || 0).toFixed(2)}`;
+    return `$${(product.price || 0).toFixed(2)} per sticker`;
   };
 
   const getBadgeColor = (badge?: string) => {
