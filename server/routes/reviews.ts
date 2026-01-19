@@ -48,6 +48,20 @@ export const handleSubmitReview: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Invalid email address" });
     }
 
+    // Validate image sizes (max 15MB each)
+    const MAX_IMAGE_SIZE = 15 * 1024 * 1024; // 15MB
+    if (images && Array.isArray(images)) {
+      for (const imageBase64 of images) {
+        // Rough estimate: Base64 is ~33% larger than binary, so divide by 1.33
+        const estimatedSize = (imageBase64.split(",")[1]?.length || 0) * 0.75;
+        if (estimatedSize > MAX_IMAGE_SIZE) {
+          return res.status(400).json({
+            error: `Image size exceeds 15MB limit`,
+          });
+        }
+      }
+    }
+
     // Upload images to Cloudinary if provided
     const image_urls: string[] = [];
     if (images && Array.isArray(images) && images.length > 0) {
