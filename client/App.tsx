@@ -35,6 +35,7 @@ import MyTickets from "./pages/MyTickets";
 import AdminSupport from "./pages/AdminSupport";
 import AdminOrders from "./pages/AdminOrders";
 import AdminProofs from "./pages/AdminProofs";
+import AdminReviews from "./pages/AdminReviews";
 import AdminEmailNotifications from "./pages/AdminEmailNotifications";
 import AdminSettings from "./pages/AdminSettings";
 import StoreCreditAdmin from "./pages/StoreCreditAdmin";
