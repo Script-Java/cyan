@@ -476,21 +476,6 @@ export default function Products() {
             </div>
           )}
 
-          {/* CTA Section */}
-          <div
-            className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100 rounded-lg text-center mt-12 p-8"
-          >
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Can't find what you're looking for?
-            </h2>
-            <p className="text-gray-700 text-sm mb-4 max-w-2xl mx-auto">
-              Contact our team for custom bulk orders and special requests.
-            </p>
-            <button className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all text-sm">
-              Get a Quote
-            </button>
-          </div>
-
         </div>
       </main>
 
