@@ -421,6 +421,43 @@ export function createServer() {
     res.json({ message: ping });
   });
 
+  // Health check endpoint - verify environment configuration
+  app.get("/api/health", (_req, res) => {
+    const requiredEnvVars = [
+      "SUPABASE_URL",
+      "SUPABASE_SERVICE_KEY",
+      "JWT_SECRET",
+      "SQUARE_APPLICATION_ID",
+      "SQUARE_ACCESS_TOKEN",
+      "SQUARE_LOCATION_ID",
+    ];
+
+    const missingVars = requiredEnvVars.filter((v) => !process.env[v]);
+    const isHealthy = missingVars.length === 0;
+
+    const health = {
+      status: isHealthy ? "healthy" : "degraded",
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV,
+      configured: {
+        SUPABASE_URL: !!process.env.SUPABASE_URL,
+        SUPABASE_SERVICE_KEY: !!process.env.SUPABASE_SERVICE_KEY,
+        JWT_SECRET: !!process.env.JWT_SECRET,
+        FRONTEND_URL: !!process.env.FRONTEND_URL,
+        BASE_URL: !!process.env.BASE_URL,
+        SQUARE_APPLICATION_ID: !!process.env.SQUARE_APPLICATION_ID,
+        SQUARE_ACCESS_TOKEN: !!process.env.SQUARE_ACCESS_TOKEN,
+        SQUARE_LOCATION_ID: !!process.env.SQUARE_LOCATION_ID,
+        ECWID_API_TOKEN: !!process.env.ECWID_API_TOKEN,
+        CLOUDINARY_CLOUD_NAME: !!process.env.CLOUDINARY_CLOUD_NAME,
+      },
+      missingVars: process.env.NODE_ENV === "development" ? missingVars : [],
+    };
+
+    const statusCode = isHealthy ? 200 : 503;
+    res.status(statusCode).json(health);
+  });
+
   app.get("/api/demo", handleDemo);
 
   // ===== Authentication Routes =====
