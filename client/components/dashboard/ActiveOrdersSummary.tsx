@@ -611,7 +611,7 @@ export default function ActiveOrdersSummary({
                                       Base Cost per Sticker:
                                     </span>
                                     <span className="text-gray-900 font-medium">
-                                      ${formatPrice(unitPrice)}
+                                      ${formatPrice(basePrice)}
                                     </span>
                                   </div>
 
