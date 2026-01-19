@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { supabase } from "../utils/supabase";
 import sharp from "sharp";
+import { v2 as cloudinary } from "cloudinary";
 
 interface OrderDesign {
   orderId: number;
