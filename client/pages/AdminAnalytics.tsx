@@ -14,12 +14,6 @@ import {
   DollarSign,
   ShoppingCart,
   Users,
-  Package,
-  Eye,
-  BookOpen,
-  FileText,
-  Truck,
-  MessageSquare,
 } from "lucide-react";
 
 interface AnalyticsData {
