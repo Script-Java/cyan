@@ -40,8 +40,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
   // Update cart count when items are added
   const updateCartCount = () => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const totalItems = cart.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0);
-    setCartItemCount(totalItems);
+    setCartItemCount(cart.length);
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
