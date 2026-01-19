@@ -6,20 +6,11 @@ import { Input } from "@/components/ui/input";
 import {
   Edit,
   Trash2,
-  Eye,
   Plus,
   Calendar,
   User,
   Search,
   ArrowRight,
-  Package,
-  BarChart3,
-  DollarSign,
-  Users,
-  BookOpen,
-  FileText,
-  Truck,
-  MessageSquare,
 } from "lucide-react";
 
 interface BlogItem {
