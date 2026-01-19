@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer
-      className="bg-white text-gray-600 border-t border-gray-200"
+      className="bg-white text-gray-600 border-t border-gray-200 mt-auto"
       style={{ padding: "32px 0" }}
     >
       <div
