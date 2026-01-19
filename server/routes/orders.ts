@@ -674,7 +674,7 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
         subtotal: order.subtotal,
         tax: order.tax,
         shipping: order.shipping,
-        customerName: `${(order.customers as any)?.first_name || ""} ${(order.customers as any)?.last_name || ""}`.trim(),
+        customerName: customerName || "",
         customerEmail: customerEmail,
         products: order.order_items || [],
         shippingAddress: order.shipping_address,
