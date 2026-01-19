@@ -803,7 +803,7 @@ export default function OrderHistory() {
                                     {/* Item pricing summary */}
                                     <div className="space-y-1 text-xs">
                                       <div className="flex justify-between">
-                                        <span className="text-gray-600">Unit Price:</span>
+                                        <p className="text-gray-600">Per Sticker:</p>
                                         <span className="text-gray-900 font-medium">
                                           ${formatPrice(pricePerUnit)}
                                         </span>
