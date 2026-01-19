@@ -1,60 +1,86 @@
+import { useState } from 'react';
+
 export default function Footer() {
+  const [email, setEmail] = useState('');
+  const [consent, setConsent] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !consent) {
+      setMessage('Please enter an email and accept the consent');
+      return;
+    }
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (response.ok) {
+        setMessage('Thanks for subscribing!');
+        setEmail('');
+        setConsent(false);
+      }
+    } catch {
+      setMessage('An error occurred. Please try again.');
+    }
+  };
+
   return (
-    <footer
-      className="bg-white text-gray-600 border-t border-gray-200 mt-auto"
-      style={{ padding: "32px 0" }}
-    >
-      <div
-        className="mx-auto px-4 sm:px-6 lg:px-8"
-        style={{ maxWidth: "1100px" }}
-      >
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-6">
-          <div>
-            <h4 className="font-bold text-gray-900 mb-3 text-sm">Company</h4>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <a href="#" className="hover:text-gray-900 transition-colors">
-                  About
-                </a>
-              </li>
-              <li>
-                <a href="/blogs" className="hover:text-gray-900 transition-colors">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="/support" className="hover:text-gray-900 transition-colors">
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold text-gray-900 mb-3 text-sm">Legal</h4>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <a href="/privacy" className="hover:text-gray-900 transition-colors">
-                  Privacy
-                </a>
-              </li>
-              <li>
-                <a href="/terms" className="hover:text-gray-900 transition-colors">
-                  Terms
-                </a>
-              </li>
-              <li>
-                <a href="/shipping" className="hover:text-gray-900 transition-colors">
-                  Shipping
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold text-gray-900 mb-3 text-sm">Follow</h4>
-            <div className="flex gap-4">
+    <footer className="border-t border-gray-200 mt-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+        {/* Newsletter Section */}
+        <div className="bg-gray-900 text-white p-8 sm:p-12">
+          <div className="max-w-md">
+            <h3 className="text-lg font-bold mb-2">Stay connected with Sticky Slap</h3>
+            <p className="text-sm text-gray-300 mb-6">
+              Sign up to our email list for insider deals, tips and inspiration.
+            </p>
+
+            <form onSubmit={handleSubscribe} className="space-y-4">
+              <div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
+                  className="w-full px-4 py-2 rounded-lg border border-gray-400 bg-white text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  required
+                />
+              </div>
+
+              <div className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  id="consent"
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                  className="mt-1 w-5 h-5 rounded cursor-pointer"
+                  required
+                />
+                <label htmlFor="consent" className="text-xs text-gray-300 cursor-pointer">
+                  I consent that Sticky Slap LLC may process my personal data for the purpose of direct marketing. I can unsubscribe anytime via link in email and read details in our Privacy Policy.
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-yellow-400 text-gray-900 font-bold py-2 px-4 rounded-lg hover:bg-yellow-500 transition-colors text-sm"
+              >
+                SUBSCRIBE
+              </button>
+
+              {message && (
+                <p className="text-xs text-yellow-300">{message}</p>
+              )}
+            </form>
+
+            {/* Social Icons */}
+            <div className="flex gap-4 mt-8 pt-6 border-t border-gray-700">
               <a
                 href="#"
-                className="hover:text-gray-900 transition-colors"
+                className="hover:text-yellow-400 transition-colors"
                 aria-label="Instagram"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -63,7 +89,7 @@ export default function Footer() {
               </a>
               <a
                 href="#"
-                className="hover:text-gray-900 transition-colors"
+                className="hover:text-yellow-400 transition-colors"
                 aria-label="Twitter"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -72,7 +98,7 @@ export default function Footer() {
               </a>
               <a
                 href="#"
-                className="hover:text-gray-900 transition-colors"
+                className="hover:text-yellow-400 transition-colors"
                 aria-label="TikTok"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -83,9 +109,56 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 pt-6 text-center text-xs">
-          <p>© Sticky Slap LLC. 2026</p>
+        {/* Links Section */}
+        <div className="bg-white text-gray-600 p-8 sm:p-12">
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-bold text-gray-900 mb-3 text-sm">Company</h4>
+              <ul className="space-y-2 text-xs">
+                <li>
+                  <a href="#" className="hover:text-gray-900 transition-colors">
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a href="/blogs" className="hover:text-gray-900 transition-colors">
+                    Blog
+                  </a>
+                </li>
+                <li>
+                  <a href="/support" className="hover:text-gray-900 transition-colors">
+                    Contact
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-3 text-sm">Legal</h4>
+              <ul className="space-y-2 text-xs">
+                <li>
+                  <a href="/privacy" className="hover:text-gray-900 transition-colors">
+                    Privacy
+                  </a>
+                </li>
+                <li>
+                  <a href="/terms" className="hover:text-gray-900 transition-colors">
+                    Terms
+                  </a>
+                </li>
+                <li>
+                  <a href="/shipping" className="hover:text-gray-900 transition-colors">
+                    Shipping
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+      </div>
+
+      {/* Copyright */}
+      <div className="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-600">
+        <p>© Sticky Slap LLC. 2026</p>
       </div>
     </footer>
   );
