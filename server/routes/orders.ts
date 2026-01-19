@@ -687,7 +687,7 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
         shipping: order.shipping,
         customerName: customerName || "",
         customerEmail: customerEmail,
-        products: order.order_items || [],
+        products: enrichedItems,
         shippingAddress: order.shipping_address,
         billingAddress: order.billing_address,
         digitalFiles: digitalFiles,
