@@ -88,8 +88,14 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
       }
     };
 
+    // Listen for focus to update cart count when returning to tab
+    const handleFocus = () => {
+      updateCartCount();
+    };
+
     document.addEventListener("visibilitychange", handleVisibilityChange);
     window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("focus", handleFocus);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
