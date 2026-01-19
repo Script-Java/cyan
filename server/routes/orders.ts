@@ -566,33 +566,13 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
 
     // Parse order number - accepts both SY-5XXXXX format and plain numeric format
     let orderIdNum: number;
-    const orderNumberStr = (orderNumber as string).trim();
-
-    if (orderNumberStr.toUpperCase().startsWith("SY-5")) {
-      // Format: SY-54011 where 4011 = 4001 + id, so id = 4011 - 4001
-      const displayNumber = parseInt(orderNumberStr.substring(4));
-      if (isNaN(displayNumber)) {
-        return res.status(400).json({
-          success: false,
-          error: "Invalid order number format",
-        });
-      }
-      orderIdNum = displayNumber - 4001;
-      if (orderIdNum <= 0) {
-        return res.status(400).json({
-          success: false,
-          error: "Invalid order number format",
-        });
-      }
-    } else {
-      // Plain numeric format
-      orderIdNum = parseInt(orderNumberStr);
-      if (isNaN(orderIdNum)) {
-        return res.status(400).json({
-          success: false,
-          error: "Invalid order number format",
-        });
-      }
+    try {
+      orderIdNum = parseOrderNumber(orderNumber as string);
+    } catch (err) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid order number format",
+      });
     }
 
     const { supabase } = await import("../utils/supabase");
