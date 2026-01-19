@@ -316,8 +316,8 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
               )}
 
               {uploadedImages.length < 3 && (
-                <label className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-blue-400 rounded p-3 cursor-pointer hover:border-blue-500 transition bg-blue-50">
-                  <ImageIcon className="w-5 h-5 text-blue-600" />
+                <label className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-green-400 rounded p-3 cursor-pointer hover:border-green-500 transition bg-green-50">
+                  <ImageIcon className="w-5 h-5 text-green-600" />
                   <div className="text-center">
                     <p className="text-black font-medium text-xs">Click to upload photos</p>
                     <p className="text-gray-600 text-xs mt-0.5">JPG, PNG (max 15MB)</p>
