@@ -56,7 +56,7 @@ interface OrderData {
 }
 
 export default function OrderStatus() {
-  const [orderNumber, setOrderNumber] = useState("");
+  const [orderNumber, setOrderNumber] = useState("SY-54002");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [orderData, setOrderData] = useState<OrderData | null>(null);
