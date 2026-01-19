@@ -574,30 +574,24 @@ export default function ActiveOrdersSummary({
                                                   const optionPrice = option.price || option.modifier_price || 0;
                                                   const optionName = option.option_name || option.name || option.option_id || `Option ${idx + 1}`;
                                                   const optionValue = option.option_value || option.value || "";
-                                                  if (optionPrice > 0) {
-                                                    return (
-                                                      <div key={idx} className="flex justify-between">
-                                                        <span>➕ {optionName} {optionValue && `(${optionValue})`}:</span>
-                                                        <span className="font-semibold">+${formatPrice(optionPrice)}</span>
-                                                      </div>
-                                                    );
-                                                  }
-                                                  return null;
+                                                  return (
+                                                    <div key={idx} className="flex justify-between">
+                                                      <span>➕ {optionName} {optionValue && `(${optionValue})`}:</span>
+                                                      <span className="font-semibold">+${formatPrice(optionPrice)}</span>
+                                                    </div>
+                                                  );
                                                 })
                                               ) : (
                                                 Object.entries(item.options).map(([key, val]: [string, any]) => {
-                                                  const optionPrice = typeof val === "object" ? val.price || val.modifier_price : 0;
+                                                  const optionPrice = typeof val === "object" ? val.price || val.modifier_price || 0 : 0;
                                                   const displayValue = typeof val === "object" ? val.value || val.name : val;
                                                   const formattedKey = formatOptionKey(key);
-                                                  if (optionPrice > 0) {
-                                                    return (
-                                                      <div key={key} className="flex justify-between">
-                                                        <span>➕ {formattedKey} {displayValue && `(${formatOptionValue(displayValue)})`}:</span>
-                                                        <span className="font-semibold">+${formatPrice(optionPrice)}</span>
-                                                      </div>
-                                                    );
-                                                  }
-                                                  return null;
+                                                  return (
+                                                    <div key={key} className="flex justify-between">
+                                                      <span>➕ {formattedKey} {displayValue && `(${formatOptionValue(displayValue)})`}:</span>
+                                                      <span className="font-semibold">+${formatPrice(optionPrice)}</span>
+                                                    </div>
+                                                  );
                                                 })
                                               )}
                                             </div>
