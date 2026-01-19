@@ -409,13 +409,13 @@ export default function OrderHistory() {
                           <User className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                           Customer & Shipping Information
                         </h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                           {order.customerName && (
                             <div>
                               <p className="text-xs text-gray-600 mb-1">
                                 Full Name
                               </p>
-                              <p className="text-sm font-medium text-gray-900">
+                              <p className="text-xs sm:text-sm font-medium text-gray-900">
                                 {order.customerName}
                               </p>
                             </div>
