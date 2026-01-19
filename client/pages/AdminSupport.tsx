@@ -222,6 +222,13 @@ export default function AdminSupport() {
       <>
         <Header />
         <main className="min-h-screen bg-gray-50 py-6">
+          {/* Quick Access Links */}
+          <div className="bg-white border-b border-gray-200 px-4 sm:px-10 py-6 mb-8">
+            <div className="max-w-4xl mx-auto">
+              <AdminQuickAccess />
+            </div>
+          </div>
+
           {/* Header Section */}
           <div className="border-b border-gray-200 bg-white">
             <div className="px-4 sm:px-10 py-6 max-w-4xl mx-auto">
