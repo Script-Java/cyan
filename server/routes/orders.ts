@@ -118,6 +118,7 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       total: order.total,
       subtotal: order.subtotal_ex_tax,
       tax: order.total_tax,
+      shipping: order.total_shipping || 0,
       dateCreated: order.date_created,
       source: "bigcommerce",
       itemCount: order.line_items?.length || 0,
