@@ -23,7 +23,9 @@ interface OrderItem {
   price_inc_tax?: number;
   price_ex_tax?: number;
   price?: number;
-  options?: Record<string, string> | Array<{ option_id?: string; option_value?: string }>;
+  option_price?: number;
+  total_price?: number;
+  options?: Record<string, string> | Array<{ option_id?: string; option_value?: string; price?: number }>;
   design_file_url?: string;
 }
 
