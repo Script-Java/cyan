@@ -63,7 +63,6 @@ interface OrderData {
 
 export default function OrderStatus() {
   const [orderNumber, setOrderNumber] = useState("");
-  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [orderData, setOrderData] = useState<OrderData | null>(null);
@@ -128,8 +127,8 @@ export default function OrderStatus() {
     setOrderData(null);
     setHasSearched(true);
 
-    if (!orderNumber.trim() || !email.trim()) {
-      setError("Please enter both order number and email");
+    if (!orderNumber.trim()) {
+      setError("Please enter an order number");
       return;
     }
 
@@ -137,7 +136,7 @@ export default function OrderStatus() {
       setIsLoading(true);
 
       const response = await fetch(
-        `/api/public/order-status?orderNumber=${encodeURIComponent(orderNumber)}&email=${encodeURIComponent(email)}`,
+        `/api/public/order-status?orderNumber=${encodeURIComponent(orderNumber)}`,
       );
 
       if (!response.ok) {
@@ -162,7 +161,6 @@ export default function OrderStatus() {
 
   const handleReset = () => {
     setOrderNumber("");
-    setEmail("");
     setOrderData(null);
     setError("");
     setHasSearched(false);
@@ -218,27 +216,6 @@ export default function OrderStatus() {
                   </p>
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-semibold text-gray-900 mb-2"
-                  >
-                    Email Address
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="your@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={isLoading}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-50 text-gray-900 placeholder-gray-500"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Must match the email address used for the order
-                  </p>
-                </div>
-
                 <div className="flex flex-col sm:flex-row gap-3 pt-4">
                   <button
                     type="submit"
@@ -268,12 +245,6 @@ export default function OrderStatus() {
                 <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm font-medium text-red-900">{error}</p>
-                  {error === "Email does not match this order" && (
-                    <p className="text-xs text-red-700 mt-1">
-                      Please check that you entered the correct email address
-                      associated with this order.
-                    </p>
-                  )}
                   {error === "Order not found" && (
                     <p className="text-xs text-red-700 mt-1">
                       Please verify your order number and try again.
