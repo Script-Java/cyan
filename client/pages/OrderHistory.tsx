@@ -402,7 +402,7 @@ export default function OrderHistory() {
 
                   {/* Order Details - Expanded */}
                   {expandedOrderId === order.id && (
-                    <div className="border-t border-gray-200 px-4 sm:px-6 py-4 sm:py-6 bg-gray-50">
+                    <div className="bg-gray-50 border-t-2 border-gray-200 p-3 sm:p-5 space-y-3 sm:space-y-4">
                       {/* Customer Information */}
                       <div className="mb-6 bg-white rounded-lg border border-gray-200 p-4 sm:p-5">
                         <h4 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
