@@ -965,6 +965,9 @@ export default function Product() {
               Items will be added to your cart
             </p>
           </div>
+
+          {/* Product Reviews Section */}
+          <ProductReviews productId={productId!} />
         </div>
 
         {/* Footer */}
