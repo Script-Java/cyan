@@ -398,10 +398,10 @@ export default function Index() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                to="/ecwid-store"
+                to="/deals"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border-2 border-gray-300 text-gray-900 rounded-lg font-bold hover:bg-gray-50 transition-all text-sm"
               >
-                Shop Now
+                Sticker Deals
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
