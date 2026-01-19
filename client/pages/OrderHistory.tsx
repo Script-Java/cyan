@@ -585,23 +585,31 @@ export default function OrderHistory() {
                       )}
 
                       {/* Order Totals */}
-                      <div className="mb-6 bg-white p-3 sm:p-4 rounded border border-gray-200">
+                      <div className="bg-white rounded-lg border-2 border-gray-200 p-3 sm:p-4 shadow-sm">
+                        <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
+                          <DollarSign className="w-4 h-4 text-gray-600" />
+                          Order Summary
+                        </h3>
                         <div className="space-y-2 text-xs sm:text-sm">
                           <div className="flex justify-between">
                             <span className="text-gray-600">Subtotal:</span>
-                            <span className="font-medium">
+                            <span className="font-medium text-gray-900">
                               {formatCurrency(order.subtotal || 0)}
                             </span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Tax:</span>
-                            <span className="font-medium">
-                              {formatCurrency(order.tax || 0)}
+                          {order.tax !== undefined && order.tax > 0 && (
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">Tax:</span>
+                              <span className="font-medium text-gray-900">
+                                {formatCurrency(order.tax)}
+                              </span>
+                            </div>
+                          )}
+                          <div className="pt-2 border-t-2 border-gray-300 flex justify-between">
+                            <span className="font-bold text-gray-900">
+                              Order Total:
                             </span>
-                          </div>
-                          <div className="border-t border-gray-200 pt-2 flex justify-between font-semibold">
-                            <span>Total:</span>
-                            <span className="text-base sm:text-lg">
+                            <span className="font-bold text-lg text-emerald-600">
                               {formatCurrency(order.total)}
                             </span>
                           </div>
