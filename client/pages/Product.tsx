@@ -788,6 +788,9 @@ export default function Product() {
                 <p className="text-gray-500 text-xs mt-1">for your order</p>
               </div>
             </div>
+
+            {/* Product Benefits */}
+            <ProductBenefits />
           </div>
 
           {/* Below Grid - Additional Fields and Upload */}
