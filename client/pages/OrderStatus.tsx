@@ -302,34 +302,6 @@ export default function OrderStatus() {
                 </div>
 
 
-                {/* Shipping Address */}
-                {orderData.shippingAddress && (
-                  <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-6 sm:p-8 shadow-sm">
-                    <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-                      <MapPin className="w-5 h-5 text-green-500" />
-                      Shipping Address
-                    </h3>
-                    <div className="text-gray-900 space-y-1">
-                      <p className="font-semibold">{orderData.customerName}</p>
-                      {orderData.shippingAddress.street && (
-                        <p className="text-gray-600">{orderData.shippingAddress.street}</p>
-                      )}
-                      {orderData.shippingAddress.city && (
-                        <p className="text-gray-600">
-                          {orderData.shippingAddress.city},{" "}
-                          {orderData.shippingAddress.state}{" "}
-                          {orderData.shippingAddress.postalCode}
-                        </p>
-                      )}
-                      {orderData.shippingAddress.country && (
-                        <p className="text-gray-600">
-                          {orderData.shippingAddress.country}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                )}
-
 
                 {/* Digital Files */}
                 {orderData.digitalFiles && orderData.digitalFiles.length > 0 && (
