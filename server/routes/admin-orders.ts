@@ -481,9 +481,8 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
 
     // Convert orderId to number
     const numOrderId = typeof orderId === "string" ? parseInt(orderId, 10) : orderId;
-    const numItemId = typeof itemId === "string" ? parseInt(itemId, 10) : itemId;
 
-    console.log("Fetching order_items with orderId:", numOrderId);
+    console.log("Fetching order_items with orderId:", numOrderId, "itemId:", itemId);
 
     // Query the order_items table directly instead of through the orders relation
     const { data: allItems, error: itemsError } = await supabase
@@ -493,6 +492,11 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
 
     console.log("Order items query:", {
       count: allItems?.length,
+      items: allItems?.map((i: any) => ({
+        id: i.id,
+        product_name: i.product_name,
+        optionsCount: i.options ? Object.keys(i.options).length : 0,
+      })),
       error: itemsError,
       itemsError: itemsError ? {
         message: itemsError.message,
@@ -513,20 +517,35 @@ export const handleUpdateOrderItemOptions: RequestHandler = async (req, res) => 
       return res.status(404).json({ error: "No items found for this order" });
     }
 
-    // Find the item to update (by ID or index)
+    // Find the item to update (by UUID ID or index)
     let itemToUpdate = null;
     let itemIndex = -1;
 
+    // First try to match by UUID
     for (let i = 0; i < allItems.length; i++) {
-      if (allItems[i].id === numItemId || i === numItemId) {
+      const itemUuid = String(allItems[i].id).toLowerCase();
+      const searchId = String(itemId).toLowerCase();
+
+      if (itemUuid === searchId) {
         itemToUpdate = allItems[i];
         itemIndex = i;
+        console.log("Found item by UUID match at index:", i);
         break;
       }
     }
 
+    // If not found by UUID, try by array index
+    if (!itemToUpdate && !isNaN(Number(itemId))) {
+      const numItemId = Number(itemId);
+      if (numItemId >= 0 && numItemId < allItems.length) {
+        itemToUpdate = allItems[numItemId];
+        itemIndex = numItemId;
+        console.log("Found item by index match at:", numItemId);
+      }
+    }
+
     if (!itemToUpdate) {
-      console.error("Item not found with ID:", numItemId);
+      console.error("Item not found with ID:", itemId, "Available items:", allItems.map((i: any) => i.id));
       return res.status(404).json({ error: "Item not found in this order" });
     }
 
