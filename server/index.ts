@@ -305,7 +305,9 @@ export function createServer() {
 
   console.log("✅ CORS Configuration initialized:", {
     allowedOrigins,
+    netliftySiteName: process.env.NETLIFY_SITE_NAME,
     flyAppName: process.env.FLY_APP_NAME,
+    frontendUrl: process.env.FRONTEND_URL,
   });
 
   // Middleware
