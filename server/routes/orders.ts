@@ -7,6 +7,7 @@ import {
 } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
 import { bigCommerceAPI } from "../utils/bigcommerce";
+import { parseOrderNumber } from "../utils/order";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
