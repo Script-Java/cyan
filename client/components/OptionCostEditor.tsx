@@ -54,36 +54,44 @@ export default function OptionCostEditor({
         throw new Error("No authentication token found");
       }
 
+      const payload = {
+        orderId,
+        itemId,
+        options: editedOptions.map((opt) => ({
+          option_id: opt.option_id,
+          option_name: opt.option_name || opt.name,
+          option_value: opt.option_value || opt.value,
+          price: opt.price,
+        })),
+      };
+
+      console.log("Sending option update payload:", payload);
+
       const response = await fetch("/api/admin/update-order-item-options", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          orderId,
-          itemId,
-          options: editedOptions.map((opt) => ({
-            option_id: opt.option_id,
-            option_name: opt.option_name || opt.name,
-            option_value: opt.option_value || opt.value,
-            price: opt.price,
-          })),
-        }),
+        body: JSON.stringify(payload),
       });
 
+      const responseData = await response.json().catch(() => ({}));
+
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
+        console.error("Update failed:", { status: response.status, data: responseData });
         throw new Error(
-          errorData.error || "Failed to update option costs"
+          responseData.error || `Failed to update option costs (${response.status})`
         );
       }
 
+      console.log("Successfully updated options:", responseData);
       onSuccess();
       onClose();
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "An error occurred";
+      console.error("Option save error:", errorMessage);
       setError(errorMessage);
     } finally {
       setIsLoading(false);
