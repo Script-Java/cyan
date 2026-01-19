@@ -546,16 +546,19 @@ export default function CheckoutNew() {
     // Handle both selectedOptions (from localStorage) and product_options (from API)
     if (item.selectedOptions && Object.keys(item.selectedOptions).length > 0) {
       return Object.entries(item.selectedOptions).map(([optionId, valueId]) => {
-        // Look up the human-readable value name
+        // Look up the human-readable value name and price modifier
         const option = item.options?.find((opt: any) => opt.id === optionId);
         const optionValue = option?.values?.find(
           (val: any) => val.id === valueId,
         );
         const displayValue = optionValue?.name || valueId;
+        const priceModifier = optionValue?.priceModifier || 0;
 
         return {
           option_id: optionId,
+          option_name: option?.name,
           option_value: displayValue,
+          modifier_price: priceModifier,
         };
       });
     }
@@ -563,16 +566,18 @@ export default function CheckoutNew() {
     // Handle product_options from API carts
     if (item.product_options && item.product_options.length > 0) {
       return item.product_options.map(
-        (opt: { option_id?: number; option_value?: string } | string) => {
+        (opt: { option_id?: number; option_value?: string; modifier_price?: number } | string) => {
           if (typeof opt === "string") {
             return {
               option_id: "custom",
               option_value: opt,
+              modifier_price: 0,
             };
           }
           return {
             option_id: opt.option_id || "custom",
             option_value: opt.option_value || "",
+            modifier_price: (opt as any).modifier_price || 0,
           };
         },
       );
