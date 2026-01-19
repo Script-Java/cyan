@@ -693,11 +693,11 @@ export default function ProductForm() {
 
     const hasSharedVariants =
       formData.sharedVariants && formData.sharedVariants.length > 0;
-    if (formData.basePrice <= 0 && !hasSharedVariants) {
+    if (formData.basePrice < 0 && !hasSharedVariants) {
       toast({
         title: "Validation Error",
         description:
-          "Base price must be greater than 0 (or add shared variants to override)",
+          "Base price cannot be negative (or add shared variants to override)",
         variant: "destructive",
       });
       return;
