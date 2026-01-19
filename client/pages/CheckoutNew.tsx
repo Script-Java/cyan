@@ -925,9 +925,11 @@ export default function CheckoutNew() {
                                       (item.price || 0.25) * item.quantity;
                                     return (
                                       <>
-                                        <p className="text-gray-600">
-                                          Regular: ${regularTotal.toFixed(2)}
-                                        </p>
+                                        {basePrice > 0 && (
+                                          <p className="text-gray-600">
+                                            Regular: ${regularTotal.toFixed(2)}
+                                          </p>
+                                        )}
                                         <p className="text-gray-600">
                                           Quantity: {item.quantity}
                                         </p>
