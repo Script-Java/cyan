@@ -11,6 +11,7 @@ import {
   Calendar,
   Upload,
   ArrowRight,
+  Eye,
 } from "lucide-react";
 
 interface OrderItem {
