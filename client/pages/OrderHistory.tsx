@@ -455,12 +455,12 @@ export default function OrderHistory() {
                           )}
                         </div>
                         {order.shippingAddress && (
-                          <div className="mt-4 pt-4 border-t border-gray-200">
+                          <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200">
                             <p className="text-xs text-gray-600 mb-2 flex items-center gap-1">
                               <MapPin className="w-3 h-3" />
                               Shipping Address
                             </p>
-                            <div className="text-sm text-gray-900 space-y-1">
+                            <div className="text-xs sm:text-sm text-gray-900 space-y-1">
                               <p>{order.shippingAddress.street}</p>
                               <p>
                                 {order.shippingAddress.city},{" "}
