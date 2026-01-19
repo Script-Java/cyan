@@ -5,18 +5,9 @@ import {
   Send,
   Loader,
   AlertCircle,
-  Package,
-  Eye,
-  BarChart3,
-  DollarSign,
-  Users,
-  BookOpen,
-  FileText,
-  Truck,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import AdminNavigationGrid from "@/components/AdminNavigationGrid";
 import MobileAdminPanel from "@/components/MobileAdminPanel";
 
 interface SupportTicket {
