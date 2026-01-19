@@ -398,7 +398,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
           {reviews.map((review) => (
             <div
               key={review.id}
-              className="bg-white rounded-lg border-2 border-green-200 p-4 hover:shadow-md transition hover:border-green-300"
+              className="bg-white rounded-lg border-2 border-purple-200 p-4 hover:shadow-md transition hover:border-purple-300"
             >
               {/* Review Header */}
               <div className="flex items-start justify-between mb-2">
