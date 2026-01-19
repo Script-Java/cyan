@@ -561,10 +561,12 @@ export default function ActiveOrdersSummary({
                                   <div className="bg-blue-50 border border-blue-200 rounded p-2 mb-2">
                                     <p className="text-blue-900 font-medium text-xs">How We Calculated ${formatPrice(pricePerUnit)} Per Sticker:</p>
                                     <div className="text-blue-800 text-xs mt-2 space-y-1">
-                                      <div className="flex justify-between">
-                                        <span>📌 Base sticker price:</span>
-                                        <span className="font-semibold">$0.40</span>
-                                      </div>
+                                      {basePrice > 0 && (
+                                        <div className="flex justify-between">
+                                          <span>📌 Base sticker price:</span>
+                                          <span className="font-semibold">${formatPrice(basePrice)}</span>
+                                        </div>
+                                      )}
                                       {item.options && (
                                         <>
                                           <div className="border-t border-blue-300 pt-1 mt-1">
