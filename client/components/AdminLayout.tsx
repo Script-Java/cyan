@@ -17,14 +17,14 @@ export default function AdminLayout({
       <Header />
       <AdminNavbar />
       <main className="min-h-screen bg-[#fafafa] text-gray-900">
-        {!hideQuickAccess && (
-          <div className="py-6 border-b border-gray-200 bg-white sticky top-0 z-40">
-            <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          {!hideQuickAccess && (
+            <div className="mb-6">
               <AdminQuickAccess />
             </div>
-          </div>
-        )}
-        {children}
+          )}
+          {children}
+        </div>
       </main>
     </>
   );
