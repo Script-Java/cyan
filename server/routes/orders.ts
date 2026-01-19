@@ -675,6 +675,7 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
           product_sku: productSku,
           product_description: productDescription,
           options: item.options || null,
+          design_file_url: item.design_file_url || null,
           line_total: (item.price || 0) * (item.quantity || 0),
         };
       })
