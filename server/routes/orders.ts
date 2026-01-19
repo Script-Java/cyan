@@ -638,18 +638,29 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
 
         if (item.product_id) {
           try {
+            // Handle both numeric and string IDs (e.g., "admin_11" or 11)
+            let queryId = item.product_id;
+            if (typeof queryId === "string" && queryId.includes("admin_")) {
+              // Extract numeric part from "admin_11" -> 11
+              const numericPart = queryId.replace("admin_", "");
+              queryId = parseInt(numericPart, 10);
+            }
+
+            console.log(`Fetching product with ID: ${queryId} (original: ${item.product_id})`);
+
             const { data: product, error: productError } = await supabase
               .from("admin_products")
               .select("name, sku, description")
-              .eq("id", item.product_id)
+              .eq("id", queryId)
               .single();
 
             if (product && product.name) {
               productName = product.name;
               productSku = product.sku || "";
               productDescription = product.description || "";
+              console.log(`Product found: ${productName}`);
             } else if (productError) {
-              console.warn(`Failed to fetch product ${item.product_id}:`, productError);
+              console.warn(`Failed to fetch product ${queryId}:`, productError);
             }
           } catch (err) {
             console.warn(`Error fetching product ${item.product_id}:`, err);
