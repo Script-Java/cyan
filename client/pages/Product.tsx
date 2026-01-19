@@ -1124,6 +1124,45 @@ export default function Product() {
           </div>
         </footer>
       </main>
+
+      {/* Post-Checkout Action Dialog */}
+      <Dialog open={showCheckoutDialog} onOpenChange={setShowCheckoutDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 rounded-full mb-4">
+              <Check className="w-6 h-6 text-green-600" />
+            </div>
+            <DialogTitle className="text-center text-xl">
+              Item Added to Cart!
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              Your artwork has been successfully added. What would you like to do next?
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 mt-6">
+            <Button
+              onClick={() => {
+                setShowCheckoutDialog(false);
+                setDesignFile(null);
+                setDesignPreview(null);
+                setOrderNotes("");
+              }}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              Add to Cart & Keep Shopping
+            </Button>
+            <Button
+              onClick={() => {
+                setShowCheckoutDialog(false);
+                navigate("/checkout-new");
+              }}
+              className="w-full bg-green-600 hover:bg-green-700 text-white"
+            >
+              Go to Checkout
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
