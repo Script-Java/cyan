@@ -343,7 +343,11 @@ export default function OrderStatus() {
                                 <h4 className="text-2xl font-bold text-gray-900 mt-2">
                                   {item.product_name && item.product_name.trim()
                                     ? item.product_name
-                                    : `Product #${item.product_id}`}
+                                    : item.product_id
+                                      ? (typeof item.product_id === "string" && item.product_id.includes("admin_")
+                                          ? `Custom Sticker`
+                                          : `Product #${item.product_id}`)
+                                      : "Unknown Product"}
                                 </h4>
                               </div>
                             </div>
