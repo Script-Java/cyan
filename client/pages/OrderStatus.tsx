@@ -23,6 +23,10 @@ interface OrderItem {
   product_id: number;
   quantity: number;
   price: number;
+  product_name?: string;
+  product_sku?: string;
+  product_description?: string;
+  line_total?: number;
 }
 
 interface DigitalFile {
