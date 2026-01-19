@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useStoreCredit } from "@/hooks/useStoreCredit";
+import { getDesignFile } from "@/lib/design-file-storage";
 
 interface CartItem {
   product_id: number;
