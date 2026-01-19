@@ -440,6 +440,7 @@ export function createServer() {
 
   // ===== Order Routes (Public - for guest order confirmation) =====
   app.get("/api/public/orders/:orderId", handleGetOrderPublic);
+  app.get("/api/public/order-status", handleGetOrderStatus);
 
   // ===== Design Routes (Protected) =====
   app.get("/api/designs", verifyToken, handleGetDesigns);
