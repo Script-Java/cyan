@@ -1,13 +1,20 @@
 import Header from "@/components/Header";
 import ProductGallery from "@/components/ProductGallery";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { ChevronLeft, Upload, X, AlertCircle } from "lucide-react";
+import { ChevronLeft, Upload, X, AlertCircle, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 interface ProductImage {
   id?: string;
