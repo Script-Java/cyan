@@ -559,7 +559,7 @@ export default function AccountSettings() {
                               firstName: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         />
                       </div>
                       <div>
@@ -575,7 +575,7 @@ export default function AccountSettings() {
                               lastName: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         />
                       </div>
                     </div>
@@ -594,7 +594,7 @@ export default function AccountSettings() {
                             email: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       />
                     </div>
 
@@ -612,7 +612,7 @@ export default function AccountSettings() {
                             phone: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="+1 (555) 000-0000"
                       />
                     </div>
@@ -731,7 +731,7 @@ export default function AccountSettings() {
                               firstName: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         />
                       </div>
                       <div>
@@ -748,7 +748,7 @@ export default function AccountSettings() {
                               lastName: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         />
                       </div>
                     </div>
@@ -767,7 +767,7 @@ export default function AccountSettings() {
                             street1: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="123 Main Street"
                       />
                     </div>
@@ -785,7 +785,7 @@ export default function AccountSettings() {
                             street2: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Apartment 4B"
                       />
                     </div>
@@ -805,7 +805,7 @@ export default function AccountSettings() {
                               city: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         />
                       </div>
                       <div>
@@ -822,7 +822,7 @@ export default function AccountSettings() {
                               stateOrProvince: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                           placeholder="CA"
                         />
                       </div>
@@ -843,7 +843,7 @@ export default function AccountSettings() {
                               postalCode: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                           placeholder="90210"
                         />
                       </div>
@@ -861,7 +861,7 @@ export default function AccountSettings() {
                               countryCode: e.target.value.toUpperCase(),
                             })
                           }
-                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                           placeholder="US"
                           maxLength={2}
                         />
