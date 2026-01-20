@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
   publish = "dist/spa"
-  environment = { NODE_VERSION = "20", JWT_SECRET = "cUCuGC4kLjHA5U63lrSMi1TawBzrFbaDqCQrDf4SXV0=" }
+  environment = { NODE_VERSION = "20" }
   functions = "netlify/functions"
 
 # API routes must come FIRST - before the SPA catch-all
