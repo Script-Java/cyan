@@ -1,5 +1,13 @@
 import rateLimit from "express-rate-limit";
 
+// Custom error handler that returns JSON instead of plain text
+const handleRateLimitError = (req: any, res: any, options: any) => {
+  res.status(options.statusCode).json({
+    error: options.message,
+    retryAfter: Math.ceil(options.windowMs / 1000),
+  });
+};
+
 /**
  * General API rate limiter
  * 15 minutes window, max 150 requests per IP
@@ -10,6 +18,7 @@ export const apiLimiter = rateLimit({
   message: "Too many requests from this IP address, please try again later.",
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  handler: handleRateLimitError, // Use JSON response handler
   skip: (req) => {
     // Skip rate limiting for:
     // 1. Health checks
