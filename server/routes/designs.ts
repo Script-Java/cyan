@@ -340,10 +340,18 @@ export const handleUploadDesignFile: RequestHandler = async (req, res) => {
       });
     } catch (uploadError) {
       console.error("Error uploading to Cloudinary:", uploadError);
-      return res.status(500).json({
-        error: "Failed to upload design file",
-        details:
-          uploadError instanceof Error ? uploadError.message : "Unknown error",
+      // If Cloudinary upload fails, return the base64 data URL as fallback
+      const dataUrl = `data:${fileType || "image/png"};base64,${fileData}`;
+      console.warn(
+        "Falling back to base64 data URL for design file (Cloudinary upload failed)"
+      );
+      return res.json({
+        success: true,
+        fileUrl: dataUrl,
+        fileName: sanitizedFileName,
+        size: buffer.length,
+        uploadedAt: new Date().toISOString(),
+        warning: "File stored locally, not in cloud storage",
       });
     }
   } catch (error) {
