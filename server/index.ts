@@ -1029,7 +1029,9 @@ export function createServer() {
     async (req: any, res: any) => {
       try {
         const { v2: cloudinary } = await import("cloudinary");
-        const sharp = await import("sharp");
+        const { processImage: processImageUtil } = await import(
+          "../server/utils/image-processor"
+        );
 
         cloudinary.config({
           cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -1041,15 +1043,12 @@ export function createServer() {
           return res.status(400).json({ error: "No file provided" });
         }
 
-        // Compress and optimize image
-        const compressedBuffer = await sharp
-          .default(req.file.buffer)
-          .resize(1200, 800, {
-            fit: "inside",
-            withoutEnlargement: true,
-          })
-          .jpeg({ quality: 85, progressive: true })
-          .toBuffer();
+        // Compress and optimize image (uses sharp if available, falls back to original)
+        const compressedBuffer = await processImageUtil(
+          req.file.buffer,
+          1200,
+          800
+        );
 
         const b64 = compressedBuffer.toString("base64");
         const dataURI = `data:image/jpeg;base64,${b64}`;
