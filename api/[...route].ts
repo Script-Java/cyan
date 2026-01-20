@@ -1,7 +1,13 @@
-import serverless from "serverless-http";
 import { createServer } from "../server/index";
 
 const app = createServer();
-const handler = serverless(app);
 
-export default handler;
+export default async (req: any, res: any) => {
+  // Call the Express app as middleware
+  return new Promise<void>((resolve, reject) => {
+    app(req, res, (err?: any) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+};
