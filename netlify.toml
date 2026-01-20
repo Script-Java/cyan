@@ -5,11 +5,11 @@
   functions = "netlify/functions"
 
 # API routes must come FIRST - before the SPA catch-all
+# Route API requests to the serverless function
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/:splat"
   status = 200
-  force = true
 
 # SPA catch-all - handles all other routes by serving index.html
 [[redirects]]
