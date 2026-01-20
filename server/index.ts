@@ -1050,7 +1050,7 @@ export function createServer() {
         const compressedBuffer = await processImageUtil(
           req.file.buffer,
           1200,
-          800
+          800,
         );
 
         const b64 = compressedBuffer.toString("base64");

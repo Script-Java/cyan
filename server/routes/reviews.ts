@@ -29,12 +29,21 @@ interface ReviewData {
  */
 export const handleSubmitReview: RequestHandler = async (req, res) => {
   try {
-    const { product_id, reviewer_name, reviewer_email, rating, title, comment, images } = req.body as ReviewData & { images?: string[] };
+    const {
+      product_id,
+      reviewer_name,
+      reviewer_email,
+      rating,
+      title,
+      comment,
+      images,
+    } = req.body as ReviewData & { images?: string[] };
 
     // Validation
     if (!product_id || !reviewer_name || !reviewer_email || !rating) {
       return res.status(400).json({
-        error: "Missing required fields: product_id, reviewer_name, reviewer_email, rating",
+        error:
+          "Missing required fields: product_id, reviewer_name, reviewer_email, rating",
       });
     }
 
@@ -76,7 +85,7 @@ export const handleSubmitReview: RequestHandler = async (req, res) => {
           // Compress image before uploading
           const buffer = Buffer.from(
             dataUri.split(",")[1] || imageBase64,
-            "base64"
+            "base64",
           );
           const compressedBuffer = await processImage(buffer, 600, 600);
           const compressedDataUri = `data:image/jpeg;base64,${compressedBuffer.toString("base64")}`;
@@ -141,7 +150,9 @@ export const handleGetProductReviews: RequestHandler = async (req, res) => {
 
     const { data, error } = await supabase
       .from("product_reviews")
-      .select("id, product_id, reviewer_name, rating, title, comment, image_urls, helpful_count, created_at")
+      .select(
+        "id, product_id, reviewer_name, rating, title, comment, image_urls, helpful_count, created_at",
+      )
       .eq("product_id", productId)
       .eq("status", "approved")
       .order("created_at", { ascending: false });
@@ -155,7 +166,9 @@ export const handleGetProductReviews: RequestHandler = async (req, res) => {
     const reviews = data || [];
     const averageRating =
       reviews.length > 0
-        ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+        ? (
+            reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+          ).toFixed(1)
         : 0;
 
     res.json({
@@ -194,7 +207,9 @@ export const handleMarkReviewHelpful: RequestHandler = async (req, res) => {
 
     if (error) {
       console.error("Error marking review as helpful:", error);
-      return res.status(500).json({ error: "Failed to mark review as helpful" });
+      return res
+        .status(500)
+        .json({ error: "Failed to mark review as helpful" });
     }
 
     res.json({ success: true, review: data?.[0] || {} });

@@ -99,16 +99,18 @@ export const handleUpdateCustomer: RequestHandler = async (req, res) => {
       console.error("Customer update error details:", {
         customerId,
         updateData,
-        error: error ? {
-          message: error.message,
-          code: error.code,
-          details: error.details,
-        } : null,
+        error: error
+          ? {
+              message: error.message,
+              code: error.code,
+              details: error.details,
+            }
+          : null,
         updatedCustomer,
       });
       return res.status(500).json({
         error: "Failed to update customer",
-        details: error?.message || "Unknown error"
+        details: error?.message || "Unknown error",
       });
     }
 

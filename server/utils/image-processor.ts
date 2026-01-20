@@ -19,7 +19,7 @@ try {
   sharpAvailable = true;
 } catch (error) {
   console.warn(
-    "Sharp not available - using original image format. This is expected in serverless environments like Netlify."
+    "Sharp not available - using original image format. This is expected in serverless environments like Netlify.",
   );
 }
 
@@ -34,11 +34,11 @@ try {
 export async function processImage(
   buffer: Buffer,
   maxWidth: number = 500,
-  maxHeight: number = 500
+  maxHeight: number = 500,
 ): Promise<Buffer> {
   if (!sharpAvailable || !Sharp) {
     console.log(
-      "Image processing skipped - sharp not available. Image will be uploaded as-is."
+      "Image processing skipped - sharp not available. Image will be uploaded as-is.",
     );
     return buffer;
   }
@@ -52,7 +52,9 @@ export async function processImage(
       .webp({ quality: 80 })
       .toBuffer();
 
-    console.log(`Image processed successfully: ${buffer.length} -> ${processed.length} bytes`);
+    console.log(
+      `Image processed successfully: ${buffer.length} -> ${processed.length} bytes`,
+    );
     return processed;
   } catch (error) {
     console.error("Error processing image with sharp:", error);

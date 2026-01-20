@@ -343,7 +343,7 @@ export const handleUploadDesignFile: RequestHandler = async (req, res) => {
       // If Cloudinary upload fails, return the base64 data URL as fallback
       const dataUrl = `data:${fileType || "image/png"};base64,${fileData}`;
       console.warn(
-        "Falling back to base64 data URL for design file (Cloudinary upload failed)"
+        "Falling back to base64 data URL for design file (Cloudinary upload failed)",
       );
       return res.json({
         success: true,
