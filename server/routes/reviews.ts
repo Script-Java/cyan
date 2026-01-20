@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
 import { v2 as cloudinary } from "cloudinary";
-import sharp from "sharp";
+import { processImage } from "../utils/image-processor";
 
 const supabaseUrl = process.env.SUPABASE_URL || "";
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
@@ -78,14 +78,7 @@ export const handleSubmitReview: RequestHandler = async (req, res) => {
             dataUri.split(",")[1] || imageBase64,
             "base64"
           );
-          const compressedBuffer = await sharp(buffer)
-            .resize(600, 600, {
-              fit: "inside",
-              withoutEnlargement: true,
-            })
-            .jpeg({ quality: 80, progressive: true })
-            .toBuffer();
-
+          const compressedBuffer = await processImage(buffer, 600, 600);
           const compressedDataUri = `data:image/jpeg;base64,${compressedBuffer.toString("base64")}`;
 
           const result = await cloudinary.uploader.upload(compressedDataUri, {
