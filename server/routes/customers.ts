@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
 import { v2 as cloudinary } from "cloudinary";
-import sharp from "sharp";
+import { processImage } from "../utils/image-processor";
 import { getCustomerStoreCredit } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
 
@@ -508,13 +508,8 @@ export const handleUploadAvatar: RequestHandler = async (req, res) => {
     }
 
     // Compress and resize image for avatar (square format)
-    const compressedBuffer = await sharp(req.file.buffer)
-      .resize(500, 500, {
-        fit: "cover",
-        withoutEnlargement: false,
-      })
-      .jpeg({ quality: 85, progressive: true })
-      .toBuffer();
+    // Uses sharp if available, falls back to original buffer in serverless environments
+    const compressedBuffer = await processImage(req.file.buffer, 500, 500);
 
     const b64 = compressedBuffer.toString("base64");
     const dataURI = `data:image/jpeg;base64,${b64}`;
