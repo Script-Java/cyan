@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
 import { v2 as cloudinary } from "cloudinary";
-import sharp from "sharp";
+import { processImage } from "../utils/image-processor";
 
 const supabaseUrl = process.env.SUPABASE_URL || "";
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
@@ -238,14 +238,8 @@ export const handleUploadBlogImage: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "No file provided" });
     }
 
-    // Compress image using sharp
-    const compressedBuffer = await sharp(req.file.buffer)
-      .resize(1200, 800, {
-        fit: "inside",
-        withoutEnlargement: true,
-      })
-      .jpeg({ quality: 80, progressive: true })
-      .toBuffer();
+    // Compress image using sharp (falls back to original in serverless)
+    const compressedBuffer = await processImage(req.file.buffer, 1200, 800);
 
     const b64 = compressedBuffer.toString("base64");
     const dataURI = `data:image/jpeg;base64,${b64}`;
