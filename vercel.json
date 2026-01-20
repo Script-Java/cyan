@@ -1,8 +1,19 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
-  "public": "dist/spa",
+  "outputDirectory": "dist/spa",
   "env": {
     "NODE_ENV": "production"
-  }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/[...route]?route=$1",
+      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }
