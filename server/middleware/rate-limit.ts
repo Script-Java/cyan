@@ -42,6 +42,7 @@ export const authLimiter = rateLimit({
   message: "Too many login/signup attempts. Please try again after 15 minutes.",
   standardHeaders: true,
   legacyHeaders: false,
+  handler: handleRateLimitError, // Use JSON response handler
   skipSuccessfulRequests: true, // Don't count successful requests
   skipFailedRequests: false, // Count failed requests
 });
@@ -56,6 +57,7 @@ export const paymentLimiter = rateLimit({
   message: "Too many payment attempts. Please try again after 5 minutes.",
   standardHeaders: true,
   legacyHeaders: false,
+  handler: handleRateLimitError, // Use JSON response handler
 });
 
 /**
@@ -68,6 +70,7 @@ export const checkoutLimiter = rateLimit({
   message: "Too many checkout attempts. Please try again after 5 minutes.",
   standardHeaders: true,
   legacyHeaders: false,
+  handler: handleRateLimitError, // Use JSON response handler
 });
 
 /**
@@ -80,4 +83,5 @@ export const adminLimiter = rateLimit({
   message: "Too many admin operations. Please try again after 5 minutes.",
   standardHeaders: true,
   legacyHeaders: false,
+  handler: handleRateLimitError, // Use JSON response handler
 });
