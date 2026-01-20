@@ -1137,5 +1137,3 @@ export function createServer() {
 
   return app;
 }
-
-export { createServer };
