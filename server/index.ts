@@ -238,6 +238,9 @@ export function createServer() {
     // Custom frontend URL
     process.env.FRONTEND_URL || "http://localhost:5173",
     "https://stickershop.test", // Local testing
+    // Production domains
+    "https://stickyslap.app",
+    "https://www.stickyslap.app",
     // Add production domains here as environment variables
     ...(process.env.ALLOWED_ORIGINS
       ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
