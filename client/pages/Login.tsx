@@ -56,7 +56,9 @@ export default function Login() {
               <h1 className="text-3xl font-bold text-[#030140] mb-2">
                 Welcome Back
               </h1>
-              <p className="text-gray-600">Log in to your Sticky Slap account</p>
+              <p className="text-gray-600">
+                Log in to your Sticky Slap account
+              </p>
             </div>
 
             {error && (

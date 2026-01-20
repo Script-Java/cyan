@@ -90,100 +90,115 @@ export default function App() {
           <div className="flex flex-col min-h-screen">
             <div className="flex-1">
               <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/verify" element={<VerifyEmail />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/deals" element={<Deals />} />
-            <Route path="/product/:productId" element={<Product />} />
-            <Route path="/product-page/:productId" element={<ProductPage />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/ecwid-store" element={<EcwidStore />} />
-            <Route
-              path="/ecwid-product/:productId"
-              element={<EcwidProductDetail />}
-            />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/checkout-new" element={<CheckoutNew />} />
-            <Route path="/checkout-success" element={<CheckoutSuccess />} />
-            <Route path="/order-confirmation" element={<OrderConfirmation />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/order-history" element={<OrderHistory />} />
-            <Route path="/order-history/:orderId" element={<OrderDetails />} />
-            <Route path="/order-status" element={<OrderStatus />} />
-            <Route path="/finances" element={<Finances />} />
-            <Route path="/designs" element={<Designs />} />
-            <Route path="/proofs" element={<Proofs />} />
-            <Route
-              path="/proofs/:proofId/approve"
-              element={<ProofApproval />}
-            />
-            <Route
-              path="/proofs/:proofId/request-revisions"
-              element={<ProofApproval />}
-            />
-            <Route path="/account-settings" element={<AccountSettings />} />
-            <Route path="/support" element={<Support />} />
-            <Route path="/my-tickets" element={<MyTickets />} />
-            <Route path="/blogs" element={<Blogs />} />
-            <Route path="/blog/:blogId" element={<BlogPost />} />
-            <Route path="/legal-pages" element={<LegalPages />} />
-            <Route
-              path="/return-refund-policy"
-              element={<ReturnRefundPolicy />}
-            />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/orders" element={<AdminOrders />} />
-            <Route path="/admin/customers" element={<Customers />} />
-            <Route path="/admin/products" element={<AdminProducts />} />
-            <Route path="/admin/products/new" element={<ProductForm />} />
-            <Route
-              path="/admin/products/:productId/edit"
-              element={<ProductForm />}
-            />
-            <Route path="/admin/proofs" element={<AdminProofs />} />
-            <Route path="/admin/reviews" element={<AdminReviews />} />
-            <Route
-              path="/admin/email-notifications"
-              element={<AdminEmailNotifications />}
-            />
-            <Route path="/admin/finance" element={<AdminFinance />} />
-            <Route path="/admin/analytics" element={<AdminAnalytics />} />
-            <Route path="/admin/blogs" element={<AdminBlogs />} />
-            <Route path="/admin/create-blog" element={<CreateBlog />} />
-            <Route path="/admin/edit-blog/:blogId" element={<EditBlog />} />
-            <Route path="/admin/legal-pages" element={<AdminLegalPages />} />
-            <Route
-              path="/admin/create-legal-page"
-              element={<CreateLegalPage />}
-            />
-            <Route
-              path="/admin/edit-legal-page/:pageId"
-              element={<EditLegalPage />}
-            />
-            <Route
-              path="/admin/return-refund-policy"
-              element={<AdminReturnRefundPolicy />}
-            />
-            <Route path="/admin/settings" element={<AdminSettings />} />
-            <Route path="/admin/support" element={<AdminSupport />} />
-            <Route path="/admin/shipping" element={<AdminShipping />} />
-            <Route path="/admin/gallery" element={<AdminGallery />} />
-            <Route
-              path="/admin/import-products"
-              element={<AdminProductImport />}
-            />
-            <Route
-              path="/admin/ecwid-migration"
-              element={<AdminEcwidMigration />}
-            />
-            <Route path="/store-credit-admin" element={<StoreCreditAdmin />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="/:pageType" element={<LegalPage />} />
-            <Route path="*" element={<NotFound />} />
+                <Route path="/" element={<Index />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/verify" element={<VerifyEmail />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/deals" element={<Deals />} />
+                <Route path="/product/:productId" element={<Product />} />
+                <Route
+                  path="/product-page/:productId"
+                  element={<ProductPage />}
+                />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/ecwid-store" element={<EcwidStore />} />
+                <Route
+                  path="/ecwid-product/:productId"
+                  element={<EcwidProductDetail />}
+                />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/checkout-new" element={<CheckoutNew />} />
+                <Route path="/checkout-success" element={<CheckoutSuccess />} />
+                <Route
+                  path="/order-confirmation"
+                  element={<OrderConfirmation />}
+                />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/order-history" element={<OrderHistory />} />
+                <Route
+                  path="/order-history/:orderId"
+                  element={<OrderDetails />}
+                />
+                <Route path="/order-status" element={<OrderStatus />} />
+                <Route path="/finances" element={<Finances />} />
+                <Route path="/designs" element={<Designs />} />
+                <Route path="/proofs" element={<Proofs />} />
+                <Route
+                  path="/proofs/:proofId/approve"
+                  element={<ProofApproval />}
+                />
+                <Route
+                  path="/proofs/:proofId/request-revisions"
+                  element={<ProofApproval />}
+                />
+                <Route path="/account-settings" element={<AccountSettings />} />
+                <Route path="/support" element={<Support />} />
+                <Route path="/my-tickets" element={<MyTickets />} />
+                <Route path="/blogs" element={<Blogs />} />
+                <Route path="/blog/:blogId" element={<BlogPost />} />
+                <Route path="/legal-pages" element={<LegalPages />} />
+                <Route
+                  path="/return-refund-policy"
+                  element={<ReturnRefundPolicy />}
+                />
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/orders" element={<AdminOrders />} />
+                <Route path="/admin/customers" element={<Customers />} />
+                <Route path="/admin/products" element={<AdminProducts />} />
+                <Route path="/admin/products/new" element={<ProductForm />} />
+                <Route
+                  path="/admin/products/:productId/edit"
+                  element={<ProductForm />}
+                />
+                <Route path="/admin/proofs" element={<AdminProofs />} />
+                <Route path="/admin/reviews" element={<AdminReviews />} />
+                <Route
+                  path="/admin/email-notifications"
+                  element={<AdminEmailNotifications />}
+                />
+                <Route path="/admin/finance" element={<AdminFinance />} />
+                <Route path="/admin/analytics" element={<AdminAnalytics />} />
+                <Route path="/admin/blogs" element={<AdminBlogs />} />
+                <Route path="/admin/create-blog" element={<CreateBlog />} />
+                <Route path="/admin/edit-blog/:blogId" element={<EditBlog />} />
+                <Route
+                  path="/admin/legal-pages"
+                  element={<AdminLegalPages />}
+                />
+                <Route
+                  path="/admin/create-legal-page"
+                  element={<CreateLegalPage />}
+                />
+                <Route
+                  path="/admin/edit-legal-page/:pageId"
+                  element={<EditLegalPage />}
+                />
+                <Route
+                  path="/admin/return-refund-policy"
+                  element={<AdminReturnRefundPolicy />}
+                />
+                <Route path="/admin/settings" element={<AdminSettings />} />
+                <Route path="/admin/support" element={<AdminSupport />} />
+                <Route path="/admin/shipping" element={<AdminShipping />} />
+                <Route path="/admin/gallery" element={<AdminGallery />} />
+                <Route
+                  path="/admin/import-products"
+                  element={<AdminProductImport />}
+                />
+                <Route
+                  path="/admin/ecwid-migration"
+                  element={<AdminEcwidMigration />}
+                />
+                <Route
+                  path="/store-credit-admin"
+                  element={<StoreCreditAdmin />}
+                />
+                <Route path="/auth/callback" element={<AuthCallback />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="/:pageType" element={<LegalPage />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
             <Footer />
