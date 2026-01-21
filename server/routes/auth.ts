@@ -92,8 +92,15 @@ export const handleLogin: RequestHandler = async (req, res) => {
 export const handleSignup: RequestHandler = async (req, res) => {
   try {
     console.log("Signup request received:", {
+      method: req.method,
+      url: req.url,
+      headers: {
+        "Content-Type": req.get("Content-Type"),
+        "Content-Length": req.get("Content-Length"),
+      },
+      bodyType: typeof req.body,
       body: req.body,
-      contentType: req.get("Content-Type"),
+      bodyKeys: Object.keys(req.body || {}),
     });
 
     const { firstName, lastName, email, password } = req.body as SignupRequest;
