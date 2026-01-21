@@ -355,3 +355,127 @@ export const handleLogout: RequestHandler = (req, res) => {
     res.status(500).json({ error: "Logout failed" });
   }
 };
+
+/**
+ * Initiate password reset - sends reset email to user
+ */
+export const handleForgotPassword: RequestHandler = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
+    console.log("🔓 Forgot password request for:", email);
+
+    // Check if customer exists
+    const { data: customer, error: customerError } = await supabase
+      .from("customers")
+      .select("id, email, first_name")
+      .eq("email", email)
+      .single();
+
+    if (customerError || !customer) {
+      // Don't reveal if email exists or not (security)
+      console.log("Customer not found for email:", email);
+      return res.json({
+        success: true,
+        message: "If an account exists, a reset link has been sent to your email",
+      });
+    }
+
+    // Generate a reset token (valid for 1 hour)
+    const resetToken = jwt.sign(
+      { customerId: customer.id, email: customer.email, type: "password-reset" },
+      JWT_SECRET,
+      { expiresIn: "1h" },
+    );
+
+    // Generate reset link
+    const baseUrl = process.env.BASE_URL || "https://stickyslap.app";
+    const resetLink = `${baseUrl}/reset-password?token=${resetToken}`;
+
+    // Generate and send email
+    const emailContent = generatePasswordResetEmail({
+      customerName: customer.first_name || "User",
+      resetLink,
+      expiresIn: "1 hour",
+    });
+
+    await sendEmail({
+      to: customer.email,
+      subject: "Reset Your Password - Sticky Slap",
+      html: emailContent,
+    });
+
+    console.log("✅ Password reset email sent to:", customer.email);
+
+    res.json({
+      success: true,
+      message: "Password reset link has been sent to your email",
+    });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : "Failed to process password reset request",
+    });
+  }
+};
+
+/**
+ * Reset password - validates token and updates password
+ */
+export const handleResetPassword: RequestHandler = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      return res.status(400).json({ error: "Token and new password are required" });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({ error: "Password must be at least 8 characters" });
+    }
+
+    console.log("🔐 Reset password request with token");
+
+    // Verify and decode token
+    let decoded: any;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET);
+      if (decoded.type !== "password-reset") {
+        throw new Error("Invalid token type");
+      }
+    } catch (error) {
+      console.log("Token verification failed:", error);
+      return res.status(401).json({ error: "Invalid or expired reset token" });
+    }
+
+    // Hash new password
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+
+    // Update customer password
+    const { error: updateError } = await supabase
+      .from("customers")
+      .update({ password_hash: passwordHash })
+      .eq("id", decoded.customerId);
+
+    if (updateError) {
+      console.error("Password update error:", updateError);
+      throw updateError;
+    }
+
+    console.log("✅ Password reset successfully for customer:", decoded.customerId);
+
+    res.json({
+      success: true,
+      message: "Password has been reset successfully",
+    });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : "Failed to reset password",
+    });
+  }
+};
