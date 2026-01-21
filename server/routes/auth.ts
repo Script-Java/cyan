@@ -99,33 +99,15 @@ export const handleLogin: RequestHandler = async (req, res) => {
 
 export const handleSignup: RequestHandler = async (req, res) => {
   try {
-    console.log("Signup request received:", {
+    console.log("📝 Signup request received:", {
       method: req.method,
-      url: req.url,
-      headers: {
-        "Content-Type": req.get("Content-Type"),
-        "Content-Length": req.get("Content-Length"),
-      },
+      headers: { "Content-Type": req.get("Content-Type") },
       bodyType: typeof req.body,
-      bodyIsArray: Array.isArray(req.body),
+      bodyKeys: req.body ? Object.keys(req.body) : [],
       body: req.body,
-      bodyKeys: Object.keys(req.body || {}),
-      rawBody: (req as any).rawBody,
     });
 
-    // Handle case where body might be a string
-    let parsedBody = req.body;
-    if (typeof req.body === "string") {
-      try {
-        parsedBody = JSON.parse(req.body);
-        console.log("✅ Parsed body from string:", parsedBody);
-      } catch (e) {
-        console.error("❌ Failed to parse body string:", e);
-        return res.status(400).json({ error: "Invalid JSON in request body" });
-      }
-    }
-
-    const { firstName, lastName, email, password } = parsedBody as SignupRequest;
+    const { firstName, lastName, email, password } = req.body as SignupRequest;
 
     if (!firstName || !lastName || !email || !password) {
       console.log("Missing required fields:", {
