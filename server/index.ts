@@ -252,11 +252,6 @@ export function createServer() {
     allowedOrigins.push(`https://${process.env.NETLIFY_SITE_NAME}.netlify.app`);
   }
 
-  // Allow fly.dev production URLs (Fly.io deployments)
-  if (process.env.FLY_APP_NAME) {
-    allowedOrigins.push(`https://${process.env.FLY_APP_NAME}.fly.dev`);
-  }
-
   // Allow www subdomain for production URLs
   const allowWwwVariants = (url: string) => {
     if (url.startsWith("https://") && !url.includes("www.")) {
