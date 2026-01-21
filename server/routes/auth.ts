@@ -41,7 +41,18 @@ function generateToken(customerId: number, email: string): string {
 
 export const handleLogin: RequestHandler = async (req, res) => {
   try {
-    const { email, password } = req.body as LoginRequest;
+    // Handle case where body might be a string
+    let parsedBody = req.body;
+    if (typeof req.body === "string") {
+      try {
+        parsedBody = JSON.parse(req.body);
+      } catch (e) {
+        console.error("❌ Failed to parse login body:", e);
+        return res.status(400).json({ error: "Invalid JSON in request body" });
+      }
+    }
+
+    const { email, password } = parsedBody as LoginRequest;
 
     if (!email || !password) {
       return res.status(400).json({ error: "Email and password required" });
