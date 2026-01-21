@@ -1,10 +1,18 @@
-# Fly.io Environment Variables
+# Fly.io Environment Variables (DEPRECATED)
 
-This document lists the environment variables that should be set in Fly.io for the application to run properly.
+⚠️ **This file is deprecated.** The application has been migrated to Netlify and no longer uses Fly.io for deployment.
 
-## Required Environment Variables
+For current deployment instructions, see `DEPLOYMENT_CHECKLIST.md` and deploy to Netlify instead.
 
-Set these using `flyctl secrets set` or via the Fly.io dashboard:
+The information below is kept for reference only and should not be used.
+
+---
+
+# Legacy Fly.io Configuration (Do Not Use)
+
+This document listed environment variables for the Fly.io deployment platform.
+
+## Required Environment Variables (Legacy)
 
 ```bash
 # Supabase Configuration
@@ -16,40 +24,12 @@ flyctl secrets set VITE_SUPABASE_URL=your_supabase_url
 flyctl secrets set VITE_SUPABASE_ANON_KEY=your_anon_key
 ```
 
-## Optional Environment Variables
+## Migration to Netlify
 
-These have defaults but can be overridden:
+To deploy to Netlify instead:
 
-- `NODE_ENV` - Set to "production" (already set in fly.toml)
-- `PORT` - Automatically set by Fly.io (defaults to 3000)
-- `PING_MESSAGE` - Custom message for /api/ping endpoint
+1. Connect your GitHub repository to Netlify
+2. Set environment variables in Netlify Dashboard → Site Settings → Build & Deploy → Environment
+3. Deploy using the Netlify UI
 
-## Setting Secrets
-
-To set secrets in Fly.io:
-
-```bash
-flyctl secrets set KEY=value -a ss1-k4c0dg
-```
-
-Or set multiple at once:
-
-```bash
-flyctl secrets set \
-  SUPABASE_URL=your_url \
-  SUPABASE_SERVICE_KEY=your_key \
-  VITE_SUPABASE_URL=your_url \
-  VITE_SUPABASE_ANON_KEY=your_anon_key \
-  -a ss1-k4c0dg
-```
-
-## View Current Secrets
-
-```bash
-flyctl secrets list -a ss1-k4c0dg
-```
-
-## Note
-
-The application will start even without these variables (using placeholder values), but functionality that depends on Supabase will not work correctly. Make sure to set all required variables for full functionality.
-
+See `DEPLOYMENT_CHECKLIST.md` for full instructions.
