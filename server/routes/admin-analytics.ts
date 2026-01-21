@@ -220,6 +220,19 @@ export const handleGetAnalytics: RequestHandler = async (req, res) => {
  */
 export const handleTrackEvent: RequestHandler = async (req, res) => {
   try {
+    console.log("🔍 Analytics track event received:", {
+      method: req.method,
+      url: req.url,
+      headers: {
+        "Content-Type": req.get("Content-Type"),
+        "Content-Length": req.get("Content-Length"),
+      },
+      bodyType: typeof req.body,
+      bodyKeys: req.body ? Object.keys(req.body) : [],
+      body: req.body,
+      isArray: Array.isArray(req.body),
+    });
+
     const {
       event_type,
       event_name,
@@ -234,6 +247,7 @@ export const handleTrackEvent: RequestHandler = async (req, res) => {
     const token = req.headers.authorization?.split("Bearer ")[1];
 
     if (!event_type || !event_name) {
+      console.log("❌ Missing required fields:", { event_type, event_name });
       return res.status(400).json({ error: "Missing required fields" });
     }
 
