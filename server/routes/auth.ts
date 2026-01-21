@@ -99,11 +99,25 @@ export const handleSignup: RequestHandler = async (req, res) => {
         "Content-Length": req.get("Content-Length"),
       },
       bodyType: typeof req.body,
+      bodyIsArray: Array.isArray(req.body),
       body: req.body,
       bodyKeys: Object.keys(req.body || {}),
+      rawBody: (req as any).rawBody,
     });
 
-    const { firstName, lastName, email, password } = req.body as SignupRequest;
+    // Handle case where body might be a string
+    let parsedBody = req.body;
+    if (typeof req.body === "string") {
+      try {
+        parsedBody = JSON.parse(req.body);
+        console.log("✅ Parsed body from string:", parsedBody);
+      } catch (e) {
+        console.error("❌ Failed to parse body string:", e);
+        return res.status(400).json({ error: "Invalid JSON in request body" });
+      }
+    }
+
+    const { firstName, lastName, email, password } = parsedBody as SignupRequest;
 
     if (!firstName || !lastName || !email || !password) {
       console.log("Missing required fields:", {
