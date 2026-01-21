@@ -1,5 +1,5 @@
-// Only load dotenv in development (not in production on Fly.io)
-// In production, environment variables should be set via Fly.io secrets
+// Only load dotenv in development (not in production on Netlify)
+// In production, environment variables should be set via Netlify
 if (process.env.NODE_ENV !== "production") {
   // Use dynamic import for dotenv to avoid issues in ES modules
   import("dotenv/config").catch(() => {
