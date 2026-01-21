@@ -91,11 +91,23 @@ export const handleLogin: RequestHandler = async (req, res) => {
 
 export const handleSignup: RequestHandler = async (req, res) => {
   try {
+    console.log("Signup request received:", {
+      body: req.body,
+      contentType: req.get("Content-Type"),
+    });
+
     const { firstName, lastName, email, password } = req.body as SignupRequest;
 
     if (!firstName || !lastName || !email || !password) {
+      console.log("Missing required fields:", {
+        firstName: !!firstName,
+        lastName: !!lastName,
+        email: !!email,
+        password: !!password,
+      });
       return res.status(400).json({
         error: "First name, last name, email, and password are required",
+        received: { firstName, lastName, email, password },
       });
     }
 
