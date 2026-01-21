@@ -228,10 +228,22 @@ export const handleTrackEvent: RequestHandler = async (req, res) => {
         "Content-Length": req.get("Content-Length"),
       },
       bodyType: typeof req.body,
-      bodyKeys: req.body ? Object.keys(req.body) : [],
+      bodyIsArray: Array.isArray(req.body),
+      bodyKeys: req.body && typeof req.body === "object" ? Object.keys(req.body) : [],
       body: req.body,
-      isArray: Array.isArray(req.body),
     });
+
+    // Handle case where body might be a string
+    let parsedBody = req.body;
+    if (typeof req.body === "string") {
+      try {
+        parsedBody = JSON.parse(req.body);
+        console.log("✅ Parsed analytics body from string:", parsedBody);
+      } catch (e) {
+        console.error("❌ Failed to parse analytics body:", e);
+        return res.status(400).json({ error: "Invalid JSON in request body" });
+      }
+    }
 
     const {
       event_type,
@@ -243,7 +255,7 @@ export const handleTrackEvent: RequestHandler = async (req, res) => {
       browser,
       country,
       data,
-    } = req.body;
+    } = parsedBody;
     const token = req.headers.authorization?.split("Bearer ")[1];
 
     if (!event_type || !event_name) {
