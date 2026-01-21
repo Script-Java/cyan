@@ -1,219 +1,204 @@
-# Deployment Checklist for Product Import
+# Deployment Checklist for Netlify
 
 ## Pre-Deployment Steps
 
 ### 1. Database Schema ✓
-- [ ] Applied migration: `supabase/migrations/complete_admin_products_schema.sql`
-- [ ] Verified all columns exist in `admin_products` table
-- [ ] Command: Visit Supabase Dashboard > SQL Editor > Run migration
+- [x] All migrations applied to Supabase
+- [x] Admin products table exists with all required columns
+- [x] Supabase project is accessible and configured
 
-### 2. Environment Variables
-- [ ] Set `SUPABASE_URL` to `https://nbzttuomtdtsfzcagfnh.supabase.co`
-- [ ] Set `SUPABASE_SERVICE_KEY` (find in Supabase Dashboard > Settings > API)
-- [ ] Set `JWT_SECRET` to a secure random string
-- [ ] Command: `flyctl secrets list` to verify on Fly.io
+### 2. Environment Variables (Netlify)
+- [x] `JWT_SECRET` - Set in Netlify Dashboard
+- [x] `SUPABASE_URL` - Set in Netlify Dashboard  
+- [x] `SUPABASE_SERVICE_KEY` - Set in Netlify Dashboard
+- [x] `SQUARE_APPLICATION_ID` - Set in Netlify Dashboard
+- [x] `SQUARE_ACCESS_TOKEN` - Set in Netlify Dashboard
+- [x] `SQUARE_LOCATION_ID` - Set in Netlify Dashboard
 
 ### 3. Code Changes
-- [ ] ✓ Fixed route ordering in `server/index.ts` (import route before parameterized)
-- [ ] ✓ Updated `server/utils/supabase.ts` with correct URL
-- [ ] ✓ Fixed `handleImportAdminProduct` to handle missing columns gracefully
-- [ ] ✓ Fixed AdminProofs authorization headers
-- [ ] ✓ Removed duplicate React imports from AdminProducts.tsx
+- [x] CORS configuration updated for production domain (stickyslap.app)
+- [x] All Fly.io references removed from code
+- [x] Route ordering fixed in `server/index.ts`
+- [x] Supabase utilities configured correctly
 
 ### 4. Local Testing
-- [ ] Dev server running: `pnpm run dev`
-- [ ] Admin products page loads without errors
-- [ ] Import Product button is visible and clickable
-- [ ] Can successfully import a product
-- [ ] Product appears in products list
+- [x] Dev server running: `pnpm run dev`
+- [x] Signup flow works on localhost
+- [x] Checkout flow works on localhost
+- [x] Admin features accessible with proper auth
+- [x] All API endpoints responding correctly
 
 ### 5. Push to Production
-- [ ] All code changes committed and ready
-- [ ] Click "Push" button in Builder.io UI
-- [ ] Wait for Fly.io deployment to complete
+- [x] All code changes committed and pushed to git
+- [x] Netlify deployment triggered automatically
+- [x] Build completed successfully
 
 ### 6. Production Verification
-- [ ] Visit production URL (fly.dev domain)
-- [ ] Login as admin
-- [ ] Navigate to Products page
-- [ ] Test import functionality
-- [ ] Verify product appears in database
+- [x] Visit https://stickyslap.app
+- [x] Signup/login works
+- [x] Can create orders and checkout
+- [x] Admin dashboard accessible
 
 ## Detailed Setup Steps
 
-### Step 1: Apply Database Migration
+### Step 1: Set Netlify Environment Variables
 
-1. Go to https://app.supabase.com
-2. Select your project: `nbzttuomtdtsfzcagfnh`
-3. Navigate to **SQL Editor**
-4. Click **New Query**
-5. Copy entire contents of `supabase/migrations/complete_admin_products_schema.sql`
-6. Paste into editor
-7. Click **Run**
-8. Verify "Success" message appears
-9. Go to **Table Editor** > `admin_products` to verify columns
+1. Go to https://app.netlify.com
+2. Select your site
+3. Navigate to **Settings** → **Build & Deploy** → **Environment**
+4. Click **Edit variables**
+5. Add all required variables:
 
-### Step 2: Set Fly.io Environment Variables
-
-```bash
-# Get your Supabase Service Key:
-# 1. Go to https://app.supabase.com
-# 2. Select project
-# 3. Settings > API
-# 4. Copy "service_role key"
-
-# Set the secrets
-flyctl secrets set SUPABASE_URL=https://nbzttuomtdtsfzcagfnh.supabase.co
-flyctl secrets set SUPABASE_SERVICE_KEY="<paste-service-key-here>"
-flyctl secrets set JWT_SECRET="<generate-random-secret>"
-
-# Generate a random JWT_SECRET (run this locally):
-# node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-
-# Verify they were set
-flyctl secrets list
+```
+JWT_SECRET=cUCuGC4kLjHA5U63lrSMi1TawBzrFbaDqCQrDf4SXV0=
+SUPABASE_URL=https://nbzttuomtdtsfzcagfnh.supabase.co
+SUPABASE_SERVICE_KEY=<your-service-key>
+SQUARE_APPLICATION_ID=sq0idp-Ax3q0SqLPOhtGcUnC6YsOg
+SQUARE_ACCESS_TOKEN=<your-square-token>
+SQUARE_LOCATION_ID=M22XGM76XXKXW
 ```
 
-### Step 3: Test Locally
+6. Click **Save**
+7. Netlify will automatically redeploy with the new variables
+
+### Step 2: Test Locally
 
 ```bash
-# Terminal 1: Start dev server
+# Start dev server
 pnpm run dev
 
-# Terminal 2: Check logs
-npm run dev > logs.txt 2>&1
-
 # In browser:
-# 1. Navigate to http://localhost:5173/admin/products
-# 2. Login with admin account
-# 3. Click "Import Product" button
-# 4. Should see success toast notification
-# 5. Product should appear in list
+# 1. Navigate to http://localhost:5173
+# 2. Try signup at http://localhost:5173/signup
+# 3. Try checkout at http://localhost:5173/checkout-new
+# 4. Access admin at http://localhost:5173/admin
 ```
 
-### Step 4: Deploy to Production
+### Step 3: Deploy to Production
 
-1. Ensure all local changes are working
-2. In Builder.io UI, click "Push" button (top right)
-3. Wait for deployment to complete
-4. Visit production URL from Fly.io
-5. Test product import again
+1. Make all code changes locally
+2. Push to git: `git push origin main`
+3. Netlify automatically detects changes and deploys
+4. Monitor deploy status at https://app.netlify.com
+
+### Step 4: Verify Production
+
+1. Visit https://stickyslap.app
+2. Test signup flow
+3. Test checkout flow
+4. Login to admin dashboard
+5. Verify all features work
 
 ## Troubleshooting
 
-### Issue: "Could not find 'categories' column"
-**Solution:** Migration not applied
-```bash
-# Apply migration via Supabase dashboard (Step 1 above)
+### Issue: CORS Policy Error
+**Solution:** Ensure stickyslap.app is in CORS whitelist in `server/index.ts`
+```typescript
+const allowedOrigins = [
+  "https://stickyslap.app",
+  "https://www.stickyslap.app",
+  // ... other origins
+];
 ```
 
-### Issue: "No authorization token provided"
-**Solution:** JWT_SECRET not set
+### Issue: JWT Token Verification Error
+**Solution:** Check JWT_SECRET is set in Netlify environment variables
 ```bash
-# Set on Fly.io
-flyctl secrets set JWT_SECRET="<random-secret>"
+# In Netlify Dashboard:
+# Settings → Build & Deploy → Environment
+# Verify JWT_SECRET is set and matches your local value
 ```
 
-### Issue: "Failed to create product"
-**Solution:** Check server logs
-```bash
-# View live logs
-flyctl logs
-
-# Or check local dev console for details
+### Issue: API Endpoints Not Found (404)
+**Solution:** Check netlify.toml redirects are configured correctly
+```toml
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api:splat"
+  status = 200
 ```
 
-### Issue: Products not showing after import
-**Solution:** Availability filter
-```sql
--- Check in Supabase SQL Editor:
-SELECT id, name, availability FROM admin_products;
-
--- If availability is false, update it:
-UPDATE admin_products SET availability = true WHERE id = <product_id>;
+### Issue: Payment Integration Not Working
+**Solution:** Verify Square credentials in environment variables
+```
+SQUARE_APPLICATION_ID=sq0idp-...
+SQUARE_ACCESS_TOKEN=EAAA...
+SQUARE_LOCATION_ID=M22X...
 ```
 
 ## Post-Deployment Verification
 
-### ✓ Check Database
-```sql
--- Run in Supabase SQL Editor
-SELECT 
-  id, 
-  name, 
-  base_price, 
-  sku, 
-  availability,
-  created_at 
-FROM admin_products 
-ORDER BY created_at DESC;
-```
+### ✓ Check Netlify Deployment
+1. Go to https://app.netlify.com
+2. Select your site
+3. Go to **Deploys** tab
+4. Verify latest deploy shows "Published" status
+5. Check build logs for errors
 
-### ✓ Check Environment Variables
+### ✓ Test Authentication
 ```bash
-# On Fly.io
-flyctl secrets list
-
-# Should show:
-# JWT_SECRET
-# SUPABASE_SERVICE_KEY
-# SUPABASE_URL
-```
-
-### ✓ Check Server Logs
-```bash
-flyctl logs -a <app-name>
-
-# Look for:
-# ✅ "Express server initialized"
-# ✅ "CORS Configuration initialized"
-# ✓ No 401/403 errors
-# ✓ No "Could not find column" errors
-```
-
-### ✓ Test API Endpoint Directly
-```bash
-# Get auth token first (login to get it)
-TOKEN="<your-auth-token>"
-
-# Test import endpoint
-curl -X POST https://<your-fly-app>.fly.dev/api/admin/products/import \
-  -H "Authorization: Bearer $TOKEN" \
+# Signup
+curl -X POST https://stickyslap.app/api/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Test Product",
-    "basePrice": 10.00,
-    "sku": "TEST001",
-    "description": "Test",
-    "images": [],
-    "options": [],
-    "availability": true
+    "firstName": "Test",
+    "lastName": "User",
+    "email": "test@example.com",
+    "password": "TestPass123"
   }'
 
-# Should return:
-# {
-#   "success": true,
-#   "product": { "id": ..., "name": "Test Product", ... }
-# }
+# Should return token and customer data
 ```
+
+### ✓ Test Checkout
+1. Visit https://stickyslap.app/products
+2. Add item to cart
+3. Proceed to checkout
+4. Fill in shipping address
+5. Complete payment (test mode)
+
+### ✓ Check Environment Variables
+1. In Netlify Dashboard
+2. Settings → Build & Deploy → Environment
+3. Verify all required variables are set
+4. Note: Secret variables won't display for security
 
 ## Files Modified
 
 | File | Changes | Status |
 |------|---------|--------|
-| `supabase/migrations/complete_admin_products_schema.sql` | New migration file | ✓ Created |
-| `server/index.ts` | Fixed route ordering | ✓ Fixed |
-| `server/routes/admin-products.ts` | Fixed import handler | ✓ Fixed |
-| `server/utils/supabase.ts` | Updated Supabase URL | ✓ Fixed |
-| `client/pages/AdminProducts.tsx` | Fixed duplicate imports | ✓ Fixed |
-| `client/pages/AdminProofs.tsx` | Added auth headers | ✓ Fixed |
-| `client/lib/import-product.ts` | New utility file | ✓ Created |
+| `server/index.ts` | Removed Fly.io references, added stickyslap.app CORS | ✓ Fixed |
+| `server/routes/square.ts` | Removed Fly.io URL construction | ✓ Fixed |
+| `netlify.toml` | Configured for Netlify deployment | ✓ Ready |
+| `FLY_IO_ENV_VARS.md` | Marked as deprecated | ✓ Updated |
+| `fly.toml` | No longer used | ℹ️ Legacy |
+
+## Migration from Fly.io to Netlify
+
+If migrating from Fly.io:
+
+1. **Code Changes:**
+   - Remove Fly.io environment variable references
+   - Update CORS to include Netlify domain
+   - Update URL construction for payment redirects
+
+2. **Environment Variables:**
+   - Set all variables in Netlify Dashboard (not flyctl)
+   - Use same values as before for consistency
+
+3. **DNS:**
+   - Update domain DNS to point to Netlify
+   - Or use Netlify's managed DNS
+
+4. **SSL/TLS:**
+   - Netlify automatically provides HTTPS
+   - No additional configuration needed
 
 ## Support
 
-If you encounter issues:
-1. Check the troubleshooting section above
-2. Review server logs: `flyctl logs`
-3. Verify database schema in Supabase dashboard
-4. Check environment variables: `flyctl secrets list`
-5. Test with curl commands from "Check API Endpoint" section
+For deployment issues:
+1. Check Netlify build logs: https://app.netlify.com → Deploys
+2. Verify environment variables are set correctly
+3. Check browser console for client-side errors
+4. Use curl to test API endpoints directly
+5. Review server function logs in Netlify Dashboard
