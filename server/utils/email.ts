@@ -7,6 +7,38 @@ const resend = process.env.RESEND_API_KEY
 
 const ORDER_EMAIL_FROM = "orders@stickyslap.com";
 
+/**
+ * Generic email sender
+ */
+export async function sendEmail(params: {
+  to: string;
+  subject: string;
+  html: string;
+  from?: string;
+}): Promise<boolean> {
+  try {
+    if (!resend) {
+      console.warn(
+        "Resend API key not configured. Email sending disabled. Set RESEND_API_KEY environment variable to enable.",
+      );
+      return true; // Return true to not block the operation
+    }
+
+    await resend.emails.send({
+      from: params.from || "noreply@stickyslap.com",
+      to: params.to,
+      subject: params.subject,
+      html: params.html,
+    });
+
+    console.log(`Email sent to ${params.to}:`, params.subject);
+    return true;
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return false;
+  }
+}
+
 export async function sendTicketCreationEmail(
   customerEmail: string,
   customerName: string,
