@@ -352,8 +352,6 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       baseUrl = `https://${process.env.NETLIFY_SITE_NAME}.netlify.app`;
     } else if (process.env.VERCEL_URL) {
       baseUrl = `https://${process.env.VERCEL_URL}`;
-    } else if (process.env.FLY_APP_NAME) {
-      baseUrl = `https://${process.env.FLY_APP_NAME}.fly.dev`;
     }
 
     const redirectUrl = `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`;
