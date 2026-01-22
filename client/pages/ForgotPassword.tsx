@@ -110,8 +110,8 @@ export default function ForgotPassword() {
       <Header />
       <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
         <div className="max-w-md mx-auto px-4">
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="flex justify-center mb-6">
+          <div className="bg-white rounded-lg shadow-lg pt-[45px] pb-8 px-8 mt-[46px]">
+            <div className="flex justify-center mt-2 mb-6">
               <div className="bg-blue-100 rounded-full p-4">
                 <Mail className="w-8 h-8 text-blue-600" />
               </div>
