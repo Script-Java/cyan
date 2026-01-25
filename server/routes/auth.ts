@@ -389,7 +389,6 @@ export const handleRequestPasswordReset: RequestHandler = async (req, res) => {
     const resetLink = `${frontendUrl}/reset-password?token=${resetToken}`;
 
     // Send password reset email
-    const { sendPasswordResetEmail } = await import("../utils/email");
     await sendPasswordResetEmail(
       customer.email,
       customer.first_name || "Customer",
