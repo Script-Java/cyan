@@ -341,7 +341,7 @@ export default function Deals() {
                     />
                     {product.badge && (
                       <div
-                        className={`absolute top-2 right-2 ${getBadgeColor(product.badge)} ${product.badge?.toLowerCase() === "deal" ? "" : "text-white"} px-2 py-1 rounded text-xs font-bold`}
+                        className={`absolute top-2 right-2 ${getBadgeColor(product.badge)} px-2 py-1 rounded text-xs font-bold`}
                       >
                         {product.badge}
                       </div>
