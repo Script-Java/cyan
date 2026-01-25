@@ -351,3 +351,118 @@ export const handleLogout: RequestHandler = (req, res) => {
     res.status(500).json({ error: "Logout failed" });
   }
 };
+
+export const handleRequestPasswordReset: RequestHandler = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
+    // Get customer from Supabase
+    const { data: customer } = await supabase
+      .from("customers")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    // Don't reveal if email exists (security best practice)
+    if (!customer) {
+      return res.json({
+        success: true,
+        message:
+          "If an account exists with this email, a password reset link has been sent",
+      });
+    }
+
+    // Generate password reset token (expires in 1 hour)
+    const resetToken = jwt.sign(
+      { customerId: customer.id, email: customer.email, type: "password-reset" },
+      JWT_SECRET,
+      { expiresIn: "1h" },
+    );
+
+    // Get frontend URL from environment or request
+    const frontendUrl =
+      process.env.FRONTEND_URL ||
+      `${req.protocol}://${req.get("host").replace(":8080", ":5173")}`;
+    const resetLink = `${frontendUrl}/reset-password?token=${resetToken}`;
+
+    // Send password reset email
+    const { sendPasswordResetEmail } = await import("../utils/email");
+    await sendPasswordResetEmail(
+      customer.email,
+      customer.first_name || "Customer",
+      resetLink,
+    );
+
+    res.json({
+      success: true,
+      message:
+        "If an account exists with this email, a password reset link has been sent",
+    });
+  } catch (error) {
+    console.error("Password reset request error:", error);
+    res.status(500).json({ error: "Failed to process password reset request" });
+  }
+};
+
+export const handleResetPassword: RequestHandler = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      return res
+        .status(400)
+        .json({ error: "Token and new password are required" });
+    }
+
+    if (newPassword.length < 6) {
+      return res
+        .status(400)
+        .json({ error: "Password must be at least 6 characters long" });
+    }
+
+    // Verify reset token
+    let decoded;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET) as {
+        customerId: number;
+        email: string;
+        type: string;
+      };
+    } catch (error) {
+      return res.status(401).json({ error: "Invalid or expired reset token" });
+    }
+
+    if (decoded.type !== "password-reset") {
+      return res.status(401).json({ error: "Invalid token type" });
+    }
+
+    // Hash new password
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+
+    // Update customer password in Supabase
+    const { data: updatedCustomer, error } = await supabase
+      .from("customers")
+      .update({ password_hash: passwordHash })
+      .eq("id", decoded.customerId)
+      .select()
+      .single();
+
+    if (error || !updatedCustomer) {
+      throw new Error("Failed to update password");
+    }
+
+    res.json({
+      success: true,
+      message: "Password reset successfully",
+    });
+  } catch (error) {
+    console.error("Password reset error:", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to reset password";
+    res.status(500).json({ error: message });
+  }
+};
