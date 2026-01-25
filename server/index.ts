@@ -464,6 +464,12 @@ export function createServer() {
   app.post("/api/auth/signup", authLimiter, handleSignup);
   app.post("/api/auth/logout", handleLogout);
   app.post("/api/auth/admin-setup", authLimiter, handleAdminSetup);
+  app.post(
+    "/api/auth/request-password-reset",
+    authLimiter,
+    handleRequestPasswordReset,
+  );
+  app.post("/api/auth/reset-password", handleResetPassword);
 
   // ===== Customer Routes (Protected) =====
   app.get("/api/customers/me", verifyToken, handleGetCustomer);
