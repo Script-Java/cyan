@@ -271,15 +271,15 @@ export default function Deals() {
   const getBadgeColor = (badge?: string) => {
     switch (badge?.toLowerCase()) {
       case "hot":
-        return "bg-red-600";
+        return "bg-red-600 text-white";
       case "deal":
         return "bg-[#FFD713] text-[#030140]";
       case "green":
-        return "bg-emerald-600";
+        return "bg-emerald-600 text-white";
       case "popular":
-        return "bg-[#030140]";
+        return "bg-[#030140] text-white";
       default:
-        return "bg-[#030140]";
+        return "bg-[#030140] text-white";
     }
   };
 
