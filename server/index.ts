@@ -15,6 +15,8 @@ import {
   handleSignup,
   handleLogout,
   handleAdminSetup,
+  handleRequestPasswordReset,
+  handleResetPassword,
 } from "./routes/auth";
 import {
   handleGetCustomer,
