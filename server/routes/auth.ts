@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { ecwidAPI } from "../utils/ecwid";
+import { sendPasswordResetEmail } from "../utils/email";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
