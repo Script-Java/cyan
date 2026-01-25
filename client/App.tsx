@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
 import Products from "./pages/Products";
 import Deals from "./pages/Deals";
 import Product from "./pages/Product";
