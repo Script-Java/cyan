@@ -208,3 +208,37 @@ export async function sendOrderConfirmationEmail(params: {
     return false;
   }
 }
+
+export async function sendPasswordResetEmail(
+  customerEmail: string,
+  customerName: string,
+  resetLink: string,
+): Promise<boolean> {
+  try {
+    if (!resend) {
+      console.warn(
+        "Resend API key not configured. Email sending disabled. Set RESEND_API_KEY environment variable to enable.",
+      );
+      return true; // Return true to not block the password reset request
+    }
+
+    const emailHtml = generatePasswordResetEmail({
+      customerName,
+      resetLink,
+      expiresIn: "1 hour",
+    });
+
+    await resend.emails.send({
+      from: SUPPORT_EMAIL_FROM,
+      to: customerEmail,
+      subject: "Reset Your Password - Sticky Slap",
+      html: emailHtml,
+    });
+
+    console.log(`Password reset email sent to ${customerEmail}`);
+    return true;
+  } catch (error) {
+    console.error("Error sending password reset email:", error);
+    return false;
+  }
+}
