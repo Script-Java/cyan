@@ -1,11 +1,13 @@
 import { Resend } from "resend";
 import { generateOrderConfirmationEmail } from "../emails/order-confirmation";
+import { generatePasswordResetEmail } from "../emails/password-reset";
 
 const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
 const ORDER_EMAIL_FROM = "orders@stickyslap.com";
+const SUPPORT_EMAIL_FROM = "support@stickyslap.com";
 
 export async function sendTicketCreationEmail(
   customerEmail: string,
