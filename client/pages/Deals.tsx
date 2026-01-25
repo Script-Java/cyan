@@ -273,13 +273,13 @@ export default function Deals() {
       case "hot":
         return "bg-red-600";
       case "deal":
-        return "bg-green-600";
+        return "bg-[#FFD713] text-[#030140]";
       case "green":
         return "bg-emerald-600";
       case "popular":
-        return "bg-blue-600";
+        return "bg-[#030140]";
       default:
-        return "bg-blue-600";
+        return "bg-[#030140]";
     }
   };
 
