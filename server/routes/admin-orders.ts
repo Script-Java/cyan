@@ -121,20 +121,33 @@ export const handleDebugOrders: RequestHandler = async (req, res) => {
 };
 
 /**
- * Get all orders from Supabase and Ecwid (admin only)
- * Fetches all orders regardless of status
+ * Get all orders from Supabase (admin only) with pagination
+ * Fetches orders regardless of status with pagination to reduce response size
  * Returns orders with customer details and tracking info
- * Includes both pending/processing orders from Supabase and completed orders from Ecwid
+ * Supports page and limit query parameters for pagination
  */
 export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
   try {
-    let allOrders: any[] = [];
+    // Get pagination params from query string
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.min(20, Math.max(1, parseInt(req.query.limit as string) || 20)); // Max 20 per page
+    const offset = (page - 1) * limit;
 
-    // Fetch Supabase orders (all statuses) - optimized for performance
+    console.log(`Fetching orders - Page: ${page}, Limit: ${limit}, Offset: ${offset}`);
+
+    // First, get the total count of orders
+    const { count: totalCount, error: countError } = await supabase
+      .from("orders")
+      .select("id", { count: "exact", head: true });
+
+    if (countError) {
+      console.error("Error getting order count:", countError);
+      throw countError;
+    }
+
+    // Fetch paginated orders from Supabase
     let supabaseOrders: any[] = [];
     try {
-      // First, fetch basic order data without relations
-      // Note: Using generic * to get all columns and handle missing ones gracefully
       const result = await supabase
         .from("orders")
         .select(
@@ -155,7 +168,7 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           `,
         )
         .order("created_at", { ascending: false })
-        .limit(100); // Reduced from 200 to 100 for better performance
+        .range(offset, offset + limit - 1); // Paginate
 
       supabaseOrders = result.data || [];
 
@@ -163,7 +176,9 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
         console.error("Supabase error:", result.error);
       }
 
-      console.log(`Fetched ${supabaseOrders.length} orders from Supabase`);
+      console.log(
+        `Fetched ${supabaseOrders.length} orders for page ${page}`,
+      );
     } catch (queryError) {
       console.error("Supabase query exception:", queryError);
     }
@@ -241,16 +256,19 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
       }
     });
 
-    // Return Supabase orders sorted by date
-    allOrders = formattedSupabaseOrders.sort(
-      (a, b) =>
-        new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime(),
-    );
+    const hasMore = offset + limit < (totalCount || 0);
 
     res.json({
       success: true,
-      orders: allOrders,
-      count: allOrders.length,
+      orders: formattedSupabaseOrders,
+      pagination: {
+        page,
+        limit,
+        offset,
+        totalCount: totalCount || 0,
+        totalPages: Math.ceil((totalCount || 0) / limit),
+        hasMore,
+      },
     });
   } catch (error) {
     console.error("Get all admin orders error:", {
