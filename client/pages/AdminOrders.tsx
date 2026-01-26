@@ -1109,7 +1109,8 @@ export default function AdminOrders() {
           onClose={() => setShippingLabelOrderId(null)}
           onSuccess={() => {
             setShippingLabelOrderId(null);
-            fetchOrders();
+            // Reload current page without resetting
+            fetchOrders(currentPage, false);
           }}
         />
       )}
