@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AlertCircle, Edit2, Trash2, Plus, Copy, CheckCircle } from "lucide-react";
+import AdminLayout from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DiscountCode } from "@shared/api";
