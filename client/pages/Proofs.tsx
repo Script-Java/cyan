@@ -44,10 +44,19 @@ interface Proof {
   comments?: ProofComment[];
 }
 
+interface PaginationInfo {
+  currentPage: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+  hasMore: boolean;
+}
+
 interface ProofsResponse {
   success: boolean;
   proofs: Proof[];
   unreadNotifications: number;
+  pagination?: PaginationInfo;
 }
 
 interface ProofDetailResponse {
