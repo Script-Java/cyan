@@ -42,21 +42,37 @@ interface ProofDetail extends ProofRow {
 }
 
 /**
- * Get all proofs for the logged-in customer
+ * Get all proofs for the logged-in customer (paginated)
  */
 export const handleGetProofs: RequestHandler = async (req, res) => {
   try {
     const customerId = (req as any).customerId;
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = 5;
+    const offset = (page - 1) * limit;
 
     if (!customerId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    // Get total count
+    const { count: totalCount, error: countError } = await supabase
+      .from("proofs")
+      .select("*", { count: "exact", head: true })
+      .eq("customer_id", customerId);
+
+    if (countError) {
+      console.error("Error counting proofs:", countError);
+      return res.status(500).json({ error: "Failed to fetch proofs" });
+    }
+
+    // Get paginated proofs
     const { data: proofs, error } = await supabase
       .from("proofs")
       .select("*")
       .eq("customer_id", customerId)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .range(offset, offset + limit - 1);
 
     if (error) {
       console.error("Error fetching proofs:", error);
@@ -70,10 +86,19 @@ export const handleGetProofs: RequestHandler = async (req, res) => {
       .eq("customer_id", customerId)
       .eq("is_read", false);
 
+    const totalPages = Math.ceil((totalCount || 0) / limit);
+
     res.json({
       success: true,
       proofs: proofs || [],
       unreadNotifications: notifications?.length || 0,
+      pagination: {
+        currentPage: page,
+        pageSize: limit,
+        totalItems: totalCount || 0,
+        totalPages,
+        hasMore: page < totalPages,
+      },
     });
   } catch (error) {
     console.error("Get proofs error:", error);
