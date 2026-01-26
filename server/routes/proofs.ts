@@ -569,7 +569,21 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
  */
 export const handleGetAdminProofs: RequestHandler = async (req, res) => {
   try {
-    // Get all proofs with their customer info
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = 5;
+    const offset = (page - 1) * limit;
+
+    // Get total count
+    const { count: totalCount, error: countError } = await supabase
+      .from("proofs")
+      .select("*", { count: "exact", head: true });
+
+    if (countError) {
+      console.error("Error counting admin proofs:", countError);
+      return res.status(500).json({ error: "Failed to fetch proofs" });
+    }
+
+    // Get paginated proofs with their customer info
     const { data: proofs, error } = await supabase
       .from("proofs")
       .select(
@@ -578,7 +592,8 @@ export const handleGetAdminProofs: RequestHandler = async (req, res) => {
         customers:customer_id (id, email, first_name, last_name)
       `,
       )
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .range(offset, offset + limit - 1);
 
     if (error) {
       console.error("Error fetching admin proofs:", error);
@@ -591,10 +606,19 @@ export const handleGetAdminProofs: RequestHandler = async (req, res) => {
       .select("*")
       .eq("is_read", false);
 
+    const totalPages = Math.ceil((totalCount || 0) / limit);
+
     res.json({
       success: true,
       proofs: proofs || [],
       unreadNotifications: notifications?.length || 0,
+      pagination: {
+        currentPage: page,
+        pageSize: limit,
+        totalItems: totalCount || 0,
+        totalPages,
+        hasMore: page < totalPages,
+      },
     });
   } catch (error) {
     console.error("Get admin proofs error:", error);
