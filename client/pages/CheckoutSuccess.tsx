@@ -45,6 +45,7 @@ export default function CheckoutSuccess() {
 
         setOrderData(result.order);
         localStorage.removeItem("cart_id");
+        localStorage.removeItem("cart");
 
         setTimeout(() => {
           navigate(`/order-confirmation?orderId=${orderId}`);
