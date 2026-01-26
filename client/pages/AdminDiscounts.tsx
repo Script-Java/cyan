@@ -93,6 +93,13 @@ export default function AdminDiscounts() {
 
       if (!response.ok) {
         const errorData = await response.json();
+        // Show detailed validation errors if available
+        if (errorData.details && Array.isArray(errorData.details)) {
+          const validationErrors = errorData.details
+            .map((err: any) => err.message)
+            .join(", ");
+          throw new Error(validationErrors);
+        }
         throw new Error(errorData.error || "Failed to save discount code");
       }
 
