@@ -13,6 +13,7 @@ import {
   Truck,
   MessageSquare,
   Star,
+  Percent,
 } from "lucide-react";
 import { useAdminNotifications } from "@/hooks/useAdminNotifications";
 
