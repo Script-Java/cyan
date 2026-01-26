@@ -115,26 +115,34 @@ export default function AdminOrders() {
     fetchOrders(1, true);
   }, [navigate]);
 
-  const fetchOrders = async (retryCount = 0) => {
+  const fetchOrders = async (
+    page: number = 1,
+    reset: boolean = false,
+    retryCount = 0,
+  ) => {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
         console.error("No authentication token found");
         setIsLoading(false);
+        setIsLoadingMore(false);
         return;
       }
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 120000); // 120 second timeout
 
-      const response = await fetch("/api/admin/all-orders", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `/api/admin/all-orders?page=${page}&limit=20`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
         },
-        signal: controller.signal,
-      });
+      );
 
       clearTimeout(timeoutId);
 
@@ -149,22 +157,39 @@ export default function AdminOrders() {
         if (response.status >= 500 && retryCount < 2) {
           console.log(`Retrying orders fetch (attempt ${retryCount + 2})...`);
           setTimeout(
-            () => fetchOrders(retryCount + 1),
+            () => fetchOrders(page, reset, retryCount + 1),
             1000 * (retryCount + 1),
           );
           return;
         }
 
         setIsLoading(false);
+        setIsLoadingMore(false);
         return;
       }
 
       const data = await response.json();
-      setPendingOrders(data.orders || []);
-      setFilteredOrders(data.orders || []);
+      const newOrders = data.orders || [];
+
+      // If resetting (first page), replace all orders; otherwise append
+      if (reset) {
+        setPendingOrders(newOrders);
+        setFilteredOrders(newOrders);
+      } else {
+        setPendingOrders((prev) => [...prev, ...newOrders]);
+        setFilteredOrders((prev) => [...prev, ...newOrders]);
+      }
+
+      // Update pagination state
+      setCurrentPage(page);
+      setHasMore(data.pagination?.hasMore || false);
+
+      console.log(
+        `Loaded page ${page}, has more: ${data.pagination?.hasMore}`,
+      );
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") {
-        console.error("Orders fetch timeout after 60 seconds");
+        console.error("Orders fetch timeout after 120 seconds");
       } else {
         const errorMessage =
           error instanceof Error ? error.message : String(error);
@@ -176,11 +201,15 @@ export default function AdminOrders() {
         console.log(
           `Retrying orders fetch (attempt ${retryCount + 2}) after network error...`,
         );
-        setTimeout(() => fetchOrders(retryCount + 1), 1000 * (retryCount + 1));
+        setTimeout(
+          () => fetchOrders(page, reset, retryCount + 1),
+          1000 * (retryCount + 1),
+        );
         return;
       }
     } finally {
       setIsLoading(false);
+      setIsLoadingMore(false);
     }
   };
 
