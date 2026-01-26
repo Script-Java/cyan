@@ -129,7 +129,7 @@ export default function AdminProofs() {
       return;
     }
 
-    fetchProofs(token);
+    fetchProofs(token, 1, false);
     fetchPendingOrders(token);
   }, [navigate]);
 
