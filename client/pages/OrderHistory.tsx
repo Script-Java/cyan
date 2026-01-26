@@ -190,6 +190,45 @@ export default function OrderHistory() {
     return false;
   });
 
+  const fetchOrders = async (page: number = 1, reset: boolean = true) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!reset) {
+        setIsLoadingMore(true);
+      } else {
+        setIsLoading(true);
+      }
+      setError("");
+
+      const response = await fetch(`/api/orders?page=${page}&limit=20`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to fetch order history");
+      }
+
+      const data: OrdersResponse = await response.json();
+
+      if (reset) {
+        setOrders(data.orders || []);
+      } else {
+        setOrders((prev) => [...prev, ...(data.orders || [])]);
+      }
+
+      setCurrentPage(page);
+      setHasMore(data.pagination?.hasMore || false);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to load order history";
+      setError(message);
+    } finally {
+      setIsLoading(false);
+      setIsLoadingMore(false);
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
 
@@ -198,32 +237,10 @@ export default function OrderHistory() {
       return;
     }
 
-    const fetchOrders = async () => {
-      try {
-        setIsLoading(true);
-        setError("");
-
-        const response = await fetch("/api/orders", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Failed to fetch order history");
-        }
-
-        const data: OrdersResponse = await response.json();
-        setOrders(data.orders || []);
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Failed to load order history";
-        setError(message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchOrders();
+    // Reset pagination on initial load
+    setCurrentPage(1);
+    setOrders([]);
+    fetchOrders(1, true);
   }, [navigate]);
 
   const getStatusColor = (status: string) => {
