@@ -96,6 +96,9 @@ export default function AdminOrders() {
     productName: string;
     options: any[];
   } | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -106,7 +109,10 @@ export default function AdminOrders() {
       return;
     }
     setIsAuthenticated(true);
-    fetchOrders();
+    // Reset pagination on initial load
+    setCurrentPage(1);
+    setPendingOrders([]);
+    fetchOrders(1, true);
   }, [navigate]);
 
   const fetchOrders = async (retryCount = 0) => {
