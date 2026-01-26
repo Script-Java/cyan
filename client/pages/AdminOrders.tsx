@@ -1091,7 +1091,8 @@ export default function AdminOrders() {
           onClose={() => setEditingOrderId(null)}
           onSuccess={() => {
             setEditingOrderId(null);
-            fetchOrders();
+            // Reload current page without resetting
+            fetchOrders(currentPage, false);
           }}
         />
       )}
