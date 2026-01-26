@@ -99,6 +99,7 @@ export default function AdminProofs() {
   const [proofs, setProofs] = useState<Proof[]>([]);
   const [pendingOrders, setPendingOrders] = useState<PendingOrder[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [error, setError] = useState("");
   const [expandedProofId, setExpandedProofId] = useState<string | null>(null);
@@ -117,6 +118,8 @@ export default function AdminProofs() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<PendingOrder | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState<PaginationInfo | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
