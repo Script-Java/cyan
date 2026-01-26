@@ -353,7 +353,7 @@ export default function MyTickets() {
                     onChange={(e) => setReplyMessage(e.target.value)}
                     placeholder="Type your message here..."
                     rows={3}
-                    className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
+                    className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
                   />
                   <button
                     onClick={handleSubmitReply}
