@@ -122,6 +122,14 @@ const quickAccessLinks = [
     color: "bg-rose-100 hover:bg-rose-200",
     textColor: "text-rose-600",
   },
+  {
+    title: "Discounts",
+    description: "Manage discount codes",
+    icon: <Percent className="w-5 h-5" />,
+    path: "/admin/discounts",
+    color: "bg-emerald-100 hover:bg-emerald-200",
+    textColor: "text-emerald-600",
+  },
 ];
 
 export default function AdminQuickAccess() {
