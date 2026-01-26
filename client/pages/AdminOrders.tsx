@@ -998,6 +998,29 @@ export default function AdminOrders() {
                     </div>
                   ))}
                 </div>
+
+                {/* Load More Button */}
+                {filteredOrders.length > 0 && hasMore && (
+                  <div className="mt-6 flex justify-center">
+                    <button
+                      onClick={() => {
+                        setIsLoadingMore(true);
+                        fetchOrders(currentPage + 1);
+                      }}
+                      disabled={isLoadingMore}
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors"
+                    >
+                      {isLoadingMore ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Loading...
+                        </>
+                      ) : (
+                        "Load More Orders"
+                      )}
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="bg-white border border-gray-200 rounded-lg p-8 sm:p-12 text-center">
