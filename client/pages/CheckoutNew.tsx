@@ -464,16 +464,44 @@ export default function CheckoutNew() {
     fetchStoreCredit();
   };
 
-  const handleApplyDiscount = () => {
-    if (discountCode) {
-      const discountAmount = orderData.subtotal * 0.1;
-      setAppliedDiscount(discountAmount);
-      calculateOrderData(
-        orderData.subtotal,
-        discountAmount,
-        appliedStoreCredit,
-      );
-      toast.success("Discount code applied!");
+  const handleApplyDiscount = async () => {
+    if (!discountCode) {
+      toast.error("Please enter a discount code");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/discounts/validate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code: discountCode,
+          orderTotal: orderData.subtotal,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.error || "Invalid discount code");
+        return;
+      }
+
+      if (data.success && data.discount) {
+        const discountAmount = data.discount.amount;
+        setAppliedDiscount(discountAmount);
+        calculateOrderData(
+          orderData.subtotal,
+          discountAmount,
+          appliedStoreCredit,
+        );
+        toast.success(`Discount applied! You save $${discountAmount.toFixed(2)}`);
+      }
+    } catch (error) {
+      console.error("Error applying discount code:", error);
+      toast.error("Failed to apply discount code");
     }
   };
 
