@@ -1126,7 +1126,8 @@ export default function AdminOrders() {
           onClose={() => setEditingShippingAddressOrderId(null)}
           onSuccess={() => {
             setEditingShippingAddressOrderId(null);
-            fetchOrders();
+            // Reload current page without resetting
+            fetchOrders(currentPage, false);
           }}
         />
       )}
