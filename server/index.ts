@@ -960,6 +960,42 @@ export function createServer() {
     handleDeleteShippingOption,
   );
 
+  // ===== Discount Code Routes (Public validation) =====
+  app.post("/api/discounts/validate", handleValidateDiscountCode);
+  app.post("/api/discounts/apply", handleApplyDiscountCode);
+
+  // ===== Discount Code Routes (Protected - admin only) =====
+  app.get(
+    "/api/admin/discounts",
+    verifyToken,
+    requireAdmin,
+    handleGetDiscountCodes,
+  );
+  app.get(
+    "/api/admin/discounts/:id",
+    verifyToken,
+    requireAdmin,
+    handleGetDiscountCode,
+  );
+  app.post(
+    "/api/admin/discounts",
+    verifyToken,
+    requireAdmin,
+    handleCreateDiscountCode,
+  );
+  app.put(
+    "/api/admin/discounts/:id",
+    verifyToken,
+    requireAdmin,
+    handleUpdateDiscountCode,
+  );
+  app.delete(
+    "/api/admin/discounts/:id",
+    verifyToken,
+    requireAdmin,
+    handleDeleteDiscountCode,
+  );
+
   // ===== Webhook Routes =====
   app.post("/api/webhooks/ecwid", handleEcwidOrderWebhook);
   app.get("/api/webhooks/health", handleWebhookHealth);
