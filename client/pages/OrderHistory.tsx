@@ -1004,6 +1004,28 @@ export default function OrderHistory() {
                   )}
                 </div>
               ))}
+              {/* Load More Button */}
+              {filteredOrders.length > 0 && hasMore && !searchQuery && (
+                <div className="flex justify-center pt-6">
+                  <button
+                    onClick={() => {
+                      setIsLoadingMore(true);
+                      fetchOrders(currentPage + 1, false);
+                    }}
+                    disabled={isLoadingMore}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors"
+                  >
+                    {isLoadingMore ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Loading...
+                      </>
+                    ) : (
+                      "Load More Orders"
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
