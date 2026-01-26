@@ -15,8 +15,9 @@ const supabase = createClient(
 );
 
 /**
- * Get customer's orders from Ecwid
+ * Get customer's orders from Ecwid, BigCommerce, and Supabase with pagination
  * Requires: customerId in JWT token
+ * Supports page and limit query parameters for pagination
  */
 export const handleGetOrders: RequestHandler = async (req, res) => {
   try {
@@ -26,7 +27,12 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    console.log("Fetching orders for customer:", customerId);
+    // Get pagination params from query string
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.min(20, Math.max(1, parseInt(req.query.limit as string) || 20)); // Max 20 per page
+    const offset = (page - 1) * limit;
+
+    console.log(`Fetching orders for customer ${customerId} - Page: ${page}, Limit: ${limit}`);
 
     // Fetch orders from Ecwid
     let ecwidOrders = [];
