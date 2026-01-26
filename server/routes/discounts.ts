@@ -29,11 +29,7 @@ const DiscountCodeSchema = z.object({
     .optional()
     .or(z.null()),
   is_active: z.boolean().optional().default(true),
-  expires_at: z
-    .string()
-    .datetime()
-    .optional()
-    .or(z.null()),
+  expires_at: z.string().datetime().optional().or(z.null()),
 });
 
 type DiscountCode = z.infer<typeof DiscountCodeSchema>;
@@ -267,7 +263,9 @@ export const handleValidateDiscountCode: RequestHandler = async (req, res) => {
       discountCode.max_uses !== null &&
       discountCode.used_count >= discountCode.max_uses
     ) {
-      return res.status(400).json({ error: "Discount code usage limit reached" });
+      return res
+        .status(400)
+        .json({ error: "Discount code usage limit reached" });
     }
 
     // Check minimum order value
@@ -301,7 +299,9 @@ export const handleValidateDiscountCode: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Failed to validate discount code:", error);
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to validate discount code";
+      error instanceof Error
+        ? error.message
+        : "Failed to validate discount code";
     res.status(500).json({ success: false, error: errorMessage });
   }
 };

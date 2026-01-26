@@ -29,10 +29,15 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
 
     // Get pagination params from query string
     const page = Math.max(1, parseInt(req.query.page as string) || 1);
-    const limit = Math.min(20, Math.max(1, parseInt(req.query.limit as string) || 20)); // Max 20 per page
+    const limit = Math.min(
+      20,
+      Math.max(1, parseInt(req.query.limit as string) || 20),
+    ); // Max 20 per page
     const offset = (page - 1) * limit;
 
-    console.log(`Fetching orders for customer ${customerId} - Page: ${page}, Limit: ${limit}`);
+    console.log(
+      `Fetching orders for customer ${customerId} - Page: ${page}, Limit: ${limit}`,
+    );
 
     // Fetch orders from Ecwid
     let ecwidOrders = [];

@@ -130,10 +130,15 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
   try {
     // Get pagination params from query string
     const page = Math.max(1, parseInt(req.query.page as string) || 1);
-    const limit = Math.min(20, Math.max(1, parseInt(req.query.limit as string) || 20)); // Max 20 per page
+    const limit = Math.min(
+      20,
+      Math.max(1, parseInt(req.query.limit as string) || 20),
+    ); // Max 20 per page
     const offset = (page - 1) * limit;
 
-    console.log(`Fetching orders - Page: ${page}, Limit: ${limit}, Offset: ${offset}`);
+    console.log(
+      `Fetching orders - Page: ${page}, Limit: ${limit}, Offset: ${offset}`,
+    );
 
     // First, get the total count of orders
     const { count: totalCount, error: countError } = await supabase
@@ -176,9 +181,7 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
         console.error("Supabase error:", result.error);
       }
 
-      console.log(
-        `Fetched ${supabaseOrders.length} orders for page ${page}`,
-      );
+      console.log(`Fetched ${supabaseOrders.length} orders for page ${page}`);
     } catch (queryError) {
       console.error("Supabase query exception:", queryError);
     }

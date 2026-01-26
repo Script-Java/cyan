@@ -420,7 +420,8 @@ export default function MyTickets() {
               >
                 {status === "all"
                   ? "All"
-                  : status.replace("-", " ").charAt(0).toUpperCase() + status.slice(1).replace("-", " ")}
+                  : status.replace("-", " ").charAt(0).toUpperCase() +
+                    status.slice(1).replace("-", " ")}
               </button>
             ))}
           </div>
@@ -428,7 +429,9 @@ export default function MyTickets() {
           {/* Tickets List */}
           {isLoading ? (
             <div className="flex justify-center items-center h-64">
-              <div className="text-sm sm:text-base text-gray-600">Loading your tickets...</div>
+              <div className="text-sm sm:text-base text-gray-600">
+                Loading your tickets...
+              </div>
             </div>
           ) : tickets.length === 0 ? (
             <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-12 text-center">
@@ -470,7 +473,9 @@ export default function MyTickets() {
                           <span
                             className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-semibold ${getStatusColor(ticket.status)}`}
                           >
-                            {ticket.status === "in-progress" ? "In Progress" : ticket.status.toUpperCase()}
+                            {ticket.status === "in-progress"
+                              ? "In Progress"
+                              : ticket.status.toUpperCase()}
                           </span>
                           <span
                             className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-semibold ${getPriorityBg(ticket.priority)} ${getPriorityColor(ticket.priority)}`}

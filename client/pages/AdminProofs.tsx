@@ -133,7 +133,11 @@ export default function AdminProofs() {
     fetchPendingOrders(token);
   }, [navigate]);
 
-  const fetchProofs = async (token: string, page: number = 1, append: boolean = false) => {
+  const fetchProofs = async (
+    token: string,
+    page: number = 1,
+    append: boolean = false,
+  ) => {
     try {
       if (!append) {
         setIsLoading(true);

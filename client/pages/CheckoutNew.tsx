@@ -497,7 +497,9 @@ export default function CheckoutNew() {
           discountAmount,
           appliedStoreCredit,
         );
-        toast.success(`Discount applied! You save $${discountAmount.toFixed(2)}`);
+        toast.success(
+          `Discount applied! You save $${discountAmount.toFixed(2)}`,
+        );
       }
     } catch (error) {
       console.error("Error applying discount code:", error);
@@ -1158,12 +1160,15 @@ export default function CheckoutNew() {
                       <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                         <div className="flex justify-between items-center mb-3">
                           <div>
-                            <p className="text-sm text-gray-600">Discount Applied</p>
+                            <p className="text-sm text-gray-600">
+                              Discount Applied
+                            </p>
                             <p className="text-xl font-bold text-green-600">
                               -${appliedDiscount.toFixed(2)}
                             </p>
                             <p className="text-xs text-gray-500 mt-1">
-                              Code: <code className="font-mono">{discountCode}</code>
+                              Code:{" "}
+                              <code className="font-mono">{discountCode}</code>
                             </p>
                           </div>
                           <Button
@@ -1171,7 +1176,11 @@ export default function CheckoutNew() {
                             onClick={() => {
                               setDiscountCode("");
                               setAppliedDiscount(0);
-                              calculateOrderData(orderData.subtotal, 0, appliedStoreCredit);
+                              calculateOrderData(
+                                orderData.subtotal,
+                                0,
+                                appliedStoreCredit,
+                              );
                               toast.info("Discount code removed");
                             }}
                             variant="outline"

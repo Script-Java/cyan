@@ -184,9 +184,7 @@ export default function AdminOrders() {
       setCurrentPage(page);
       setHasMore(data.pagination?.hasMore || false);
 
-      console.log(
-        `Loaded page ${page}, has more: ${data.pagination?.hasMore}`,
-      );
+      console.log(`Loaded page ${page}, has more: ${data.pagination?.hasMore}`);
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") {
         console.error("Orders fetch timeout after 120 seconds");
