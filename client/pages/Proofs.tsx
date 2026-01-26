@@ -78,6 +78,9 @@ export default function Proofs() {
   const [submittingAction, setSubmittingAction] = useState<
     Record<string, boolean>
   >({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState<PaginationInfo | null>(null);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
