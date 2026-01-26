@@ -215,6 +215,15 @@ import {
   handleDeleteReview,
 } from "./routes/reviews";
 import {
+  handleGetDiscountCodes,
+  handleGetDiscountCode,
+  handleCreateDiscountCode,
+  handleUpdateDiscountCode,
+  handleDeleteDiscountCode,
+  handleValidateDiscountCode,
+  handleApplyDiscountCode,
+} from "./routes/discounts";
+import {
   verifyToken,
   optionalVerifyToken,
   requireAdmin,
