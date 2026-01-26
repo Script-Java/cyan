@@ -99,6 +99,14 @@ interface OrdersResponse {
   success: boolean;
   orders: Order[];
   count: number;
+  pagination?: {
+    page: number;
+    limit: number;
+    offset: number;
+    totalCount: number;
+    totalPages: number;
+    hasMore: boolean;
+  };
 }
 
 export default function OrderHistory() {
