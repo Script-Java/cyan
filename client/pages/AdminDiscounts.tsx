@@ -68,16 +68,42 @@ export default function AdminDiscounts() {
     e.preventDefault();
 
     try {
-      const payload = {
+      // Validate required fields
+      if (!formData.code.trim()) {
+        setError("Code is required");
+        return;
+      }
+
+      if (!formData.discount_value || parseFloat(formData.discount_value) <= 0) {
+        setError("Discount value must be a positive number");
+        return;
+      }
+
+      const payload: any = {
         code: formData.code.toUpperCase(),
-        description: formData.description || null,
         discount_type: formData.discount_type,
         discount_value: parseFloat(formData.discount_value),
-        min_order_value: parseFloat(formData.min_order_value) || 0,
-        max_uses: formData.max_uses ? parseInt(formData.max_uses) : null,
-        expires_at: formData.expires_at || null,
         is_active: formData.is_active,
       };
+
+      // Only include optional fields if they have values
+      if (formData.description.trim()) {
+        payload.description = formData.description;
+      }
+
+      if (formData.min_order_value && parseFloat(formData.min_order_value) > 0) {
+        payload.min_order_value = parseFloat(formData.min_order_value);
+      } else {
+        payload.min_order_value = 0;
+      }
+
+      if (formData.max_uses && parseInt(formData.max_uses) > 0) {
+        payload.max_uses = parseInt(formData.max_uses);
+      }
+
+      if (formData.expires_at) {
+        payload.expires_at = new Date(formData.expires_at).toISOString();
+      }
 
       const method = editingId ? "PUT" : "POST";
       const url = editingId ? `/api/admin/discounts/${editingId}` : "/api/admin/discounts";
