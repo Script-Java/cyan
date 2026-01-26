@@ -81,6 +81,12 @@ export default function OrderConfirmation() {
     // Allow guest users to view their order confirmation without auth
   }, []);
 
+  // Clear cart on confirmation page load (final safety net)
+  useEffect(() => {
+    localStorage.removeItem("cart");
+    localStorage.removeItem("cart_id");
+  }, []);
+
   // useEffect(() => {
   //   // Store credit fetch disabled temporarily
   //   // const token = localStorage.getItem("authToken");
