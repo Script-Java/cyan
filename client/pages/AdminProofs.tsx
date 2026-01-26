@@ -133,12 +133,16 @@ export default function AdminProofs() {
     fetchPendingOrders(token);
   }, [navigate]);
 
-  const fetchProofs = async (token: string) => {
+  const fetchProofs = async (token: string, page: number = 1, append: boolean = false) => {
     try {
-      setIsLoading(true);
+      if (!append) {
+        setIsLoading(true);
+      } else {
+        setIsLoadingMore(true);
+      }
       setError("");
 
-      const response = await fetch("/api/admin/proofs", {
+      const response = await fetch(`/api/admin/proofs?page=${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -150,14 +154,23 @@ export default function AdminProofs() {
       }
 
       const data: AdminProofsResponse = await response.json();
-      setProofs(data.proofs || []);
+
+      if (append) {
+        setProofs((prev) => [...prev, ...(data.proofs || [])]);
+      } else {
+        setProofs(data.proofs || []);
+      }
+
       setUnreadCount(data.unreadNotifications || 0);
+      setPagination(data.pagination || null);
+      setCurrentPage(page);
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to load proofs";
       setError(message);
     } finally {
       setIsLoading(false);
+      setIsLoadingMore(false);
     }
   };
 
