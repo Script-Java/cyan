@@ -53,10 +53,19 @@ interface Proof {
   comments?: ProofComment[];
 }
 
+interface PaginationInfo {
+  currentPage: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+  hasMore: boolean;
+}
+
 interface AdminProofsResponse {
   success: boolean;
   proofs: Proof[];
   unreadNotifications: number;
+  pagination?: PaginationInfo;
 }
 
 interface OrderItem {
