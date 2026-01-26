@@ -717,6 +717,8 @@ export default function CheckoutNew() {
         subtotal: orderData.subtotal,
         tax: orderData.tax,
         shipping: orderData.shipping,
+        discount: appliedDiscount,
+        discountCode: discountCode || undefined,
         total: orderData.total,
         appliedStoreCredit: appliedStoreCredit,
         customerId: customerId ? parseInt(customerId) : undefined,
