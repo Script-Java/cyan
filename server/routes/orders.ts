@@ -215,18 +215,27 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
         new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime(),
     );
 
+    // Get paginated results
+    const paginatedOrders = allOrders.slice(offset, offset + limit);
+    const totalCount = allOrders.length;
+    const hasMore = offset + limit < totalCount;
+
     console.log(
-      "Fetched",
-      allOrders.length,
-      "orders (Ecwid +",
-      bigCommerceOrders.length,
-      "BigCommerce + Supabase)",
+      `Fetched ${allOrders.length} total orders, returning page ${page} with ${paginatedOrders.length} orders`,
     );
 
     res.json({
       success: true,
-      orders: allOrders,
-      count: allOrders.length,
+      orders: paginatedOrders,
+      count: paginatedOrders.length,
+      pagination: {
+        page,
+        limit,
+        offset,
+        totalCount,
+        totalPages: Math.ceil(totalCount / limit),
+        hasMore,
+      },
     });
   } catch (error) {
     console.error("Get orders error:", error);
