@@ -93,13 +93,17 @@ export default function Proofs() {
     fetchProofs();
   }, [navigate]);
 
-  const fetchProofs = async () => {
+  const fetchProofs = async (page: number = 1, append: boolean = false) => {
     try {
-      setIsLoading(true);
+      if (!append) {
+        setIsLoading(true);
+      } else {
+        setIsLoadingMore(true);
+      }
       setError("");
 
       const token = localStorage.getItem("authToken");
-      const response = await fetch("/api/proofs", {
+      const response = await fetch(`/api/proofs?page=${page}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -109,14 +113,23 @@ export default function Proofs() {
       }
 
       const data: ProofsResponse = await response.json();
-      setProofs(data.proofs || []);
+
+      if (append) {
+        setProofs((prev) => [...prev, ...(data.proofs || [])]);
+      } else {
+        setProofs(data.proofs || []);
+      }
+
       setUnreadCount(data.unreadNotifications || 0);
+      setPagination(data.pagination || null);
+      setCurrentPage(page);
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to load proofs";
       setError(message);
     } finally {
       setIsLoading(false);
+      setIsLoadingMore(false);
     }
   };
 
