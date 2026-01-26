@@ -1230,6 +1230,31 @@ export default function AdminProofs() {
               </div>
             </div>
           )}
+
+          {/* Load More Button */}
+          {pagination && pagination.hasMore && (
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={() => {
+                  const token = localStorage.getItem("authToken");
+                  if (token) {
+                    fetchProofs(token, currentPage + 1, true);
+                  }
+                }}
+                disabled={isLoadingMore}
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 transition-colors flex items-center gap-2"
+              >
+                {isLoadingMore ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span className="text-sm">Loading...</span>
+                  </>
+                ) : (
+                  <span className="text-sm">Load More Proofs</span>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </AdminLayout>
