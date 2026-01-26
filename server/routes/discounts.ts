@@ -13,14 +13,27 @@ const DiscountCodeSchema = z.object({
     .string()
     .min(3, "Code must be at least 3 characters")
     .max(50, "Code must be at most 50 characters")
-    .toUpperCase(),
-  description: z.string().optional(),
+    .transform((val) => val.toUpperCase()),
+  description: z.string().optional().or(z.null()),
   discount_type: z.enum(["percentage", "fixed"]),
   discount_value: z.number().positive("Discount value must be positive"),
-  min_order_value: z.number().nonnegative("Min order value must be non-negative").optional().default(0),
-  max_uses: z.number().int().positive("Max uses must be positive").optional().nullable(),
+  min_order_value: z
+    .number()
+    .nonnegative("Min order value must be non-negative")
+    .optional()
+    .default(0),
+  max_uses: z
+    .number()
+    .int()
+    .positive("Max uses must be positive")
+    .optional()
+    .or(z.null()),
   is_active: z.boolean().optional().default(true),
-  expires_at: z.string().datetime().optional().nullable(),
+  expires_at: z
+    .string()
+    .datetime()
+    .optional()
+    .or(z.null()),
 });
 
 type DiscountCode = z.infer<typeof DiscountCodeSchema>;
