@@ -807,6 +807,10 @@ export default function CheckoutNew() {
     // Store credit fetch disabled temporarily
     // fetchStoreCredit();
 
+    // Clear cart before redirecting
+    localStorage.removeItem("cart");
+    localStorage.removeItem("cart_id");
+
     // Redirect to order confirmation page
     if (createdOrderId) {
       setTimeout(() => {
