@@ -256,7 +256,7 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                         value={formData.name}
                         onChange={handleInputChange}
                         placeholder="John Doe"
-                        className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -273,7 +273,7 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                         value={formData.email}
                         onChange={handleInputChange}
                         placeholder="john@example.com"
-                        className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -293,7 +293,7 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                       value={formData.subject}
                       onChange={handleInputChange}
                       placeholder="Brief description of your issue"
-                      className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                      className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                     />
                   </div>
 
@@ -311,7 +311,7 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                         name="category"
                         value={formData.category}
                         onChange={handleInputChange}
-                        className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                       >
                         <option value="general">General Inquiry</option>
                         <option value="order">Order Issue</option>
@@ -334,7 +334,7 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                         name="priority"
                         value={formData.priority}
                         onChange={handleInputChange}
-                        className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                        className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                       >
                         <option value="low">Low</option>
                         <option value="medium">Medium</option>
@@ -379,7 +379,7 @@ Est. Delivery: ${orderData.estimatedDelivery}`,
                       onChange={handleInputChange}
                       placeholder="Describe your issue in detail..."
                       rows={5}
-                      className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
+                      className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
                     />
                   </div>
 
