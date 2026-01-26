@@ -1154,35 +1154,69 @@ export default function CheckoutNew() {
                 <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6">
                   <fieldset>
                     <legend className="sr-only">Discount Code Section</legend>
-                    <div className="flex gap-2">
-                      <div className="flex-1 relative">
-                        <label htmlFor="discount-code" className="sr-only">
-                          Discount code
-                        </label>
-                        <Input
-                          id="discount-code"
-                          placeholder="Discount code"
-                          value={discountCode}
-                          onChange={(e) => setDiscountCode(e.target.value)}
-                          className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400"
-                          aria-label="Discount code"
-                          aria-describedby="discount-help"
-                        />
-                        <span id="discount-help" className="sr-only">
-                          Enter your discount code to apply savings to your
-                          order
-                        </span>
+                    {appliedDiscount > 0 ? (
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div className="flex justify-between items-center mb-3">
+                          <div>
+                            <p className="text-sm text-gray-600">Discount Applied</p>
+                            <p className="text-xl font-bold text-green-600">
+                              -${appliedDiscount.toFixed(2)}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Code: <code className="font-mono">{discountCode}</code>
+                            </p>
+                          </div>
+                          <Button
+                            type="button"
+                            onClick={() => {
+                              setDiscountCode("");
+                              setAppliedDiscount(0);
+                              calculateOrderData(orderData.subtotal, 0, appliedStoreCredit);
+                              toast.info("Discount code removed");
+                            }}
+                            variant="outline"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
+                            Remove
+                          </Button>
+                        </div>
                       </div>
-                      <Button
-                        type="button"
-                        onClick={handleApplyDiscount}
-                        disabled={!discountCode}
-                        className="bg-green-500 hover:bg-green-600 text-white px-6"
-                        aria-label="Apply discount code"
-                      >
-                        Apply
-                      </Button>
-                    </div>
+                    ) : (
+                      <div className="flex gap-2">
+                        <div className="flex-1 relative">
+                          <label htmlFor="discount-code" className="sr-only">
+                            Discount code
+                          </label>
+                          <Input
+                            id="discount-code"
+                            placeholder="Discount code"
+                            value={discountCode}
+                            onChange={(e) => setDiscountCode(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                handleApplyDiscount();
+                              }
+                            }}
+                            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400"
+                            aria-label="Discount code"
+                            aria-describedby="discount-help"
+                          />
+                          <span id="discount-help" className="sr-only">
+                            Enter your discount code to apply savings to your
+                            order
+                          </span>
+                        </div>
+                        <Button
+                          type="button"
+                          onClick={handleApplyDiscount}
+                          disabled={!discountCode}
+                          className="bg-green-500 hover:bg-green-600 text-white px-6"
+                          aria-label="Apply discount code"
+                        >
+                          Apply
+                        </Button>
+                      </div>
+                    )}
                   </fieldset>
                 </div>
 
