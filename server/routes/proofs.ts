@@ -508,9 +508,10 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
     }
 
     // Create proof record (independent of orders conceptually, but linked for DB constraint)
+    // Note: If using reference_number in the future, add it to the description for now
     const proofPayload: any = {
       customer_id: resolvedCustomerId,
-      description,
+      description: referenceNumber ? `${referenceNumber} - ${description}` : description,
       file_url: finalFileUrl,
       file_name: storedFileName,
       status: "pending",
@@ -519,11 +520,6 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
     // Include order_id if we have one
     if (resolvedOrderId) {
       proofPayload.order_id = resolvedOrderId;
-    }
-
-    // Only include reference_number if it's provided
-    if (referenceNumber) {
-      proofPayload.reference_number = referenceNumber;
     }
 
     const { data: proof, error: proofError } = await supabase
