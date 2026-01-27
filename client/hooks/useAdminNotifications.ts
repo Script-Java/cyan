@@ -30,13 +30,22 @@ export function useAdminNotifications() {
         let pendingOrders = 0;
         let rejectedProofs = 0;
 
-        // Fetch support tickets count
-        try {
-          const ticketsResponse = await fetch("/api/admin/tickets", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+        // Create a timeout promise
+        const createTimeoutPromise = (ms: number) =>
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Request timeout")), ms)
+          );
 
-          if (ticketsResponse.ok) {
+        // Fetch support tickets count with timeout
+        try {
+          const ticketsResponse = await Promise.race([
+            fetch("/api/admin/tickets", {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            createTimeoutPromise(10000),
+          ]);
+
+          if (ticketsResponse instanceof Response && ticketsResponse.ok) {
             const ticketsText = await ticketsResponse.text();
             const ticketsData = ticketsText ? JSON.parse(ticketsText) : [];
             openTickets = (
@@ -48,16 +57,21 @@ export function useAdminNotifications() {
             ).length;
           }
         } catch (err) {
-          console.warn("Error fetching tickets:", err);
+          console.warn("Error fetching tickets:", {
+            error: err instanceof Error ? err.message : String(err),
+          });
         }
 
-        // Fetch pending orders count
+        // Fetch pending orders count with timeout
         try {
-          const ordersResponse = await fetch("/api/admin/pending-orders", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          const ordersResponse = await Promise.race([
+            fetch("/api/admin/pending-orders", {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            createTimeoutPromise(10000),
+          ]);
 
-          if (ordersResponse.ok) {
+          if (ordersResponse instanceof Response && ordersResponse.ok) {
             const ordersText = await ordersResponse.text();
             const ordersData = ordersText
               ? JSON.parse(ordersText)
@@ -65,16 +79,21 @@ export function useAdminNotifications() {
             pendingOrders = ordersData.count || 0;
           }
         } catch (err) {
-          console.warn("Error fetching pending orders:", err);
+          console.warn("Error fetching pending orders:", {
+            error: err instanceof Error ? err.message : String(err),
+          });
         }
 
-        // Fetch proofs with revisions requested count
+        // Fetch proofs with revisions requested count with timeout
         try {
-          const proofsResponse = await fetch("/api/admin/proofs", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          const proofsResponse = await Promise.race([
+            fetch("/api/admin/proofs", {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            createTimeoutPromise(10000),
+          ]);
 
-          if (proofsResponse.ok) {
+          if (proofsResponse instanceof Response && proofsResponse.ok) {
             const proofsText = await proofsResponse.text();
             const proofsData = proofsText
               ? JSON.parse(proofsText)
@@ -84,7 +103,9 @@ export function useAdminNotifications() {
             ).length;
           }
         } catch (err) {
-          console.warn("Error fetching proofs:", err);
+          console.warn("Error fetching proofs:", {
+            error: err instanceof Error ? err.message : String(err),
+          });
         }
 
         setNotifications({
@@ -94,7 +115,9 @@ export function useAdminNotifications() {
         });
         setError(null);
       } catch (err) {
-        console.error("Error in fetchNotifications:", err);
+        console.error("Error in fetchNotifications:", {
+          error: err instanceof Error ? err.message : String(err),
+        });
         setError(
           err instanceof Error ? err.message : "Failed to fetch notifications",
         );
