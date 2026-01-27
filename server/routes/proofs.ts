@@ -389,111 +389,47 @@ export const handleGetProofNotifications: RequestHandler = async (req, res) => {
 };
 
 /**
- * Admin: Send proof to customer
- * Note: Only allows sending proofs for orders from Supabase database
+ * Admin: Send proof to customer (standalone, not linked to orders)
  */
 export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
   try {
-    const { orderId, customerId, customerEmail, description, fileData, fileName, fileUrl } = req.body;
+    const { customerEmail, description, referenceNumber, fileData, fileName, fileUrl } = req.body;
 
     if (!description) {
-      return res.status(400).json({ error: "Proof description is required" });
+      return res.status(400).json({ error: "Proof subject is required" });
     }
 
     if (!customerEmail) {
       return res.status(400).json({ error: "Customer email is required" });
     }
 
-    let resolvedCustomerId = customerId;
-    let resolvedOrderId = orderId;
+    // Find or create customer
+    let resolvedCustomerId: number;
+    const { data: existingCustomer } = await supabase
+      .from("customers")
+      .select("id")
+      .eq("email", customerEmail)
+      .maybeSingle();
 
-    // Find or create customer if not provided
-    if (!resolvedCustomerId && customerEmail) {
-      const { data: existingCustomer, error: findError } = await supabase
+    if (existingCustomer) {
+      resolvedCustomerId = existingCustomer.id;
+    } else {
+      // Create new customer
+      const emailParts = customerEmail.split("@");
+      const { data: newCustomer, error: createError } = await supabase
         .from("customers")
+        .insert({
+          email: customerEmail,
+          first_name: emailParts[0],
+          last_name: "Customer",
+        })
         .select("id")
-        .eq("email", customerEmail)
-        .maybeSingle();
-
-      if (existingCustomer) {
-        resolvedCustomerId = existingCustomer.id;
-      } else {
-        // Create new customer
-        const emailParts = customerEmail.split("@");
-        const { data: newCustomer, error: createError } = await supabase
-          .from("customers")
-          .insert({
-            email: customerEmail,
-            first_name: emailParts[0],
-            last_name: "Customer",
-          })
-          .select("id")
-          .single();
-
-        if (newCustomer) {
-          resolvedCustomerId = newCustomer.id;
-        } else {
-          return res
-            .status(500)
-            .json({ error: "Failed to create customer record" });
-        }
-      }
-    }
-
-    if (!resolvedCustomerId) {
-      return res
-        .status(400)
-        .json({ error: "Could not resolve customer ID" });
-    }
-
-    // If orderId is provided, validate it exists
-    if (orderId) {
-      const { data: order, error: orderError } = await supabase
-        .from("orders")
-        .select("id, customer_id")
-        .eq("id", orderId)
         .single();
 
-      if (orderError || !order) {
-        return res.status(404).json({
-          error:
-            "Order not found. Only Supabase orders are supported for proofs.",
-        });
+      if (!newCustomer) {
+        return res.status(500).json({ error: "Failed to create customer record" });
       }
-
-      resolvedOrderId = order.customer_id;
-    } else {
-      // If no orderId provided, find a dummy order for this customer
-      // or create one for standalone proofs
-      const { data: dummyOrder, error: dummyError } = await supabase
-        .from("orders")
-        .select("id")
-        .eq("customer_id", resolvedCustomerId)
-        .eq("status", "pending")
-        .limit(1)
-        .maybeSingle();
-
-      if (dummyOrder) {
-        resolvedOrderId = dummyOrder.id;
-      } else {
-        // Create a placeholder order for standalone proofs
-        const { data: newOrder, error: newOrderError } = await supabase
-          .from("orders")
-          .insert({
-            customer_id: resolvedCustomerId,
-            status: "pending",
-            total: 0,
-            items: [],
-          })
-          .select("id")
-          .single();
-
-        if (newOrder) {
-          resolvedOrderId = newOrder.id;
-        } else {
-          return res.status(500).json({ error: "Failed to create order record" });
-        }
-      }
+      resolvedCustomerId = newCustomer.id;
     }
 
     let finalFileUrl: string | undefined;
@@ -508,16 +444,12 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
     // Otherwise, handle file upload if base64 data is provided
     else if (fileData && fileName) {
       try {
-        // Convert base64 to buffer
         const buffer = Buffer.from(fileData, "base64");
-
-        // Generate unique filename
         const timestamp = Date.now();
-        const uniqueFileName = `proof-${orderId}-${customerId}-${timestamp}-${fileName}`;
+        const uniqueFileName = `proof-${timestamp}-${fileName}`;
         const bucketPath = `proofs/${uniqueFileName}`;
 
-        // Upload to Supabase Storage
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from("proofs")
           .upload(bucketPath, buffer, {
             cacheControl: "3600",
@@ -530,7 +462,6 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
           return res.status(500).json({ error: "Failed to upload file" });
         }
 
-        // Get public URL
         const { data: publicUrlData } = supabase.storage
           .from("proofs")
           .getPublicUrl(bucketPath);
@@ -544,25 +475,17 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
       }
     }
 
-    // Create proof
-    const proofData: any = {
-      customer_id: resolvedCustomerId,
-      description,
-      file_url: finalFileUrl,
-      file_name: storedFileName,
-      status: "pending",
-    };
-
-    console.log("Creating proof with data:", JSON.stringify(proofData));
-
-    // Add order_id if provided
-    if (resolvedOrderId) {
-      proofData.order_id = resolvedOrderId;
-    }
-
+    // Create proof record (independent of orders)
     const { data: proof, error: proofError } = await supabase
       .from("proofs")
-      .insert(proofData)
+      .insert({
+        customer_id: resolvedCustomerId,
+        description,
+        file_url: finalFileUrl,
+        file_name: storedFileName,
+        status: "pending",
+        reference_number: referenceNumber || null,
+      })
       .select()
       .single();
 
@@ -571,64 +494,27 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
       return res.status(500).json({ error: "Failed to send proof" });
     }
 
-    // Create notification for customer
-    const notificationMessage = resolvedOrderId
-      ? `You have a new proof ready for order #${resolvedOrderId}`
-      : "You have a new proof ready";
-
-    const { error: notifError } = await supabase
-      .from("proof_notifications")
-      .insert({
-        customer_id: resolvedCustomerId,
-        proof_id: proof.id,
-        notification_type: "proof_ready",
-        message: notificationMessage,
-        is_read: false,
-      });
-
-    if (notifError) {
-      console.error("Error creating notification:", notifError);
-    }
-
     // Send proof email
-    const emailToSend = customerEmail || (await supabase
-      .from("customers")
-      .select("email")
-      .eq("id", resolvedCustomerId)
-      .single())?.data?.email;
-
-    if (emailToSend && process.env.RESEND_API_KEY && resend) {
+    if (process.env.RESEND_API_KEY && resend) {
       try {
-        // Generate approval and revision links
-        const baseUrl =
-          process.env.FRONTEND_URL ||
-          "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev";
+        const baseUrl = process.env.FRONTEND_URL || "https://stickyslap.com";
         const approvalLink = `${baseUrl}/proofs/${proof.id}/approve`;
         const revisionLink = `${baseUrl}/proofs/${proof.id}/request-revisions`;
 
-        // Get customer name if available
-        let customerName = "Valued Customer";
-        if (resolvedCustomerId) {
-          const { data: customer } = await supabase
-            .from("customers")
-            .select("first_name, last_name")
-            .eq("id", resolvedCustomerId)
-            .single();
+        const { data: customer } = await supabase
+          .from("customers")
+          .select("first_name, last_name")
+          .eq("id", resolvedCustomerId)
+          .single();
 
-          if (customer && customer.first_name) {
-            customerName = `${customer.first_name}${customer.last_name ? " " + customer.last_name : ""}`;
-          }
-        }
-
-        // Generate email subject
-        const emailSubject = resolvedOrderId
-          ? `Your Design Proof is Ready - Order ${formatOrderNumber(resolvedOrderId)}`
-          : "Your Design Proof is Ready";
+        const customerName = customer?.first_name
+          ? `${customer.first_name}${customer.last_name ? " " + customer.last_name : ""}`
+          : "Valued Customer";
 
         // Generate email HTML
         const emailHtml = generateProofEmailHtml({
           customerName,
-          orderId: resolvedOrderId || 0,
+          orderId: 0, // Not used for standalone proofs
           proofDescription: description,
           proofFileUrl: finalFileUrl,
           approvalLink,
@@ -638,8 +524,8 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
         // Send email via Resend
         const emailResult = await resend.emails.send({
           from: PROOF_EMAIL_FROM,
-          to: emailToSend,
-          subject: emailSubject,
+          to: customerEmail,
+          subject: `Your Design Proof is Ready${referenceNumber ? ` - ${referenceNumber}` : ""}`,
           html: emailHtml,
         });
 
