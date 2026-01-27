@@ -211,27 +211,16 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           tax: order.tax || 0,
           shipping: order.shipping || 0,
           dateCreated: order.created_at || new Date().toISOString(),
-          tracking_number: order.tracking_number || null,
-          tracking_carrier: order.tracking_carrier || null,
-          tracking_url: order.tracking_url || null,
-          shipped_date: order.shipped_date || null,
-          shipping_addresses: order.shipping_address
-            ? [order.shipping_address]
-            : [],
           source: "supabase" as const,
           orderItems: (order.order_items || []).map((item: any) => ({
             id: item.id,
             quantity: item.quantity,
             product_name: item.product_name,
             options: item.options,
-            design_file_url: item.design_file_url,
           })),
           proofs: (order.proofs || []).map((proof: any) => ({
             id: proof.id,
             status: proof.status,
-            description: proof.description,
-            createdAt: proof.created_at,
-            updatedAt: proof.updated_at,
           })),
         };
       } catch (formatError) {
