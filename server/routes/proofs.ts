@@ -630,7 +630,7 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
           customerName,
           orderId: resolvedOrderId || 0,
           proofDescription: description,
-          proofFileUrl: fileUrl,
+          proofFileUrl: finalFileUrl,
           approvalLink,
           revisionLink,
         });
