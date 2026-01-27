@@ -258,7 +258,7 @@ export default function AdminOrderDetail() {
     );
   }
 
-  if (!order) {
+  if (errorMessage || !order) {
     return (
       <AdminLayout>
         <div className="max-w-6xl mx-auto px-4 py-6">
@@ -272,11 +272,22 @@ export default function AdminOrderDetail() {
           <div className="bg-white border border-gray-200 rounded-lg p-8 sm:p-12 text-center">
             <Package className="w-12 h-12 text-gray-300 mx-auto mb-3" />
             <h3 className="text-lg font-semibold text-gray-900 mb-1">
-              Order Not Found
+              Unable to Load Order
             </h3>
             <p className="text-sm text-gray-600">
-              The requested order could not be found.
+              {errorMessage || "The requested order could not be found."}
             </p>
+            {errorMessage && (
+              <button
+                onClick={() => {
+                  setErrorMessage(null);
+                  fetchOrderDetail();
+                }}
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              >
+                Try Again
+              </button>
+            )}
           </div>
         </div>
       </AdminLayout>
