@@ -694,6 +694,8 @@ export default function AdminOrderDetail() {
             setEditingOrderId(null);
             fetchOrderDetail();
           }}
+          currentTrackingCarrier={undefined}
+          currentTrackingUrl={undefined}
         />
       )}
 
