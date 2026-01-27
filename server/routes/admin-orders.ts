@@ -575,6 +575,33 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
         error: error.message,
         code: error.code,
       });
+
+      // If error is about missing column (shipped_date), try updating without it
+      if (error.code === "42703" && error.message.includes("shipped_date")) {
+        console.log("shipped_date column not available yet, retrying without it");
+
+        // Remove shipped_date and try again
+        delete updateData.shipped_date;
+
+        const { data: retryData, error: retryError } = await supabase
+          .from("orders")
+          .update(updateData)
+          .eq("id", orderIdNumber)
+          .select()
+          .single();
+
+        if (retryError) {
+          console.error("Retry error updating order:", retryError);
+          return res.status(500).json({ error: "Failed to update order" });
+        }
+
+        return res.json({
+          success: true,
+          message: "Order updated successfully",
+          order: retryData,
+        });
+      }
+
       return res.status(500).json({ error: "Failed to update order" });
     }
 
