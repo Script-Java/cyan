@@ -473,11 +473,48 @@ export default function AdminProofs() {
                 </p>
               </div>
               <div className="flex gap-2 w-full sm:w-auto">
+                <div className="flex items-center gap-2 bg-gray-100 border border-gray-300 rounded-lg px-2 py-2 flex-shrink-0">
+                  <span className="text-xs font-medium text-gray-700 hidden sm:inline">Sort:</span>
+                  <button
+                    onClick={() => {
+                      setSortOrder("newest");
+                      const token = localStorage.getItem("authToken");
+                      if (token) {
+                        fetchProofs(token, 1, false, "newest");
+                        toast.success("Sorting by newest first...");
+                      }
+                    }}
+                    className={`px-2 sm:px-3 py-1 text-xs font-medium rounded transition-colors ${
+                      sortOrder === "newest"
+                        ? "bg-blue-600 text-white"
+                        : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
+                    }`}
+                  >
+                    Newest
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSortOrder("oldest");
+                      const token = localStorage.getItem("authToken");
+                      if (token) {
+                        fetchProofs(token, 1, false, "oldest");
+                        toast.success("Sorting by oldest first...");
+                      }
+                    }}
+                    className={`px-2 sm:px-3 py-1 text-xs font-medium rounded transition-colors ${
+                      sortOrder === "oldest"
+                        ? "bg-blue-600 text-white"
+                        : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
+                    }`}
+                  >
+                    Oldest
+                  </button>
+                </div>
                 <Button
                   onClick={() => {
                     const token = localStorage.getItem("authToken");
                     if (token) {
-                      fetchProofs(token, 1, false);
+                      fetchProofs(token, 1, false, sortOrder);
                       toast.success("Refreshing proofs...");
                     }
                   }}
