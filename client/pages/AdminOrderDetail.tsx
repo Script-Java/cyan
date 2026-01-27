@@ -59,9 +59,6 @@ interface OrderDetail {
   dateUpdated: string;
   source: "supabase";
   orderItems?: OrderItem[];
-  shippingAddress?: ShippingAddress;
-  trackingNumber?: string;
-  shippedDate?: string;
   proofs?: ProofStatus[];
 }
 
