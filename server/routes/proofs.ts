@@ -496,11 +496,17 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
       }
     }
 
-    let fileUrl: string | undefined;
+    let finalFileUrl: string | undefined;
     let storedFileName: string | undefined;
 
-    // Handle file upload if provided
-    if (fileData && fileName) {
+    // If fileUrl is provided directly (from Cloudinary), use it
+    if (fileUrl) {
+      finalFileUrl = fileUrl;
+      storedFileName = fileName;
+      console.log("Using pre-uploaded file URL from Cloudinary:", finalFileUrl);
+    }
+    // Otherwise, handle file upload if base64 data is provided
+    else if (fileData && fileName) {
       try {
         // Convert base64 to buffer
         const buffer = Buffer.from(fileData, "base64");
@@ -529,8 +535,9 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
           .from("proofs")
           .getPublicUrl(bucketPath);
 
-        fileUrl = publicUrlData.publicUrl;
+        finalFileUrl = publicUrlData.publicUrl;
         storedFileName = fileName;
+        console.log("Uploaded file to Supabase Storage:", finalFileUrl);
       } catch (fileError) {
         console.error("Error processing file:", fileError);
         return res.status(500).json({ error: "Failed to process file" });
