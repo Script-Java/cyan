@@ -412,7 +412,10 @@ export function createServer() {
   // Error handling for JSON parsing
   app.use((err: any, _req: any, res: any, next: any) => {
     if (err instanceof SyntaxError && "body" in err) {
-      console.error("JSON parsing error:", err.message);
+      console.error("JSON parsing error:", {
+        message: err.message,
+        bodyPartial: (err as any).body?.substring?.(0, 200), // Log first 200 chars if available
+      });
       return res.status(400).json({ error: "Invalid JSON in request body" });
     }
     if (err) {

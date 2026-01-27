@@ -2,12 +2,12 @@ import { formatOrderNumber } from "./order-number";
 
 interface TrackEventPayload {
   event_type:
-    | "page_view"
-    | "click"
-    | "purchase"
-    | "cart_action"
-    | "design_action"
-    | "search";
+  | "page_view"
+  | "click"
+  | "purchase"
+  | "cart_action"
+  | "design_action"
+  | "search";
   event_name: string;
   session_id?: string;
   page_path?: string;
@@ -74,16 +74,8 @@ export async function trackEvent(event: TrackEventPayload): Promise<void> {
       headers.Authorization = `Bearer ${token}`;
     }
 
-    // Use sendBeacon for page views (more reliable, survives page unload)
-    if (event.event_type === "page_view" && navigator.sendBeacon) {
-      const blob = new Blob([JSON.stringify(payload)], {
-        type: "application/json",
-      });
-      navigator.sendBeacon("/api/analytics/track", blob);
-      return;
-    }
-
-    // For other events, use fetch with keepalive to prevent abort on navigation
+    // Use fetch with keepalive for all events to ensure headers (Authorization) are sent
+    // and to prevent 400 errors from missing headers with sendBeacon
     fetch("/api/analytics/track", {
       method: "POST",
       headers,
@@ -92,6 +84,9 @@ export async function trackEvent(event: TrackEventPayload): Promise<void> {
     }).catch(() => {
       // Fail silently - analytics should never block the app
     });
+    return;
+
+
   } catch (error) {
     // Fail silently - don't let analytics errors break the app
   }

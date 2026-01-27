@@ -42,9 +42,23 @@ function generateToken(customerId: number, email: string): string {
 
 export const handleLogin: RequestHandler = async (req, res) => {
   try {
+    console.log("LOGIN ATTEMPT:", {
+      headers: {
+        "content-type": req.headers["content-type"],
+        "content-length": req.headers["content-length"],
+      },
+      bodyKeys: Object.keys(req.body || {}),
+      bodyType: typeof req.body,
+      emailMap: req.body?.email ? "present" : "missing",
+    });
+
     const { email, password } = req.body as LoginRequest;
 
     if (!email || !password) {
+      console.log("LOGIN FAILED: Missing credentials", {
+        hasEmail: !!email,
+        hasPassword: !!password,
+      });
       return res.status(400).json({ error: "Email and password required" });
     }
 
@@ -56,7 +70,10 @@ export const handleLogin: RequestHandler = async (req, res) => {
       .single();
 
     if (error || !customer) {
-      console.log("Customer not found in Supabase:", email);
+      console.log("LOGIN FAILED: Customer not found or error", {
+        email,
+        error: error?.message,
+      });
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
