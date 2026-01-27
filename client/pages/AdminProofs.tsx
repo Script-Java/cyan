@@ -470,13 +470,28 @@ export default function AdminProofs() {
                   Manage design proofs for customers
                 </p>
               </div>
-              <Button
-                onClick={() => navigate("/admin/send-proof")}
-                className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg flex-shrink-0 w-full sm:w-auto"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Send New Proof</span>
-              </Button>
+              <div className="flex gap-2 w-full sm:w-auto">
+                <Button
+                  onClick={() => {
+                    const token = localStorage.getItem("authToken");
+                    if (token) {
+                      fetchProofs(token, 1, false);
+                      toast.success("Refreshing proofs...");
+                    }
+                  }}
+                  className="flex items-center justify-center gap-2 bg-gray-600 hover:bg-gray-700 text-white font-medium text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg flex-shrink-0"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  <span className="hidden sm:inline">Refresh</span>
+                </Button>
+                <Button
+                  onClick={() => navigate("/admin/send-proof")}
+                  className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg flex-shrink-0 flex-1 sm:flex-none"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Send New Proof</span>
+                </Button>
+              </div>
             </div>
           </div>
 
