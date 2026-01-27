@@ -39,6 +39,7 @@ import AdminSupport from "./pages/AdminSupport";
 import AdminOrders from "./pages/AdminOrders";
 import AdminOrderDetail from "./pages/AdminOrderDetail";
 import AdminProofs from "./pages/AdminProofs";
+import AdminSendProof from "./pages/AdminSendProof";
 import AdminReviews from "./pages/AdminReviews";
 import AdminEmailNotifications from "./pages/AdminEmailNotifications";
 import AdminSettings from "./pages/AdminSettings";
