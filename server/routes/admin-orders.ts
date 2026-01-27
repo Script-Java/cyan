@@ -446,7 +446,13 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
 export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { status, tracking_number } = req.body;
+    const {
+      status,
+      tracking_number,
+      tracking_carrier,
+      tracking_url,
+      shipping_address,
+    } = req.body;
 
     if (!orderId) {
       return res.status(400).json({ error: "Order ID is required" });
@@ -474,9 +480,20 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
       updateData.status = status;
     }
 
+    // Add shipping address if provided
+    if (shipping_address !== undefined) {
+      updateData.shipping_address = shipping_address || null;
+    }
+
     // Add tracking information if provided
     if (tracking_number !== undefined) {
       updateData.tracking_number = tracking_number || null;
+    }
+    if (tracking_carrier !== undefined) {
+      updateData.tracking_carrier = tracking_carrier || null;
+    }
+    if (tracking_url !== undefined) {
+      updateData.tracking_url = tracking_url || null;
     }
 
     // If tracking information is provided, set the shipped date
