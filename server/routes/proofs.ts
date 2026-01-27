@@ -596,6 +596,7 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
 export const handleGetAdminProofs: RequestHandler = async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const sort = (req.query.sort as string) || "newest";
     const limit = 5;
     const offset = (page - 1) * limit;
 
@@ -610,6 +611,7 @@ export const handleGetAdminProofs: RequestHandler = async (req, res) => {
     }
 
     // Get paginated proofs with their customer info
+    const sortAscending = sort === "oldest" ? true : false;
     const { data: proofs, error } = await supabase
       .from("proofs")
       .select(
@@ -618,7 +620,7 @@ export const handleGetAdminProofs: RequestHandler = async (req, res) => {
         customers:customer_id (id, email, first_name, last_name)
       `,
       )
-      .order("created_at", { ascending: false })
+      .order("created_at", { ascending: sortAscending })
       .range(offset, offset + limit - 1);
 
     if (error) {
