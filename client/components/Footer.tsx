@@ -1,7 +1,40 @@
 import { Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+interface LegalPageItem {
+  id: string;
+  title: string;
+  page_type: "privacy" | "terms" | "shipping" | "returns" | "legal";
+}
+
+const pageTypeLabels: Record<string, string> = {
+  privacy: "Privacy Policy",
+  terms: "Terms of Service",
+  shipping: "Shipping Policy",
+  returns: "Return & Refund",
+  legal: "Legal Notice",
+};
 
 export default function Footer() {
+  const [legalPages, setLegalPages] = useState<LegalPageItem[]>([]);
+
+  useEffect(() => {
+    const fetchLegalPages = async () => {
+      try {
+        const response = await fetch("/api/legal-pages");
+        if (response.ok) {
+          const data = await response.json();
+          setLegalPages(data.pages || []);
+        }
+      } catch (err) {
+        console.error("Error fetching legal pages:", err);
+      }
+    };
+
+    fetchLegalPages();
+  }, []);
+
   return (
     <footer className="bg-black text-white mt-auto">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12" style={{ maxWidth: "1200px" }}>
@@ -10,11 +43,13 @@ export default function Footer() {
           {/* Logo and Brand Info */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-3">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Fe6aa9b4de7094c5282fd1abccfc14588"
-                alt="Sticky Slap Logo"
-                className="w-12 h-12 rounded"
-              />
+              <div className="w-16 h-16 flex-shrink-0">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Fe6aa9b4de7094c5282fd1abccfc14588"
+                  alt="Sticky Slap Logo"
+                  className="w-full h-full object-contain rounded"
+                />
+              </div>
               <span style={{ fontFamily: "Goldplay, sans-serif" }} className="font-semibold text-xl">Sticky Slap</span>
             </div>
             <div className="space-y-3 text-sm text-gray-300">
