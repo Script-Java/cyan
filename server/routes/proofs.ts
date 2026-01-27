@@ -557,11 +557,11 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
         // Generate email HTML
         const emailHtml = generateProofEmailHtml({
           customerName,
-          orderId: 0, // Not used for standalone proofs
           proofDescription: description,
           proofFileUrl: finalFileUrl,
           approvalLink,
           revisionLink,
+          referenceNumber,
         });
 
         // Send email via Resend
