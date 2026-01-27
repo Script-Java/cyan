@@ -292,7 +292,7 @@ export default function AdminProofs() {
           formData.append("upload_preset", "sticky_slap_proofs");
 
           const cloudinaryResponse = await fetch(
-            "https://api.cloudinary.com/v1_1/sticky-slap/auto/upload",
+            "https://api.cloudinary.com/v1_1/dabgothkm/auto/upload",
             {
               method: "POST",
               body: formData,
