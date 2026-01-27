@@ -681,8 +681,19 @@ export default function AdminOrderDetail() {
             setEditingOrderId(null);
             fetchOrderDetail();
           }}
-          currentTrackingCarrier={undefined}
-          currentTrackingUrl={undefined}
+        />
+      )}
+
+      {/* Shipping Address Editor Modal */}
+      {editingShippingAddressOrderId !== null && (
+        <ShippingAddressEditor
+          orderId={editingShippingAddressOrderId}
+          currentAddress={order?.shippingAddress}
+          onClose={() => setEditingShippingAddressOrderId(null)}
+          onSuccess={() => {
+            setEditingShippingAddressOrderId(null);
+            fetchOrderDetail();
+          }}
         />
       )}
 
