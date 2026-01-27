@@ -565,12 +565,16 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
     const { data, error } = await supabase
       .from("orders")
       .update(updateData)
-      .eq("id", orderId)
+      .eq("id", orderIdNumber)
       .select()
       .single();
 
     if (error) {
-      console.error("Error updating order:", error);
+      console.error("Error updating order:", {
+        orderId: orderIdNumber,
+        error: error.message,
+        code: error.code,
+      });
       return res.status(500).json({ error: "Failed to update order" });
     }
 
