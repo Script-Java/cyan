@@ -90,6 +90,10 @@ export default function AdminSendProof() {
       toast.loading("Sending proof to customer...");
       const token = localStorage.getItem("authToken");
 
+      if (!token) {
+        throw new Error("You are not logged in. Please log in and try again.");
+      }
+
       const response = await fetch("/api/admin/proofs/send", {
         method: "POST",
         headers: {
