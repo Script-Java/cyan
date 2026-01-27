@@ -284,66 +284,50 @@ export default function AdminProofs() {
       }
 
       if (uploadedFile) {
-        try {
-          // Upload to Cloudinary
-          toast.loading("Uploading file to Cloudinary...");
-          const formData = new FormData();
-          formData.append("file", uploadedFile);
-          formData.append("upload_preset", "sticky_slap_proofs");
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          try {
+            const base64String = (e.target?.result as string).split(",")[1];
+            const token = localStorage.getItem("authToken");
 
-          const cloudinaryResponse = await fetch(
-            "https://api.cloudinary.com/v1_1/dabgothkm/auto/upload",
-            {
+            const response = await fetch("/api/admin/proofs/send", {
               method: "POST",
-              body: formData,
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                ...requestBody,
+                fileData: base64String,
+                fileName: uploadedFile.name,
+              }),
+            });
+
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.error || "Failed to send proof");
             }
-          );
 
-          if (!cloudinaryResponse.ok) {
-            throw new Error("Failed to upload file to Cloudinary");
+            toast.success("Proof sent to customer successfully!");
+            setOrderId("");
+            setCustomerId("");
+            setCustomerEmail("");
+            setDescription("");
+            setUploadedFile(null);
+            setFilePreview(null);
+            setSelectedOrder(null);
+            setSelectedOrderProofStatus(null);
+            setShowSendForm(false);
+            fetchProofs();
+          } catch (err) {
+            const message =
+              err instanceof Error ? err.message : "Failed to send proof";
+            toast.error(message);
+          } finally {
+            setSendingProof(false);
           }
-
-          const cloudinaryData = await cloudinaryResponse.json();
-          const fileUrl = cloudinaryData.secure_url;
-
-          // Send proof with Cloudinary URL
-          const token = localStorage.getItem("authToken");
-          const response = await fetch("/api/admin/proofs/send", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              ...requestBody,
-              fileUrl: fileUrl,
-              fileName: uploadedFile.name,
-            }),
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || "Failed to send proof");
-          }
-
-          toast.success("Proof sent to customer successfully!");
-          setOrderId("");
-          setCustomerId("");
-          setCustomerEmail("");
-          setDescription("");
-          setUploadedFile(null);
-          setFilePreview(null);
-          setSelectedOrder(null);
-          setSelectedOrderProofStatus(null);
-          setShowSendForm(false);
-          fetchProofs();
-        } catch (err) {
-          const message =
-            err instanceof Error ? err.message : "Failed to send proof";
-          toast.error(message);
-        } finally {
-          setSendingProof(false);
-        }
+        };
+        reader.readAsDataURL(uploadedFile);
       } else {
         const token = localStorage.getItem("authToken");
         const response = await fetch("/api/admin/proofs/send", {
