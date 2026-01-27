@@ -28,6 +28,18 @@ interface ProofStatus {
   updatedAt: string;
 }
 
+interface ShippingAddress {
+  first_name: string;
+  last_name: string;
+  street_1: string;
+  street_2?: string;
+  city: string;
+  state_or_province: string;
+  postal_code: string;
+  country_iso2: string;
+  phone?: string;
+}
+
 interface OrderDetail {
   id: number;
   customerId: number;
@@ -41,6 +53,11 @@ interface OrderDetail {
   dateCreated: string;
   dateUpdated: string;
   source: "supabase";
+  shippingAddress?: ShippingAddress;
+  trackingNumber?: string;
+  trackingCarrier?: string;
+  trackingUrl?: string;
+  shippedDate?: string;
   orderItems?: OrderItem[];
   proofs?: ProofStatus[];
 }
