@@ -614,6 +614,12 @@ export const handleUpdateShippingAddress: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Order ID is required" });
     }
 
+    // Convert orderId to number
+    const orderIdNumber = parseInt(orderId, 10);
+    if (isNaN(orderIdNumber)) {
+      return res.status(400).json({ error: "Invalid order ID format" });
+    }
+
     // Validate required fields
     if (
       !first_name ||
@@ -649,7 +655,7 @@ export const handleUpdateShippingAddress: RequestHandler = async (req, res) => {
         shipping_address: shippingAddress,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", orderId)
+      .eq("id", orderIdNumber)
       .select()
       .single();
 
