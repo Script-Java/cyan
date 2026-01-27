@@ -607,21 +607,6 @@ export default function AdminProofs() {
               <div className="space-y-4 sm:space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
-                    Order ID (For Reference Only)
-                  </label>
-                  <p className="text-xs text-gray-600 mb-2">
-                    ℹ️ Leave blank if sending to a customer email only
-                  </p>
-                  <input
-                    type="text"
-                    value={orderId}
-                    onChange={(e) => setOrderId(e.target.value)}
-                    placeholder="e.g., 12345 (optional)"
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
                     Customer Email *
                   </label>
                   <input
