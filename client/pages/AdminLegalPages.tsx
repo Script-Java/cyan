@@ -230,9 +230,9 @@ export default function AdminLegalPages() {
                             {page.title}
                           </h3>
                           <span
-                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${pageTypeColors[page.page_type]}`}
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${getPageTypeColor(page.page_type)}`}
                           >
-                            {pageTypeLabels[page.page_type]}
+                            {getPageTypeLabel(page.page_type)}
                           </span>
                         </div>
 
