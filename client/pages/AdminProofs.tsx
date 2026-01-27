@@ -262,12 +262,14 @@ export default function AdminProofs() {
         const reader = new FileReader();
         reader.onload = async (e) => {
           const base64String = (e.target?.result as string).split(",")[1];
+          const token = localStorage.getItem("authToken");
 
           try {
             const response = await fetch("/api/admin/proofs/send", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
               },
               body: JSON.stringify({
                 ...requestBody,
