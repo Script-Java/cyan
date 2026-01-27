@@ -121,6 +121,118 @@ export const handleDebugOrders: RequestHandler = async (req, res) => {
 };
 
 /**
+ * Get a single order detail from Supabase (admin only)
+ * Fetches complete order information including design files
+ * Returns full order data with all nested relationships
+ */
+export const handleGetOrderDetail: RequestHandler = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    if (!orderId) {
+      return res.status(400).json({ error: "Order ID is required" });
+    }
+
+    // Fetch single order with all details including design files
+    const { data: order, error } = await supabase
+      .from("orders")
+      .select(
+        `
+        id,
+        customer_id,
+        status,
+        total,
+        subtotal,
+        tax,
+        shipping,
+        created_at,
+        updated_at,
+        shipping_address,
+        tracking_number,
+        tracking_carrier,
+        tracking_url,
+        shipped_date,
+        customers(id,first_name,last_name,email),
+        order_items(id,quantity,product_name,options,design_file_url),
+        proofs(id,status,description,created_at,updated_at)
+        `,
+      )
+      .eq("id", orderId)
+      .single();
+
+    if (error) {
+      console.error("Error fetching order detail:", error);
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Format the response
+    const customerName =
+      order.customers && Array.isArray(order.customers)
+        ? `${order.customers[0]?.first_name || ""} ${order.customers[0]?.last_name || ""}`.trim()
+        : order.customers
+          ? `${order.customers.first_name || ""} ${order.customers.last_name || ""}`.trim()
+          : "Guest";
+
+    const customerEmail =
+      order.customers && Array.isArray(order.customers)
+        ? order.customers[0]?.email || "N/A"
+        : order.customers?.email || "N/A";
+
+    const formattedOrder = {
+      id: order.id,
+      customerId: order.customer_id,
+      customerName,
+      customerEmail,
+      status: order.status,
+      total: order.total || 0,
+      subtotal: order.subtotal || 0,
+      tax: order.tax || 0,
+      shipping: order.shipping || 0,
+      dateCreated: order.created_at || new Date().toISOString(),
+      dateUpdated: order.updated_at || new Date().toISOString(),
+      source: "supabase" as const,
+      shippingAddress: order.shipping_address,
+      trackingNumber: order.tracking_number,
+      trackingCarrier: order.tracking_carrier,
+      trackingUrl: order.tracking_url,
+      shippedDate: order.shipped_date,
+      orderItems: (order.order_items || []).map((item: any) => ({
+        id: item.id,
+        quantity: item.quantity,
+        product_name: item.product_name,
+        options: item.options,
+        design_file_url: item.design_file_url,
+      })),
+      proofs: (order.proofs || []).map((proof: any) => ({
+        id: proof.id,
+        status: proof.status,
+        description: proof.description,
+        createdAt: proof.created_at,
+        updatedAt: proof.updated_at,
+      })),
+    };
+
+    res.json({
+      success: true,
+      order: formattedOrder,
+    });
+  } catch (error) {
+    console.error("Get order detail error:", {
+      error,
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
+    const message =
+      error instanceof Error ? error.message : "Failed to fetch order";
+    res.status(500).json({ error: message });
+  }
+};
+
+/**
  * Get all orders from Supabase (admin only) with pagination
  * Fetches orders regardless of status with pagination to reduce response size
  * Returns orders with customer details and tracking info
