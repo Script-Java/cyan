@@ -260,8 +260,8 @@ export default function AdminProofs() {
         return;
       }
 
-      if (!orderId && !customerEmail) {
-        toast.error("Please either select an order from the table OR enter a customer email address");
+      if (!customerEmail) {
+        toast.error("Please enter customer email address");
         return;
       }
 
