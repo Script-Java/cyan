@@ -31,8 +31,8 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "File URL is required" });
     }
 
-    // Generate unique proof ID
-    const proofId = `proof-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    // Generate unique proof ID using UUID
+    const proofId = uuidv4();
 
     // Find or create customer record
     let customerId: number | null = null;
