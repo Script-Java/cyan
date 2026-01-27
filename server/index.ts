@@ -891,12 +891,6 @@ export function createServer() {
     requireAdmin,
     handleGetAllAdminOrders,
   );
-  app.get(
-    "/api/admin/orders/:orderId",
-    verifyToken,
-    requireAdmin,
-    handleGetOrderDetail,
-  );
   app.put(
     "/api/admin/orders/:orderId/status",
     verifyToken,
