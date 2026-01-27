@@ -518,51 +518,6 @@ export default function AdminOrderDetail() {
             <p className="text-sm text-gray-600">{order.customerEmail}</p>
           </div>
 
-          {/* Shipping Address */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Shipping Address
-              </h2>
-              <button
-                onClick={() => setEditingShippingAddressOrderId(order.id)}
-                className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-100 hover:bg-blue-200 border border-blue-300 rounded text-blue-700 hover:text-blue-800 transition-colors text-xs font-medium"
-              >
-                <Edit className="w-3 h-3" />
-                {order.shippingAddress ? "Edit" : "Add"}
-              </button>
-            </div>
-            {order.shippingAddress ? (
-              <div className="text-sm space-y-1">
-                <p className="text-gray-900 font-medium">
-                  {order.shippingAddress.first_name}{" "}
-                  {order.shippingAddress.last_name}
-                </p>
-                <p className="text-gray-600">{order.shippingAddress.street_1}</p>
-                {order.shippingAddress.street_2 && (
-                  <p className="text-gray-600">{order.shippingAddress.street_2}</p>
-                )}
-                <p className="text-gray-600">
-                  {order.shippingAddress.city},{" "}
-                  {order.shippingAddress.state_or_province}{" "}
-                  {order.shippingAddress.postal_code}
-                </p>
-                <p className="text-gray-600">
-                  {order.shippingAddress.country_iso2}
-                </p>
-                {order.shippingAddress.phone && (
-                  <p className="text-gray-600 mt-2">
-                    {order.shippingAddress.phone}
-                  </p>
-                )}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-600">
-                No shipping address yet. Click "Add" to add one.
-              </p>
-            )}
-          </div>
-
           {/* Artwork Proofs Status */}
           {order.proofs && order.proofs.length > 0 && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
