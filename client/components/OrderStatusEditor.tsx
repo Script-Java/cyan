@@ -142,34 +142,6 @@ export default function OrderStatusEditor({
             />
           </div>
 
-          {/* Tracking Carrier */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
-              Carrier
-            </label>
-            <input
-              type="text"
-              value={trackingCarrier}
-              onChange={(e) => setTrackingCarrier(e.target.value)}
-              placeholder="e.g., UPS, FedEx, DHL"
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
-            />
-          </div>
-
-          {/* Tracking URL */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2">
-              Tracking URL
-            </label>
-            <input
-              type="url"
-              value={trackingUrl}
-              onChange={(e) => setTrackingUrl(e.target.value)}
-              placeholder="https://tracking.example.com/..."
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
-            />
-          </div>
-
           {/* Error Message */}
           {error && (
             <div className="p-3 bg-red-500/20 border border-red-500/30 rounded text-red-200 text-sm">
