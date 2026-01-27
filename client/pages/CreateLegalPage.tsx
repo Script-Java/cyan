@@ -56,6 +56,8 @@ export default function CreateLegalPage() {
     content: "",
     visibility: "visible",
   });
+  const [isCustomPageType, setIsCustomPageType] = useState(false);
+  const [customPageType, setCustomPageType] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
