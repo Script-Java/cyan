@@ -652,16 +652,21 @@ export default function AdminProofs() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
-                    Customer Email (Optional)
+                    Customer Email {!orderId ? "*" : "(Optional)"}
                   </label>
                   <input
                     type="email"
                     value={customerEmail}
                     onChange={(e) => setCustomerEmail(e.target.value)}
-                    placeholder="Enter customer email (optional)"
+                    placeholder={orderId ? "Enter customer email (optional)" : "Enter customer email (required without Order ID)"}
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                   />
                   <input type="hidden" value={customerId} />
+                  {!orderId && (
+                    <p className="text-xs text-gray-600 mt-2">
+                      ℹ️ Email is required when no order is selected. The proof will be sent directly to this email address.
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
