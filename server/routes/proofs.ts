@@ -754,6 +754,104 @@ export const handleGetProofDetailPublic: RequestHandler = async (req, res) => {
  * Approve a proof (public - no authentication required)
  * Used for proof review links sent via email
  */
+export const handleApproveProofPublicNew: RequestHandler = async (req, res) => {
+  try {
+    const { proofId } = req.params;
+
+    if (!proofId) {
+      return res.status(400).json({ error: "Proof ID is required" });
+    }
+
+    // Get proof
+    const { data: proof, error: proofError } = await supabase
+      .from("proofs")
+      .select("*")
+      .eq("id", proofId)
+      .single();
+
+    if (proofError || !proof) {
+      return res.status(404).json({ error: "Proof not found" });
+    }
+
+    // Update proof status
+    const { error: updateError } = await supabase
+      .from("proofs")
+      .update({
+        status: "approved",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", proofId);
+
+    if (updateError) {
+      console.error("Error approving proof:", updateError);
+      return res.status(500).json({ error: "Failed to approve proof" });
+    }
+
+    res.json({
+      success: true,
+      message: "Proof approved successfully",
+      status: "approved",
+    });
+  } catch (error) {
+    console.error("Approve proof public error:", error);
+    res.status(500).json({ error: "Failed to approve proof" });
+  }
+};
+
+/**
+ * Request revisions on a proof (public - no authentication required)
+ * Used for proof review links sent via email
+ */
+export const handleReviseProofPublicNew: RequestHandler = async (req, res) => {
+  try {
+    const { proofId } = req.params;
+    const { revision_notes } = req.body;
+
+    if (!proofId) {
+      return res.status(400).json({ error: "Proof ID is required" });
+    }
+
+    // Get proof
+    const { data: proof, error: proofError } = await supabase
+      .from("proofs")
+      .select("*")
+      .eq("id", proofId)
+      .single();
+
+    if (proofError || !proof) {
+      return res.status(404).json({ error: "Proof not found" });
+    }
+
+    // Update proof status
+    const { error: updateError } = await supabase
+      .from("proofs")
+      .update({
+        status: "revisions_requested",
+        revision_notes: revision_notes || "",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", proofId);
+
+    if (updateError) {
+      console.error("Error requesting revisions:", updateError);
+      return res.status(500).json({ error: "Failed to request revisions" });
+    }
+
+    res.json({
+      success: true,
+      message: "Revision request submitted successfully",
+      status: "revisions_requested",
+    });
+  } catch (error) {
+    console.error("Revise proof public error:", error);
+    res.status(500).json({ error: "Failed to request revisions" });
+  }
+};
+
+/**
+ * Approve a proof (public - no authentication required)
+ * Used for proof review links sent via email
+ */
 export const handleApproveProofPublic: RequestHandler = async (req, res) => {
   try {
     const { proofId } = req.params;
