@@ -498,13 +498,17 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
     }
 
     // Create notification for customer
+    const notificationMessage = resolvedOrderId
+      ? `You have a new proof ready for order #${resolvedOrderId}`
+      : "You have a new proof ready";
+
     const { error: notifError } = await supabase
       .from("proof_notifications")
       .insert({
         customer_id: resolvedCustomerId,
         proof_id: proof.id,
         notification_type: "proof_ready",
-        message: `You have a new proof ready for order #${orderId}`,
+        message: notificationMessage,
         is_read: false,
       });
 
