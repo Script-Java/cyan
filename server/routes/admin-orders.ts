@@ -210,8 +210,6 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
       source: "supabase" as const,
       shippingAddress: order.shipping_address,
       trackingNumber: order.tracking_number,
-      trackingCarrier: order.tracking_carrier,
-      trackingUrl: order.tracking_url,
       shippedDate: order.shipped_date,
       orderItems: (order.order_items || []).map((item: any) => ({
         id: item.id,
