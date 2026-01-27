@@ -607,57 +607,18 @@ export default function AdminProofs() {
               <div className="space-y-4 sm:space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
-                    Order ID (Optional) {orderId && `(#${orderId})`}
+                    Order ID (For Reference Only)
                   </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      value={orderId}
-                      onChange={(e) => {
-                        const id = e.target.value;
-                        setOrderId(id);
-                        if (id) {
-                          const foundOrder = pendingOrders.find(
-                            (o) => o.id.toString() === id,
-                          );
-                          if (foundOrder) {
-                            setCustomerId(foundOrder.customerId.toString());
-                            setCustomerEmail(foundOrder.customerEmail);
-                            const status = getOrderProofStatus(foundOrder.id);
-                            setSelectedOrderProofStatus(status);
-                          }
-                        }
-                      }}
-                      placeholder="Enter order ID (optional)"
-                      className="flex-1 px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
-                    />
-                    {pendingOrders.length > 0 && (
-                      <Button
-                        onClick={() => setShowOrderModal(true)}
-                        className="bg-white/10 hover:bg-white/20 text-white border border-white/10 whitespace-nowrap"
-                      >
-                        Browse Orders
-                      </Button>
-                    )}
-                  </div>
-                  {/* Proof Status Indicator */}
-                  {selectedOrderProofStatus && (
-                    <div className={`mt-3 p-3 rounded-lg border ${
-                      selectedOrderProofStatus === "awaiting"
-                        ? "bg-blue-50 border-blue-300"
-                        : "bg-yellow-50 border-yellow-300"
-                    }`}>
-                      <p className={`text-sm font-medium ${
-                        selectedOrderProofStatus === "awaiting"
-                          ? "text-blue-700"
-                          : "text-yellow-700"
-                      }`}>
-                        {selectedOrderProofStatus === "awaiting"
-                          ? "⏳ Awaiting Customer Review - Customer is reviewing the proof you sent"
-                          : "📋 Pending Proof - This order needs a proof sent to the customer"}
-                      </p>
-                    </div>
-                  )}
+                  <p className="text-xs text-gray-600 mb-2">
+                    ℹ️ Leave blank if sending to a customer email only
+                  </p>
+                  <input
+                    type="text"
+                    value={orderId}
+                    onChange={(e) => setOrderId(e.target.value)}
+                    placeholder="e.g., 12345 (optional)"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
