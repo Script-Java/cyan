@@ -442,8 +442,7 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
 export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { status, tracking_number, tracking_carrier, tracking_url } =
-      req.body;
+    const { status, tracking_number } = req.body;
 
     if (!orderId) {
       return res.status(400).json({ error: "Order ID is required" });
