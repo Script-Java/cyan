@@ -1079,6 +1079,8 @@ export default function AdminOrders() {
             pendingOrders.find((o) => o.id === editingOrderId)?.tracking_url
           }
           onClose={() => setEditingOrderId(null)}
+          currentTrackingCarrier={undefined}
+          currentTrackingUrl={undefined}
           onSuccess={() => {
             setEditingOrderId(null);
             // Reload current page without resetting
