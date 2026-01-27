@@ -166,10 +166,9 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           shipping,
           created_at,
           updated_at,
-          shipping_address,
           customers(id,first_name,last_name,email),
-          order_items(id,quantity,product_name,options,design_file_url),
-          proofs(id,status,description,created_at,updated_at)
+          order_items(id,quantity,product_name,options),
+          proofs(id,status)
           `,
         )
         .order("created_at", { ascending: false })
