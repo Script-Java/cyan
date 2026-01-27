@@ -9,7 +9,7 @@ export default function AdminSendProof() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
-  const [orderNumber, setOrderNumber] = useState("");
+  const [referenceNumber, setReferenceNumber] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [isSending, setIsSending] = useState(false);
