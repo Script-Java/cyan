@@ -91,7 +91,7 @@ export default function AdminLegalPages() {
   const handleDeletePage = async (pageId: string, pageType: string) => {
     if (
       !confirm(
-        `Are you sure you want to delete the ${pageTypeLabels[pageType]} page?`,
+        `Are you sure you want to delete the ${getPageTypeLabel(pageType)} page?`,
       )
     ) {
       return;
