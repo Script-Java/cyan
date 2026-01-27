@@ -407,6 +407,45 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
     let resolvedCustomerId = customerId;
     let resolvedOrderId = orderId;
 
+    // Find or create customer if not provided
+    if (!resolvedCustomerId && customerEmail) {
+      const { data: existingCustomer, error: findError } = await supabase
+        .from("customers")
+        .select("id")
+        .eq("email", customerEmail)
+        .maybeSingle();
+
+      if (existingCustomer) {
+        resolvedCustomerId = existingCustomer.id;
+      } else {
+        // Create new customer
+        const emailParts = customerEmail.split("@");
+        const { data: newCustomer, error: createError } = await supabase
+          .from("customers")
+          .insert({
+            email: customerEmail,
+            first_name: emailParts[0],
+            last_name: "Customer",
+          })
+          .select("id")
+          .single();
+
+        if (newCustomer) {
+          resolvedCustomerId = newCustomer.id;
+        } else {
+          return res
+            .status(500)
+            .json({ error: "Failed to create customer record" });
+        }
+      }
+    }
+
+    if (!resolvedCustomerId) {
+      return res
+        .status(400)
+        .json({ error: "Could not resolve customer ID" });
+    }
+
     // If orderId is provided, validate it exists
     if (orderId) {
       const { data: order, error: orderError } = await supabase
@@ -422,13 +461,39 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
         });
       }
 
-      resolvedCustomerId = order.customer_id;
-    }
+      resolvedOrderId = order.customer_id;
+    } else {
+      // If no orderId provided, find a dummy order for this customer
+      // or create one for standalone proofs
+      const { data: dummyOrder, error: dummyError } = await supabase
+        .from("orders")
+        .select("id")
+        .eq("customer_id", resolvedCustomerId)
+        .eq("status", "pending")
+        .limit(1)
+        .maybeSingle();
 
-    if (!resolvedCustomerId) {
-      return res
-        .status(400)
-        .json({ error: "Could not resolve customer ID" });
+      if (dummyOrder) {
+        resolvedOrderId = dummyOrder.id;
+      } else {
+        // Create a placeholder order for standalone proofs
+        const { data: newOrder, error: newOrderError } = await supabase
+          .from("orders")
+          .insert({
+            customer_id: resolvedCustomerId,
+            status: "pending",
+            total: 0,
+            items: [],
+          })
+          .select("id")
+          .single();
+
+        if (newOrder) {
+          resolvedOrderId = newOrder.id;
+        } else {
+          return res.status(500).json({ error: "Failed to create order record" });
+        }
+      }
     }
 
     let fileUrl: string | undefined;
