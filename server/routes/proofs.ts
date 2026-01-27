@@ -476,16 +476,22 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
     }
 
     // Create proof record (independent of orders)
+    const proofPayload: any = {
+      customer_id: resolvedCustomerId,
+      description,
+      file_url: finalFileUrl,
+      file_name: storedFileName,
+      status: "pending",
+    };
+
+    // Only include reference_number if it's provided
+    if (referenceNumber) {
+      proofPayload.reference_number = referenceNumber;
+    }
+
     const { data: proof, error: proofError } = await supabase
       .from("proofs")
-      .insert({
-        customer_id: resolvedCustomerId,
-        description,
-        file_url: finalFileUrl,
-        file_name: storedFileName,
-        status: "pending",
-        reference_number: referenceNumber || null,
-      })
+      .insert(proofPayload)
       .select()
       .single();
 
