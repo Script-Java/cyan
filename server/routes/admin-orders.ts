@@ -157,8 +157,6 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
         updated_at,
         shipping_address,
         tracking_number,
-        tracking_carrier,
-        tracking_url,
         shipped_date,
         customers(id,first_name,last_name,email),
         order_items(id,quantity,product_name,options,design_file_url),
