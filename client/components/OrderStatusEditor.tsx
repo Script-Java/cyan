@@ -68,6 +68,8 @@ export default function OrderStatusEditor({
         body: JSON.stringify({
           status,
           tracking_number: trackingNumber || undefined,
+          tracking_carrier: trackingCarrier || undefined,
+          tracking_url: trackingUrl || undefined,
         }),
       });
 
