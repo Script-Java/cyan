@@ -61,8 +61,6 @@ interface OrderDetail {
   orderItems?: OrderItem[];
   shippingAddress?: ShippingAddress;
   trackingNumber?: string;
-  trackingCarrier?: string;
-  trackingUrl?: string;
   shippedDate?: string;
   proofs?: ProofStatus[];
 }
