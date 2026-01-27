@@ -117,7 +117,7 @@ export default function AdminSendProof() {
       // Reset form
       setEmail("");
       setSubject("");
-      setOrderNumber("");
+      setReferenceNumber("");
       setUploadedFile(null);
       setFilePreview(null);
       setUploadProgress(0);
