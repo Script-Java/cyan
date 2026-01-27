@@ -90,20 +90,25 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
 
     console.log("Creating proof record with customer ID:", customerId);
 
-    // Build the proof record - only include order_id if provided
-    const proofRecordData: any = {
+    // Build the proof record
+    let parsedOrderId: number | null = null;
+    if (orderNumber && !isNaN(parseInt(orderNumber))) {
+      parsedOrderId = parseInt(orderNumber);
+    } else {
+      // Use 0 as placeholder when no order number is provided
+      // This indicates a standalone proof not tied to a specific order
+      parsedOrderId = 0;
+    }
+
+    const proofRecordData = {
       id: proofId,
+      order_id: parsedOrderId,
       customer_id: customerId,
       description: subject,
       file_url: fileUrl,
       file_name: fileName,
       status: "pending",
     };
-
-    // Only add order_id if a valid order number is provided
-    if (orderNumber && !isNaN(parseInt(orderNumber))) {
-      proofRecordData.order_id = parseInt(orderNumber);
-    }
 
     console.log("Proof record data:", JSON.stringify(proofRecordData));
 
