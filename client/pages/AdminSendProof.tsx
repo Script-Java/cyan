@@ -190,20 +190,20 @@ export default function AdminSendProof() {
                 />
               </div>
 
-              {/* Order Number */}
+              {/* Reference Number */}
               <div>
                 <label className="block text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wider">
-                  Order Number (Optional)
+                  Reference Number (Optional)
                 </label>
                 <input
                   type="text"
-                  value={orderNumber}
-                  onChange={(e) => setOrderNumber(e.target.value)}
-                  placeholder="e.g., #12345 or Order-001"
+                  value={referenceNumber}
+                  onChange={(e) => setReferenceNumber(e.target.value)}
+                  placeholder="e.g., Order #12345, Project ID, etc."
                   className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                 />
                 <p className="text-xs text-gray-600 mt-1">
-                  For reference only - not required
+                  Any reference info the customer should see (e.g., order number, project name)
                 </p>
               </div>
 
