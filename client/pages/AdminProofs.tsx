@@ -272,14 +272,6 @@ export default function AdminProofs() {
         customerEmail,
       };
 
-      if (orderId) {
-        requestBody.orderId = parseInt(orderId);
-      }
-
-      if (customerId) {
-        requestBody.customerId = parseInt(customerId);
-      }
-
       if (uploadedFile) {
         const reader = new FileReader();
         reader.onload = async (e) => {
