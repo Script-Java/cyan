@@ -394,7 +394,7 @@ export const handleGetProofNotifications: RequestHandler = async (req, res) => {
  */
 export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
   try {
-    const { orderId, customerId, customerEmail, description, fileData, fileName } = req.body;
+    const { orderId, customerId, customerEmail, description, fileData, fileName, fileUrl } = req.body;
 
     if (!description) {
       return res.status(400).json({ error: "Proof description is required" });
