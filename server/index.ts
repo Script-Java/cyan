@@ -243,8 +243,12 @@ export function createServer() {
   const allowedOrigins = [
     // Frontend URLs - Development
     "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
     "http://localhost:8080", // Vite dev server proxy
     "http://127.0.0.1:5173",
+    "http://127.0.0.1:5174",
+    "http://127.0.0.1:5175",
     "http://127.0.0.1:8080",
     // Custom frontend URL
     process.env.FRONTEND_URL || "http://localhost:5173",
@@ -349,12 +353,12 @@ export function createServer() {
       "Content-Security-Policy",
       [
         "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://connect.squareup.com",
-        "connect-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://*.squareupsandbox.com https://*.squareup.com https://connect.squareup.com https://connect.squareupsandbox.com",
-        "frame-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://*.squareupsandbox.com https://*.squareup.com",
-        "img-src 'self' https: data:",
-        "style-src 'self' 'unsafe-inline' https://web.squarecdn.com https://sandbox.web.squarecdn.com",
-        "font-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://fonts.googleapis.com",
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://connect.squareup.com https://*.ecwid.com https://*.google.com https://*.googleapis.com https://*.gstatic.com https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:*",
+        "connect-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://*.squareupsandbox.com https://*.squareup.com https://connect.squareup.com https://connect.squareupsandbox.com https://*.ecwid.com https://*.google.com https://*.googleapis.com https://*.gstatic.com https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:*",
+        "frame-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://*.squareupsandbox.com https://*.squareup.com https://*.ecwid.com https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:*",
+        "img-src 'self' https: data: https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:*",
+        "style-src 'self' 'unsafe-inline' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://fonts.googleapis.com https://*.ecwid.com https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:*",
+        "font-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://fonts.googleapis.com https://*.gstatic.com https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:*",
         "object-src 'none'",
       ].join("; "),
     );

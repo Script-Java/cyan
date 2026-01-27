@@ -87,7 +87,12 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
           <PageTracker />
           <div className="flex flex-col min-h-screen">
             <div className="flex-1">

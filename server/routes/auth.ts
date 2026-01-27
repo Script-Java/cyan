@@ -5,10 +5,10 @@ import bcrypt from "bcryptjs";
 import { ecwidAPI } from "../utils/ecwid";
 import { sendPasswordResetEmail } from "../utils/email";
 
-const supabase = createClient(
-  process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_KEY || "",
-);
+import { supabase } from "../utils/supabase";
+
+// Removed local Supabase initialization in favor of shared client
+// const supabase = createClient(...)
 
 interface LoginRequest {
   email: string;
@@ -199,7 +199,8 @@ export const handleSignup: RequestHandler = async (req, res) => {
       .single();
 
     if (error || !newCustomer) {
-      throw new Error("Failed to create customer account");
+      console.error("Supabase Customer Creation Error:", error);
+      throw new Error(`Failed to create customer account: ${error?.message || "Unknown error"}`);
     }
 
     console.log("Customer created in Supabase:", newCustomer.id);

@@ -1,13 +1,16 @@
 import { Router, Request, Response } from "express";
-import { createClient } from "@supabase/supabase-js";
+// import { createClient } from "@supabase/supabase-js";
 import { verifyToken, requireAdmin } from "../middleware/auth";
 
 const router = Router();
 
 // Initialize Supabase client
-const supabaseUrl = process.env.SUPABASE_URL || "";
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from "../utils/supabase";
+
+// Removed local Supabase initialization in favor of shared client
+// const supabaseUrl = process.env.SUPABASE_URL || "";
+// const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
+// const supabase = createClient(supabaseUrl, supabaseKey);
 
 // GET all gallery images (public)
 router.get("/gallery", async (req: Request, res: Response) => {
