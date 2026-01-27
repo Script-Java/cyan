@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Save } from "lucide-react";
 
 interface LegalPageFormData {
-  page_type: "privacy" | "terms" | "shipping" | "returns" | "legal";
+  page_type: string;
   title: string;
   content: string;
   visibility: "visible" | "hidden";
@@ -18,7 +18,7 @@ const pageTypeLabels: Record<string, string> = {
   terms: "Terms of Service",
   shipping: "Shipping Policy",
   returns: "Returns Policy",
-  legal: "Legal Notice",
+  legal: "Artwork, Authorization, and Ownership",
 };
 
 export default function EditLegalPage() {
