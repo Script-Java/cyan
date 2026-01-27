@@ -41,7 +41,10 @@ export default function Footer() {
 
   return (
     <footer className="bg-black text-white mt-auto">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12" style={{ maxWidth: "1200px" }}>
+      <div
+        className="mx-auto px-4 sm:px-6 lg:px-8 py-12"
+        style={{ maxWidth: "1200px" }}
+      >
         {/* Top Section - Logo, Email, Hours, Instagram */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 pb-8 border-b border-gray-800">
           {/* Logo and Brand Info */}
@@ -54,17 +57,27 @@ export default function Footer() {
                   className="w-full h-full object-contain rounded"
                 />
               </div>
-              <span style={{ fontFamily: "Goldplay, sans-serif" }} className="font-semibold text-xl">Sticky Slap</span>
+              <span
+                style={{ fontFamily: "Goldplay, sans-serif" }}
+                className="font-semibold text-xl"
+              >
+                Sticky Slap
+              </span>
             </div>
             <div className="space-y-3 text-sm text-gray-300">
               <p>
-                <span className="text-white">Email:</span><br />
-                <a href="mailto:sticky@stickyslap.com" className="hover:text-white transition-colors">
+                <span className="text-white">Email:</span>
+                <br />
+                <a
+                  href="mailto:sticky@stickyslap.com"
+                  className="hover:text-white transition-colors"
+                >
                   sticky@stickyslap.com
                 </a>
               </p>
               <p>
-                <span className="text-white">Hours:</span><br />
+                <span className="text-white">Hours:</span>
+                <br />
                 Monday - Friday: 10am - 5pm
               </p>
             </div>
@@ -93,17 +106,26 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-12">
           {/* Products & Deals */}
           <div>
-            <h3 style={{ fontFamily: "Goldplay, sans-serif" }} className="font-semibold text-lg mb-4 text-white">
+            <h3
+              style={{ fontFamily: "Goldplay, sans-serif" }}
+              className="font-semibold text-lg mb-4 text-white"
+            >
               Shop
             </h3>
             <ul className="space-y-2 text-sm text-gray-300">
               <li>
-                <Link to="/products" className="hover:text-white transition-colors">
+                <Link
+                  to="/products"
+                  className="hover:text-white transition-colors"
+                >
                   Products
                 </Link>
               </li>
               <li>
-                <Link to="/deals" className="hover:text-white transition-colors">
+                <Link
+                  to="/deals"
+                  className="hover:text-white transition-colors"
+                >
                   Deals
                 </Link>
               </li>
@@ -112,22 +134,34 @@ export default function Footer() {
 
           {/* Customer Links */}
           <div>
-            <h3 style={{ fontFamily: "Goldplay, sans-serif" }} className="font-semibold text-lg mb-4 text-white">
+            <h3
+              style={{ fontFamily: "Goldplay, sans-serif" }}
+              className="font-semibold text-lg mb-4 text-white"
+            >
               Account
             </h3>
             <ul className="space-y-2 text-sm text-gray-300">
               <li>
-                <Link to="/dashboard" className="hover:text-white transition-colors">
+                <Link
+                  to="/dashboard"
+                  className="hover:text-white transition-colors"
+                >
                   Dashboard
                 </Link>
               </li>
               <li>
-                <Link to="/account-settings" className="hover:text-white transition-colors">
+                <Link
+                  to="/account-settings"
+                  className="hover:text-white transition-colors"
+                >
                   Settings
                 </Link>
               </li>
               <li>
-                <Link to="/support" className="hover:text-white transition-colors">
+                <Link
+                  to="/support"
+                  className="hover:text-white transition-colors"
+                >
                   Support
                 </Link>
               </li>
@@ -136,14 +170,20 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 style={{ fontFamily: "Goldplay, sans-serif" }} className="font-semibold text-lg mb-4 text-white">
+            <h3
+              style={{ fontFamily: "Goldplay, sans-serif" }}
+              className="font-semibold text-lg mb-4 text-white"
+            >
               Legal
             </h3>
             <ul className="space-y-2 text-sm text-gray-300">
               {legalPages.length > 0 ? (
                 legalPages.map((page) => (
                   <li key={page.id}>
-                    <Link to={`/${page.page_type}`} className="hover:text-white transition-colors">
+                    <Link
+                      to={`/${page.page_type}`}
+                      className="hover:text-white transition-colors"
+                    >
                       {getPageTypeLabel(page.page_type)}
                     </Link>
                   </li>
@@ -151,12 +191,18 @@ export default function Footer() {
               ) : (
                 <>
                   <li>
-                    <Link to="/privacy" className="hover:text-white transition-colors">
+                    <Link
+                      to="/privacy"
+                      className="hover:text-white transition-colors"
+                    >
                       Privacy Policy
                     </Link>
                   </li>
                   <li>
-                    <Link to="/terms" className="hover:text-white transition-colors">
+                    <Link
+                      to="/terms"
+                      className="hover:text-white transition-colors"
+                    >
                       Terms of Service
                     </Link>
                   </li>

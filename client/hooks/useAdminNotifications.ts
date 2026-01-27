@@ -126,7 +126,9 @@ export function useAdminNotifications() {
         });
         if (isMounted) {
           setError(
-            err instanceof Error ? err.message : "Failed to fetch notifications",
+            err instanceof Error
+              ? err.message
+              : "Failed to fetch notifications",
           );
         }
       } finally {

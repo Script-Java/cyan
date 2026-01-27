@@ -653,7 +653,10 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
     if (fullOrder) {
       order = fullOrder;
       orderError = null;
-    } else if (fullError && (fullError.message.includes("column") || fullError.code === "42703")) {
+    } else if (
+      fullError &&
+      (fullError.message.includes("column") || fullError.code === "42703")
+    ) {
       // If tracking columns don't exist yet, try without them
       console.log("Tracking columns not available yet, fetching basic order");
       const { data: basicOrder, error: basicError } = await supabase

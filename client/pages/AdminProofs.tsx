@@ -78,7 +78,7 @@ export default function AdminProofs() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -275,9 +275,7 @@ export default function AdminProofs() {
               <div className="mb-4">
                 <h2 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
                   <Clock className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                  <span>
-                    Awaiting Customer Review ({pendingProofs.length})
-                  </span>
+                  <span>Awaiting Customer Review ({pendingProofs.length})</span>
                 </h2>
               </div>
               <div className="space-y-3 sm:space-y-4">
@@ -294,7 +292,7 @@ export default function AdminProofs() {
                         {proof.file_url ? (
                           <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center">
                             {proof.file_url.match(
-                              /\.(jpg|jpeg|png|gif|webp|svg)$/i
+                              /\.(jpg|jpeg|png|gif|webp|svg)$/i,
                             ) ? (
                               <img
                                 src={proof.file_url}
@@ -334,7 +332,7 @@ export default function AdminProofs() {
                     {/* Status Badge */}
                     <div
                       className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium flex-shrink-0 border ${getStatusColor(
-                        proof.status
+                        proof.status,
                       )}`}
                     >
                       {getStatusIcon(proof.status)}
@@ -371,7 +369,7 @@ export default function AdminProofs() {
                         {proof.file_url ? (
                           <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center">
                             {proof.file_url.match(
-                              /\.(jpg|jpeg|png|gif|webp|svg)$/i
+                              /\.(jpg|jpeg|png|gif|webp|svg)$/i,
                             ) ? (
                               <img
                                 src={proof.file_url}
@@ -411,7 +409,7 @@ export default function AdminProofs() {
                     {/* Status Badge */}
                     <div
                       className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium flex-shrink-0 border ${getStatusColor(
-                        proof.status
+                        proof.status,
                       )}`}
                     >
                       {getStatusIcon(proof.status)}

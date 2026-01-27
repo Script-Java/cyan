@@ -117,7 +117,9 @@ export default function AdminOrderDetail() {
         try {
           const errorData = await response.json();
           console.error(`Failed to fetch order: ${response.status}`, errorData);
-          setErrorMessage(errorData.error || `Failed to fetch order (${response.status})`);
+          setErrorMessage(
+            errorData.error || `Failed to fetch order (${response.status})`,
+          );
         } catch {
           console.error(`Failed to fetch order: ${response.status}`);
           setErrorMessage(`Failed to fetch order: ${response.statusText}`);
@@ -135,8 +137,7 @@ export default function AdminOrderDetail() {
         console.error("Unexpected response format:", data);
       }
     } catch (error) {
-      const errorMsg =
-        error instanceof Error ? error.message : String(error);
+      const errorMsg = error instanceof Error ? error.message : String(error);
       console.error("Error fetching order detail:", errorMsg);
       setErrorMessage(errorMsg);
     } finally {
@@ -437,7 +438,8 @@ export default function AdminOrderDetail() {
               )}
               {!order.trackingNumber && !order.trackingCarrier && (
                 <p className="text-sm text-gray-600 italic">
-                  No tracking information yet. Click "Edit Status & Tracking" to add it.
+                  No tracking information yet. Click "Edit Status & Tracking" to
+                  add it.
                 </p>
               )}
             </div>
@@ -454,9 +456,13 @@ export default function AdminOrderDetail() {
                   {order.shippingAddress.first_name}{" "}
                   {order.shippingAddress.last_name}
                 </p>
-                <p className="text-gray-600">{order.shippingAddress.street_1}</p>
+                <p className="text-gray-600">
+                  {order.shippingAddress.street_1}
+                </p>
                 {order.shippingAddress.street_2 && (
-                  <p className="text-gray-600">{order.shippingAddress.street_2}</p>
+                  <p className="text-gray-600">
+                    {order.shippingAddress.street_2}
+                  </p>
                 )}
                 <p className="text-gray-600">
                   {order.shippingAddress.city},{" "}
@@ -474,7 +480,8 @@ export default function AdminOrderDetail() {
               </div>
             ) : (
               <p className="text-sm text-gray-600">
-                No shipping address yet. Click "Edit Shipping Address" to add one.
+                No shipping address yet. Click "Edit Shipping Address" to add
+                one.
               </p>
             )}
           </div>
@@ -532,14 +539,14 @@ export default function AdminOrderDetail() {
                                   setEditingOptionItemId({
                                     orderId: order.id,
                                     itemId: item.id ?? idx,
-                                    productName:
-                                      item.product_name || "Product",
+                                    productName: item.product_name || "Product",
                                     options: Array.isArray(item.options)
                                       ? item.options
                                       : Object.entries(item.options).map(
                                           ([key, val]) => ({
                                             option_id: key,
-                                            option_value: formatOptionValue(val),
+                                            option_value:
+                                              formatOptionValue(val),
                                             price:
                                               typeof val === "object"
                                                 ? val.price || 0
@@ -591,7 +598,8 @@ export default function AdminOrderDetail() {
                                   : null
                                 : Object.entries(item.options).map(
                                     ([key, val]) => {
-                                      const displayValue = formatOptionValue(val);
+                                      const displayValue =
+                                        formatOptionValue(val);
                                       const isNumericKey = /^\d+$/.test(key);
                                       const label = isNumericKey
                                         ? displayValue

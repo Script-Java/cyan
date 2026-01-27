@@ -70,7 +70,9 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
 
       if (customerError) {
         console.error("Error creating customer:", customerError);
-        return res.status(500).json({ error: "Failed to create customer record" });
+        return res
+          .status(500)
+          .json({ error: "Failed to create customer record" });
       }
 
       if (newCustomer) {
@@ -78,7 +80,9 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
         console.log("Created new customer with ID:", customerId);
       } else {
         console.error("No customer data returned after insert");
-        return res.status(500).json({ error: "Failed to create customer record" });
+        return res
+          .status(500)
+          .json({ error: "Failed to create customer record" });
       }
     }
 
@@ -120,7 +124,9 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
 
     if (proofError) {
       console.error("Error creating proof record:", proofError);
-      return res.status(500).json({ error: "Failed to create proof record in database" });
+      return res
+        .status(500)
+        .json({ error: "Failed to create proof record in database" });
     }
 
     if (!proofRecord) {
@@ -131,8 +137,7 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
     console.log("Successfully created proof:", proofId);
 
     // Generate approval and revision links
-    const baseUrl =
-      process.env.FRONTEND_URL || "https://stickyslap.app";
+    const baseUrl = process.env.FRONTEND_URL || "https://stickyslap.app";
     const approvalLink = `${baseUrl}/proof/${proofId}/approve`;
     const revisionLink = `${baseUrl}/proof/${proofId}/request-revisions`;
 
@@ -203,7 +208,11 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
 
     if (emailResult.error) {
       console.error("Error sending proof email:", emailResult.error);
-      return res.status(500).json({ error: "Failed to send email: " + JSON.stringify(emailResult.error) });
+      return res
+        .status(500)
+        .json({
+          error: "Failed to send email: " + JSON.stringify(emailResult.error),
+        });
     }
 
     console.log("Proof email sent successfully:", emailResult.data?.id);

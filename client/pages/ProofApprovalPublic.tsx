@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { CheckCircle2, AlertCircle, MessageSquare, Send, Loader } from "lucide-react";
+import {
+  CheckCircle2,
+  AlertCircle,
+  MessageSquare,
+  Send,
+  Loader,
+} from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
@@ -102,7 +108,9 @@ export default function ProofApprovalPublic() {
       }
 
       setAction("revise");
-      setProof((prev) => (prev ? { ...prev, status: "revisions_requested" } : null));
+      setProof((prev) =>
+        prev ? { ...prev, status: "revisions_requested" } : null,
+      );
       toast.success("Your feedback has been sent. We'll make those changes!");
 
       setTimeout(() => {
@@ -138,8 +146,12 @@ export default function ProofApprovalPublic() {
         <main className="flex-1 flex items-center justify-center min-h-screen bg-gradient-to-b from-slate-50 to-white">
           <div className="text-center">
             <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Proof Not Found</h1>
-            <p className="text-gray-600 mb-6">This proof link may have expired or is invalid.</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              Proof Not Found
+            </h1>
+            <p className="text-gray-600 mb-6">
+              This proof link may have expired or is invalid.
+            </p>
             <button
               onClick={() => navigate("/")}
               className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
@@ -193,9 +205,7 @@ export default function ProofApprovalPublic() {
             )}
 
             {proof.file_name && (
-              <p className="text-sm text-gray-600">
-                File: {proof.file_name}
-              </p>
+              <p className="text-sm text-gray-600">File: {proof.file_name}</p>
             )}
           </div>
 
@@ -205,7 +215,9 @@ export default function ProofApprovalPublic() {
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h3 className="font-semibold text-green-900 mb-1">Design Approved</h3>
+                  <h3 className="font-semibold text-green-900 mb-1">
+                    Design Approved
+                  </h3>
                   <p className="text-sm text-green-800">
                     Your design has been approved. Production will begin soon.
                   </p>
@@ -219,9 +231,12 @@ export default function ProofApprovalPublic() {
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-6 h-6 text-orange-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h3 className="font-semibold text-orange-900 mb-1">Feedback Received</h3>
+                  <h3 className="font-semibold text-orange-900 mb-1">
+                    Feedback Received
+                  </h3>
                   <p className="text-sm text-orange-800">
-                    We've received your feedback and will make those changes. We'll send you an updated proof soon.
+                    We've received your feedback and will make those changes.
+                    We'll send you an updated proof soon.
                   </p>
                 </div>
               </div>
@@ -260,7 +275,9 @@ export default function ProofApprovalPublic() {
                     onChange={() => {}}
                     className="w-4 h-4"
                   />
-                  <span className="font-semibold text-gray-900">Request Changes</span>
+                  <span className="font-semibold text-gray-900">
+                    Request Changes
+                  </span>
                 </label>
 
                 <textarea

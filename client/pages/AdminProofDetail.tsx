@@ -86,7 +86,8 @@ export default function AdminProofDetail() {
       const data = await response.json();
       setProof(data.proof);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to load proof";
+      const message =
+        err instanceof Error ? err.message : "Failed to load proof";
       setError(message);
       toast.error(message);
     } finally {
@@ -118,7 +119,8 @@ export default function AdminProofDetail() {
       setCommentText("");
       await fetchProof();
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to add comment";
+      const message =
+        err instanceof Error ? err.message : "Failed to add comment";
       toast.error(message);
     } finally {
       setIsSubmittingComment(false);
@@ -177,7 +179,9 @@ export default function AdminProofDetail() {
         <div className="w-full pb-20 md:pb-0 px-3 sm:px-6 lg:px-8 pt-6 md:pt-8">
           <div className="max-w-4xl mx-auto">
             <div className="flex justify-center items-center h-64">
-              <div className="text-gray-600 text-sm">Loading proof details...</div>
+              <div className="text-gray-600 text-sm">
+                Loading proof details...
+              </div>
             </div>
           </div>
         </div>
@@ -229,7 +233,7 @@ export default function AdminProofDetail() {
                 </h1>
                 <div
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg border font-medium text-sm flex-shrink-0 ${getStatusColor(
-                    proof.status
+                    proof.status,
                   )}`}
                 >
                   {getStatusIcon(proof.status)}
@@ -277,7 +281,9 @@ export default function AdminProofDetail() {
             {/* Design Preview */}
             {proof.file_url && (
               <div className="mb-8">
-                <p className="text-sm font-semibold text-gray-900 mb-4">Design Preview</p>
+                <p className="text-sm font-semibold text-gray-900 mb-4">
+                  Design Preview
+                </p>
                 <div className="border border-gray-300 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center">
                   {proof.file_url.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i) ? (
                     <img
@@ -314,7 +320,9 @@ export default function AdminProofDetail() {
             {/* Revision Notes */}
             {proof.revision_notes && (
               <div className="mb-8 p-4 bg-orange-50 border border-orange-200 rounded-lg">
-                <p className="text-sm font-semibold text-orange-900 mb-2">Revision Notes</p>
+                <p className="text-sm font-semibold text-orange-900 mb-2">
+                  Revision Notes
+                </p>
                 <p className="text-sm text-orange-800 whitespace-pre-wrap">
                   {proof.revision_notes}
                 </p>
@@ -348,7 +356,9 @@ export default function AdminProofDetail() {
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-gray-500 italic">No comments yet</p>
+                  <p className="text-sm text-gray-500 italic">
+                    No comments yet
+                  </p>
                 )}
               </div>
 

@@ -192,7 +192,9 @@ export default function CreateLegalPage() {
                       type="radio"
                       name="page_type"
                       value={option.value}
-                      checked={!isCustomPageType && formData.page_type === option.value}
+                      checked={
+                        !isCustomPageType && formData.page_type === option.value
+                      }
                       onChange={(e) => {
                         setIsCustomPageType(false);
                         setFormData({

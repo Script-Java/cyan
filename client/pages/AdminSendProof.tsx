@@ -74,7 +74,7 @@ export default function AdminSendProof() {
         {
           method: "POST",
           body: formData,
-        }
+        },
       );
 
       setUploadProgress(50);
@@ -203,7 +203,8 @@ export default function AdminSendProof() {
                   className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                 />
                 <p className="text-xs text-gray-600 mt-1">
-                  Any reference info the customer should see (e.g., order number, project name)
+                  Any reference info the customer should see (e.g., order
+                  number, project name)
                 </p>
               </div>
 
@@ -307,7 +308,10 @@ export default function AdminSendProof() {
           {/* Info Box */}
           <div className="mt-8 bg-blue-50 border border-blue-300 rounded-xl p-4">
             <p className="text-sm text-blue-900">
-              <strong>ℹ️ How it works:</strong> The customer will receive an email with the design proof. They can approve it, request changes, or add notes. All responses are logged and displayed next to their email in the proof records.
+              <strong>ℹ️ How it works:</strong> The customer will receive an
+              email with the design proof. They can approve it, request changes,
+              or add notes. All responses are logged and displayed next to their
+              email in the proof records.
             </p>
           </div>
         </div>

@@ -175,7 +175,10 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
     if (fullOrder) {
       order = fullOrder;
       error = null;
-    } else if (fullError && (fullError.message.includes("column") || fullError.code === "42703")) {
+    } else if (
+      fullError &&
+      (fullError.message.includes("column") || fullError.code === "42703")
+    ) {
       // If column doesn't exist (code 42703 is PostgreSQL "column does not exist"), try without the new columns
       console.log("New columns not available yet, fetching with basic columns");
       const { data: basicOrder, error: basicError } = await supabase
@@ -203,7 +206,9 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
       error = basicError;
 
       if (basicOrder) {
-        console.log(`Successfully fetched order ${orderIdNumber} with basic columns`);
+        console.log(
+          `Successfully fetched order ${orderIdNumber} with basic columns`,
+        );
       }
     } else {
       order = fullOrder;
@@ -220,12 +225,15 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
 
       // Provide more specific error messages
       if (error.code === "PGRST301") {
-        return res.status(403).json({ error: "Permission denied - check your access level" });
+        return res
+          .status(403)
+          .json({ error: "Permission denied - check your access level" });
       }
 
       return res.status(404).json({
         error: "Order not found",
-        debug: process.env.NODE_ENV === "development" ? error.message : undefined
+        debug:
+          process.env.NODE_ENV === "development" ? error.message : undefined,
       });
     }
 
@@ -578,7 +586,9 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
 
       // If error is about missing column (shipped_date), try updating without it
       if (error.code === "42703" && error.message.includes("shipped_date")) {
-        console.log("shipped_date column not available yet, retrying without it");
+        console.log(
+          "shipped_date column not available yet, retrying without it",
+        );
 
         // Remove shipped_date and try again
         delete updateData.shipped_date;
@@ -694,10 +704,16 @@ export const handleUpdateShippingAddress: RequestHandler = async (req, res) => {
       });
 
       // If column doesn't exist (code 42703 is PostgreSQL "column does not exist")
-      if (error.code === "42703" && error.message.includes("shipping_address")) {
-        console.error("shipping_address column not available - migration not applied");
+      if (
+        error.code === "42703" &&
+        error.message.includes("shipping_address")
+      ) {
+        console.error(
+          "shipping_address column not available - migration not applied",
+        );
         return res.status(500).json({
-          error: "Database migration not applied. The shipping_address column does not exist yet. Please contact administrator."
+          error:
+            "Database migration not applied. The shipping_address column does not exist yet. Please contact administrator.",
         });
       }
 

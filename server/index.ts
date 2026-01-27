@@ -867,7 +867,12 @@ export function createServer() {
     requireAdmin,
     handleAddAdminProofComment,
   );
-  app.post("/api/send-proof", verifyToken, requireAdmin, handleSendProofDirectly);
+  app.post(
+    "/api/send-proof",
+    verifyToken,
+    requireAdmin,
+    handleSendProofDirectly,
+  );
   app.get("/api/email-preview/proof", handleProofEmailPreview);
   app.post("/api/email-preview/send", handleSendProofEmailPreview);
   app.get("/api/email-preview/signup", handleSignupConfirmationPreview);

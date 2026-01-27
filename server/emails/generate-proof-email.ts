@@ -160,8 +160,8 @@ export function generateProofEmailHtml(params: {
         referenceNumber
           ? ` for <strong>${referenceNumber}</strong>`
           : formattedOrderNumber
-          ? ` for <strong>Order ${formattedOrderNumber}</strong>`
-          : ""
+            ? ` for <strong>Order ${formattedOrderNumber}</strong>`
+            : ""
       } is ready for review.</p>
 
       <!-- Proof Description -->

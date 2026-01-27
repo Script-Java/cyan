@@ -393,7 +393,14 @@ export const handleGetProofNotifications: RequestHandler = async (req, res) => {
  */
 export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
   try {
-    const { customerEmail, description, referenceNumber, fileData, fileName, fileUrl } = req.body;
+    const {
+      customerEmail,
+      description,
+      referenceNumber,
+      fileData,
+      fileName,
+      fileUrl,
+    } = req.body;
 
     if (!description) {
       return res.status(400).json({ error: "Proof subject is required" });
@@ -427,7 +434,9 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
         .single();
 
       if (!newCustomer) {
-        return res.status(500).json({ error: "Failed to create customer record" });
+        return res
+          .status(500)
+          .json({ error: "Failed to create customer record" });
       }
       resolvedCustomerId = newCustomer.id;
     }
@@ -511,7 +520,9 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
     // Note: If using reference_number in the future, add it to the description for now
     const proofPayload: any = {
       customer_id: resolvedCustomerId,
-      description: referenceNumber ? `${referenceNumber} - ${description}` : description,
+      description: referenceNumber
+        ? `${referenceNumber} - ${description}`
+        : description,
       file_url: finalFileUrl,
       file_name: storedFileName,
       status: "pending",
@@ -607,7 +618,7 @@ export const handleGetAdminProofDetail: RequestHandler = async (req, res) => {
         *,
         customers:customer_id (id, email, first_name, last_name),
         comments:proof_comments (id, proof_id, customer_id, admin_id, admin_email, message, created_at)
-      `
+      `,
       )
       .eq("id", proofId)
       .single();

@@ -140,8 +140,14 @@ export default function App() {
                   path="/proofs/:proofId/request-revisions"
                   element={<ProofApproval />}
                 />
-                <Route path="/proof/:proofId/approve" element={<ProofApprovalPublic />} />
-                <Route path="/proof/:proofId/request-revisions" element={<ProofApprovalPublic />} />
+                <Route
+                  path="/proof/:proofId/approve"
+                  element={<ProofApprovalPublic />}
+                />
+                <Route
+                  path="/proof/:proofId/request-revisions"
+                  element={<ProofApprovalPublic />}
+                />
                 <Route path="/account-settings" element={<AccountSettings />} />
                 <Route path="/support" element={<Support />} />
                 <Route path="/my-tickets" element={<MyTickets />} />
@@ -154,7 +160,10 @@ export default function App() {
                 />
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/orders" element={<AdminOrders />} />
-                <Route path="/admin/orders/:orderId" element={<AdminOrderDetail />} />
+                <Route
+                  path="/admin/orders/:orderId"
+                  element={<AdminOrderDetail />}
+                />
                 <Route path="/admin/customers" element={<Customers />} />
                 <Route path="/admin/products" element={<AdminProducts />} />
                 <Route path="/admin/products/new" element={<ProductForm />} />
@@ -163,7 +172,10 @@ export default function App() {
                   element={<ProductForm />}
                 />
                 <Route path="/admin/proofs" element={<AdminProofs />} />
-                <Route path="/admin/proofs/:proofId" element={<AdminProofDetail />} />
+                <Route
+                  path="/admin/proofs/:proofId"
+                  element={<AdminProofDetail />}
+                />
                 <Route path="/admin/send-proof" element={<AdminSendProof />} />
                 <Route path="/admin/reviews" element={<AdminReviews />} />
                 <Route
