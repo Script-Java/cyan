@@ -178,12 +178,12 @@ export default function CreateLegalPage() {
               <label className="block text-sm font-semibold text-white mb-4">
                 Page Type *
               </label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
                 {pageTypeOptions.map((option) => (
                   <label
                     key={option.value}
                     className={`flex items-start gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                      formData.page_type === option.value
+                      !isCustomPageType && formData.page_type === option.value
                         ? "border-blue-500 bg-blue-500/10"
                         : "border-white/10 hover:border-white/20"
                     }`}
@@ -192,14 +192,14 @@ export default function CreateLegalPage() {
                       type="radio"
                       name="page_type"
                       value={option.value}
-                      checked={formData.page_type === option.value}
-                      onChange={(e) =>
+                      checked={!isCustomPageType && formData.page_type === option.value}
+                      onChange={(e) => {
+                        setIsCustomPageType(false);
                         setFormData({
                           ...formData,
-                          page_type: e.target
-                            .value as LegalPageFormData["page_type"],
-                        })
-                      }
+                          page_type: e.target.value,
+                        });
+                      }}
                       className="w-4 h-4 mt-0.5"
                     />
                     <div>
@@ -210,6 +210,44 @@ export default function CreateLegalPage() {
                     </div>
                   </label>
                 ))}
+              </div>
+
+              {/* Custom Page Type Option */}
+              <div className="border-t border-white/10 pt-4">
+                <label className="flex items-start gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all border-white/10 hover:border-white/20">
+                  <input
+                    type="radio"
+                    name="page_type"
+                    checked={isCustomPageType}
+                    onChange={() => setIsCustomPageType(true)}
+                    className="w-4 h-4 mt-0.5"
+                  />
+                  <div className="flex-1">
+                    <p className="text-white font-medium">Create Custom Page</p>
+                    <p className="text-white/50 text-sm">
+                      Create a page with a custom type name
+                    </p>
+                  </div>
+                </label>
+
+                {/* Custom Page Type Input */}
+                {isCustomPageType && (
+                  <div className="mt-4 pl-11">
+                    <Input
+                      type="text"
+                      placeholder="e.g., Warranty, FAQ, GDPR Policy..."
+                      value={customPageType}
+                      onChange={(e) => {
+                        setCustomPageType(e.target.value);
+                        setFormData({
+                          ...formData,
+                          page_type: e.target.value,
+                        });
+                      }}
+                      className="bg-black/50 border-white/20 text-white placeholder:text-white/40 focus:border-blue-500"
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
