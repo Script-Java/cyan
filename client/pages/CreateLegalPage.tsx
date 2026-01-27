@@ -7,14 +7,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Save } from "lucide-react";
 
 interface LegalPageFormData {
-  page_type: "privacy" | "terms" | "shipping" | "returns" | "legal";
+  page_type: string;
   title: string;
   content: string;
   visibility: "visible" | "hidden";
 }
 
 const pageTypeOptions: Array<{
-  value: "privacy" | "terms" | "shipping" | "returns" | "legal";
+  value: string;
   label: string;
   description: string;
 }> = [
@@ -40,8 +40,8 @@ const pageTypeOptions: Array<{
   },
   {
     value: "legal",
-    label: "Legal Notice",
-    description: "General legal disclosures and notices",
+    label: "Artwork, Authorization, and Ownership",
+    description: "Artwork format & specifications and authorization",
   },
 ];
 
