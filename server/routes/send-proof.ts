@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
+import { v4 as uuidv4 } from "uuid";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
