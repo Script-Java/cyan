@@ -144,7 +144,7 @@ export default function Footer() {
                 legalPages.map((page) => (
                   <li key={page.id}>
                     <Link to={`/${page.page_type}`} className="hover:text-white transition-colors">
-                      {pageTypeLabels[page.page_type]}
+                      {getPageTypeLabel(page.page_type)}
                     </Link>
                   </li>
                 ))
