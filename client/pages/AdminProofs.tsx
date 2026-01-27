@@ -315,6 +315,8 @@ export default function AdminProofs() {
             setDescription("");
             setUploadedFile(null);
             setFilePreview(null);
+            setSelectedOrder(null);
+            setSelectedOrderProofStatus(null);
             setShowSendForm(false);
             fetchProofs();
           } catch (err) {
