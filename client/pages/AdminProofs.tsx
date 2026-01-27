@@ -269,6 +269,7 @@ export default function AdminProofs() {
 
       const requestBody: any = {
         description,
+        customerEmail,
       };
 
       if (orderId) {
@@ -277,10 +278,6 @@ export default function AdminProofs() {
 
       if (customerId) {
         requestBody.customerId = parseInt(customerId);
-      }
-
-      if (customerEmail) {
-        requestBody.customerEmail = customerEmail;
       }
 
       if (uploadedFile) {
