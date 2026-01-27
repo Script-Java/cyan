@@ -255,8 +255,13 @@ export default function AdminProofs() {
 
   const handleSendProof = async () => {
     try {
-      if (!orderId || !description) {
-        toast.error("Please fill in Order ID and Proof Description");
+      if (!description) {
+        toast.error("Please fill in Proof Description");
+        return;
+      }
+
+      if (!orderId && !customerEmail) {
+        toast.error("Please provide either Order ID or Customer Email");
         return;
       }
 
