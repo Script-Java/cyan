@@ -1496,7 +1496,7 @@ export default function AdminProofs() {
                 onClick={() => {
                   const token = localStorage.getItem("authToken");
                   if (token) {
-                    fetchProofs(token, currentPage + 1, true);
+                    fetchProofs(token, currentPage + 1, true, sortOrder);
                   }
                 }}
                 disabled={isLoadingMore}
