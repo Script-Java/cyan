@@ -149,6 +149,7 @@ export default function App() {
                 />
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/orders" element={<AdminOrders />} />
+                <Route path="/admin/orders/:orderId" element={<AdminOrderDetail />} />
                 <Route path="/admin/customers" element={<Customers />} />
                 <Route path="/admin/products" element={<AdminProducts />} />
                 <Route path="/admin/products/new" element={<ProductForm />} />
