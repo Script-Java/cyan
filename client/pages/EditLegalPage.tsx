@@ -149,7 +149,7 @@ export default function EditLegalPage() {
               Back to Legal Pages
             </button>
             <h1 className="text-3xl font-bold text-white">
-              Edit {pageTypeLabels[formData.page_type]}
+              Edit {pageTypeLabels[formData.page_type] || formData.page_type}
             </h1>
             <p className="text-white/60 mt-1">Update your legal page</p>
           </div>
