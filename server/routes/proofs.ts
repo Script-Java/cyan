@@ -475,7 +475,39 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
       }
     }
 
-    // Create proof record (independent of orders)
+    // Create or find a placeholder order for this proof
+    // (database requires order_id, so we create a dummy one for standalone proofs)
+    let resolvedOrderId: number | null = null;
+
+    const { data: existingOrder } = await supabase
+      .from("orders")
+      .select("id")
+      .eq("customer_id", resolvedCustomerId)
+      .eq("status", "pending")
+      .limit(1)
+      .maybeSingle();
+
+    if (existingOrder) {
+      resolvedOrderId = existingOrder.id;
+    } else {
+      // Create a placeholder order
+      const { data: newOrder } = await supabase
+        .from("orders")
+        .insert({
+          customer_id: resolvedCustomerId,
+          status: "pending",
+          total: 0,
+          items: [],
+        })
+        .select("id")
+        .single();
+
+      if (newOrder) {
+        resolvedOrderId = newOrder.id;
+      }
+    }
+
+    // Create proof record (independent of orders conceptually, but linked for DB constraint)
     const proofPayload: any = {
       customer_id: resolvedCustomerId,
       description,
@@ -483,6 +515,11 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
       file_name: storedFileName,
       status: "pending",
     };
+
+    // Include order_id if we have one
+    if (resolvedOrderId) {
+      proofPayload.order_id = resolvedOrderId;
+    }
 
     // Only include reference_number if it's provided
     if (referenceNumber) {
