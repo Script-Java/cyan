@@ -139,6 +139,8 @@ export default function App() {
                   path="/proofs/:proofId/request-revisions"
                   element={<ProofApproval />}
                 />
+                <Route path="/proof/:proofId/approve" element={<ProofApprovalPublic />} />
+                <Route path="/proof/:proofId/request-revisions" element={<ProofApprovalPublic />} />
                 <Route path="/account-settings" element={<AccountSettings />} />
                 <Route path="/support" element={<Support />} />
                 <Route path="/my-tickets" element={<MyTickets />} />
