@@ -843,6 +843,10 @@ export function createServer() {
   app.get("/api/proofs/public/:proofId", handleGetProofDetailPublic);
   app.post("/api/proofs/public/:proofId/approve", handleApproveProofPublic);
   app.post("/api/proofs/public/:proofId/deny", handleDenyProofPublic);
+  // New proof routes for public approval page
+  app.get("/api/proofs/:proofId/public", handleGetProofDetailPublic);
+  app.post("/api/proofs/:proofId/approve", handleApproveProofPublicNew);
+  app.post("/api/proofs/:proofId/revise", handleReviseProofPublicNew);
   app.post(
     "/api/admin/proofs/send",
     verifyToken,
