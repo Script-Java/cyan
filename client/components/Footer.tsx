@@ -10,9 +10,9 @@ export default function Footer() {
           {/* Logo and Brand Info */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-3">
-              <img 
-                src="/placeholder.svg" 
-                alt="Sticky Slap Logo" 
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Fe6aa9b4de7094c5282fd1abccfc14588"
+                alt="Sticky Slap Logo"
                 className="w-12 h-12 rounded"
               />
               <span style={{ fontFamily: "Goldplay, sans-serif" }} className="font-semibold text-xl">Sticky Slap</span>
@@ -20,8 +20,8 @@ export default function Footer() {
             <div className="space-y-3 text-sm text-gray-300">
               <p>
                 <span className="text-white">Email:</span><br />
-                <a href="mailto:hello@stickyslap.com" className="hover:text-white transition-colors">
-                  hello@stickyslap.com
+                <a href="mailto:sticky@stickyslap.com" className="hover:text-white transition-colors">
+                  sticky@stickyslap.com
                 </a>
               </p>
               <p>
