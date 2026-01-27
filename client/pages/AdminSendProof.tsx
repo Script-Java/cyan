@@ -99,7 +99,7 @@ export default function AdminSendProof() {
         body: JSON.stringify({
           customerEmail: email,
           description: subject,
-          orderId: orderNumber ? parseInt(orderNumber) : null,
+          referenceNumber: referenceNumber || null,
           fileUrl,
           fileName: uploadedFile.name,
         }),
