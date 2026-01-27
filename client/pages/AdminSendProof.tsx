@@ -90,16 +90,16 @@ export default function AdminSendProof() {
       toast.loading("Sending proof to customer...");
       const token = localStorage.getItem("authToken");
 
-      const response = await fetch("/api/send-proof", {
+      const response = await fetch("/api/admin/proofs/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          email,
-          subject,
-          orderNumber: orderNumber || null,
+          customerEmail: email,
+          description: subject,
+          orderId: orderNumber ? parseInt(orderNumber) : null,
           fileUrl,
           fileName: uploadedFile.name,
         }),
