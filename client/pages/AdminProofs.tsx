@@ -1043,6 +1043,104 @@ export default function AdminProofs() {
                     {/* Proof Details - Expanded */}
                     {expandedProofId === proof.id && (
                       <div className="border-t border-gray-300 px-3 sm:px-6 py-4 sm:py-6 bg-gray-50">
+                        {/* Proof Email Details */}
+                        <div className="mb-6 p-4 bg-white rounded-lg border border-gray-300">
+                          <h4 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                            <FileIcon className="w-4 h-4" />
+                            Proof Details
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
+                                Recipient Email
+                              </p>
+                              <p className="text-sm font-medium text-gray-900">
+                                {proof.customers?.email || "Unknown"}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
+                                Customer Name
+                              </p>
+                              <p className="text-sm font-medium text-gray-900">
+                                {proof.customers?.first_name} {proof.customers?.last_name}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
+                                Status
+                              </p>
+                              <span className={`px-3 py-1 rounded-full text-xs font-medium inline-block ${getStatusColor(proof.status)}`}>
+                                {getStatusLabel(proof.status)}
+                              </span>
+                            </div>
+                            <div>
+                              <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
+                                Sent Date
+                              </p>
+                              <p className="text-sm font-medium text-gray-900">
+                                {formatDate(proof.created_at)}
+                              </p>
+                            </div>
+                            {proof.file_name && (
+                              <div className="sm:col-span-2">
+                                <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
+                                  File Name
+                                </p>
+                                <p className="text-sm font-medium text-gray-900 break-all">
+                                  {proof.file_name}
+                                </p>
+                              </div>
+                            )}
+                            {proof.description && (
+                              <div className="sm:col-span-2">
+                                <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
+                                  Description
+                                </p>
+                                <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                                  {proof.description}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* File Preview */}
+                        {proof.file_url && (
+                          <div className="mb-6 p-4 bg-white rounded-lg border border-gray-300">
+                            <p className="text-sm font-semibold text-gray-900 mb-3">
+                              Design Preview
+                            </p>
+                            <div
+                              className="rounded-lg border border-gray-300 overflow-hidden bg-gray-100 flex items-center justify-center"
+                              style={{
+                                maxHeight: "300px",
+                                minHeight: "150px",
+                              }}
+                            >
+                              {proof.file_url.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i) ? (
+                                <img
+                                  src={proof.file_url}
+                                  alt={proof.file_name || "Design"}
+                                  className="max-w-full max-h-full object-contain"
+                                  onError={(e) => {
+                                    (
+                                      e.currentTarget as HTMLImageElement
+                                    ).style.display = "none";
+                                  }}
+                                />
+                              ) : (
+                                <div className="flex flex-col items-center justify-center p-6 text-center w-full">
+                                  <FileIcon className="w-10 h-10 text-gray-300 mb-2" />
+                                  <p className="text-sm text-gray-600">
+                                    {proof.file_name || "Non-image file"}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
                         {/* Comments Section */}
                         {proof.comments && proof.comments.length > 0 && (
                           <div className="mb-6">
