@@ -302,10 +302,12 @@ export default function AdminProofs() {
         };
         reader.readAsDataURL(uploadedFile);
       } else {
+        const token = localStorage.getItem("authToken");
         const response = await fetch("/api/admin/proofs/send", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(requestBody),
         });
