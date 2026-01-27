@@ -72,11 +72,6 @@ export default function AdminOrderDetail() {
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [editingOrderId, setEditingOrderId] = useState<number | null>(null);
-  const [shippingLabelOrderId, setShippingLabelOrderId] = useState<
-    number | null
-  >(null);
-  const [editingShippingAddressOrderId, setEditingShippingAddressOrderId] =
-    useState<number | null>(null);
   const [editingOptionItemId, setEditingOptionItemId] = useState<{
     orderId: number;
     itemId: number;
