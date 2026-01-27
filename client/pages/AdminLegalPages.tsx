@@ -121,10 +121,6 @@ export default function AdminLegalPages() {
         .includes(searchTerm.toLowerCase()),
   );
 
-  const availablePageTypes = (
-    ["privacy", "terms", "shipping", "returns", "legal"] as const
-  ).filter((type) => !pages.some((p) => p.page_type === type));
-
   if (!isAuthenticated) {
     return null;
   }
@@ -146,23 +142,13 @@ export default function AdminLegalPages() {
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  {availablePageTypes.length > 0 ? (
-                    <Button
-                      onClick={() => navigate("/admin/create-legal-page")}
-                      className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
-                    >
-                      <Plus className="w-4 h-4" />
-                      New Page
-                    </Button>
-                  ) : (
-                    <Button
-                      disabled
-                      className="bg-blue-600/50 text-white flex items-center gap-2 cursor-not-allowed"
-                    >
-                      <Plus className="w-4 h-4" />
-                      All Pages Created
-                    </Button>
-                  )}
+                  <Button
+                    onClick={() => navigate("/admin/create-legal-page")}
+                    className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                    New Page
+                  </Button>
                 </div>
               </div>
             </div>
