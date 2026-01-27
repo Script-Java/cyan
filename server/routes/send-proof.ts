@@ -33,23 +33,62 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
     // Generate unique proof ID
     const proofId = `proof-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-    // Create proof record in database
-    const { data: proofRecord, error: proofError } = await supabase
-      .from("proofs")
-      .insert({
-        id: proofId,
-        order_id: orderNumber ? parseInt(orderNumber) : null,
-        description: subject,
-        file_url: fileUrl,
-        file_name: fileName,
-        status: "pending",
-      })
-      .select()
+    // Find or create customer record
+    let customerId: number | null = null;
+
+    // Try to find customer by email
+    const { data: existingCustomer } = await supabase
+      .from("customers")
+      .select("id")
+      .eq("email", email)
       .single();
 
-    if (proofError) {
-      console.error("Error creating proof record:", proofError);
-      // Continue anyway - still send the email
+    if (existingCustomer) {
+      customerId = existingCustomer.id;
+    } else {
+      // Create a temporary customer record for this email
+      const emailParts = email.split("@");
+      const name = emailParts[0];
+
+      const { data: newCustomer, error: customerError } = await supabase
+        .from("customers")
+        .insert({
+          email,
+          first_name: name,
+          last_name: "Customer",
+        })
+        .select("id")
+        .single();
+
+      if (newCustomer) {
+        customerId = newCustomer.id;
+      } else {
+        console.error("Error creating customer:", customerError);
+      }
+    }
+
+    // Create proof record in database
+    if (customerId) {
+      const { data: proofRecord, error: proofError } = await supabase
+        .from("proofs")
+        .insert({
+          id: proofId,
+          order_id: orderNumber ? parseInt(orderNumber) : null,
+          customer_id: customerId,
+          description: subject,
+          file_url: fileUrl,
+          file_name: fileName,
+          status: "pending",
+        })
+        .select()
+        .single();
+
+      if (proofError) {
+        console.error("Error creating proof record:", proofError);
+        // Continue anyway - still send the email
+      }
+    } else {
+      console.warn("Could not create or find customer for proof");
     }
 
     // Generate approval and revision links
