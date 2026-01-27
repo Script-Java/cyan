@@ -205,9 +205,6 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
       dateCreated: order.created_at || new Date().toISOString(),
       dateUpdated: order.updated_at || new Date().toISOString(),
       source: "supabase" as const,
-      shippingAddress: order.shipping_address,
-      trackingNumber: order.tracking_number,
-      shippedDate: order.shipped_date,
       orderItems: (order.order_items || []).map((item: any) => ({
         id: item.id,
         quantity: item.quantity,
