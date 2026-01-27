@@ -609,10 +609,12 @@ export default function AdminProofs() {
                           );
                           if (foundOrder) {
                             setCustomerId(foundOrder.customerId.toString());
+                            const status = getOrderProofStatus(foundOrder.id);
+                            setSelectedOrderProofStatus(status);
                           }
                         }
                       }}
-                      placeholder="Enter order ID"
+                      placeholder="Enter order ID or click on order below"
                       className="flex-1 px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                     />
                     {pendingOrders.length > 0 && (
@@ -624,6 +626,24 @@ export default function AdminProofs() {
                       </Button>
                     )}
                   </div>
+                  {/* Proof Status Indicator */}
+                  {selectedOrderProofStatus && (
+                    <div className={`mt-3 p-3 rounded-lg border ${
+                      selectedOrderProofStatus === "awaiting"
+                        ? "bg-blue-50 border-blue-300"
+                        : "bg-yellow-50 border-yellow-300"
+                    }`}>
+                      <p className={`text-sm font-medium ${
+                        selectedOrderProofStatus === "awaiting"
+                          ? "text-blue-700"
+                          : "text-yellow-700"
+                      }`}>
+                        {selectedOrderProofStatus === "awaiting"
+                          ? "⏳ Awaiting Customer Review - Customer is reviewing the proof you sent"
+                          : "📋 Pending Proof - This order needs a proof sent to the customer"}
+                      </p>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
