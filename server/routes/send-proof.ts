@@ -32,7 +32,7 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
     }
 
     // Generate unique proof ID using UUID
-    const proofId = uuidv4();
+    const proofId = randomUUID();
 
     // Find or create customer record
     let customerId: number | null = null;
