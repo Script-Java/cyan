@@ -821,28 +821,6 @@ export default function AdminOrders() {
                                     {order.tracking_number}
                                   </p>
                                 </div>
-                                {order.tracking_carrier && (
-                                  <div>
-                                    <p className="text-xs text-gray-600">
-                                      Carrier
-                                    </p>
-                                    <p className="text-sm text-gray-900">
-                                      {order.tracking_carrier}
-                                    </p>
-                                  </div>
-                                )}
-                                {order.tracking_url && (
-                                  <div>
-                                    <a
-                                      href={order.tracking_url}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="text-sm text-blue-600 hover:text-blue-700 transition-colors break-all"
-                                    >
-                                      Track Package →
-                                    </a>
-                                  </div>
-                                )}
                                 {order.shipped_date && (
                                   <div>
                                     <p className="text-xs text-gray-600">
