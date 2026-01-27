@@ -436,11 +436,7 @@ export default function AdminOrders() {
                     <div key={order.id}>
                       {/* Order Row */}
                       <button
-                        onClick={() =>
-                          setExpandedOrderId(
-                            expandedOrderId === order.id ? null : order.id,
-                          )
-                        }
+                        onClick={() => navigate(`/admin/orders/${order.id}`)}
                         className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors text-left"
                       >
                         <div className="flex-1 min-w-0">
