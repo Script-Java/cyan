@@ -510,6 +510,12 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Order ID is required" });
     }
 
+    // Convert orderId to number
+    const orderIdNumber = parseInt(orderId, 10);
+    if (isNaN(orderIdNumber)) {
+      return res.status(400).json({ error: "Invalid order ID format" });
+    }
+
     const updateData: any = {};
     const validStatuses = [
       "pending",
