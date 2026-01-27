@@ -37,6 +37,7 @@ import Support from "./pages/Support";
 import MyTickets from "./pages/MyTickets";
 import AdminSupport from "./pages/AdminSupport";
 import AdminOrders from "./pages/AdminOrders";
+import AdminOrderDetail from "./pages/AdminOrderDetail";
 import AdminProofs from "./pages/AdminProofs";
 import AdminReviews from "./pages/AdminReviews";
 import AdminEmailNotifications from "./pages/AdminEmailNotifications";
