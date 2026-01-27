@@ -39,6 +39,10 @@ export default function OrderStatusEditor({
   const [trackingNumber, setTrackingNumber] = useState(
     currentTrackingNumber || "",
   );
+  const [trackingCarrier, setTrackingCarrier] = useState(
+    currentTrackingCarrier || "",
+  );
+  const [trackingUrl, setTrackingUrl] = useState(currentTrackingUrl || "");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
