@@ -156,7 +156,13 @@ export function generateProofEmailHtml(params: {
     <div class="content">
       <p>Hi <strong>${customerName}</strong>,</p>
 
-      <p>Great news! Your design proof for <strong>Order ${formattedOrderNumber}</strong> is ready for review.</p>
+      <p>Great news! Your design proof${
+        referenceNumber
+          ? ` for <strong>${referenceNumber}</strong>`
+          : formattedOrderNumber
+          ? ` for <strong>Order ${formattedOrderNumber}</strong>`
+          : ""
+      } is ready for review.</p>
 
       <!-- Proof Description -->
       <div class="proof-box">
