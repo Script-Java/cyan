@@ -694,7 +694,7 @@ export function createServer() {
     "/api/admin/orders/:orderId",
     verifyToken,
     requireAdmin,
-    handleAdminGetOrder,
+    handleGetOrderDetail,
   );
   app.get(
     "/api/admin/customers",
