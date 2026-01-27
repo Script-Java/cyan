@@ -349,6 +349,8 @@ export default function AdminProofs() {
         setCustomerId("");
         setCustomerEmail("");
         setDescription("");
+        setSelectedOrder(null);
+        setSelectedOrderProofStatus(null);
         setShowSendForm(false);
         fetchProofs();
         setSendingProof(false);
