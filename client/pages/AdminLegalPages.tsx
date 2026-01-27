@@ -28,7 +28,7 @@ const pageTypeLabels: Record<string, string> = {
   terms: "Terms of Service",
   shipping: "Shipping Policy",
   returns: "Returns Policy",
-  legal: "Legal Notice",
+  legal: "Artwork, Authorization, and Ownership",
 };
 
 const pageTypeColors: Record<string, string> = {
