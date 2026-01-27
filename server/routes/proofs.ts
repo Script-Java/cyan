@@ -590,6 +590,44 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
 };
 
 /**
+ * Admin: Get single proof detail
+ */
+export const handleGetAdminProofDetail: RequestHandler = async (req, res) => {
+  try {
+    const { proofId } = req.params;
+
+    if (!proofId) {
+      return res.status(400).json({ error: "Proof ID is required" });
+    }
+
+    const { data: proof, error } = await supabase
+      .from("proofs")
+      .select(
+        `
+        *,
+        customers:customer_id (id, email, first_name, last_name),
+        comments:proof_comments (id, proof_id, customer_id, admin_id, admin_email, message, created_at)
+      `
+      )
+      .eq("id", proofId)
+      .single();
+
+    if (error || !proof) {
+      console.error("Error fetching proof detail:", error);
+      return res.status(404).json({ error: "Proof not found" });
+    }
+
+    res.json({
+      success: true,
+      proof,
+    });
+  } catch (error) {
+    console.error("Get proof detail error:", error);
+    res.status(500).json({ error: "Failed to get proof details" });
+  }
+};
+
+/**
  * Admin: Get pending proofs for all customers
  */
 export const handleGetAdminProofs: RequestHandler = async (req, res) => {
