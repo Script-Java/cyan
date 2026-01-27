@@ -470,10 +470,7 @@ export default function AdminProofs() {
                 </p>
               </div>
               <Button
-                onClick={() => {
-                  setShowSendForm(!showSendForm);
-                  setShowOrderModal(false);
-                }}
+                onClick={() => navigate("/admin/send-proof")}
                 className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg flex-shrink-0 w-full sm:w-auto"
               >
                 <Plus className="w-4 h-4" />
