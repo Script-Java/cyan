@@ -74,6 +74,7 @@ export default function AdminOrderDetail() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [editingOrderId, setEditingOrderId] = useState<number | null>(null);
   const [editingShippingAddressOrderId, setEditingShippingAddressOrderId] =
     useState<number | null>(null);
