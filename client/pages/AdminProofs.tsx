@@ -513,42 +513,59 @@ export default function AdminProofs() {
                     </tr>
                   </thead>
                   <tbody>
-                    {pendingOrders.map((order) => (
-                      <tr
-                        key={order.id}
-                        className="border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
-                      >
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap text-xs sm:text-sm">
-                          #{order.id}
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-gray-700 whitespace-nowrap hidden sm:table-cell truncate max-w-xs text-xs sm:text-sm">
-                          {order.customerName}
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-gray-600 hidden md:table-cell text-xs sm:text-sm">
-                          <div className="flex items-center gap-1 truncate max-w-xs">
-                            {order.customerEmail}
-                          </div>
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 sm:py-4">
-                          <span className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-medium bg-orange-100 text-orange-700 border border-orange-300 whitespace-nowrap inline-block">
-                            {order.status.charAt(0).toUpperCase() +
-                              order.status.slice(1)}
-                          </span>
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-green-700 text-right whitespace-nowrap text-xs sm:text-sm">
-                          ${order.total.toFixed(2)}
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-right">
-                          <button
-                            onClick={() => handleSelectOrder(order)}
-                            className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-2 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors font-medium text-xs whitespace-nowrap border border-green-300"
-                          >
-                            <span>Send</span>
-                            <span className="hidden sm:inline">Proof</span>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                    {pendingOrders.map((order) => {
+                      const proofStatus = getOrderProofStatus(order.id);
+                      return (
+                        <tr
+                          key={order.id}
+                          onClick={() => handleSelectOrder(order)}
+                          className="border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
+                        >
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-gray-900 whitespace-nowrap text-xs sm:text-sm">
+                            #{order.id}
+                          </td>
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 text-gray-700 whitespace-nowrap hidden sm:table-cell truncate max-w-xs text-xs sm:text-sm">
+                            {order.customerName}
+                          </td>
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 text-gray-600 hidden md:table-cell text-xs sm:text-sm">
+                            <div className="flex items-center gap-1 truncate max-w-xs">
+                              {order.customerEmail}
+                            </div>
+                          </td>
+                          <td className="px-2 sm:px-4 py-3 sm:py-4">
+                            <div className="space-y-1">
+                              <span className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-medium bg-orange-100 text-orange-700 border border-orange-300 whitespace-nowrap inline-block">
+                                {order.status.charAt(0).toUpperCase() +
+                                  order.status.slice(1)}
+                              </span>
+                              {proofStatus && (
+                                <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium border whitespace-nowrap inline-block ml-2 ${
+                                  proofStatus === "awaiting"
+                                    ? "bg-blue-100 text-blue-700 border-blue-300"
+                                    : "bg-yellow-100 text-yellow-700 border-yellow-300"
+                                }`}>
+                                  {proofStatus === "awaiting"
+                                    ? "Awaiting Review"
+                                    : "Pending Proof"}
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 font-semibold text-green-700 text-right whitespace-nowrap text-xs sm:text-sm">
+                            ${order.total.toFixed(2)}
+                          </td>
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 text-right" onClick={(e) => e.stopPropagation()}>
+                            <button
+                              onClick={() => handleSelectOrder(order)}
+                              className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-2 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors font-medium text-xs whitespace-nowrap border border-green-300"
+                            >
+                              <span>Send</span>
+                              <span className="hidden sm:inline">Proof</span>
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
