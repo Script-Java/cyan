@@ -205,12 +205,22 @@ export default function AdminProofs() {
     }
   };
 
+  const getOrderProofStatus = (orderId: number): "pending" | "awaiting" | null => {
+    const existingProof = proofs.find((p) => p.order_id === orderId);
+    if (existingProof) {
+      return existingProof.status === "pending" ? "awaiting" : null;
+    }
+    return "pending";
+  };
+
   const handleSelectOrder = (order: PendingOrder) => {
+    const status = getOrderProofStatus(order.id);
     setOrderId(order.id.toString());
     setCustomerId(order.customerId ? order.customerId.toString() : "");
     setCustomerEmail(order.customerEmail || "");
     setDescription("");
     setSelectedOrder(order);
+    setSelectedOrderProofStatus(status);
     setShowOrderModal(false);
     setShowSendForm(true);
   };
