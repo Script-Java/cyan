@@ -9,7 +9,7 @@ interface OrderStatusEditorProps {
   currentTrackingUrl?: string;
   onClose: () => void;
   onSuccess: () => void;
-}
+} // Note: currentTrackingCarrier and currentTrackingUrl are accepted but not used since DB columns don't exist
 
 const STATUS_OPTIONS = [
   { value: "pending", label: "Pending", color: "orange" },
