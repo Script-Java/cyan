@@ -90,17 +90,26 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
 
     console.log("Creating proof record with customer ID:", customerId);
 
+    // Build the proof record - only include order_id if provided
+    const proofRecordData: any = {
+      id: proofId,
+      customer_id: customerId,
+      description: subject,
+      file_url: fileUrl,
+      file_name: fileName,
+      status: "pending",
+    };
+
+    // Only add order_id if a valid order number is provided
+    if (orderNumber && !isNaN(parseInt(orderNumber))) {
+      proofRecordData.order_id = parseInt(orderNumber);
+    }
+
+    console.log("Proof record data:", JSON.stringify(proofRecordData));
+
     const { data: proofRecord, error: proofError } = await supabase
       .from("proofs")
-      .insert({
-        id: proofId,
-        order_id: orderNumber ? parseInt(orderNumber) : null,
-        customer_id: customerId,
-        description: subject,
-        file_url: fileUrl,
-        file_name: fileName,
-        status: "pending",
-      })
+      .insert(proofRecordData)
       .select()
       .single();
 
