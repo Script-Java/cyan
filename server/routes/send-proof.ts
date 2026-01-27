@@ -82,28 +82,38 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
     }
 
     // Create proof record in database
-    if (customerId) {
-      const { data: proofRecord, error: proofError } = await supabase
-        .from("proofs")
-        .insert({
-          id: proofId,
-          order_id: orderNumber ? parseInt(orderNumber) : null,
-          customer_id: customerId,
-          description: subject,
-          file_url: fileUrl,
-          file_name: fileName,
-          status: "pending",
-        })
-        .select()
-        .single();
-
-      if (proofError) {
-        console.error("Error creating proof record:", proofError);
-        // Continue anyway - still send the email
-      }
-    } else {
-      console.warn("Could not create or find customer for proof");
+    if (!customerId) {
+      console.error("Cannot create proof - no customer ID");
+      return res.status(500).json({ error: "Failed to resolve customer" });
     }
+
+    console.log("Creating proof record with customer ID:", customerId);
+
+    const { data: proofRecord, error: proofError } = await supabase
+      .from("proofs")
+      .insert({
+        id: proofId,
+        order_id: orderNumber ? parseInt(orderNumber) : null,
+        customer_id: customerId,
+        description: subject,
+        file_url: fileUrl,
+        file_name: fileName,
+        status: "pending",
+      })
+      .select()
+      .single();
+
+    if (proofError) {
+      console.error("Error creating proof record:", proofError);
+      return res.status(500).json({ error: "Failed to create proof record in database" });
+    }
+
+    if (!proofRecord) {
+      console.error("No proof record returned after insert");
+      return res.status(500).json({ error: "Failed to create proof record" });
+    }
+
+    console.log("Successfully created proof:", proofId);
 
     // Generate approval and revision links
     const baseUrl =
