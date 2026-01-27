@@ -855,6 +855,12 @@ export function createServer() {
     handleSendProofToCustomer,
   );
   app.get("/api/admin/proofs", verifyToken, requireAdmin, handleGetAdminProofs);
+  app.get(
+    "/api/admin/proofs/:proofId",
+    verifyToken,
+    requireAdmin,
+    handleGetAdminProofDetail,
+  );
   app.post(
     "/api/admin/proofs/:proofId/comments",
     verifyToken,
