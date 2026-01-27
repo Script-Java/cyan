@@ -676,7 +676,7 @@ export const handleUpdateShippingAddress: RequestHandler = async (req, res) => {
     };
 
     // Update the order in Supabase
-    const { data, error } = await supabase
+    let updateResponse = await supabase
       .from("orders")
       .update({
         shipping_address: shippingAddress,
@@ -686,8 +686,30 @@ export const handleUpdateShippingAddress: RequestHandler = async (req, res) => {
       .select()
       .single();
 
+    let data = updateResponse.data;
+    let error = updateResponse.error;
+
+    // If column doesn't exist (code 42703 is PostgreSQL "column does not exist"), log it
+    if (error && (error.message.includes("shipping_address") || error.code === "42703")) {
+      console.error("shipping_address column not available yet:", {
+        code: error.code,
+        message: error.message,
+      });
+      // Still return success but log that the column doesn't exist
+      // The schema will be updated later with the migration
+      return res.json({
+        success: false,
+        message: "Shipping address column not yet available in database. Migration needed.",
+        error: "Column not available",
+      });
+    }
+
     if (error) {
-      console.error("Error updating shipping address:", error);
+      console.error("Error updating shipping address:", {
+        orderId: orderIdNumber,
+        error: error.message,
+        code: error.code,
+      });
       return res
         .status(500)
         .json({ error: "Failed to update shipping address" });
