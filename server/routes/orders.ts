@@ -767,6 +767,10 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
         products: enrichedItems,
         shippingAddress: order.shipping_address,
         billingAddress: order.billing_address,
+        trackingNumber: order.tracking_number || undefined,
+        trackingCarrier: order.tracking_carrier || undefined,
+        trackingUrl: order.tracking_url || undefined,
+        shippedDate: order.shipped_date || undefined,
         digitalFiles: digitalFiles,
       },
     });
