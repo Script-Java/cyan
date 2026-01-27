@@ -16,13 +16,17 @@ export function useAdminNotifications() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchNotifications = async () => {
       try {
+        if (!isMounted) return;
         setIsLoading(true);
+
         const token = localStorage.getItem("authToken");
 
         if (!token) {
-          setIsLoading(false);
+          if (isMounted) setIsLoading(false);
           return;
         }
 
@@ -30,22 +34,18 @@ export function useAdminNotifications() {
         let pendingOrders = 0;
         let rejectedProofs = 0;
 
-        // Create a timeout promise
-        const createTimeoutPromise = (ms: number) =>
-          new Promise((_, reject) =>
-            setTimeout(() => reject(new Error("Request timeout")), ms)
-          );
-
-        // Fetch support tickets count with timeout
+        // Fetch support tickets count
         try {
-          const ticketsResponse = await Promise.race([
-            fetch("/api/admin/tickets", {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-            createTimeoutPromise(10000),
-          ]);
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-          if (ticketsResponse instanceof Response && ticketsResponse.ok) {
+          const ticketsResponse = await fetch("/api/admin/tickets", {
+            headers: { Authorization: `Bearer ${token}` },
+            signal: controller.signal,
+          });
+          clearTimeout(timeoutId);
+
+          if (ticketsResponse.ok) {
             const ticketsText = await ticketsResponse.text();
             const ticketsData = ticketsText ? JSON.parse(ticketsText) : [];
             openTickets = (
@@ -62,16 +62,18 @@ export function useAdminNotifications() {
           });
         }
 
-        // Fetch pending orders count with timeout
+        // Fetch pending orders count
         try {
-          const ordersResponse = await Promise.race([
-            fetch("/api/admin/pending-orders", {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-            createTimeoutPromise(10000),
-          ]);
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-          if (ordersResponse instanceof Response && ordersResponse.ok) {
+          const ordersResponse = await fetch("/api/admin/pending-orders", {
+            headers: { Authorization: `Bearer ${token}` },
+            signal: controller.signal,
+          });
+          clearTimeout(timeoutId);
+
+          if (ordersResponse.ok) {
             const ordersText = await ordersResponse.text();
             const ordersData = ordersText
               ? JSON.parse(ordersText)
@@ -84,16 +86,18 @@ export function useAdminNotifications() {
           });
         }
 
-        // Fetch proofs with revisions requested count with timeout
+        // Fetch proofs with revisions requested count
         try {
-          const proofsResponse = await Promise.race([
-            fetch("/api/admin/proofs", {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-            createTimeoutPromise(10000),
-          ]);
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-          if (proofsResponse instanceof Response && proofsResponse.ok) {
+          const proofsResponse = await fetch("/api/admin/proofs", {
+            headers: { Authorization: `Bearer ${token}` },
+            signal: controller.signal,
+          });
+          clearTimeout(timeoutId);
+
+          if (proofsResponse.ok) {
             const proofsText = await proofsResponse.text();
             const proofsData = proofsText
               ? JSON.parse(proofsText)
@@ -108,21 +112,27 @@ export function useAdminNotifications() {
           });
         }
 
-        setNotifications({
-          openTickets,
-          pendingOrders,
-          rejectedProofs,
-        });
-        setError(null);
+        if (isMounted) {
+          setNotifications({
+            openTickets,
+            pendingOrders,
+            rejectedProofs,
+          });
+          setError(null);
+        }
       } catch (err) {
         console.error("Error in fetchNotifications:", {
           error: err instanceof Error ? err.message : String(err),
         });
-        setError(
-          err instanceof Error ? err.message : "Failed to fetch notifications",
-        );
+        if (isMounted) {
+          setError(
+            err instanceof Error ? err.message : "Failed to fetch notifications",
+          );
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -131,7 +141,10 @@ export function useAdminNotifications() {
     // Refresh notifications every 30 seconds
     const interval = setInterval(fetchNotifications, 30000);
 
-    return () => clearInterval(interval);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   return { notifications, isLoading, error };
