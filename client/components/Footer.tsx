@@ -69,7 +69,7 @@ export default function Footer() {
           {/* Instagram */}
           <div className="flex md:justify-end">
             <a
-              href="https://instagram.com/stickyslap"
+              href="https://instagram.com/stickyslapco"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 hover:text-gray-300 transition-colors group"
@@ -79,7 +79,7 @@ export default function Footer() {
               </div>
               <div className="text-right">
                 <p className="text-sm font-semibold">Follow Us</p>
-                <p className="text-xs text-gray-400">@stickyslap</p>
+                <p className="text-xs text-gray-400">@stickyslapco</p>
               </div>
             </a>
           </div>
