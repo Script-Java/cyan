@@ -314,6 +314,61 @@ export default function OrderStatus() {
                   </div>
                 </div>
 
+                {/* Tracking Information */}
+                {orderData.trackingNumber && (
+                  <div className="backdrop-blur-sm bg-white/40 border border-gray-200/50 rounded-xl p-6 sm:p-8 shadow-sm">
+                    <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                      <Truck className="w-5 h-5 text-blue-600" />
+                      Tracking Information
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 bg-blue-50/50 border border-blue-200 rounded-lg">
+                        <div>
+                          <p className="text-xs font-semibold text-gray-600 uppercase">
+                            Tracking Number
+                          </p>
+                          <p className="text-lg font-mono font-bold text-gray-900 mt-1">
+                            {orderData.trackingNumber}
+                          </p>
+                        </div>
+                        {orderData.trackingUrl && (
+                          <a
+                            href={orderData.trackingUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors whitespace-nowrap"
+                          >
+                            Track Package
+                            <ExternalLink className="w-4 h-4" />
+                          </a>
+                        )}
+                      </div>
+
+                      {orderData.trackingCarrier && (
+                        <div className="p-4 bg-gray-50/50 border border-gray-200 rounded-lg">
+                          <p className="text-xs font-semibold text-gray-600 uppercase">
+                            Carrier
+                          </p>
+                          <p className="text-base font-medium text-gray-900 mt-1">
+                            {orderData.trackingCarrier}
+                          </p>
+                        </div>
+                      )}
+
+                      {orderData.shippedDate && (
+                        <div className="p-4 bg-gray-50/50 border border-gray-200 rounded-lg">
+                          <p className="text-xs font-semibold text-gray-600 uppercase">
+                            Shipped On
+                          </p>
+                          <p className="text-base font-medium text-gray-900 mt-1">
+                            {formatDate(orderData.shippedDate)}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* Digital Files */}
                 {orderData.digitalFiles &&
                   orderData.digitalFiles.length > 0 && (
