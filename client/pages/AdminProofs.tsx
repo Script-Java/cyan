@@ -610,7 +610,7 @@ export default function AdminProofs() {
               <div className="space-y-4 sm:space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
-                    Order ID * {orderId && `(#${orderId})`}
+                    Order ID (Optional) {orderId && `(#${orderId})`}
                   </label>
                   <div className="flex gap-2">
                     <input
@@ -625,12 +625,13 @@ export default function AdminProofs() {
                           );
                           if (foundOrder) {
                             setCustomerId(foundOrder.customerId.toString());
+                            setCustomerEmail(foundOrder.customerEmail);
                             const status = getOrderProofStatus(foundOrder.id);
                             setSelectedOrderProofStatus(status);
                           }
                         }
                       }}
-                      placeholder="Enter order ID or click on order below"
+                      placeholder="Enter order ID (optional)"
                       className="flex-1 px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                     />
                     {pendingOrders.length > 0 && (
@@ -663,21 +664,19 @@ export default function AdminProofs() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
-                    Customer Email {!orderId ? "*" : "(Optional)"}
+                    Customer Email *
                   </label>
                   <input
                     type="email"
                     value={customerEmail}
                     onChange={(e) => setCustomerEmail(e.target.value)}
-                    placeholder={orderId ? "Enter customer email (optional)" : "Enter customer email (required without Order ID)"}
+                    placeholder="Enter customer email address"
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 transition"
                   />
                   <input type="hidden" value={customerId} />
-                  {!orderId && (
-                    <p className="text-xs text-gray-600 mt-2">
-                      ℹ️ Email is required when no order is selected. The proof will be sent directly to this email address.
-                    </p>
-                  )}
+                  <p className="text-xs text-gray-600 mt-2">
+                    ℹ️ Customer email is required. The proof will be sent to this address.
+                  </p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
