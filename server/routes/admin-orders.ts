@@ -141,8 +141,12 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
 
     console.log(`Fetching order detail for ID: ${orderIdNumber}`);
 
-    // Fetch single order with all details including design files
-    const { data: order, error } = await supabase
+    // Try to fetch with all columns, fall back to basic columns if some don't exist
+    let order: any;
+    let error: any;
+
+    // First try with all columns
+    const { data: fullOrder, error: fullError } = await supabase
       .from("orders")
       .select(
         `
@@ -167,6 +171,40 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
       )
       .eq("id", orderIdNumber)
       .single();
+
+    if (fullOrder) {
+      order = fullOrder;
+      error = null;
+    } else if (fullError && fullError.message.includes("column")) {
+      // If column doesn't exist, try without the new columns
+      console.log("New columns not available yet, fetching with basic columns");
+      const { data: basicOrder, error: basicError } = await supabase
+        .from("orders")
+        .select(
+          `
+          id,
+          customer_id,
+          status,
+          total,
+          subtotal,
+          tax,
+          shipping,
+          created_at,
+          updated_at,
+          customers(id,first_name,last_name,email),
+          order_items(id,quantity,product_name,options,design_file_url),
+          proofs(id,status,description,created_at,updated_at)
+          `,
+        )
+        .eq("id", orderIdNumber)
+        .single();
+
+      order = basicOrder;
+      error = basicError;
+    } else {
+      order = fullOrder;
+      error = fullError;
+    }
 
     if (error) {
       console.error("Error fetching order detail:", {
