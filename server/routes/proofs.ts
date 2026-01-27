@@ -516,21 +516,14 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
       console.error("Error creating notification:", notifError);
     }
 
-    // Fetch customer email to send proof email
-    const { data: customer, error: customerError } = await supabase
+    // Send proof email
+    const emailToSend = customerEmail || (await supabase
       .from("customers")
-      .select("email, first_name, last_name")
+      .select("email")
       .eq("id", resolvedCustomerId)
-      .single();
+      .single())?.data?.email;
 
-    if (customerError) {
-      console.error("Error fetching customer for email:", customerError);
-    } else if (
-      customer &&
-      customer.email &&
-      process.env.RESEND_API_KEY &&
-      resend
-    ) {
+    if (emailToSend && process.env.RESEND_API_KEY && resend) {
       try {
         // Generate approval and revision links
         const baseUrl =
@@ -539,14 +532,29 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
         const approvalLink = `${baseUrl}/proofs/${proof.id}/approve`;
         const revisionLink = `${baseUrl}/proofs/${proof.id}/request-revisions`;
 
-        const customerName = customer.first_name
-          ? `${customer.first_name}${customer.last_name ? " " + customer.last_name : ""}`
-          : "Valued Customer";
+        // Get customer name if available
+        let customerName = "Valued Customer";
+        if (resolvedCustomerId) {
+          const { data: customer } = await supabase
+            .from("customers")
+            .select("first_name, last_name")
+            .eq("id", resolvedCustomerId)
+            .single();
+
+          if (customer && customer.first_name) {
+            customerName = `${customer.first_name}${customer.last_name ? " " + customer.last_name : ""}`;
+          }
+        }
+
+        // Generate email subject
+        const emailSubject = resolvedOrderId
+          ? `Your Design Proof is Ready - Order ${formatOrderNumber(resolvedOrderId)}`
+          : "Your Design Proof is Ready";
 
         // Generate email HTML
         const emailHtml = generateProofEmailHtml({
           customerName,
-          orderId,
+          orderId: resolvedOrderId || 0,
           proofDescription: description,
           proofFileUrl: fileUrl,
           approvalLink,
@@ -556,8 +564,8 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
         // Send email via Resend
         const emailResult = await resend.emails.send({
           from: PROOF_EMAIL_FROM,
-          to: customer.email,
-          subject: `Your Design Proof is Ready - Order ${formatOrderNumber(orderId)}`,
+          to: emailToSend,
+          subject: emailSubject,
           html: emailHtml,
         });
 
