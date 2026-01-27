@@ -8,9 +8,6 @@ import {
   Package,
   ChevronLeft,
   Edit,
-  Truck,
-  Loader2,
-  Download,
   FileText,
   Image as ImageIcon,
 } from "lucide-react";
