@@ -118,6 +118,9 @@ export default function AdminProofs() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<PendingOrder | null>(null);
+  const [selectedOrderProofStatus, setSelectedOrderProofStatus] = useState<
+    "pending" | "awaiting" | null
+  >(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState<PaginationInfo | null>(null);
 
