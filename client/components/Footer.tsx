@@ -16,6 +16,10 @@ const pageTypeLabels: Record<string, string> = {
   legal: "Artwork, Authorization, and Ownership",
 };
 
+const getPageTypeLabel = (pageType: string): string => {
+  return pageTypeLabels[pageType] || pageType;
+};
+
 export default function Footer() {
   const [legalPages, setLegalPages] = useState<LegalPageItem[]>([]);
 
