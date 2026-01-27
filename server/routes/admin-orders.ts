@@ -175,8 +175,8 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
     if (fullOrder) {
       order = fullOrder;
       error = null;
-    } else if (fullError && fullError.message.includes("column")) {
-      // If column doesn't exist, try without the new columns
+    } else if (fullError && (fullError.message.includes("column") || fullError.code === "42703")) {
+      // If column doesn't exist (code 42703 is PostgreSQL "column does not exist"), try without the new columns
       console.log("New columns not available yet, fetching with basic columns");
       const { data: basicOrder, error: basicError } = await supabase
         .from("orders")
@@ -201,6 +201,10 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
 
       order = basicOrder;
       error = basicError;
+
+      if (basicOrder) {
+        console.log(`Successfully fetched order ${orderIdNumber} with basic columns`);
+      }
     } else {
       order = fullOrder;
       error = fullError;
