@@ -32,6 +32,14 @@ const pageTypeColors: Record<string, { bg: string; text: string }> = {
   legal: { bg: "bg-red-50", text: "text-red-700" },
 };
 
+const getPageTypeColor = (pageType: string): { bg: string; text: string } => {
+  return pageTypeColors[pageType] || { bg: "bg-gray-50", text: "text-gray-700" };
+};
+
+const getPageTypeLabel = (pageType: string): string => {
+  return pageTypeLabels[pageType] || pageType;
+};
+
 export default function LegalPages() {
   const navigate = useNavigate();
   const [pages, setPages] = useState<LegalPageItem[]>([]);
