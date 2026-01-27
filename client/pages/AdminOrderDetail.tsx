@@ -516,37 +516,6 @@ export default function AdminOrderDetail() {
             </div>
           )}
 
-          {/* Tracking Information */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              Tracking Information
-            </h2>
-            {order.trackingNumber ? (
-              <div className="space-y-3">
-                <div>
-                  <p className="text-xs text-gray-600 font-medium">
-                    Tracking Number
-                  </p>
-                  <p className="text-sm font-mono text-gray-900 mt-1">
-                    {order.trackingNumber}
-                  </p>
-                </div>
-                {order.shippedDate && (
-                  <div>
-                    <p className="text-xs text-gray-600 font-medium">Shipped</p>
-                    <p className="text-sm text-gray-900 mt-1">
-                      {formatDate(order.shippedDate)}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-600">
-                No tracking information yet
-              </p>
-            )}
-          </div>
-
           {/* Customer Info */}
           <div className="bg-white border border-gray-200 rounded-lg p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
