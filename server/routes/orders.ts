@@ -615,7 +615,11 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
     const { supabase } = await import("../utils/supabase");
 
     // Get the order from Supabase
-    const { data: order, error: orderError } = await supabase
+    // Try with tracking columns first, fall back to basic columns if they don't exist
+    let order: any;
+    let orderError: any;
+
+    const { data: fullOrder, error: fullError } = await supabase
       .from("orders")
       .select(
         `
@@ -645,6 +649,46 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
       )
       .eq("id", orderIdNum)
       .single();
+
+    if (fullOrder) {
+      order = fullOrder;
+      orderError = null;
+    } else if (fullError && (fullError.message.includes("column") || fullError.code === "42703")) {
+      // If tracking columns don't exist yet, try without them
+      console.log("Tracking columns not available yet, fetching basic order");
+      const { data: basicOrder, error: basicError } = await supabase
+        .from("orders")
+        .select(
+          `
+          id,
+          customer_id,
+          status,
+          created_at,
+          total,
+          subtotal,
+          tax,
+          shipping,
+          shipping_address,
+          billing_address,
+          order_items (
+            id,
+            product_id,
+            quantity,
+            price,
+            options,
+            design_file_url
+          )
+        `,
+        )
+        .eq("id", orderIdNum)
+        .single();
+
+      order = basicOrder;
+      orderError = basicError;
+    } else {
+      order = fullOrder;
+      orderError = fullError;
+    }
 
     if (orderError || !order) {
       console.warn(
