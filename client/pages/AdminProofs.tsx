@@ -142,6 +142,7 @@ export default function AdminProofs() {
     token: string,
     page: number = 1,
     append: boolean = false,
+    sort: "newest" | "oldest" = sortOrder,
   ) => {
     try {
       if (!append) {
@@ -151,7 +152,7 @@ export default function AdminProofs() {
       }
       setError("");
 
-      const response = await fetch(`/api/admin/proofs?page=${page}`, {
+      const response = await fetch(`/api/admin/proofs?page=${page}&sort=${sort}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
