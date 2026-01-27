@@ -475,11 +475,7 @@ export default function AdminOrders() {
                           <span className="font-semibold text-green-600 text-right">
                             ${order.total.toFixed(2)}
                           </span>
-                          <ChevronDown
-                            className={`w-5 h-5 text-gray-600 transition-transform ${
-                              expandedOrderId === order.id ? "rotate-180" : ""
-                            }`}
-                          />
+                          <ArrowRight className="w-5 h-5 text-gray-600" />
                         </div>
                       </button>
 
