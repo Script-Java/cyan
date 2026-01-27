@@ -173,9 +173,11 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
 
     // Send email via Resend
     if (!resend) {
-      console.warn("Resend API key not configured");
+      console.error("Resend API key not configured - cannot send email");
       return res.status(500).json({ error: "Email service not configured" });
     }
+
+    console.log("Sending email to:", email);
 
     const emailResult = await resend.emails.send({
       from: PROOF_EMAIL_FROM,
@@ -186,10 +188,10 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
 
     if (emailResult.error) {
       console.error("Error sending proof email:", emailResult.error);
-      return res.status(500).json({ error: "Failed to send email" });
+      return res.status(500).json({ error: "Failed to send email: " + JSON.stringify(emailResult.error) });
     }
 
-    console.log("Proof email sent successfully:", emailResult.data);
+    console.log("Proof email sent successfully:", emailResult.data?.id);
 
     res.json({
       success: true,
