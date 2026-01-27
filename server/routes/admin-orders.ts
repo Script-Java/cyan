@@ -475,12 +475,6 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
     if (tracking_number !== undefined) {
       updateData.tracking_number = tracking_number || null;
     }
-    if (tracking_carrier !== undefined) {
-      updateData.tracking_carrier = tracking_carrier || null;
-    }
-    if (tracking_url !== undefined) {
-      updateData.tracking_url = tracking_url || null;
-    }
 
     // If tracking information is provided, set the shipped date
     if (tracking_number) {
