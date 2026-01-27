@@ -133,6 +133,14 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Order ID is required" });
     }
 
+    // Convert orderId to number since it comes as a string from params
+    const orderIdNumber = parseInt(orderId, 10);
+    if (isNaN(orderIdNumber)) {
+      return res.status(400).json({ error: "Invalid order ID format" });
+    }
+
+    console.log(`Fetching order detail for ID: ${orderIdNumber}`);
+
     // Fetch single order with all details including design files
     const { data: order, error } = await supabase
       .from("orders")
@@ -157,17 +165,24 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
         proofs(id,status,description,created_at,updated_at)
         `,
       )
-      .eq("id", orderId)
+      .eq("id", orderIdNumber)
       .single();
 
     if (error) {
-      console.error("Error fetching order detail:", error);
+      console.error("Error fetching order detail:", {
+        orderId: orderIdNumber,
+        error,
+        message: error.message,
+      });
       return res.status(404).json({ error: "Order not found" });
     }
 
     if (!order) {
+      console.warn(`Order not found for ID: ${orderIdNumber}`);
       return res.status(404).json({ error: "Order not found" });
     }
+
+    console.log(`Successfully fetched order ${orderIdNumber}`);
 
     // Format the response
     const customerName =
