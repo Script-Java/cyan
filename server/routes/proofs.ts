@@ -473,16 +473,22 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
     }
 
     // Create proof
+    const proofData: any = {
+      customer_id: resolvedCustomerId,
+      description,
+      file_url: fileUrl,
+      file_name: storedFileName,
+      status: "pending",
+    };
+
+    // Add order_id if provided
+    if (resolvedOrderId) {
+      proofData.order_id = resolvedOrderId;
+    }
+
     const { data: proof, error: proofError } = await supabase
       .from("proofs")
-      .insert({
-        order_id: orderId,
-        customer_id: resolvedCustomerId,
-        description,
-        file_url: fileUrl,
-        file_name: storedFileName,
-        status: "pending",
-      })
+      .insert(proofData)
       .select()
       .single();
 
