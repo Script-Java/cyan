@@ -59,7 +59,15 @@ export const handleLogin: RequestHandler = async (req, res) => {
         hasEmail: !!email,
         hasPassword: !!password,
       });
-      return res.status(400).json({ error: "Email and password required" });
+      return res.status(400).json({
+        error: "Email and password required",
+        debug: {
+          receivedBodyType: typeof req.body,
+          receivedBodyKeys: Object.keys(req.body || {}),
+          receivedBody: req.body, // TEMPORARY: Return body to see what we got
+          contentType: req.headers["content-type"],
+        },
+      });
     }
 
     // Get customer from Supabase
