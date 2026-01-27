@@ -307,7 +307,7 @@ export default function AdminSendProof() {
           {/* Info Box */}
           <div className="mt-8 bg-blue-50 border border-blue-300 rounded-xl p-4">
             <p className="text-sm text-blue-900">
-              <strong>ℹ️ How it works:</strong> The customer will receive an email with the design. They can approve it or request revisions. Their response will be tracked in the proofs section.
+              <strong>ℹ️ How it works:</strong> The customer will receive an email with the design proof. They can approve it, request changes, or add notes. All responses are logged and displayed next to their email in the proof records.
             </p>
           </div>
         </div>
