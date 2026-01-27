@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
 import DesignThumbnail from "@/components/DesignThumbnail";
 import OrderStatusEditor from "@/components/OrderStatusEditor";
+import ShippingAddressEditor from "@/components/ShippingAddressEditor";
 import OptionCostEditor from "@/components/OptionCostEditor";
 import {
   Package,
