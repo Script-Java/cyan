@@ -1,0 +1,121 @@
+import { RequestHandler } from "express";
+import { createClient } from "@supabase/supabase-js";
+import { Resend } from "resend";
+
+const supabase = createClient(
+  process.env.SUPABASE_URL || "",
+  process.env.SUPABASE_SERVICE_KEY || "",
+);
+
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
+
+const PROOF_EMAIL_FROM = "sticky@stickyslap.com";
+
+export const handleSendProofDirectly: RequestHandler = async (req, res) => {
+  try {
+    const { email, subject, orderNumber, fileUrl, fileName } = req.body;
+
+    // Validation
+    if (!email) {
+      return res.status(400).json({ error: "Customer email is required" });
+    }
+
+    if (!subject) {
+      return res.status(400).json({ error: "Proof subject is required" });
+    }
+
+    if (!fileUrl) {
+      return res.status(400).json({ error: "File URL is required" });
+    }
+
+    // Generate unique proof ID
+    const proofId = `proof-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+    // Generate approval and revision links
+    const baseUrl =
+      process.env.FRONTEND_URL || "https://stickyslap.app";
+    const approvalLink = `${baseUrl}/proof/${proofId}/approve`;
+    const revisionLink = `${baseUrl}/proof/${proofId}/request-revisions`;
+
+    // Generate email HTML
+    const emailHtml = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background-color: #000; color: #fff; padding: 20px; text-align: center; }
+          .content { background-color: #f9f9f9; padding: 20px; margin: 20px 0; }
+          .proof-image { max-width: 100%; height: auto; margin: 20px 0; border: 1px solid #ddd; border-radius: 8px; }
+          .button { display: inline-block; padding: 12px 24px; margin: 10px 5px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+          .approve-btn { background-color: #22c55e; color: #fff; }
+          .revise-btn { background-color: #f59e0b; color: #fff; }
+          .footer { text-align: center; color: #666; font-size: 12px; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 20px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Your Design Proof is Ready</h1>
+          </div>
+          
+          <div class="content">
+            <h2>${subject}</h2>
+            ${orderNumber ? `<p><strong>Order Reference:</strong> ${orderNumber}</p>` : ""}
+            
+            <p>We're excited to show you your design proof! Please review the image below.</p>
+            
+            <img src="${fileUrl}" alt="Design Proof" class="proof-image" />
+            
+            <p><strong>What's next?</strong></p>
+            <p>Please let us know if you approve this design or if you'd like us to make any changes.</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${approvalLink}" class="button approve-btn">✓ Approve Design</a>
+              <a href="${revisionLink}" class="button revise-btn">✎ Request Changes</a>
+            </div>
+          </div>
+          
+          <div class="footer">
+            <p>&copy; 2026 Sticky Slap. All rights reserved.</p>
+            <p>Questions? Reply to this email or contact us at sticky@stickyslap.com</p>
+          </div>
+        </div>
+      </body>
+    </html>
+    `;
+
+    // Send email via Resend
+    if (!resend) {
+      console.warn("Resend API key not configured");
+      return res.status(500).json({ error: "Email service not configured" });
+    }
+
+    const emailResult = await resend.emails.send({
+      from: PROOF_EMAIL_FROM,
+      to: email,
+      subject: `Design Proof Ready: ${subject}`,
+      html: emailHtml,
+    });
+
+    if (emailResult.error) {
+      console.error("Error sending proof email:", emailResult.error);
+      return res.status(500).json({ error: "Failed to send email" });
+    }
+
+    console.log("Proof email sent successfully:", emailResult.data);
+
+    res.json({
+      success: true,
+      proofId,
+      message: "Proof sent to customer successfully",
+    });
+  } catch (error) {
+    console.error("Send proof error:", error);
+    res.status(500).json({ error: "Failed to send proof" });
+  }
+};
