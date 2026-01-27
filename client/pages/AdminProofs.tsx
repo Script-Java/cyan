@@ -987,13 +987,34 @@ export default function AdminProofs() {
                       className="w-full px-3 sm:px-6 py-3 sm:py-4 flex items-start sm:items-center justify-between hover:bg-gray-50 transition-colors gap-3"
                     >
                       <div className="flex items-start sm:items-center gap-2 sm:gap-4 flex-1 text-left min-w-0">
-                        <div className="bg-blue-100 border border-blue-300 p-2 sm:p-3 rounded-lg flex-shrink-0">
-                          {getStatusIcon(proof.status)}
+                        {/* Thumbnail Preview */}
+                        <div className="flex-shrink-0">
+                          {proof.file_url ? (
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center">
+                              {proof.file_url.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i) ? (
+                                <img
+                                  src={proof.file_url}
+                                  alt={proof.file_name || "Design thumbnail"}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    (e.currentTarget as HTMLImageElement).src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23999'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' /%3E%3C/svg%3E";
+                                  }}
+                                />
+                              ) : (
+                                <FileIcon className="w-8 h-8 text-gray-400" />
+                              )}
+                            </div>
+                          ) : (
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 border border-gray-300 rounded-lg flex items-center justify-center">
+                              <FileIcon className="w-8 h-8 text-gray-400" />
+                            </div>
+                          )}
                         </div>
+
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1 sm:mb-2 flex-wrap">
                             <h3 className="text-base sm:text-lg font-semibold text-gray-900">
-                              Order {formatOrderNumber(proof.order_id)}
+                              {proof.description || `Proof ${proof.id.substring(0, 8)}`}
                             </h3>
                             <span
                               className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium flex-shrink-0 ${getStatusColor(proof.status)}`}
@@ -1001,12 +1022,11 @@ export default function AdminProofs() {
                               {getStatusLabel(proof.status)}
                             </span>
                           </div>
-                          <p className="text-xs sm:text-sm text-gray-600 truncate">
-                            Customer: {proof.customers?.first_name}{" "}
-                            {proof.customers?.last_name}
+                          <p className="text-xs sm:text-sm text-gray-600 mb-1">
+                            To: {proof.customers?.email || "Unknown email"}
                           </p>
-                          <p className="text-xs sm:text-sm text-gray-600 mt-1 line-clamp-2">
-                            {proof.description}
+                          <p className="text-xs sm:text-sm text-gray-600">
+                            {proof.customers?.first_name} {proof.customers?.last_name}
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
                             Sent on {formatDate(proof.created_at)}
