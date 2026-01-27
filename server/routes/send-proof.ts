@@ -33,6 +33,25 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
     // Generate unique proof ID
     const proofId = `proof-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
+    // Create proof record in database
+    const { data: proofRecord, error: proofError } = await supabase
+      .from("proofs")
+      .insert({
+        id: proofId,
+        order_id: orderNumber ? parseInt(orderNumber) : null,
+        description: subject,
+        file_url: fileUrl,
+        file_name: fileName,
+        status: "pending",
+      })
+      .select()
+      .single();
+
+    if (proofError) {
+      console.error("Error creating proof record:", proofError);
+      // Continue anyway - still send the email
+    }
+
     // Generate approval and revision links
     const baseUrl =
       process.env.FRONTEND_URL || "https://stickyslap.app";
