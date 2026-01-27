@@ -67,6 +67,10 @@ interface OrderData {
     postalCode: string;
     country: string;
   };
+  trackingNumber?: string;
+  trackingCarrier?: string;
+  trackingUrl?: string;
+  shippedDate?: string;
   digitalFiles?: DigitalFile[];
 }
 
