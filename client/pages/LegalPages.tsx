@@ -253,9 +253,9 @@ export default function LegalPages() {
                             </div>
                             <Badge
                               variant="secondary"
-                              className={`text-xs font-medium border-transparent ${pageTypeColors[page.page_type].bg} ${pageTypeColors[page.page_type].text}`}
+                              className={`text-xs font-medium border-transparent ${getPageTypeColor(page.page_type).bg} ${getPageTypeColor(page.page_type).text}`}
                             >
-                              {pageTypeLabels[page.page_type]}
+                              {getPageTypeLabel(page.page_type)}
                             </Badge>
                           </div>
 
