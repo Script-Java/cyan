@@ -124,6 +124,7 @@ export default function AdminProofs() {
   >(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState<PaginationInfo | null>(null);
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
