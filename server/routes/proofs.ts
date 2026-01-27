@@ -548,10 +548,12 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
     const proofData: any = {
       customer_id: resolvedCustomerId,
       description,
-      file_url: fileUrl,
+      file_url: finalFileUrl,
       file_name: storedFileName,
       status: "pending",
     };
+
+    console.log("Creating proof with data:", JSON.stringify(proofData));
 
     // Add order_id if provided
     if (resolvedOrderId) {
