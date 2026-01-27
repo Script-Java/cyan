@@ -114,8 +114,14 @@ export default function AdminOrderDetail() {
       });
 
       if (!response.ok) {
-        const errorData = await response.text().catch(() => "");
-        console.error(`Failed to fetch order: ${response.status}`, errorData);
+        try {
+          const errorData = await response.json();
+          console.error(`Failed to fetch order: ${response.status}`, errorData);
+          setErrorMessage(errorData.error || `Failed to fetch order (${response.status})`);
+        } catch {
+          console.error(`Failed to fetch order: ${response.status}`);
+          setErrorMessage(`Failed to fetch order: ${response.statusText}`);
+        }
         setIsLoading(false);
         return;
       }
@@ -123,11 +129,16 @@ export default function AdminOrderDetail() {
       const data = await response.json();
       if (data.success && data.order) {
         setOrder(data.order);
+        setErrorMessage(null);
+      } else {
+        setErrorMessage("Invalid response from server");
+        console.error("Unexpected response format:", data);
       }
     } catch (error) {
-      const errorMessage =
+      const errorMsg =
         error instanceof Error ? error.message : String(error);
-      console.error("Error fetching order detail:", errorMessage);
+      console.error("Error fetching order detail:", errorMsg);
+      setErrorMessage(errorMsg);
     } finally {
       setIsLoading(false);
     }
