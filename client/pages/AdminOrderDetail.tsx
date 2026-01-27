@@ -590,33 +590,6 @@ export default function AdminOrderDetail() {
         />
       )}
 
-      {/* Shipping Label Modal */}
-      {shippingLabelOrderId !== null && (
-        <ShippingLabelModal
-          orderId={shippingLabelOrderId}
-          orderNumber={order?.id.toString() || ""}
-          shippingAddress={order?.shippingAddress}
-          onClose={() => setShippingLabelOrderId(null)}
-          onSuccess={() => {
-            setShippingLabelOrderId(null);
-            fetchOrderDetail();
-          }}
-        />
-      )}
-
-      {/* Shipping Address Editor Modal */}
-      {editingShippingAddressOrderId !== null && (
-        <ShippingAddressEditor
-          orderId={editingShippingAddressOrderId}
-          currentAddress={order?.shippingAddress}
-          onClose={() => setEditingShippingAddressOrderId(null)}
-          onSuccess={() => {
-            setEditingShippingAddressOrderId(null);
-            fetchOrderDetail();
-          }}
-        />
-      )}
-
       {/* Option Cost Editor Modal */}
       {editingOptionItemId !== null && (
         <OptionCostEditor
