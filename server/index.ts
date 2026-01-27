@@ -120,6 +120,7 @@ import {
   handleGetProofNotifications,
   handleSendProofToCustomer,
   handleGetAdminProofs,
+  handleGetAdminProofDetail,
   handleAddAdminProofComment,
   handleGetProofDetailPublic,
   handleApproveProofPublic,
