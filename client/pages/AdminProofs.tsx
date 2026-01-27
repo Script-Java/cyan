@@ -268,12 +268,19 @@ export default function AdminProofs() {
       setSendingProof(true);
 
       const requestBody: any = {
-        orderId: parseInt(orderId),
         description,
       };
 
+      if (orderId) {
+        requestBody.orderId = parseInt(orderId);
+      }
+
       if (customerId) {
         requestBody.customerId = parseInt(customerId);
+      }
+
+      if (customerEmail) {
+        requestBody.customerEmail = customerEmail;
       }
 
       if (uploadedFile) {
