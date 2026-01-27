@@ -174,7 +174,7 @@ export default function EditLegalPage() {
                 Page Type
               </label>
               <div className="px-4 py-2 bg-black/50 border border-white/20 rounded text-white/80">
-                {pageTypeLabels[formData.page_type]}
+                {pageTypeLabels[formData.page_type] || formData.page_type}
               </div>
               <p className="text-xs text-white/50 mt-2">
                 Page type cannot be changed after creation
