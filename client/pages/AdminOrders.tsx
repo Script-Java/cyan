@@ -51,8 +51,6 @@ interface PendingOrder {
   itemCount?: number;
   orderItems?: OrderItem[];
   tracking_number?: string;
-  tracking_carrier?: string;
-  tracking_url?: string;
   shipped_date?: string;
   shipping_addresses?: Array<{
     first_name: string;
