@@ -261,7 +261,7 @@ export default function AdminProofs() {
       }
 
       if (!orderId && !customerEmail) {
-        toast.error("Please provide either Order ID or Customer Email");
+        toast.error("Please either select an order from the table OR enter a customer email address");
         return;
       }
 
