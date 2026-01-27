@@ -944,18 +944,16 @@ export default function CheckoutNew() {
                           )}
                         </div>
                         {item.design_file_url && (
-                          <div className="w-24 h-24 sm:w-40 md:w-48 bg-white border border-gray-200 rounded-xl overflow-hidden flex items-center justify-center">
+                          <div className="w-24 sm:w-40 md:w-48 bg-white border border-gray-200 rounded-xl flex items-center justify-center p-2">
                             {item.design_file_url.match(
                               /\.(jpg|jpeg|png|gif|webp)$/i,
                             ) ||
                             item.design_file_url.startsWith("data:image") ? (
-                              <div className="w-full h-auto p-2">
-                                <img
-                                  src={item.design_file_url}
-                                  alt="Design thumbnail"
-                                  className="w-full h-auto object-contain rounded-lg"
-                                />
-                              </div>
+                              <img
+                                src={item.design_file_url}
+                                alt="Design thumbnail"
+                                className="w-full h-auto object-contain rounded-lg"
+                              />
                             ) : (
                               <div className="p-4 text-center">
                                 <p className="text-xs text-gray-600">
