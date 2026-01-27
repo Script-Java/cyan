@@ -139,6 +139,7 @@ import {
   handleGetAdminPendingOrders,
   handleUpdateOrderStatus,
   handleGetAllAdminOrders,
+  handleGetOrderDetail,
   handleUpdateShippingAddress,
   handleUpdateOrderItemOptions,
   handleTestAdminOrders,
