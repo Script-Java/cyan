@@ -241,7 +241,6 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           dateCreated: order.created_at || new Date().toISOString(),
           source: "supabase" as const,
           orderItems: [],
-          shipping_addresses: [],
           proofs: [],
         };
       }
