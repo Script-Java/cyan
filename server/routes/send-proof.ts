@@ -37,18 +37,25 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
     let customerId: number | null = null;
 
     // Try to find customer by email
-    const { data: existingCustomer } = await supabase
+    const { data: existingCustomer, error: findError } = await supabase
       .from("customers")
       .select("id")
       .eq("email", email)
-      .single();
+      .maybeSingle();
+
+    if (findError) {
+      console.error("Error finding customer:", findError);
+    }
 
     if (existingCustomer) {
       customerId = existingCustomer.id;
+      console.log("Found existing customer:", customerId);
     } else {
       // Create a temporary customer record for this email
       const emailParts = email.split("@");
       const name = emailParts[0];
+
+      console.log("Creating new customer for email:", email);
 
       const { data: newCustomer, error: customerError } = await supabase
         .from("customers")
@@ -60,10 +67,17 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
         .select("id")
         .single();
 
+      if (customerError) {
+        console.error("Error creating customer:", customerError);
+        return res.status(500).json({ error: "Failed to create customer record" });
+      }
+
       if (newCustomer) {
         customerId = newCustomer.id;
+        console.log("Created new customer with ID:", customerId);
       } else {
-        console.error("Error creating customer:", customerError);
+        console.error("No customer data returned after insert");
+        return res.status(500).json({ error: "Failed to create customer record" });
       }
     }
 
