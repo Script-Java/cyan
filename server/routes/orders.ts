@@ -629,6 +629,10 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
         shipping,
         shipping_address,
         billing_address,
+        tracking_number,
+        tracking_carrier,
+        tracking_url,
+        shipped_date,
         order_items (
           id,
           product_id,
