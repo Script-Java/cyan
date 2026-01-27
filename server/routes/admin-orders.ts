@@ -213,10 +213,20 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
     if (error) {
       console.error("Error fetching order detail:", {
         orderId: orderIdNumber,
-        error,
-        message: error.message,
+        errorCode: error.code,
+        errorMessage: error.message,
+        errorDetails: error.details,
       });
-      return res.status(404).json({ error: "Order not found" });
+
+      // Provide more specific error messages
+      if (error.code === "PGRST301") {
+        return res.status(403).json({ error: "Permission denied - check your access level" });
+      }
+
+      return res.status(404).json({
+        error: "Order not found",
+        debug: process.env.NODE_ENV === "development" ? error.message : undefined
+      });
     }
 
     if (!order) {
