@@ -124,6 +124,8 @@ import {
   handleGetProofDetailPublic,
   handleApproveProofPublic,
   handleDenyProofPublic,
+  handleApproveProofPublicNew,
+  handleReviseProofPublicNew,
 } from "./routes/proofs";
 import { handleSendProofDirectly } from "./routes/send-proof";
 import {
