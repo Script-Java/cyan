@@ -365,6 +365,97 @@ export default function AdminOrderDetail() {
             </div>
           </div>
 
+          {/* Tracking Information */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Tracking Information
+            </h2>
+            <div className="space-y-4">
+              {order.trackingNumber && (
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">
+                    Tracking Number
+                  </p>
+                  <p className="text-base font-mono text-gray-900 mt-1">
+                    {order.trackingNumber}
+                  </p>
+                </div>
+              )}
+              {order.trackingCarrier && (
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">Carrier</p>
+                  <p className="text-base text-gray-900 mt-1">
+                    {order.trackingCarrier}
+                  </p>
+                </div>
+              )}
+              {order.trackingUrl && (
+                <div>
+                  <p className="text-sm text-gray-600 font-medium mb-1">
+                    Track Package
+                  </p>
+                  <a
+                    href={order.trackingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-600 hover:text-blue-700 transition-colors break-all"
+                  >
+                    {order.trackingUrl}
+                  </a>
+                </div>
+              )}
+              {order.shippedDate && (
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">Shipped</p>
+                  <p className="text-base text-gray-900 mt-1">
+                    {formatDate(order.shippedDate)}
+                  </p>
+                </div>
+              )}
+              {!order.trackingNumber && !order.trackingCarrier && (
+                <p className="text-sm text-gray-600 italic">
+                  No tracking information yet. Click "Edit Status & Tracking" to add it.
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Shipping Address */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Shipping Address
+            </h2>
+            {order.shippingAddress ? (
+              <div className="text-sm space-y-1">
+                <p className="text-gray-900 font-medium">
+                  {order.shippingAddress.first_name}{" "}
+                  {order.shippingAddress.last_name}
+                </p>
+                <p className="text-gray-600">{order.shippingAddress.street_1}</p>
+                {order.shippingAddress.street_2 && (
+                  <p className="text-gray-600">{order.shippingAddress.street_2}</p>
+                )}
+                <p className="text-gray-600">
+                  {order.shippingAddress.city},{" "}
+                  {order.shippingAddress.state_or_province}{" "}
+                  {order.shippingAddress.postal_code}
+                </p>
+                <p className="text-gray-600">
+                  {order.shippingAddress.country_iso2}
+                </p>
+                {order.shippingAddress.phone && (
+                  <p className="text-gray-600 mt-2">
+                    {order.shippingAddress.phone}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-600">
+                No shipping address yet. Click "Edit Shipping Address" to add one.
+              </p>
+            )}
+          </div>
+
           {/* Order Items */}
           {order.orderItems && order.orderItems.length > 0 && (
             <div className="bg-white border border-gray-200 rounded-lg p-6">
