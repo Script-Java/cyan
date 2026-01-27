@@ -873,8 +873,10 @@ export default function AdminProofs() {
                       setShowSendForm(false);
                       setUploadedFile(null);
                       setFilePreview(null);
+                      setOrderId("");
                       setCustomerEmail("");
                       setSelectedOrder(null);
+                      setSelectedOrderProofStatus(null);
                     }}
                     className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-white/10 hover:bg-white/20 text-white font-medium text-sm sm:text-base rounded-lg sm:rounded-xl transition-colors border border-white/10"
                   >
