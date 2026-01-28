@@ -31,48 +31,42 @@ export default function ProductionBreakdown({
       label: "Printing Now",
       count: printingCount,
       unit: "sticker",
-      borderColor: "border-orange-200",
-      bgHover: "hover:bg-orange-50",
-      iconBg: "bg-orange-100",
-      iconColor: "text-orange-600",
-      labelColor: "text-orange-700",
-      countColor: "text-orange-600",
+      bgGradient: "from-orange-500 to-orange-600",
+      borderColor: "border-orange-400",
+      hoverGlow: "hover:shadow-orange-500/50",
+      darkBg: "bg-orange-900/20",
     },
     {
       icon: Package,
       label: "Cutting",
       count: printedCount,
       unit: "sticker",
-      borderColor: "border-cyan-200",
-      bgHover: "hover:bg-cyan-50",
-      iconBg: "bg-cyan-100",
-      iconColor: "text-cyan-600",
-      labelColor: "text-cyan-700",
-      countColor: "text-cyan-600",
+      bgGradient: "from-cyan-500 to-cyan-600",
+      borderColor: "border-cyan-400",
+      hoverGlow: "hover:shadow-cyan-500/50",
+      darkBg: "bg-cyan-900/20",
     },
     {
       icon: Truck,
       label: "Shipped",
       count: shippedCount,
       unit: "order",
-      borderColor: "border-green-200",
-      bgHover: "hover:bg-green-50",
-      iconBg: "bg-green-100",
-      iconColor: "text-green-600",
-      labelColor: "text-green-700",
-      countColor: "text-green-600",
+      bgGradient: "from-green-500 to-green-600",
+      borderColor: "border-green-400",
+      hoverGlow: "hover:shadow-green-500/50",
+      darkBg: "bg-green-900/20",
     },
   ];
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-slate-700 rounded-2xl p-8 shadow-2xl hover:shadow-2xl transition-shadow duration-300">
       {/* Header */}
-      <div className="mb-8 flex items-start justify-between">
+      <div className="mb-10 flex items-start justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">
+          <h2 className="text-4xl font-bold text-white tracking-tight mb-2">
             Production Status
           </h2>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-slate-400 uppercase tracking-widest font-semibold">
             {selectedDate
               ? `Orders for ${dateLabel}`
               : "Orders for today"}
@@ -82,19 +76,19 @@ export default function ProductionBreakdown({
           <button
             onClick={onRefresh}
             disabled={isRefreshing}
-            className="p-2.5 hover:bg-gray-100 rounded-lg transition-colors duration-200 text-gray-600 hover:text-gray-900 disabled:opacity-50"
+            className="p-3 hover:bg-slate-800 rounded-lg transition-colors duration-200 text-slate-300 hover:text-white disabled:opacity-50"
             aria-label="Refresh production status"
             title="Refresh production status"
           >
             <RefreshCw
-              className={`w-5 h-5 ${isRefreshing ? "animate-spin" : ""}`}
+              className={`w-6 h-6 ${isRefreshing ? "animate-spin" : ""}`}
             />
           </button>
         )}
       </div>
 
       {/* Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {cards.map((card, idx) => {
           const Icon = card.icon;
           const totalCount = card.count;
@@ -103,47 +97,66 @@ export default function ProductionBreakdown({
             <div
               key={idx}
               className={`
-                border ${card.borderColor} bg-white rounded-xl p-6
-                transition-all duration-200 ${card.bgHover}
-                flex flex-col items-start justify-between
-                hover:border-opacity-60
+                relative overflow-hidden rounded-xl p-8
+                border-2 ${card.borderColor}
+                bg-gradient-to-br ${card.bgGradient}
+                transition-all duration-300 ${card.hoverGlow}
+                hover:shadow-2xl hover:scale-105
+                group cursor-pointer
               `}
             >
-              {/* Icon + Label */}
-              <div className="flex items-start gap-4 w-full mb-4">
-                <div className={`${card.iconBg} rounded-lg p-3 flex-shrink-0`}>
-                  <Icon className={`w-6 h-6 ${card.iconColor}`} />
+              {/* Background glow effect */}
+              <div className={`absolute inset-0 ${card.darkBg} blur-xl opacity-30`} />
+              
+              {/* Content */}
+              <div className="relative z-10">
+                {/* Icon */}
+                <div className="mb-6 inline-block p-4 bg-white/20 rounded-lg backdrop-blur-sm">
+                  <Icon className="w-8 h-8 text-white" />
                 </div>
-                <div className="flex-1">
-                  <p className={`text-xs uppercase font-semibold tracking-wider ${card.labelColor} mb-1`}>
-                    {card.label}
+
+                {/* Label */}
+                <p className="text-sm uppercase font-bold tracking-widest text-white/90 mb-3">
+                  {card.label}
+                </p>
+
+                {/* Big Count */}
+                <div className="mb-4">
+                  <p className="text-6xl font-black text-white leading-none">
+                    {totalCount}
                   </p>
                 </div>
-              </div>
 
-              {/* Count Display */}
-              <div className="w-full">
-                <p className={`text-4xl font-semibold ${card.countColor}`}>
-                  {totalCount}
-                </p>
-                <p className="text-xs text-gray-500 mt-2">
+                {/* Unit Label */}
+                <p className="text-sm font-semibold text-white/80 uppercase tracking-wider">
                   {totalCount === 1 ? card.unit : `${card.unit}s`}
                 </p>
               </div>
+
+              {/* Shine effect on hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
             </div>
           );
         })}
       </div>
 
       {/* Summary Line */}
-      <div className="mt-8 pt-6 border-t border-gray-200">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-gray-600">
-            Total stickers in progress: <span className="font-semibold text-gray-900">{printingCount + printedCount}</span>
-          </span>
-          <span className="text-gray-500">
-            Last updated: <span className="font-medium text-gray-700">Real-time</span>
-          </span>
+      <div className="mt-10 pt-8 border-t border-slate-700">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-slate-400 text-sm uppercase tracking-wider font-semibold mb-1">
+              Total stickers in progress
+            </p>
+            <p className="text-3xl font-black text-white">
+              {printingCount + printedCount}
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-slate-500 text-xs uppercase tracking-wider font-semibold mb-1">
+              Status
+            </p>
+            <p className="text-lg font-bold text-green-400">Live</p>
+          </div>
         </div>
       </div>
     </div>
