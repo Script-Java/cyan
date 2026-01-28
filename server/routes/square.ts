@@ -110,6 +110,8 @@ interface SquareCheckoutRequest {
   tax: number;
   shipping: number;
   total: number;
+  discount?: number;
+  discountCode?: string;
   customerId?: number;
   customerEmail?: string;
   customerName?: string;
