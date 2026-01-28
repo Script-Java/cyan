@@ -370,7 +370,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       }
     }
 
-    const redirectUrl = `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`;
+    const redirectUrl = `${baseUrl}/checkout-success/${supabaseOrder.id}`;
     console.log("Square redirect URL:", redirectUrl);
 
     // Create Square Payment Link with full order details and customer contact info
