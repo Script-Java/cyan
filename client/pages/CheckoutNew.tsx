@@ -1430,50 +1430,6 @@ export default function CheckoutNew() {
                       </label>
                     </div>
 
-                    {/* GDPR Compliance */}
-                    <div className="flex items-start gap-3 mb-4">
-                      <input
-                        type="checkbox"
-                        id="agreeToGDPR"
-                        checked={agreedToGDPR}
-                        onChange={(e) => setAgreedToGDPR(e.target.checked)}
-                        className="w-5 h-5 rounded border-gray-300 text-purple-600 focus:ring-2 focus:ring-purple-500 mt-1 flex-shrink-0 cursor-pointer"
-                      />
-                      <label
-                        htmlFor="agreeToGDPR"
-                        className="text-gray-600 text-sm flex-1 cursor-pointer"
-                      >
-                        <span className="font-medium">GDPR Compliance:</span> I
-                        consent to the collection, processing, and storage of my
-                        personal data in accordance with GDPR regulations. I
-                        understand my rights including data access, correction,
-                        deletion, and portability.
-                      </label>
-                    </div>
-
-                    {/* CCPA Compliance */}
-                    <div className="flex items-start gap-3 mb-4">
-                      <input
-                        type="checkbox"
-                        id="agreeToCCPA"
-                        checked={agreedToCCPA}
-                        onChange={(e) => setAgreedToCCPA(e.target.checked)}
-                        className="w-5 h-5 rounded border-gray-300 text-orange-600 focus:ring-2 focus:ring-orange-500 mt-1 flex-shrink-0 cursor-pointer"
-                      />
-                      <label
-                        htmlFor="agreeToCCPA"
-                        className="text-gray-600 text-sm flex-1 cursor-pointer"
-                      >
-                        <span className="font-medium">
-                          CCPA Rights (California residents):
-                        </span>{" "}
-                        I acknowledge my rights to know what personal
-                        information is collected, the purposes of use, and my
-                        right to delete or opt-out of the sale of personal
-                        information.
-                      </label>
-                    </div>
-
                     {/* Terms of Service */}
                     <div className="flex items-start gap-3 mb-4">
                       <input
