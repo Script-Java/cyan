@@ -252,6 +252,8 @@ export default function AdminDashboard() {
               printedCount={printedCount}
               shippedCount={shippedCount}
               selectedDate={selectedDate}
+              onRefresh={handleRefreshProduction}
+              isRefreshing={isRefreshing}
             />
 
             {/* Two Column Layout for Proofs and Recent Orders */}
