@@ -44,10 +44,19 @@ interface Proof {
   comments?: ProofComment[];
 }
 
+interface PaginationInfo {
+  currentPage: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+  hasMore: boolean;
+}
+
 interface ProofsResponse {
   success: boolean;
   proofs: Proof[];
   unreadNotifications: number;
+  pagination?: PaginationInfo;
 }
 
 interface ProofDetailResponse {
@@ -69,6 +78,9 @@ export default function Proofs() {
   const [submittingAction, setSubmittingAction] = useState<
     Record<string, boolean>
   >({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState<PaginationInfo | null>(null);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -81,13 +93,17 @@ export default function Proofs() {
     fetchProofs();
   }, [navigate]);
 
-  const fetchProofs = async () => {
+  const fetchProofs = async (page: number = 1, append: boolean = false) => {
     try {
-      setIsLoading(true);
+      if (!append) {
+        setIsLoading(true);
+      } else {
+        setIsLoadingMore(true);
+      }
       setError("");
 
       const token = localStorage.getItem("authToken");
-      const response = await fetch("/api/proofs", {
+      const response = await fetch(`/api/proofs?page=${page}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -97,14 +113,23 @@ export default function Proofs() {
       }
 
       const data: ProofsResponse = await response.json();
-      setProofs(data.proofs || []);
+
+      if (append) {
+        setProofs((prev) => [...prev, ...(data.proofs || [])]);
+      } else {
+        setProofs(data.proofs || []);
+      }
+
       setUnreadCount(data.unreadNotifications || 0);
+      setPagination(data.pagination || null);
+      setCurrentPage(page);
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to load proofs";
       setError(message);
     } finally {
       setIsLoading(false);
+      setIsLoadingMore(false);
     }
   };
 
@@ -775,6 +800,26 @@ export default function Proofs() {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Load More Button */}
+          {pagination && pagination.hasMore && (
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={() => fetchProofs(currentPage + 1, true)}
+                disabled={isLoadingMore}
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 transition-colors flex items-center gap-2"
+              >
+                {isLoadingMore ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span className="text-sm">Loading...</span>
+                  </>
+                ) : (
+                  <span className="text-sm">Load More Proofs</span>
+                )}
+              </button>
             </div>
           )}
         </div>

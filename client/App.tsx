@@ -37,7 +37,11 @@ import Support from "./pages/Support";
 import MyTickets from "./pages/MyTickets";
 import AdminSupport from "./pages/AdminSupport";
 import AdminOrders from "./pages/AdminOrders";
+import AdminOrderDetail from "./pages/AdminOrderDetail";
 import AdminProofs from "./pages/AdminProofs";
+import AdminProofDetail from "./pages/AdminProofDetail";
+import AdminSendProof from "./pages/AdminSendProof";
+import ProofApprovalPublic from "./pages/ProofApprovalPublic";
 import AdminReviews from "./pages/AdminReviews";
 import AdminEmailNotifications from "./pages/AdminEmailNotifications";
 import AdminSettings from "./pages/AdminSettings";
@@ -65,6 +69,7 @@ import AdminEcwidMigration from "./pages/AdminEcwidMigration";
 import ReturnRefundPolicy from "./pages/ReturnRefundPolicy";
 import AdminReturnRefundPolicy from "./pages/AdminReturnRefundPolicy";
 import AdminGallery from "./pages/AdminGallery";
+import AdminDiscounts from "./pages/AdminDiscounts";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 
@@ -135,6 +140,14 @@ export default function App() {
                   path="/proofs/:proofId/request-revisions"
                   element={<ProofApproval />}
                 />
+                <Route
+                  path="/proof/:proofId/approve"
+                  element={<ProofApprovalPublic />}
+                />
+                <Route
+                  path="/proof/:proofId/request-revisions"
+                  element={<ProofApprovalPublic />}
+                />
                 <Route path="/account-settings" element={<AccountSettings />} />
                 <Route path="/support" element={<Support />} />
                 <Route path="/my-tickets" element={<MyTickets />} />
@@ -147,6 +160,10 @@ export default function App() {
                 />
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/orders" element={<AdminOrders />} />
+                <Route
+                  path="/admin/orders/:orderId"
+                  element={<AdminOrderDetail />}
+                />
                 <Route path="/admin/customers" element={<Customers />} />
                 <Route path="/admin/products" element={<AdminProducts />} />
                 <Route path="/admin/products/new" element={<ProductForm />} />
@@ -155,6 +172,11 @@ export default function App() {
                   element={<ProductForm />}
                 />
                 <Route path="/admin/proofs" element={<AdminProofs />} />
+                <Route
+                  path="/admin/proofs/:proofId"
+                  element={<AdminProofDetail />}
+                />
+                <Route path="/admin/send-proof" element={<AdminSendProof />} />
                 <Route path="/admin/reviews" element={<AdminReviews />} />
                 <Route
                   path="/admin/email-notifications"
@@ -185,6 +207,7 @@ export default function App() {
                 <Route path="/admin/support" element={<AdminSupport />} />
                 <Route path="/admin/shipping" element={<AdminShipping />} />
                 <Route path="/admin/gallery" element={<AdminGallery />} />
+                <Route path="/admin/discounts" element={<AdminDiscounts />} />
                 <Route
                   path="/admin/import-products"
                   element={<AdminProductImport />}

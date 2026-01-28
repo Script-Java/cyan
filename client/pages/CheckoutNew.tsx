@@ -464,16 +464,46 @@ export default function CheckoutNew() {
     fetchStoreCredit();
   };
 
-  const handleApplyDiscount = () => {
-    if (discountCode) {
-      const discountAmount = orderData.subtotal * 0.1;
-      setAppliedDiscount(discountAmount);
-      calculateOrderData(
-        orderData.subtotal,
-        discountAmount,
-        appliedStoreCredit,
-      );
-      toast.success("Discount code applied!");
+  const handleApplyDiscount = async () => {
+    if (!discountCode) {
+      toast.error("Please enter a discount code");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/discounts/validate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code: discountCode,
+          orderTotal: orderData.subtotal,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.error || "Invalid discount code");
+        return;
+      }
+
+      if (data.success && data.discount) {
+        const discountAmount = data.discount.amount;
+        setAppliedDiscount(discountAmount);
+        calculateOrderData(
+          orderData.subtotal,
+          discountAmount,
+          appliedStoreCredit,
+        );
+        toast.success(
+          `Discount applied! You save $${discountAmount.toFixed(2)}`,
+        );
+      }
+    } catch (error) {
+      console.error("Error applying discount code:", error);
+      toast.error("Failed to apply discount code");
     }
   };
 
@@ -689,6 +719,8 @@ export default function CheckoutNew() {
         subtotal: orderData.subtotal,
         tax: orderData.tax,
         shipping: orderData.shipping,
+        discount: appliedDiscount,
+        discountCode: discountCode || undefined,
         total: orderData.total,
         appliedStoreCredit: appliedStoreCredit,
         customerId: customerId ? parseInt(customerId) : undefined,
@@ -807,6 +839,10 @@ export default function CheckoutNew() {
     // Store credit fetch disabled temporarily
     // fetchStoreCredit();
 
+    // Clear cart before redirecting
+    localStorage.removeItem("cart");
+    localStorage.removeItem("cart_id");
+
     // Redirect to order confirmation page
     if (createdOrderId) {
       setTimeout(() => {
@@ -908,18 +944,16 @@ export default function CheckoutNew() {
                           )}
                         </div>
                         {item.design_file_url && (
-                          <div className="w-24 h-24 sm:w-40 md:w-48 bg-white border border-gray-200 rounded-xl overflow-hidden flex items-center justify-center">
+                          <div className="w-24 sm:w-40 md:w-48 bg-white border border-gray-200 rounded-xl flex items-center justify-center p-2">
                             {item.design_file_url.match(
                               /\.(jpg|jpeg|png|gif|webp)$/i,
                             ) ||
                             item.design_file_url.startsWith("data:image") ? (
-                              <div className="w-full h-auto p-2">
-                                <img
-                                  src={item.design_file_url}
-                                  alt="Design thumbnail"
-                                  className="w-full h-auto object-contain rounded-lg"
-                                />
-                              </div>
+                              <img
+                                src={item.design_file_url}
+                                alt="Design thumbnail"
+                                className="w-full h-auto object-contain rounded-lg"
+                              />
                             ) : (
                               <div className="p-4 text-center">
                                 <p className="text-xs text-gray-600">
@@ -1125,35 +1159,76 @@ export default function CheckoutNew() {
                 <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6">
                   <fieldset>
                     <legend className="sr-only">Discount Code Section</legend>
-                    <div className="flex gap-2">
-                      <div className="flex-1 relative">
-                        <label htmlFor="discount-code" className="sr-only">
-                          Discount code
-                        </label>
-                        <Input
-                          id="discount-code"
-                          placeholder="Discount code"
-                          value={discountCode}
-                          onChange={(e) => setDiscountCode(e.target.value)}
-                          className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400"
-                          aria-label="Discount code"
-                          aria-describedby="discount-help"
-                        />
-                        <span id="discount-help" className="sr-only">
-                          Enter your discount code to apply savings to your
-                          order
-                        </span>
+                    {appliedDiscount > 0 ? (
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div className="flex justify-between items-center mb-3">
+                          <div>
+                            <p className="text-sm text-gray-600">
+                              Discount Applied
+                            </p>
+                            <p className="text-xl font-bold text-green-600">
+                              -${appliedDiscount.toFixed(2)}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Code:{" "}
+                              <code className="font-mono">{discountCode}</code>
+                            </p>
+                          </div>
+                          <Button
+                            type="button"
+                            onClick={() => {
+                              setDiscountCode("");
+                              setAppliedDiscount(0);
+                              calculateOrderData(
+                                orderData.subtotal,
+                                0,
+                                appliedStoreCredit,
+                              );
+                              toast.info("Discount code removed");
+                            }}
+                            variant="outline"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
+                            Remove
+                          </Button>
+                        </div>
                       </div>
-                      <Button
-                        type="button"
-                        onClick={handleApplyDiscount}
-                        disabled={!discountCode}
-                        className="bg-green-500 hover:bg-green-600 text-white px-6"
-                        aria-label="Apply discount code"
-                      >
-                        Apply
-                      </Button>
-                    </div>
+                    ) : (
+                      <div className="flex gap-2">
+                        <div className="flex-1 relative">
+                          <label htmlFor="discount-code" className="sr-only">
+                            Discount code
+                          </label>
+                          <Input
+                            id="discount-code"
+                            placeholder="Discount code"
+                            value={discountCode}
+                            onChange={(e) => setDiscountCode(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                handleApplyDiscount();
+                              }
+                            }}
+                            className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400"
+                            aria-label="Discount code"
+                            aria-describedby="discount-help"
+                          />
+                          <span id="discount-help" className="sr-only">
+                            Enter your discount code to apply savings to your
+                            order
+                          </span>
+                        </div>
+                        <Button
+                          type="button"
+                          onClick={handleApplyDiscount}
+                          disabled={!discountCode}
+                          className="bg-green-500 hover:bg-green-600 text-white px-6"
+                          aria-label="Apply discount code"
+                        >
+                          Apply
+                        </Button>
+                      </div>
+                    )}
                   </fieldset>
                 </div>
 

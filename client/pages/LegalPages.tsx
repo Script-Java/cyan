@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import { Calendar, ArrowRight, Search, X, FileText, ChevronDown } from "lucide-react";
+import {
+  Calendar,
+  ArrowRight,
+  Search,
+  X,
+  FileText,
+  ChevronDown,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,7 +28,7 @@ const pageTypeLabels: Record<string, string> = {
   terms: "Terms of Service",
   shipping: "Shipping Policy",
   returns: "Returns Policy",
-  legal: "Legal Notice",
+  legal: "Artwork, Authorization, and Ownership",
 };
 
 const pageTypeColors: Record<string, { bg: string; text: string }> = {
@@ -30,6 +37,16 @@ const pageTypeColors: Record<string, { bg: string; text: string }> = {
   shipping: { bg: "bg-green-50", text: "text-green-700" },
   returns: { bg: "bg-orange-50", text: "text-orange-700" },
   legal: { bg: "bg-red-50", text: "text-red-700" },
+};
+
+const getPageTypeColor = (pageType: string): { bg: string; text: string } => {
+  return (
+    pageTypeColors[pageType] || { bg: "bg-gray-50", text: "text-gray-700" }
+  );
+};
+
+const getPageTypeLabel = (pageType: string): string => {
+  return pageTypeLabels[pageType] || pageType;
 };
 
 export default function LegalPages() {
@@ -59,7 +76,7 @@ export default function LegalPages() {
   };
 
   const allPageTypes = Array.from(
-    new Set(pages.map((page) => page.page_type))
+    new Set(pages.map((page) => page.page_type)),
   ).sort();
 
   const filteredPages = pages.filter((page) => {
@@ -71,7 +88,8 @@ export default function LegalPages() {
         .includes(searchTerm.toLowerCase());
 
     const matchesPageType =
-      selectedPageTypes.length === 0 || selectedPageTypes.includes(page.page_type);
+      selectedPageTypes.length === 0 ||
+      selectedPageTypes.includes(page.page_type);
 
     return matchesSearch && matchesPageType;
   });
@@ -80,7 +98,7 @@ export default function LegalPages() {
     setSelectedPageTypes((prev) =>
       prev.includes(pageType)
         ? prev.filter((t) => t !== pageType)
-        : [...prev, pageType]
+        : [...prev, pageType],
     );
   };
 
@@ -154,7 +172,9 @@ export default function LegalPages() {
                   <Button
                     key={pageType}
                     variant={
-                      selectedPageTypes.includes(pageType) ? "default" : "outline"
+                      selectedPageTypes.includes(pageType)
+                        ? "default"
+                        : "outline"
                     }
                     size="sm"
                     onClick={() => togglePageType(pageType)}
@@ -245,9 +265,9 @@ export default function LegalPages() {
                             </div>
                             <Badge
                               variant="secondary"
-                              className={`text-xs font-medium border-transparent ${pageTypeColors[page.page_type].bg} ${pageTypeColors[page.page_type].text}`}
+                              className={`text-xs font-medium border-transparent ${getPageTypeColor(page.page_type).bg} ${getPageTypeColor(page.page_type).text}`}
                             >
-                              {pageTypeLabels[page.page_type]}
+                              {getPageTypeLabel(page.page_type)}
                             </Badge>
                           </div>
 
@@ -285,20 +305,19 @@ export default function LegalPages() {
                       <div className="border-t border-gray-200 bg-gray-50 p-6">
                         <div className="prose prose-sm max-w-none">
                           <div className="text-gray-700 whitespace-pre-wrap leading-relaxed space-y-4">
-                            {page.content.split("\n").map((paragraph, index) => (
-                              <p key={index} className="text-base">
-                                {paragraph}
-                              </p>
-                            ))}
+                            {page.content
+                              .split("\n")
+                              .map((paragraph, index) => (
+                                <p key={index} className="text-base">
+                                  {paragraph}
+                                </p>
+                              ))}
                           </div>
                         </div>
 
                         {/* Footer Info */}
                         <div className="mt-6 pt-4 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">
-                          <span>
-                            Updated{" "}
-                            {formatDate(page.updated_at)}
-                          </span>
+                          <span>Updated {formatDate(page.updated_at)}</span>
                           <button
                             onClick={() => navigate(`/${page.page_type}`)}
                             className="text-blue-600 hover:text-blue-700 font-medium"
@@ -324,7 +343,8 @@ export default function LegalPages() {
             <div>
               <h3 className="font-semibold text-gray-900 mb-4">About</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                We're committed to transparency and providing clear information about our policies and practices.
+                We're committed to transparency and providing clear information
+                about our policies and practices.
               </p>
             </div>
 
@@ -380,11 +400,14 @@ export default function LegalPages() {
           {/* Divider */}
           <div className="border-t border-gray-200 pt-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <p className="text-gray-600 text-sm">
-                © 2025 Sticky Slap.
-              </p>
+              <p className="text-gray-600 text-sm">© 2025 Sticky Slap.</p>
               <p className="text-gray-500 text-xs">
-                Last updated {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                Last updated{" "}
+                {new Date().toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
               </p>
             </div>
           </div>

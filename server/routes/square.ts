@@ -110,6 +110,8 @@ interface SquareCheckoutRequest {
   tax: number;
   shipping: number;
   total: number;
+  discount?: number;
+  discountCode?: string;
   customerId?: number;
   customerEmail?: string;
   customerName?: string;
@@ -327,6 +329,8 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       subtotal: checkoutData.subtotal,
       tax: checkoutData.tax,
       shipping: checkoutData.shipping,
+      discount: checkoutData.discount,
+      discount_code: checkoutData.discountCode,
       billing_address: checkoutData.billingAddress,
       shipping_address: checkoutData.shippingAddress,
       items: checkoutData.items.map((item) => ({
@@ -345,7 +349,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     await createOrderItems(supabaseOrder.id, checkoutData.items as any);
 
     // Build the redirect URL for after payment
-    let baseUrl = "http://localhost:8080";
+    let baseUrl = "http://localhost:5173";
     if (process.env.BASE_URL) {
       baseUrl = process.env.BASE_URL;
     } else if (process.env.NETLIFY_SITE_NAME) {
@@ -355,6 +359,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     }
 
     const redirectUrl = `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`;
+    console.log("Square redirect URL:", redirectUrl);
 
     // Create Square Payment Link with full order details and customer contact info
     const paymentLinkResult = await createSquarePaymentLink({
@@ -371,6 +376,8 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       subtotal: checkoutData.subtotal,
       tax: checkoutData.tax,
       shipping: checkoutData.shipping,
+      discount: checkoutData.discount,
+      discountCode: checkoutData.discountCode,
       shippingOptionId: checkoutData.shipping_option_id,
       shippingOptionName: checkoutData.shipping_option_name,
       estimatedDeliveryDate: checkoutData.estimated_delivery_date,
@@ -411,38 +418,8 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       paymentLinkUrl: paymentLinkResult.paymentLinkUrl,
     });
 
-    // Send order confirmation email with design thumbnails and policies
-    await sendOrderConfirmationEmail({
-      customerEmail: checkoutData.customerEmail,
-      customerName: checkoutData.customerName || "Valued Customer",
-      orderNumber: formatOrderNumber(supabaseOrder.id),
-      orderDate: new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-      items: checkoutData.items.map((item) => ({
-        name: item.product_name || `Product #${item.product_id}`,
-        quantity: item.quantity,
-        price: item.price || 0.25,
-        designFileUrl: item.design_file_url,
-        options: (item as any).options,
-      })),
-      subtotal: checkoutData.subtotal,
-      tax: checkoutData.tax,
-      shipping: checkoutData.shipping,
-      total: checkoutData.total,
-      estimatedDelivery: new Date(
-        Date.now() + 14 * 24 * 60 * 60 * 1000,
-      ).toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-      }),
-      orderLink: `${baseUrl}/order-confirmation?orderId=${supabaseOrder.id}`,
-      shippingAddress: checkoutData.shippingAddress,
-      policies: (checkoutData as any).policies,
-    });
+    // Note: Order confirmation email will be sent AFTER customer completes
+    // payment on the Square checkout page (in handleConfirmCheckout)
 
     const responsePayload = {
       success: true,
@@ -669,6 +646,84 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
       return res.status(400).json({
         error: "Failed to confirm order",
       });
+    }
+
+    // Fetch customer details
+    const { data: customer, error: customerError } = await supabase
+      .from("customers")
+      .select("*")
+      .eq("id", data.customer_id)
+      .single();
+
+    if (customerError) {
+      console.error("Failed to fetch customer details:", customerError);
+    }
+
+    // Fetch order items
+    const { data: orderItems, error: itemsError } = await supabase
+      .from("order_items")
+      .select("*")
+      .eq("order_id", id);
+
+    if (itemsError) {
+      console.error("Failed to fetch order items:", itemsError);
+    }
+
+    // Send order confirmation email now that payment is confirmed
+    try {
+      const baseUrl = process.env.BASE_URL || "http://localhost:5173";
+
+      await sendOrderConfirmationEmail({
+        customerEmail: customer?.email || data.email || "customer@example.com",
+        customerName:
+          customer?.first_name && customer?.last_name
+            ? `${customer.first_name} ${customer.last_name}`
+            : "Valued Customer",
+        orderNumber: formatOrderNumber(id),
+        orderDate: new Date(data.created_at).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        items:
+          orderItems?.map((item) => ({
+            name: item.product_name,
+            quantity: item.quantity,
+            price: item.price,
+            designFileUrl: item.design_file_url,
+            options: item.options,
+          })) || [],
+        subtotal: data.subtotal || 0,
+        tax: data.tax || 0,
+        shipping: data.shipping || 0,
+        discount: data.discount || 0,
+        discountCode: data.discount_code,
+        total: data.total,
+        estimatedDelivery: data.estimated_delivery_date
+          ? new Date(data.estimated_delivery_date).toLocaleDateString("en-US", {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+            })
+          : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString(
+              "en-US",
+              {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+              },
+            ),
+        orderLink: `${baseUrl}/order-confirmation?orderId=${id}`,
+        shippingAddress: data.shipping_address || undefined,
+        policies: undefined,
+      });
+
+      console.log(
+        `Order confirmation email sent to ${customer?.email} after payment confirmation`,
+      );
+    } catch (emailError) {
+      console.error("Failed to send confirmation email:", emailError);
+      // Don't fail the payment confirmation if email fails
     }
 
     res.json({

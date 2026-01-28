@@ -31,3 +31,44 @@ export interface SupportSubmissionResponse {
   message: string;
   referenceId?: string;
 }
+
+/**
+ * Discount code
+ */
+export interface DiscountCode {
+  id: number;
+  code: string;
+  description?: string;
+  discount_type: "percentage" | "fixed";
+  discount_value: number;
+  min_order_value: number;
+  max_uses: number | null;
+  used_count: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  expires_at: string | null;
+}
+
+/**
+ * Discount code validation request
+ */
+export interface ValidateDiscountCodeRequest {
+  code: string;
+  orderTotal: number;
+}
+
+/**
+ * Discount code validation response
+ */
+export interface ValidateDiscountCodeResponse {
+  success: boolean;
+  error?: string;
+  discount?: {
+    code: string;
+    type: "percentage" | "fixed";
+    value: number;
+    amount: number;
+    description?: string;
+  };
+}

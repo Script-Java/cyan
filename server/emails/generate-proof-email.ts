@@ -2,11 +2,12 @@ import { formatOrderNumber } from "../utils/order";
 
 export function generateProofEmailHtml(params: {
   customerName: string;
-  orderId: number;
+  orderId?: number;
   proofDescription: string;
   proofFileUrl?: string;
   approvalLink: string;
   revisionLink: string;
+  referenceNumber?: string;
 }): string {
   const {
     customerName,
@@ -15,9 +16,10 @@ export function generateProofEmailHtml(params: {
     proofFileUrl,
     approvalLink,
     revisionLink,
+    referenceNumber,
   } = params;
 
-  const formattedOrderNumber = formatOrderNumber(orderId);
+  const formattedOrderNumber = orderId ? formatOrderNumber(orderId) : null;
 
   const imageHtml = proofFileUrl
     ? `
@@ -154,7 +156,13 @@ export function generateProofEmailHtml(params: {
     <div class="content">
       <p>Hi <strong>${customerName}</strong>,</p>
 
-      <p>Great news! Your design proof for <strong>Order ${formattedOrderNumber}</strong> is ready for review.</p>
+      <p>Great news! Your design proof${
+        referenceNumber
+          ? ` for <strong>${referenceNumber}</strong>`
+          : formattedOrderNumber
+            ? ` for <strong>Order ${formattedOrderNumber}</strong>`
+            : ""
+      } is ready for review.</p>
 
       <!-- Proof Description -->
       <div class="proof-box">

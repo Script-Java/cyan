@@ -149,13 +149,19 @@ export default function OrderStatusEditor({
             <label className="block text-sm font-medium text-white mb-2">
               Carrier
             </label>
-            <input
-              type="text"
+            <select
               value={trackingCarrier}
               onChange={(e) => setTrackingCarrier(e.target.value)}
-              placeholder="e.g., UPS, FedEx, DHL"
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
-            />
+              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50"
+            >
+              <option value="">Select a carrier...</option>
+              <option value="UPS">UPS</option>
+              <option value="FedEx">FedEx</option>
+              <option value="DHL">DHL</option>
+              <option value="USPS">USPS</option>
+              <option value="Canada Post">Canada Post</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
 
           {/* Tracking URL */}

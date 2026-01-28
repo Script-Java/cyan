@@ -28,7 +28,7 @@ const pageTypeLabels: Record<string, string> = {
   terms: "Terms of Service",
   shipping: "Shipping Policy",
   returns: "Returns Policy",
-  legal: "Legal Notice",
+  legal: "Artwork, Authorization, and Ownership",
 };
 
 const pageTypeColors: Record<string, string> = {
@@ -37,6 +37,14 @@ const pageTypeColors: Record<string, string> = {
   shipping: "bg-green-100 text-green-700",
   returns: "bg-orange-100 text-orange-700",
   legal: "bg-red-100 text-red-700",
+};
+
+const getPageTypeColor = (pageType: string): string => {
+  return pageTypeColors[pageType] || "bg-gray-100 text-gray-700";
+};
+
+const getPageTypeLabel = (pageType: string): string => {
+  return pageTypeLabels[pageType] || pageType;
 };
 
 export default function AdminLegalPages() {
@@ -83,7 +91,7 @@ export default function AdminLegalPages() {
   const handleDeletePage = async (pageId: string, pageType: string) => {
     if (
       !confirm(
-        `Are you sure you want to delete the ${pageTypeLabels[pageType]} page?`,
+        `Are you sure you want to delete the ${getPageTypeLabel(pageType)} page?`,
       )
     ) {
       return;
@@ -121,10 +129,6 @@ export default function AdminLegalPages() {
         .includes(searchTerm.toLowerCase()),
   );
 
-  const availablePageTypes = (
-    ["privacy", "terms", "shipping", "returns", "legal"] as const
-  ).filter((type) => !pages.some((p) => p.page_type === type));
-
   if (!isAuthenticated) {
     return null;
   }
@@ -146,23 +150,13 @@ export default function AdminLegalPages() {
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  {availablePageTypes.length > 0 ? (
-                    <Button
-                      onClick={() => navigate("/admin/create-legal-page")}
-                      className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
-                    >
-                      <Plus className="w-4 h-4" />
-                      New Page
-                    </Button>
-                  ) : (
-                    <Button
-                      disabled
-                      className="bg-blue-600/50 text-white flex items-center gap-2 cursor-not-allowed"
-                    >
-                      <Plus className="w-4 h-4" />
-                      All Pages Created
-                    </Button>
-                  )}
+                  <Button
+                    onClick={() => navigate("/admin/create-legal-page")}
+                    className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                    New Page
+                  </Button>
                 </div>
               </div>
             </div>
@@ -236,9 +230,9 @@ export default function AdminLegalPages() {
                             {page.title}
                           </h3>
                           <span
-                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${pageTypeColors[page.page_type]}`}
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${getPageTypeColor(page.page_type)}`}
                           >
-                            {pageTypeLabels[page.page_type]}
+                            {getPageTypeLabel(page.page_type)}
                           </span>
                         </div>
 

@@ -51,8 +51,6 @@ interface PendingOrder {
   itemCount?: number;
   orderItems?: OrderItem[];
   tracking_number?: string;
-  tracking_carrier?: string;
-  tracking_url?: string;
   shipped_date?: string;
   shipping_addresses?: Array<{
     first_name: string;
@@ -96,6 +94,9 @@ export default function AdminOrders() {
     productName: string;
     options: any[];
   } | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -106,29 +107,40 @@ export default function AdminOrders() {
       return;
     }
     setIsAuthenticated(true);
-    fetchOrders();
+    // Reset pagination on initial load
+    setCurrentPage(1);
+    setPendingOrders([]);
+    fetchOrders(1, true);
   }, [navigate]);
 
-  const fetchOrders = async (retryCount = 0) => {
+  const fetchOrders = async (
+    page: number = 1,
+    reset: boolean = false,
+    retryCount = 0,
+  ) => {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
         console.error("No authentication token found");
         setIsLoading(false);
+        setIsLoadingMore(false);
         return;
       }
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 120000); // 120 second timeout
 
-      const response = await fetch("/api/admin/all-orders", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `/api/admin/all-orders?page=${page}&limit=20`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
         },
-        signal: controller.signal,
-      });
+      );
 
       clearTimeout(timeoutId);
 
@@ -143,22 +155,37 @@ export default function AdminOrders() {
         if (response.status >= 500 && retryCount < 2) {
           console.log(`Retrying orders fetch (attempt ${retryCount + 2})...`);
           setTimeout(
-            () => fetchOrders(retryCount + 1),
+            () => fetchOrders(page, reset, retryCount + 1),
             1000 * (retryCount + 1),
           );
           return;
         }
 
         setIsLoading(false);
+        setIsLoadingMore(false);
         return;
       }
 
       const data = await response.json();
-      setPendingOrders(data.orders || []);
-      setFilteredOrders(data.orders || []);
+      const newOrders = data.orders || [];
+
+      // If resetting (first page), replace all orders; otherwise append
+      if (reset) {
+        setPendingOrders(newOrders);
+        setFilteredOrders(newOrders);
+      } else {
+        setPendingOrders((prev) => [...prev, ...newOrders]);
+        setFilteredOrders((prev) => [...prev, ...newOrders]);
+      }
+
+      // Update pagination state
+      setCurrentPage(page);
+      setHasMore(data.pagination?.hasMore || false);
+
+      console.log(`Loaded page ${page}, has more: ${data.pagination?.hasMore}`);
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") {
-        console.error("Orders fetch timeout after 60 seconds");
+        console.error("Orders fetch timeout after 120 seconds");
       } else {
         const errorMessage =
           error instanceof Error ? error.message : String(error);
@@ -170,11 +197,15 @@ export default function AdminOrders() {
         console.log(
           `Retrying orders fetch (attempt ${retryCount + 2}) after network error...`,
         );
-        setTimeout(() => fetchOrders(retryCount + 1), 1000 * (retryCount + 1));
+        setTimeout(
+          () => fetchOrders(page, reset, retryCount + 1),
+          1000 * (retryCount + 1),
+        );
         return;
       }
     } finally {
       setIsLoading(false);
+      setIsLoadingMore(false);
     }
   };
 
@@ -403,11 +434,7 @@ export default function AdminOrders() {
                     <div key={order.id}>
                       {/* Order Row */}
                       <button
-                        onClick={() =>
-                          setExpandedOrderId(
-                            expandedOrderId === order.id ? null : order.id,
-                          )
-                        }
+                        onClick={() => navigate(`/admin/orders/${order.id}`)}
                         className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors text-left"
                       >
                         <div className="flex-1 min-w-0">
@@ -446,11 +473,7 @@ export default function AdminOrders() {
                           <span className="font-semibold text-green-600 text-right">
                             ${order.total.toFixed(2)}
                           </span>
-                          <ChevronDown
-                            className={`w-5 h-5 text-gray-600 transition-transform ${
-                              expandedOrderId === order.id ? "rotate-180" : ""
-                            }`}
-                          />
+                          <ArrowRight className="w-5 h-5 text-gray-600" />
                         </div>
                       </button>
 
@@ -798,28 +821,6 @@ export default function AdminOrders() {
                                     {order.tracking_number}
                                   </p>
                                 </div>
-                                {order.tracking_carrier && (
-                                  <div>
-                                    <p className="text-xs text-gray-600">
-                                      Carrier
-                                    </p>
-                                    <p className="text-sm text-gray-900">
-                                      {order.tracking_carrier}
-                                    </p>
-                                  </div>
-                                )}
-                                {order.tracking_url && (
-                                  <div>
-                                    <a
-                                      href={order.tracking_url}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="text-sm text-blue-600 hover:text-blue-700 transition-colors break-all"
-                                    >
-                                      Track Package →
-                                    </a>
-                                  </div>
-                                )}
                                 {order.shipped_date && (
                                   <div>
                                     <p className="text-xs text-gray-600">
@@ -963,6 +964,29 @@ export default function AdminOrders() {
                     </div>
                   ))}
                 </div>
+
+                {/* Load More Button */}
+                {filteredOrders.length > 0 && hasMore && (
+                  <div className="mt-6 flex justify-center">
+                    <button
+                      onClick={() => {
+                        setIsLoadingMore(true);
+                        fetchOrders(currentPage + 1);
+                      }}
+                      disabled={isLoadingMore}
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors"
+                    >
+                      {isLoadingMore ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Loading...
+                        </>
+                      ) : (
+                        "Load More Orders"
+                      )}
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="bg-white border border-gray-200 rounded-lg p-8 sm:p-12 text-center">
@@ -1031,9 +1055,12 @@ export default function AdminOrders() {
             pendingOrders.find((o) => o.id === editingOrderId)?.tracking_url
           }
           onClose={() => setEditingOrderId(null)}
+          currentTrackingCarrier={undefined}
+          currentTrackingUrl={undefined}
           onSuccess={() => {
             setEditingOrderId(null);
-            fetchOrders();
+            // Reload current page without resetting
+            fetchOrders(currentPage, false);
           }}
         />
       )}
@@ -1050,7 +1077,8 @@ export default function AdminOrders() {
           onClose={() => setShippingLabelOrderId(null)}
           onSuccess={() => {
             setShippingLabelOrderId(null);
-            fetchOrders();
+            // Reload current page without resetting
+            fetchOrders(currentPage, false);
           }}
         />
       )}
@@ -1066,7 +1094,8 @@ export default function AdminOrders() {
           onClose={() => setEditingShippingAddressOrderId(null)}
           onSuccess={() => {
             setEditingShippingAddressOrderId(null);
-            fetchOrders();
+            // Reload current page without resetting
+            fetchOrders(currentPage, false);
           }}
         />
       )}
@@ -1081,7 +1110,8 @@ export default function AdminOrders() {
           onClose={() => setEditingOptionItemId(null)}
           onSuccess={() => {
             setEditingOptionItemId(null);
-            fetchOrders();
+            // Reload current page without resetting
+            fetchOrders(currentPage, false);
           }}
         />
       )}

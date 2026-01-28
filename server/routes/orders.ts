@@ -15,8 +15,9 @@ const supabase = createClient(
 );
 
 /**
- * Get customer's orders from Ecwid
+ * Get customer's orders from Ecwid, BigCommerce, and Supabase with pagination
  * Requires: customerId in JWT token
+ * Supports page and limit query parameters for pagination
  */
 export const handleGetOrders: RequestHandler = async (req, res) => {
   try {
@@ -26,7 +27,17 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    console.log("Fetching orders for customer:", customerId);
+    // Get pagination params from query string
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.min(
+      20,
+      Math.max(1, parseInt(req.query.limit as string) || 20),
+    ); // Max 20 per page
+    const offset = (page - 1) * limit;
+
+    console.log(
+      `Fetching orders for customer ${customerId} - Page: ${page}, Limit: ${limit}`,
+    );
 
     // Fetch orders from Ecwid
     let ecwidOrders = [];
@@ -209,18 +220,27 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
         new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime(),
     );
 
+    // Get paginated results
+    const paginatedOrders = allOrders.slice(offset, offset + limit);
+    const totalCount = allOrders.length;
+    const hasMore = offset + limit < totalCount;
+
     console.log(
-      "Fetched",
-      allOrders.length,
-      "orders (Ecwid +",
-      bigCommerceOrders.length,
-      "BigCommerce + Supabase)",
+      `Fetched ${allOrders.length} total orders, returning page ${page} with ${paginatedOrders.length} orders`,
     );
 
     res.json({
       success: true,
-      orders: allOrders,
-      count: allOrders.length,
+      orders: paginatedOrders,
+      count: paginatedOrders.length,
+      pagination: {
+        page,
+        limit,
+        offset,
+        totalCount,
+        totalPages: Math.ceil(totalCount / limit),
+        hasMore,
+      },
     });
   } catch (error) {
     console.error("Get orders error:", error);
@@ -595,7 +615,11 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
     const { supabase } = await import("../utils/supabase");
 
     // Get the order from Supabase
-    const { data: order, error: orderError } = await supabase
+    // Try with tracking columns first, fall back to basic columns if they don't exist
+    let order: any;
+    let orderError: any;
+
+    const { data: fullOrder, error: fullError } = await supabase
       .from("orders")
       .select(
         `
@@ -609,6 +633,10 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
         shipping,
         shipping_address,
         billing_address,
+        tracking_number,
+        tracking_carrier,
+        tracking_url,
+        shipped_date,
         order_items (
           id,
           product_id,
@@ -621,6 +649,49 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
       )
       .eq("id", orderIdNum)
       .single();
+
+    if (fullOrder) {
+      order = fullOrder;
+      orderError = null;
+    } else if (
+      fullError &&
+      (fullError.message.includes("column") || fullError.code === "42703")
+    ) {
+      // If tracking columns don't exist yet, try without them
+      console.log("Tracking columns not available yet, fetching basic order");
+      const { data: basicOrder, error: basicError } = await supabase
+        .from("orders")
+        .select(
+          `
+          id,
+          customer_id,
+          status,
+          created_at,
+          total,
+          subtotal,
+          tax,
+          shipping,
+          shipping_address,
+          billing_address,
+          order_items (
+            id,
+            product_id,
+            quantity,
+            price,
+            options,
+            design_file_url
+          )
+        `,
+        )
+        .eq("id", orderIdNum)
+        .single();
+
+      order = basicOrder;
+      orderError = basicError;
+    } else {
+      order = fullOrder;
+      orderError = fullError;
+    }
 
     if (orderError || !order) {
       console.warn(
@@ -743,6 +814,10 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
         products: enrichedItems,
         shippingAddress: order.shipping_address,
         billingAddress: order.billing_address,
+        trackingNumber: order.tracking_number || undefined,
+        trackingCarrier: order.tracking_carrier || undefined,
+        trackingUrl: order.tracking_url || undefined,
+        shippedDate: order.shipped_date || undefined,
         digitalFiles: digitalFiles,
       },
     });

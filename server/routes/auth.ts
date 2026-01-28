@@ -3,8 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { ecwidAPI } from "../utils/ecwid";
-import { sendEmail } from "../utils/email";
-import { generatePasswordResetEmail } from "../emails/password-reset";
+import { sendPasswordResetEmail } from "../utils/email";
 
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
@@ -43,17 +42,9 @@ function generateToken(customerId: number, email: string): string {
 
 export const handleLogin: RequestHandler = async (req, res) => {
   try {
-    console.log("🔐 Login request received:", {
-      method: req.method,
-      headers: { "Content-Type": req.get("Content-Type") },
-      bodyType: typeof req.body,
-      body: req.body,
-    });
-
     const { email, password } = req.body as LoginRequest;
 
     if (!email || !password) {
-      console.log("❌ Missing email or password:", { email: !!email, password: !!password });
       return res.status(400).json({ error: "Email and password required" });
     }
 
@@ -101,12 +92,16 @@ export const handleLogin: RequestHandler = async (req, res) => {
 
 export const handleSignup: RequestHandler = async (req, res) => {
   try {
-    console.log("📝 Signup request received:", {
+    console.log("Signup request received:", {
       method: req.method,
-      headers: { "Content-Type": req.get("Content-Type") },
+      url: req.url,
+      headers: {
+        "Content-Type": req.get("Content-Type"),
+        "Content-Length": req.get("Content-Length"),
+      },
       bodyType: typeof req.body,
-      bodyKeys: req.body ? Object.keys(req.body) : [],
       body: req.body,
+      bodyKeys: Object.keys(req.body || {}),
     });
 
     const { firstName, lastName, email, password } = req.body as SignupRequest;
@@ -356,10 +351,7 @@ export const handleLogout: RequestHandler = (req, res) => {
   }
 };
 
-/**
- * Initiate password reset - sends reset email to user
- */
-export const handleForgotPassword: RequestHandler = async (req, res) => {
+export const handleRequestPasswordReset: RequestHandler = async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -367,115 +359,108 @@ export const handleForgotPassword: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Email is required" });
     }
 
-    console.log("🔓 Forgot password request for:", email);
-
-    // Check if customer exists
-    const { data: customer, error: customerError } = await supabase
+    // Get customer from Supabase
+    const { data: customer } = await supabase
       .from("customers")
-      .select("id, email, first_name")
+      .select("*")
       .eq("email", email)
       .single();
 
-    if (customerError || !customer) {
-      // Don't reveal if email exists or not (security)
-      console.log("Customer not found for email:", email);
+    // Don't reveal if email exists (security best practice)
+    if (!customer) {
       return res.json({
         success: true,
-        message: "If an account exists, a reset link has been sent to your email",
+        message:
+          "If an account exists with this email, a password reset link has been sent",
       });
     }
 
-    // Generate a reset token (valid for 1 hour)
+    // Generate password reset token (expires in 1 hour)
     const resetToken = jwt.sign(
       { customerId: customer.id, email: customer.email, type: "password-reset" },
       JWT_SECRET,
       { expiresIn: "1h" },
     );
 
-    // Generate reset link
-    const baseUrl = process.env.BASE_URL || "https://stickyslap.app";
-    const resetLink = `${baseUrl}/reset-password?token=${resetToken}`;
+    // Get frontend URL from environment or request
+    const frontendUrl =
+      process.env.FRONTEND_URL ||
+      `${req.protocol}://${req.get("host").replace(":8080", ":5173")}`;
+    const resetLink = `${frontendUrl}/reset-password?token=${resetToken}`;
 
-    // Generate and send email
-    const emailContent = generatePasswordResetEmail({
-      customerName: customer.first_name || "User",
+    // Send password reset email
+    await sendPasswordResetEmail(
+      customer.email,
+      customer.first_name || "Customer",
       resetLink,
-      expiresIn: "1 hour",
-    });
-
-    await sendEmail({
-      to: customer.email,
-      subject: "Reset Your Password - Sticky Slap",
-      html: emailContent,
-    });
-
-    console.log("✅ Password reset email sent to:", customer.email);
+    );
 
     res.json({
       success: true,
-      message: "Password reset link has been sent to your email",
+      message:
+        "If an account exists with this email, a password reset link has been sent",
     });
   } catch (error) {
-    console.error("Forgot password error:", error);
-    res.status(500).json({
-      error: error instanceof Error ? error.message : "Failed to process password reset request",
-    });
+    console.error("Password reset request error:", error);
+    res.status(500).json({ error: "Failed to process password reset request" });
   }
 };
 
-/**
- * Reset password - validates token and updates password
- */
 export const handleResetPassword: RequestHandler = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
 
     if (!token || !newPassword) {
-      return res.status(400).json({ error: "Token and new password are required" });
+      return res
+        .status(400)
+        .json({ error: "Token and new password are required" });
     }
 
-    if (newPassword.length < 8) {
-      return res.status(400).json({ error: "Password must be at least 8 characters" });
+    if (newPassword.length < 6) {
+      return res
+        .status(400)
+        .json({ error: "Password must be at least 6 characters long" });
     }
 
-    console.log("🔐 Reset password request with token");
-
-    // Verify and decode token
-    let decoded: any;
+    // Verify reset token
+    let decoded;
     try {
-      decoded = jwt.verify(token, JWT_SECRET);
-      if (decoded.type !== "password-reset") {
-        throw new Error("Invalid token type");
-      }
+      decoded = jwt.verify(token, JWT_SECRET) as {
+        customerId: number;
+        email: string;
+        type: string;
+      };
     } catch (error) {
-      console.log("Token verification failed:", error);
       return res.status(401).json({ error: "Invalid or expired reset token" });
+    }
+
+    if (decoded.type !== "password-reset") {
+      return res.status(401).json({ error: "Invalid token type" });
     }
 
     // Hash new password
     const passwordHash = await bcrypt.hash(newPassword, 10);
 
-    // Update customer password
-    const { error: updateError } = await supabase
+    // Update customer password in Supabase
+    const { data: updatedCustomer, error } = await supabase
       .from("customers")
       .update({ password_hash: passwordHash })
-      .eq("id", decoded.customerId);
+      .eq("id", decoded.customerId)
+      .select()
+      .single();
 
-    if (updateError) {
-      console.error("Password update error:", updateError);
-      throw updateError;
+    if (error || !updatedCustomer) {
+      throw new Error("Failed to update password");
     }
-
-    console.log("✅ Password reset successfully for customer:", decoded.customerId);
 
     res.json({
       success: true,
-      message: "Password has been reset successfully",
+      message: "Password reset successfully",
     });
   } catch (error) {
-    console.error("Reset password error:", error);
-    res.status(500).json({
-      error: error instanceof Error ? error.message : "Failed to reset password",
-    });
+    console.error("Password reset error:", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to reset password";
+    res.status(500).json({ error: message });
   }
 };

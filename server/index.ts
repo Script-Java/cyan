@@ -15,7 +15,7 @@ import {
   handleSignup,
   handleLogout,
   handleAdminSetup,
-  handleForgotPassword,
+  handleRequestPasswordReset,
   handleResetPassword,
 } from "./routes/auth";
 import {
@@ -120,11 +120,15 @@ import {
   handleGetProofNotifications,
   handleSendProofToCustomer,
   handleGetAdminProofs,
+  handleGetAdminProofDetail,
   handleAddAdminProofComment,
   handleGetProofDetailPublic,
   handleApproveProofPublic,
   handleDenyProofPublic,
+  handleApproveProofPublicNew,
+  handleReviseProofPublicNew,
 } from "./routes/proofs";
+import { handleSendProofDirectly } from "./routes/send-proof";
 import {
   handleProofEmailPreview,
   handleSendProofEmailPreview,
@@ -139,6 +143,7 @@ import {
   handleGetAdminPendingOrders,
   handleUpdateOrderStatus,
   handleGetAllAdminOrders,
+  handleGetOrderDetail,
   handleUpdateShippingAddress,
   handleUpdateOrderItemOptions,
   handleTestAdminOrders,
@@ -214,6 +219,15 @@ import {
   handleUpdateReviewStatus,
   handleDeleteReview,
 } from "./routes/reviews";
+import {
+  handleGetDiscountCodes,
+  handleGetDiscountCode,
+  handleCreateDiscountCode,
+  handleUpdateDiscountCode,
+  handleDeleteDiscountCode,
+  handleValidateDiscountCode,
+  handleApplyDiscountCode,
+} from "./routes/discounts";
 import {
   verifyToken,
   optionalVerifyToken,
@@ -311,33 +325,6 @@ export function createServer() {
 
   // Middleware
   app.use(cors(corsOptions));
-
-  // Custom body parser for serverless-http compatibility
-  // This middleware ensures the body is properly parsed even in Netlify serverless environment
-  app.use((req: any, res, next) => {
-    // If body is already an object, we're good
-    if (typeof req.body === "object" && req.body !== null) {
-      console.log("✅ Body already parsed as object");
-      return next();
-    }
-
-    // If body is a string, parse it as JSON
-    if (typeof req.body === "string") {
-      console.log("⚠️ Body is a string, parsing as JSON...", req.body.substring(0, 100));
-      try {
-        req.body = JSON.parse(req.body);
-        console.log("✅ Successfully parsed body from string");
-        return next();
-      } catch (e) {
-        console.error("❌ Failed to parse body as JSON:", e);
-        return res.status(400).json({ error: "Invalid JSON in request body" });
-      }
-    }
-
-    // For all other cases, proceed with normal middleware
-    next();
-  });
-
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
@@ -491,8 +478,12 @@ export function createServer() {
   app.post("/api/auth/signup", authLimiter, handleSignup);
   app.post("/api/auth/logout", handleLogout);
   app.post("/api/auth/admin-setup", authLimiter, handleAdminSetup);
-  app.post("/api/auth/forgot-password", authLimiter, handleForgotPassword);
-  app.post("/api/auth/reset-password", authLimiter, handleResetPassword);
+  app.post(
+    "/api/auth/request-password-reset",
+    authLimiter,
+    handleRequestPasswordReset,
+  );
+  app.post("/api/auth/reset-password", handleResetPassword);
 
   // ===== Customer Routes (Protected) =====
   app.get("/api/customers/me", verifyToken, handleGetCustomer);
@@ -707,7 +698,7 @@ export function createServer() {
     "/api/admin/orders/:orderId",
     verifyToken,
     requireAdmin,
-    handleAdminGetOrder,
+    handleGetOrderDetail,
   );
   app.get(
     "/api/admin/customers",
@@ -853,6 +844,10 @@ export function createServer() {
   app.get("/api/proofs/public/:proofId", handleGetProofDetailPublic);
   app.post("/api/proofs/public/:proofId/approve", handleApproveProofPublic);
   app.post("/api/proofs/public/:proofId/deny", handleDenyProofPublic);
+  // New proof routes for public approval page
+  app.get("/api/proofs/:proofId/public", handleGetProofDetailPublic);
+  app.post("/api/proofs/:proofId/approve", handleApproveProofPublicNew);
+  app.post("/api/proofs/:proofId/revise", handleReviseProofPublicNew);
   app.post(
     "/api/admin/proofs/send",
     verifyToken,
@@ -860,11 +855,23 @@ export function createServer() {
     handleSendProofToCustomer,
   );
   app.get("/api/admin/proofs", verifyToken, requireAdmin, handleGetAdminProofs);
+  app.get(
+    "/api/admin/proofs/:proofId",
+    verifyToken,
+    requireAdmin,
+    handleGetAdminProofDetail,
+  );
   app.post(
     "/api/admin/proofs/:proofId/comments",
     verifyToken,
     requireAdmin,
     handleAddAdminProofComment,
+  );
+  app.post(
+    "/api/send-proof",
+    verifyToken,
+    requireAdmin,
+    handleSendProofDirectly,
   );
   app.get("/api/email-preview/proof", handleProofEmailPreview);
   app.post("/api/email-preview/send", handleSendProofEmailPreview);
@@ -972,6 +979,42 @@ export function createServer() {
     verifyToken,
     requireAdmin,
     handleDeleteShippingOption,
+  );
+
+  // ===== Discount Code Routes (Public validation) =====
+  app.post("/api/discounts/validate", handleValidateDiscountCode);
+  app.post("/api/discounts/apply", handleApplyDiscountCode);
+
+  // ===== Discount Code Routes (Protected - admin only) =====
+  app.get(
+    "/api/admin/discounts",
+    verifyToken,
+    requireAdmin,
+    handleGetDiscountCodes,
+  );
+  app.get(
+    "/api/admin/discounts/:id",
+    verifyToken,
+    requireAdmin,
+    handleGetDiscountCode,
+  );
+  app.post(
+    "/api/admin/discounts",
+    verifyToken,
+    requireAdmin,
+    handleCreateDiscountCode,
+  );
+  app.put(
+    "/api/admin/discounts/:id",
+    verifyToken,
+    requireAdmin,
+    handleUpdateDiscountCode,
+  );
+  app.delete(
+    "/api/admin/discounts/:id",
+    verifyToken,
+    requireAdmin,
+    handleDeleteDiscountCode,
   );
 
   // ===== Webhook Routes =====

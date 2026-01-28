@@ -22,6 +22,7 @@ interface OrderDetails {
   total: number;
   status: string;
   date_created: string;
+  estimated_delivery_date?: string;
   products?: Array<{
     id: number;
     name: string;
@@ -79,6 +80,12 @@ export default function OrderConfirmation() {
     const token = localStorage.getItem("auth_token");
     setAuthToken(token);
     // Allow guest users to view their order confirmation without auth
+  }, []);
+
+  // Clear cart on confirmation page load (final safety net)
+  useEffect(() => {
+    localStorage.removeItem("cart");
+    localStorage.removeItem("cart_id");
   }, []);
 
   // useEffect(() => {
@@ -249,13 +256,33 @@ export default function OrderConfirmation() {
                 <CardHeader>
                   <CardTitle>Order Status</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-4">
                   <div
                     className={`inline-block px-4 py-2 rounded-lg font-semibold ${statusInfo.color}`}
                   >
                     {statusInfo.label}
                   </div>
-                  <p className="text-gray-600 mt-4">
+
+                  {/* Expected Delivery Date */}
+                  {order.estimated_delivery_date && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <p className="text-sm text-blue-600 font-semibold mb-1">
+                        📦 Expected Delivery Date
+                      </p>
+                      <p className="text-lg font-bold text-blue-900">
+                        {new Date(
+                          order.estimated_delivery_date,
+                        ).toLocaleDateString("en-US", {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </p>
+                    </div>
+                  )}
+
+                  <p className="text-gray-600">
                     We've sent a confirmation email with your order details. You
                     can track your shipment once it's dispatched.
                   </p>
@@ -365,19 +392,32 @@ export default function OrderConfirmation() {
                   <div>
                     <p className="font-semibold mb-1">1. Confirmation Email</p>
                     <p className="text-gray-600">
-                      Check your email for order confirmation
+                      Check your email for order confirmation with details
                     </p>
                   </div>
                   <div>
                     <p className="font-semibold mb-1">2. Processing</p>
                     <p className="text-gray-600">
-                      We'll prepare your order for shipment
+                      We'll prepare your order for shipment (usually 1-3 days)
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold mb-1">3. Tracking</p>
+                    <p className="font-semibold mb-1">3. Shipping</p>
                     <p className="text-gray-600">
-                      You'll receive tracking info when it ships
+                      Your order ships and you receive tracking information
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-semibold mb-1">4. Delivery</p>
+                    <p className="text-gray-600">
+                      {order.estimated_delivery_date
+                        ? `Expected to arrive by ${new Date(
+                            order.estimated_delivery_date,
+                          ).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}`
+                        : "Tracking details will be provided"}
                     </p>
                   </div>
                 </CardContent>

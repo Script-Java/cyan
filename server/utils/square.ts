@@ -333,6 +333,8 @@ export async function createSquarePaymentLink(data: {
   subtotal?: number;
   tax?: number;
   shipping?: number;
+  discount?: number;
+  discountCode?: string;
   shippingOptionId?: number;
   shippingOptionName?: string;
   estimatedDeliveryDate?: string;
@@ -515,6 +517,22 @@ export async function createSquarePaymentLink(data: {
       discounts: [],
     };
 
+    // Add discount if present
+    if (data.discount && data.discount > 0) {
+      const discountName = data.discountCode
+        ? `Discount (${data.discountCode})`
+        : "Discount";
+      orderObject.discounts.push({
+        uid: `discount-${data.orderId}`,
+        name: discountName,
+        type: "FIXED_AMOUNT",
+        amount_money: {
+          amount: Math.round(data.discount * 100),
+          currency: data.currency || "USD",
+        },
+      });
+    }
+
     // Add tax if present
     // Square requires either 'percentage' or 'applied_money' (or both)
     if (data.tax && data.tax > 0) {
@@ -636,6 +654,9 @@ export async function createSquarePaymentLink(data: {
         quantity: li.quantity,
         amount: li.base_price_money?.amount,
       })),
+      discountAmount:
+        paymentLinkBody.order?.discounts?.[0]?.applied_money?.amount,
+      discountName: paymentLinkBody.order?.discounts?.[0]?.name,
       taxAmount: paymentLinkBody.order?.taxes?.[0]?.applied_money?.amount,
       shippingName: paymentLinkBody.order?.shipping?.name,
       shippingAmount: paymentLinkBody.order?.shipping?.charge?.money?.amount,
@@ -645,9 +666,11 @@ export async function createSquarePaymentLink(data: {
         subtotal: data.subtotal,
         tax: data.tax,
         shipping: data.shipping,
+        discount: data.discount,
         total: data.amount,
       },
-      expectedTotal: (data.subtotal + data.tax + data.shipping) * 100,
+      expectedTotal:
+        (data.subtotal + data.tax + data.shipping - (data.discount || 0)) * 100,
       sentTotal: data.amount * 100,
     });
 

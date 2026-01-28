@@ -16,13 +16,17 @@ export function useAdminNotifications() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchNotifications = async () => {
       try {
+        if (!isMounted) return;
         setIsLoading(true);
+
         const token = localStorage.getItem("authToken");
 
         if (!token) {
-          setIsLoading(false);
+          if (isMounted) setIsLoading(false);
           return;
         }
 
@@ -32,9 +36,14 @@ export function useAdminNotifications() {
 
         // Fetch support tickets count
         try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 8000);
+
           const ticketsResponse = await fetch("/api/admin/tickets", {
             headers: { Authorization: `Bearer ${token}` },
+            signal: controller.signal,
           });
+          clearTimeout(timeoutId);
 
           if (ticketsResponse.ok) {
             const ticketsText = await ticketsResponse.text();
@@ -48,14 +57,21 @@ export function useAdminNotifications() {
             ).length;
           }
         } catch (err) {
-          console.warn("Error fetching tickets:", err);
+          console.warn("Error fetching tickets:", {
+            error: err instanceof Error ? err.message : String(err),
+          });
         }
 
         // Fetch pending orders count
         try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 8000);
+
           const ordersResponse = await fetch("/api/admin/pending-orders", {
             headers: { Authorization: `Bearer ${token}` },
+            signal: controller.signal,
           });
+          clearTimeout(timeoutId);
 
           if (ordersResponse.ok) {
             const ordersText = await ordersResponse.text();
@@ -65,14 +81,21 @@ export function useAdminNotifications() {
             pendingOrders = ordersData.count || 0;
           }
         } catch (err) {
-          console.warn("Error fetching pending orders:", err);
+          console.warn("Error fetching pending orders:", {
+            error: err instanceof Error ? err.message : String(err),
+          });
         }
 
         // Fetch proofs with revisions requested count
         try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 8000);
+
           const proofsResponse = await fetch("/api/admin/proofs", {
             headers: { Authorization: `Bearer ${token}` },
+            signal: controller.signal,
           });
+          clearTimeout(timeoutId);
 
           if (proofsResponse.ok) {
             const proofsText = await proofsResponse.text();
@@ -84,22 +107,34 @@ export function useAdminNotifications() {
             ).length;
           }
         } catch (err) {
-          console.warn("Error fetching proofs:", err);
+          console.warn("Error fetching proofs:", {
+            error: err instanceof Error ? err.message : String(err),
+          });
         }
 
-        setNotifications({
-          openTickets,
-          pendingOrders,
-          rejectedProofs,
-        });
-        setError(null);
+        if (isMounted) {
+          setNotifications({
+            openTickets,
+            pendingOrders,
+            rejectedProofs,
+          });
+          setError(null);
+        }
       } catch (err) {
-        console.error("Error in fetchNotifications:", err);
-        setError(
-          err instanceof Error ? err.message : "Failed to fetch notifications",
-        );
+        console.error("Error in fetchNotifications:", {
+          error: err instanceof Error ? err.message : String(err),
+        });
+        if (isMounted) {
+          setError(
+            err instanceof Error
+              ? err.message
+              : "Failed to fetch notifications",
+          );
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -108,7 +143,10 @@ export function useAdminNotifications() {
     // Refresh notifications every 30 seconds
     const interval = setInterval(fetchNotifications, 30000);
 
-    return () => clearInterval(interval);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   return { notifications, isLoading, error };

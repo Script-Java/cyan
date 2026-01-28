@@ -12,6 +12,8 @@ export function generateOrderConfirmationEmail(params: {
   subtotal: number;
   tax: number;
   shipping: number;
+  discount?: number;
+  discountCode?: string;
   total: number;
   estimatedDelivery: string;
   orderLink: string;
@@ -42,6 +44,8 @@ export function generateOrderConfirmationEmail(params: {
     subtotal,
     tax,
     shipping,
+    discount,
+    discountCode,
     total,
     estimatedDelivery,
     orderLink,
@@ -50,10 +54,9 @@ export function generateOrderConfirmationEmail(params: {
   } = params;
 
   const itemsHtml = items
-    .map(
-      (item) => {
-        const designThumbnail = item.designFileUrl
-          ? `<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f3f4f6;">
+    .map((item) => {
+      const designThumbnail = item.designFileUrl
+        ? `<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f3f4f6;">
               <p style="margin: 0 0 8px 0; font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Design Preview</p>
               <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 4px; padding: 8px; text-align: center;">
                 ${
@@ -64,9 +67,10 @@ export function generateOrderConfirmationEmail(params: {
                 }
               </div>
             </div>`
-          : "";
+        : "";
 
-        const optionsDisplay = item.options && item.options.length > 0
+      const optionsDisplay =
+        item.options && item.options.length > 0
           ? `<div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #f3f4f6;">
               <p style="margin: 0 0 4px 0; font-size: 11px; color: #9ca3af; text-transform: uppercase;">Specifications</p>
               <div style="font-size: 13px; color: #6b7280;">
@@ -75,7 +79,7 @@ export function generateOrderConfirmationEmail(params: {
             </div>`
           : "";
 
-        return `
+      return `
     <tr>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #374151;">
         <div>
@@ -88,8 +92,7 @@ export function generateOrderConfirmationEmail(params: {
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; color: #374151; text-align: right;">$${item.price.toFixed(2)}</td>
     </tr>
   `;
-      }
-    )
+    })
     .join("");
 
   return `
@@ -270,6 +273,16 @@ export function generateOrderConfirmationEmail(params: {
           <span>Shipping:</span>
           <span>$${shipping.toFixed(2)}</span>
         </div>
+        ${
+          discount && discount > 0
+            ? `
+        <div class="summary-row" style="color: #10b981;">
+          <span>Discount${discountCode ? ` (${discountCode})` : ""}:</span>
+          <span>-$${discount.toFixed(2)}</span>
+        </div>
+        `
+            : ""
+        }
         <div class="summary-row">
           <span>Tax:</span>
           <span>$${tax.toFixed(2)}</span>

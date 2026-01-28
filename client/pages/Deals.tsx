@@ -271,32 +271,32 @@ export default function Deals() {
   const getBadgeColor = (badge?: string) => {
     switch (badge?.toLowerCase()) {
       case "hot":
-        return "bg-red-600";
+        return "bg-red-600 text-white";
       case "deal":
-        return "bg-green-600";
+        return "bg-[#FFD713] text-[#030140]";
       case "green":
-        return "bg-emerald-600";
+        return "bg-emerald-600 text-white";
       case "popular":
-        return "bg-blue-600";
+        return "bg-[#030140] text-white";
       default:
-        return "bg-blue-600";
+        return "bg-[#030140] text-white";
     }
   };
 
   return (
     <>
       <Header />
-      <main className="pt-20 min-h-screen bg-white text-gray-900">
+      <main className="pt-20 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <div
           className="max-w-full mx-auto px-2 sm:px-3 lg:px-4"
           style={{ padding: "16px 16px 50px" }}
         >
           {/* Header Section */}
-          <div className="mb-6 text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl sm:text-4xl font-bold text-[#030140] mb-2">
               Deals &amp; Offers
             </h1>
-            <p className="text-sm text-gray-600">
+            <p className="text-base text-gray-600">
               Discover our best deals on premium stickers
             </p>
           </div>
@@ -305,7 +305,7 @@ export default function Deals() {
           {isLoading && (
             <div className="flex justify-center items-center py-12">
               <div className="text-center">
-                <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-3"></div>
+                <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-[#FFD713] mb-3"></div>
                 <p className="text-gray-600 text-sm">Loading deals...</p>
               </div>
             </div>
@@ -313,7 +313,7 @@ export default function Deals() {
 
           {/* Error State */}
           {error && products.length === 0 && !isLoading && (
-            <div className="bg-red-100 border border-red-400 rounded-lg p-4 mb-6">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
               <p className="text-red-700 text-sm">Error: {error}</p>
               <button
                 onClick={fetchProducts}
@@ -330,10 +330,10 @@ export default function Deals() {
               {products.map((product) => (
                 <div
                   key={product.id}
-                  className="group rounded-lg overflow-hidden bg-gray-100 hover:bg-gray-200 transition-all duration-300 flex flex-col h-full"
+                  className="group rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full border border-gray-200"
                 >
                   {/* Product Image */}
-                  <div className="relative bg-gray-200 aspect-square overflow-hidden flex items-center justify-center">
+                  <div className="relative bg-gray-100 aspect-square overflow-hidden flex items-center justify-center">
                     <img
                       src={product.image}
                       alt={product.name}
@@ -341,7 +341,7 @@ export default function Deals() {
                     />
                     {product.badge && (
                       <div
-                        className={`absolute top-1 right-1 ${getBadgeColor(product.badge)} text-white px-1.5 py-0.5 rounded text-xs font-bold`}
+                        className={`absolute top-2 right-2 ${getBadgeColor(product.badge)} px-2 py-1 rounded text-xs font-bold`}
                       >
                         {product.badge}
                       </div>
@@ -349,8 +349,8 @@ export default function Deals() {
                   </div>
 
                   {/* Product Info */}
-                  <div className="p-1.5 flex flex-col flex-grow">
-                    <h3 className="font-bold text-gray-900 text-xs mb-0.5 group-hover:text-blue-600 transition-colors line-clamp-2">
+                  <div className="p-2 flex flex-col flex-grow">
+                    <h3 className="font-semibold text-[#030140] text-xs mb-1 group-hover:text-[#FFD713] transition-colors line-clamp-2">
                       {product.name}
                     </h3>
                   </div>
@@ -358,10 +358,10 @@ export default function Deals() {
                   {/* CTA Button */}
                   <Link
                     to={`/product/${product.id}`}
-                    className="mx-1 mb-1 py-1 px-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-center flex items-center justify-center gap-0.5 text-xs font-semibold transition-all"
+                    className="mx-2 mb-2 py-2 px-2 bg-[#FFD713] hover:bg-[#FFA500] text-[#030140] rounded-md text-center flex items-center justify-center gap-1 text-xs font-semibold transition-all shadow-sm hover:shadow-md"
                   >
-                    <ShoppingCart className="w-2.5 h-2.5" />
-                    Cart
+                    <ShoppingCart className="w-3 h-3" />
+                    View
                   </Link>
                 </div>
               ))}
@@ -369,10 +369,10 @@ export default function Deals() {
           )}
 
           {/* Explore All Section */}
-          <div className="mt-8 text-center">
+          <div className="mt-10 text-center">
             <Link
               to="/products"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all text-sm"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#FFD713] hover:bg-[#FFA500] text-[#030140] rounded-lg font-bold transition-all text-base shadow-lg shadow-[#FFD713]/30"
             >
               Explore All Products
               <ArrowRight className="w-4 h-4" />

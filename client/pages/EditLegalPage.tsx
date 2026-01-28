@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Save } from "lucide-react";
 
 interface LegalPageFormData {
-  page_type: "privacy" | "terms" | "shipping" | "returns" | "legal";
+  page_type: string;
   title: string;
   content: string;
   visibility: "visible" | "hidden";
@@ -18,7 +18,7 @@ const pageTypeLabels: Record<string, string> = {
   terms: "Terms of Service",
   shipping: "Shipping Policy",
   returns: "Returns Policy",
-  legal: "Legal Notice",
+  legal: "Artwork, Authorization, and Ownership",
 };
 
 export default function EditLegalPage() {
@@ -149,7 +149,7 @@ export default function EditLegalPage() {
               Back to Legal Pages
             </button>
             <h1 className="text-3xl font-bold text-white">
-              Edit {pageTypeLabels[formData.page_type]}
+              Edit {pageTypeLabels[formData.page_type] || formData.page_type}
             </h1>
             <p className="text-white/60 mt-1">Update your legal page</p>
           </div>
@@ -174,7 +174,7 @@ export default function EditLegalPage() {
                 Page Type
               </label>
               <div className="px-4 py-2 bg-black/50 border border-white/20 rounded text-white/80">
-                {pageTypeLabels[formData.page_type]}
+                {pageTypeLabels[formData.page_type] || formData.page_type}
               </div>
               <p className="text-xs text-white/50 mt-2">
                 Page type cannot be changed after creation

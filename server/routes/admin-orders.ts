@@ -121,20 +121,225 @@ export const handleDebugOrders: RequestHandler = async (req, res) => {
 };
 
 /**
- * Get all orders from Supabase and Ecwid (admin only)
- * Fetches all orders regardless of status
+ * Get a single order detail from Supabase (admin only)
+ * Fetches complete order information including design files
+ * Returns full order data with all nested relationships
+ */
+export const handleGetOrderDetail: RequestHandler = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    if (!orderId) {
+      return res.status(400).json({ error: "Order ID is required" });
+    }
+
+    // Convert orderId to number since it comes as a string from params
+    const orderIdNumber = parseInt(orderId, 10);
+    if (isNaN(orderIdNumber)) {
+      return res.status(400).json({ error: "Invalid order ID format" });
+    }
+
+    console.log(`Fetching order detail for ID: ${orderIdNumber}`);
+
+    // Try to fetch with all columns, fall back to basic columns if some don't exist
+    let order: any;
+    let error: any;
+
+    // First try with all columns
+    const { data: fullOrder, error: fullError } = await supabase
+      .from("orders")
+      .select(
+        `
+        id,
+        customer_id,
+        status,
+        total,
+        subtotal,
+        tax,
+        shipping,
+        created_at,
+        updated_at,
+        shipping_address,
+        tracking_number,
+        tracking_carrier,
+        tracking_url,
+        shipped_date,
+        customers(id,first_name,last_name,email),
+        order_items(id,quantity,product_name,options,design_file_url),
+        proofs(id,status,description,created_at,updated_at)
+        `,
+      )
+      .eq("id", orderIdNumber)
+      .single();
+
+    if (fullOrder) {
+      order = fullOrder;
+      error = null;
+    } else if (
+      fullError &&
+      (fullError.message.includes("column") || fullError.code === "42703")
+    ) {
+      // If column doesn't exist (code 42703 is PostgreSQL "column does not exist"), try without the new columns
+      console.log("New columns not available yet, fetching with basic columns");
+      const { data: basicOrder, error: basicError } = await supabase
+        .from("orders")
+        .select(
+          `
+          id,
+          customer_id,
+          status,
+          total,
+          subtotal,
+          tax,
+          shipping,
+          created_at,
+          updated_at,
+          customers(id,first_name,last_name,email),
+          order_items(id,quantity,product_name,options,design_file_url),
+          proofs(id,status,description,created_at,updated_at)
+          `,
+        )
+        .eq("id", orderIdNumber)
+        .single();
+
+      order = basicOrder;
+      error = basicError;
+
+      if (basicOrder) {
+        console.log(
+          `Successfully fetched order ${orderIdNumber} with basic columns`,
+        );
+      }
+    } else {
+      order = fullOrder;
+      error = fullError;
+    }
+
+    if (error) {
+      console.error("Error fetching order detail:", {
+        orderId: orderIdNumber,
+        errorCode: error.code,
+        errorMessage: error.message,
+        errorDetails: error.details,
+      });
+
+      // Provide more specific error messages
+      if (error.code === "PGRST301") {
+        return res
+          .status(403)
+          .json({ error: "Permission denied - check your access level" });
+      }
+
+      return res.status(404).json({
+        error: "Order not found",
+        debug:
+          process.env.NODE_ENV === "development" ? error.message : undefined,
+      });
+    }
+
+    if (!order) {
+      console.warn(`Order not found for ID: ${orderIdNumber}`);
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    console.log(`Successfully fetched order ${orderIdNumber}`);
+
+    // Format the response
+    const customerName =
+      order.customers && Array.isArray(order.customers)
+        ? `${order.customers[0]?.first_name || ""} ${order.customers[0]?.last_name || ""}`.trim()
+        : order.customers
+          ? `${order.customers.first_name || ""} ${order.customers.last_name || ""}`.trim()
+          : "Guest";
+
+    const customerEmail =
+      order.customers && Array.isArray(order.customers)
+        ? order.customers[0]?.email || "N/A"
+        : order.customers?.email || "N/A";
+
+    const formattedOrder = {
+      id: order.id,
+      customerId: order.customer_id,
+      customerName,
+      customerEmail,
+      status: order.status,
+      total: order.total || 0,
+      subtotal: order.subtotal || 0,
+      tax: order.tax || 0,
+      shipping: order.shipping || 0,
+      dateCreated: order.created_at || new Date().toISOString(),
+      dateUpdated: order.updated_at || new Date().toISOString(),
+      source: "supabase" as const,
+      shippingAddress: order.shipping_address || undefined,
+      trackingNumber: order.tracking_number || undefined,
+      trackingCarrier: order.tracking_carrier || undefined,
+      trackingUrl: order.tracking_url || undefined,
+      shippedDate: order.shipped_date || undefined,
+      orderItems: (order.order_items || []).map((item: any) => ({
+        id: item.id,
+        quantity: item.quantity,
+        product_name: item.product_name,
+        options: item.options,
+        design_file_url: item.design_file_url,
+      })),
+      proofs: (order.proofs || []).map((proof: any) => ({
+        id: proof.id,
+        status: proof.status,
+        description: proof.description,
+        createdAt: proof.created_at,
+        updatedAt: proof.updated_at,
+      })),
+    };
+
+    res.json({
+      success: true,
+      order: formattedOrder,
+    });
+  } catch (error) {
+    console.error("Get order detail error:", {
+      error,
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
+    const message =
+      error instanceof Error ? error.message : "Failed to fetch order";
+    res.status(500).json({ error: message });
+  }
+};
+
+/**
+ * Get all orders from Supabase (admin only) with pagination
+ * Fetches orders regardless of status with pagination to reduce response size
  * Returns orders with customer details and tracking info
- * Includes both pending/processing orders from Supabase and completed orders from Ecwid
+ * Supports page and limit query parameters for pagination
  */
 export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
   try {
-    let allOrders: any[] = [];
+    // Get pagination params from query string
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.min(
+      20,
+      Math.max(1, parseInt(req.query.limit as string) || 20),
+    ); // Max 20 per page
+    const offset = (page - 1) * limit;
 
-    // Fetch Supabase orders (all statuses) - optimized for performance
+    console.log(
+      `Fetching orders - Page: ${page}, Limit: ${limit}, Offset: ${offset}`,
+    );
+
+    // First, get the total count of orders
+    const { count: totalCount, error: countError } = await supabase
+      .from("orders")
+      .select("id", { count: "exact", head: true });
+
+    if (countError) {
+      console.error("Error getting order count:", countError);
+      throw countError;
+    }
+
+    // Fetch paginated orders from Supabase
     let supabaseOrders: any[] = [];
     try {
-      // First, fetch basic order data without relations
-      // Note: Using generic * to get all columns and handle missing ones gracefully
       const result = await supabase
         .from("orders")
         .select(
@@ -148,14 +353,13 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           shipping,
           created_at,
           updated_at,
-          shipping_address,
           customers(id,first_name,last_name,email),
-          order_items(id,quantity,product_name,options,design_file_url),
-          proofs(id,status,description,created_at,updated_at)
+          order_items(id,quantity,product_name,options),
+          proofs(id,status)
           `,
         )
         .order("created_at", { ascending: false })
-        .limit(100); // Reduced from 200 to 100 for better performance
+        .range(offset, offset + limit - 1); // Paginate
 
       supabaseOrders = result.data || [];
 
@@ -163,7 +367,7 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
         console.error("Supabase error:", result.error);
       }
 
-      console.log(`Fetched ${supabaseOrders.length} orders from Supabase`);
+      console.log(`Fetched ${supabaseOrders.length} orders for page ${page}`);
     } catch (queryError) {
       console.error("Supabase query exception:", queryError);
     }
@@ -194,27 +398,16 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           tax: order.tax || 0,
           shipping: order.shipping || 0,
           dateCreated: order.created_at || new Date().toISOString(),
-          tracking_number: order.tracking_number || null,
-          tracking_carrier: order.tracking_carrier || null,
-          tracking_url: order.tracking_url || null,
-          shipped_date: order.shipped_date || null,
-          shipping_addresses: order.shipping_address
-            ? [order.shipping_address]
-            : [],
           source: "supabase" as const,
           orderItems: (order.order_items || []).map((item: any) => ({
             id: item.id,
             quantity: item.quantity,
             product_name: item.product_name,
             options: item.options,
-            design_file_url: item.design_file_url,
           })),
           proofs: (order.proofs || []).map((proof: any) => ({
             id: proof.id,
             status: proof.status,
-            description: proof.description,
-            createdAt: proof.created_at,
-            updatedAt: proof.updated_at,
           })),
         };
       } catch (formatError) {
@@ -235,22 +428,24 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
           dateCreated: order.created_at || new Date().toISOString(),
           source: "supabase" as const,
           orderItems: [],
-          shipping_addresses: [],
           proofs: [],
         };
       }
     });
 
-    // Return Supabase orders sorted by date
-    allOrders = formattedSupabaseOrders.sort(
-      (a, b) =>
-        new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime(),
-    );
+    const hasMore = offset + limit < (totalCount || 0);
 
     res.json({
       success: true,
-      orders: allOrders,
-      count: allOrders.length,
+      orders: formattedSupabaseOrders,
+      pagination: {
+        page,
+        limit,
+        offset,
+        totalCount: totalCount || 0,
+        totalPages: Math.ceil((totalCount || 0) / limit),
+        hasMore,
+      },
     });
   } catch (error) {
     console.error("Get all admin orders error:", {
@@ -311,11 +506,22 @@ export const handleGetAdminPendingOrders: RequestHandler = async (req, res) => {
 export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { status, tracking_number, tracking_carrier, tracking_url } =
-      req.body;
+    const {
+      status,
+      tracking_number,
+      tracking_carrier,
+      tracking_url,
+      shipping_address,
+    } = req.body;
 
     if (!orderId) {
       return res.status(400).json({ error: "Order ID is required" });
+    }
+
+    // Convert orderId to number
+    const orderIdNumber = parseInt(orderId, 10);
+    if (isNaN(orderIdNumber)) {
+      return res.status(400).json({ error: "Invalid order ID format" });
     }
 
     const updateData: any = {};
@@ -340,6 +546,11 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
       updateData.status = status;
     }
 
+    // Add shipping address if provided
+    if (shipping_address !== undefined) {
+      updateData.shipping_address = shipping_address || null;
+    }
+
     // Add tracking information if provided
     if (tracking_number !== undefined) {
       updateData.tracking_number = tracking_number || null;
@@ -362,12 +573,45 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
     const { data, error } = await supabase
       .from("orders")
       .update(updateData)
-      .eq("id", orderId)
+      .eq("id", orderIdNumber)
       .select()
       .single();
 
     if (error) {
-      console.error("Error updating order:", error);
+      console.error("Error updating order:", {
+        orderId: orderIdNumber,
+        error: error.message,
+        code: error.code,
+      });
+
+      // If error is about missing column (shipped_date), try updating without it
+      if (error.code === "42703" && error.message.includes("shipped_date")) {
+        console.log(
+          "shipped_date column not available yet, retrying without it",
+        );
+
+        // Remove shipped_date and try again
+        delete updateData.shipped_date;
+
+        const { data: retryData, error: retryError } = await supabase
+          .from("orders")
+          .update(updateData)
+          .eq("id", orderIdNumber)
+          .select()
+          .single();
+
+        if (retryError) {
+          console.error("Retry error updating order:", retryError);
+          return res.status(500).json({ error: "Failed to update order" });
+        }
+
+        return res.json({
+          success: true,
+          message: "Order updated successfully",
+          order: retryData,
+        });
+      }
+
       return res.status(500).json({ error: "Failed to update order" });
     }
 
@@ -407,6 +651,12 @@ export const handleUpdateShippingAddress: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Order ID is required" });
     }
 
+    // Convert orderId to number
+    const orderIdNumber = parseInt(orderId, 10);
+    if (isNaN(orderIdNumber)) {
+      return res.status(400).json({ error: "Invalid order ID format" });
+    }
+
     // Validate required fields
     if (
       !first_name ||
@@ -442,12 +692,31 @@ export const handleUpdateShippingAddress: RequestHandler = async (req, res) => {
         shipping_address: shippingAddress,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", orderId)
+      .eq("id", orderIdNumber)
       .select()
       .single();
 
     if (error) {
-      console.error("Error updating shipping address:", error);
+      console.error("Error updating shipping address:", {
+        orderId: orderIdNumber,
+        error: error.message,
+        code: error.code,
+      });
+
+      // If column doesn't exist (code 42703 is PostgreSQL "column does not exist")
+      if (
+        error.code === "42703" &&
+        error.message.includes("shipping_address")
+      ) {
+        console.error(
+          "shipping_address column not available - migration not applied",
+        );
+        return res.status(500).json({
+          error:
+            "Database migration not applied. The shipping_address column does not exist yet. Please contact administrator.",
+        });
+      }
+
       return res
         .status(500)
         .json({ error: "Failed to update shipping address" });

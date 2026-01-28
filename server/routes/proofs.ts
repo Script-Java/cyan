@@ -42,21 +42,37 @@ interface ProofDetail extends ProofRow {
 }
 
 /**
- * Get all proofs for the logged-in customer
+ * Get all proofs for the logged-in customer (paginated)
  */
 export const handleGetProofs: RequestHandler = async (req, res) => {
   try {
     const customerId = (req as any).customerId;
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = 5;
+    const offset = (page - 1) * limit;
 
     if (!customerId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    // Get total count
+    const { count: totalCount, error: countError } = await supabase
+      .from("proofs")
+      .select("*", { count: "exact", head: true })
+      .eq("customer_id", customerId);
+
+    if (countError) {
+      console.error("Error counting proofs:", countError);
+      return res.status(500).json({ error: "Failed to fetch proofs" });
+    }
+
+    // Get paginated proofs
     const { data: proofs, error } = await supabase
       .from("proofs")
       .select("*")
       .eq("customer_id", customerId)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .range(offset, offset + limit - 1);
 
     if (error) {
       console.error("Error fetching proofs:", error);
@@ -70,10 +86,19 @@ export const handleGetProofs: RequestHandler = async (req, res) => {
       .eq("customer_id", customerId)
       .eq("is_read", false);
 
+    const totalPages = Math.ceil((totalCount || 0) / limit);
+
     res.json({
       success: true,
       proofs: proofs || [],
       unreadNotifications: notifications?.length || 0,
+      pagination: {
+        currentPage: page,
+        pageSize: limit,
+        totalItems: totalCount || 0,
+        totalPages,
+        hasMore: page < totalPages,
+      },
     });
   } catch (error) {
     console.error("Get proofs error:", error);
@@ -364,56 +389,76 @@ export const handleGetProofNotifications: RequestHandler = async (req, res) => {
 };
 
 /**
- * Admin: Send proof to customer
- * Note: Only allows sending proofs for orders from Supabase database
+ * Admin: Send proof to customer (standalone, not linked to orders)
  */
 export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
   try {
-    const { orderId, customerId, description, fileData, fileName } = req.body;
+    const {
+      customerEmail,
+      description,
+      referenceNumber,
+      fileData,
+      fileName,
+      fileUrl,
+    } = req.body;
 
-    if (!orderId) {
-      return res.status(400).json({ error: "Order ID is required" });
+    if (!description) {
+      return res.status(400).json({ error: "Proof subject is required" });
     }
 
-    // Validate order exists in Supabase (required)
-    const { data: order, error: orderError } = await supabase
-      .from("orders")
-      .select("id, customer_id")
-      .eq("id", orderId)
-      .single();
-
-    if (orderError || !order) {
-      return res.status(404).json({
-        error:
-          "Order not found. Only Supabase orders are supported for proofs.",
-      });
+    if (!customerEmail) {
+      return res.status(400).json({ error: "Customer email is required" });
     }
 
-    // Use customer ID from order lookup
-    const resolvedCustomerId = order.customer_id;
+    // Find or create customer
+    let resolvedCustomerId: number;
+    const { data: existingCustomer } = await supabase
+      .from("customers")
+      .select("id")
+      .eq("email", customerEmail)
+      .maybeSingle();
 
-    if (!resolvedCustomerId) {
-      return res
-        .status(400)
-        .json({ error: "Order has no associated customer" });
+    if (existingCustomer) {
+      resolvedCustomerId = existingCustomer.id;
+    } else {
+      // Create new customer
+      const emailParts = customerEmail.split("@");
+      const { data: newCustomer, error: createError } = await supabase
+        .from("customers")
+        .insert({
+          email: customerEmail,
+          first_name: emailParts[0],
+          last_name: "Customer",
+        })
+        .select("id")
+        .single();
+
+      if (!newCustomer) {
+        return res
+          .status(500)
+          .json({ error: "Failed to create customer record" });
+      }
+      resolvedCustomerId = newCustomer.id;
     }
 
-    let fileUrl: string | undefined;
+    let finalFileUrl: string | undefined;
     let storedFileName: string | undefined;
 
-    // Handle file upload if provided
-    if (fileData && fileName) {
+    // If fileUrl is provided directly (from Cloudinary), use it
+    if (fileUrl) {
+      finalFileUrl = fileUrl;
+      storedFileName = fileName;
+      console.log("Using pre-uploaded file URL from Cloudinary:", finalFileUrl);
+    }
+    // Otherwise, handle file upload if base64 data is provided
+    else if (fileData && fileName) {
       try {
-        // Convert base64 to buffer
         const buffer = Buffer.from(fileData, "base64");
-
-        // Generate unique filename
         const timestamp = Date.now();
-        const uniqueFileName = `proof-${orderId}-${customerId}-${timestamp}-${fileName}`;
+        const uniqueFileName = `proof-${timestamp}-${fileName}`;
         const bucketPath = `proofs/${uniqueFileName}`;
 
-        // Upload to Supabase Storage
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from("proofs")
           .upload(bucketPath, buffer, {
             cacheControl: "3600",
@@ -426,30 +471,71 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
           return res.status(500).json({ error: "Failed to upload file" });
         }
 
-        // Get public URL
         const { data: publicUrlData } = supabase.storage
           .from("proofs")
           .getPublicUrl(bucketPath);
 
-        fileUrl = publicUrlData.publicUrl;
+        finalFileUrl = publicUrlData.publicUrl;
         storedFileName = fileName;
+        console.log("Uploaded file to Supabase Storage:", finalFileUrl);
       } catch (fileError) {
         console.error("Error processing file:", fileError);
         return res.status(500).json({ error: "Failed to process file" });
       }
     }
 
-    // Create proof
+    // Create or find a placeholder order for this proof
+    // (database requires order_id, so we create a dummy one for standalone proofs)
+    let resolvedOrderId: number | null = null;
+
+    const { data: existingOrder } = await supabase
+      .from("orders")
+      .select("id")
+      .eq("customer_id", resolvedCustomerId)
+      .eq("status", "pending")
+      .limit(1)
+      .maybeSingle();
+
+    if (existingOrder) {
+      resolvedOrderId = existingOrder.id;
+    } else {
+      // Create a placeholder order
+      const { data: newOrder } = await supabase
+        .from("orders")
+        .insert({
+          customer_id: resolvedCustomerId,
+          status: "pending",
+          total: 0,
+          items: [],
+        })
+        .select("id")
+        .single();
+
+      if (newOrder) {
+        resolvedOrderId = newOrder.id;
+      }
+    }
+
+    // Create proof record (independent of orders conceptually, but linked for DB constraint)
+    // Note: If using reference_number in the future, add it to the description for now
+    const proofPayload: any = {
+      customer_id: resolvedCustomerId,
+      description: referenceNumber
+        ? `${referenceNumber} - ${description}`
+        : description,
+      file_url: finalFileUrl,
+      file_name: storedFileName,
+      status: "pending",
+    };
+
+    // Include order_id if we have one
+    if (resolvedOrderId) {
+      proofPayload.order_id = resolvedOrderId;
+    }
+
     const { data: proof, error: proofError } = await supabase
       .from("proofs")
-      .insert({
-        order_id: orderId,
-        customer_id: resolvedCustomerId,
-        description,
-        file_url: fileUrl,
-        file_name: storedFileName,
-        status: "pending",
-      })
+      .insert(proofPayload)
       .select()
       .single();
 
@@ -458,63 +544,38 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
       return res.status(500).json({ error: "Failed to send proof" });
     }
 
-    // Create notification for customer
-    const { error: notifError } = await supabase
-      .from("proof_notifications")
-      .insert({
-        customer_id: resolvedCustomerId,
-        proof_id: proof.id,
-        notification_type: "proof_ready",
-        message: `You have a new proof ready for order #${orderId}`,
-        is_read: false,
-      });
-
-    if (notifError) {
-      console.error("Error creating notification:", notifError);
-    }
-
-    // Fetch customer email to send proof email
-    const { data: customer, error: customerError } = await supabase
-      .from("customers")
-      .select("email, first_name, last_name")
-      .eq("id", resolvedCustomerId)
-      .single();
-
-    if (customerError) {
-      console.error("Error fetching customer for email:", customerError);
-    } else if (
-      customer &&
-      customer.email &&
-      process.env.RESEND_API_KEY &&
-      resend
-    ) {
+    // Send proof email
+    if (process.env.RESEND_API_KEY && resend) {
       try {
-        // Generate approval and revision links
-        const baseUrl =
-          process.env.FRONTEND_URL ||
-          "https://51be3d6708344836a6f6586ec48b1e4b-476bca083d854b2a92cc8cfa4.fly.dev";
+        const baseUrl = process.env.FRONTEND_URL || "https://stickyslap.com";
         const approvalLink = `${baseUrl}/proofs/${proof.id}/approve`;
         const revisionLink = `${baseUrl}/proofs/${proof.id}/request-revisions`;
 
-        const customerName = customer.first_name
+        const { data: customer } = await supabase
+          .from("customers")
+          .select("first_name, last_name")
+          .eq("id", resolvedCustomerId)
+          .single();
+
+        const customerName = customer?.first_name
           ? `${customer.first_name}${customer.last_name ? " " + customer.last_name : ""}`
           : "Valued Customer";
 
         // Generate email HTML
         const emailHtml = generateProofEmailHtml({
           customerName,
-          orderId,
           proofDescription: description,
-          proofFileUrl: fileUrl,
+          proofFileUrl: finalFileUrl,
           approvalLink,
           revisionLink,
+          referenceNumber,
         });
 
         // Send email via Resend
         const emailResult = await resend.emails.send({
           from: PROOF_EMAIL_FROM,
-          to: customer.email,
-          subject: `Your Design Proof is Ready - Order ${formatOrderNumber(orderId)}`,
+          to: customerEmail,
+          subject: `Your Design Proof is Ready${referenceNumber ? ` - ${referenceNumber}` : ""}`,
           html: emailHtml,
         });
 
@@ -540,11 +601,65 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
 };
 
 /**
+ * Admin: Get single proof detail
+ */
+export const handleGetAdminProofDetail: RequestHandler = async (req, res) => {
+  try {
+    const { proofId } = req.params;
+
+    if (!proofId) {
+      return res.status(400).json({ error: "Proof ID is required" });
+    }
+
+    const { data: proof, error } = await supabase
+      .from("proofs")
+      .select(
+        `
+        *,
+        customers:customer_id (id, email, first_name, last_name),
+        comments:proof_comments (id, proof_id, customer_id, admin_id, admin_email, message, created_at)
+      `,
+      )
+      .eq("id", proofId)
+      .single();
+
+    if (error || !proof) {
+      console.error("Error fetching proof detail:", error);
+      return res.status(404).json({ error: "Proof not found" });
+    }
+
+    res.json({
+      success: true,
+      proof,
+    });
+  } catch (error) {
+    console.error("Get proof detail error:", error);
+    res.status(500).json({ error: "Failed to get proof details" });
+  }
+};
+
+/**
  * Admin: Get pending proofs for all customers
  */
 export const handleGetAdminProofs: RequestHandler = async (req, res) => {
   try {
-    // Get all proofs with their customer info
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const sort = (req.query.sort as string) || "newest";
+    const limit = 5;
+    const offset = (page - 1) * limit;
+
+    // Get total count
+    const { count: totalCount, error: countError } = await supabase
+      .from("proofs")
+      .select("*", { count: "exact", head: true });
+
+    if (countError) {
+      console.error("Error counting admin proofs:", countError);
+      return res.status(500).json({ error: "Failed to fetch proofs" });
+    }
+
+    // Get paginated proofs with their customer info
+    const sortAscending = sort === "oldest" ? true : false;
     const { data: proofs, error } = await supabase
       .from("proofs")
       .select(
@@ -553,7 +668,8 @@ export const handleGetAdminProofs: RequestHandler = async (req, res) => {
         customers:customer_id (id, email, first_name, last_name)
       `,
       )
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: sortAscending })
+      .range(offset, offset + limit - 1);
 
     if (error) {
       console.error("Error fetching admin proofs:", error);
@@ -566,10 +682,19 @@ export const handleGetAdminProofs: RequestHandler = async (req, res) => {
       .select("*")
       .eq("is_read", false);
 
+    const totalPages = Math.ceil((totalCount || 0) / limit);
+
     res.json({
       success: true,
       proofs: proofs || [],
       unreadNotifications: notifications?.length || 0,
+      pagination: {
+        currentPage: page,
+        pageSize: limit,
+        totalItems: totalCount || 0,
+        totalPages,
+        hasMore: page < totalPages,
+      },
     });
   } catch (error) {
     console.error("Get admin proofs error:", error);
@@ -672,6 +797,104 @@ export const handleGetProofDetailPublic: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Get proof detail public error:", error);
     res.status(500).json({ error: "Failed to fetch proof details" });
+  }
+};
+
+/**
+ * Approve a proof (public - no authentication required)
+ * Used for proof review links sent via email
+ */
+export const handleApproveProofPublicNew: RequestHandler = async (req, res) => {
+  try {
+    const { proofId } = req.params;
+
+    if (!proofId) {
+      return res.status(400).json({ error: "Proof ID is required" });
+    }
+
+    // Get proof
+    const { data: proof, error: proofError } = await supabase
+      .from("proofs")
+      .select("*")
+      .eq("id", proofId)
+      .single();
+
+    if (proofError || !proof) {
+      return res.status(404).json({ error: "Proof not found" });
+    }
+
+    // Update proof status
+    const { error: updateError } = await supabase
+      .from("proofs")
+      .update({
+        status: "approved",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", proofId);
+
+    if (updateError) {
+      console.error("Error approving proof:", updateError);
+      return res.status(500).json({ error: "Failed to approve proof" });
+    }
+
+    res.json({
+      success: true,
+      message: "Proof approved successfully",
+      status: "approved",
+    });
+  } catch (error) {
+    console.error("Approve proof public error:", error);
+    res.status(500).json({ error: "Failed to approve proof" });
+  }
+};
+
+/**
+ * Request revisions on a proof (public - no authentication required)
+ * Used for proof review links sent via email
+ */
+export const handleReviseProofPublicNew: RequestHandler = async (req, res) => {
+  try {
+    const { proofId } = req.params;
+    const { revision_notes } = req.body;
+
+    if (!proofId) {
+      return res.status(400).json({ error: "Proof ID is required" });
+    }
+
+    // Get proof
+    const { data: proof, error: proofError } = await supabase
+      .from("proofs")
+      .select("*")
+      .eq("id", proofId)
+      .single();
+
+    if (proofError || !proof) {
+      return res.status(404).json({ error: "Proof not found" });
+    }
+
+    // Update proof status
+    const { error: updateError } = await supabase
+      .from("proofs")
+      .update({
+        status: "revisions_requested",
+        revision_notes: revision_notes || "",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", proofId);
+
+    if (updateError) {
+      console.error("Error requesting revisions:", updateError);
+      return res.status(500).json({ error: "Failed to request revisions" });
+    }
+
+    res.json({
+      success: true,
+      message: "Revision request submitted successfully",
+      status: "revisions_requested",
+    });
+  } catch (error) {
+    console.error("Revise proof public error:", error);
+    res.status(500).json({ error: "Failed to request revisions" });
   }
 };
 

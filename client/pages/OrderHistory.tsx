@@ -99,15 +99,26 @@ interface OrdersResponse {
   success: boolean;
   orders: Order[];
   count: number;
+  pagination?: {
+    page: number;
+    limit: number;
+    offset: number;
+    totalCount: number;
+    totalPages: number;
+    hasMore: boolean;
+  };
 }
 
 export default function OrderHistory() {
   const navigate = useNavigate();
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState("");
   const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
 
   // Helper functions
   const formatDate = (dateString: string) => {
@@ -179,6 +190,45 @@ export default function OrderHistory() {
     return false;
   });
 
+  const fetchOrders = async (page: number = 1, reset: boolean = true) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!reset) {
+        setIsLoadingMore(true);
+      } else {
+        setIsLoading(true);
+      }
+      setError("");
+
+      const response = await fetch(`/api/orders?page=${page}&limit=20`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to fetch order history");
+      }
+
+      const data: OrdersResponse = await response.json();
+
+      if (reset) {
+        setOrders(data.orders || []);
+      } else {
+        setOrders((prev) => [...prev, ...(data.orders || [])]);
+      }
+
+      setCurrentPage(page);
+      setHasMore(data.pagination?.hasMore || false);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to load order history";
+      setError(message);
+    } finally {
+      setIsLoading(false);
+      setIsLoadingMore(false);
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
 
@@ -187,32 +237,10 @@ export default function OrderHistory() {
       return;
     }
 
-    const fetchOrders = async () => {
-      try {
-        setIsLoading(true);
-        setError("");
-
-        const response = await fetch("/api/orders", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Failed to fetch order history");
-        }
-
-        const data: OrdersResponse = await response.json();
-        setOrders(data.orders || []);
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Failed to load order history";
-        setError(message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchOrders();
+    // Reset pagination on initial load
+    setCurrentPage(1);
+    setOrders([]);
+    fetchOrders(1, true);
   }, [navigate]);
 
   const getStatusColor = (status: string) => {
@@ -976,6 +1004,28 @@ export default function OrderHistory() {
                   )}
                 </div>
               ))}
+              {/* Load More Button */}
+              {filteredOrders.length > 0 && hasMore && !searchQuery && (
+                <div className="flex justify-center pt-6">
+                  <button
+                    onClick={() => {
+                      setIsLoadingMore(true);
+                      fetchOrders(currentPage + 1, false);
+                    }}
+                    disabled={isLoadingMore}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors"
+                  >
+                    {isLoadingMore ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Loading...
+                      </>
+                    ) : (
+                      "Load More Orders"
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
           )}
 

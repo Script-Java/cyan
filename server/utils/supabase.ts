@@ -159,6 +159,8 @@ interface OrderData {
   subtotal?: number;
   tax?: number;
   shipping?: number;
+  discount?: number;
+  discount_code?: string;
   billing_address?: any;
   shipping_address?: any;
   items?: any[];
@@ -205,6 +207,8 @@ export async function createSupabaseOrder(
     if (orderData.bigcommerce_order_id) {
       orderToInsert.bigcommerce_order_id = orderData.bigcommerce_order_id;
     }
+    // Note: discount and discount_code columns don't exist yet in the database
+    // They are tracked but not persisted to the orders table at this time
     if (orderData.estimated_delivery_date) {
       orderToInsert.estimated_delivery_date = orderData.estimated_delivery_date;
     }
