@@ -26,16 +26,6 @@ export default function DesignThumbnail({
     ? designFileUrl.match(/^data:image\/(jpg|jpeg|png|gif|webp)/i)
     : designFileUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
 
-  const handleDownload = () => {
-    if (isDataUrl) {
-      const link = document.createElement("a");
-      link.href = designFileUrl;
-      link.download = `design-${itemId || "file"}`;
-      link.click();
-    } else {
-      window.open(designFileUrl, "_blank");
-    }
-  };
 
   // Build high-quality download URL with quality parameter
   const getHighQualityUrl = (url: string) => {
