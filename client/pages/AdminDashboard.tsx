@@ -183,7 +183,8 @@ export default function AdminDashboard() {
       console.error("Error fetching orders:", error);
       setRecentOrders([]);
     } finally {
-      setOrdersLoading(false);
+      if (!isRefreshing) setOrdersLoading(false);
+      if (isRefreshing) setIsRefreshing(false);
     }
   };
 
