@@ -79,14 +79,18 @@ export default function ShippingOptionsSelector({
             const data = await response.json();
             const options = data.data || [];
 
-            console.log("Shipping options loaded successfully:", options.length);
+            console.log(
+              "Shipping options loaded successfully:",
+              options.length,
+            );
             setShippingOptions(options);
             setError(null);
             setIsLoading(false);
 
             if (options.length > 0 && !selectedOptionId) {
               const defaultOption = options[0];
-              const estimatedDate = calculateEstimatedDeliveryDate(defaultOption);
+              const estimatedDate =
+                calculateEstimatedDeliveryDate(defaultOption);
               onSelectionChange(
                 defaultOption.id,
                 defaultOption.cost,
@@ -104,7 +108,10 @@ export default function ShippingOptionsSelector({
                 "Request timeout: Shipping options are taking too long to load",
               );
             } else {
-              lastError = fetchErr instanceof Error ? fetchErr : new Error(String(fetchErr));
+              lastError =
+                fetchErr instanceof Error
+                  ? fetchErr
+                  : new Error(String(fetchErr));
             }
 
             console.warn(`Attempt ${attempt} failed:`, lastError.message);
@@ -124,7 +131,8 @@ export default function ShippingOptionsSelector({
           if (attempt === maxRetries) {
             // Final attempt failed - show error to user
             console.error("All fetch attempts failed:", lastError);
-            const errorMsg = lastError.message || "Failed to load shipping options";
+            const errorMsg =
+              lastError.message || "Failed to load shipping options";
             console.error("Full error details:", {
               error: err,
               message: errorMsg,
@@ -214,7 +222,8 @@ export default function ShippingOptionsSelector({
           <div className="flex-1">
             <p className="text-red-400 text-xs font-medium mb-1">{error}</p>
             <p className="text-red-400/70 text-xs">
-              Shipping costs will be calculated during checkout. You can continue without selecting an option.
+              Shipping costs will be calculated during checkout. You can
+              continue without selecting an option.
             </p>
           </div>
         </div>

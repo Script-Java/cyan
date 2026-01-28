@@ -26,7 +26,6 @@ export default function DesignThumbnail({
     ? designFileUrl.match(/^data:image\/(jpg|jpeg|png|gif|webp)/i)
     : designFileUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
 
-
   // Build high-quality download URL with quality parameter
   const getHighQualityUrl = (url: string) => {
     if (url.startsWith("data:")) return url;
