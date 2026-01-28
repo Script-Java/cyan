@@ -349,7 +349,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     await createOrderItems(supabaseOrder.id, checkoutData.items as any);
 
     // Build the redirect URL for after payment
-    let baseUrl = "http://localhost:8080";
+    let baseUrl = "http://localhost:5173";
     if (process.env.BASE_URL) {
       baseUrl = process.env.BASE_URL;
     } else if (process.env.NETLIFY_SITE_NAME) {
@@ -359,6 +359,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     }
 
     const redirectUrl = `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`;
+    console.log("Square redirect URL:", redirectUrl);
 
     // Create Square Payment Link with full order details and customer contact info
     const paymentLinkResult = await createSquarePaymentLink({
