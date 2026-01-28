@@ -10,21 +10,21 @@ interface ProductionStatusEditorProps {
 
 const PRODUCTION_STATUSES = [
   {
-    value: "PRINTING",
+    value: "printing",
     label: "Printing Now",
     icon: Printer,
     color: "orange",
     description: "Order is currently being printed",
   },
   {
-    value: "PRINTED",
+    value: "cutting",
     label: "Cutting",
     icon: Package,
     color: "cyan",
     description: "Order is being cut and is ready for shipping",
   },
   {
-    value: "SHIPPED",
+    value: "shipped",
     label: "Shipped",
     icon: Truck,
     color: "green",
