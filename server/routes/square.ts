@@ -1571,7 +1571,7 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
                 month: "short",
                 day: "numeric",
               }),
-          orderLink: `${baseUrl}/order-confirmation?orderId=${orderId}`,
+          orderLink: `${baseUrl}/order-status?orderNumber=${formatOrderNumber(orderId)}`,
           shippingAddress: order?.shipping_address || undefined,
           policies: undefined,
         });
