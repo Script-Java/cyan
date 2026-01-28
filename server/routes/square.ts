@@ -1399,13 +1399,36 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
     let order = null;
     const numOrderId = parseInt(squareOrderId, 10);
     if (!isNaN(numOrderId)) {
-      const { data: orderByNum } = await supabase
-        .from("orders")
-        .select("id, customer_id, total, status, square_payment_details")
-        .eq("id", numOrderId)
-        .single()
-        .catch(() => ({ data: null }));
-      order = orderByNum;
+      try {
+        const { data: orderByNum, error } = await supabase
+          .from("orders")
+          .select("id, customer_id, total, status, square_payment_details")
+          .eq("id", numOrderId)
+          .single();
+
+        if (!error && orderByNum) {
+          order = orderByNum;
+        }
+      } catch (err) {
+        // Order not found by numeric ID, continue
+      }
+    }
+
+    // If not found by numeric ID, try by Square order ID
+    if (!order) {
+      try {
+        const { data: orderBySquareId, error } = await supabase
+          .from("orders")
+          .select("id, customer_id, total, status, square_payment_details")
+          .eq("square_order_id", squareOrderId)
+          .single();
+
+        if (!error && orderBySquareId) {
+          order = orderBySquareId;
+        }
+      } catch (err) {
+        // Order not found
+      }
     }
 
     if (!order) {
