@@ -418,40 +418,8 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       paymentLinkUrl: paymentLinkResult.paymentLinkUrl,
     });
 
-    // Send order confirmation email with design thumbnails and policies
-    await sendOrderConfirmationEmail({
-      customerEmail: checkoutData.customerEmail,
-      customerName: checkoutData.customerName || "Valued Customer",
-      orderNumber: formatOrderNumber(supabaseOrder.id),
-      orderDate: new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-      items: checkoutData.items.map((item) => ({
-        name: item.product_name || `Product #${item.product_id}`,
-        quantity: item.quantity,
-        price: item.price || 0.25,
-        designFileUrl: item.design_file_url,
-        options: (item as any).options,
-      })),
-      subtotal: checkoutData.subtotal,
-      tax: checkoutData.tax,
-      shipping: checkoutData.shipping,
-      discount: checkoutData.discount,
-      discountCode: checkoutData.discountCode,
-      total: checkoutData.total,
-      estimatedDelivery: new Date(
-        Date.now() + 14 * 24 * 60 * 60 * 1000,
-      ).toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-      }),
-      orderLink: `${baseUrl}/order-confirmation?orderId=${supabaseOrder.id}`,
-      shippingAddress: checkoutData.shippingAddress,
-      policies: (checkoutData as any).policies,
-    });
+    // Note: Order confirmation email will be sent AFTER customer completes
+    // payment on the Square checkout page (in handleConfirmCheckout)
 
     const responsePayload = {
       success: true,
