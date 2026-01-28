@@ -145,14 +145,11 @@ export default function AdminDashboard() {
         setPrintedCount(printedOrders);
         setShippedCount(shippedOrders);
 
-        // Sort by date created (newest first)
-        const sortedOrders = orders.sort(
-          (a: Order, b: Order) =>
-            new Date(b.dateCreated).getTime() -
-            new Date(a.dateCreated).getTime(),
-        );
-
-        setRecentOrders(sortedOrders);
+        // Orders are already sorted by date created (newest first) from the server
+        setRecentOrders(orders);
+      } else {
+        console.error("Failed to fetch orders:", response.statusText);
+        setRecentOrders([]);
       }
     } catch (error) {
       console.error("Error fetching orders:", error);
