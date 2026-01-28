@@ -121,7 +121,7 @@ export const handleCreateLegalPage: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    const validTypes = ["privacy", "terms", "shipping", "returns", "legal"];
+    const validTypes = ["privacy", "terms", "shipping", "returns", "legal", "gdpr", "ccpa"];
     if (!validTypes.includes(formData.page_type)) {
       return res.status(400).json({ error: "Invalid page type" });
     }
