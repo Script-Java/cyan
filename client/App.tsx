@@ -87,11 +87,11 @@ function PageTracker() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <TooltipProvider>
-        <QueryClientProvider client={queryClient}>
-          <Toaster />
-          <Sonner />
+    <TooltipProvider>
+      <QueryClientProvider client={queryClient}>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
           <PageTracker />
           <div className="flex flex-col min-h-screen">
             <div className="flex-1">
@@ -228,8 +228,8 @@ export default function App() {
             </div>
             <Footer />
           </div>
-        </QueryClientProvider>
-      </TooltipProvider>
-    </BrowserRouter>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </TooltipProvider>
   );
 }

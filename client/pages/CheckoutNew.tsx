@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams, Link } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import CheckoutForm from "@/components/CheckoutForm";
 import ShippingOptionsSelector from "@/components/ShippingOptionsSelector";
@@ -966,17 +966,12 @@ export default function CheckoutNew() {
                       </div>
 
                       <div className="flex-1">
-                        <div className="flex justify-between items-start mb-4">
-                          <div className="flex-1">
-                            <Link
-                              to={`/product/${item.product_id}`}
-                              className="text-xl font-bold hover:text-blue-400 transition"
-                            >
-                              <h3>
-                                {item.product_name ||
-                                  `Product #${item.product_id}`}
-                              </h3>
-                            </Link>
+                        <div className="flex justify-between items-start mb-3 sm:mb-4 gap-3">
+                          <div>
+                            <h3 className="text-lg sm:text-xl font-bold">
+                              {item.product_name ||
+                                `Product #${item.product_id}`}
+                            </h3>
                             <div className="text-sm space-y-1">
                               {item.savePercentage &&
                               item.savePercentage > 0 ? (
