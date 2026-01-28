@@ -717,6 +717,7 @@ export function createServer() {
   app.post("/api/square/process-payment", paymentLimiter, processSquarePayment);
   app.post("/api/square/create-payment", paymentLimiter, handleCreatePayment);
   app.post("/api/webhooks/square", handleSquareWebhook);
+  app.post("/api/admin/verify-payment/:orderId", verifyToken, requireAdmin, handleVerifyPendingPayment);
 
   // ===== Admin Routes (Protected - Admin only) =====
   app.get(
