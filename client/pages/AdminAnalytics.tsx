@@ -349,6 +349,165 @@ export default function AdminAnalytics() {
               </div>
             </div>
 
+            {/* CALENDAR VIEW - DAILY SALES */}
+            <div className="mb-8 bg-white border border-gray-200 rounded-lg p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-bold text-gray-900">📅 Sales Calendar</h2>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      setCurrentMonth(
+                        new Date(
+                          currentMonth.getFullYear(),
+                          currentMonth.getMonth() - 1,
+                        ),
+                      );
+                      setSelectedDate(null);
+                    }}
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    <ChevronLeft className="w-5 h-5 text-gray-600" />
+                  </button>
+                  <span className="text-sm font-semibold text-gray-900 min-w-[180px] text-center">
+                    {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+                  </span>
+                  <button
+                    onClick={() => {
+                      setCurrentMonth(
+                        new Date(
+                          currentMonth.getFullYear(),
+                          currentMonth.getMonth() + 1,
+                        ),
+                      );
+                      setSelectedDate(null);
+                    }}
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    <ChevronRight className="w-5 h-5 text-gray-600" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Selected Day Details */}
+              {selectedDate && (
+                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-sm font-medium text-gray-900 mb-2">
+                    {new Date(selectedDate).toLocaleDateString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs text-gray-600 uppercase tracking-wide font-medium">
+                        Revenue
+                      </p>
+                      <p className="text-2xl font-bold text-green-600">
+                        ${selectedDayRevenue.toFixed(2)}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-600 uppercase tracking-wide font-medium">
+                        Orders
+                      </p>
+                      <p className="text-2xl font-bold text-blue-600">
+                        {selectedDayOrders}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Day of Week Headers */}
+              <div className="grid grid-cols-7 gap-2 mb-2">
+                {dayNames.map((day) => (
+                  <div
+                    key={day}
+                    className="text-center text-xs font-semibold text-gray-600 py-2"
+                  >
+                    {day}
+                  </div>
+                ))}
+              </div>
+
+              {/* Calendar Grid */}
+              <div className="grid grid-cols-7 gap-2">
+                {calendarDays.map((day, idx) => {
+                  const revenue = getRevenueForDay(day);
+                  const dateStr = day
+                    ? `${currentMonth.getFullYear()}-${String(
+                        currentMonth.getMonth() + 1,
+                      ).padStart(2, "0")}-${String(day).padStart(2, "0")}`
+                    : null;
+                  const isSelected = selectedDate === dateStr;
+                  const hasRevenue = revenue > 0;
+
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        if (day) {
+                          setSelectedDate(dateStr);
+                        }
+                      }}
+                      disabled={!day}
+                      className={`aspect-square rounded-lg p-2 text-sm font-medium transition-all ${
+                        !day
+                          ? "bg-transparent cursor-default"
+                          : isSelected
+                            ? "ring-2 ring-green-500 ring-offset-2 bg-green-500 text-white"
+                            : hasRevenue
+                              ? `${getColorIntensity(revenue)} text-gray-900 hover:shadow-md cursor-pointer`
+                              : "bg-gray-50 text-gray-400 hover:bg-gray-100 cursor-pointer"
+                      }`}
+                    >
+                      {day && (
+                        <div className="flex flex-col h-full justify-between">
+                          <span className="text-xs">{day}</span>
+                          {hasRevenue && (
+                            <span className="text-xs font-bold">
+                              ${(revenue / 100).toFixed(0)}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Legend */}
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <p className="text-xs font-semibold text-gray-600 mb-3">
+                  Color Legend:
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-gray-50 rounded"></div>
+                    <span className="text-xs text-gray-600">No Sales</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-green-100 rounded"></div>
+                    <span className="text-xs text-gray-600">Low</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-green-200 rounded"></div>
+                    <span className="text-xs text-gray-600">Medium</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-green-400 rounded"></div>
+                    <span className="text-xs text-gray-600">High</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-green-600 rounded"></div>
+                    <span className="text-xs text-gray-600">Very High</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Key Metrics */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               {/* Revenue */}
