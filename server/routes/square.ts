@@ -1059,14 +1059,29 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
       amount: amountMoney.amount,
     });
 
-    // Only process approved payments
-    if (paymentStatus !== "APPROVED" && paymentStatus !== "COMPLETED") {
-      console.log(`Payment status is ${paymentStatus}, skipping order update`);
+    // Only process completed payments - do NOT update on APPROVED or PENDING
+    if (paymentStatus !== "COMPLETED") {
+      console.log(
+        `Payment status is ${paymentStatus}, not COMPLETED - skipping order update`,
+      );
       return;
     }
 
     if (!orderId) {
       console.warn("No order ID associated with payment:", paymentId);
+      return;
+    }
+
+    // Check if order already exists and has been finalized
+    const { data: existingOrder } = await supabase
+      .from("orders")
+      .select("id, status, square_payment_details")
+      .eq("id", orderId)
+      .single()
+      .catch(() => ({ data: null }));
+
+    if (existingOrder?.status === "paid" || existingOrder?.status === "completed") {
+      console.log("Order already finalized, skipping duplicate payment processing:", orderId);
       return;
     }
 
@@ -1085,22 +1100,6 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
       receipt_number: payment.receipt_number || "",
     };
 
-    // Get the order from Supabase
-    const { data: order, error: orderError } = await supabase
-      .from("orders")
-      .select("id, customer_id, total, items")
-      .eq("id", orderId)
-      .single();
-
-    if (orderError || !order) {
-      console.warn(
-        "Order not found in Supabase for payment:",
-        orderId,
-        orderError,
-      );
-      return;
-    }
-
     // Update order with payment details and mark as paid
     const { error: updateError } = await supabase
       .from("orders")
@@ -1118,8 +1117,15 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
 
     console.log("Order marked as paid with payment details:", orderId);
 
-    // Award store credit to customer (5% of order total)
-    if (order.customer_id) {
+    // Get updated order for credit and email
+    const { data: order } = await supabase
+      .from("orders")
+      .select("id, customer_id, total")
+      .eq("id", orderId)
+      .single();
+
+    if (order?.customer_id) {
+      // Award store credit to customer (5% of order total)
       const earnedCredit = order.total * 0.05;
       await updateCustomerStoreCredit(
         order.customer_id,
@@ -1132,6 +1138,77 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
         customerId: order.customer_id,
         earnedCredit,
       });
+    }
+
+    // Send order confirmation email now that payment is confirmed
+    try {
+      const { data: customer } = await supabase
+        .from("customers")
+        .select("*")
+        .eq("id", order?.customer_id)
+        .single();
+
+      const { data: orderItems } = await supabase
+        .from("order_items")
+        .select("*")
+        .eq("order_id", orderId);
+
+      const baseUrl = process.env.BASE_URL || "http://localhost:5173";
+
+      await sendOrderConfirmationEmail({
+        customerEmail: customer?.email || order?.email || "customer@example.com",
+        customerName:
+          customer?.first_name && customer?.last_name
+            ? `${customer.first_name} ${customer.last_name}`
+            : "Valued Customer",
+        orderNumber: formatOrderNumber(orderId),
+        orderDate: new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        items:
+          orderItems?.map((item) => ({
+            name: item.product_name,
+            quantity: item.quantity,
+            price: item.price,
+            designFileUrl: item.design_file_url,
+            options: item.options,
+          })) || [],
+        subtotal: order?.subtotal || 0,
+        tax: order?.tax || 0,
+        shipping: order?.shipping || 0,
+        discount: order?.discount || 0,
+        discountCode: order?.discount_code,
+        total: order?.total || 0,
+        estimatedDelivery: order?.estimated_delivery_date
+          ? new Date(order.estimated_delivery_date).toLocaleDateString(
+              "en-US",
+              {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+              },
+            )
+          : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString(
+              "en-US",
+              {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+              },
+            ),
+        orderLink: `${baseUrl}/order-confirmation?orderId=${orderId}`,
+        shippingAddress: order?.shipping_address || undefined,
+        policies: undefined,
+      });
+
+      console.log(
+        `Order confirmation email sent to ${customer?.email} after payment confirmation`,
+      );
+    } catch (emailError) {
+      console.error("Failed to send confirmation email:", emailError);
+      // Don't fail the payment confirmation if email fails
     }
   } catch (error) {
     console.error("Error processing Square payment creation:", error);
