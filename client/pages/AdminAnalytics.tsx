@@ -230,9 +230,9 @@ export default function AdminAnalytics() {
                     Total Sales
                   </p>
                   <p className="text-3xl font-bold text-green-600">
-                    ${analytics.totalRevenue.toFixed(2)}
+                    ${todayRevenue.toFixed(2)}
                   </p>
-                  <p className="text-gray-500 text-xs mt-2">All-time revenue</p>
+                  <p className="text-gray-500 text-xs mt-2">Today's revenue</p>
                 </div>
 
                 {/* Products Sold */}
