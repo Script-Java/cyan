@@ -20,81 +20,24 @@ export default function CheckoutSuccess() {
   const VERIFICATION_INTERVAL = 2000; // 2 seconds
 
   useEffect(() => {
-    const verifyPayment = async () => {
-      if (!orderId) {
-        setError("No order ID provided");
-        setIsLoading(false);
-        return;
-      }
+    if (!orderId) {
+      setError("No order ID provided");
+      setIsLoading(false);
+      return;
+    }
 
-      setIsVerifying(true);
-      console.log(
-        `CheckoutSuccess: Verifying payment for order ${orderId} (attempt ${verificationAttempts + 1})`,
-      );
+    // Square has redirected us here, which means payment was successful
+    // The webhook from Square will update the order status in the background
+    console.log("Payment successful! Redirecting to order confirmation...");
+    localStorage.removeItem("cart_id");
+    localStorage.removeItem("cart");
 
-      try {
-        // Verify the payment with the backend
-        const response = await fetch("/api/square/confirm-checkout", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ orderId }),
-        });
-
-        console.log("Payment verification response status:", response.status);
-
-        const result = await response.json();
-
-        // 202 Accepted means payment is still processing
-        if (response.status === 202) {
-          console.log("Payment is still processing, will retry...");
-          setError(null); // Clear error for retry
-
-          if (verificationAttempts < MAX_VERIFICATION_ATTEMPTS) {
-            // Retry after a delay
-            setTimeout(() => {
-              setVerificationAttempts((prev) => prev + 1);
-            }, VERIFICATION_INTERVAL);
-            setIsVerifying(false);
-            return;
-          } else {
-            // Max attempts reached
-            throw new Error(
-              "Payment verification timeout. Please refresh this page to check your order status.",
-            );
-          }
-        }
-
-        if (!response.ok) {
-          throw new Error(
-            result.error || `Payment verification failed (${response.status})`,
-          );
-        }
-
-        console.log("Payment verified successfully, redirecting...");
-        setOrderData(result.order);
-        localStorage.removeItem("cart_id");
-        localStorage.removeItem("cart");
-
-        // Redirect immediately to order confirmation
-        setTimeout(() => {
-          console.log("Navigating to order confirmation page...");
-          navigate(`/order-confirmation/${orderId}`);
-        }, 1500);
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Failed to verify payment";
-        setError(errorMessage);
-        console.error("Payment verification error:", err);
-      } finally {
-        setIsVerifying(false);
-        setIsLoading(false);
-      }
-    };
-
-    verifyPayment();
-  }, [orderId, navigate, verificationAttempts]);
+    // Redirect to order confirmation after a short delay
+    setTimeout(() => {
+      setIsLoading(false);
+      navigate(`/order-confirmation/${orderId}`);
+    }, 1500);
+  }, [orderId, navigate]);
 
   if (isLoading) {
     return (
