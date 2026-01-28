@@ -234,6 +234,7 @@ export function generateOrderConfirmationEmail(params: {
   <div class="container">
     <!-- Header -->
     <div class="header">
+      <img src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Ff76c51c7227242dc8bd4b1757ab321af" alt="Sticky Slap Logo" style="max-width: 200px; height: auto; margin-bottom: 15px;" />
       <h1>✓ Order Confirmed</h1>
       <p>Thank you for your order! We're preparing your custom stickers.</p>
     </div>
