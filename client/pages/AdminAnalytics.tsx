@@ -59,6 +59,8 @@ export default function AdminAnalytics() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [analytics, setAnalytics] = useState<AnalyticsData>({
     activeUsers: 0,
     totalPageViews: 0,
