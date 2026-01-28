@@ -67,15 +67,30 @@ export default function ProductionBreakdown({
   return (
     <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
       {/* Header */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">
-          Production Status
-        </h2>
-        <p className="text-sm text-gray-500 mt-2">
-          {selectedDate
-            ? `Orders for ${dateLabel}`
-            : "Orders for today"}
-        </p>
+      <div className="mb-8 flex items-start justify-between">
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">
+            Production Status
+          </h2>
+          <p className="text-sm text-gray-500 mt-2">
+            {selectedDate
+              ? `Orders for ${dateLabel}`
+              : "Orders for today"}
+          </p>
+        </div>
+        {onRefresh && (
+          <button
+            onClick={onRefresh}
+            disabled={isRefreshing}
+            className="p-2.5 hover:bg-gray-100 rounded-lg transition-colors duration-200 text-gray-600 hover:text-gray-900 disabled:opacity-50"
+            aria-label="Refresh production status"
+            title="Refresh production status"
+          >
+            <RefreshCw
+              className={`w-5 h-5 ${isRefreshing ? "animate-spin" : ""}`}
+            />
+          </button>
+        )}
       </div>
 
       {/* Cards Grid */}
