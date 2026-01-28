@@ -159,6 +159,8 @@ export async function sendOrderConfirmationEmail(params: {
   subtotal: number;
   tax: number;
   shipping: number;
+  discount?: number;
+  discountCode?: string;
   total: number;
   estimatedDelivery: string;
   orderLink: string;
