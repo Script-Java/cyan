@@ -342,6 +342,13 @@ export default function AdminOrderDetail() {
         {/* Action Buttons */}
         <div className="flex gap-2 flex-wrap mb-6">
           <button
+            onClick={() => setEditingProductionStatusOrderId(order.id)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 hover:bg-purple-200 border border-purple-300 rounded-lg text-purple-700 hover:text-purple-800 transition-colors text-sm font-medium"
+          >
+            <Edit className="w-4 h-4" />
+            Update Production Status
+          </button>
+          <button
             onClick={() => setEditingOrderId(order.id)}
             className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 hover:bg-green-200 border border-green-300 rounded-lg text-green-700 hover:text-green-800 transition-colors text-sm font-medium"
           >
