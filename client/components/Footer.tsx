@@ -14,6 +14,8 @@ const pageTypeLabels: Record<string, string> = {
   shipping: "Shipping Policy",
   returns: "Return & Refund",
   legal: "Artwork, Authorization, and Ownership",
+  gdpr: "GDPR Compliance",
+  ccpa: "CCPA Rights",
 };
 
 const getPageTypeLabel = (pageType: string): string => {
