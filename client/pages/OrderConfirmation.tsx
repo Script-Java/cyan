@@ -54,13 +54,13 @@ interface Order {
 }
 
 export default function OrderConfirmation() {
-  const [searchParams] = useSearchParams();
+  const { orderId: pathOrderId } = useParams<{ orderId: string }>();
   const navigate = useNavigate();
   const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const orderId = searchParams.get("orderId");
+  const orderId = pathOrderId;
 
   useEffect(() => {
     const fetchOrder = async () => {
