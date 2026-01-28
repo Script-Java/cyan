@@ -101,14 +101,6 @@ export default function CheckoutSuccess() {
               <p className="text-gray-700">
                 Your payment has been processed successfully.
               </p>
-              {isVerifying && (
-                <div className="flex items-center justify-center gap-2 text-gray-600">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>
-                    Verifying your order... (Attempt {verificationAttempts + 1})
-                  </span>
-                </div>
-              )}
               <p className="text-sm text-gray-500">
                 Redirecting to order confirmation...
               </p>
