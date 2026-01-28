@@ -170,7 +170,7 @@ export default function AdminDashboard() {
         ).length;
 
         setPrintingCount(printingStickers);
-        setPrintedCount(printedStickers);
+        setPrintedCount(cuttingStickers);
         setShippedCount(shippedOrders);
 
         // Orders are already sorted by date created (newest first) from the server
