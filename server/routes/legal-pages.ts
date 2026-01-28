@@ -6,7 +6,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface LegalPageFormData {
-  page_type: "privacy" | "terms" | "shipping" | "returns" | "legal";
+  page_type: "privacy" | "terms" | "shipping" | "returns" | "legal" | "gdpr" | "ccpa";
   title: string;
   content: string;
   visibility: "visible" | "hidden";
