@@ -12,6 +12,8 @@ export function generateOrderConfirmationEmail(params: {
   subtotal: number;
   tax: number;
   shipping: number;
+  discount?: number;
+  discountCode?: string;
   total: number;
   estimatedDelivery: string;
   orderLink: string;
@@ -42,6 +44,8 @@ export function generateOrderConfirmationEmail(params: {
     subtotal,
     tax,
     shipping,
+    discount,
+    discountCode,
     total,
     estimatedDelivery,
     orderLink,
