@@ -68,6 +68,7 @@ export default function AdminDashboard() {
   // Orders and proofs for selected day
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [approvedProofs, setApprovedProofs] = useState<Proof[]>([]);
   const [proofsLoading, setProofsLoading] = useState(false);
 
