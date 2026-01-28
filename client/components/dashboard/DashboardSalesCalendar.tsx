@@ -60,31 +60,6 @@ export default function DashboardSalesCalendar({
     return salesData.find((d) => d.date === dateStr)?.orders ?? 0;
   };
 
-  const getMaxRevenueInMonth = () => {
-    return Math.max(
-      ...salesData
-        .filter((d) => {
-          const [year, month] = d.date.split("-");
-          return (
-            parseInt(year) === currentMonth.getFullYear() &&
-            parseInt(month) === currentMonth.getMonth() + 1
-          );
-        })
-        .map((d) => d.revenue),
-      0,
-    );
-  };
-
-  const getColorIntensity = (revenue: number) => {
-    if (revenue === 0) return "bg-gray-50";
-    const maxRevenue = getMaxRevenueInMonth();
-    const intensity = maxRevenue > 0 ? revenue / maxRevenue : 0;
-    if (intensity < 0.25) return "bg-blue-100";
-    if (intensity < 0.5) return "bg-blue-200";
-    if (intensity < 0.75) return "bg-blue-400";
-    return "bg-blue-600";
-  };
-
   const monthNames = [
     "January",
     "February",
@@ -102,6 +77,7 @@ export default function DashboardSalesCalendar({
 
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const calendarDays = generateCalendarDays();
+  const today = new Date().toISOString().split("T")[0];
 
   const selectedDayRevenue = selectedDate
     ? getRevenueForDay(parseInt(selectedDate.split("-")[2]))
@@ -110,11 +86,31 @@ export default function DashboardSalesCalendar({
     ? getOrdersForDay(parseInt(selectedDate.split("-")[2]))
     : 0;
 
+  const isToday = (dateStr: string | null) => dateStr === today;
+
+  const getDateLabel = (dateStr: string) => {
+    const date = new Date(dateStr + "T00:00:00");
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-bold text-gray-900">📅 Sales by Day</h2>
-        <div className="flex items-center gap-2">
+    <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">
+            {monthNames[currentMonth.getMonth()]}
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            {currentMonth.getFullYear()}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-4">
           <button
             onClick={() => {
               setCurrentMonth(
@@ -124,13 +120,11 @@ export default function DashboardSalesCalendar({
                 ),
               );
             }}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2.5 hover:bg-gray-100 rounded-lg transition-colors duration-200 text-gray-600 hover:text-gray-900"
+            aria-label="Previous month"
           >
-            <ChevronLeft className="w-5 h-5 text-gray-600" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
-          <span className="text-sm font-semibold text-gray-900 min-w-[160px] text-center">
-            {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-          </span>
           <button
             onClick={() => {
               setCurrentMonth(
@@ -140,22 +134,24 @@ export default function DashboardSalesCalendar({
                 ),
               );
             }}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2.5 hover:bg-gray-100 rounded-lg transition-colors duration-200 text-gray-600 hover:text-gray-900"
+            aria-label="Next month"
           >
-            <ChevronRight className="w-5 h-5 text-gray-600" />
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Calendar Grid Container */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Calendar */}
         <div className="lg:col-span-2">
           {/* Day Headers */}
-          <div className="grid grid-cols-7 gap-2 mb-2">
+          <div className="grid grid-cols-7 gap-2 mb-4">
             {dayNames.map((day) => (
               <div
                 key={day}
-                className="text-center text-xs font-semibold text-gray-600 py-2"
+                className="text-center py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider"
               >
                 {day}
               </div>
@@ -172,81 +168,147 @@ export default function DashboardSalesCalendar({
                   ).padStart(2, "0")}-${String(day).padStart(2, "0")}`
                 : null;
               const isSelected = selectedDate === dateStr;
+              const isDayToday = isToday(dateStr);
               const hasRevenue = revenue > 0;
+
+              if (!day) {
+                return (
+                  <div
+                    key={`empty-${idx}`}
+                    className="aspect-square rounded-lg"
+                  />
+                );
+              }
 
               return (
                 <button
-                  key={idx}
+                  key={day}
                   onClick={() => {
-                    if (day && dateStr) {
+                    if (dateStr) {
                       onDateSelect(dateStr);
                     }
                   }}
-                  disabled={!day}
-                  className={`aspect-square rounded-lg p-2 text-sm font-medium transition-all ${
-                    !day
-                      ? "bg-transparent cursor-default"
-                      : isSelected
-                        ? "ring-2 ring-blue-500 ring-offset-2 bg-blue-500 text-white"
-                        : hasRevenue
-                          ? `${getColorIntensity(revenue)} text-gray-900 hover:shadow-md cursor-pointer`
-                          : "bg-gray-50 text-gray-400 hover:bg-gray-100 cursor-pointer"
-                  }`}
+                  className={`
+                    aspect-square rounded-lg p-3 flex flex-col items-start justify-between
+                    text-left transition-all duration-200 group
+                    ${
+                      isSelected
+                        ? "bg-blue-50 border-2 border-blue-500 shadow-sm"
+                        : isDayToday
+                          ? "border-2 border-blue-300 bg-white hover:bg-blue-50"
+                          : "bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300"
+                    }
+                  `}
                 >
-                  {day && (
-                    <div className="flex flex-col h-full justify-between">
-                      <span className="text-xs">{day}</span>
-                      {hasRevenue && (
-                        <span className="text-xs font-bold">
-                          ${(revenue / 100).toFixed(0)}
-                        </span>
-                      )}
-                    </div>
+                  <div className="flex flex-col w-full">
+                    <span
+                      className={`text-sm font-medium ${
+                        isSelected
+                          ? "text-blue-600"
+                          : isDayToday
+                            ? "text-blue-600"
+                            : "text-gray-900"
+                      }`}
+                    >
+                      {day}
+                    </span>
+                    {isDayToday && (
+                      <span className="text-xs font-semibold text-blue-600 mt-0.5">
+                        Today
+                      </span>
+                    )}
+                  </div>
+
+                  {hasRevenue && (
+                    <span
+                      className={`text-xs font-semibold whitespace-nowrap ${
+                        isSelected
+                          ? "text-blue-600"
+                          : "text-gray-600 group-hover:text-gray-900"
+                      }`}
+                    >
+                      ${(revenue / 100).toFixed(0)}
+                    </span>
                   )}
                 </button>
               );
             })}
           </div>
-        </div>
 
-        {/* Selected Day Summary */}
-        <div className="lg:col-span-1">
-          {selectedDate ? (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 h-full flex flex-col">
-              <p className="text-sm font-medium text-gray-900 mb-4">
-                {new Date(selectedDate + "T00:00:00").toLocaleDateString(
-                  "en-US",
-                  {
-                    weekday: "short",
-                    month: "short",
-                    day: "numeric",
-                  },
-                )}
-              </p>
-              <div className="space-y-4 flex-1">
-                <div>
-                  <p className="text-xs text-gray-600 uppercase tracking-wide font-medium mb-1">
-                    Total Sales
-                  </p>
-                  <p className="text-3xl font-bold text-blue-600">
-                    ${selectedDayRevenue.toFixed(2)}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-600 uppercase tracking-wide font-medium mb-1">
-                    Orders
-                  </p>
-                  <p className="text-3xl font-bold text-blue-600">
-                    {selectedDayOrders}
-                  </p>
-                </div>
+          {/* Legend */}
+          <div className="mt-8 pt-6 border-t border-gray-200">
+            <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-4">
+              Legend
+            </p>
+            <div className="flex items-center gap-4 text-xs text-gray-600">
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded border-2 border-blue-300 bg-white" />
+                <span>Today</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded bg-blue-50 border-2 border-blue-500" />
+                <span>Selected</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Day Summary Panel */}
+        <div className="lg:col-span-1">
+          {selectedDate ? (
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 h-full flex flex-col justify-between shadow-sm">
+              {/* Date */}
+              <div className="mb-6">
+                <p className="text-xs uppercase tracking-wider font-semibold text-gray-600 mb-2">
+                  Selected Date
+                </p>
+                <p className="text-lg font-medium text-gray-900">
+                  {getDateLabel(selectedDate)}
+                </p>
+              </div>
+
+              {/* Metrics */}
+              <div className="space-y-6 flex-1">
+                {/* Sales */}
+                <div>
+                  <p className="text-xs uppercase tracking-wider font-semibold text-gray-600 mb-2">
+                    Total Sales
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-semibold text-blue-600">
+                      ${selectedDayRevenue.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Orders */}
+                <div>
+                  <p className="text-xs uppercase tracking-wider font-semibold text-gray-600 mb-2">
+                    Orders
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-semibold text-gray-900">
+                      {selectedDayOrders}
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      {selectedDayOrders === 1 ? "order" : "orders"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <button className="w-full mt-6 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 text-sm shadow-sm hover:shadow-md">
+                View Orders for This Day
+              </button>
+            </div>
           ) : (
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 h-full flex items-center justify-center">
-              <p className="text-sm text-gray-600 text-center">
-                Select a day to view details
-              </p>
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 h-full flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-sm text-gray-600">
+                  Select a day on the calendar to see details
+                </p>
+              </div>
             </div>
           )}
         </div>
