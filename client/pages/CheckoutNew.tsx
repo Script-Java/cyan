@@ -117,8 +117,8 @@ export default function CheckoutNew() {
   const [showPolicyDropdown, setShowPolicyDropdown] = useState(false);
   const [policy, setPolicy] = useState<any>(null);
   const [agreedToPrivacy, setAgreedToPrivacy] = useState(false);
-  const [agreedToGDPR, setAgreedToGDPR] = useState(false);
-  const [agreedToCCPA, setAgreedToCCPA] = useState(false);
+  const [agreedToGDPR, setAgreedToGDPR] = useState(true); // Handled on separate legal page
+  const [agreedToCCPA, setAgreedToCCPA] = useState(true); // Handled on separate legal page
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [agreedToShippingPolicy, setAgreedToShippingPolicy] = useState(false);
 
