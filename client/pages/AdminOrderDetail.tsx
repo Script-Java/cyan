@@ -202,6 +202,7 @@ export default function AdminOrderDetail() {
       pending: "Pending",
       processing: "Processing",
       printing: "Printing",
+      cutting: "Cutting",
       "preparing for shipping": "Preparing for Shipping",
       "in transit": "In Transit",
       shipped: "Shipped",
