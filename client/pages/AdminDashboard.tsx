@@ -105,9 +105,13 @@ export default function AdminDashboard() {
       if (response.ok) {
         const data = await response.json();
         setSalesData(data.revenueByDay || []);
+      } else {
+        console.error("Failed to fetch analytics:", response.statusText);
+        setSalesData([]);
       }
     } catch (error) {
       console.error("Error fetching analytics data:", error);
+      setSalesData([]);
     }
   };
 
