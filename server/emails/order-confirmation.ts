@@ -330,8 +330,6 @@ export function generateOrderConfirmationEmail(params: {
         <div style="color: #365314; font-size: 13px; line-height: 1.8; space-y: 8px;">
           ${policies.returnAndRefund ? `<div style="margin-bottom: 8px;">✓ Return & Refund Policy acknowledged</div>` : ""}
           ${policies.privacy ? `<div style="margin-bottom: 8px;">✓ Privacy Policy agreed</div>` : ""}
-          ${policies.gdpr ? `<div style="margin-bottom: 8px;">✓ GDPR data processing consent confirmed</div>` : ""}
-          ${policies.ccpa ? `<div style="margin-bottom: 8px;">✓ CCPA privacy rights acknowledged</div>` : ""}
           ${policies.terms ? `<div style="margin-bottom: 8px;">✓ Terms of Service agreed</div>` : ""}
           ${policies.shipping ? `<div style="margin-bottom: 0;">✓ Shipping Policy agreed</div>` : ""}
         </div>
