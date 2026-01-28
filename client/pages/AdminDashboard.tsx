@@ -117,9 +117,15 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleRefreshProduction = async () => {
+    setIsRefreshing(true);
+    await fetchOrdersForDate();
+    setIsRefreshing(false);
+  };
+
   const fetchOrdersForDate = async () => {
     try {
-      setOrdersLoading(true);
+      if (!isRefreshing) setOrdersLoading(true);
       const token = localStorage.getItem("authToken");
       if (!token) return;
 
