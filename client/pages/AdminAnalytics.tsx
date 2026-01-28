@@ -14,6 +14,8 @@ import {
   DollarSign,
   ShoppingCart,
   Users,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 interface AnalyticsData {
