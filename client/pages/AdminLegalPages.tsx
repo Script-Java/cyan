@@ -29,6 +29,8 @@ const pageTypeLabels: Record<string, string> = {
   shipping: "Shipping Policy",
   returns: "Returns Policy",
   legal: "Artwork, Authorization, and Ownership",
+  gdpr: "GDPR Compliance",
+  ccpa: "CCPA Rights",
 };
 
 const pageTypeColors: Record<string, string> = {
@@ -37,6 +39,8 @@ const pageTypeColors: Record<string, string> = {
   shipping: "bg-green-100 text-green-700",
   returns: "bg-orange-100 text-orange-700",
   legal: "bg-red-100 text-red-700",
+  gdpr: "bg-indigo-100 text-indigo-700",
+  ccpa: "bg-amber-100 text-amber-700",
 };
 
 const getPageTypeColor = (pageType: string): string => {
