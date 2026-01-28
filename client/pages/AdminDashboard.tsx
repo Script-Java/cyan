@@ -118,7 +118,7 @@ export default function AdminDashboard() {
       if (!token) return;
 
       const response = await fetch(
-        `/api/admin/orders?date=${selectedDate}&limit=10`,
+        `/api/admin/all-orders?date=${selectedDate}&limit=10&page=1`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
