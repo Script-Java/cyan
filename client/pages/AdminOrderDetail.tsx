@@ -187,9 +187,9 @@ export default function AdminOrderDetail() {
   };
 
   const getPaymentStatusLabel = (status: string) => {
-    if (status === "pending_payment") {
-      return "Awaiting Payment";
-    } else if (status === "paid") {
+    // Only show payment status badge for "paid" status
+    // "pending_payment" already shows in the main status badge
+    if (status === "paid") {
       return "Payment Confirmed";
     }
     return null;
