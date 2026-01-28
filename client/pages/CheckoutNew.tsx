@@ -1503,8 +1503,6 @@ export default function CheckoutNew() {
                   </div>
 
                   {(!agreedToPrivacy ||
-                    !agreedToGDPR ||
-                    !agreedToCCPA ||
                     !agreedToTerms ||
                     !agreedToShippingPolicy) && (
                     <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2">
