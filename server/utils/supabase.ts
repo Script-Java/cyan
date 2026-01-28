@@ -159,6 +159,8 @@ interface OrderData {
   subtotal?: number;
   tax?: number;
   shipping?: number;
+  discount?: number;
+  discount_code?: string;
   billing_address?: any;
   shipping_address?: any;
   items?: any[];
