@@ -256,13 +256,34 @@ export default function OrderConfirmation() {
                 <CardHeader>
                   <CardTitle>Order Status</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-4">
                   <div
                     className={`inline-block px-4 py-2 rounded-lg font-semibold ${statusInfo.color}`}
                   >
                     {statusInfo.label}
                   </div>
-                  <p className="text-gray-600 mt-4">
+
+                  {/* Expected Delivery Date */}
+                  {order.estimated_delivery_date && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <p className="text-sm text-blue-600 font-semibold mb-1">
+                        📦 Expected Delivery Date
+                      </p>
+                      <p className="text-lg font-bold text-blue-900">
+                        {new Date(order.estimated_delivery_date).toLocaleDateString(
+                          "en-US",
+                          {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )}
+                      </p>
+                    </div>
+                  )}
+
+                  <p className="text-gray-600">
                     We've sent a confirmation email with your order details. You
                     can track your shipment once it's dispatched.
                   </p>
