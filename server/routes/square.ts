@@ -742,32 +742,11 @@ export const handleSquareWebhook: RequestHandler = async (req, res) => {
     console.log("Received Square webhook:", {
       type: event.type,
       eventId: event.id,
+      timestamp: event.created_at,
     });
 
-    // Check if webhook has already been processed (idempotency)
-    const { data: existingEvent } = await supabase
-      .from("webhook_events")
-      .select("id")
-      .eq("event_id", event.id)
-      .single()
-      .catch(() => ({ data: null }));
-
-    if (existingEvent) {
-      console.log("Webhook already processed, skipping:", event.id);
-      return res.json({ received: true, cached: true });
-    }
-
-    // Mark webhook as processed
-    try {
-      await supabase.from("webhook_events").insert({
-        event_id: event.id,
-        event_type: event.type,
-        processed_at: new Date().toISOString(),
-      });
-    } catch (err) {
-      console.warn("Failed to record webhook event:", err);
-      // Continue processing anyway
-    }
+    // Note: Idempotency is handled within each event handler
+    // by checking if the order/payment has already been processed
 
     // Handle customer created events
     if (event.type === "customer.created") {
