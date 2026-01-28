@@ -125,7 +125,7 @@ export default function CheckoutSuccess() {
                 <div className="flex gap-2">
                   <Button
                     onClick={() =>
-                      navigate(`/order-confirmation?orderId=${orderId}`)
+                      navigate(`/order-confirmation/${orderId}`)
                     }
                     className="flex-1 bg-blue-600 hover:bg-blue-700"
                   >
