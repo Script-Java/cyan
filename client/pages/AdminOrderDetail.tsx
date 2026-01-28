@@ -160,6 +160,8 @@ export default function AdminOrderDetail() {
         return "text-yellow-300 bg-yellow-500/20 border border-yellow-500/30";
       case "printing":
         return "text-purple-300 bg-purple-500/20 border border-purple-500/30";
+      case "cutting":
+        return "text-cyan-300 bg-cyan-500/20 border border-cyan-500/30";
       case "preparing for shipping":
         return "text-indigo-300 bg-indigo-500/20 border border-indigo-500/30";
       case "in transit":
