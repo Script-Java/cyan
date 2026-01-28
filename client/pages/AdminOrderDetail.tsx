@@ -226,6 +226,44 @@ export default function AdminOrderDetail() {
     });
   };
 
+  const handleMarkAsPaid = async () => {
+    if (!order) return;
+
+    setIsMarkingPaid(true);
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        setErrorMessage("Authentication token not found");
+        return;
+      }
+
+      const response = await fetch(`/api/admin/orders/${order.id}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          status: "paid",
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to mark order as paid");
+      }
+
+      // Refresh the order data
+      await fetchOrderDetail();
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      setErrorMessage(errorMsg);
+      console.error("Error marking order as paid:", errorMsg);
+    } finally {
+      setIsMarkingPaid(false);
+    }
+  };
+
   const formatOptionValue = (value: any): string => {
     if (value === null || value === undefined) {
       return "N/A";
