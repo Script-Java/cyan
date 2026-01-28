@@ -645,30 +645,37 @@ export const handleGetAdminProofs: RequestHandler = async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page as string) || 1);
     const sort = (req.query.sort as string) || "newest";
-    const limit = Math.max(1, Math.min(20, parseInt(req.query.limit as string) || 5));
+    const limit = Math.max(
+      1,
+      Math.min(20, parseInt(req.query.limit as string) || 5),
+    );
     const offset = (page - 1) * limit;
     const dateFilter = (req.query.date as string) || null;
     const statusFilter = (req.query.status as string) || null;
 
     // Build the count query
-    let countQuery = supabase.from("proofs").select("*", { count: "exact", head: true });
+    let countQuery = supabase
+      .from("proofs")
+      .select("*", { count: "exact", head: true });
 
     // Get paginated proofs query
-    let proofQuery = supabase
-      .from("proofs")
-      .select(
-        `
+    let proofQuery = supabase.from("proofs").select(
+      `
         *,
         customers:customer_id (id, email, first_name, last_name)
       `,
-      );
+    );
 
     // Apply date filter if provided
     if (dateFilter) {
       const startOfDay = `${dateFilter}T00:00:00.000Z`;
       const endOfDay = `${dateFilter}T23:59:59.999Z`;
-      countQuery = countQuery.gte("created_at", startOfDay).lte("created_at", endOfDay);
-      proofQuery = proofQuery.gte("created_at", startOfDay).lte("created_at", endOfDay);
+      countQuery = countQuery
+        .gte("created_at", startOfDay)
+        .lte("created_at", endOfDay);
+      proofQuery = proofQuery
+        .gte("created_at", startOfDay)
+        .lte("created_at", endOfDay);
     }
 
     // Apply status filter if provided

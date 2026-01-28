@@ -9,7 +9,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Loader2, CheckCircle, AlertCircle, Package, Truck, Calendar } from "lucide-react";
+import {
+  Loader2,
+  CheckCircle,
+  AlertCircle,
+  Package,
+  Truck,
+  Calendar,
+} from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface OrderItem {
@@ -69,9 +76,7 @@ export default function OrderConfirmation() {
         const response = await fetch(`/api/public/orders/${orderId}`);
 
         if (!response.ok) {
-          throw new Error(
-            `Failed to fetch order (${response.status})`,
-          );
+          throw new Error(`Failed to fetch order (${response.status})`);
         }
 
         const result = await response.json();
@@ -268,9 +273,7 @@ export default function OrderConfirmation() {
                   <CardTitle className="text-3xl font-bold text-[#030140]">
                     {orderNumber}
                   </CardTitle>
-                  <CardDescription>
-                    Ordered on {orderDate}
-                  </CardDescription>
+                  <CardDescription>Ordered on {orderDate}</CardDescription>
                 </div>
                 {getStatusBadge()}
               </div>
@@ -285,7 +288,10 @@ export default function OrderConfirmation() {
             <CardContent>
               <div className="space-y-4">
                 {order.orderItems?.map((item) => (
-                  <div key={item.id} className="flex gap-4 pb-4 border-b last:pb-0 last:border-b-0">
+                  <div
+                    key={item.id}
+                    className="flex gap-4 pb-4 border-b last:pb-0 last:border-b-0"
+                  >
                     <div className="flex-1">
                       <p className="font-medium text-gray-900">
                         {item.product_name}
@@ -376,7 +382,8 @@ export default function OrderConfirmation() {
                     </p>
                   )}
                   <p className="text-gray-600">
-                    {order.shipping_address.city}, {order.shipping_address.state}{" "}
+                    {order.shipping_address.city},{" "}
+                    {order.shipping_address.state}{" "}
                     {order.shipping_address.postalCode}
                   </p>
                   <p className="text-gray-600">

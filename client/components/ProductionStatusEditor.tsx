@@ -129,9 +129,7 @@ export default function ProductionStatusEditor({
                   <div className="flex items-start gap-3">
                     <Icon
                       className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
-                        isSelected
-                          ? "text-blue-600"
-                          : "text-gray-400"
+                        isSelected ? "text-blue-600" : "text-gray-400"
                       }`}
                     />
                     <div className="flex-1">
@@ -168,14 +166,17 @@ export default function ProductionStatusEditor({
 
           {success && (
             <div className="p-3 bg-green-50 border border-green-200 rounded-lg mb-4">
-              <p className="text-sm text-green-700">Status updated successfully!</p>
+              <p className="text-sm text-green-700">
+                Status updated successfully!
+              </p>
             </div>
           )}
 
           {/* Info */}
           <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
             <p className="text-xs text-blue-700">
-              <strong>Note:</strong> The dashboard production status will update automatically when you change the status.
+              <strong>Note:</strong> The dashboard production status will update
+              automatically when you change the status.
             </p>
           </div>
         </div>

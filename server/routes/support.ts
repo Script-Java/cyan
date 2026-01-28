@@ -132,7 +132,9 @@ export const handleGetTickets: RequestHandler = async (req, res) => {
       return;
     }
 
-    console.log(`Successfully fetched ${data?.length || 0} tickets for customer ${customerId}`);
+    console.log(
+      `Successfully fetched ${data?.length || 0} tickets for customer ${customerId}`,
+    );
     res.json({ tickets: data || [] });
   } catch (error) {
     console.error("Error in handleGetTickets:", error);

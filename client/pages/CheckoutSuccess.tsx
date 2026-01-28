@@ -124,7 +124,9 @@ export default function CheckoutSuccess() {
                 </Alert>
                 <div className="flex gap-2">
                   <Button
-                    onClick={() => navigate(`/order-confirmation?orderId=${orderId}`)}
+                    onClick={() =>
+                      navigate(`/order-confirmation?orderId=${orderId}`)
+                    }
                     className="flex-1 bg-blue-600 hover:bg-blue-700"
                   >
                     View Order Status
@@ -164,7 +166,9 @@ export default function CheckoutSuccess() {
               {isVerifying && (
                 <div className="flex items-center justify-center gap-2 text-gray-600">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Verifying your order... (Attempt {verificationAttempts + 1})</span>
+                  <span>
+                    Verifying your order... (Attempt {verificationAttempts + 1})
+                  </span>
                 </div>
               )}
               <p className="text-sm text-gray-500">

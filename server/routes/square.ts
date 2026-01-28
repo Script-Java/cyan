@@ -1005,12 +1005,21 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
           // Found order, use it
           const orderId = orderByNum.id;
 
-          if (orderByNum.status === "paid" || orderByNum.status === "completed") {
-            console.log("Order already finalized, skipping duplicate payment processing:", orderId);
+          if (
+            orderByNum.status === "paid" ||
+            orderByNum.status === "completed"
+          ) {
+            console.log(
+              "Order already finalized, skipping duplicate payment processing:",
+              orderId,
+            );
             return;
           }
         } else {
-          console.warn("Could not find order for Square payment:", squareOrderId);
+          console.warn(
+            "Could not find order for Square payment:",
+            squareOrderId,
+          );
           return;
         }
       } else {
@@ -1022,7 +1031,10 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
     const orderId = squareOrder.id;
 
     if (squareOrder.status === "paid" || squareOrder.status === "completed") {
-      console.log("Order already finalized, skipping duplicate payment processing:", orderId);
+      console.log(
+        "Order already finalized, skipping duplicate payment processing:",
+        orderId,
+      );
       return;
     }
 
@@ -1097,7 +1109,8 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
       const baseUrl = process.env.BASE_URL || "http://localhost:5173";
 
       await sendOrderConfirmationEmail({
-        customerEmail: customer?.email || order?.email || "customer@example.com",
+        customerEmail:
+          customer?.email || order?.email || "customer@example.com",
         customerName:
           customer?.first_name && customer?.last_name
             ? `${customer.first_name} ${customer.last_name}`
@@ -1383,10 +1396,7 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
     }
 
     if (!order) {
-      console.warn(
-        "Order not found in Supabase for payment:",
-        squareOrderId,
-      );
+      console.warn("Order not found in Supabase for payment:", squareOrderId);
       return;
     }
 
@@ -1394,7 +1404,9 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
 
     // Check if payment is being completed (COMPLETED or APPROVED status)
     const isPaymentCompleted =
-      paymentStatus === "COMPLETED" || paymentStatus === "APPROVED" || cardDetails.status === "CAPTURED";
+      paymentStatus === "COMPLETED" ||
+      paymentStatus === "APPROVED" ||
+      cardDetails.status === "CAPTURED";
 
     // Check if this is the first time the payment is being marked as completed
     const previousPaymentDetails = order.square_payment_details || {};
@@ -1484,7 +1496,8 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
         const baseUrl = process.env.BASE_URL || "http://localhost:5173";
 
         await sendOrderConfirmationEmail({
-          customerEmail: customer?.email || order?.email || "customer@example.com",
+          customerEmail:
+            customer?.email || order?.email || "customer@example.com",
           customerName:
             customer?.first_name && customer?.last_name
               ? `${customer.first_name} ${customer.last_name}`
@@ -1518,14 +1531,13 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
                   day: "numeric",
                 },
               )
-            : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString(
-                "en-US",
-                {
-                  weekday: "short",
-                  month: "short",
-                  day: "numeric",
-                },
-              ),
+            : new Date(
+                Date.now() + 14 * 24 * 60 * 60 * 1000,
+              ).toLocaleDateString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+              }),
           orderLink: `${baseUrl}/order-confirmation?orderId=${orderId}`,
           shippingAddress: order?.shipping_address || undefined,
           policies: undefined,
@@ -1593,10 +1605,14 @@ export const handleVerifyPendingPayment: RequestHandler = async (req, res) => {
     }
 
     // Check payment details stored from webhook
-    if (order.square_payment_details?.payment_status === "APPROVED" ||
-        order.square_payment_details?.payment_status === "COMPLETED") {
+    if (
+      order.square_payment_details?.payment_status === "APPROVED" ||
+      order.square_payment_details?.payment_status === "COMPLETED"
+    ) {
       // Payment was approved by webhook but status wasn't updated before - update it now
-      console.log("Found approved payment in stored details, updating order status");
+      console.log(
+        "Found approved payment in stored details, updating order status",
+      );
 
       const { error: updateError } = await supabase
         .from("orders")

@@ -329,7 +329,9 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
     );
 
     // Build the initial query
-    let countQuery = supabase.from("orders").select("id", { count: "exact", head: true });
+    let countQuery = supabase
+      .from("orders")
+      .select("id", { count: "exact", head: true });
     let dataQuery = supabase
       .from("orders")
       .select(
@@ -355,8 +357,12 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
       // Filter by date (created_at between start and end of day)
       const startOfDay = `${dateFilter}T00:00:00.000Z`;
       const endOfDay = `${dateFilter}T23:59:59.999Z`;
-      countQuery = countQuery.gte("created_at", startOfDay).lte("created_at", endOfDay);
-      dataQuery = dataQuery.gte("created_at", startOfDay).lte("created_at", endOfDay);
+      countQuery = countQuery
+        .gte("created_at", startOfDay)
+        .lte("created_at", endOfDay);
+      dataQuery = dataQuery
+        .gte("created_at", startOfDay)
+        .lte("created_at", endOfDay);
     }
 
     // First, get the total count of orders

@@ -67,9 +67,7 @@ export default function ProductionBreakdown({
             Production Status
           </h2>
           <p className="text-sm text-slate-400 uppercase tracking-widest font-semibold">
-            {selectedDate
-              ? `Orders for ${dateLabel}`
-              : "Orders for today"}
+            {selectedDate ? `Orders for ${dateLabel}` : "Orders for today"}
           </p>
         </div>
         {onRefresh && (
@@ -106,8 +104,10 @@ export default function ProductionBreakdown({
               `}
             >
               {/* Background glow effect */}
-              <div className={`absolute inset-0 ${card.darkBg} blur-xl opacity-30`} />
-              
+              <div
+                className={`absolute inset-0 ${card.darkBg} blur-xl opacity-30`}
+              />
+
               {/* Content */}
               <div className="relative z-10">
                 {/* Icon */}

@@ -260,7 +260,10 @@ export default function AdminDashboard() {
             {/* Two Column Layout for Proofs and Recent Orders */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Approved Proofs */}
-              <ApprovedProofs proofs={approvedProofs} isLoading={proofsLoading} />
+              <ApprovedProofs
+                proofs={approvedProofs}
+                isLoading={proofsLoading}
+              />
 
               {/* Recent Orders */}
               <DashboardRecentOrders

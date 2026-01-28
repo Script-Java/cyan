@@ -52,7 +52,10 @@ export default function DashboardRecentOrders({
         </h2>
         <div className="space-y-3">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-20 bg-gray-100 rounded-lg animate-pulse" />
+            <div
+              key={i}
+              className="h-20 bg-gray-100 rounded-lg animate-pulse"
+            />
           ))}
         </div>
       </div>
@@ -87,7 +90,9 @@ export default function DashboardRecentOrders({
                   <span className="font-semibold text-gray-900">
                     Order #{order.id}
                   </span>
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(order.status)}`}>
+                  <span
+                    className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(order.status)}`}
+                  >
                     {order.status || "NEW"}
                   </span>
                 </div>

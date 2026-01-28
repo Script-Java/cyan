@@ -142,9 +142,8 @@ export default function AdminAnalytics() {
   );
 
   const today = new Date().toISOString().split("T")[0];
-  const todayRevenue = analytics.revenueByDay.find(
-    (day) => day.date === today,
-  )?.revenue ?? 0;
+  const todayRevenue =
+    analytics.revenueByDay.find((day) => day.date === today)?.revenue ?? 0;
 
   // Calendar functions
   const getDaysInMonth = (date: Date) => {
@@ -233,14 +232,10 @@ export default function AdminAnalytics() {
   const maxRevenueInMonth = getMaxRevenueInMonth();
 
   const selectedDayRevenue = selectedDate
-    ? getRevenueForDay(
-        parseInt(selectedDate.split("-")[2]),
-      )
+    ? getRevenueForDay(parseInt(selectedDate.split("-")[2]))
     : 0;
   const selectedDayOrders = selectedDate
-    ? getOrdersForDay(
-        parseInt(selectedDate.split("-")[2]),
-      )
+    ? getOrdersForDay(parseInt(selectedDate.split("-")[2]))
     : 0;
 
   const trafficData = [
@@ -312,7 +307,9 @@ export default function AdminAnalytics() {
           <div className="max-w-7xl mx-auto">
             {/* TODAY'S QUICK VIEW */}
             <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">📊 Today's Summary</h2>
+              <h2 className="text-lg font-bold text-gray-900 mb-4">
+                📊 Today's Summary
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Checkouts Today */}
                 <div className="bg-white rounded-lg p-4 border border-blue-100">
@@ -344,7 +341,9 @@ export default function AdminAnalytics() {
                   <p className="text-3xl font-bold text-purple-600">
                     {analytics.topProducts.length}
                   </p>
-                  <p className="text-gray-500 text-xs mt-2">Different products</p>
+                  <p className="text-gray-500 text-xs mt-2">
+                    Different products
+                  </p>
                 </div>
               </div>
             </div>
@@ -352,7 +351,9 @@ export default function AdminAnalytics() {
             {/* CALENDAR VIEW - DAILY SALES */}
             <div className="mb-8 bg-white border border-gray-200 rounded-lg p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-bold text-gray-900">📅 Sales Calendar</h2>
+                <h2 className="text-lg font-bold text-gray-900">
+                  📅 Sales Calendar
+                </h2>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => {
@@ -369,7 +370,8 @@ export default function AdminAnalytics() {
                     <ChevronLeft className="w-5 h-5 text-gray-600" />
                   </button>
                   <span className="text-sm font-semibold text-gray-900 min-w-[180px] text-center">
-                    {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+                    {monthNames[currentMonth.getMonth()]}{" "}
+                    {currentMonth.getFullYear()}
                   </span>
                   <button
                     onClick={() => {
