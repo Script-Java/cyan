@@ -19,6 +19,8 @@ const pageTypeLabels: Record<string, string> = {
   shipping: "Shipping Policy",
   returns: "Returns Policy",
   legal: "Legal Notice",
+  gdpr: "GDPR Compliance",
+  ccpa: "CCPA Rights",
 };
 
 const pageTypeColors: Record<string, string> = {
@@ -27,6 +29,8 @@ const pageTypeColors: Record<string, string> = {
   shipping: "from-green-600 to-green-800",
   returns: "from-orange-600 to-orange-800",
   legal: "from-red-600 to-red-800",
+  gdpr: "from-indigo-600 to-indigo-800",
+  ccpa: "from-amber-600 to-amber-800",
 };
 
 export default function LegalPage() {
