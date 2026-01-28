@@ -5,6 +5,7 @@ import DesignThumbnail from "@/components/DesignThumbnail";
 import OrderStatusEditor from "@/components/OrderStatusEditor";
 import ShippingAddressEditor from "@/components/ShippingAddressEditor";
 import OptionCostEditor from "@/components/OptionCostEditor";
+import ProductionStatusEditor from "@/components/ProductionStatusEditor";
 import {
   Package,
   ChevronLeft,
