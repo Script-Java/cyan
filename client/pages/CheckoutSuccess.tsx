@@ -80,7 +80,7 @@ export default function CheckoutSuccess() {
         // Redirect immediately to order confirmation
         setTimeout(() => {
           console.log("Navigating to order confirmation page...");
-          navigate(`/order-confirmation?orderId=${orderId}`);
+          navigate(`/order-confirmation/${orderId}`);
         }, 1500);
       } catch (err) {
         const errorMessage =
