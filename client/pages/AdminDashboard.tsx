@@ -143,7 +143,7 @@ export default function AdminDashboard() {
         const orders = data.orders || [];
 
         // Count stickers by status
-        // PRINTING & PRINTED: sum all sticker units from line items
+        // PRINTING & CUTTING: sum all sticker units from line items
         // SHIPPED: count number of orders
         const printingStickers = orders
           .filter((o: Order) => o.status?.toUpperCase() === "PRINTING")
@@ -155,8 +155,8 @@ export default function AdminDashboard() {
             return total + itemQuantities;
           }, 0);
 
-        const printedStickers = orders
-          .filter((o: Order) => o.status?.toUpperCase() === "PRINTED")
+        const cuttingStickers = orders
+          .filter((o: Order) => o.status?.toUpperCase() === "CUTTING")
           .reduce((total: number, o: Order) => {
             const itemQuantities = (o.orderItems || []).reduce(
               (sum: number, item: OrderItem) => sum + (item.quantity || 0),
