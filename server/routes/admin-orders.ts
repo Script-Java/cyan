@@ -540,6 +540,7 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
       "pending",
       "processing",
       "printing",
+      "cutting",
       "preparing for shipping",
       "in transit",
       "shipped",
