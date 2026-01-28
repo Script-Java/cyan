@@ -40,7 +40,7 @@ export default function ProductionBreakdown({
     },
     {
       icon: Package,
-      label: "Printed",
+      label: "Cutting",
       count: printedCount,
       unit: "sticker",
       borderColor: "border-cyan-200",
