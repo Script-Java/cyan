@@ -709,6 +709,19 @@ export default function AdminOrderDetail() {
         </div>
       </div>
 
+      {/* Production Status Editor Modal */}
+      {editingProductionStatusOrderId !== null && (
+        <ProductionStatusEditor
+          orderId={editingProductionStatusOrderId}
+          currentStatus={order?.status || ""}
+          onClose={() => setEditingProductionStatusOrderId(null)}
+          onSuccess={() => {
+            setEditingProductionStatusOrderId(null);
+            fetchOrderDetail();
+          }}
+        />
+      )}
+
       {/* Order Status Editor Modal */}
       {editingOrderId !== null && (
         <OrderStatusEditor
