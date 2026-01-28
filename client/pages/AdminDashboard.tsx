@@ -134,19 +134,35 @@ export default function AdminDashboard() {
         const data = await response.json();
         const orders = data.orders || [];
 
-        // Count orders by status
-        const printingOrders = orders.filter(
-          (o: Order) => o.status?.toUpperCase() === "PRINTING",
-        ).length;
-        const printedOrders = orders.filter(
-          (o: Order) => o.status?.toUpperCase() === "PRINTED",
-        ).length;
+        // Count stickers by status
+        // PRINTING & PRINTED: sum all sticker units from line items
+        // SHIPPED: count number of orders
+        const printingStickers = orders
+          .filter((o: Order) => o.status?.toUpperCase() === "PRINTING")
+          .reduce((total: number, o: Order) => {
+            const itemQuantities = (o.orderItems || []).reduce(
+              (sum: number, item: OrderItem) => sum + (item.quantity || 0),
+              0,
+            );
+            return total + itemQuantities;
+          }, 0);
+
+        const printedStickers = orders
+          .filter((o: Order) => o.status?.toUpperCase() === "PRINTED")
+          .reduce((total: number, o: Order) => {
+            const itemQuantities = (o.orderItems || []).reduce(
+              (sum: number, item: OrderItem) => sum + (item.quantity || 0),
+              0,
+            );
+            return total + itemQuantities;
+          }, 0);
+
         const shippedOrders = orders.filter(
           (o: Order) => o.status?.toUpperCase() === "SHIPPED",
         ).length;
 
-        setPrintingCount(printingOrders);
-        setPrintedCount(printedOrders);
+        setPrintingCount(printingStickers);
+        setPrintedCount(printedStickers);
         setShippedCount(shippedOrders);
 
         // Orders are already sorted by date created (newest first) from the server
