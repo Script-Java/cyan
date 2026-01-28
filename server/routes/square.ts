@@ -437,6 +437,8 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       subtotal: checkoutData.subtotal,
       tax: checkoutData.tax,
       shipping: checkoutData.shipping,
+      discount: checkoutData.discount,
+      discountCode: checkoutData.discountCode,
       total: checkoutData.total,
       estimatedDelivery: new Date(
         Date.now() + 14 * 24 * 60 * 60 * 1000,
