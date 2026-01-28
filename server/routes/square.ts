@@ -969,10 +969,10 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
       amount: amountMoney.amount,
     });
 
-    // Only process completed payments - do NOT update on APPROVED or PENDING
-    if (paymentStatus !== "COMPLETED") {
+    // Only process completed or approved payments - do NOT update on PENDING
+    if (paymentStatus !== "COMPLETED" && paymentStatus !== "APPROVED") {
       console.log(
-        `Payment status is ${paymentStatus}, not COMPLETED - skipping order update`,
+        `Payment status is ${paymentStatus}, not COMPLETED or APPROVED - skipping order update`,
       );
       return;
     }
