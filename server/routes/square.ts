@@ -994,53 +994,54 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
       return;
     }
 
-    // Get the Square order to find our order ID via reference_id
-    const { data: squareOrder } = await supabase
-      .from("orders")
-      .select("id, status, square_payment_details")
-      .or(`id.eq.${squareOrderId}, square_order_id.eq.${squareOrderId}`)
-      .single()
-      .catch(() => ({ data: null }));
+    // Get the order - first try by numeric ID (most common)
+    let orderId: number | null = null;
+    let orderData: any = null;
 
-    if (!squareOrder) {
-      // Try to find by parsing the order ID if it's numeric
-      const numOrderId = parseInt(squareOrderId, 10);
-      if (!isNaN(numOrderId)) {
-        const { data: orderByNum } = await supabase
+    // Try to find by parsing the order ID if it's numeric
+    const numOrderId = parseInt(squareOrderId, 10);
+    if (!isNaN(numOrderId)) {
+      try {
+        const { data: orderByNum, error } = await supabase
           .from("orders")
           .select("id, status, square_payment_details")
           .eq("id", numOrderId)
-          .single()
-          .catch(() => ({ data: null }));
+          .single();
 
-        if (orderByNum) {
-          // Found order, use it
-          const orderId = orderByNum.id;
-
-          if (
-            orderByNum.status === "paid" ||
-            orderByNum.status === "completed"
-          ) {
-            console.log(
-              "Order already finalized, skipping duplicate payment processing:",
-              orderId,
-            );
-            return;
-          }
-        } else {
-          console.warn(
-            "Could not find order for Square payment:",
-            squareOrderId,
-          );
-          return;
+        if (!error && orderByNum) {
+          orderId = orderByNum.id;
+          orderData = orderByNum;
         }
-      } else {
-        console.warn("Could not find order for Square payment:", squareOrderId);
-        return;
+      } catch (err) {
+        // Continue to next lookup method
       }
     }
 
-    const orderId = squareOrder.id;
+    // If not found by numeric ID, try by UUID
+    if (!orderId) {
+      try {
+        const { data: orderByUuid, error } = await supabase
+          .from("orders")
+          .select("id, status, square_payment_details")
+          .eq("square_order_id", squareOrderId)
+          .single();
+
+        if (!error && orderByUuid) {
+          orderId = orderByUuid.id;
+          orderData = orderByUuid;
+        }
+      } catch (err) {
+        // Order not found
+      }
+    }
+
+    if (!orderId || !orderData) {
+      console.warn(
+        "Could not find order for Square payment:",
+        squareOrderId,
+      );
+      return;
+    }
 
     if (squareOrder.status === "paid" || squareOrder.status === "completed") {
       console.log(
