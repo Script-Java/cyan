@@ -108,7 +108,7 @@ export default function ProductionBreakdown({
                   {totalCount}
                 </p>
                 <p className="text-xs text-gray-500 mt-2">
-                  {totalCount === 1 ? "order" : "orders"}
+                  {totalCount === 1 ? card.unit : `${card.unit}s`}
                 </p>
               </div>
             </div>
