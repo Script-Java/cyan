@@ -1,10 +1,8 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../utils/supabase";
 
-const supabase = createClient(
-  process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_KEY || "",
-);
+// Removed local Supabase initialization in favor of shared client
+// const supabase = createClient(...)
 
 interface AnalyticsData {
   activeUsers: number;

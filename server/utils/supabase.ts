@@ -1,8 +1,18 @@
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl =
-  process.env.SUPABASE_URL || "https://nbzttuomtdtsfzcagfnh.supabase.co";
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY || "";
+  process.env.SUPABASE_URL ||
+  process.env.VITE_SUPABASE_URL ||
+  "https://bxkphaslciswfspuqdgo.supabase.co";
+const supabaseServiceKey =
+  process.env.SUPABASE_SERVICE_KEY || process.env.VITE_SUPABASE_ANON_KEY || "";
+
+console.log("Supabase Client Initialization:");
+console.log("  URL:", supabaseUrl);
+console.log(
+  "  Key Length:",
+  supabaseServiceKey ? supabaseServiceKey.length : "0 (Missing)",
+);
 
 if (!supabaseServiceKey) {
   console.warn(
@@ -16,7 +26,33 @@ const buildTimeKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1idWlsZC1wbGFjZWhvbGRlciJ9.dummy";
 const keyToUse = supabaseServiceKey || buildTimeKey;
 
-export const supabase = createClient(supabaseUrl, keyToUse);
+export const supabase = createClient(supabaseUrl, keyToUse, {
+  auth: {
+    persistSession: false,
+  },
+  global: {
+    fetch: (url, options) => {
+      return fetch(url, { ...options, timeout: 20000 } as any);
+    },
+  },
+});
+
+// Verify connection
+(async () => {
+  try {
+    const { error } = await supabase
+      .from("customers")
+      .select("count", { count: "exact", head: true });
+
+    if (error) {
+      console.error("Supabase connection check failed:", error.message);
+    } else {
+      console.log("Supabase connection check successful");
+    }
+  } catch (err) {
+    console.error("Supabase connection check error:", err);
+  }
+})();
 
 interface CustomerData {
   id: number;

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { createClient } from "@supabase/supabase-js";
+// import { createClient } from "@supabase/supabase-js";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
@@ -19,10 +19,10 @@ declare global {
   }
 }
 
-const supabase = createClient(
-  process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_KEY || "",
-);
+import { supabase } from "../utils/supabase";
+
+// Removed local Supabase initialization in favor of shared client
+// const supabase = createClient(...)
 
 /**
  * Middleware to verify JWT token and extract customer info

@@ -1,28 +1,36 @@
-import { defineConfig, Plugin } from "vite";
+import { defineConfig, Plugin, loadEnv } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 5173,
-    fs: {
-      allow: ["./client", "./shared"],
-      deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "server/**"],
+export default defineConfig(({ mode }) => {
+  // Load env file based on `mode` in the current working directory.
+  // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
+  const env = loadEnv(mode, process.cwd(), '');
+  // Merge loaded env variables into process.env for the server to use
+  Object.assign(process.env, env);
+
+  return {
+    server: {
+      host: "::",
+      port: 5173,
+      fs: {
+        allow: [".", "./client", "./shared"],
+        deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "server/**"],
+      },
     },
-  },
-  build: {
-    outDir: "dist/spa",
-  },
-  plugins: [react(), expressPlugin()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./client"),
-      "@shared": path.resolve(__dirname, "./shared"),
+    build: {
+      outDir: "dist/spa",
     },
-  },
-}));
+    plugins: [react(), expressPlugin()],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./client"),
+        "@shared": path.resolve(__dirname, "./shared"),
+      },
+    },
+  };
+});
 
 // Singleton to hold the Express app
 let cachedExpressApp: any = null;

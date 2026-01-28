@@ -138,6 +138,7 @@ export default function Signup() {
                       required
                       value={formData.firstName}
                       onChange={handleChange}
+                      autoComplete="given-name"
                       className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
                       placeholder="John"
                     />
@@ -156,6 +157,7 @@ export default function Signup() {
                       required
                       value={formData.lastName}
                       onChange={handleChange}
+                      autoComplete="family-name"
                       className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
                       placeholder="Doe"
                     />
@@ -175,6 +177,7 @@ export default function Signup() {
                     required
                     value={formData.email}
                     onChange={handleChange}
+                    autoComplete="email"
                     className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
                     placeholder="you@example.com"
                   />
@@ -193,6 +196,7 @@ export default function Signup() {
                     required
                     value={formData.password}
                     onChange={handleChange}
+                    autoComplete="new-password"
                     className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
                     placeholder="••••••••"
                   />
@@ -217,9 +221,8 @@ export default function Signup() {
                         className="flex items-center gap-2 text-sm"
                       >
                         <Check
-                          className={`w-4 h-4 ${
-                            req.met ? "text-green-600" : "text-gray-300"
-                          }`}
+                          className={`w-4 h-4 ${req.met ? "text-green-600" : "text-gray-300"
+                            }`}
                         />
                         <span
                           className={
@@ -246,6 +249,7 @@ export default function Signup() {
                     required
                     value={formData.confirmPassword}
                     onChange={handleChange}
+                    autoComplete="new-password"
                     className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
                     placeholder="••••••••"
                   />
