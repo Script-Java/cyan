@@ -146,6 +146,103 @@ export default function AdminAnalytics() {
     (day) => day.date === today,
   )?.revenue ?? 0;
 
+  // Calendar functions
+  const getDaysInMonth = (date: Date) => {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  };
+
+  const getFirstDayOfMonth = (date: Date) => {
+    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+  };
+
+  const generateCalendarDays = () => {
+    const daysInMonth = getDaysInMonth(currentMonth);
+    const firstDay = getFirstDayOfMonth(currentMonth);
+    const days = [];
+
+    for (let i = 0; i < firstDay; i++) {
+      days.push(null);
+    }
+
+    for (let i = 1; i <= daysInMonth; i++) {
+      days.push(i);
+    }
+
+    return days;
+  };
+
+  const getRevenueForDay = (day: number | null) => {
+    if (!day) return 0;
+    const dateStr = `${currentMonth.getFullYear()}-${String(
+      currentMonth.getMonth() + 1,
+    ).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    return analytics.revenueByDay.find((d) => d.date === dateStr)?.revenue ?? 0;
+  };
+
+  const getOrdersForDay = (day: number | null) => {
+    if (!day) return 0;
+    const dateStr = `${currentMonth.getFullYear()}-${String(
+      currentMonth.getMonth() + 1,
+    ).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    return analytics.revenueByDay.find((d) => d.date === dateStr)?.orders ?? 0;
+  };
+
+  const getMaxRevenueInMonth = () => {
+    return Math.max(
+      ...analytics.revenueByDay
+        .filter((d) => {
+          const [year, month] = d.date.split("-");
+          return (
+            parseInt(year) === currentMonth.getFullYear() &&
+            parseInt(month) === currentMonth.getMonth() + 1
+          );
+        })
+        .map((d) => d.revenue),
+      0,
+    );
+  };
+
+  const getColorIntensity = (revenue: number) => {
+    if (revenue === 0) return "bg-gray-50";
+    const maxRevenue = getMaxRevenueInMonth();
+    const intensity = maxRevenue > 0 ? revenue / maxRevenue : 0;
+    if (intensity === 0) return "bg-gray-50";
+    if (intensity < 0.25) return "bg-green-100";
+    if (intensity < 0.5) return "bg-green-200";
+    if (intensity < 0.75) return "bg-green-400";
+    return "bg-green-600";
+  };
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const calendarDays = generateCalendarDays();
+  const maxRevenueInMonth = getMaxRevenueInMonth();
+
+  const selectedDayRevenue = selectedDate
+    ? getRevenueForDay(
+        parseInt(selectedDate.split("-")[2]),
+      )
+    : 0;
+  const selectedDayOrders = selectedDate
+    ? getOrdersForDay(
+        parseInt(selectedDate.split("-")[2]),
+      )
+    : 0;
+
   const trafficData = [
     {
       name: "Direct",
