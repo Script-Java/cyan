@@ -836,7 +836,7 @@ export default function CheckoutNew() {
     // Redirect to order confirmation page
     if (createdOrderId) {
       setTimeout(() => {
-        navigate(`/order-confirmation?orderId=${createdOrderId}`);
+        navigate(`/order-confirmation/${createdOrderId}`);
       }, 1000);
     }
   };
