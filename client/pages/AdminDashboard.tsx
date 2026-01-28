@@ -166,7 +166,7 @@ export default function AdminDashboard() {
       if (!token) return;
 
       const response = await fetch(
-        `/api/admin/proofs?date=${selectedDate}&status=APPROVED`,
+        `/api/admin/proofs?date=${selectedDate}&status=APPROVED&limit=10&page=1`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -177,6 +177,9 @@ export default function AdminDashboard() {
       if (response.ok) {
         const data = await response.json();
         setApprovedProofs(data.proofs || []);
+      } else {
+        console.error("Failed to fetch proofs:", response.statusText);
+        setApprovedProofs([]);
       }
     } catch (error) {
       console.error("Error fetching proofs:", error);
