@@ -94,6 +94,7 @@ import {
   handleConfirmCheckout,
   handleSquareWebhook,
   handleCreatePayment,
+  handleVerifyPendingPayment,
 } from "./routes/square";
 import { processSquarePayment } from "./routes/square-payment";
 import {
