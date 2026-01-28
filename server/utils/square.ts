@@ -655,6 +655,8 @@ export async function createSquarePaymentLink(data: {
         quantity: li.quantity,
         amount: li.base_price_money?.amount,
       })),
+      discountAmount: paymentLinkBody.order?.discounts?.[0]?.applied_money?.amount,
+      discountName: paymentLinkBody.order?.discounts?.[0]?.name,
       taxAmount: paymentLinkBody.order?.taxes?.[0]?.applied_money?.amount,
       shippingName: paymentLinkBody.order?.shipping?.name,
       shippingAmount: paymentLinkBody.order?.shipping?.charge?.money?.amount,
@@ -664,9 +666,10 @@ export async function createSquarePaymentLink(data: {
         subtotal: data.subtotal,
         tax: data.tax,
         shipping: data.shipping,
+        discount: data.discount,
         total: data.amount,
       },
-      expectedTotal: (data.subtotal + data.tax + data.shipping) * 100,
+      expectedTotal: (data.subtotal + data.tax + data.shipping - (data.discount || 0)) * 100,
       sentTotal: data.amount * 100,
     });
 
