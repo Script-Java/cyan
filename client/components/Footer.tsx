@@ -5,7 +5,14 @@ import { useEffect, useState } from "react";
 interface LegalPageItem {
   id: string;
   title: string;
-  page_type: "privacy" | "terms" | "shipping" | "returns" | "legal" | "gdpr" | "ccpa";
+  page_type:
+    | "privacy"
+    | "terms"
+    | "shipping"
+    | "returns"
+    | "legal"
+    | "gdpr"
+    | "ccpa";
 }
 
 const pageTypeLabels: Record<string, string> = {

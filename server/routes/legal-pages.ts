@@ -6,14 +6,24 @@ const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface LegalPageFormData {
-  page_type: "privacy" | "terms" | "shipping" | "returns" | "legal" | "gdpr" | "ccpa";
+  page_type:
+    | "privacy"
+    | "terms"
+    | "shipping"
+    | "returns"
+    | "legal"
+    | "gdpr"
+    | "ccpa";
   title: string;
   content: string;
   visibility: "visible" | "hidden";
 }
 
 // Get all published legal pages (public)
-export const handleGetPublishedLegalPages: RequestHandler = async (req, res) => {
+export const handleGetPublishedLegalPages: RequestHandler = async (
+  req,
+  res,
+) => {
   try {
     const { data, error } = await supabase
       .from("legal_pages")
@@ -56,7 +66,15 @@ export const handleGetLegalPageByType: RequestHandler = async (req, res) => {
   try {
     const { pageType } = req.params;
 
-    const validTypes = ["privacy", "terms", "shipping", "returns", "legal", "gdpr", "ccpa"];
+    const validTypes = [
+      "privacy",
+      "terms",
+      "shipping",
+      "returns",
+      "legal",
+      "gdpr",
+      "ccpa",
+    ];
     if (!validTypes.includes(pageType)) {
       return res.status(400).json({ error: "Invalid page type" });
     }
@@ -121,7 +139,15 @@ export const handleCreateLegalPage: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    const validTypes = ["privacy", "terms", "shipping", "returns", "legal", "gdpr", "ccpa"];
+    const validTypes = [
+      "privacy",
+      "terms",
+      "shipping",
+      "returns",
+      "legal",
+      "gdpr",
+      "ccpa",
+    ];
     if (!validTypes.includes(formData.page_type)) {
       return res.status(400).json({ error: "Invalid page type" });
     }

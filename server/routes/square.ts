@@ -1036,10 +1036,7 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
     }
 
     if (!orderId || !orderData) {
-      console.warn(
-        "Could not find order for Square payment:",
-        squareOrderId,
-      );
+      console.warn("Could not find order for Square payment:", squareOrderId);
       return;
     }
 
