@@ -34,83 +34,118 @@ export default function ShippingOptionsSelector({
 
   useEffect(() => {
     const fetchShippingOptions = async () => {
-      try {
-        const apiUrl = `/api/shipping-options`;
-        console.log("Attempting to fetch shipping options from:", apiUrl);
+      const maxRetries = 3;
+      let lastError: Error | null = null;
 
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
-          console.log("Starting fetch request for shipping options...");
-          const response = await fetch(apiUrl, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            signal: controller.signal,
-          }).catch((err) => {
-            // Network error - provide more details
-            console.error("Network/CORS error details:", {
-              message: err.message,
-              type: err.constructor.name,
-              stack: err.stack,
+          const apiUrl = `/api/shipping-options`;
+          console.log(
+            `Attempting to fetch shipping options (attempt ${attempt}/${maxRetries}) from:`,
+            apiUrl,
+          );
+
+          const controller = new AbortController();
+          // Increase timeout to 30 seconds for production deployments
+          const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+          try {
+            console.log("Starting fetch request for shipping options...");
+            const response = await fetch(apiUrl, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              signal: controller.signal,
+            }).catch((err) => {
+              // Network error - provide more details
+              console.error("Network/CORS error details:", {
+                message: err.message,
+                type: err.constructor.name,
+                stack: err.stack,
+              });
+              throw err;
             });
-            throw err;
-          });
 
-          clearTimeout(timeoutId);
-          console.log("Shipping options response status:", response.status);
+            clearTimeout(timeoutId);
+            console.log("Shipping options response status:", response.status);
 
-          if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            const errorMsg = errorData.error || `HTTP ${response.status}`;
-            throw new Error(`Failed to fetch shipping options: ${errorMsg}`);
+            if (!response.ok) {
+              const errorData = await response.json().catch(() => ({}));
+              const errorMsg = errorData.error || `HTTP ${response.status}`;
+              throw new Error(`Failed to fetch shipping options: ${errorMsg}`);
+            }
+
+            const data = await response.json();
+            const options = data.data || [];
+
+            console.log("Shipping options loaded successfully:", options.length);
+            setShippingOptions(options);
+            setError(null);
+
+            if (options.length > 0 && !selectedOptionId) {
+              const defaultOption = options[0];
+              const estimatedDate = calculateEstimatedDeliveryDate(defaultOption);
+              onSelectionChange(
+                defaultOption.id,
+                defaultOption.cost,
+                estimatedDate,
+                defaultOption.name,
+              );
+            }
+
+            // Success - exit retry loop
+            return;
+          } catch (fetchErr) {
+            clearTimeout(timeoutId);
+            if (fetchErr instanceof Error && fetchErr.name === "AbortError") {
+              lastError = new Error(
+                "Request timeout: Shipping options are taking too long to load",
+              );
+            } else {
+              lastError = fetchErr instanceof Error ? fetchErr : new Error(String(fetchErr));
+            }
+
+            console.warn(`Attempt ${attempt} failed:`, lastError.message);
+
+            // Wait before retrying (exponential backoff)
+            if (attempt < maxRetries) {
+              const delayMs = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+              console.log(`Retrying in ${delayMs}ms...`);
+              await new Promise((resolve) => setTimeout(resolve, delayMs));
+            }
+
+            throw lastError;
           }
+        } catch (err) {
+          lastError = err instanceof Error ? err : new Error(String(err));
 
-          const data = await response.json();
-          const options = data.data || [];
+          if (attempt === maxRetries) {
+            // Final attempt failed - show error to user
+            console.error("All fetch attempts failed:", lastError);
+            const errorMsg = lastError.message || "Failed to load shipping options";
+            console.error("Full error details:", {
+              error: err,
+              message: errorMsg,
+              type: lastError.constructor.name,
+              stack: lastError.stack,
+            });
 
-          console.log("Shipping options loaded:", options.length);
-          setShippingOptions(options);
-          setError(null);
+            // Provide user-friendly error message based on error type
+            let displayError = errorMsg;
+            if (
+              errorMsg.includes("Failed to fetch") ||
+              errorMsg.includes("NetworkError")
+            ) {
+              displayError =
+                "Network error: Unable to reach the server. Please check your connection and try again.";
+            }
 
-          if (options.length > 0 && !selectedOptionId) {
-            const defaultOption = options[0];
-            const estimatedDate = calculateEstimatedDeliveryDate(defaultOption);
-            onSelectionChange(
-              defaultOption.id,
-              defaultOption.cost,
-              estimatedDate,
-              defaultOption.name,
-            );
+            setError(displayError);
+            setIsLoading(false);
+            break;
           }
-        } catch (fetchErr) {
-          clearTimeout(timeoutId);
-          if (fetchErr instanceof Error && fetchErr.name === 'AbortError') {
-            throw new Error("Request timeout: Shipping options are taking too long to load");
-          }
-          throw fetchErr;
         }
-      } catch (err) {
-        console.error("Error fetching shipping options:", err);
-        const errorMsg = err instanceof Error ? err.message : "Failed to load shipping options";
-        console.error("Full error details:", {
-          error: err,
-          message: errorMsg,
-          type: err instanceof Error ? err.constructor.name : typeof err,
-          stack: err instanceof Error ? err.stack : "no stack",
-        });
-
-        // Provide user-friendly error message based on error type
-        let displayError = errorMsg;
-        if (errorMsg.includes("Failed to fetch") || errorMsg.includes("NetworkError")) {
-          displayError = "Network error: Unable to reach the server. Please check your connection and try again.";
-        }
-
-        setError(displayError);
-      } finally {
-        setIsLoading(false);
       }
     };
 
