@@ -1043,7 +1043,7 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
       return;
     }
 
-    if (squareOrder.status === "paid" || squareOrder.status === "completed") {
+    if (orderData.status === "paid" || orderData.status === "completed") {
       console.log(
         "Order already finalized, skipping duplicate payment processing:",
         orderId,
