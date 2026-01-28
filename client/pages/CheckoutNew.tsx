@@ -1726,8 +1726,6 @@ export default function CheckoutNew() {
                           isSubmitting ||
                           !agreedToPolicy ||
                           !agreedToPrivacy ||
-                          !agreedToGDPR ||
-                          !agreedToCCPA ||
                           !agreedToTerms ||
                           !agreedToShippingPolicy
                         }
