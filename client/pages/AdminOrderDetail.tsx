@@ -383,6 +383,16 @@ export default function AdminOrderDetail() {
 
         {/* Action Buttons */}
         <div className="flex gap-2 flex-wrap mb-6">
+          {order.status === "pending_payment" && (
+            <button
+              onClick={handleMarkAsPaid}
+              disabled={isMarkingPaid}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 rounded-lg text-emerald-700 hover:text-emerald-800 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Package className="w-4 h-4" />
+              {isMarkingPaid ? "Marking as Paid..." : "Mark as Paid"}
+            </button>
+          )}
           <button
             onClick={() => setEditingProductionStatusOrderId(order.id)}
             className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 hover:bg-purple-200 border border-purple-300 rounded-lg text-purple-700 hover:text-purple-800 transition-colors text-sm font-medium"
