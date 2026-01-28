@@ -85,6 +85,8 @@ export default function AdminOrderDetail() {
     productName: string;
     options: any[];
   } | null>(null);
+  const [editingProductionStatusOrderId, setEditingProductionStatusOrderId] =
+    useState<number | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
