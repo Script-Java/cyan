@@ -22,6 +22,7 @@ interface OrderDetails {
   total: number;
   status: string;
   date_created: string;
+  estimated_delivery_date?: string;
   products?: Array<{
     id: number;
     name: string;
