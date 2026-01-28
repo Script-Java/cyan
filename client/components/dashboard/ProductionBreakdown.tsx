@@ -14,6 +14,8 @@ export default function ProductionBreakdown({
   printedCount,
   shippedCount,
   selectedDate,
+  onRefresh,
+  isRefreshing = false,
 }: ProductionBreakdownProps) {
   const dateLabel = selectedDate
     ? new Date(selectedDate + "T00:00:00").toLocaleDateString("en-US", {
