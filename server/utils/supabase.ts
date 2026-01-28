@@ -207,6 +207,12 @@ export async function createSupabaseOrder(
     if (orderData.bigcommerce_order_id) {
       orderToInsert.bigcommerce_order_id = orderData.bigcommerce_order_id;
     }
+    if (orderData.discount !== undefined) {
+      orderToInsert.discount = orderData.discount;
+    }
+    if (orderData.discount_code) {
+      orderToInsert.discount_code = orderData.discount_code;
+    }
     if (orderData.estimated_delivery_date) {
       orderToInsert.estimated_delivery_date = orderData.estimated_delivery_date;
     }
