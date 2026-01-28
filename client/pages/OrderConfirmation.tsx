@@ -66,7 +66,7 @@ export default function OrderConfirmation() {
       try {
         console.log("Fetching order details:", orderId);
 
-        const response = await fetch(`/api/orders/${orderId}`);
+        const response = await fetch(`/api/public/orders/${orderId}`);
 
         if (!response.ok) {
           throw new Error(
@@ -74,8 +74,14 @@ export default function OrderConfirmation() {
           );
         }
 
-        const data = await response.json();
-        console.log("Order data received:", data);
+        const result = await response.json();
+        console.log("Order data received:", result);
+
+        if (!result.success || !result.data) {
+          throw new Error("Invalid order data");
+        }
+
+        const data = result.data;
 
         // Only show order if payment is confirmed
         if (
@@ -90,7 +96,29 @@ export default function OrderConfirmation() {
           );
         }
 
-        setOrder(data);
+        // Transform the data to match our Order interface
+        const transformedOrder: Order = {
+          id: data.id,
+          status: data.status,
+          total: data.total,
+          subtotal: data.subtotal,
+          tax: data.tax,
+          shipping: data.shipping,
+          discount: 0,
+          created_at: data.date_created,
+          estimated_delivery_date: data.estimated_delivery_date,
+          shipping_address: data.shipping_addresses?.[0],
+          orderItems: data.products?.map((item: any) => ({
+            id: item.id,
+            product_id: item.product_id,
+            product_name: item.product_name,
+            quantity: item.quantity,
+            price: item.price,
+            design_file_url: item.design_file_url,
+          })),
+        };
+
+        setOrder(transformedOrder);
       } catch (err) {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to load order details";
