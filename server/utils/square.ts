@@ -395,13 +395,6 @@ export async function createSquarePaymentLink(data: {
         buyerAddress.country = data.shippingAddress.country;
     }
 
-    // Append order ID to redirect URL as query parameter for Square
-    let finalRedirectUrl = data.redirectUrl;
-    if (finalRedirectUrl && !finalRedirectUrl.includes("orderId=")) {
-      const separator = finalRedirectUrl.includes("?") ? "&" : "?";
-      finalRedirectUrl = `${finalRedirectUrl}${separator}redirected=true`;
-    }
-
     // Build customer contact info
     const customerContactInfo: any = {};
     if (data.customerEmail) {
