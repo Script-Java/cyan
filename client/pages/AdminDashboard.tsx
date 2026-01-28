@@ -6,6 +6,7 @@ import DashboardSalesCalendar from "@/components/dashboard/DashboardSalesCalenda
 import ProductionBreakdown from "@/components/dashboard/ProductionBreakdown";
 import ApprovedProofs from "@/components/dashboard/ApprovedProofs";
 import DashboardRecentOrders from "@/components/dashboard/DashboardRecentOrders";
+import { RefreshCw } from "lucide-react";
 
 interface OrderItem {
   id?: number;
