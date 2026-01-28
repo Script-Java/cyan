@@ -87,6 +87,7 @@ export default function AdminOrderDetail() {
   } | null>(null);
   const [editingProductionStatusOrderId, setEditingProductionStatusOrderId] =
     useState<number | null>(null);
+  const [isMarkingPaid, setIsMarkingPaid] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
