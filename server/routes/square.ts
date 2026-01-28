@@ -361,7 +361,11 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       // Fall back to detecting from the request if in production
       const requestHost = req.get("host");
       const protocol = req.protocol === "http" ? "http" : "https";
-      if (requestHost && !requestHost.includes("localhost") && !requestHost.includes("127.0.0.1")) {
+      if (
+        requestHost &&
+        !requestHost.includes("localhost") &&
+        !requestHost.includes("127.0.0.1")
+      ) {
         baseUrl = `${protocol}://${requestHost}`;
       }
     }
