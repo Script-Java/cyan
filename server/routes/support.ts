@@ -120,13 +120,19 @@ export const handleGetTickets: RequestHandler = async (req, res) => {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("Error fetching tickets:", error);
+      console.error("Error fetching tickets from Supabase:", {
+        message: error.message,
+        code: (error as any).code,
+        details: (error as any).details,
+      });
       res.status(500).json({
         error: "Failed to fetch tickets",
+        details: error.message,
       });
       return;
     }
 
+    console.log(`Successfully fetched ${data?.length || 0} tickets for customer ${customerId}`);
     res.json({ tickets: data || [] });
   } catch (error) {
     console.error("Error in handleGetTickets:", error);
