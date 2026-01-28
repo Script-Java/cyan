@@ -1,10 +1,12 @@
-import { Package, Printer, Truck } from "lucide-react";
+import { Package, Printer, Truck, RefreshCw } from "lucide-react";
 
 interface ProductionBreakdownProps {
   printingCount: number;
   printedCount: number;
   shippedCount: number;
   selectedDate: string | null;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
 }
 
 export default function ProductionBreakdown({
