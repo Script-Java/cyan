@@ -183,7 +183,7 @@ export default function Footer() {
                 legalPages.map((page) => (
                   <li key={page.id}>
                     <Link
-                      to={`/${page.page_type}`}
+                      to={`/legal/${page.page_type}`}
                       className="hover:text-white transition-colors"
                     >
                       {getPageTypeLabel(page.page_type)}
@@ -194,7 +194,7 @@ export default function Footer() {
                 <>
                   <li>
                     <Link
-                      to="/privacy"
+                      to="/legal/privacy"
                       className="hover:text-white transition-colors"
                     >
                       Privacy Policy
@@ -202,7 +202,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      to="/terms"
+                      to="/legal/terms"
                       className="hover:text-white transition-colors"
                     >
                       Terms of Service
