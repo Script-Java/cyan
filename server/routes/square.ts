@@ -1548,3 +1548,114 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
     console.error("Error processing Square payment update:", error);
   }
 }
+
+/**
+ * Verify pending payment and update order status if payment is confirmed
+ * Admin endpoint to retry payment verification for stuck orders
+ */
+export const handleVerifyPendingPayment: RequestHandler = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { supabase } = await import("../utils/supabase");
+
+    if (!orderId) {
+      return res.status(400).json({ error: "Order ID required" });
+    }
+
+    const id = parseInt(orderId, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid order ID" });
+    }
+
+    console.log("Verifying pending payment for order:", id);
+
+    // Get the order
+    const { data: order, error: orderError } = await supabase
+      .from("orders")
+      .select("id, status, square_payment_details")
+      .eq("id", id)
+      .single();
+
+    if (orderError || !order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Check if already paid
+    if (order.status === "paid" || order.status === "completed") {
+      return res.json({
+        success: true,
+        message: "Order is already paid",
+        order: {
+          id: order.id,
+          status: order.status,
+        },
+      });
+    }
+
+    // Check payment details stored from webhook
+    if (order.square_payment_details?.payment_status === "APPROVED" ||
+        order.square_payment_details?.payment_status === "COMPLETED") {
+      // Payment was approved by webhook but status wasn't updated before - update it now
+      console.log("Found approved payment in stored details, updating order status");
+
+      const { error: updateError } = await supabase
+        .from("orders")
+        .update({
+          status: "paid",
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", id);
+
+      if (updateError) {
+        throw new Error(`Failed to update order: ${updateError.message}`);
+      }
+
+      // Award store credit
+      if (order) {
+        const earnedCredit = (order as any).total * 0.05;
+        // Get customer ID for credit
+        const { data: updatedOrder } = await supabase
+          .from("orders")
+          .select("customer_id, total")
+          .eq("id", id)
+          .single();
+
+        if (updatedOrder?.customer_id) {
+          await updateCustomerStoreCredit(
+            updatedOrder.customer_id,
+            earnedCredit,
+            `Earned 5% from order ${id}`,
+          );
+        }
+      }
+
+      return res.json({
+        success: true,
+        message: "Order payment verified and status updated to paid",
+        order: {
+          id: id,
+          status: "paid",
+        },
+      });
+    }
+
+    // No approved payment found
+    return res.json({
+      success: false,
+      message: "No approved payment found for this order",
+      order: {
+        id: order.id,
+        status: order.status,
+        paymentStatus: order.square_payment_details?.payment_status,
+      },
+    });
+  } catch (error) {
+    console.error("Verify pending payment error:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Payment verification failed";
+    res.status(500).json({
+      success: false,
+      error: errorMessage,
+    });
+  }
+};
