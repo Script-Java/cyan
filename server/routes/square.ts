@@ -350,12 +350,20 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
 
     // Build the redirect URL for after payment
     let baseUrl = "http://localhost:5173";
+
     if (process.env.BASE_URL) {
       baseUrl = process.env.BASE_URL;
     } else if (process.env.NETLIFY_SITE_NAME) {
       baseUrl = `https://${process.env.NETLIFY_SITE_NAME}.netlify.app`;
     } else if (process.env.VERCEL_URL) {
       baseUrl = `https://${process.env.VERCEL_URL}`;
+    } else {
+      // Fall back to detecting from the request if in production
+      const requestHost = req.get("host");
+      const protocol = req.protocol === "http" ? "http" : "https";
+      if (requestHost && !requestHost.includes("localhost") && !requestHost.includes("127.0.0.1")) {
+        baseUrl = `${protocol}://${requestHost}`;
+      }
     }
 
     const redirectUrl = `${baseUrl}/checkout-success?orderId=${supabaseOrder.id}`;
