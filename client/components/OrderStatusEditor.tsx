@@ -15,6 +15,7 @@ const STATUS_OPTIONS = [
   { value: "pending", label: "Pending", color: "orange" },
   { value: "processing", label: "Processing", color: "yellow" },
   { value: "printing", label: "Printing", color: "purple" },
+  { value: "cutting", label: "Cutting", color: "cyan" },
   {
     value: "preparing for shipping",
     label: "Preparing for Shipping",
