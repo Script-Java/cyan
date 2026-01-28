@@ -375,6 +375,8 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       subtotal: checkoutData.subtotal,
       tax: checkoutData.tax,
       shipping: checkoutData.shipping,
+      discount: checkoutData.discount,
+      discountCode: checkoutData.discountCode,
       shippingOptionId: checkoutData.shipping_option_id,
       shippingOptionName: checkoutData.shipping_option_name,
       estimatedDeliveryDate: checkoutData.estimated_delivery_date,
