@@ -517,6 +517,23 @@ export async function createSquarePaymentLink(data: {
       discounts: [],
     };
 
+    // Add discount if present
+    if (data.discount && data.discount > 0) {
+      const discountName = data.discountCode
+        ? `Discount (${data.discountCode})`
+        : "Discount";
+      orderObject.discounts.push({
+        uid: `discount-${data.orderId}`,
+        name: discountName,
+        type: "FIXED_PERCENTAGE",
+        percentage: "0",
+        applied_money: {
+          amount: Math.round(data.discount * 100),
+          currency: data.currency || "USD",
+        },
+      });
+    }
+
     // Add tax if present
     // Square requires either 'percentage' or 'applied_money' (or both)
     if (data.tax && data.tax > 0) {
