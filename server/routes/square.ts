@@ -329,6 +329,8 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       subtotal: checkoutData.subtotal,
       tax: checkoutData.tax,
       shipping: checkoutData.shipping,
+      discount: checkoutData.discount,
+      discount_code: checkoutData.discountCode,
       billing_address: checkoutData.billingAddress,
       shipping_address: checkoutData.shippingAddress,
       items: checkoutData.items.map((item) => ({
