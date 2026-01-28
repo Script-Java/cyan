@@ -137,6 +137,11 @@ export default function AdminAnalytics() {
     0,
   );
 
+  const today = new Date().toISOString().split("T")[0];
+  const todayRevenue = analytics.revenueByDay.find(
+    (day) => day.date === today,
+  )?.revenue ?? 0;
+
   const trafficData = [
     {
       name: "Direct",
