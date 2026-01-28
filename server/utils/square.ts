@@ -525,9 +525,8 @@ export async function createSquarePaymentLink(data: {
       orderObject.discounts.push({
         uid: `discount-${data.orderId}`,
         name: discountName,
-        type: "FIXED_PERCENTAGE",
-        percentage: "0",
-        applied_money: {
+        type: "FIXED_AMOUNT",
+        amount_money: {
           amount: Math.round(data.discount * 100),
           currency: data.currency || "USD",
         },
