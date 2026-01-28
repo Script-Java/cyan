@@ -120,10 +120,10 @@ export default function ProductionBreakdown({
       <div className="mt-8 pt-6 border-t border-gray-200">
         <div className="flex items-center justify-between text-sm">
           <span className="text-gray-600">
-            Total orders: <span className="font-semibold text-gray-900">{printingCount + printedCount + shippedCount}</span>
+            Total stickers in progress: <span className="font-semibold text-gray-900">{printingCount + printedCount}</span>
           </span>
           <span className="text-gray-500">
-            Last updated: <span className="font-medium text-gray-700">Just now</span>
+            Last updated: <span className="font-medium text-gray-700">Real-time</span>
           </span>
         </div>
       </div>
