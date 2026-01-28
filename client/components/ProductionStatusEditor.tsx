@@ -18,10 +18,10 @@ const PRODUCTION_STATUSES = [
   },
   {
     value: "PRINTED",
-    label: "Printed",
+    label: "Cutting",
     icon: Package,
     color: "cyan",
-    description: "Order has been printed and is ready for shipping",
+    description: "Order is being cut and is ready for shipping",
   },
   {
     value: "SHIPPED",
