@@ -639,19 +639,46 @@ export const handleGetAdminProofDetail: RequestHandler = async (req, res) => {
 };
 
 /**
- * Admin: Get pending proofs for all customers
+ * Admin: Get pending proofs for all customers with optional date and status filtering
  */
 export const handleGetAdminProofs: RequestHandler = async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page as string) || 1);
     const sort = (req.query.sort as string) || "newest";
-    const limit = 5;
+    const limit = Math.max(1, Math.min(20, parseInt(req.query.limit as string) || 5));
     const offset = (page - 1) * limit;
+    const dateFilter = (req.query.date as string) || null;
+    const statusFilter = (req.query.status as string) || null;
+
+    // Build the count query
+    let countQuery = supabase.from("proofs").select("*", { count: "exact", head: true });
+
+    // Get paginated proofs query
+    let proofQuery = supabase
+      .from("proofs")
+      .select(
+        `
+        *,
+        customers:customer_id (id, email, first_name, last_name)
+      `,
+      );
+
+    // Apply date filter if provided
+    if (dateFilter) {
+      const startOfDay = `${dateFilter}T00:00:00.000Z`;
+      const endOfDay = `${dateFilter}T23:59:59.999Z`;
+      countQuery = countQuery.gte("created_at", startOfDay).lte("created_at", endOfDay);
+      proofQuery = proofQuery.gte("created_at", startOfDay).lte("created_at", endOfDay);
+    }
+
+    // Apply status filter if provided
+    if (statusFilter) {
+      countQuery = countQuery.eq("status", statusFilter);
+      proofQuery = proofQuery.eq("status", statusFilter);
+    }
 
     // Get total count
-    const { count: totalCount, error: countError } = await supabase
-      .from("proofs")
-      .select("*", { count: "exact", head: true });
+    const { count: totalCount, error: countError } = await countQuery;
 
     if (countError) {
       console.error("Error counting admin proofs:", countError);
@@ -660,14 +687,7 @@ export const handleGetAdminProofs: RequestHandler = async (req, res) => {
 
     // Get paginated proofs with their customer info
     const sortAscending = sort === "oldest" ? true : false;
-    const { data: proofs, error } = await supabase
-      .from("proofs")
-      .select(
-        `
-        *,
-        customers:customer_id (id, email, first_name, last_name)
-      `,
-      )
+    const { data: proofs, error } = await proofQuery
       .order("created_at", { ascending: sortAscending })
       .range(offset, offset + limit - 1);
 
@@ -686,7 +706,19 @@ export const handleGetAdminProofs: RequestHandler = async (req, res) => {
 
     res.json({
       success: true,
-      proofs: proofs || [],
+      proofs: (proofs || []).map((proof: any) => ({
+        id: proof.id,
+        orderId: proof.order_id,
+        customerId: proof.customer_id,
+        customerName: proof.customers
+          ? `${proof.customers.first_name || ""} ${proof.customers.last_name || ""}`.trim()
+          : "Unknown",
+        customerEmail: proof.customers?.email || "N/A",
+        status: proof.status,
+        thumbnailUrl: proof.file_url,
+        approvedAt: proof.updated_at,
+        createdAt: proof.created_at,
+      })),
       unreadNotifications: notifications?.length || 0,
       pagination: {
         currentPage: page,
