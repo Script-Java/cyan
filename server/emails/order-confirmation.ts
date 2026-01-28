@@ -274,6 +274,16 @@ export function generateOrderConfirmationEmail(params: {
           <span>Shipping:</span>
           <span>$${shipping.toFixed(2)}</span>
         </div>
+        ${
+          discount && discount > 0
+            ? `
+        <div class="summary-row" style="color: #10b981;">
+          <span>Discount${discountCode ? ` (${discountCode})` : ""}:</span>
+          <span>-$${discount.toFixed(2)}</span>
+        </div>
+        `
+            : ""
+        }
         <div class="summary-row">
           <span>Tax:</span>
           <span>$${tax.toFixed(2)}</span>
