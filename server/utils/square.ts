@@ -493,7 +493,12 @@ export async function createSquarePaymentLink(data: {
         enable_coupon: true,
         enable_loyalty: true,
         merchant_support_email: "sticky@stickyslap.com",
-        accepted_payment_methods: {},
+        accepted_payment_methods: {
+          afterpay_clearpay: true,
+          apple_pay: true,
+          cash_app_pay: true,
+          google_pay: true,
+        },
       },
       pre_populated_data: {},
     };
