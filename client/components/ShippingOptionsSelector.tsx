@@ -82,6 +82,7 @@ export default function ShippingOptionsSelector({
             console.log("Shipping options loaded successfully:", options.length);
             setShippingOptions(options);
             setError(null);
+            setIsLoading(false);
 
             if (options.length > 0 && !selectedOptionId) {
               const defaultOption = options[0];
@@ -150,7 +151,7 @@ export default function ShippingOptionsSelector({
     };
 
     fetchShippingOptions();
-  }, [selectedOptionId, onSelectionChange]);
+  }, []);
 
   const calculateEstimatedDeliveryDate = (option: ShippingOption): string => {
     // Use MAX delivery days for conservative estimate (worst-case scenario)
