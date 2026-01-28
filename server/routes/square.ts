@@ -813,43 +813,29 @@ export const handleSquareWebhook: RequestHandler = async (req, res) => {
       eventId: event.id,
     });
 
-    // Handle payment link completed events
-    if (event.type === "payment_link.completed") {
-      const paymentLinkId = event.data?.object?.id;
-      const paymentId = event.data?.object?.payment_id;
+    // Check if webhook has already been processed (idempotency)
+    const { data: existingEvent } = await supabase
+      .from("webhook_events")
+      .select("id")
+      .eq("event_id", event.id)
+      .single()
+      .catch(() => ({ data: null }));
 
-      if (paymentId) {
-        console.log("Processing completed payment:", paymentId);
+    if (existingEvent) {
+      console.log("Webhook already processed, skipping:", event.id);
+      return res.json({ received: true, cached: true });
+    }
 
-        // Get the order associated with this payment
-        const { data: order } = await supabase
-          .from("orders")
-          .select("id, customer_id, total")
-          .eq("status", "pending_payment")
-          .limit(1)
-          .single();
-
-        if (order) {
-          // Update order status to paid
-          await supabase
-            .from("orders")
-            .update({ status: "paid" })
-            .eq("id", order.id);
-
-          // Award store credit (5% of order total)
-          const earnedCredit = order.total * 0.05;
-          await updateCustomerStoreCredit(
-            order.customer_id,
-            earnedCredit,
-            `Earned 5% from order ${order.id}`,
-          );
-
-          console.log("Order status updated to paid:", {
-            orderId: order.id,
-            earnedCredit,
-          });
-        }
-      }
+    // Mark webhook as processed
+    try {
+      await supabase.from("webhook_events").insert({
+        event_id: event.id,
+        event_type: event.type,
+        processed_at: new Date().toISOString(),
+      });
+    } catch (err) {
+      console.warn("Failed to record webhook event:", err);
+      // Continue processing anyway
     }
 
     // Handle customer created events
