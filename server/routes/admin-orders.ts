@@ -537,6 +537,8 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
 
     const updateData: any = {};
     const validStatuses = [
+      "pending_payment",
+      "paid",
       "pending",
       "processing",
       "printing",
@@ -546,6 +548,8 @@ export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
       "shipped",
       "delivered",
       "cancelled",
+      "payment_failed",
+      "completed",
     ];
 
     // Validate status if provided
