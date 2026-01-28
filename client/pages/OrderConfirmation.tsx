@@ -393,19 +393,32 @@ export default function OrderConfirmation() {
                   <div>
                     <p className="font-semibold mb-1">1. Confirmation Email</p>
                     <p className="text-gray-600">
-                      Check your email for order confirmation
+                      Check your email for order confirmation with details
                     </p>
                   </div>
                   <div>
                     <p className="font-semibold mb-1">2. Processing</p>
                     <p className="text-gray-600">
-                      We'll prepare your order for shipment
+                      We'll prepare your order for shipment (usually 1-3 days)
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold mb-1">3. Tracking</p>
+                    <p className="font-semibold mb-1">3. Shipping</p>
                     <p className="text-gray-600">
-                      You'll receive tracking info when it ships
+                      Your order ships and you receive tracking information
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-semibold mb-1">4. Delivery</p>
+                    <p className="text-gray-600">
+                      {order.estimated_delivery_date
+                        ? `Expected to arrive by ${new Date(
+                            order.estimated_delivery_date
+                          ).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}`
+                        : "Tracking details will be provided"}
                     </p>
                   </div>
                 </CardContent>
