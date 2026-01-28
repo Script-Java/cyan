@@ -711,7 +711,7 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
                 weekday: "short",
                 month: "short",
                 day: "numeric",
-              }
+              },
             ),
         orderLink: `${baseUrl}/order-confirmation?orderId=${id}`,
         shippingAddress: data.shipping_address || undefined,
@@ -719,7 +719,7 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
       });
 
       console.log(
-        `Order confirmation email sent to ${customer?.email} after payment confirmation`
+        `Order confirmation email sent to ${customer?.email} after payment confirmation`,
       );
     } catch (emailError) {
       console.error("Failed to send confirmation email:", emailError);

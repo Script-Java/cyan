@@ -270,15 +270,14 @@ export default function OrderConfirmation() {
                         📦 Expected Delivery Date
                       </p>
                       <p className="text-lg font-bold text-blue-900">
-                        {new Date(order.estimated_delivery_date).toLocaleDateString(
-                          "en-US",
-                          {
-                            weekday: "long",
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          }
-                        )}
+                        {new Date(
+                          order.estimated_delivery_date,
+                        ).toLocaleDateString("en-US", {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
                       </p>
                     </div>
                   )}
@@ -413,7 +412,7 @@ export default function OrderConfirmation() {
                     <p className="text-gray-600">
                       {order.estimated_delivery_date
                         ? `Expected to arrive by ${new Date(
-                            order.estimated_delivery_date
+                            order.estimated_delivery_date,
                           ).toLocaleDateString("en-US", {
                             month: "short",
                             day: "numeric",
