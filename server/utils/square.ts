@@ -615,6 +615,11 @@ export async function createSquarePaymentLink(data: {
 
     paymentLinkBody.order = orderObject;
 
+    // Add the redirect URL for after payment completion
+    if (data.redirectUrl) {
+      paymentLinkBody.redirect_url = data.redirectUrl;
+    }
+
     // Add the total amount the payment link should collect
     // This is the grand total including all line items, taxes, and shipping
     paymentLinkBody.amount_money = {
