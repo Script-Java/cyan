@@ -43,6 +43,16 @@ const pageTypeOptions: Array<{
     label: "Artwork, Authorization, and Ownership",
     description: "Artwork format & specifications and authorization",
   },
+  {
+    value: "gdpr",
+    label: "GDPR Compliance",
+    description: "GDPR data processing and privacy rights",
+  },
+  {
+    value: "ccpa",
+    label: "CCPA Rights",
+    description: "California privacy rights and information",
+  },
 ];
 
 export default function CreateLegalPage() {
