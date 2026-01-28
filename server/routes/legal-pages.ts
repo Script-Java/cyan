@@ -56,7 +56,7 @@ export const handleGetLegalPageByType: RequestHandler = async (req, res) => {
   try {
     const { pageType } = req.params;
 
-    const validTypes = ["privacy", "terms", "shipping", "returns", "legal"];
+    const validTypes = ["privacy", "terms", "shipping", "returns", "legal", "gdpr", "ccpa"];
     if (!validTypes.includes(pageType)) {
       return res.status(400).json({ error: "Invalid page type" });
     }
