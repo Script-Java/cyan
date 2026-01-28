@@ -3,31 +3,37 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Loader2, CheckCircle } from "lucide-react";
+import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function CheckoutSuccess() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [isConfirming, setIsConfirming] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
   const [orderData, setOrderData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [verificationAttempts, setVerificationAttempts] = useState(0);
 
   const orderId = searchParams.get("orderId");
+  const MAX_VERIFICATION_ATTEMPTS = 5;
+  const VERIFICATION_INTERVAL = 2000; // 2 seconds
 
   useEffect(() => {
-    const confirmPayment = async () => {
+    const verifyPayment = async () => {
       if (!orderId) {
         setError("No order ID provided");
         setIsLoading(false);
         return;
       }
 
-      setIsConfirming(true);
-      console.log("CheckoutSuccess: Confirming payment for order", orderId);
+      setIsVerifying(true);
+      console.log(
+        `CheckoutSuccess: Verifying payment for order ${orderId} (attempt ${verificationAttempts + 1})`,
+      );
 
       try {
-        // Confirm the payment with the backend
+        // Verify the payment with the backend
         const response = await fetch("/api/square/confirm-checkout", {
           method: "POST",
           headers: {
@@ -36,38 +42,59 @@ export default function CheckoutSuccess() {
           body: JSON.stringify({ orderId }),
         });
 
-        console.log("Confirm checkout response status:", response.status);
+        console.log("Payment verification response status:", response.status);
 
         const result = await response.json();
 
+        // 202 Accepted means payment is still processing
+        if (response.status === 202) {
+          console.log("Payment is still processing, will retry...");
+          setError(null); // Clear error for retry
+
+          if (verificationAttempts < MAX_VERIFICATION_ATTEMPTS) {
+            // Retry after a delay
+            setTimeout(() => {
+              setVerificationAttempts((prev) => prev + 1);
+            }, VERIFICATION_INTERVAL);
+            setIsVerifying(false);
+            return;
+          } else {
+            // Max attempts reached
+            throw new Error(
+              "Payment verification timeout. Please refresh this page to check your order status.",
+            );
+          }
+        }
+
         if (!response.ok) {
           throw new Error(
-            result.error || `Payment confirmation failed (${response.status})`,
+            result.error || `Payment verification failed (${response.status})`,
           );
         }
 
-        console.log("Payment confirmed successfully, redirecting...");
+        console.log("Payment verified successfully, redirecting...");
         setOrderData(result.order);
         localStorage.removeItem("cart_id");
         localStorage.removeItem("cart");
 
+        // Redirect immediately to order confirmation
         setTimeout(() => {
           console.log("Navigating to order confirmation page...");
           navigate(`/order-confirmation?orderId=${orderId}`);
-        }, 2000);
+        }, 1500);
       } catch (err) {
         const errorMessage =
-          err instanceof Error ? err.message : "Failed to confirm payment";
+          err instanceof Error ? err.message : "Failed to verify payment";
         setError(errorMessage);
-        console.error("Payment confirmation error:", err);
+        console.error("Payment verification error:", err);
       } finally {
-        setIsConfirming(false);
+        setIsVerifying(false);
         setIsLoading(false);
       }
     };
 
-    confirmPayment();
-  }, [orderId, navigate]);
+    verifyPayment();
+  }, [orderId, navigate, verificationAttempts]);
 
   if (isLoading) {
     return (
@@ -88,16 +115,28 @@ export default function CheckoutSuccess() {
           <div className="max-w-md mx-auto px-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-red-600">Payment Error</CardTitle>
+                <CardTitle className="text-red-600">Payment Alert</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-gray-700">{error}</p>
-                <Button
-                  onClick={() => navigate("/checkout")}
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                >
-                  Return to Checkout
-                </Button>
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => navigate(`/order-confirmation?orderId=${orderId}`)}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                  >
+                    View Order Status
+                  </Button>
+                  <Button
+                    onClick={() => navigate("/checkout")}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    Return to Checkout
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -122,10 +161,10 @@ export default function CheckoutSuccess() {
               <p className="text-gray-700">
                 Your payment has been processed successfully.
               </p>
-              {isConfirming && (
+              {isVerifying && (
                 <div className="flex items-center justify-center gap-2 text-gray-600">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Confirming your order...</span>
+                  <span>Verifying your order... (Attempt {verificationAttempts + 1})</span>
                 </div>
               )}
               <p className="text-sm text-gray-500">
