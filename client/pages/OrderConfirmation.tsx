@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,168 +8,101 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CheckCircle, Loader2, Home } from "lucide-react";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Loader2, CheckCircle, AlertCircle, Package, Truck, Calendar } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useStoreCredit } from "@/hooks/useStoreCredit";
-import { trackPurchase } from "@/lib/analytics";
-import { formatOrderNumber } from "@/lib/order-number";
 
-interface OrderDetails {
+interface OrderItem {
   id: number;
-  customer_id: number;
-  total: number;
-  status: string;
-  date_created: string;
-  estimated_delivery_date?: string;
-  products?: Array<{
-    id: number;
-    name: string;
-    quantity: number;
-    price: number;
-  }>;
-  billing_address?: {
-    first_name: string;
-    last_name: string;
-    street_1: string;
-    city: string;
-    state_or_province: string;
-    postal_code: string;
-  };
-  shipping_addresses?: Array<{
-    first_name: string;
-    last_name: string;
-    street_1: string;
-    city: string;
-    state_or_province: string;
-    postal_code: string;
-  }>;
+  product_id: number;
+  product_name: string;
+  quantity: number;
+  price: number;
+  design_file_url?: string;
 }
 
-const STATUS_DISPLAY: Record<
-  string | number,
-  { label: string; color: string }
-> = {
-  0: { label: "Pending", color: "bg-yellow-100 text-yellow-800" },
-  1: { label: "Completed", color: "bg-green-100 text-green-800" },
-  2: { label: "Shipped", color: "bg-blue-100 text-blue-800" },
-  3: { label: "Delivered", color: "bg-green-100 text-green-800" },
-  4: { label: "Cancelled", color: "bg-red-100 text-red-800" },
-  5: { label: "Refunded", color: "bg-purple-100 text-purple-800" },
-  paid: { label: "✓ Paid", color: "bg-green-100 text-green-800" },
-  pending: { label: "Pending", color: "bg-yellow-100 text-yellow-800" },
-  processing: { label: "Processing", color: "bg-blue-100 text-blue-800" },
-  shipped: { label: "Shipped", color: "bg-blue-100 text-blue-800" },
-  delivered: { label: "Delivered", color: "bg-green-100 text-green-800" },
-  cancelled: { label: "Cancelled", color: "bg-red-100 text-red-800" },
-};
+interface ShippingAddress {
+  firstName: string;
+  lastName: string;
+  street: string;
+  street2?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
+
+interface Order {
+  id: number;
+  status: string;
+  total: number;
+  subtotal: number;
+  tax: number;
+  shipping: number;
+  discount?: number;
+  created_at: string;
+  estimated_delivery_date?: string;
+  shipping_address?: ShippingAddress;
+  orderItems?: OrderItem[];
+}
 
 export default function OrderConfirmation() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const orderId = searchParams.get("orderId");
-
-  const [order, setOrder] = useState<OrderDetails | null>(null);
+  const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [authToken, setAuthToken] = useState<string | null>(null);
-  const { fetchStoreCredit } = useStoreCredit();
 
-  useEffect(() => {
-    const token = localStorage.getItem("auth_token");
-    setAuthToken(token);
-    // Allow guest users to view their order confirmation without auth
-  }, []);
-
-  // Clear cart on confirmation page load (final safety net)
-  useEffect(() => {
-    localStorage.removeItem("cart");
-    localStorage.removeItem("cart_id");
-  }, []);
-
-  // useEffect(() => {
-  //   // Store credit fetch disabled temporarily
-  //   // const token = localStorage.getItem("authToken");
-  //   // if (token) {
-  //   //   fetchStoreCredit();
-  //   // }
-  // }, [fetchStoreCredit]);
+  const orderId = searchParams.get("orderId");
 
   useEffect(() => {
     const fetchOrder = async () => {
+      if (!orderId) {
+        setError("No order ID provided");
+        setIsLoading(false);
+        return;
+      }
+
       try {
-        if (!orderId) {
-          setError("No order ID provided");
-          setIsLoading(false);
-          return;
+        console.log("Fetching order details:", orderId);
+
+        const response = await fetch(`/api/orders/${orderId}`);
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch order (${response.status})`,
+          );
         }
 
-        // Try the public endpoint first (works for both guest and authenticated users)
-        const response = await fetch(`/api/public/orders/${orderId}`);
+        const data = await response.json();
+        console.log("Order data received:", data);
 
-        if (response.ok) {
-          const data = await response.json();
-          setOrder(data.data);
-          setIsLoading(false);
-          return;
+        // Only show order if payment is confirmed
+        if (
+          data.status !== "paid" &&
+          data.status !== "completed" &&
+          data.status !== "processing" &&
+          data.status !== "shipped" &&
+          data.status !== "delivered"
+        ) {
+          throw new Error(
+            "Order is not yet confirmed. Please wait for payment verification.",
+          );
         }
 
-        // If public endpoint fails and user is authenticated, try the protected endpoint
-        if (authToken) {
-          const headers: Record<string, string> = {
-            Authorization: `Bearer ${authToken}`,
-          };
-
-          const protectedResponse = await fetch(`/api/orders/${orderId}`, {
-            headers,
-          });
-
-          if (protectedResponse.ok) {
-            const data = await protectedResponse.json();
-            setOrder(data.data);
-            setIsLoading(false);
-            return;
-          }
-        }
-
-        // If both endpoints fail, show a placeholder
-        console.warn("Failed to fetch order from both endpoints");
-        setOrder({
-          id: parseInt(orderId || "0"),
-          customer_id: 0,
-          total: 0,
-          status: "pending",
-          date_created: new Date().toISOString(),
-          products: [],
-        });
+        setOrder(data);
       } catch (err) {
-        console.error("Failed to fetch order:", err);
-        // Show success page even if we can't fetch details for guest orders
-        setOrder({
-          id: parseInt(orderId || "0"),
-          customer_id: 0,
-          total: 0,
-          status: "pending",
-          date_created: new Date().toISOString(),
-          products: [],
-        });
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to load order details";
+        setError(errorMessage);
+        console.error("Order fetch error:", err);
       } finally {
         setIsLoading(false);
       }
     };
 
-    if (orderId) {
-      fetchOrder();
-    }
-  }, [authToken, orderId]);
-
-  // Track purchase when order is loaded
-  useEffect(() => {
-    if (order && order.id && order.total > 0 && !isLoading) {
-      const itemCount = order.products?.length || 0;
-      trackPurchase(order.id, order.total, itemCount);
-    }
-  }, [order, isLoading]);
+    fetchOrder();
+  }, [orderId]);
 
   if (isLoading) {
     return (
@@ -189,27 +121,21 @@ export default function OrderConfirmation() {
         <Header />
         <main className="pt-20 min-h-screen bg-gray-50 py-12">
           <div className="max-w-2xl mx-auto px-4">
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-            <Button asChild className="mt-6">
-              <Link to="/">Return Home</Link>
-            </Button>
-          </div>
-        </main>
-      </>
-    );
-  }
-
-  if (!order) {
-    return (
-      <>
-        <Header />
-        <main className="pt-20 min-h-screen bg-gray-50 py-12">
-          <div className="max-w-2xl mx-auto px-4">
             <Card>
-              <CardContent className="pt-6">
-                <p className="text-gray-600">Order not found</p>
+              <CardHeader>
+                <CardTitle className="text-red-600">Order Error</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+                <Button
+                  onClick={() => navigate("/")}
+                  className="w-full bg-blue-600 hover:bg-blue-700"
+                >
+                  Return to Home
+                </Button>
               </CardContent>
             </Card>
           </div>
@@ -218,239 +144,291 @@ export default function OrderConfirmation() {
     );
   }
 
-  const statusInfo = STATUS_DISPLAY[order.status] || {
-    label:
-      typeof order.status === "string"
-        ? order.status.charAt(0).toUpperCase() + order.status.slice(1)
-        : "Unknown",
-    color: "bg-gray-100 text-gray-800",
+  if (!order) {
+    return null;
+  }
+
+  const orderNumber = `SY-${order.id}`;
+  const orderDate = new Date(order.created_at).toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const estimatedDelivery = order.estimated_delivery_date
+    ? new Date(order.estimated_delivery_date).toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+    : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString(
+        "en-US",
+        {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        },
+      );
+
+  const getStatusBadge = () => {
+    switch (order.status) {
+      case "paid":
+        return (
+          <div className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+            <Package className="w-4 h-4" />
+            Processing
+          </div>
+        );
+      case "processing":
+        return (
+          <div className="flex items-center gap-2 px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">
+            <Package className="w-4 h-4" />
+            Processing
+          </div>
+        );
+      case "shipped":
+        return (
+          <div className="flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
+            <Truck className="w-4 h-4" />
+            Shipped
+          </div>
+        );
+      case "delivered":
+        return (
+          <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+            <CheckCircle className="w-4 h-4" />
+            Delivered
+          </div>
+        );
+      default:
+        return (
+          <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
+            {order.status}
+          </div>
+        );
+    }
   };
 
   return (
     <>
       <Header />
       <main className="pt-20 min-h-screen bg-gray-50 py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Success Message */}
-          <div className="text-center mb-12">
-            <div className="flex justify-center mb-6">
-              <CheckCircle className="w-20 h-20 text-green-500" />
-            </div>
-            <h1 className="text-4xl font-bold text-[#030140] mb-4">
-              Order Confirmed!
-            </h1>
-            <p className="text-xl text-gray-600 mb-2">
-              Thank you for your purchase
-            </p>
-            <p className="text-lg text-gray-500">
-              {formatOrderNumber(order.id)} • placed on{" "}
-              {new Date(order.date_created).toLocaleDateString()}
-            </p>
-          </div>
+        <div className="max-w-4xl mx-auto px-4 space-y-8">
+          {/* Success Header */}
+          <Card className="border-green-200 bg-green-50">
+            <CardHeader className="text-center">
+              <div className="flex justify-center mb-4">
+                <CheckCircle className="w-12 h-12 text-green-600" />
+              </div>
+              <CardTitle className="text-2xl text-green-900">
+                Order Confirmed!
+              </CardTitle>
+              <CardDescription className="text-green-800">
+                Thank you for your purchase. Your order is now being prepared.
+              </CardDescription>
+            </CardHeader>
+          </Card>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-            {/* Order Details */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Order Status */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Order Status</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div
-                    className={`inline-block px-4 py-2 rounded-lg font-semibold ${statusInfo.color}`}
-                  >
-                    {statusInfo.label}
-                  </div>
-
-                  {/* Expected Delivery Date */}
-                  {order.estimated_delivery_date && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <p className="text-sm text-blue-600 font-semibold mb-1">
-                        📦 Expected Delivery Date
-                      </p>
-                      <p className="text-lg font-bold text-blue-900">
-                        {new Date(
-                          order.estimated_delivery_date,
-                        ).toLocaleDateString("en-US", {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </p>
-                    </div>
-                  )}
-
-                  <p className="text-gray-600">
-                    We've sent a confirmation email with your order details. You
-                    can track your shipment once it's dispatched.
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Shipping Address */}
-              {order.shipping_addresses &&
-                order.shipping_addresses.length > 0 && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Shipping Address</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-gray-700">
-                        <p className="font-semibold">
-                          {order.shipping_addresses[0].first_name}{" "}
-                          {order.shipping_addresses[0].last_name}
-                        </p>
-                        <p>{order.shipping_addresses[0].street_1}</p>
-                        <p>
-                          {order.shipping_addresses[0].city},{" "}
-                          {order.shipping_addresses[0].state_or_province}{" "}
-                          {order.shipping_addresses[0].postal_code}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
-
-              {/* Billing Address */}
-              {order.billing_address && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Billing Address</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-gray-700">
-                      <p className="font-semibold">
-                        {order.billing_address.first_name}{" "}
-                        {order.billing_address.last_name}
-                      </p>
-                      <p>{order.billing_address.street_1}</p>
-                      <p>
-                        {order.billing_address.city},{" "}
-                        {order.billing_address.state_or_province}{" "}
-                        {order.billing_address.postal_code}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-
-            {/* Order Summary */}
-            <div className="lg:col-span-1">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Order Summary</CardTitle>
+          {/* Order Number and Status */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-3xl font-bold text-[#030140]">
+                    {orderNumber}
+                  </CardTitle>
                   <CardDescription>
-                    {formatOrderNumber(order.id)}
+                    Ordered on {orderDate}
                   </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="border-b pb-4">
-                    {order.products && order.products.length > 0 ? (
-                      <div className="space-y-3">
-                        {order.products.map((product) => (
-                          <div
-                            key={product.id}
-                            className="flex justify-between text-sm"
-                          >
-                            <div>
-                              <p className="font-medium">{product.name}</p>
-                              <p className="text-gray-600">
-                                Qty: {product.quantity}
-                              </p>
-                            </div>
-                            <p className="font-medium">
-                              ${(product.price * product.quantity).toFixed(2)}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-gray-500 text-sm">Items in order</p>
-                    )}
-                  </div>
+                </div>
+                {getStatusBadge()}
+              </div>
+            </CardHeader>
+          </Card>
 
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="font-semibold">Total</span>
-                      <span className="font-bold text-lg">
-                        ${order.total.toFixed(2)}
-                      </span>
+          {/* Order Items */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Order Items</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {order.orderItems?.map((item) => (
+                  <div key={item.id} className="flex gap-4 pb-4 border-b last:pb-0 last:border-b-0">
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900">
+                        {item.product_name}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Quantity: {item.quantity}
+                      </p>
+                      {item.design_file_url && (
+                        <p className="text-sm text-blue-600 mt-1">
+                          Design uploaded
+                        </p>
+                      )}
+                    </div>
+                    <div className="text-right">
+                      <p className="font-medium text-gray-900">
+                        ${(item.price * item.quantity).toFixed(2)}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        ${item.price.toFixed(2)} each
+                      </p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
-              {/* Next Steps */}
-              <Card className="mt-6">
-                <CardHeader>
-                  <CardTitle className="text-base">What's Next?</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3 text-sm">
-                  <div>
-                    <p className="font-semibold mb-1">1. Confirmation Email</p>
-                    <p className="text-gray-600">
-                      Check your email for order confirmation with details
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">2. Processing</p>
-                    <p className="text-gray-600">
-                      We'll prepare your order for shipment (usually 1-3 days)
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">3. Shipping</p>
-                    <p className="text-gray-600">
-                      Your order ships and you receive tracking information
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">4. Delivery</p>
-                    <p className="text-gray-600">
-                      {order.estimated_delivery_date
-                        ? `Expected to arrive by ${new Date(
-                            order.estimated_delivery_date,
-                          ).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                          })}`
-                        : "Tracking details will be provided"}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+          {/* Order Summary */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Order Summary</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Subtotal</span>
+                <span className="font-medium">
+                  ${order.subtotal.toFixed(2)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Shipping</span>
+                <span className="font-medium">
+                  ${order.shipping.toFixed(2)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Tax</span>
+                <span className="font-medium">${order.tax.toFixed(2)}</span>
+              </div>
+              {order.discount && order.discount > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Discount</span>
+                  <span className="font-medium text-green-600">
+                    -${order.discount.toFixed(2)}
+                  </span>
+                </div>
+              )}
+              <div className="pt-3 border-t-2 flex justify-between">
+                <span className="font-bold text-lg text-gray-900">Total</span>
+                <span className="font-bold text-lg text-[#FFD713]">
+                  ${order.total.toFixed(2)}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              asChild
-              variant="outline"
-              className="border-[#030140] text-[#030140] hover:bg-[#030140]/5"
-            >
-              <Link to="/order-history">View Order History</Link>
-            </Button>
-            <Button
-              asChild
-              className="bg-[#FFD713] text-[#030140] hover:bg-[#FFD713]/90"
-            >
-              <Link to="/products">Continue Shopping</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="border-[#030140] text-[#030140] hover:bg-[#030140]/5"
-            >
-              <Link to="/">
-                <Home className="w-4 h-4 mr-2" />
-                Back Home
-              </Link>
-            </Button>
-          </div>
+          {/* Shipping & Delivery */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Shipping & Delivery</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {order.shipping_address && (
+                <div>
+                  <p className="text-sm font-medium text-gray-500 mb-2">
+                    Delivery Address
+                  </p>
+                  <p className="text-gray-900">
+                    {order.shipping_address.firstName}{" "}
+                    {order.shipping_address.lastName}
+                  </p>
+                  <p className="text-gray-600">
+                    {order.shipping_address.street}
+                  </p>
+                  {order.shipping_address.street2 && (
+                    <p className="text-gray-600">
+                      {order.shipping_address.street2}
+                    </p>
+                  )}
+                  <p className="text-gray-600">
+                    {order.shipping_address.city}, {order.shipping_address.state}{" "}
+                    {order.shipping_address.postalCode}
+                  </p>
+                  <p className="text-gray-600">
+                    {order.shipping_address.country}
+                  </p>
+                </div>
+              )}
+
+              <div className="pt-4 border-t">
+                <div className="flex items-center gap-2 mb-2">
+                  <Calendar className="w-4 h-4 text-blue-600" />
+                  <p className="text-sm font-medium text-gray-500">
+                    Estimated Delivery
+                  </p>
+                </div>
+                <p className="text-gray-900 font-medium">{estimatedDelivery}</p>
+                <p className="text-sm text-gray-600 mt-1">
+                  Standard shipping (14-21 business days)
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Next Steps */}
+          <Card>
+            <CardHeader>
+              <CardTitle>What's Next?</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[#FFD713] flex items-center justify-center text-sm font-bold text-[#030140] flex-shrink-0">
+                    1
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">
+                      Order Confirmation
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      A confirmation email has been sent to your email address.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-bold text-gray-600 flex-shrink-0">
+                    2
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">
+                      Production & Quality Check
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      We'll create your stickers and perform a quality check.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-bold text-gray-600 flex-shrink-0">
+                    3
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">Shipping</p>
+                    <p className="text-sm text-gray-600">
+                      Your order will be shipped via USPS or UPS. You'll receive
+                      a tracking number.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-4">
+                <Button
+                  onClick={() => navigate("/")}
+                  className="w-full bg-[#FFD713] hover:bg-[#e6c200] text-[#030140] font-medium"
+                >
+                  Continue Shopping
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </main>
     </>
