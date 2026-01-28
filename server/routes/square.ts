@@ -956,7 +956,7 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
     }
 
     const paymentId = payment.id;
-    const orderId = payment.order_id;
+    const squareOrderId = payment.order_id;
     const paymentStatus = payment.status;
     const amountMoney = payment.amount_money || {};
     const cardDetails = payment.card_details || {};
@@ -964,7 +964,7 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
 
     console.log("Processing Square payment creation:", {
       paymentId,
-      orderId,
+      squareOrderId,
       status: paymentStatus,
       amount: amountMoney.amount,
     });
@@ -977,20 +977,51 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
       return;
     }
 
-    if (!orderId) {
-      console.warn("No order ID associated with payment:", paymentId);
+    if (!squareOrderId) {
+      console.warn("No Square order ID associated with payment:", paymentId);
       return;
     }
 
-    // Check if order already exists and has been finalized
-    const { data: existingOrder } = await supabase
+    // Get the Square order to find our order ID via reference_id
+    const { data: squareOrder } = await supabase
       .from("orders")
       .select("id, status, square_payment_details")
-      .eq("id", orderId)
+      .or(`id.eq.${squareOrderId}, square_order_id.eq.${squareOrderId}`)
       .single()
       .catch(() => ({ data: null }));
 
-    if (existingOrder?.status === "paid" || existingOrder?.status === "completed") {
+    if (!squareOrder) {
+      // Try to find by parsing the order ID if it's numeric
+      const numOrderId = parseInt(squareOrderId, 10);
+      if (!isNaN(numOrderId)) {
+        const { data: orderByNum } = await supabase
+          .from("orders")
+          .select("id, status, square_payment_details")
+          .eq("id", numOrderId)
+          .single()
+          .catch(() => ({ data: null }));
+
+        if (orderByNum) {
+          // Found order, use it
+          const orderId = orderByNum.id;
+
+          if (orderByNum.status === "paid" || orderByNum.status === "completed") {
+            console.log("Order already finalized, skipping duplicate payment processing:", orderId);
+            return;
+          }
+        } else {
+          console.warn("Could not find order for Square payment:", squareOrderId);
+          return;
+        }
+      } else {
+        console.warn("Could not find order for Square payment:", squareOrderId);
+        return;
+      }
+    }
+
+    const orderId = squareOrder.id;
+
+    if (squareOrder.status === "paid" || squareOrder.status === "completed") {
       console.log("Order already finalized, skipping duplicate payment processing:", orderId);
       return;
     }
