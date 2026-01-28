@@ -24,6 +24,7 @@ export default function CheckoutSuccess() {
       }
 
       setIsConfirming(true);
+      console.log("CheckoutSuccess: Confirming payment for order", orderId);
 
       try {
         // Confirm the payment with the backend
@@ -35,6 +36,8 @@ export default function CheckoutSuccess() {
           body: JSON.stringify({ orderId }),
         });
 
+        console.log("Confirm checkout response status:", response.status);
+
         const result = await response.json();
 
         if (!response.ok) {
@@ -43,11 +46,13 @@ export default function CheckoutSuccess() {
           );
         }
 
+        console.log("Payment confirmed successfully, redirecting...");
         setOrderData(result.order);
         localStorage.removeItem("cart_id");
         localStorage.removeItem("cart");
 
         setTimeout(() => {
+          console.log("Navigating to order confirmation page...");
           navigate(`/order-confirmation?orderId=${orderId}`);
         }, 2000);
       } catch (err) {
