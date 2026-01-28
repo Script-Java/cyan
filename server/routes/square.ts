@@ -1351,54 +1351,56 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
     }
 
     const paymentId = payment.id;
-    const orderIdRaw = payment.order_id;
+    const squareOrderId = payment.order_id;
     const paymentStatus = payment.status;
     const amountMoney = payment.amount_money || {};
     const cardDetails = payment.card_details || {};
     const card = cardDetails.card || {};
 
-    if (!orderIdRaw) {
+    if (!squareOrderId) {
       console.warn("No order ID associated with payment:", paymentId);
-      return;
-    }
-
-    const orderId = parseInt(orderIdRaw, 10);
-    if (isNaN(orderId)) {
-      console.warn("Invalid order ID format:", orderIdRaw);
       return;
     }
 
     console.log("Processing Square payment update:", {
       paymentId,
-      orderId,
+      squareOrderId,
       status: paymentStatus,
       amount: amountMoney.amount,
     });
 
-    // Get the current order
-    const { data: order, error: orderError } = await supabase
-      .from("orders")
-      .select("id, customer_id, total, status, square_payment_details")
-      .eq("id", orderId)
-      .single();
+    // Try to find order by numeric ID first (in case Square sends our ID)
+    let order = null;
+    const numOrderId = parseInt(squareOrderId, 10);
+    if (!isNaN(numOrderId)) {
+      const { data: orderByNum } = await supabase
+        .from("orders")
+        .select("id, customer_id, total, status, square_payment_details")
+        .eq("id", numOrderId)
+        .single()
+        .catch(() => ({ data: null }));
+      order = orderByNum;
+    }
 
-    if (orderError || !order) {
+    if (!order) {
       console.warn(
         "Order not found in Supabase for payment:",
-        orderId,
-        orderError,
+        squareOrderId,
       );
       return;
     }
 
-    // Check if payment is being completed (COMPLETED or CAPTURED status)
+    const orderId = order.id;
+
+    // Check if payment is being completed (COMPLETED or APPROVED status)
     const isPaymentCompleted =
-      paymentStatus === "COMPLETED" || cardDetails.status === "CAPTURED";
+      paymentStatus === "COMPLETED" || paymentStatus === "APPROVED" || cardDetails.status === "CAPTURED";
 
     // Check if this is the first time the payment is being marked as completed
     const previousPaymentDetails = order.square_payment_details || {};
     const wasAlreadyCompleted =
       previousPaymentDetails.payment_status === "COMPLETED" ||
+      previousPaymentDetails.payment_status === "APPROVED" ||
       previousPaymentDetails.card_status === "CAPTURED";
 
     // Prepare updated payment details object
@@ -1424,7 +1426,7 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
 
     // Determine new status based on payment status
     let newStatus = order.status;
-    if (paymentStatus === "COMPLETED") {
+    if (paymentStatus === "COMPLETED" || paymentStatus === "APPROVED") {
       newStatus = "paid";
     } else if (paymentStatus === "FAILED" || paymentStatus === "CANCELED") {
       newStatus = "payment_failed";
