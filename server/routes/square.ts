@@ -1434,17 +1434,7 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
       amount: amountMoney.amount,
     });
 
-    // Only process completed or captured payments
-    if (
-      paymentStatus !== "COMPLETED" &&
-      paymentStatus !== "APPROVED" &&
-      cardDetails.status !== "CAPTURED"
-    ) {
-      console.log(`Payment status is ${paymentStatus}, skipping order update`);
-      return;
-    }
-
-    // Get the current order to check if we need to award store credit
+    // Get the current order
     const { data: order, error: orderError } = await supabase
       .from("orders")
       .select("id, customer_id, total, status, square_payment_details")
@@ -1459,6 +1449,10 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
       );
       return;
     }
+
+    // Check if payment is being completed (COMPLETED or CAPTURED status)
+    const isPaymentCompleted =
+      paymentStatus === "COMPLETED" || cardDetails.status === "CAPTURED";
 
     // Check if this is the first time the payment is being marked as completed
     const previousPaymentDetails = order.square_payment_details || {};
@@ -1487,8 +1481,16 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
       captured_at: cardDetails.card_payment_timeline?.captured_at || null,
     };
 
+    // Determine new status based on payment status
+    let newStatus = order.status;
+    if (paymentStatus === "COMPLETED") {
+      newStatus = "paid";
+    } else if (paymentStatus === "FAILED" || paymentStatus === "CANCELED") {
+      newStatus = "payment_failed";
+    }
+    // For PENDING and APPROVED, keep the current status (don't change pending_payment)
+
     // Update order with payment details
-    const newStatus = paymentStatus === "COMPLETED" ? "paid" : order.status;
     const { error: updateError } = await supabase
       .from("orders")
       .update({
@@ -1503,14 +1505,13 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
       return;
     }
 
-    console.log("Order updated with payment details:", orderId);
+    console.log("Order updated with payment details:", {
+      orderId,
+      newStatus,
+    });
 
     // Award store credit only if this is the first time payment is completed
-    if (
-      !wasAlreadyCompleted &&
-      order.customer_id &&
-      (paymentStatus === "COMPLETED" || cardDetails.status === "CAPTURED")
-    ) {
+    if (!wasAlreadyCompleted && isPaymentCompleted && order.customer_id) {
       const earnedCredit = order.total * 0.05;
       await updateCustomerStoreCredit(
         order.customer_id,
@@ -1523,9 +1524,80 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
         customerId: order.customer_id,
         earnedCredit,
       });
+
+      // Send confirmation email now that payment is confirmed
+      try {
+        const { data: customer } = await supabase
+          .from("customers")
+          .select("*")
+          .eq("id", order.customer_id)
+          .single();
+
+        const { data: orderItems } = await supabase
+          .from("order_items")
+          .select("*")
+          .eq("order_id", orderId);
+
+        const baseUrl = process.env.BASE_URL || "http://localhost:5173";
+
+        await sendOrderConfirmationEmail({
+          customerEmail: customer?.email || order?.email || "customer@example.com",
+          customerName:
+            customer?.first_name && customer?.last_name
+              ? `${customer.first_name} ${customer.last_name}`
+              : "Valued Customer",
+          orderNumber: formatOrderNumber(orderId),
+          orderDate: new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          items:
+            orderItems?.map((item) => ({
+              name: item.product_name,
+              quantity: item.quantity,
+              price: item.price,
+              designFileUrl: item.design_file_url,
+              options: item.options,
+            })) || [],
+          subtotal: order?.subtotal || 0,
+          tax: order?.tax || 0,
+          shipping: order?.shipping || 0,
+          discount: order?.discount || 0,
+          discountCode: order?.discount_code,
+          total: order?.total || 0,
+          estimatedDelivery: order?.estimated_delivery_date
+            ? new Date(order.estimated_delivery_date).toLocaleDateString(
+                "en-US",
+                {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                },
+              )
+            : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString(
+                "en-US",
+                {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                },
+              ),
+          orderLink: `${baseUrl}/order-confirmation?orderId=${orderId}`,
+          shippingAddress: order?.shipping_address || undefined,
+          policies: undefined,
+        });
+
+        console.log(
+          `Order confirmation email sent to ${customer?.email} after payment completion`,
+        );
+      } catch (emailError) {
+        console.error("Failed to send confirmation email:", emailError);
+        // Don't fail the webhook if email fails
+      }
     } else if (wasAlreadyCompleted) {
       console.log(
-        "Payment already completed, skipping duplicate store credit award:",
+        "Payment already completed, skipping duplicate store credit award and email:",
         orderId,
       );
     }
