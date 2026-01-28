@@ -311,7 +311,7 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
  * Get all orders from Supabase (admin only) with pagination
  * Fetches orders regardless of status with pagination to reduce response size
  * Returns orders with customer details and tracking info
- * Supports page and limit query parameters for pagination
+ * Supports page, limit, and date query parameters for pagination and filtering
  */
 export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
   try {
@@ -322,15 +322,45 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
       Math.max(1, parseInt(req.query.limit as string) || 20),
     ); // Max 20 per page
     const offset = (page - 1) * limit;
+    const dateFilter = (req.query.date as string) || null;
 
     console.log(
-      `Fetching orders - Page: ${page}, Limit: ${limit}, Offset: ${offset}`,
+      `Fetching orders - Page: ${page}, Limit: ${limit}, Offset: ${offset}, Date: ${dateFilter || "all"}`,
     );
 
-    // First, get the total count of orders
-    const { count: totalCount, error: countError } = await supabase
+    // Build the initial query
+    let countQuery = supabase.from("orders").select("id", { count: "exact", head: true });
+    let dataQuery = supabase
       .from("orders")
-      .select("id", { count: "exact", head: true });
+      .select(
+        `
+        id,
+        customer_id,
+        status,
+        total,
+        subtotal,
+        tax,
+        shipping,
+        created_at,
+        updated_at,
+        customers(id,first_name,last_name,email),
+        order_items(id,quantity,product_name,options),
+        proofs(id,status)
+        `,
+      )
+      .order("created_at", { ascending: false });
+
+    // Apply date filter if provided
+    if (dateFilter) {
+      // Filter by date (created_at between start and end of day)
+      const startOfDay = `${dateFilter}T00:00:00.000Z`;
+      const endOfDay = `${dateFilter}T23:59:59.999Z`;
+      countQuery = countQuery.gte("created_at", startOfDay).lte("created_at", endOfDay);
+      dataQuery = dataQuery.gte("created_at", startOfDay).lte("created_at", endOfDay);
+    }
+
+    // First, get the total count of orders
+    const { count: totalCount, error: countError } = await countQuery;
 
     if (countError) {
       console.error("Error getting order count:", countError);
@@ -340,26 +370,7 @@ export const handleGetAllAdminOrders: RequestHandler = async (req, res) => {
     // Fetch paginated orders from Supabase
     let supabaseOrders: any[] = [];
     try {
-      const result = await supabase
-        .from("orders")
-        .select(
-          `
-          id,
-          customer_id,
-          status,
-          total,
-          subtotal,
-          tax,
-          shipping,
-          created_at,
-          updated_at,
-          customers(id,first_name,last_name,email),
-          order_items(id,quantity,product_name,options),
-          proofs(id,status)
-          `,
-        )
-        .order("created_at", { ascending: false })
-        .range(offset, offset + limit - 1); // Paginate
+      const result = await dataQuery.range(offset, offset + limit - 1); // Paginate
 
       supabaseOrders = result.data || [];
 
