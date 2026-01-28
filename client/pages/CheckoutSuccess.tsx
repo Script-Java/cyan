@@ -8,14 +8,14 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function CheckoutSuccess() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const { orderId: pathOrderId } = useParams<{ orderId: string }>();
   const [isLoading, setIsLoading] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
   const [orderData, setOrderData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [verificationAttempts, setVerificationAttempts] = useState(0);
 
-  const orderId = searchParams.get("orderId");
+  const orderId = pathOrderId;
   const MAX_VERIFICATION_ATTEMPTS = 5;
   const VERIFICATION_INTERVAL = 2000; // 2 seconds
 
