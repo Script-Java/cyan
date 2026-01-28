@@ -122,7 +122,10 @@ export default function App() {
                 />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/checkout-new" element={<CheckoutNew />} />
-                <Route path="/checkout-success/:orderId" element={<CheckoutSuccess />} />
+                <Route
+                  path="/checkout-success/:orderId"
+                  element={<CheckoutSuccess />}
+                />
                 <Route
                   path="/order-confirmation/:orderId"
                   element={<OrderConfirmation />}
