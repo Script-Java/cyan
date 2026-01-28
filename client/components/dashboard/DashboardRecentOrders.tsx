@@ -24,6 +24,8 @@ const getStatusColor = (status: string) => {
       return "bg-blue-100 text-blue-800";
     case "PRINTING":
       return "bg-orange-100 text-orange-800";
+    case "CUTTING":
+      return "bg-cyan-100 text-cyan-800";
     case "PRINTED":
       return "bg-cyan-100 text-cyan-800";
     case "SHIPPED":
