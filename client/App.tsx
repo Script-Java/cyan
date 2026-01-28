@@ -37,6 +37,7 @@ import Support from "./pages/Support";
 import MyTickets from "./pages/MyTickets";
 import AdminSupport from "./pages/AdminSupport";
 import AdminOrders from "./pages/AdminOrders";
+import AdminOrderDetail from "./pages/AdminOrderDetail";
 import AdminProofs from "./pages/AdminProofs";
 import AdminReviews from "./pages/AdminReviews";
 import AdminEmailNotifications from "./pages/AdminEmailNotifications";
@@ -153,6 +154,10 @@ export default function App() {
                 />
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/orders" element={<AdminOrders />} />
+                <Route
+                  path="/admin/orders/:orderId"
+                  element={<AdminOrderDetail />}
+                />
                 <Route path="/admin/customers" element={<Customers />} />
                 <Route path="/admin/products" element={<AdminProducts />} />
                 <Route path="/admin/products/new" element={<ProductForm />} />
