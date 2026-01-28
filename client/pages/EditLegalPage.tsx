@@ -19,6 +19,8 @@ const pageTypeLabels: Record<string, string> = {
   shipping: "Shipping Policy",
   returns: "Returns Policy",
   legal: "Artwork, Authorization, and Ownership",
+  gdpr: "GDPR Compliance",
+  ccpa: "CCPA Rights",
 };
 
 export default function EditLegalPage() {
