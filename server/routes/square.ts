@@ -599,6 +599,8 @@ export const handleGetSquareLocations: RequestHandler = async (req, res) => {
 
 /**
  * Confirm checkout after Square redirect
+ * Note: The webhook handler already sets status to "paid" when payment is confirmed.
+ * This endpoint just verifies the order exists and returns its details.
  */
 export const handleConfirmCheckout: RequestHandler = async (req, res) => {
   try {
@@ -635,102 +637,31 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
       });
     }
 
-    // Update order status to completed
-    const { error: updateError } = await supabase
-      .from("orders")
-      .update({ status: "completed" })
-      .eq("id", id);
-
-    if (updateError) {
-      console.error("Failed to update order status:", updateError);
-      return res.status(400).json({
-        error: "Failed to confirm order",
-      });
-    }
-
-    // Fetch customer details
-    const { data: customer, error: customerError } = await supabase
-      .from("customers")
-      .select("*")
-      .eq("id", data.customer_id)
-      .single();
-
-    if (customerError) {
-      console.error("Failed to fetch customer details:", customerError);
-    }
-
-    // Fetch order items
-    const { data: orderItems, error: itemsError } = await supabase
-      .from("order_items")
-      .select("*")
-      .eq("order_id", id);
-
-    if (itemsError) {
-      console.error("Failed to fetch order items:", itemsError);
-    }
-
-    // Send order confirmation email now that payment is confirmed
-    try {
-      const baseUrl = process.env.BASE_URL || "http://localhost:5173";
-
-      await sendOrderConfirmationEmail({
-        customerEmail: customer?.email || data.email || "customer@example.com",
-        customerName:
-          customer?.first_name && customer?.last_name
-            ? `${customer.first_name} ${customer.last_name}`
-            : "Valued Customer",
-        orderNumber: formatOrderNumber(id),
-        orderDate: new Date(data.created_at).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }),
-        items:
-          orderItems?.map((item) => ({
-            name: item.product_name,
-            quantity: item.quantity,
-            price: item.price,
-            designFileUrl: item.design_file_url,
-            options: item.options,
-          })) || [],
-        subtotal: data.subtotal || 0,
-        tax: data.tax || 0,
-        shipping: data.shipping || 0,
-        discount: data.discount || 0,
-        discountCode: data.discount_code,
-        total: data.total,
-        estimatedDelivery: data.estimated_delivery_date
-          ? new Date(data.estimated_delivery_date).toLocaleDateString("en-US", {
-              weekday: "short",
-              month: "short",
-              day: "numeric",
-            })
-          : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString(
-              "en-US",
-              {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-              },
-            ),
-        orderLink: `${baseUrl}/order-confirmation?orderId=${id}`,
-        shippingAddress: data.shipping_address || undefined,
-        policies: undefined,
-      });
-
-      console.log(
-        `Order confirmation email sent to ${customer?.email} after payment confirmation`,
+    // Verify payment status - should be "paid" if webhook succeeded
+    if (data.status !== "paid" && data.status !== "completed") {
+      console.warn(
+        "Order status is not paid after Square redirect:",
+        data.status,
       );
-    } catch (emailError) {
-      console.error("Failed to send confirmation email:", emailError);
-      // Don't fail the payment confirmation if email fails
+      // Return 202 Accepted - payment may still be processing
+      return res.status(202).json({
+        success: false,
+        error: "Payment is still being processed",
+        order: {
+          id: id,
+          status: data.status,
+        },
+      });
     }
+
+    // Email should have already been sent by webhook handler
+    // But we'll verify it exists and return order details
 
     res.json({
       success: true,
       order: {
         id: id,
-        status: "completed",
+        status: data.status,
         total: data.total,
       },
     });
