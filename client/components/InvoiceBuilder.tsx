@@ -348,12 +348,12 @@ export default function InvoiceBuilder({
                 <Input
                   type="number"
                   placeholder="Qty"
-                  value={item.quantity}
+                  value={isNaN(item.quantity) ? "" : item.quantity}
                   onChange={(e) =>
                     handleLineItemChange(
                       index,
                       "quantity",
-                      parseFloat(e.target.value)
+                      e.target.value === "" ? 0 : parseFloat(e.target.value) || 0
                     )
                   }
                   className="col-span-2"
@@ -361,12 +361,12 @@ export default function InvoiceBuilder({
                 <Input
                   type="number"
                   placeholder="Price"
-                  value={item.unit_price}
+                  value={isNaN(item.unit_price) ? "" : item.unit_price}
                   onChange={(e) =>
                     handleLineItemChange(
                       index,
                       "unit_price",
-                      parseFloat(e.target.value)
+                      e.target.value === "" ? 0 : parseFloat(e.target.value) || 0
                     )
                   }
                   className="col-span-2"
