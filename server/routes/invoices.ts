@@ -595,7 +595,7 @@ export const handleCancelInvoice: RequestHandler = async (req, res) => {
     // Log activity
     await supabase.from("invoice_activity").insert({
       invoice_id: id,
-      activity_type: "canceled",
+      action: "canceled",
       description: `Invoice canceled${reason ? `: ${reason}` : ""}`,
     });
 
