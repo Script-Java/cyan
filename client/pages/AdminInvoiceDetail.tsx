@@ -164,9 +164,9 @@ export default function AdminInvoiceDetail() {
                     <tr key={idx} className="border-b">
                       <td className="py-3">{item.item_name}</td>
                       <td className="py-3 text-center">{item.quantity}</td>
-                      <td className="py-3 text-right">${item.unit_price.toFixed(2)}</td>
+                      <td className="py-3 text-right">${(item.unit_price || 0).toFixed(2)}</td>
                       <td className="py-3 text-right font-medium">
-                        ${item.line_total.toFixed(2)}
+                        ${(item.amount || item.quantity * item.unit_price || 0).toFixed(2)}
                       </td>
                     </tr>
                   ))}
