@@ -234,6 +234,27 @@ export default function App() {
                   path="/store-credit-admin"
                   element={<StoreCreditAdmin />}
                 />
+
+                {/* Invoice Routes */}
+                <Route path="/admin/invoices" element={<AdminInvoices />} />
+                <Route
+                  path="/admin/invoices/new"
+                  element={<AdminInvoiceNew />}
+                />
+                <Route
+                  path="/admin/invoices/:id"
+                  element={<AdminInvoiceDetail />}
+                />
+                <Route
+                  path="/admin/invoices/:id/edit"
+                  element={<AdminInvoiceEdit />}
+                />
+                <Route path="/invoice/:token" element={<CustomerInvoiceView />} />
+                <Route
+                  path="/invoice-checkout"
+                  element={<InvoiceCheckout />}
+                />
+
                 <Route path="/auth/callback" element={<AuthCallback />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="/legal/:pageType" element={<LegalPage />} />
