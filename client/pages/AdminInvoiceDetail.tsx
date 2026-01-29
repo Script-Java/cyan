@@ -74,13 +74,47 @@ export default function AdminInvoiceDetail() {
         throw new Error("No payment token received");
       }
 
-      const paymentLink = `https://stickyslap.app/invoice/${token}`;
+      const link = `https://stickyslap.app/invoice/${token}`;
 
-      await navigator.clipboard.writeText(paymentLink);
-      toast.success("Payment link copied to clipboard");
+      // Try modern Clipboard API first
+      try {
+        await navigator.clipboard.writeText(link);
+        toast.success("Payment link copied to clipboard");
+      } catch (clipboardError) {
+        // Fallback: Show modal for manual copy if Clipboard API fails (e.g., in iframe)
+        console.warn("Clipboard API blocked, showing modal fallback", clipboardError);
+        setPaymentLink(link);
+        setShowLinkModal(true);
+      }
     } catch (error) {
       console.error("Copy link error:", error);
       toast.error(error instanceof Error ? error.message : "Failed to copy payment link");
+    }
+  };
+
+  const handleCopyFromModal = async () => {
+    if (paymentLink) {
+      try {
+        await navigator.clipboard.writeText(paymentLink);
+        setShowLinkModal(false);
+        setPaymentLink(null);
+        toast.success("Payment link copied to clipboard");
+      } catch {
+        // If still fails, try the old method
+        const textArea = document.createElement("textarea");
+        textArea.value = paymentLink;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand("copy");
+          toast.success("Payment link copied to clipboard");
+          setShowLinkModal(false);
+          setPaymentLink(null);
+        } catch {
+          toast.error("Could not copy link, please copy manually");
+        }
+        document.body.removeChild(textArea);
+      }
     }
   };
 
