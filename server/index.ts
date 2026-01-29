@@ -208,6 +208,22 @@ import {
   updateReturnRefundPolicy,
 } from "./routes/admin-return-refund-policy";
 import {
+  handleGetInvoices,
+  handleGetInvoice,
+  handleCreateInvoice,
+  handleUpdateInvoice,
+  handleSendInvoice,
+  handleMarkInvoicePaid,
+  handleCancelInvoice,
+  handleGetInvoiceByToken,
+} from "./routes/invoices";
+import {
+  handleUploadArtwork,
+  handleGetArtwork,
+  handleDeleteArtwork,
+  uploadMiddleware,
+} from "./routes/invoice-artwork";
+import {
   handleEcwidMigration,
   handleGetMigrationStatus,
   handleCSVCustomerImport,
