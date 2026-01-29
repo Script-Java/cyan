@@ -20,24 +20,41 @@ export const verifySupabaseToken = async (
 
     const token = authHeader.substring(7);
 
-    // Verify token using Supabase service role to check if it's valid
-    try {
-      const { data: { user }, error } = await supabase.auth.admin.getUserById(token);
-
-      if (error || !user) {
-        // If admin lookup fails, that's okay - just verify it's a valid JWT
-        res.status(401).json({ error: "Invalid or expired token" });
-        return;
+    // Create a client with the user's token to verify it works
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseWithAuth = createClient(
+      process.env.SUPABASE_URL!,
+      process.env.VITE_SUPABASE_ANON_KEY!,
+      {
+        auth: {
+          persistSession: false,
+        },
       }
-    } catch (e) {
-      // Token verification failed
+    );
+
+    // Set auth token
+    await supabaseWithAuth.auth.setSession({
+      access_token: token,
+      refresh_token: "",
+    });
+
+    // Try a simple query to verify token works
+    const { error } = await supabaseWithAuth
+      .from("invoices")
+      .select("id")
+      .limit(1);
+
+    if (error && error.code !== "PGRST116") {
+      // PGRST116 is no rows returned, which is fine
+      // Any other error means the token is invalid
+      console.error("Token verification query error:", error);
       res.status(401).json({ error: "Invalid or expired token" });
       return;
     }
 
-    // Store the token for use in handlers
+    // Store the authenticated client and token in request
+    (req as any).supabaseWithAuth = supabaseWithAuth;
     (req as any).token = token;
-    (req as any).authHeader = `Bearer ${token}`;
     next();
   } catch (error) {
     console.error("Token verification error:", error);
