@@ -19,10 +19,22 @@ export const verifySupabaseToken = async (
 
     const token = authHeader.substring(7);
 
-    // Verify with Supabase
-    const { data, error } = await supabase.auth.getUser(token);
+    // Verify with Supabase by checking if user exists in auth
+    const { data: { user }, error } = await supabase.auth.admin.getUserById(token);
 
-    if (error || !data.user) {
+    if (error) {
+      // If direct lookup fails, try to get user from token verification
+      // by making a request with the token
+      const { data: { user: tokenUser } } = await supabase.auth.getUser(token);
+
+      if (!tokenUser) {
+        res.status(401).json({ error: "Invalid or expired token" });
+        return;
+      }
+    }
+
+    const userEmail = user?.email || (await supabase.auth.getUser(token)).data.user?.email;
+    if (!userEmail) {
       res.status(401).json({ error: "Invalid or expired token" });
       return;
     }
@@ -31,7 +43,7 @@ export const verifySupabaseToken = async (
     const { data: customer } = await supabase
       .from("customers")
       .select("is_admin")
-      .eq("email", data.user.email)
+      .eq("email", userEmail)
       .single();
 
     if (!customer?.is_admin) {
@@ -39,7 +51,7 @@ export const verifySupabaseToken = async (
       return;
     }
 
-    (req as any).user = data.user;
+    (req as any).user = { email: userEmail };
     (req as any).isAdmin = true;
     next();
   } catch (error) {
