@@ -20,31 +20,24 @@ export const verifySupabaseToken = async (
 
     const token = authHeader.substring(7);
 
-    // Create a Supabase client with the user's token for RLS to work
-    const { createClient } = await import("@supabase/supabase-js");
-    const supabaseWithAuth = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.VITE_SUPABASE_ANON_KEY!,
-      {
-        global: {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        },
+    // Verify token using Supabase service role to check if it's valid
+    try {
+      const { data: { user }, error } = await supabase.auth.admin.getUserById(token);
+
+      if (error || !user) {
+        // If admin lookup fails, that's okay - just verify it's a valid JWT
+        res.status(401).json({ error: "Invalid or expired token" });
+        return;
       }
-    );
-
-    // Verify token by trying to get the current user
-    const { data: { user }, error } = await supabaseWithAuth.auth.getUser();
-
-    if (error || !user) {
+    } catch (e) {
+      // Token verification failed
       res.status(401).json({ error: "Invalid or expired token" });
       return;
     }
 
-    // Store the authenticated client in request for use in handlers
-    (req as any).supabaseWithAuth = supabaseWithAuth;
-    (req as any).user = user;
+    // Store the token for use in handlers
+    (req as any).token = token;
+    (req as any).authHeader = `Bearer ${token}`;
     next();
   } catch (error) {
     console.error("Token verification error:", error);
