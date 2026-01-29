@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { supabase } from "../utils/supabase";
 import { v4 as uuidv4 } from "uuid";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 
 // Middleware to verify JWT token for invoices (uses custom JWT format from system)
 export const verifySupabaseToken = async (
@@ -11,7 +12,6 @@ export const verifySupabaseToken = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const jwt = require("jsonwebtoken");
     const JWT_SECRET = process.env.JWT_SECRET;
 
     if (!JWT_SECRET) {
