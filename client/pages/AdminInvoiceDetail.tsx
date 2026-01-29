@@ -118,7 +118,7 @@ export default function AdminInvoiceDetail() {
               <CardContent className="pt-6">
                 <p className="text-sm text-gray-600">Issue Date</p>
                 <p className="font-semibold">
-                  {new Date(invoice.issue_date).toLocaleDateString()}
+                  {invoice.created_at ? new Date(invoice.created_at).toLocaleDateString() : "N/A"}
                 </p>
               </CardContent>
             </Card>
@@ -126,7 +126,7 @@ export default function AdminInvoiceDetail() {
               <CardContent className="pt-6">
                 <p className="text-sm text-gray-600">Due Date</p>
                 <p className="font-semibold">
-                  {new Date(invoice.due_date).toLocaleDateString()}
+                  {invoice.due_date ? new Date(invoice.due_date).toLocaleDateString() : "N/A"}
                 </p>
               </CardContent>
             </Card>
