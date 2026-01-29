@@ -216,6 +216,7 @@ import {
   handleMarkInvoicePaid,
   handleCancelInvoice,
   handleGetInvoiceByToken,
+  verifySupabaseToken,
 } from "./routes/invoices";
 import { handleInitializeInvoicesDatabase } from "./routes/db-setup";
 import {
