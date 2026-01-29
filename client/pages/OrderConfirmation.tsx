@@ -65,7 +65,9 @@ export default function OrderConfirmation() {
   useEffect(() => {
     const fetchOrder = async () => {
       // Allow preview mode with mock data for development
-      if (!orderId || orderId === "preview") {
+      const isPreview = !orderId || orderId === "preview" || isNaN(Number(orderId));
+
+      if (isPreview) {
         // Mock order for testing/editing
         const mockOrder: Order = {
           id: 1001,
