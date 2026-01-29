@@ -1245,65 +1245,55 @@ export function createServer() {
   // Admin routes (Protected - Admin only)
   app.get(
     "/api/admin/invoices",
-    verifyToken,
-    requireAdmin,
+    verifySupabaseToken,
     handleGetInvoices,
   );
   app.get(
     "/api/admin/invoices/:id",
-    verifyToken,
-    requireAdmin,
+    verifySupabaseToken,
     handleGetInvoice,
   );
   app.post(
     "/api/admin/invoices",
-    verifyToken,
-    requireAdmin,
+    verifySupabaseToken,
     handleCreateInvoice,
   );
   app.put(
     "/api/admin/invoices/:id",
-    verifyToken,
-    requireAdmin,
+    verifySupabaseToken,
     handleUpdateInvoice,
   );
   app.post(
     "/api/admin/invoices/:id/send",
-    verifyToken,
-    requireAdmin,
+    verifySupabaseToken,
     handleSendInvoice,
   );
   app.post(
     "/api/admin/invoices/:id/mark-paid",
-    verifyToken,
-    requireAdmin,
+    verifySupabaseToken,
     handleMarkInvoicePaid,
   );
   app.post(
     "/api/admin/invoices/:id/cancel",
-    verifyToken,
-    requireAdmin,
+    verifySupabaseToken,
     handleCancelInvoice,
   );
 
   // Artwork upload routes
   app.post(
     "/api/admin/invoices/:invoiceId/artwork",
-    verifyToken,
-    requireAdmin,
+    verifySupabaseToken,
     uploadMiddleware.single("file"),
     handleUploadArtwork,
   );
   app.get(
     "/api/admin/invoices/:invoiceId/artwork",
-    verifyToken,
-    requireAdmin,
+    verifySupabaseToken,
     handleGetArtwork,
   );
   app.delete(
     "/api/admin/invoices/artwork/:artworkId",
-    verifyToken,
-    requireAdmin,
+    verifySupabaseToken,
     handleDeleteArtwork,
   );
 
