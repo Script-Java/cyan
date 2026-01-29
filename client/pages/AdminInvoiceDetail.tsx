@@ -209,7 +209,7 @@ export default function AdminInvoiceDetail() {
                   {invoice.activity?.map((item: any, idx: number) => (
                     <div key={idx} className="flex gap-3 pb-4 border-b last:border-b-0">
                       <div className="flex-shrink-0">
-                        {item.activity_type === "paid" ? (
+                        {item.action === "paid" ? (
                           <Check className="w-5 h-5 text-green-600" />
                         ) : (
                           <Clock className="w-5 h-5 text-gray-600" />
@@ -217,10 +217,10 @@ export default function AdminInvoiceDetail() {
                       </div>
                       <div className="flex-1">
                         <p className="font-medium text-gray-900">
-                          {item.description}
+                          {item.description || item.action}
                         </p>
                         <p className="text-sm text-gray-600">
-                          {new Date(item.timestamp).toLocaleString()}
+                          {new Date(item.created_at).toLocaleString()}
                         </p>
                       </div>
                     </div>
