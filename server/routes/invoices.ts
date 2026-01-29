@@ -258,8 +258,7 @@ export const handleCreateInvoice: RequestHandler = async (req, res) => {
         description: item.description,
         quantity: item.quantity,
         unit_price: item.unit_price,
-        line_total: item.quantity * item.unit_price,
-        tax_enabled: item.tax_enabled || false,
+        amount: item.quantity * item.unit_price,
       }));
 
       await supabase.from("invoice_line_items").insert(itemsToInsert);
@@ -268,7 +267,7 @@ export const handleCreateInvoice: RequestHandler = async (req, res) => {
     // Log activity
     await supabase.from("invoice_activity").insert({
       invoice_id: invoice.id,
-      activity_type: "created",
+      action: "created",
       description: "Invoice created",
     });
 
