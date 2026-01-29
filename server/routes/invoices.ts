@@ -228,10 +228,8 @@ export const handleCreateInvoice: RequestHandler = async (req, res) => {
         invoice_number,
         customer_name,
         customer_email,
-        company,
-        billing_address,
+        customer_phone: null,
         invoice_type,
-        issue_date,
         due_date,
         notes,
         subtotal,
@@ -239,9 +237,14 @@ export const handleCreateInvoice: RequestHandler = async (req, res) => {
         tax_amount,
         shipping: shipping || 0,
         discount_amount: discount_amount || 0,
-        discount_type,
         total,
         status: "Draft",
+        metadata: {
+          company,
+          billing_address,
+          discount_type,
+          issue_date,
+        },
       })
       .select()
       .single();
