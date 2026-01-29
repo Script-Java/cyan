@@ -1279,6 +1279,11 @@ export function createServer() {
     verifySupabaseToken,
     handleCancelInvoice,
   );
+  app.get(
+    "/api/admin/invoices/:invoiceId/payment-token",
+    verifySupabaseToken,
+    handleGetPaymentToken,
+  );
 
   // Artwork upload routes
   app.post(
