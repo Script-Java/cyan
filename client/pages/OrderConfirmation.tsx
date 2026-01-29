@@ -455,16 +455,35 @@ export default function OrderConfirmation() {
               )}
 
               <div className="pt-4 border-t">
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-2 mb-3">
                   <Calendar className="w-4 h-4 text-blue-600" />
                   <p className="text-sm font-medium text-gray-500">
-                    Estimated Delivery
+                    Shipping Timeline
                   </p>
                 </div>
-                <p className="text-gray-900 font-medium">{estimatedDelivery}</p>
-                <p className="text-sm text-gray-600 mt-1">
-                  Standard shipping (14-21 business days)
-                </p>
+                <div className="space-y-3">
+                  <div className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-3 h-3 rounded-full bg-blue-600 mb-2"></div>
+                      <div className="w-0.5 h-12 bg-gray-300"></div>
+                    </div>
+                    <div className="pb-12">
+                      <p className="font-medium text-gray-900 text-sm">Processing</p>
+                      <p className="text-xs text-gray-600">2-3 business days</p>
+                      <p className="text-xs text-blue-600 font-medium mt-1">Ready by {processingDateStr}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-3 h-3 rounded-full bg-blue-600 mb-2"></div>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm">Shipping</p>
+                      <p className="text-xs text-gray-600">7-21 business days via USPS/UPS</p>
+                      <p className="text-xs text-blue-600 font-medium mt-1">Arrives between {deliveryDateMinStr} - {deliveryDateMaxStr}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
