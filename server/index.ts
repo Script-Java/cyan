@@ -1239,6 +1239,75 @@ export function createServer() {
     updateReturnRefundPolicy,
   );
 
+  // ===== Invoice Routes =====
+  // Admin routes (Protected - Admin only)
+  app.get(
+    "/api/admin/invoices",
+    verifyToken,
+    requireAdmin,
+    handleGetInvoices,
+  );
+  app.get(
+    "/api/admin/invoices/:id",
+    verifyToken,
+    requireAdmin,
+    handleGetInvoice,
+  );
+  app.post(
+    "/api/admin/invoices",
+    verifyToken,
+    requireAdmin,
+    handleCreateInvoice,
+  );
+  app.put(
+    "/api/admin/invoices/:id",
+    verifyToken,
+    requireAdmin,
+    handleUpdateInvoice,
+  );
+  app.post(
+    "/api/admin/invoices/:id/send",
+    verifyToken,
+    requireAdmin,
+    handleSendInvoice,
+  );
+  app.post(
+    "/api/admin/invoices/:id/mark-paid",
+    verifyToken,
+    requireAdmin,
+    handleMarkInvoicePaid,
+  );
+  app.post(
+    "/api/admin/invoices/:id/cancel",
+    verifyToken,
+    requireAdmin,
+    handleCancelInvoice,
+  );
+
+  // Artwork upload routes
+  app.post(
+    "/api/admin/invoices/:invoiceId/artwork",
+    verifyToken,
+    requireAdmin,
+    uploadMiddleware.single("file"),
+    handleUploadArtwork,
+  );
+  app.get(
+    "/api/admin/invoices/:invoiceId/artwork",
+    verifyToken,
+    requireAdmin,
+    handleGetArtwork,
+  );
+  app.delete(
+    "/api/admin/invoices/artwork/:artworkId",
+    verifyToken,
+    requireAdmin,
+    handleDeleteArtwork,
+  );
+
+  // Public routes
+  app.get("/api/invoice/:token", handleGetInvoiceByToken);
+
   // Global error handler - must be last
   app.use((err: any, _req: any, res: any, _next: any) => {
     console.error("Global error handler:", err);
