@@ -15,7 +15,7 @@ export default function AdminInvoiceEdit() {
       try {
         const response = await fetch(`/api/admin/invoices/${id}`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
         });
 
