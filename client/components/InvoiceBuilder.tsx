@@ -412,17 +412,17 @@ export default function InvoiceBuilder({
               </label>
               <Input
                 type="number"
-                value={formData.tax_rate}
+                value={isNaN(formData.tax_rate) ? "" : formData.tax_rate}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    tax_rate: parseFloat(e.target.value),
+                    tax_rate: e.target.value === "" ? 0 : parseFloat(e.target.value) || 0,
                   })
                 }
                 step="0.01"
               />
               <p className="text-xs text-gray-600 mt-1">
-                ${taxAmount.toFixed(2)}
+                ${isNaN(taxAmount) ? "0.00" : taxAmount.toFixed(2)}
               </p>
             </div>
 
@@ -432,11 +432,11 @@ export default function InvoiceBuilder({
               </label>
               <Input
                 type="number"
-                value={formData.shipping}
+                value={isNaN(formData.shipping) ? "" : formData.shipping}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    shipping: parseFloat(e.target.value),
+                    shipping: e.target.value === "" ? 0 : parseFloat(e.target.value) || 0,
                   })
                 }
                 step="0.01"
@@ -449,11 +449,11 @@ export default function InvoiceBuilder({
               </label>
               <Input
                 type="number"
-                value={formData.discount_amount}
+                value={isNaN(formData.discount_amount) ? "" : formData.discount_amount}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    discount_amount: parseFloat(e.target.value),
+                    discount_amount: e.target.value === "" ? 0 : parseFloat(e.target.value) || 0,
                   })
                 }
                 step="0.01"
