@@ -614,6 +614,56 @@ export const handleCancelInvoice: RequestHandler = async (req, res) => {
   }
 };
 
+// Get or create payment token for invoice
+export const handleGetPaymentToken: RequestHandler = async (req, res) => {
+  try {
+    const { invoiceId } = req.params;
+
+    // Try to get existing token
+    const { data: existingToken } = await supabase
+      .from("invoice_tokens")
+      .select("token")
+      .eq("invoice_id", invoiceId)
+      .eq("is_active", true)
+      .single();
+
+    if (existingToken) {
+      return res.status(200).json({
+        success: true,
+        token: existingToken.token,
+      });
+    }
+
+    // Create new token if one doesn't exist
+    const newToken = generateInvoiceToken();
+
+    const { data: createdToken, error } = await supabase
+      .from("invoice_tokens")
+      .insert({
+        invoice_id: parseInt(invoiceId),
+        token: newToken,
+        is_active: true,
+      })
+      .select()
+      .single();
+
+    if (error || !createdToken) {
+      throw error || new Error("Failed to create payment token");
+    }
+
+    res.status(200).json({
+      success: true,
+      token: newToken,
+    });
+  } catch (error) {
+    console.error("Get payment token error:", error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to get payment token",
+    });
+  }
+};
+
 // Get invoice by token (customer view)
 export const handleGetInvoiceByToken: RequestHandler = async (req, res) => {
   try {
