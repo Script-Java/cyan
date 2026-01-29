@@ -4,14 +4,21 @@ import { supabase } from "../utils/supabase";
 import { v4 as uuidv4 } from "uuid";
 import crypto from "crypto";
 
-// Middleware to verify Supabase JWT token for invoices
-// Uses RLS policies for authorization
+// Middleware to verify JWT token for invoices (uses custom JWT format from system)
 export const verifySupabaseToken = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
   try {
+    const jwt = require("jsonwebtoken");
+    const JWT_SECRET = process.env.JWT_SECRET;
+
+    if (!JWT_SECRET) {
+      res.status(500).json({ error: "Server configuration error" });
+      return;
+    }
+
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       res.status(401).json({ error: "No authorization token provided" });
@@ -20,41 +27,35 @@ export const verifySupabaseToken = async (
 
     const token = authHeader.substring(7);
 
-    // Create a client with the user's token to verify it works
-    const { createClient } = await import("@supabase/supabase-js");
-    const supabaseWithAuth = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.VITE_SUPABASE_ANON_KEY!,
-      {
-        auth: {
-          persistSession: false,
-        },
+    // Verify the JWT token
+    const decoded = jwt.verify(token, JWT_SECRET) as {
+      customerId: number;
+      email: string;
+    };
+
+    // Store customer info in request
+    (req as any).customerId = decoded.customerId;
+    (req as any).email = decoded.email;
+
+    // Check if user is admin
+    try {
+      const { data: customer } = await supabase
+        .from("customers")
+        .select("is_admin")
+        .eq("id", decoded.customerId)
+        .single();
+
+      if (!customer?.is_admin) {
+        res.status(403).json({ error: "Admin access required" });
+        return;
       }
-    );
 
-    // Set auth token
-    await supabaseWithAuth.auth.setSession({
-      access_token: token,
-      refresh_token: "",
-    });
-
-    // Try a simple query to verify token works
-    const { error } = await supabaseWithAuth
-      .from("invoices")
-      .select("id")
-      .limit(1);
-
-    if (error && error.code !== "PGRST116") {
-      // PGRST116 is no rows returned, which is fine
-      // Any other error means the token is invalid
-      console.error("Token verification query error:", error);
-      res.status(401).json({ error: "Invalid or expired token" });
+      (req as any).isAdmin = true;
+    } catch (error) {
+      res.status(403).json({ error: "Admin access required" });
       return;
     }
 
-    // Store the authenticated client and token in request
-    (req as any).supabaseWithAuth = supabaseWithAuth;
-    (req as any).token = token;
     next();
   } catch (error) {
     console.error("Token verification error:", error);
