@@ -229,6 +229,15 @@ export default function OrderConfirmation() {
     day: "numeric",
   });
 
+  // Calculate shipping timeline
+  const PROCESSING_DAYS = 3; // 2-3 business days to process
+  const SHIPPING_DAYS_MIN = 7; // Minimum 7 business days for shipping
+  const SHIPPING_DAYS_MAX = 21; // Maximum 21 business days for shipping
+
+  const processingEndDate = new Date(Date.now() + PROCESSING_DAYS * 24 * 60 * 60 * 1000);
+  const deliveryMinDate = new Date(Date.now() + (PROCESSING_DAYS + SHIPPING_DAYS_MIN) * 24 * 60 * 60 * 1000);
+  const deliveryMaxDate = new Date(Date.now() + (PROCESSING_DAYS + SHIPPING_DAYS_MAX) * 24 * 60 * 60 * 1000);
+
   const estimatedDelivery = order.estimated_delivery_date
     ? new Date(order.estimated_delivery_date).toLocaleDateString("en-US", {
         weekday: "short",
@@ -236,15 +245,28 @@ export default function OrderConfirmation() {
         day: "numeric",
         year: "numeric",
       })
-    : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString(
-        "en-US",
-        {
-          weekday: "short",
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        },
-      );
+    : deliveryMaxDate.toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+
+  const processingDateStr = processingEndDate.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+
+  const deliveryDateMinStr = deliveryMinDate.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+
+  const deliveryDateMaxStr = deliveryMaxDate.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 
   const getStatusBadge = () => {
     switch (order.status) {
