@@ -181,35 +181,48 @@ export const handleInitializeInvoicesDatabase: RequestHandler = async (req, res)
         );
     `;
 
-    // Execute each query using Supabase's raw SQL execution
-    const { error: error1 } = await supabase.rpc("exec_sql", {
-      sql: invoicesQuery,
-    }).catch(() => ({ error: null }));
+    // Try to create tables using direct query execution
+    // Fallback: Return SQL for manual execution if RPC doesn't work
+    const errors = [];
 
-    const { error: error2 } = await supabase.rpc("exec_sql", {
-      sql: invoicesLineItemsQuery,
-    }).catch(() => ({ error: null }));
+    try {
+      // Check if invoices table exists by trying a select query
+      const { error: checkError } = await supabase
+        .from("invoices")
+        .select("id", { count: "exact", head: true })
+        .limit(0);
 
-    const { error: error3 } = await supabase.rpc("exec_sql", {
-      sql: invoiceTokensQuery,
-    }).catch(() => ({ error: null }));
+      if (!checkError) {
+        // Table exists already
+        console.log("Invoices table already exists");
+        return res.status(200).json({
+          message: "Database already initialized",
+          tables_created: false,
+          status: "ready",
+        });
+      }
+    } catch (error) {
+      console.log("Tables do not exist yet, creating them...");
+    }
 
-    const { error: error4 } = await supabase.rpc("exec_sql", {
-      sql: invoiceArtworkQuery,
-    }).catch(() => ({ error: null }));
-
-    const { error: error5 } = await supabase.rpc("exec_sql", {
-      sql: invoiceActivityQuery,
-    }).catch(() => ({ error: null }));
-
-    const { error: error6 } = await supabase.rpc("exec_sql", {
-      sql: rlsQuery,
-    }).catch(() => ({ error: null }));
-
-    res.status(200).json({
-      message: "Database initialization completed",
-      tables_created: true,
-      errors: [error1, error2, error3, error4, error5, error6].filter(Boolean),
+    // If tables don't exist, we need to provide instructions
+    // Since we can't execute raw SQL through the normal client,
+    // return instructions for manual creation
+    res.status(202).json({
+      message: "Database initialization required",
+      status: "manual_setup_needed",
+      instructions: {
+        method: "Copy the SQL below and execute it in Supabase SQL Editor",
+        sql_commands: {
+          invoices_table: invoicesQuery,
+          line_items_table: invoicesLineItemsQuery,
+          tokens_table: invoiceTokensQuery,
+          artwork_table: invoiceArtworkQuery,
+          activity_table: invoiceActivityQuery,
+          rls_policies: rlsQuery,
+        },
+        url: "https://app.supabase.com/project/nbzttuomtdtsfzcagfnh/sql/new",
+      },
     });
   } catch (error) {
     console.error("Database initialization error:", error);
