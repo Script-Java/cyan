@@ -358,8 +358,6 @@ export default function AccountSettings() {
           lastName: customer?.lastName,
           email: customer?.email,
           phone: customer?.phone,
-          // Note: This would require a custom field in BigCommerce for proper storage
-          // For now, we're storing it alongside other customer data
           company: socialMediaString || undefined,
         }),
       });
@@ -473,11 +471,10 @@ export default function AccountSettings() {
               <div className="flex gap-2 sm:gap-4 md:gap-8 min-w-min">
                 <button
                   onClick={() => setActiveTab("personal")}
-                  className={`py-3 sm:py-4 px-2 sm:px-3 md:px-4 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
-                    activeTab === "personal"
+                  className={`py-3 sm:py-4 px-2 sm:px-3 md:px-4 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${activeTab === "personal"
                       ? "border-blue-600 text-blue-600"
                       : "border-transparent text-gray-600 hover:text-gray-900"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-1 sm:gap-2">
                     <User className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
@@ -489,11 +486,10 @@ export default function AccountSettings() {
                 </button>
                 <button
                   onClick={() => setActiveTab("social")}
-                  className={`py-3 sm:py-4 px-2 sm:px-3 md:px-4 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
-                    activeTab === "social"
+                  className={`py-3 sm:py-4 px-2 sm:px-3 md:px-4 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${activeTab === "social"
                       ? "border-blue-600 text-blue-600"
                       : "border-transparent text-gray-600 hover:text-gray-900"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-1 sm:gap-2">
                     <Share2 className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
@@ -502,11 +498,10 @@ export default function AccountSettings() {
                 </button>
                 <button
                   onClick={() => setActiveTab("delete")}
-                  className={`py-3 sm:py-4 px-2 sm:px-3 md:px-4 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${
-                    activeTab === "delete"
+                  className={`py-3 sm:py-4 px-2 sm:px-3 md:px-4 border-b-2 font-medium transition-colors whitespace-nowrap text-sm sm:text-base ${activeTab === "delete"
                       ? "border-red-600 text-red-600"
                       : "border-transparent text-gray-600 hover:text-gray-900"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-1 sm:gap-2">
                     <Trash2 className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
@@ -664,11 +659,10 @@ export default function AccountSettings() {
                         {customer.addresses.map((addr) => (
                           <div
                             key={addr.id}
-                            className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                              selectedAddressId === addr.id
+                            className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${selectedAddressId === addr.id
                                 ? "border-blue-500 bg-blue-50"
                                 : "border-gray-100 hover:border-blue-200 bg-gray-50"
-                            }`}
+                              }`}
                             onClick={() => {
                               setSelectedAddressId(addr.id);
                               setAddressFormData({
@@ -1068,7 +1062,7 @@ export default function AccountSettings() {
                       (deleteConfirmation.toLowerCase() !==
                         "delete my account" &&
                         deleteConfirmation.toLowerCase() !==
-                          "delete my account.")
+                        "delete my account.")
                     }
                     className="w-full py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 shadow-sm hover:shadow-md transition-all disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >

@@ -351,23 +351,17 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     // Build the redirect URL for after payment
     let baseUrl = "http://localhost:5173";
 
+    // Determine environment to set correct redirect base URL
+    const requestHost = req.get("host") || "";
+    const isLocal =
+      requestHost.includes("localhost") || requestHost.includes("127.0.0.1");
+
     if (process.env.BASE_URL) {
       baseUrl = process.env.BASE_URL;
-    } else if (process.env.NETLIFY_SITE_NAME) {
-      baseUrl = `https://${process.env.NETLIFY_SITE_NAME}.netlify.app`;
-    } else if (process.env.VERCEL_URL) {
-      baseUrl = `https://${process.env.VERCEL_URL}`;
-    } else {
-      // Fall back to detecting from the request if in production
-      const requestHost = req.get("host");
-      const protocol = req.protocol === "http" ? "http" : "https";
-      if (
-        requestHost &&
-        !requestHost.includes("localhost") &&
-        !requestHost.includes("127.0.0.1")
-      ) {
-        baseUrl = `${protocol}://${requestHost}`;
-      }
+    } else if (!isLocal) {
+      // FORCE production URL for all non-local environments
+      // This ensures redirects go to the main domain even if initiated from other domains/deployments
+      baseUrl = "https://stickyslap.app";
     }
 
     const redirectUrl = `${baseUrl}/checkout-success/${supabaseOrder.id}`;
@@ -1147,21 +1141,21 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
         total: order?.total || 0,
         estimatedDelivery: order?.estimated_delivery_date
           ? new Date(order.estimated_delivery_date).toLocaleDateString(
-              "en-US",
-              {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-              },
-            )
+            "en-US",
+            {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+            },
+          )
           : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString(
-              "en-US",
-              {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-              },
-            ),
+            "en-US",
+            {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+            },
+          ),
         orderLink: `${baseUrl}/order-status?orderNumber=${formatOrderNumber(orderId)}`,
         shippingAddress: order?.shipping_address || undefined,
         policies: undefined,
@@ -1557,20 +1551,20 @@ async function handleSquarePaymentUpdated(data: any): Promise<void> {
           total: order?.total || 0,
           estimatedDelivery: order?.estimated_delivery_date
             ? new Date(order.estimated_delivery_date).toLocaleDateString(
-                "en-US",
-                {
-                  weekday: "short",
-                  month: "short",
-                  day: "numeric",
-                },
-              )
-            : new Date(
-                Date.now() + 14 * 24 * 60 * 60 * 1000,
-              ).toLocaleDateString("en-US", {
+              "en-US",
+              {
                 weekday: "short",
                 month: "short",
                 day: "numeric",
-              }),
+              },
+            )
+            : new Date(
+              Date.now() + 14 * 24 * 60 * 60 * 1000,
+            ).toLocaleDateString("en-US", {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+            }),
           orderLink: `${baseUrl}/order-status?orderNumber=${formatOrderNumber(orderId)}`,
           shippingAddress: order?.shipping_address || undefined,
           policies: undefined,
