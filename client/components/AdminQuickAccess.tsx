@@ -60,6 +60,14 @@ const quickAccessLinks = [
     textColor: "text-green-600",
   },
   {
+    title: "Invoices",
+    description: "Manage invoices",
+    icon: <Receipt className="w-5 h-5" />,
+    path: "/admin/invoices",
+    color: "bg-violet-100 hover:bg-violet-200",
+    textColor: "text-violet-600",
+  },
+  {
     title: "Analytics",
     description: "View analytics",
     icon: <BarChart3 className="w-5 h-5" />,
