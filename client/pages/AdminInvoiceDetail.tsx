@@ -3,6 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Loader2, Copy, Send, Edit2, X, Clock, Check } from "lucide-react";
 import { toast } from "sonner";
 
@@ -11,6 +19,8 @@ export default function AdminInvoiceDetail() {
   const navigate = useNavigate();
   const [invoice, setInvoice] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [paymentLink, setPaymentLink] = useState<string | null>(null);
+  const [showLinkModal, setShowLinkModal] = useState(false);
 
   useEffect(() => {
     const fetchInvoice = async () => {
