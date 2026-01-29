@@ -64,8 +64,46 @@ export default function OrderConfirmation() {
 
   useEffect(() => {
     const fetchOrder = async () => {
-      if (!orderId) {
-        setError("No order ID provided");
+      // Allow preview mode with mock data for development
+      if (!orderId || orderId === "preview") {
+        // Mock order for testing/editing
+        const mockOrder: Order = {
+          id: 1001,
+          status: "paid",
+          total: 149.99,
+          subtotal: 125.00,
+          tax: 12.50,
+          shipping: 12.49,
+          discount: 0,
+          created_at: new Date().toISOString(),
+          estimated_delivery_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+          shipping_address: {
+            firstName: "John",
+            lastName: "Doe",
+            street: "123 Main Street",
+            city: "San Francisco",
+            state: "CA",
+            postalCode: "94102",
+            country: "United States",
+          },
+          orderItems: [
+            {
+              id: 1,
+              product_id: 1,
+              product_name: "Custom Sticker Sheet",
+              quantity: 2,
+              price: 29.99,
+            },
+            {
+              id: 2,
+              product_id: 2,
+              product_name: "Vinyl Decal Pack",
+              quantity: 1,
+              price: 65.00,
+            },
+          ],
+        };
+        setOrder(mockOrder);
         setIsLoading(false);
         return;
       }
