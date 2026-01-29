@@ -1,9 +1,8 @@
 import { RequestHandler } from "express";
-import { supabase } from "../utils/supabase";
 
 export const handleInitializeInvoicesDatabase: RequestHandler = async (req, res) => {
   try {
-    console.log("Starting invoices database initialization...");
+    console.log("Database setup endpoint called");
 
     // Create invoices table
     const invoicesQuery = `
