@@ -42,18 +42,35 @@ export default function AdminInvoiceDetail() {
 
   const handleCopyLink = async () => {
     try {
-      const response = await fetch(`/api/admin/invoices/${id}`, {
+      if (!invoice) {
+        toast.error("Invoice not loaded");
+        return;
+      }
+
+      // Get or create payment token for this invoice
+      const response = await fetch(`/api/admin/invoices/${id}/payment-token`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       });
-      const data = await response.json();
-      const paymentLink = `https://stickyslap.app/invoice/${data.data.token}`;
-      
+
+      if (!response.ok) {
+        throw new Error("Failed to get payment token");
+      }
+
+      const { token } = await response.json();
+
+      if (!token) {
+        throw new Error("No payment token received");
+      }
+
+      const paymentLink = `https://stickyslap.app/invoice/${token}`;
+
       await navigator.clipboard.writeText(paymentLink);
       toast.success("Payment link copied to clipboard");
     } catch (error) {
-      toast.error("Failed to copy link");
+      console.error("Copy link error:", error);
+      toast.error(error instanceof Error ? error.message : "Failed to copy payment link");
     }
   };
 
