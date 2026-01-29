@@ -334,6 +334,25 @@ export default function AdminInvoiceDetail() {
           </div>
         </div>
       </main>
+
+      {/* Payment Link Modal */}
+      <AlertDialog open={showLinkModal} onOpenChange={setShowLinkModal}>
+        <AlertDialogContent>
+          <AlertDialogTitle>Copy Payment Link</AlertDialogTitle>
+          <AlertDialogDescription>
+            The Clipboard API is not available in this environment. Please copy the link below manually:
+          </AlertDialogDescription>
+          <div className="my-4 p-3 bg-gray-100 rounded border border-gray-300">
+            <p className="text-sm font-mono break-all">{paymentLink}</p>
+          </div>
+          <div className="flex gap-2">
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleCopyFromModal}>
+              Copy Link
+            </AlertDialogAction>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
