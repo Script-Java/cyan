@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import crypto from "crypto";
 
 // Middleware to verify Supabase JWT token for invoices
+// Uses RLS policies for authorization
 export const verifySupabaseToken = async (
   req: Request,
   res: Response,
@@ -19,40 +20,31 @@ export const verifySupabaseToken = async (
 
     const token = authHeader.substring(7);
 
-    // Verify with Supabase by checking if user exists in auth
-    const { data: { user }, error } = await supabase.auth.admin.getUserById(token);
-
-    if (error) {
-      // If direct lookup fails, try to get user from token verification
-      // by making a request with the token
-      const { data: { user: tokenUser } } = await supabase.auth.getUser(token);
-
-      if (!tokenUser) {
-        res.status(401).json({ error: "Invalid or expired token" });
-        return;
+    // Create a Supabase client with the user's token for RLS to work
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseWithAuth = createClient(
+      process.env.SUPABASE_URL!,
+      process.env.VITE_SUPABASE_ANON_KEY!,
+      {
+        global: {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        },
       }
-    }
+    );
 
-    const userEmail = user?.email || (await supabase.auth.getUser(token)).data.user?.email;
-    if (!userEmail) {
+    // Verify token by trying to get the current user
+    const { data: { user }, error } = await supabaseWithAuth.auth.getUser();
+
+    if (error || !user) {
       res.status(401).json({ error: "Invalid or expired token" });
       return;
     }
 
-    // Check if user is admin
-    const { data: customer } = await supabase
-      .from("customers")
-      .select("is_admin")
-      .eq("email", userEmail)
-      .single();
-
-    if (!customer?.is_admin) {
-      res.status(403).json({ error: "Admin access required" });
-      return;
-    }
-
-    (req as any).user = { email: userEmail };
-    (req as any).isAdmin = true;
+    // Store the authenticated client in request for use in handlers
+    (req as any).supabaseWithAuth = supabaseWithAuth;
+    (req as any).user = user;
     next();
   } catch (error) {
     console.error("Token verification error:", error);
