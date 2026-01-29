@@ -1,7 +1,52 @@
 import { RequestHandler } from "express";
+import { Request, Response, NextFunction } from "express";
 import { supabase } from "../utils/supabase";
 import { v4 as uuidv4 } from "uuid";
 import crypto from "crypto";
+
+// Middleware to verify Supabase JWT token for invoices
+export const verifySupabaseToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).json({ error: "No authorization token provided" });
+      return;
+    }
+
+    const token = authHeader.substring(7);
+
+    // Verify with Supabase
+    const { data, error } = await supabase.auth.getUser(token);
+
+    if (error || !data.user) {
+      res.status(401).json({ error: "Invalid or expired token" });
+      return;
+    }
+
+    // Check if user is admin
+    const { data: customer } = await supabase
+      .from("customers")
+      .select("is_admin")
+      .eq("email", data.user.email)
+      .single();
+
+    if (!customer?.is_admin) {
+      res.status(403).json({ error: "Admin access required" });
+      return;
+    }
+
+    (req as any).user = data.user;
+    (req as any).isAdmin = true;
+    next();
+  } catch (error) {
+    console.error("Token verification error:", error);
+    res.status(401).json({ error: "Invalid or expired token" });
+  }
+};
 
 // Types
 interface Invoice {
