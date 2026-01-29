@@ -217,6 +217,7 @@ import {
   handleCancelInvoice,
   handleGetInvoiceByToken,
 } from "./routes/invoices";
+import { handleInitializeInvoicesDatabase } from "./routes/db-setup";
 import {
   handleUploadArtwork,
   handleGetArtwork,
