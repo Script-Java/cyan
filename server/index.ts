@@ -1309,6 +1309,9 @@ export function createServer() {
   // Public routes
   app.get("/api/invoice/:token", handleGetInvoiceByToken);
 
+  // Database setup route
+  app.post("/api/admin/setup/init-invoices", requireAdmin, handleInitializeInvoicesDatabase);
+
   // Global error handler - must be last
   app.use((err: any, _req: any, res: any, _next: any) => {
     console.error("Global error handler:", err);
