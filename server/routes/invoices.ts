@@ -554,7 +554,7 @@ export const handleMarkInvoicePaid: RequestHandler = async (req, res) => {
     // Log activity
     await supabase.from("invoice_activity").insert({
       invoice_id: id,
-      activity_type: "paid",
+      action: "paid",
       description: "Invoice marked as paid",
     });
 
