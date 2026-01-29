@@ -14,6 +14,7 @@ import {
   MessageSquare,
   Star,
   Percent,
+  Receipt,
 } from "lucide-react";
 import { useAdminNotifications } from "@/hooks/useAdminNotifications";
 
