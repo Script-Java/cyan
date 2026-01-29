@@ -83,7 +83,7 @@ export default function AdminInvoices() {
 
       const response = await fetch(`/api/admin/invoices?${params}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       });
 
