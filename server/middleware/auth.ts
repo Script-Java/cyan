@@ -15,6 +15,7 @@ declare global {
       customerId?: number;
       email?: string;
       isAdmin?: boolean;
+      userJwt?: string; // JWT token for creating scoped Supabase clients
     }
   }
 }
