@@ -62,13 +62,29 @@ git push --force-with-lease
 ### Environment Variables by Service
 
 #### Supabase (Database & Auth)
+
+**Server-side (NEVER expose to client):**
 ```
-SUPABASE_URL              PostgreSQL database URL
-SUPABASE_ANON_KEY         Public JWT token for RLS policy checks
-SUPABASE_SERVICE_KEY      Admin service key (SENSITIVE - server-side only)
+SUPABASE_URL              PostgreSQL database URL (internal use)
+SUPABASE_SERVICE_KEY      Admin service key - CRITICALLY SENSITIVE
 ```
+
+**Client-side (safe to expose - constrained by RLS):**
+```
+VITE_SUPABASE_URL         PostgreSQL database URL (public)
+VITE_SUPABASE_ANON_KEY    Public JWT token - safe because RLS enforces access
+```
+
+**Important Security Note:**
+- The `VITE_SUPABASE_ANON_KEY` is **intentionally public** and can be safely included in client-side code
+- All data access is protected by Row Level Security (RLS) policies at the database level
+- The anon key cannot bypass RLS - it can only access data that RLS policies explicitly allow
+- The `SUPABASE_SERVICE_KEY` is for server-side operations only and must NEVER be exposed
+
 - **Access Location:** https://app.supabase.com/projects
-- **Risk Level:** CRITICAL - Controls all database access
+- **Risk Level:**
+  - SERVICE_KEY: CRITICAL - Controls all database access without RLS restrictions
+  - ANON_KEY: LOW - Public-facing, constrained by RLS policies
 
 #### Authentication & Security
 ```
