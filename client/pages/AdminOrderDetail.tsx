@@ -12,6 +12,7 @@ import {
   Edit,
   FileText,
   Image as ImageIcon,
+  User,
 } from "lucide-react";
 
 interface OrderItem {
