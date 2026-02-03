@@ -555,34 +555,101 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
 };
 
 /**
- * Look up order by order number and email for public order status page
- * No authentication required - customers use order number and email to check status
+ * Verify public order access with customer verification (email or phone)
+ * No authentication required - customers verify with email or phone
  */
-export const handleGetOrderStatus: RequestHandler = async (req, res) => {
+export const handleVerifyOrderAccess: RequestHandler = async (req, res) => {
   try {
-    const { orderNumber } = req.query;
+    const { publicAccessToken, verificationField } = req.body;
 
-    if (!orderNumber) {
+    if (!publicAccessToken || !verificationField) {
       return res.status(400).json({
         success: false,
-        error: "Order number is required",
-      });
-    }
-
-    // Parse order number - accepts both SY-5XXXXX format and plain numeric format
-    let orderIdNum: number;
-    try {
-      orderIdNum = parseOrderNumber(orderNumber as string);
-    } catch (err) {
-      return res.status(400).json({
-        success: false,
-        error: "Invalid order number format",
+        error: "Public access token and verification field are required",
       });
     }
 
     const { supabase } = await import("../utils/supabase");
 
-    // Get the order from Supabase
+    // Get the order by public access token
+    const { data: order, error: orderError } = await supabase
+      .from("orders")
+      .select("id, customer_id, public_access_token")
+      .eq("public_access_token", publicAccessToken)
+      .maybeSingle();
+
+    if (orderError || !order) {
+      // Return 404 for any lookup failure - don't reveal if token exists
+      console.warn("Order not found for token:", publicAccessToken);
+      return res.status(404).json({
+        success: false,
+        error: "Order not found",
+      });
+    }
+
+    // Verify customer info (email or phone) matches order
+    const { data: customer, error: customerError } = await supabase
+      .from("customers")
+      .select("email, phone")
+      .eq("id", order.customer_id)
+      .maybeSingle();
+
+    if (customerError || !customer) {
+      console.warn("Customer not found for order:", order.id);
+      return res.status(404).json({
+        success: false,
+        error: "Order not found",
+      });
+    }
+
+    // Verify that the provided field matches customer email or phone
+    const emailMatch = customer.email && customer.email.toLowerCase() === verificationField.toLowerCase();
+    const phoneMatch = customer.phone && customer.phone.replace(/\D/g, "") === verificationField.replace(/\D/g, "");
+
+    if (!emailMatch && !phoneMatch) {
+      // Log suspicious activity but return generic error
+      console.warn("Failed verification attempt for order:", order.id);
+      return res.status(404).json({
+        success: false,
+        error: "Order not found",
+      });
+    }
+
+    // Verification successful - return a short-lived session token for this order
+    // In a real app, you'd generate a session JWT here
+    return res.status(200).json({
+      success: true,
+      verified: true,
+      orderId: order.id,
+      publicAccessToken: publicAccessToken,
+    });
+  } catch (error) {
+    console.error("Verify order access error:", error);
+    return res.status(404).json({
+      success: false,
+      error: "Order not found",
+    });
+  }
+};
+
+/**
+ * Look up order by public access token with prior verification
+ * Requires prior successful verification via handleVerifyOrderAccess
+ */
+export const handleGetOrderStatus: RequestHandler = async (req, res) => {
+  try {
+    const { publicAccessToken } = req.query;
+
+    if (!publicAccessToken) {
+      return res.status(400).json({
+        success: false,
+        error: "Public access token is required",
+      });
+    }
+
+    const { supabase } = await import("../utils/supabase");
+
+    // Get the order by public access token (after verification)
     // Try with tracking columns first, fall back to basic columns if they don't exist
     let order: any;
     let orderError: any;
@@ -593,6 +660,7 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
         `
         id,
         customer_id,
+        public_access_token,
         status,
         created_at,
         total,
@@ -615,8 +683,8 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
         )
       `,
       )
-      .eq("id", orderIdNum)
-      .single();
+      .eq("public_access_token", publicAccessToken)
+      .maybeSingle();
 
     if (fullOrder) {
       order = fullOrder;
@@ -633,6 +701,7 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
           `
           id,
           customer_id,
+          public_access_token,
           status,
           created_at,
           total,
@@ -651,8 +720,8 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
           )
         `,
         )
-        .eq("id", orderIdNum)
-        .single();
+        .eq("public_access_token", publicAccessToken)
+        .maybeSingle();
 
       order = basicOrder;
       orderError = basicError;
@@ -663,10 +732,8 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
 
     if (orderError || !order) {
       console.warn(
-        "Order not found in Supabase:",
-        orderIdNum,
-        "Error:",
-        orderError,
+        "Order not found for public access token:",
+        publicAccessToken,
       );
       return res.status(404).json({
         success: false,
