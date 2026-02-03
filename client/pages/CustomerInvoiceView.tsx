@@ -309,10 +309,10 @@ export default function CustomerInvoiceView() {
                           {item.quantity}
                         </td>
                         <td className="py-3 text-right">
-                          ${item.unit_price.toFixed(2)}
+                          ${(Number(item.unit_price) || 0).toFixed(2)}
                         </td>
                         <td className="py-3 text-right font-medium">
-                          ${item.line_total.toFixed(2)}
+                          ${(Number(item.line_total || item.quantity * item.unit_price) || 0).toFixed(2)}
                         </td>
                       </tr>
                     ))}
@@ -323,29 +323,29 @@ export default function CustomerInvoiceView() {
                 <div className="bg-gray-50 p-4 rounded-lg space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span>Subtotal:</span>
-                    <span>${invoice.subtotal.toFixed(2)}</span>
+                    <span>${(Number(invoice.subtotal) || 0).toFixed(2)}</span>
                   </div>
-                  {invoice.tax_amount > 0 && (
+                  {Number(invoice.tax_amount || 0) > 0 && (
                     <div className="flex justify-between">
                       <span>Tax:</span>
-                      <span>${invoice.tax_amount.toFixed(2)}</span>
+                      <span>${(Number(invoice.tax_amount) || 0).toFixed(2)}</span>
                     </div>
                   )}
-                  {invoice.shipping > 0 && (
+                  {Number(invoice.shipping || 0) > 0 && (
                     <div className="flex justify-between">
                       <span>Shipping:</span>
-                      <span>${invoice.shipping.toFixed(2)}</span>
+                      <span>${(Number(invoice.shipping) || 0).toFixed(2)}</span>
                     </div>
                   )}
-                  {invoice.discount_amount > 0 && (
+                  {Number(invoice.discount_amount || 0) > 0 && (
                     <div className="flex justify-between text-green-600">
                       <span>Discount:</span>
-                      <span>-${invoice.discount_amount.toFixed(2)}</span>
+                      <span>-${(Number(invoice.discount_amount) || 0).toFixed(2)}</span>
                     </div>
                   )}
                   <div className="border-t pt-2 font-bold flex justify-between">
                     <span>Total Due:</span>
-                    <span>${invoice.total.toFixed(2)}</span>
+                    <span>${(Number(invoice.total) || 0).toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -363,7 +363,7 @@ export default function CustomerInvoiceView() {
                 }
                 className="flex-1 bg-blue-600 hover:bg-blue-700 py-6 text-lg"
               >
-                Pay ${invoice.total.toFixed(2)}
+                Pay ${(Number(invoice.total) || 0).toFixed(2)}
               </Button>
               <Button variant="outline">
                 <Download className="w-4 h-4 mr-2" />
