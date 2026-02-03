@@ -64,6 +64,7 @@ interface OrderDetail {
   trackingCarrier?: string;
   trackingUrl?: string;
   shippedDate?: string;
+  squarePaymentId?: string;
   orderItems?: OrderItem[];
   proofs?: ProofStatus[];
 }
