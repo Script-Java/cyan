@@ -799,12 +799,34 @@ export const handleGetInvoiceByToken: RequestHandler = async (req, res) => {
   try {
     const { token } = req.params;
 
-    // Get token
-    const { data: tokenData } = await supabase
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        error: "No token provided",
+      });
+    }
+
+    // Get token - handle gracefully if table doesn't exist
+    const { data: tokenData, error: tokenError } = await supabase
       .from("invoice_tokens")
       .select("invoice_id, views")
       .eq("token", token)
-      .single();
+      .maybeSingle();
+
+    if (tokenError) {
+      console.error("Error fetching token:", tokenError);
+      // If table doesn't exist, return helpful error
+      if (
+        tokenError.code === "PGRST204" ||
+        tokenError.message.includes("Could not find the table")
+      ) {
+        return res.status(503).json({
+          success: false,
+          error: "Invoice system not yet initialized. Please contact support.",
+        });
+      }
+      throw tokenError;
+    }
 
     if (!tokenData) {
       return res.status(404).json({
@@ -813,21 +835,27 @@ export const handleGetInvoiceByToken: RequestHandler = async (req, res) => {
       });
     }
 
-    // Update view count
-    await supabase
+    // Update view count (non-blocking)
+    supabase
       .from("invoice_tokens")
       .update({
         views: (tokenData.views || 0) + 1,
         last_viewed_at: new Date().toISOString(),
       })
-      .eq("token", token);
+      .eq("token", token)
+      .catch((err) => console.error("Error updating token views:", err));
 
     // Get invoice
-    const { data: invoice } = await supabase
+    const { data: invoice, error: invoiceError } = await supabase
       .from("invoices")
       .select("*")
       .eq("id", tokenData.invoice_id)
-      .single();
+      .maybeSingle();
+
+    if (invoiceError) {
+      console.error("Error fetching invoice:", invoiceError);
+      throw invoiceError;
+    }
 
     if (!invoice) {
       return res.status(404).json({
@@ -837,19 +865,30 @@ export const handleGetInvoiceByToken: RequestHandler = async (req, res) => {
     }
 
     // Get line items
-    const { data: lineItems } = await supabase
+    const { data: lineItems, error: lineItemsError } = await supabase
       .from("invoice_line_items")
       .select("*")
       .eq("invoice_id", invoice.id);
 
+    if (lineItemsError) {
+      console.error("Error fetching line items:", lineItemsError);
+      // Don't fail if line items can't be fetched, return empty array
+    }
+
     // Get artwork if needed
     let artwork = null;
     if (invoice.invoice_type === "ArtworkUpload") {
-      const { data: artworkData } = await supabase
+      const { data: artworkData, error: artworkError } = await supabase
         .from("invoice_artwork")
         .select("*")
         .eq("invoice_id", invoice.id);
-      artwork = artworkData;
+
+      if (artworkError) {
+        console.error("Error fetching artwork:", artworkError);
+        // Don't fail if artwork can't be fetched, return empty array
+      } else {
+        artwork = artworkData;
+      }
     }
 
     res.status(200).json({
@@ -864,7 +903,10 @@ export const handleGetInvoiceByToken: RequestHandler = async (req, res) => {
     console.error("Get invoice by token error:", error);
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : "Failed to fetch invoice",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch invoice. Please try again later.",
     });
   }
 };
