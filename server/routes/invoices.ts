@@ -740,16 +740,13 @@ export const handleCancelInvoice: RequestHandler = async (req, res) => {
 // Get or create payment token for invoice
 export const handleGetPaymentToken: RequestHandler = async (req, res) => {
   try {
-    const { invoiceId } = await import("../utils/supabase").then(
-      (m) => m.supabase,
-    );
-    const { invoiceId: id } = req.params;
+    const { invoiceId } = req.params;
 
     // Try to get existing token
     const { data: existingToken } = await supabase
       .from("invoice_tokens")
       .select("token")
-      .eq("invoice_id", id)
+      .eq("invoice_id", invoiceId)
       .order("created_at", { ascending: false })
       .limit(1)
       .single()
@@ -768,7 +765,7 @@ export const handleGetPaymentToken: RequestHandler = async (req, res) => {
     const { data: createdToken, error } = await supabase
       .from("invoice_tokens")
       .insert({
-        invoice_id: parseInt(id),
+        invoice_id: parseInt(invoiceId),
         token: newToken,
       })
       .select()
