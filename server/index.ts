@@ -661,39 +661,7 @@ export function createServer() {
   app.post("/api/analytics/track", handleTrackEvent);
   app.get("/api/admin/finance", verifyToken, requireAdmin, handleGetFinance);
 
-  // ===== Admin Products Routes (Protected - Admin only) =====
-  // NOTE: More specific routes must come BEFORE parameterized routes!
-  app.post("/api/products", verifyToken, requireAdmin, handleCreateProduct);
-  app.put(
-    "/api/products/:productId",
-    verifyToken,
-    requireAdmin,
-    handleUpdateProduct,
-  );
-  app.get(
-    "/api/admin/products",
-    verifyToken,
-    requireAdmin,
-    handleGetAdminProducts,
-  );
-  app.post(
-    "/api/admin/products/import",
-    verifyToken,
-    requireAdmin,
-    handleImportAdminProduct,
-  );
-  app.get(
-    "/api/admin/products/:productId",
-    verifyToken,
-    requireAdmin,
-    handleGetAdminProduct,
-  );
-  app.delete(
-    "/api/admin/products/:productId",
-    verifyToken,
-    requireAdmin,
-    handleDeleteAdminProduct,
-  );
+  // Admin product routes handled by createProductRouter() above
 
   // ===== Store Credit Routes (Protected - admin only) =====
   app.get(
