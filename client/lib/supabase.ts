@@ -1,9 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl =
-  import.meta.env.VITE_SUPABASE_URL ||
-  "https://bxkphaslciswfspuqdgo.supabase.co";
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl) {
+  console.error("VITE_SUPABASE_URL is not configured. Check your .env file.");
+}
+if (!supabaseAnonKey) {
+  console.error("VITE_SUPABASE_ANON_KEY is not configured. Check your .env file.");
+}
 
 // Create client with a valid placeholder key during build if no key is provided
 // Supabase keys are JWT tokens, so we use a minimal valid JWT format for build-time
