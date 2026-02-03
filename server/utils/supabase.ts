@@ -45,10 +45,17 @@ export const supabase = createClient(supabaseUrl, keyToUse, {
  * Create a scoped Supabase client using user's JWT token
  * SECURITY: This enforces Row Level Security (RLS) by using the authenticated user's JWT
  *
- * Use this for all customer-facing API routes to ensure RLS policies are enforced
+ * Use this for all customer-facing API routes to ensure RLS policies are enforced.
+ * RLS policies will check that the authenticated user can only access their own data.
  *
  * @param userJwt - The user's JWT token from the Authorization header
  * @returns Scoped Supabase client with RLS enforcement
+ *
+ * Example usage in a route:
+ * ```typescript
+ * const scopedSupabase = createScopedSupabaseClient(req.userJwt);
+ * const { data } = await scopedSupabase.from('orders').select('*'); // RLS enforced
+ * ```
  */
 export function createScopedSupabaseClient(userJwt: string): SupabaseClient {
   return createClient(supabaseUrl, userJwt, {
@@ -61,6 +68,24 @@ export function createScopedSupabaseClient(userJwt: string): SupabaseClient {
       },
     },
   });
+}
+
+/**
+ * Get or create a scoped Supabase client from request
+ * SECURITY: Returns RLS-enforced client if authenticated, otherwise returns service role client
+ *
+ * For customer-facing endpoints, prefer this for consistency with authentication state
+ *
+ * @param req - Express request with optional userJwt from auth middleware
+ * @returns Scoped client if JWT present, otherwise service role client (bypass RLS)
+ */
+export function getScopedSupabaseClient(req: any): SupabaseClient {
+  if (req.userJwt) {
+    return createScopedSupabaseClient(req.userJwt);
+  }
+  // Fall back to service role if no JWT (public endpoints)
+  // NOTE: This should only happen for public endpoints that don't require auth
+  return supabase;
 }
 
 // Verify connection
