@@ -68,23 +68,10 @@ CREATE TABLE IF NOT EXISTS invoice_artwork (
 );
 
 -- Create indexes for performance
-CREATE INDEX idx_invoices_customer_email ON invoices(customer_email);
-CREATE INDEX idx_invoices_status ON invoices(status);
-CREATE INDEX idx_invoices_created_at ON invoices(created_at);
-CREATE INDEX idx_invoices_invoice_number ON invoices(invoice_number);
-CREATE INDEX idx_invoice_line_items_invoice_id ON invoice_line_items(invoice_id);
-CREATE INDEX idx_invoice_activity_invoice_id ON invoice_activity(invoice_id);
-CREATE INDEX idx_invoice_artwork_invoice_id ON invoice_artwork(invoice_id);
-
--- Enable RLS (Row Level Security) for invoices
-ALTER TABLE invoices ENABLE ROW LEVEL SECURITY;
-ALTER TABLE invoice_line_items ENABLE ROW LEVEL SECURITY;
-ALTER TABLE invoice_activity ENABLE ROW LEVEL SECURITY;
-ALTER TABLE invoice_artwork ENABLE ROW LEVEL SECURITY;
-
--- Create RLS policies for invoices
-CREATE POLICY "Admin can manage all invoices" ON invoices
-  USING (EXISTS(SELECT 1 FROM customers WHERE id = auth.uid() AND is_admin = true));
-
-CREATE POLICY "Users can view their own invoices" ON invoices
-  USING (customer_email = auth.jwt() ->> 'email' OR EXISTS(SELECT 1 FROM customers WHERE id = auth.uid() AND is_admin = true));
+CREATE INDEX IF NOT EXISTS idx_invoices_customer_email ON invoices(customer_email);
+CREATE INDEX IF NOT EXISTS idx_invoices_status ON invoices(status);
+CREATE INDEX IF NOT EXISTS idx_invoices_created_at ON invoices(created_at);
+CREATE INDEX IF NOT EXISTS idx_invoices_invoice_number ON invoices(invoice_number);
+CREATE INDEX IF NOT EXISTS idx_invoice_line_items_invoice_id ON invoice_line_items(invoice_id);
+CREATE INDEX IF NOT EXISTS idx_invoice_activity_invoice_id ON invoice_activity(invoice_id);
+CREATE INDEX IF NOT EXISTS idx_invoice_artwork_invoice_id ON invoice_artwork(invoice_id);
