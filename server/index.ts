@@ -595,8 +595,7 @@ export function createServer() {
     handleDeleteAllProducts,
   );
 
-  // ===== Storefront Products Routes (Public - merged admin + imported) =====
-  app.get("/api/storefront/products", handleGetStorefrontProducts);
+  // Storefront Products Routes handled by createProductRouter() mounted at /api/storefront above
 
   // ===== Payments Routes (Public) =====
   app.get("/api/payments/methods", handleGetPaymentMethods);
