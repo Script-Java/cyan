@@ -220,6 +220,7 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
 /**
  * Get single order details from Ecwid or Supabase
  * Requires: customerId in JWT token, orderId in params
+ * VALIDATION: Order ID must be a valid integer
  */
 export const handleGetOrder: RequestHandler = async (req, res) => {
   try {
@@ -230,11 +231,14 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    if (!orderId) {
-      return res.status(400).json({ error: "Order ID required" });
+    // VALIDATION: Parse and validate orderId is a positive integer
+    const orderIdNum = parseInt(orderId, 10);
+    if (isNaN(orderIdNum) || orderIdNum <= 0) {
+      return res.status(400).json({
+        error: "Request validation failed",
+        details: [{ field: "orderId", message: "Order ID must be a positive integer" }],
+      });
     }
-
-    const orderIdNum = parseInt(orderId);
     let order = null;
 
     // Try Ecwid first
