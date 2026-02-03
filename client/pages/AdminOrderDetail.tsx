@@ -507,47 +507,6 @@ export default function AdminOrderDetail() {
             </div>
           </div>
 
-          {/* Shipping Address */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              Shipping Address
-            </h2>
-            {order.shippingAddress ? (
-              <div className="text-sm space-y-1">
-                <p className="text-gray-900 font-medium">
-                  {order.shippingAddress.first_name}{" "}
-                  {order.shippingAddress.last_name}
-                </p>
-                <p className="text-gray-600">
-                  {order.shippingAddress.street_1}
-                </p>
-                {order.shippingAddress.street_2 && (
-                  <p className="text-gray-600">
-                    {order.shippingAddress.street_2}
-                  </p>
-                )}
-                <p className="text-gray-600">
-                  {order.shippingAddress.city},{" "}
-                  {order.shippingAddress.state_or_province}{" "}
-                  {order.shippingAddress.postal_code}
-                </p>
-                <p className="text-gray-600">
-                  {order.shippingAddress.country_iso2}
-                </p>
-                {order.shippingAddress.phone && (
-                  <p className="text-gray-600 mt-2">
-                    {order.shippingAddress.phone}
-                  </p>
-                )}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-600">
-                No shipping address yet. Click "Edit Shipping Address" to add
-                one.
-              </p>
-            )}
-          </div>
-
           {/* Order Items */}
           {order.orderItems && order.orderItems.length > 0 && (
             <div className="bg-white border border-gray-200 rounded-lg p-6">
