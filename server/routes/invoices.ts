@@ -7,6 +7,13 @@ import jwt from "jsonwebtoken";
 import { Resend } from "resend";
 import { generateInvoiceEmailHtml } from "../emails/invoice-payment";
 
+// Initialize Resend for email sending
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
+
+const INVOICE_EMAIL_FROM = "invoices@stickyslap.com";
+
 // Middleware to verify JWT token for invoices (uses custom JWT format from system)
 export const verifySupabaseToken = async (
   req: Request,
