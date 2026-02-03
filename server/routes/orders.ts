@@ -619,8 +619,8 @@ export const handleVerifyOrderAccess: RequestHandler = async (req, res) => {
     }
 
     // Verify that the provided field matches customer email or phone
-    const emailMatch = customer.email && customer.email.toLowerCase() === verificationField.toLowerCase();
-    const phoneMatch = customer.phone && customer.phone.replace(/\D/g, "") === verificationField.replace(/\D/g, "");
+    const emailMatch = customer.email && customer.email.toLowerCase() === verification_field.toLowerCase();
+    const phoneMatch = customer.phone && customer.phone.replace(/\D/g, "") === verification_field.replace(/\D/g, "");
 
     if (!emailMatch && !phoneMatch) {
       // Log suspicious activity but return generic error
