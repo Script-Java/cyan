@@ -319,7 +319,7 @@ export default function AdminOrderDetail() {
             Back to Orders
           </button>
           <div className="bg-white border border-gray-200 rounded-lg p-8 sm:p-12 text-center">
-            <UserIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+            <Package className="w-12 h-12 text-gray-300 mx-auto mb-3" />
             <h3 className="text-lg font-semibold text-gray-900 mb-1">
               Unable to Load Order
             </h3>
