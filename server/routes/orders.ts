@@ -6,7 +6,7 @@ import {
   getPendingOrders,
 } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
-import { bigCommerceAPI } from "../utils/bigcommerce";
+
 import { parseOrderNumber } from "../utils/order";
 
 const supabase = createClient(
@@ -46,15 +46,6 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
     } catch (ecwidError) {
       console.warn("Failed to fetch orders from Ecwid:", ecwidError);
       // Continue without Ecwid orders if API fails
-    }
-
-    // Fetch orders from BigCommerce
-    let bigCommerceOrders = [];
-    try {
-      bigCommerceOrders = await bigCommerceAPI.getCustomerOrders(customerId);
-    } catch (bcError) {
-      console.warn("Failed to fetch orders from BigCommerce:", bcError);
-      // Continue without BigCommerce orders if API fails
     }
 
     // Fetch from Supabase for local orders
@@ -129,30 +120,6 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
       customerPhone: order.customerPhone,
     }));
 
-    // Format BigCommerce orders
-    const formattedBigCommerceOrders = bigCommerceOrders.map((order: any) => ({
-      id: order.id,
-      customerId: order.customer_id,
-      status: order.status || "pending",
-      total: order.total,
-      subtotal: order.subtotal_ex_tax,
-      tax: order.total_tax,
-      shipping: order.total_shipping || 0,
-      dateCreated: order.date_created,
-      source: "bigcommerce",
-      itemCount: order.line_items?.length || 0,
-      items: order.line_items || [],
-      tracking_number: order.shipments?.[0]?.tracking_number,
-      tracking_carrier: order.shipments?.[0]?.shipping_provider,
-      shipped_date: order.shipments?.[0]?.date_flag_list?.shipped_on,
-      shippingAddress: order.shipping_addresses?.[0],
-      customerName:
-        `${order.billing_address?.first_name || ""} ${order.billing_address?.last_name || ""}`.trim(),
-      customerEmail: order.customer_email,
-      customerPhone: order.billing_address?.phone,
-      digital_files: [],
-    }));
-
     // Fetch digital files for all orders
     const { data: digitalFilesData } = await supabase
       .from("digital_files")
@@ -213,7 +180,6 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
     // Combine and sort by date
     const allOrders = [
       ...formattedEcwidOrders,
-      ...formattedBigCommerceOrders,
       ...formattedSupabaseOrders,
     ].sort(
       (a, b) =>

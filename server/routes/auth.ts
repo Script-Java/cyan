@@ -364,7 +364,7 @@ export const handleAdminSetup: RequestHandler = async (req, res) => {
   }
 };
 
-// BigCommerce OAuth handlers removed - using Supabase-only authentication
+
 
 export const handleLogout: RequestHandler = (req, res) => {
   try {
