@@ -104,14 +104,14 @@ const generateInvoiceNumber = async (): Promise<string> => {
   const date = new Date();
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
-  
+
   // Get count of invoices this month
   const { data, error } = await supabase
     .from("invoices")
     .select("id", { count: "exact" })
     .gte("created_at", `${year}-${month}-01`)
     .lte("created_at", `${year}-${month}-31`);
-  
+
   const count = (data?.length || 0) + 1;
   return `INV-${year}${month}-${String(count).padStart(4, "0")}`;
 };
@@ -126,9 +126,7 @@ export const handleGetInvoices: RequestHandler = async (req, res) => {
   try {
     const { status, type, search, sort_by, sort_order } = req.query;
 
-    let query = supabase
-      .from("invoices")
-      .select("*, invoice_line_items(*)");
+    let query = supabase.from("invoices").select("*, invoice_line_items(*)");
 
     // Apply filters
     if (status) {
@@ -139,7 +137,7 @@ export const handleGetInvoices: RequestHandler = async (req, res) => {
     }
     if (search) {
       query = query.or(
-        `customer_name.ilike.%${search}%,customer_email.ilike.%${search}%,invoice_number.ilike.%${search}%`
+        `customer_name.ilike.%${search}%,customer_email.ilike.%${search}%,invoice_number.ilike.%${search}%`,
       );
     }
 
@@ -151,7 +149,11 @@ export const handleGetInvoices: RequestHandler = async (req, res) => {
     const { data, error } = await query;
 
     // Handle missing table gracefully
-    if (error && (error.code === "PGRST205" || error.message.includes("Could not find the table"))) {
+    if (
+      error &&
+      (error.code === "PGRST205" ||
+        error.message.includes("Could not find the table"))
+    ) {
       console.log("Invoices table not yet created, returning empty list");
       return res.status(200).json({
         success: true,
@@ -206,7 +208,8 @@ export const handleGetInvoices: RequestHandler = async (req, res) => {
     console.error("Get invoices error:", error);
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : "Failed to fetch invoices",
+      error:
+        error instanceof Error ? error.message : "Failed to fetch invoices",
     });
   }
 };
@@ -223,7 +226,11 @@ export const handleGetInvoice: RequestHandler = async (req, res) => {
       .single();
 
     // Handle missing table gracefully
-    if (invoiceError && (invoiceError.code === "PGRST205" || invoiceError.message.includes("Could not find the table"))) {
+    if (
+      invoiceError &&
+      (invoiceError.code === "PGRST205" ||
+        invoiceError.message.includes("Could not find the table"))
+    ) {
       return res.status(404).json({
         success: false,
         error: "Invoice not found",
@@ -297,12 +304,13 @@ export const handleCreateInvoice: RequestHandler = async (req, res) => {
     let subtotal = 0;
     if (line_items && Array.isArray(line_items)) {
       subtotal = line_items.reduce((sum: number, item: any) => {
-        return sum + (item.quantity * item.unit_price);
+        return sum + item.quantity * item.unit_price;
       }, 0);
     }
 
     const tax_amount = (subtotal * (tax_rate || 0)) / 100;
-    const total = subtotal + tax_amount + (shipping || 0) - (discount_amount || 0);
+    const total =
+      subtotal + tax_amount + (shipping || 0) - (discount_amount || 0);
 
     // Create invoice
     const { data: invoice, error: invoiceError } = await supabase
@@ -365,7 +373,8 @@ export const handleCreateInvoice: RequestHandler = async (req, res) => {
     console.error("Create invoice error:", error);
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : "Failed to create invoice",
+      error:
+        error instanceof Error ? error.message : "Failed to create invoice",
     });
   }
 };
@@ -414,12 +423,13 @@ export const handleUpdateInvoice: RequestHandler = async (req, res) => {
     let subtotal = 0;
     if (line_items && Array.isArray(line_items)) {
       subtotal = line_items.reduce((sum: number, item: any) => {
-        return sum + (item.quantity * item.unit_price);
+        return sum + item.quantity * item.unit_price;
       }, 0);
     }
 
     const tax_amount = (subtotal * (tax_rate || 0)) / 100;
-    const total = subtotal + tax_amount + (shipping || 0) - (discount_amount || 0);
+    const total =
+      subtotal + tax_amount + (shipping || 0) - (discount_amount || 0);
 
     // Update invoice
     const { data: updated, error } = await supabase
@@ -450,7 +460,7 @@ export const handleUpdateInvoice: RequestHandler = async (req, res) => {
 
     // Update line items
     await supabase.from("invoice_line_items").delete().eq("invoice_id", id);
-    
+
     if (line_items && Array.isArray(line_items)) {
       const itemsToInsert = line_items.map((item: LineItem) => ({
         invoice_id: id,
@@ -473,7 +483,8 @@ export const handleUpdateInvoice: RequestHandler = async (req, res) => {
     console.error("Update invoice error:", error);
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update invoice",
+      error:
+        error instanceof Error ? error.message : "Failed to update invoice",
     });
   }
 };
@@ -535,7 +546,7 @@ export const handleSendInvoice: RequestHandler = async (req, res) => {
     const paymentLink = `https://stickyslap.app/invoice/${token}`;
 
     console.log(
-      `Invoice sent to ${invoice.customer_email} - Payment link: ${paymentLink}`
+      `Invoice sent to ${invoice.customer_email} - Payment link: ${paymentLink}`,
     );
 
     res.status(200).json({
@@ -589,7 +600,8 @@ export const handleMarkInvoicePaid: RequestHandler = async (req, res) => {
     console.error("Mark paid error:", error);
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : "Failed to mark invoice paid",
+      error:
+        error instanceof Error ? error.message : "Failed to mark invoice paid",
     });
   }
 };
@@ -632,7 +644,8 @@ export const handleCancelInvoice: RequestHandler = async (req, res) => {
     console.error("Cancel invoice error:", error);
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : "Failed to cancel invoice",
+      error:
+        error instanceof Error ? error.message : "Failed to cancel invoice",
     });
   }
 };
@@ -682,7 +695,8 @@ export const handleGetPaymentToken: RequestHandler = async (req, res) => {
     console.error("Get payment token error:", error);
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : "Failed to get payment token",
+      error:
+        error instanceof Error ? error.message : "Failed to get payment token",
     });
   }
 };
