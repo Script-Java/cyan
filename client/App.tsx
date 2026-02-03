@@ -259,7 +259,10 @@ export default function App() {
                   path="/invoice/:token"
                   element={<CustomerInvoiceView />}
                 />
-                <Route path="/invoice-checkout" element={<InvoiceCheckout />} />
+                <Route
+                  path="/invoice/:token/checkout"
+                  element={<InvoiceCheckout />}
+                />
 
                 <Route path="/auth/callback" element={<AuthCallback />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
