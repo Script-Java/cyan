@@ -436,8 +436,9 @@ export default function OrderConfirmation() {
                     {/* Price Section */}
                     <div className="flex-shrink-0 text-right">
                       <p className="text-sm text-gray-600 mb-1">Subtotal</p>
-                      <p className="font-bold text-2xl text-[#FFD713]">
-                        ${(item.price * item.quantity).toFixed(2)}
+                      <p className="font-bold text-2xl">
+                        <span style={{color: "rgba(20, 20, 20, 1)"}}>$</span>
+                        <span style={{color: "rgba(32, 32, 31, 1)"}}>{(item.price * item.quantity).toFixed(2)}</span>
                       </p>
                       <p className="text-xs text-gray-600 mt-2">
                         ${item.price.toFixed(2)} × {item.quantity}
