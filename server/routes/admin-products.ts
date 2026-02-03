@@ -112,21 +112,23 @@ interface ProductFormData {
   fixedQuantity: number | null;
 }
 
+/**
+ * Create a new product in admin catalog
+ * VALIDATION: All request fields validated against CreateProductSchema
+ * SECURITY: Requires verifyToken + requireAdmin middleware
+ */
 export const handleCreateProduct: RequestHandler = async (req, res) => {
   try {
-    const productData: ProductFormData = req.body;
-
-    if (!productData.name?.trim()) {
-      return res.status(400).json({ error: "Product name is required" });
-    }
-
-    const hasSharedVariants =
-      productData.sharedVariants && productData.sharedVariants.length > 0;
-    if (productData.basePrice < 0 && !hasSharedVariants) {
+    // VALIDATION: Validate entire product request
+    const validationResult = await validate(CreateProductSchema, req.body);
+    if (!validationResult.success) {
       return res.status(400).json({
-        error: "Base price cannot be negative (or add shared variants)",
+        error: "Request validation failed",
+        details: validationResult.errors,
       });
     }
+
+    const productData = validationResult.data;
 
     // Build complete product object with all supported columns
     const dbProduct: any = {
