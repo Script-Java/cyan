@@ -265,7 +265,7 @@ export default function InvoiceCheckout() {
                       Processing...
                     </>
                   ) : (
-                    `Pay $${invoice.total.toFixed(2)}`
+                    `Pay $${(Number(invoice.total) || 0).toFixed(2)}`
                   )}
                 </Button>
 
