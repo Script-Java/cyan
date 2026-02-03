@@ -11,6 +11,7 @@ import {
   User,
   Search,
   ArrowRight,
+  Eye,
 } from "lucide-react";
 
 interface BlogItem {
