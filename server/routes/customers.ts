@@ -140,6 +140,7 @@ export const handleUpdateCustomer: RequestHandler = async (req, res) => {
 /**
  * Get customer addresses
  * Requires: customerId in JWT token
+ * SECURITY: Uses scoped Supabase client with RLS enforcement
  */
 export const handleGetCustomerAddresses: RequestHandler = async (req, res) => {
   try {
@@ -149,7 +150,10 @@ export const handleGetCustomerAddresses: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const { data: customer, error: customerError } = await supabase
+    // SECURITY: Use scoped client to enforce RLS policies
+    const scoped = getScopedSupabaseClient(req);
+
+    const { data: customer, error: customerError } = await scoped
       .from("customers")
       .select("id")
       .eq("id", customerId)
@@ -159,7 +163,7 @@ export const handleGetCustomerAddresses: RequestHandler = async (req, res) => {
       return res.status(404).json({ error: "Customer not found" });
     }
 
-    const { data: addresses, error } = await supabase
+    const { data: addresses, error } = await scoped
       .from("addresses")
       .select("*")
       .eq("customer_id", customerId)
@@ -185,6 +189,7 @@ export const handleGetCustomerAddresses: RequestHandler = async (req, res) => {
 /**
  * Create customer address
  * Requires: customerId in JWT token
+ * SECURITY: Uses scoped Supabase client with RLS enforcement
  */
 export const handleCreateCustomerAddress: RequestHandler = async (req, res) => {
   try {
@@ -217,7 +222,11 @@ export const handleCreateCustomerAddress: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Missing required address fields" });
     }
 
-    const { data: address, error } = await supabase
+    // SECURITY: Use scoped client to enforce RLS policies
+    // Customer can only create addresses for themselves
+    const scoped = getScopedSupabaseClient(req);
+
+    const { data: address, error } = await scoped
       .from("addresses")
       .insert({
         customer_id: customerId,
@@ -263,6 +272,7 @@ export const handleCreateCustomerAddress: RequestHandler = async (req, res) => {
 /**
  * Update customer address
  * Requires: customerId in JWT token
+ * SECURITY: Uses scoped Supabase client with RLS enforcement
  */
 export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
   try {
@@ -305,8 +315,11 @@ export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Missing required address fields" });
     }
 
+    // SECURITY: Use scoped client to enforce RLS policies
+    const scoped = getScopedSupabaseClient(req);
+
     // Verify address belongs to customer
-    const { data: existingAddress, error: checkError } = await supabase
+    const { data: existingAddress, error: checkError } = await scoped
       .from("addresses")
       .select("id")
       .eq("id", parsedAddressId)
@@ -319,7 +332,7 @@ export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
         .json({ error: "Address not found or unauthorized" });
     }
 
-    const { data: address, error } = await supabase
+    const { data: address, error } = await scoped
       .from("addresses")
       .update({
         first_name: firstName,
@@ -366,6 +379,7 @@ export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
 /**
  * Delete customer address
  * Requires: customerId in JWT token
+ * SECURITY: Uses scoped Supabase client with RLS enforcement
  */
 export const handleDeleteCustomerAddress: RequestHandler = async (req, res) => {
   try {
@@ -385,8 +399,11 @@ export const handleDeleteCustomerAddress: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Invalid address ID format" });
     }
 
+    // SECURITY: Use scoped client to enforce RLS policies
+    const scoped = getScopedSupabaseClient(req);
+
     // Verify address belongs to customer
-    const { data: existingAddress, error: checkError } = await supabase
+    const { data: existingAddress, error: checkError } = await scoped
       .from("addresses")
       .select("id")
       .eq("id", parsedAddressId)
@@ -399,7 +416,7 @@ export const handleDeleteCustomerAddress: RequestHandler = async (req, res) => {
         .json({ error: "Address not found or unauthorized" });
     }
 
-    const { error } = await supabase
+    const { error } = await scoped
       .from("addresses")
       .delete()
       .eq("id", parsedAddressId);
@@ -423,6 +440,7 @@ export const handleDeleteCustomerAddress: RequestHandler = async (req, res) => {
 /**
  * Delete customer account
  * Requires: customerId in JWT token
+ * SECURITY: Uses scoped Supabase client with RLS enforcement
  */
 export const handleDeleteCustomerAccount: RequestHandler = async (req, res) => {
   try {
@@ -432,8 +450,12 @@ export const handleDeleteCustomerAccount: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    // SECURITY: Use scoped client to enforce RLS policies
+    // Customer can only delete their own account
+    const scoped = getScopedSupabaseClient(req);
+
     // Delete from Supabase
-    const { error } = await supabase
+    const { error } = await scoped
       .from("customers")
       .delete()
       .eq("id", customerId);
