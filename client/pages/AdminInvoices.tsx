@@ -138,7 +138,7 @@ export default function AdminInvoices() {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
           body: JSON.stringify({ reason: cancelReason }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -158,20 +158,18 @@ export default function AdminInvoices() {
 
   const handleResendInvoice = async (invoice: Invoice) => {
     try {
-      const response = await fetch(
-        `/api/admin/invoices/${invoice.id}/send`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-          body: JSON.stringify({
-            email_subject: `Invoice #${invoice.invoice_number}`,
-            email_message: "Please find your invoice below. Click the link to pay.",
-          }),
-        }
-      );
+      const response = await fetch(`/api/admin/invoices/${invoice.id}/send`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: JSON.stringify({
+          email_subject: `Invoice #${invoice.invoice_number}`,
+          email_message:
+            "Please find your invoice below. Click the link to pay.",
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to resend invoice");
@@ -198,7 +196,9 @@ export default function AdminInvoices() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">Invoices</h1>
-            <p className="text-gray-600">Manage and track all customer invoices</p>
+            <p className="text-gray-600">
+              Manage and track all customer invoices
+            </p>
           </div>
 
           {/* Summary Cards */}
@@ -381,7 +381,7 @@ export default function AdminInvoices() {
                           <td className="py-3 px-4">
                             <span
                               className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                                invoice.status
+                                invoice.status,
                               )}`}
                             >
                               {invoice.status}
@@ -405,7 +405,7 @@ export default function AdminInvoices() {
                                 <button
                                   onClick={() =>
                                     navigate(
-                                      `/admin/invoices/${invoice.id}/edit`
+                                      `/admin/invoices/${invoice.id}/edit`,
                                     )
                                   }
                                   className="text-gray-600 hover:text-gray-900"

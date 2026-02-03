@@ -72,12 +72,15 @@ export default function InvoiceCheckout() {
       setIsProcessing(true);
 
       // Create Square payment link via invoice endpoint
-      const response = await fetch(`/api/invoice/${token}/create-payment-link`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `/api/invoice/${token}/create-payment-link`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       if (!response.ok) {
         const error = await response.json();
@@ -167,13 +170,17 @@ export default function InvoiceCheckout() {
                   <p className="font-semibold text-gray-900">
                     {invoice.customer_name}
                   </p>
-                  <p className="text-sm text-gray-600">{invoice.customer_email}</p>
+                  <p className="text-sm text-gray-600">
+                    {invoice.customer_email}
+                  </p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-gray-600 mb-1">Status</p>
-                  <p className={`text-lg font-semibold ${
-                    isPaid ? "text-green-600" : "text-yellow-600"
-                  }`}>
+                  <p
+                    className={`text-lg font-semibold ${
+                      isPaid ? "text-green-600" : "text-yellow-600"
+                    }`}
+                  >
                     {invoice.status}
                   </p>
                 </div>
@@ -193,17 +200,23 @@ export default function InvoiceCheckout() {
                     {invoice.customer_name}
                   </p>
                   {invoice.shipping_address.street && (
-                    <p className="text-gray-600">{invoice.shipping_address.street}</p>
+                    <p className="text-gray-600">
+                      {invoice.shipping_address.street}
+                    </p>
                   )}
                   {invoice.shipping_address.city && (
                     <p className="text-gray-600">
                       {invoice.shipping_address.city}
-                      {invoice.shipping_address.state && `, ${invoice.shipping_address.state}`}
-                      {invoice.shipping_address.zip && ` ${invoice.shipping_address.zip}`}
+                      {invoice.shipping_address.state &&
+                        `, ${invoice.shipping_address.state}`}
+                      {invoice.shipping_address.zip &&
+                        ` ${invoice.shipping_address.zip}`}
                     </p>
                   )}
                   {invoice.shipping_address.country && (
-                    <p className="text-gray-600">{invoice.shipping_address.country}</p>
+                    <p className="text-gray-600">
+                      {invoice.shipping_address.country}
+                    </p>
                   )}
                 </div>
               </CardContent>
@@ -248,7 +261,9 @@ export default function InvoiceCheckout() {
                   </div>
                 )}
                 <div className="border-t pt-3 flex justify-between items-center">
-                  <span className="font-semibold text-gray-900">Amount Due</span>
+                  <span className="font-semibold text-gray-900">
+                    Amount Due
+                  </span>
                   <span className="text-3xl font-bold text-blue-600">
                     ${(Number(invoice.total) || 0).toFixed(2)}
                   </span>

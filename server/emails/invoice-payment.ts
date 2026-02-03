@@ -52,12 +52,16 @@ export function generateInvoiceEmailHtml(
           </div>
         </div>
 
-        ${invoiceDetails?.notes ? `
+        ${
+          invoiceDetails?.notes
+            ? `
           <div style="background: #f0fdf4; border-left: 4px solid #059669; padding: 15px; margin: 20px 0; border-radius: 4px;">
             <p style="color: #6b7280; font-size: 12px; margin: 0 0 5px 0; text-transform: uppercase; font-weight: 600;">Notes</p>
             <p style="color: #1f2937; font-size: 14px; margin: 0; white-space: pre-wrap;">${invoiceDetails.notes}</p>
           </div>
-        ` : ""}
+        `
+            : ""
+        }
 
         <!-- CTA Button -->
         <div style="text-align: center; margin: 30px 0;">

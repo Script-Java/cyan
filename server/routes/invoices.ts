@@ -358,7 +358,8 @@ export const handleCreateInvoice: RequestHandler = async (req, res) => {
         console.log("Invoices table not yet created");
         return res.status(503).json({
           success: false,
-          error: "Invoicing system is not yet available. Please contact support.",
+          error:
+            "Invoicing system is not yet available. Please contact support.",
         });
       }
       throw invoiceError;
@@ -441,7 +442,11 @@ export const handleUpdateInvoice: RequestHandler = async (req, res) => {
       .single();
 
     // Handle missing invoices table
-    if (existingError && (existingError.code === "PGRST205" || existingError.message.includes("Could not find the table"))) {
+    if (
+      existingError &&
+      (existingError.code === "PGRST205" ||
+        existingError.message.includes("Could not find the table"))
+    ) {
       return res.status(503).json({
         success: false,
         error: "Invoicing system is not yet available. Please contact support.",
@@ -959,8 +964,7 @@ export const handleCreateInvoicePaymentLink: RequestHandler = async (
       console.error("Failed to create Square payment link:", paymentLinkResult);
       return res.status(400).json({
         success: false,
-        error:
-          paymentLinkResult.error || "Failed to create payment link",
+        error: paymentLinkResult.error || "Failed to create payment link",
       });
     }
 

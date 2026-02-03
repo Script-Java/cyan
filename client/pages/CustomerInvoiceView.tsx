@@ -70,7 +70,7 @@ export default function CustomerInvoiceView() {
         {
           method: "POST",
           body: formData,
-        }
+        },
       );
 
       if (!response.ok) {
@@ -93,9 +93,7 @@ export default function CustomerInvoiceView() {
 
   const handlePayment = () => {
     if (!invoice) return;
-    navigate(
-      `/checkout?invoiceToken=${token}&amount=${invoice.total}`
-    );
+    navigate(`/checkout?invoiceToken=${token}&amount=${invoice.total}`);
   };
 
   if (isLoading) {
@@ -151,15 +149,17 @@ export default function CustomerInvoiceView() {
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className={`text-sm font-medium ${
-                    isPaid
-                      ? "text-green-600"
-                      : isCanceled
-                      ? "text-red-600"
-                      : isOverdue
-                      ? "text-red-600"
-                      : "text-yellow-600"
-                  }`}>
+                  <p
+                    className={`text-sm font-medium ${
+                      isPaid
+                        ? "text-green-600"
+                        : isCanceled
+                          ? "text-red-600"
+                          : isOverdue
+                            ? "text-red-600"
+                            : "text-yellow-600"
+                    }`}
+                  >
                     {invoice.status}
                   </p>
                   <p className="text-3xl font-bold text-gray-900 mt-2">
@@ -305,14 +305,18 @@ export default function CustomerInvoiceView() {
                     {invoice.line_items.map((item, idx) => (
                       <tr key={idx} className="border-b">
                         <td className="py-3">{item.item_name}</td>
-                        <td className="py-3 text-center">
-                          {item.quantity}
-                        </td>
+                        <td className="py-3 text-center">{item.quantity}</td>
                         <td className="py-3 text-right">
                           ${(Number(item.unit_price) || 0).toFixed(2)}
                         </td>
                         <td className="py-3 text-right font-medium">
-                          ${(Number(item.line_total || item.quantity * item.unit_price) || 0).toFixed(2)}
+                          $
+                          {(
+                            Number(
+                              item.line_total ||
+                                item.quantity * item.unit_price,
+                            ) || 0
+                          ).toFixed(2)}
                         </td>
                       </tr>
                     ))}
@@ -328,7 +332,9 @@ export default function CustomerInvoiceView() {
                   {Number(invoice.tax_amount || 0) > 0 && (
                     <div className="flex justify-between">
                       <span>Tax:</span>
-                      <span>${(Number(invoice.tax_amount) || 0).toFixed(2)}</span>
+                      <span>
+                        ${(Number(invoice.tax_amount) || 0).toFixed(2)}
+                      </span>
                     </div>
                   )}
                   {Number(invoice.shipping || 0) > 0 && (
@@ -340,7 +346,9 @@ export default function CustomerInvoiceView() {
                   {Number(invoice.discount_amount || 0) > 0 && (
                     <div className="flex justify-between text-green-600">
                       <span>Discount:</span>
-                      <span>-${(Number(invoice.discount_amount) || 0).toFixed(2)}</span>
+                      <span>
+                        -${(Number(invoice.discount_amount) || 0).toFixed(2)}
+                      </span>
                     </div>
                   )}
                   <div className="border-t pt-2 font-bold flex justify-between">

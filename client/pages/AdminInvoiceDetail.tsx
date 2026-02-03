@@ -82,13 +82,18 @@ export default function AdminInvoiceDetail() {
         toast.success("Payment link copied to clipboard");
       } catch (clipboardError) {
         // Fallback: Show modal for manual copy if Clipboard API fails (e.g., in iframe)
-        console.warn("Clipboard API blocked, showing modal fallback", clipboardError);
+        console.warn(
+          "Clipboard API blocked, showing modal fallback",
+          clipboardError,
+        );
         setPaymentLink(link);
         setShowLinkModal(true);
       }
     } catch (error) {
       console.error("Copy link error:", error);
-      toast.error(error instanceof Error ? error.message : "Failed to copy payment link");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to copy payment link",
+      );
     }
   };
 
@@ -153,18 +158,18 @@ export default function AdminInvoiceDetail() {
               <h1 className="text-3xl font-bold text-gray-900">
                 {invoice.invoice_number}
               </h1>
-              <p className="text-gray-600 mt-1">
-                {invoice.customer_name}
-              </p>
+              <p className="text-gray-600 mt-1">{invoice.customer_name}</p>
             </div>
             <div className="text-right">
-              <p className={`text-sm font-medium ${
-                invoice.status === "Paid"
-                  ? "text-green-600"
-                  : invoice.status === "Draft"
-                  ? "text-gray-600"
-                  : "text-yellow-600"
-              }`}>
+              <p
+                className={`text-sm font-medium ${
+                  invoice.status === "Paid"
+                    ? "text-green-600"
+                    : invoice.status === "Draft"
+                      ? "text-gray-600"
+                      : "text-yellow-600"
+                }`}
+              >
                 {invoice.status}
               </p>
               <p className="text-3xl font-bold text-gray-900">
@@ -179,7 +184,9 @@ export default function AdminInvoiceDetail() {
               <CardContent className="pt-6">
                 <p className="text-sm text-gray-600">Issue Date</p>
                 <p className="font-semibold">
-                  {invoice.created_at ? new Date(invoice.created_at).toLocaleDateString() : "N/A"}
+                  {invoice.created_at
+                    ? new Date(invoice.created_at).toLocaleDateString()
+                    : "N/A"}
                 </p>
               </CardContent>
             </Card>
@@ -187,7 +194,9 @@ export default function AdminInvoiceDetail() {
               <CardContent className="pt-6">
                 <p className="text-sm text-gray-600">Due Date</p>
                 <p className="font-semibold">
-                  {invoice.due_date ? new Date(invoice.due_date).toLocaleDateString() : "N/A"}
+                  {invoice.due_date
+                    ? new Date(invoice.due_date).toLocaleDateString()
+                    : "N/A"}
                 </p>
               </CardContent>
             </Card>
@@ -200,7 +209,9 @@ export default function AdminInvoiceDetail() {
             <Card>
               <CardContent className="pt-6">
                 <p className="text-sm text-gray-600">Email</p>
-                <p className="font-semibold text-sm">{invoice.customer_email}</p>
+                <p className="font-semibold text-sm">
+                  {invoice.customer_email}
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -225,9 +236,16 @@ export default function AdminInvoiceDetail() {
                     <tr key={idx} className="border-b">
                       <td className="py-3">{item.item_name}</td>
                       <td className="py-3 text-center">{item.quantity}</td>
-                      <td className="py-3 text-right">${(item.unit_price || 0).toFixed(2)}</td>
+                      <td className="py-3 text-right">
+                        ${(item.unit_price || 0).toFixed(2)}
+                      </td>
                       <td className="py-3 text-right font-medium">
-                        ${(item.amount || item.quantity * item.unit_price || 0).toFixed(2)}
+                        $
+                        {(
+                          item.amount ||
+                          item.quantity * item.unit_price ||
+                          0
+                        ).toFixed(2)}
                       </td>
                     </tr>
                   ))}
@@ -268,7 +286,10 @@ export default function AdminInvoiceDetail() {
               <CardContent>
                 <div className="space-y-4">
                   {invoice.activity?.map((item: any, idx: number) => (
-                    <div key={idx} className="flex gap-3 pb-4 border-b last:border-b-0">
+                    <div
+                      key={idx}
+                      className="flex gap-3 pb-4 border-b last:border-b-0"
+                    >
                       <div className="flex-shrink-0">
                         {item.action === "paid" ? (
                           <Check className="w-5 h-5 text-green-600" />
@@ -314,10 +335,7 @@ export default function AdminInvoiceDetail() {
                 Send to Customer
               </Button>
             )}
-            <Button
-              onClick={handleCopyLink}
-              variant="outline"
-            >
+            <Button onClick={handleCopyLink} variant="outline">
               <Copy className="w-4 h-4 mr-2" />
               Copy Payment Link
             </Button>
@@ -340,7 +358,8 @@ export default function AdminInvoiceDetail() {
         <AlertDialogContent>
           <AlertDialogTitle>Copy Payment Link</AlertDialogTitle>
           <AlertDialogDescription>
-            The Clipboard API is not available in this environment. Please copy the link below manually:
+            The Clipboard API is not available in this environment. Please copy
+            the link below manually:
           </AlertDialogDescription>
           <div className="my-4 p-3 bg-gray-100 rounded border border-gray-300">
             <p className="text-sm font-mono break-all">{paymentLink}</p>

@@ -1245,26 +1245,10 @@ export function createServer() {
 
   // ===== Invoice Routes =====
   // Admin routes (Protected - Admin only)
-  app.get(
-    "/api/admin/invoices",
-    verifySupabaseToken,
-    handleGetInvoices,
-  );
-  app.get(
-    "/api/admin/invoices/:id",
-    verifySupabaseToken,
-    handleGetInvoice,
-  );
-  app.post(
-    "/api/admin/invoices",
-    verifySupabaseToken,
-    handleCreateInvoice,
-  );
-  app.put(
-    "/api/admin/invoices/:id",
-    verifySupabaseToken,
-    handleUpdateInvoice,
-  );
+  app.get("/api/admin/invoices", verifySupabaseToken, handleGetInvoices);
+  app.get("/api/admin/invoices/:id", verifySupabaseToken, handleGetInvoice);
+  app.post("/api/admin/invoices", verifySupabaseToken, handleCreateInvoice);
+  app.put("/api/admin/invoices/:id", verifySupabaseToken, handleUpdateInvoice);
   app.post(
     "/api/admin/invoices/:id/send",
     verifySupabaseToken,
@@ -1307,10 +1291,17 @@ export function createServer() {
 
   // Public routes
   app.get("/api/invoice/:token", handleGetInvoiceByToken);
-  app.post("/api/invoice/:token/create-payment-link", handleCreateInvoicePaymentLink);
+  app.post(
+    "/api/invoice/:token/create-payment-link",
+    handleCreateInvoicePaymentLink,
+  );
 
   // Database setup route
-  app.post("/api/admin/setup/init-invoices", requireAdmin, handleInitializeInvoicesDatabase);
+  app.post(
+    "/api/admin/setup/init-invoices",
+    requireAdmin,
+    handleInitializeInvoicesDatabase,
+  );
 
   // Global error handler - must be last
   app.use((err: any, _req: any, res: any, _next: any) => {
