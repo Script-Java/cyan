@@ -97,6 +97,7 @@ export default function OrderConfirmation() {
               product_name: "Custom Sticker Sheet",
               quantity: 2,
               price: 29.99,
+              design_file_url: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&h=400&fit=crop",
             },
             {
               id: 2,
@@ -104,6 +105,7 @@ export default function OrderConfirmation() {
               product_name: "Vinyl Decal Pack",
               quantity: 1,
               price: 65.00,
+              design_file_url: "https://images.unsplash.com/photo-1609027291529-0cfecda156de?w=400&h=400&fit=crop",
             },
           ],
         };
