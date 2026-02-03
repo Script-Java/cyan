@@ -18,41 +18,33 @@ import {
 } from "./admin-products";
 
 /**
- * Product Routes - Public and Admin product management
+ * Product Routes - Public product management and retrieval
  *
- * This router is mounted at multiple paths:
- * - /api/products
- * - /api/admin/products
- * - /api/public/products
- * - /api/storefront
+ * Mounted at: /api/products
  *
- * Routes are designed to work correctly at each mount point
+ * Public routes for fetching Ecwid products
  */
 export function createProductRouter() {
   const router = Router();
 
-  // ===== PUBLIC ROUTES (mounted at /api/products) =====
   // GET /api/products/:productId - Get product details
   router.get("/:productId", handleGetProduct);
 
   // GET /api/products/:productId/options - Get product options
   router.get("/:productId/options", handleGetProductOptions);
 
-  // ===== PUBLIC ADMIN PRODUCT DISPLAY (mounted at /api/public/products) =====
-  // GET /api/public/products/:productId - Get public product
-  router.get("/:productId", handleGetPublicProduct);
+  return router;
+}
 
-  // GET /api/public/products/admin/:id - Get admin product (public)
-  router.get("/admin/:id", handleGetAdminProductPublic);
+/**
+ * Admin Product Routes - Create, update, delete products
+ *
+ * Mounted at: /api/admin/products
+ * Requires: verifyToken + requireAdmin middleware
+ */
+export function createAdminProductRouter() {
+  const router = Router();
 
-  // GET /api/public/products/imported/:id - Get imported product (public)
-  router.get("/imported/:id", handleGetImportedProductPublic);
-
-  // ===== STOREFRONT PRODUCTS (mounted at /api/storefront) =====
-  // GET /api/storefront/products - Get all storefront products
-  router.get("/products", handleGetStorefrontProducts);
-
-  // ===== ADMIN ROUTES (mounted at /api/admin/products) =====
   // POST /api/admin/products - Create product
   router.post("/", verifyToken, requireAdmin, handleCreateProduct);
 
@@ -70,6 +62,42 @@ export function createProductRouter() {
 
   // DELETE /api/admin/products/:productId - Delete product
   router.delete("/:productId", verifyToken, requireAdmin, handleDeleteAdminProduct);
+
+  return router;
+}
+
+/**
+ * Public Product Display Routes - Customer-facing product pages
+ *
+ * Mounted at: /api/public/products
+ * No authentication required
+ */
+export function createPublicProductRouter() {
+  const router = Router();
+
+  // GET /api/public/products/:productId - Get public product
+  router.get("/:productId", handleGetPublicProduct);
+
+  // GET /api/public/products/admin/:id - Get admin product (public)
+  router.get("/admin/:id", handleGetAdminProductPublic);
+
+  // GET /api/public/products/imported/:id - Get imported product (public)
+  router.get("/imported/:id", handleGetImportedProductPublic);
+
+  return router;
+}
+
+/**
+ * Storefront Products Router - Merged product listings
+ *
+ * Mounted at: /api/storefront
+ * No authentication required
+ */
+export function createStorefrontRouter() {
+  const router = Router();
+
+  // GET /api/storefront/products - Get all storefront products (merged admin + imported)
+  router.get("/products", handleGetStorefrontProducts);
 
   return router;
 }
