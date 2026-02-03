@@ -17,7 +17,6 @@ export function useAdminNotifications() {
 
   useEffect(() => {
     let isMounted = true;
-    const abortControllers: AbortController[] = [];
 
     const fetchWithTimeout = async (
       url: string,
@@ -25,8 +24,11 @@ export function useAdminNotifications() {
       timeoutMs: number = 8000,
     ): Promise<Response | null> => {
       const controller = new AbortController();
-      abortControllers.push(controller);
-      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+      const timeoutId = setTimeout(() => {
+        if (!controller.signal.aborted) {
+          controller.abort();
+        }
+      }, timeoutMs);
 
       try {
         const response = await fetch(url, {
@@ -37,10 +39,8 @@ export function useAdminNotifications() {
         return response;
       } catch (err) {
         clearTimeout(timeoutId);
-        // Ignore abort errors when component is unmounting
+        // Ignore abort errors silently
         if (err instanceof Error && err.name === "AbortError") {
-          if (!isMounted) return null;
-          console.warn(`Request timeout for ${url}`);
           return null;
         }
         throw err;
@@ -169,16 +169,6 @@ export function useAdminNotifications() {
     return () => {
       isMounted = false;
       clearInterval(interval);
-      // Abort all pending requests safely
-      abortControllers.forEach((controller) => {
-        if (!controller.signal.aborted) {
-          try {
-            controller.abort();
-          } catch {
-            // Ignore any errors during abort
-          }
-        }
-      });
     };
   }, []);
 
