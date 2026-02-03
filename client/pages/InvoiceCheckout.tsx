@@ -66,43 +66,37 @@ export default function InvoiceCheckout() {
   };
 
   const handlePayment = async () => {
-    if (!invoice) return;
+    if (!invoice || !token) return;
 
     try {
       setIsProcessing(true);
 
-      // Create payment session with Square
-      const response = await fetch("/api/square/create-payment-link", {
+      // Create Square payment link via invoice endpoint
+      const response = await fetch(`/api/invoice/${token}/create-payment-link`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          amount: Math.round(invoice.total * 100), // Convert to cents
-          currency: "USD",
-          description: `Invoice #${invoice.invoice_number}`,
-          customer_email: invoice.customer_email,
-          customer_name: invoice.customer_name,
-          invoice_id: invoice.id,
-          redirect_url: `${window.location.origin}/invoice/${token}`,
-        }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create payment");
+        const error = await response.json();
+        throw new Error(error.error || "Failed to create payment link");
       }
 
-      const { payment_link } = await response.json();
+      const result = await response.json();
 
       // Redirect to Square payment
-      if (payment_link) {
-        window.location.href = payment_link;
+      if (result.data?.payment_link) {
+        window.location.href = result.data.payment_link;
       } else {
         toast.error("Failed to generate payment link");
       }
     } catch (error) {
       console.error("Payment error:", error);
-      toast.error("Failed to process payment");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to process payment",
+      );
     } finally {
       setIsProcessing(false);
     }
