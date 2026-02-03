@@ -835,7 +835,7 @@ export const handleGetInvoiceByToken: RequestHandler = async (req, res) => {
       });
     }
 
-    // Update view count (non-blocking)
+    // Update view count (non-blocking - fire and forget)
     supabase
       .from("invoice_tokens")
       .update({
@@ -843,6 +843,9 @@ export const handleGetInvoiceByToken: RequestHandler = async (req, res) => {
         last_viewed_at: new Date().toISOString(),
       })
       .eq("token", token)
+      .then(() => {
+        // View count updated successfully
+      })
       .catch((err) => console.error("Error updating token views:", err));
 
     // Get invoice
