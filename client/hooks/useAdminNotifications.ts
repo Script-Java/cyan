@@ -171,10 +171,12 @@ export function useAdminNotifications() {
       clearInterval(interval);
       // Abort all pending requests safely
       abortControllers.forEach((controller) => {
-        try {
-          controller.abort();
-        } catch {
-          // Ignore errors when aborting already-aborted controllers
+        if (!controller.signal.aborted) {
+          try {
+            controller.abort();
+          } catch {
+            // Ignore any errors during abort
+          }
         }
       });
     };
