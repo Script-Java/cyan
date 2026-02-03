@@ -479,9 +479,9 @@ export default function OrderConfirmation() {
                   </span>
                 </div>
               )}
-              <div className="pt-3 border-t-2 flex justify-between">
+              <div className="pt-3 border-t-2 flex justify-between items-center">
                 <span className="font-bold text-lg text-gray-900">Total</span>
-                <span className="font-bold text-lg text-[#FFD713]">
+                <span className="font-bold text-lg text-[#FFD713] bg-black rounded-xl px-4 py-2">
                   ${order.total.toFixed(2)}
                 </span>
               </div>
