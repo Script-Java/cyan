@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { formatOrderNumber } from "@/lib/orderFormatting";
 import Header from "@/components/Header";
 import {
   Card,
