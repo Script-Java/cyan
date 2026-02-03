@@ -4,6 +4,8 @@ import { supabase } from "../utils/supabase";
 import { v4 as uuidv4 } from "uuid";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import { Resend } from "resend";
+import { generateInvoiceEmailHtml } from "../emails/invoice-payment";
 
 // Middleware to verify JWT token for invoices (uses custom JWT format from system)
 export const verifySupabaseToken = async (
