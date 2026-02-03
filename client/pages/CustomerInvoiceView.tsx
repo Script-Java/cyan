@@ -108,8 +108,8 @@ export default function CustomerInvoiceView() {
   };
 
   const handlePayment = () => {
-    if (!invoice) return;
-    navigate(`/checkout?invoiceToken=${token}&amount=${invoice.total}`);
+    if (!invoice || !token) return;
+    navigate(`/invoice/${token}/checkout`);
   };
 
   if (isLoading) {
