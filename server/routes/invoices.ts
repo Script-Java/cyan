@@ -150,6 +150,21 @@ export const handleGetInvoices: RequestHandler = async (req, res) => {
 
     const { data, error } = await query;
 
+    // Handle missing table gracefully
+    if (error && (error.code === "PGRST205" || error.message.includes("Could not find the table"))) {
+      console.log("Invoices table not yet created, returning empty list");
+      return res.status(200).json({
+        success: true,
+        data: [],
+        stats: {
+          total_outstanding: 0,
+          paid_this_month: 0,
+          overdue_count: 0,
+          draft_count: 0,
+        },
+      });
+    }
+
     if (error) {
       throw error;
     }
