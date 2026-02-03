@@ -224,7 +224,7 @@ export default function AdminInvoices() {
                     <div>
                       <p className="text-sm text-gray-600">Paid This Month</p>
                       <p className="text-2xl font-bold text-green-600">
-                        ${stats.paid_this_month.toFixed(2)}
+                        ${(Number(stats.paid_this_month) || 0).toFixed(2)}
                       </p>
                     </div>
                     <DollarSign className="w-8 h-8 text-green-600" />
