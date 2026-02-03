@@ -37,6 +37,7 @@ import {
   handleGetPendingOrders,
   handleGetOrderPublic,
   handleGetOrderStatus,
+  handleVerifyOrderAccess,
 } from "./routes/orders";
 import {
   handleGetDesigns,
