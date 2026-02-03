@@ -381,7 +381,10 @@ export default function AdminOrderDetail() {
           </p>
           {order.squarePaymentId && (
             <p className="text-xs text-gray-500 mt-2">
-              Square Transaction ID: <span className="font-mono text-gray-600">{order.squarePaymentId}</span>
+              Square Transaction ID:{" "}
+              <span className="font-mono text-gray-600">
+                {order.squarePaymentId}
+              </span>
             </p>
           )}
         </div>

@@ -63,23 +63,23 @@ export default function AdminCustomerDetail() {
         return;
       }
 
-      const response = await fetch(
-        `/api/admin/customers/${customerId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`/api/admin/customers/${customerId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         try {
           const errorData = await response.json();
-          console.error(`Failed to fetch customer: ${response.status}`, errorData);
+          console.error(
+            `Failed to fetch customer: ${response.status}`,
+            errorData,
+          );
           setErrorMessage(
-            errorData.error || `Failed to fetch customer (${response.status})`
+            errorData.error || `Failed to fetch customer (${response.status})`,
           );
         } catch {
           console.error(`Failed to fetch customer: ${response.status}`);
@@ -245,7 +245,9 @@ export default function AdminCustomerDetail() {
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <ShoppingBag className="w-4 h-4 text-blue-600" />
-                <p className="text-xs text-gray-600 font-medium">TOTAL ORDERS</p>
+                <p className="text-xs text-gray-600 font-medium">
+                  TOTAL ORDERS
+                </p>
               </div>
               <p className="text-2xl font-bold text-gray-900">
                 {customer.orderCount}
@@ -320,12 +322,13 @@ export default function AdminCustomerDetail() {
                           {formatDate(order.createdAt)}
                         </td>
                         <td className="py-3 px-4 text-gray-600">
-                          {order.itemCount} item{order.itemCount !== 1 ? "s" : ""}
+                          {order.itemCount} item
+                          {order.itemCount !== 1 ? "s" : ""}
                         </td>
                         <td className="py-3 px-4">
                           <span
                             className={`inline-block px-2 py-1 rounded text-xs font-medium ${getStatusColor(
-                              order.status
+                              order.status,
                             )}`}
                           >
                             {order.status}

@@ -68,7 +68,7 @@ export default function AdminNavbar() {
 
           if (!response.ok) {
             console.warn(
-              `Failed to fetch pending orders: ${response.status} ${response.statusText}`
+              `Failed to fetch pending orders: ${response.status} ${response.statusText}`,
             );
             if (response.status === 401) {
               // Unauthorized - clear auth
@@ -95,7 +95,10 @@ export default function AdminNavbar() {
               setPendingOrdersCount(data.count ?? data.orders?.length ?? 0);
             }
           } catch (parseError) {
-            console.error("Failed to parse pending orders response:", parseError);
+            console.error(
+              "Failed to parse pending orders response:",
+              parseError,
+            );
             if (isMounted) setPendingOrdersCount(0);
           }
         } catch (fetchError) {
@@ -103,9 +106,14 @@ export default function AdminNavbar() {
 
           if (fetchError instanceof Error) {
             if (fetchError.name === "AbortError") {
-              console.warn("Pending orders count fetch timeout after 10 seconds");
+              console.warn(
+                "Pending orders count fetch timeout after 10 seconds",
+              );
             } else {
-              console.warn("Network error fetching pending orders count:", fetchError.message);
+              console.warn(
+                "Network error fetching pending orders count:",
+                fetchError.message,
+              );
             }
           } else {
             console.warn("Unknown error fetching pending orders count");

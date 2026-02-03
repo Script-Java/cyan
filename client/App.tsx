@@ -255,11 +255,11 @@ export default function App() {
                   path="/admin/invoices/:id/edit"
                   element={<AdminInvoiceEdit />}
                 />
-                <Route path="/invoice/:token" element={<CustomerInvoiceView />} />
                 <Route
-                  path="/invoice-checkout"
-                  element={<InvoiceCheckout />}
+                  path="/invoice/:token"
+                  element={<CustomerInvoiceView />}
                 />
+                <Route path="/invoice-checkout" element={<InvoiceCheckout />} />
 
                 <Route path="/auth/callback" element={<AuthCallback />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

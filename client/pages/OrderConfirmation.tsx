@@ -69,7 +69,8 @@ export default function OrderConfirmation() {
   useEffect(() => {
     const fetchOrder = async () => {
       // Allow preview mode with mock data for development
-      const isPreview = !orderId || orderId === "preview" || isNaN(Number(orderId));
+      const isPreview =
+        !orderId || orderId === "preview" || isNaN(Number(orderId));
 
       if (isPreview) {
         // Mock order for testing/editing
@@ -77,12 +78,14 @@ export default function OrderConfirmation() {
           id: 1001,
           status: "paid",
           total: 149.99,
-          subtotal: 125.00,
-          tax: 12.50,
+          subtotal: 125.0,
+          tax: 12.5,
           shipping: 12.49,
           discount: 0,
           created_at: new Date().toISOString(),
-          estimated_delivery_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+          estimated_delivery_date: new Date(
+            Date.now() + 14 * 24 * 60 * 60 * 1000,
+          ).toISOString(),
           shipping_address: {
             firstName: "John",
             lastName: "Doe",
@@ -99,15 +102,17 @@ export default function OrderConfirmation() {
               product_name: "Custom Sticker Sheet",
               quantity: 2,
               price: 29.99,
-              design_file_url: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&h=400&fit=crop",
+              design_file_url:
+                "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&h=400&fit=crop",
             },
             {
               id: 2,
               product_id: 2,
               product_name: "Vinyl Decal Pack",
               quantity: 1,
-              price: 65.00,
-              design_file_url: "https://images.unsplash.com/photo-1609027291529-0cfecda156de?w=400&h=400&fit=crop",
+              price: 65.0,
+              design_file_url:
+                "https://images.unsplash.com/photo-1609027291529-0cfecda156de?w=400&h=400&fit=crop",
             },
           ],
         };
@@ -240,9 +245,15 @@ export default function OrderConfirmation() {
   const SHIPPING_DAYS_MIN = 7; // Minimum 7 business days for shipping
   const SHIPPING_DAYS_MAX = 21; // Maximum 21 business days for shipping
 
-  const processingEndDate = new Date(Date.now() + PROCESSING_DAYS * 24 * 60 * 60 * 1000);
-  const deliveryMinDate = new Date(Date.now() + (PROCESSING_DAYS + SHIPPING_DAYS_MIN) * 24 * 60 * 60 * 1000);
-  const deliveryMaxDate = new Date(Date.now() + (PROCESSING_DAYS + SHIPPING_DAYS_MAX) * 24 * 60 * 60 * 1000);
+  const processingEndDate = new Date(
+    Date.now() + PROCESSING_DAYS * 24 * 60 * 60 * 1000,
+  );
+  const deliveryMinDate = new Date(
+    Date.now() + (PROCESSING_DAYS + SHIPPING_DAYS_MIN) * 24 * 60 * 60 * 1000,
+  );
+  const deliveryMaxDate = new Date(
+    Date.now() + (PROCESSING_DAYS + SHIPPING_DAYS_MAX) * 24 * 60 * 60 * 1000,
+  );
 
   const estimatedDelivery = order.estimated_delivery_date
     ? new Date(order.estimated_delivery_date).toLocaleDateString("en-US", {
@@ -353,7 +364,10 @@ export default function OrderConfirmation() {
                   <CardDescription>Ordered on {orderDate}</CardDescription>
                   {order.square_payment_id && (
                     <p className="text-xs text-gray-500 mt-2">
-                      Transaction ID: <span className="font-mono">{order.square_payment_id}</span>
+                      Transaction ID:{" "}
+                      <span className="font-mono">
+                        {order.square_payment_id}
+                      </span>
                     </p>
                   )}
                 </div>
@@ -408,14 +422,19 @@ export default function OrderConfirmation() {
 
                         <div className="flex items-center gap-4 bg-gray-50 rounded-lg p-3">
                           <div>
-                            <p className="text-xs text-gray-600 font-medium">QUANTITY</p>
+                            <p className="text-xs text-gray-600 font-medium">
+                              QUANTITY
+                            </p>
                             <p className="text-lg font-bold text-gray-900">
-                              {item.quantity} {item.quantity === 1 ? 'item' : 'items'}
+                              {item.quantity}{" "}
+                              {item.quantity === 1 ? "item" : "items"}
                             </p>
                           </div>
                           <div className="border-l border-gray-300"></div>
                           <div>
-                            <p className="text-xs text-gray-600 font-medium">PRICE PER ITEM</p>
+                            <p className="text-xs text-gray-600 font-medium">
+                              PRICE PER ITEM
+                            </p>
                             <p className="text-lg font-bold text-gray-900">
                               ${item.price.toFixed(2)}
                             </p>
@@ -424,7 +443,9 @@ export default function OrderConfirmation() {
 
                         {item.design_file_url && (
                           <div className="space-y-2 pt-2">
-                            <p className="text-sm font-medium text-gray-700">Design Included</p>
+                            <p className="text-sm font-medium text-gray-700">
+                              Design Included
+                            </p>
                             <div className="flex gap-2">
                               <button className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm text-gray-700 font-medium">
                                 <Eye className="w-4 h-4" />
@@ -444,8 +465,10 @@ export default function OrderConfirmation() {
                     <div className="flex-shrink-0 text-right">
                       <p className="text-sm text-gray-600 mb-1">Subtotal</p>
                       <p className="font-bold text-2xl">
-                        <span style={{color: "rgba(20, 20, 20, 1)"}}>$</span>
-                        <span style={{color: "rgba(32, 32, 31, 1)"}}>{(item.price * item.quantity).toFixed(2)}</span>
+                        <span style={{ color: "rgba(20, 20, 20, 1)" }}>$</span>
+                        <span style={{ color: "rgba(32, 32, 31, 1)" }}>
+                          {(item.price * item.quantity).toFixed(2)}
+                        </span>
                       </p>
                       <p className="text-xs text-gray-600 mt-2">
                         ${item.price.toFixed(2)} × {item.quantity}
@@ -544,9 +567,13 @@ export default function OrderConfirmation() {
                       <div className="w-0.5 h-12 bg-gray-300"></div>
                     </div>
                     <div className="pb-12">
-                      <p className="font-medium text-gray-900 text-sm">Processing</p>
+                      <p className="font-medium text-gray-900 text-sm">
+                        Processing
+                      </p>
                       <p className="text-xs text-gray-600">2-3 business days</p>
-                      <p className="text-xs text-blue-600 font-medium mt-1">Ready by {processingDateStr}</p>
+                      <p className="text-xs text-blue-600 font-medium mt-1">
+                        Ready by {processingDateStr}
+                      </p>
                     </div>
                   </div>
                   <div className="flex gap-4">
@@ -554,9 +581,16 @@ export default function OrderConfirmation() {
                       <div className="w-3 h-3 rounded-full bg-blue-600 mb-2"></div>
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900 text-sm">Shipping</p>
-                      <p className="text-xs text-gray-600">7-21 business days via USPS/UPS</p>
-                      <p className="text-xs text-blue-600 font-medium mt-1">Arrives between {deliveryDateMinStr} - {deliveryDateMaxStr}</p>
+                      <p className="font-medium text-gray-900 text-sm">
+                        Shipping
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        7-21 business days via USPS/UPS
+                      </p>
+                      <p className="text-xs text-blue-600 font-medium mt-1">
+                        Arrives between {deliveryDateMinStr} -{" "}
+                        {deliveryDateMaxStr}
+                      </p>
                     </div>
                   </div>
                 </div>

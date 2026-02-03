@@ -71,7 +71,7 @@ export default function AdminCustomers() {
     (customer) =>
       customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       customer.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+      customer.lastName.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const formatCurrency = (amount: number) => {
@@ -244,7 +244,7 @@ export default function AdminCustomers() {
                   <p className="text-gray-600 text-sm">Total Revenue</p>
                   <p className="text-2xl font-bold text-green-600 mt-1">
                     {formatCurrency(
-                      customers.reduce((sum, c) => sum + c.totalSpent, 0)
+                      customers.reduce((sum, c) => sum + c.totalSpent, 0),
                     )}
                   </p>
                 </div>
@@ -255,7 +255,7 @@ export default function AdminCustomers() {
                       customers.length > 0
                         ? customers.reduce((sum, c) => sum + c.totalSpent, 0) /
                             customers.reduce((sum, c) => sum + c.orderCount, 0)
-                        : 0
+                        : 0,
                     )}
                   </p>
                 </div>
