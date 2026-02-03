@@ -67,6 +67,17 @@ CREATE TABLE IF NOT EXISTS invoice_artwork (
   uploaded_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+-- Create invoice_tokens table for payment links
+CREATE TABLE IF NOT EXISTS invoice_tokens (
+  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  invoice_id BIGINT NOT NULL REFERENCES invoices(id) ON DELETE CASCADE,
+  token VARCHAR(255) UNIQUE NOT NULL,
+  views INTEGER DEFAULT 0,
+  last_viewed_at TIMESTAMP,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  expires_at TIMESTAMP
+);
+
 -- Create indexes for performance
 CREATE INDEX IF NOT EXISTS idx_invoices_customer_email ON invoices(customer_email);
 CREATE INDEX IF NOT EXISTS idx_invoices_status ON invoices(status);
@@ -75,3 +86,5 @@ CREATE INDEX IF NOT EXISTS idx_invoices_invoice_number ON invoices(invoice_numbe
 CREATE INDEX IF NOT EXISTS idx_invoice_line_items_invoice_id ON invoice_line_items(invoice_id);
 CREATE INDEX IF NOT EXISTS idx_invoice_activity_invoice_id ON invoice_activity(invoice_id);
 CREATE INDEX IF NOT EXISTS idx_invoice_artwork_invoice_id ON invoice_artwork(invoice_id);
+CREATE INDEX IF NOT EXISTS idx_invoice_tokens_token ON invoice_tokens(token);
+CREATE INDEX IF NOT EXISTS idx_invoice_tokens_invoice_id ON invoice_tokens(invoice_id);
