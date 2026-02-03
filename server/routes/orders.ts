@@ -122,7 +122,7 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
     }));
 
     // Fetch digital files for all orders
-    const { data: digitalFilesData } = await supabase
+    const { data: digitalFilesData } = await scoped
       .from("digital_files")
       .select("*")
       .in(
