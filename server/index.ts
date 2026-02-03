@@ -580,6 +580,7 @@ export function createServer() {
 
   // ===== Order Routes (Public - for guest order confirmation) =====
   app.get("/api/public/orders/:orderId", handleGetOrderPublic);
+  app.post("/api/public/orders/verify", handleVerifyOrderAccess);
   app.get("/api/public/order-status", handleGetOrderStatus);
 
   // ===== Debug endpoint (development only) =====
