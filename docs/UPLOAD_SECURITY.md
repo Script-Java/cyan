@@ -18,6 +18,7 @@ Previously, when cloud storage (Cloudinary) uploads failed, the system would fal
 4. **Limits**: PostgreSQL `text` fields can store up to 1GB, but reaching 100MB+ per table is problematic
 
 ### Example
+
 ```typescript
 // BAD - Don't do this!
 const dataUrl = `data:image/png;base64,${largeBase64String}`;
@@ -35,14 +36,17 @@ const dataUrl = `data:image/png;base64,${largeBase64String}`;
 The `/api/designs/upload` endpoint now:
 
 ✅ **Validates input size** before processing
+
 - Maximum 50MB file size
 - Returns 413 (Payload Too Large) if exceeded
 
 ✅ **Requires Cloudinary configuration**
+
 - Returns 503 (Service Unavailable) if not configured
 - Prevents fallback to local storage
 
 ✅ **Returns error on upload failure**
+
 - Returns 502 (Bad Gateway) if Cloudinary fails
 - NO fallback to base64 data URLs
 - Client must handle the error and retry
@@ -68,8 +72,8 @@ Both components properly handle upload errors:
 ```typescript
 const uploadResponse = await fetch("/api/designs/upload", {
   method: "POST",
-  headers: {"Content-Type": "application/json"},
-  body: JSON.stringify({fileData, fileName, fileType}),
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ fileData, fileName, fileType }),
 });
 
 if (!uploadResponse.ok) {
@@ -82,6 +86,7 @@ design_file_url = uploadData.fileUrl; // Only if success
 ```
 
 **Error UX:**
+
 - Toast notification: "Design file upload failed. Try again..."
 - Allows user to continue without design or retry
 - Does NOT attempt to store base64 as fallback
@@ -90,24 +95,26 @@ design_file_url = uploadData.fileUrl; // Only if success
 
 Multiple layers of protection:
 
-| Layer | File | Limit | Code |
-|-------|------|-------|------|
-| **Request Size** | designs.ts | 50MB | `Buffer.length > 50 * 1024 * 1024` |
-| **Validation** | designs.ts | Check before upload | Validates before Cloudinary |
-| **Database Field** | schema.ts | text (1GB) | Design URLs stored in text field |
-| **URL Length** | postgres | 255-4000 chars | Cloudinary URLs are ~80 chars |
+| Layer              | File       | Limit               | Code                               |
+| ------------------ | ---------- | ------------------- | ---------------------------------- |
+| **Request Size**   | designs.ts | 50MB                | `Buffer.length > 50 * 1024 * 1024` |
+| **Validation**     | designs.ts | Check before upload | Validates before Cloudinary        |
+| **Database Field** | schema.ts  | text (1GB)          | Design URLs stored in text field   |
+| **URL Length**     | postgres   | 255-4000 chars      | Cloudinary URLs are ~80 chars      |
 
 ---
 
 ## Security Checklist
 
 ### During Development
+
 - [ ] No `data:` URLs stored in `design_file_url` field
 - [ ] All file uploads go through `/api/designs/upload`
 - [ ] Cloudinary credentials are in environment variables
 - [ ] Test upload failures return errors (not fallback)
 
 ### In Production
+
 - [ ] CLOUDINARY_CLOUD_NAME is configured
 - [ ] CLOUDINARY_API_KEY is configured
 - [ ] CLOUDINARY_API_SECRET is configured
@@ -141,6 +148,7 @@ curl -X POST http://localhost:3000/api/designs/upload \
 ## Data Flow
 
 ### Success Path
+
 ```
 Client (ProductPage)
   ↓ POST /api/designs/upload
@@ -159,6 +167,7 @@ Database
 ```
 
 ### Failure Path
+
 ```
 Client (ProductPage)
   ↓ POST /api/designs/upload
@@ -178,15 +187,16 @@ Client
 
 ## Why No Fallback?
 
-| Approach | Pros | Cons |
-|----------|------|------|
-| **Cloud (Cloudinary)** | Scalable, CDN-backed, optimized | Requires external service |
-| **Base64 Fallback** | Works offline, no dependencies | Database bloat, slow queries, expensive storage |
-| **Local Filesystem** | Fast, simple | Won't scale to multiple servers, no backup |
+| Approach               | Pros                            | Cons                                            |
+| ---------------------- | ------------------------------- | ----------------------------------------------- |
+| **Cloud (Cloudinary)** | Scalable, CDN-backed, optimized | Requires external service                       |
+| **Base64 Fallback**    | Works offline, no dependencies  | Database bloat, slow queries, expensive storage |
+| **Local Filesystem**   | Fast, simple                    | Won't scale to multiple servers, no backup      |
 
 **Decision:** Cloud-only (Cloudinary) with proper error handling.
 
 **Rationale:**
+
 - Base64 fallback was the root cause of database bloat
 - Local filesystem doesn't work in serverless (Netlify, Fly.dev)
 - Cloudinary failure is rare (~0.1% of requests)
@@ -197,12 +207,14 @@ Client
 ## Monitoring & Alerts
 
 ### Metrics to Monitor
+
 1. **Upload Success Rate**: Target >99.9%
 2. **Average File Size**: Should be <5MB
 3. **Cloudinary Quota**: Monitor storage used
 4. **Error Types**: Track 502 (Cloudinary errors) vs 413 (oversized)
 
 ### Alert Conditions
+
 - [ ] Upload success rate < 99%
 - [ ] Error rate > 0.1% for specific file types
 - [ ] Cloudinary storage > 80% quota
@@ -213,21 +225,27 @@ Client
 ## FAQ
 
 ### Q: What if Cloudinary is down?
+
 A: The API returns 502 "Bad Gateway". Frontend shows an error message. User can retry later. No data is stored.
 
 ### Q: Can I add a local fallback?
+
 A: **NO**. Local storage doesn't work in production (Netlify/Fly.dev are serverless). The base64 fallback was causing database bloat and is now removed.
 
 ### Q: What if a file is exactly 50MB?
+
 A: It's accepted. The check is `> 50MB`, not `>= 50MB`.
 
 ### Q: Why Cloudinary and not S3?
+
 A: Cloudinary handles image optimization, resizing, and CDN delivery automatically. S3 requires more infrastructure. Either can work, but Cloudinary was chosen for lower ops overhead.
 
 ### Q: Can customers upload large files (e.g., 100MB videos)?
+
 A: No. The limit is 50MB. For larger files, implement multipart upload or use direct-to-S3 upload.
 
 ### Q: What happens if the database field is full?
+
 A: PostgreSQL text fields support up to 1GB per row. With short URLs (~80 chars), you can store ~12 million URLs per field. Not a practical concern.
 
 ---
@@ -243,6 +261,7 @@ A: PostgreSQL text fields support up to 1GB per row. With short URLs (~80 chars)
 ## Changelog
 
 ### Version 1.0 (2025-02-03)
+
 - Removed base64 fallback from `/api/designs/upload`
 - Added 50MB file size limit with validation
 - Added Cloudinary configuration check

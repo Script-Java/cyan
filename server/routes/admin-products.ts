@@ -1,6 +1,10 @@
 import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
-import { CreateProductSchema, UpdateProductSchema, validate } from "../schemas/validation";
+import {
+  CreateProductSchema,
+  UpdateProductSchema,
+  validate,
+} from "../schemas/validation";
 
 const supabaseUrl = process.env.SUPABASE_URL || "";
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
@@ -217,7 +221,12 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
     if (isNaN(id) || id <= 0) {
       return res.status(400).json({
         error: "Request validation failed",
-        details: [{ field: "productId", message: "Product ID must be a positive integer" }],
+        details: [
+          {
+            field: "productId",
+            message: "Product ID must be a positive integer",
+          },
+        ],
       });
     }
 
@@ -363,7 +372,12 @@ export const handleGetAdminProduct: RequestHandler = async (req, res) => {
     if (isNaN(id) || id <= 0) {
       return res.status(400).json({
         error: "Request validation failed",
-        details: [{ field: "productId", message: "Product ID must be a positive integer" }],
+        details: [
+          {
+            field: "productId",
+            message: "Product ID must be a positive integer",
+          },
+        ],
       });
     }
 
@@ -386,13 +400,11 @@ export const handleGetAdminProduct: RequestHandler = async (req, res) => {
         hint: error.hint,
         productId: id,
       });
-      return res
-        .status(500)
-        .json({
-          error: "Failed to fetch product",
-          details: error.message,
-          code: error.code,
-        });
+      return res.status(500).json({
+        error: "Failed to fetch product",
+        details: error.message,
+        code: error.code,
+      });
     }
 
     const product = {
@@ -425,7 +437,12 @@ export const handleDeleteAdminProduct: RequestHandler = async (req, res) => {
     if (isNaN(id) || id <= 0) {
       return res.status(400).json({
         error: "Request validation failed",
-        details: [{ field: "productId", message: "Product ID must be a positive integer" }],
+        details: [
+          {
+            field: "productId",
+            message: "Product ID must be a positive integer",
+          },
+        ],
       });
     }
 
@@ -489,13 +506,11 @@ export const handleGetPublicProduct: RequestHandler = async (req, res) => {
         hint: error.hint,
         productId: id,
       });
-      return res
-        .status(500)
-        .json({
-          error: "Failed to fetch product",
-          details: error.message,
-          code: error.code,
-        });
+      return res.status(500).json({
+        error: "Failed to fetch product",
+        details: error.message,
+        code: error.code,
+      });
     }
 
     if (!data) {

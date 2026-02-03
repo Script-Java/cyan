@@ -236,7 +236,9 @@ export const handleGetOrder: RequestHandler = async (req, res) => {
     if (isNaN(orderIdNum) || orderIdNum <= 0) {
       return res.status(400).json({
         error: "Request validation failed",
-        details: [{ field: "orderId", message: "Order ID must be a positive integer" }],
+        details: [
+          { field: "orderId", message: "Order ID must be a positive integer" },
+        ],
       });
     }
     let order = null;
@@ -465,7 +467,9 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
     if (isNaN(orderIdNum) || orderIdNum <= 0) {
       return res.status(400).json({
         error: "Request validation failed",
-        details: [{ field: "orderId", message: "Order ID must be a positive integer" }],
+        details: [
+          { field: "orderId", message: "Order ID must be a positive integer" },
+        ],
       });
     }
 
@@ -624,8 +628,13 @@ export const handleVerifyOrderAccess: RequestHandler = async (req, res) => {
     }
 
     // Verify that the provided field matches customer email or phone
-    const emailMatch = customer.email && customer.email.toLowerCase() === verification_field.toLowerCase();
-    const phoneMatch = customer.phone && customer.phone.replace(/\D/g, "") === verification_field.replace(/\D/g, "");
+    const emailMatch =
+      customer.email &&
+      customer.email.toLowerCase() === verification_field.toLowerCase();
+    const phoneMatch =
+      customer.phone &&
+      customer.phone.replace(/\D/g, "") ===
+        verification_field.replace(/\D/g, "");
 
     if (!emailMatch && !phoneMatch) {
       // Log suspicious activity but return generic error

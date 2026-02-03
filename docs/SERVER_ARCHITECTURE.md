@@ -30,16 +30,17 @@ Each router module exports a factory function that returns an Express Router:
 // server/routes/auth.router.ts
 export function createAuthRouter() {
   const router = Router();
-  
+
   router.post("/login", authLimiter, handleLogin);
   router.post("/signup", authLimiter, handleSignup);
   // ...
-  
+
   return router;
 }
 ```
 
 **Benefits:**
+
 - Dependency injection (pass multer, middleware, etc.)
 - Lazy route registration
 - Testability (routers can be imported in tests)
@@ -58,38 +59,38 @@ app.use("/api/orders", createOrderRouter());
 
 ### Tier 1: Core Feature Routers (Implemented)
 
-| Router | File | Routes | Status |
-|--------|------|--------|--------|
-| **Auth** | `auth.router.ts` | `/api/auth/*` | ✅ Complete |
-| **Customer** | `customer.router.ts` | `/api/customers/*` | ✅ Complete |
-| **Orders** | `order.router.ts` | `/api/orders/*`, `/api/admin/orders/*`, `/api/public/orders/*` | ✅ Complete |
-| **Products** | `product.router.ts` | `/api/products/*`, `/api/admin/products/*`, `/api/public/products/*` | ✅ Complete |
+| Router       | File                 | Routes                                                               | Status      |
+| ------------ | -------------------- | -------------------------------------------------------------------- | ----------- |
+| **Auth**     | `auth.router.ts`     | `/api/auth/*`                                                        | ✅ Complete |
+| **Customer** | `customer.router.ts` | `/api/customers/*`                                                   | ✅ Complete |
+| **Orders**   | `order.router.ts`    | `/api/orders/*`, `/api/admin/orders/*`, `/api/public/orders/*`       | ✅ Complete |
+| **Products** | `product.router.ts`  | `/api/products/*`, `/api/admin/products/*`, `/api/public/products/*` | ✅ Complete |
 
 ### Tier 2: Secondary Feature Routers (To Be Created)
 
-| Router | File | Routes | Status |
-|--------|------|--------|--------|
-| **Designs** | `design.router.ts` | `/api/designs/*` | ⏳ Pending |
-| **Cart** | `cart.router.ts` | `/api/cart/*` | ⏳ Pending |
-| **Checkout** | `checkout.router.ts` | `/api/checkout/*` | ⏳ Pending |
-| **Payments** | `payment.router.ts` | `/api/payments/*`, `/api/square/*` | ⏳ Pending |
-| **Reviews** | `review.router.ts` | `/api/reviews/*`, `/api/admin/reviews/*` | ⏳ Pending |
-| **Support** | `support.router.ts` | `/api/support/*`, `/api/admin/tickets/*` | ⏳ Pending |
-| **Proofs** | `proof.router.ts` | `/api/proofs/*`, `/api/admin/proofs/*` | ⏳ Pending |
-| **Shipping** | `shipping.router.ts` | `/api/shipping/*`, `/api/admin/shipping-options/*` | ⏳ Pending |
-| **Discounts** | `discount.router.ts` | `/api/discounts/*`, `/api/admin/discounts/*` | ⏳ Pending |
+| Router        | File                 | Routes                                             | Status     |
+| ------------- | -------------------- | -------------------------------------------------- | ---------- |
+| **Designs**   | `design.router.ts`   | `/api/designs/*`                                   | ⏳ Pending |
+| **Cart**      | `cart.router.ts`     | `/api/cart/*`                                      | ⏳ Pending |
+| **Checkout**  | `checkout.router.ts` | `/api/checkout/*`                                  | ⏳ Pending |
+| **Payments**  | `payment.router.ts`  | `/api/payments/*`, `/api/square/*`                 | ⏳ Pending |
+| **Reviews**   | `review.router.ts`   | `/api/reviews/*`, `/api/admin/reviews/*`           | ⏳ Pending |
+| **Support**   | `support.router.ts`  | `/api/support/*`, `/api/admin/tickets/*`           | ⏳ Pending |
+| **Proofs**    | `proof.router.ts`    | `/api/proofs/*`, `/api/admin/proofs/*`             | ⏳ Pending |
+| **Shipping**  | `shipping.router.ts` | `/api/shipping/*`, `/api/admin/shipping-options/*` | ⏳ Pending |
+| **Discounts** | `discount.router.ts` | `/api/discounts/*`, `/api/admin/discounts/*`       | ⏳ Pending |
 
 ### Tier 3: Integration & Admin Routers (To Be Created)
 
-| Router | File | Routes | Status |
-|--------|------|--------|--------|
-| **Admin Core** | `admin.router.ts` | `/api/admin/customers/*`, `/api/admin/analytics/*`, `/api/admin/finance/*` | ⏳ Pending |
-| **Content** | `content.router.ts` | `/api/blogs/*`, `/api/legal-pages/*` | ⏳ Pending |
-| **Digital Files** | `digital-file.router.ts` | `/api/orders/:orderId/files/*` | ⏳ Pending |
-| **Webhooks** | `webhook.router.ts` | `/api/webhooks/*`, `/api/zapier/*` | ⏳ Pending |
-| **Ecwid Integration** | `ecwid.router.ts` | `/api/ecwid-products/*`, `/api/admin/ecwid/*` | ⏳ Pending |
-| **Invoices** | `invoice.router.ts` | `/api/admin/invoices/*`, `/api/invoice/*` | ⏳ Pending |
-| **Email Preview** | `email-preview.router.ts` | `/api/email-preview/*` | ⏳ Pending |
+| Router                | File                      | Routes                                                                     | Status     |
+| --------------------- | ------------------------- | -------------------------------------------------------------------------- | ---------- |
+| **Admin Core**        | `admin.router.ts`         | `/api/admin/customers/*`, `/api/admin/analytics/*`, `/api/admin/finance/*` | ⏳ Pending |
+| **Content**           | `content.router.ts`       | `/api/blogs/*`, `/api/legal-pages/*`                                       | ⏳ Pending |
+| **Digital Files**     | `digital-file.router.ts`  | `/api/orders/:orderId/files/*`                                             | ⏳ Pending |
+| **Webhooks**          | `webhook.router.ts`       | `/api/webhooks/*`, `/api/zapier/*`                                         | ⏳ Pending |
+| **Ecwid Integration** | `ecwid.router.ts`         | `/api/ecwid-products/*`, `/api/admin/ecwid/*`                              | ⏳ Pending |
+| **Invoices**          | `invoice.router.ts`       | `/api/admin/invoices/*`, `/api/invoice/*`                                  | ⏳ Pending |
+| **Email Preview**     | `email-preview.router.ts` | `/api/email-preview/*`                                                     | ⏳ Pending |
 
 ## Router Implementation Guidelines
 
@@ -109,6 +110,7 @@ Customer Profile    → customer.router.ts
 ### 2. Route Path Organization
 
 Within a router, organize routes by:
+
 1. **HTTP Method** (GET, POST, PUT, DELETE)
 2. **Specificity** (specific paths before parameterized paths)
 3. **Protection Level** (public → protected → admin)
@@ -118,13 +120,13 @@ export function createBlogRouter() {
   const router = Router();
 
   // ===== PUBLIC ROUTES =====
-  router.get("/", handleGetPublishedBlogs);              // GET /api/blogs
-  router.get("/:blogId", handleGetBlogById);              // GET /api/blogs/:blogId
+  router.get("/", handleGetPublishedBlogs); // GET /api/blogs
+  router.get("/:blogId", handleGetBlogById); // GET /api/blogs/:blogId
 
   // ===== ADMIN ROUTES =====
-  router.post("/", verifyToken, requireAdmin, handleCreateBlog);       // POST /api/admin/blogs
-  router.get("/admin/list", verifyToken, requireAdmin, handleGetAllBlogs);  // GET /api/admin/blogs
-  router.put("/:blogId", verifyToken, requireAdmin, handleUpdateBlog);  // PUT /api/admin/blogs/:blogId
+  router.post("/", verifyToken, requireAdmin, handleCreateBlog); // POST /api/admin/blogs
+  router.get("/admin/list", verifyToken, requireAdmin, handleGetAllBlogs); // GET /api/admin/blogs
+  router.put("/:blogId", verifyToken, requireAdmin, handleUpdateBlog); // PUT /api/admin/blogs/:blogId
   router.delete("/:blogId", verifyToken, requireAdmin, handleDeleteBlog); // DELETE /api/admin/blogs/:blogId
 
   return router;
@@ -139,9 +141,9 @@ Place middleware in the order handler arguments, **not** in the router factory:
 // ✅ CORRECT: Middleware in route handler
 router.post(
   "/",
-  verifyToken,           // Authentication
-  requireAdmin,          // Authorization
-  handleCreateBlog       // Handler
+  verifyToken, // Authentication
+  requireAdmin, // Authorization
+  handleCreateBlog, // Handler
 );
 
 // ❌ AVOID: Middleware in factory
@@ -244,16 +246,16 @@ Express executes middleware/routers in registration order:
 
 ```typescript
 // Order matters!
-app.use(corsMiddleware);           // 1. CORS first
-app.use(express.json());           // 2. JSON parsing
-app.use(securityHeaders);          // 3. Security headers
-app.use(rateLimit);                // 4. Rate limiting
+app.use(corsMiddleware); // 1. CORS first
+app.use(express.json()); // 2. JSON parsing
+app.use(securityHeaders); // 3. Security headers
+app.use(rateLimit); // 4. Rate limiting
 
-app.use("/api/auth", createAuthRouter());    // 5. Routes
+app.use("/api/auth", createAuthRouter()); // 5. Routes
 app.use("/api/customers", createCustomerRouter());
 // ...
 
-app.use(globalErrorHandler);       // Last: Error handling
+app.use(globalErrorHandler); // Last: Error handling
 ```
 
 **When adding new routers, maintain this order.**
@@ -277,8 +279,8 @@ describe("Example Router", () => {
 
   it("should have GET / route", () => {
     const routes = router.stack
-      .filter(layer => layer.route)
-      .map(layer => ({
+      .filter((layer) => layer.route)
+      .map((layer) => ({
         path: layer.route.path,
         methods: layer.route.methods,
       }));
@@ -302,9 +304,7 @@ describe("Products API", () => {
   });
 
   it("GET /api/products/:id returns product", async () => {
-    const response = await request(app)
-      .get("/api/products/1")
-      .expect(200);
+    const response = await request(app).get("/api/products/1").expect(200);
 
     expect(response.body).toHaveProperty("id", 1);
   });
@@ -314,11 +314,13 @@ describe("Products API", () => {
 ## File Size Reduction
 
 ### Before Refactoring
+
 - `server/index.ts`: ~1280 lines
 - Many nested imports (250+ lines of imports)
 - 500+ lines of route registrations
 
 ### After Refactoring (Current)
+
 - `server/index.ts`: ~450 lines (65% reduction)
 - Focused on setup and mounting
 - Each router 40-80 lines (focused)

@@ -1,7 +1,10 @@
 import { RequestHandler } from "express";
 import { v2 as cloudinary } from "cloudinary";
 import { processImage } from "../utils/image-processor";
-import { getCustomerStoreCredit, getScopedSupabaseClient } from "../utils/supabase";
+import {
+  getCustomerStoreCredit,
+  getScopedSupabaseClient,
+} from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
 
 /**

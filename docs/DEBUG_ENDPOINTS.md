@@ -19,10 +19,12 @@ Debug endpoints provide admin access to diagnostic information about the system.
 **Purpose:** View all orders with customer information for admin troubleshooting
 
 **Authentication:** Required
+
 - Header: `Authorization: Bearer <JWT_TOKEN>`
 - User must have admin role
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -48,6 +50,7 @@ Debug endpoints provide admin access to diagnostic information about the system.
 ```
 
 **Exposed Data:**
+
 - Order IDs, dates, status, totals
 - Customer IDs and EMAIL ADDRESSES (PII)
 
@@ -62,10 +65,12 @@ Debug endpoints provide admin access to diagnostic information about the system.
 **Purpose:** Check system health and configuration status
 
 **Authentication:** Required
+
 - Header: `Authorization: Bearer <JWT_TOKEN>`
 - User must have admin role
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -95,6 +100,7 @@ Debug endpoints provide admin access to diagnostic information about the system.
 ```
 
 **Exposed Data:**
+
 - Which environment variables are configured (not their values)
 - Database connectivity status
 - Node environment (development/production)
@@ -108,6 +114,7 @@ Debug endpoints provide admin access to diagnostic information about the system.
 ## Security Architecture
 
 ### Before (Vulnerable)
+
 ```
 Request
   ↓ Check: NODE_ENV !== "production"?
@@ -116,6 +123,7 @@ Request
 ```
 
 **Problems:**
+
 - Environment variable can be spoofed
 - No actual authentication
 - No authorization checks
@@ -123,6 +131,7 @@ Request
 - No audit trail
 
 ### After (Secure)
+
 ```
 Request
   ↓ verifyToken middleware
@@ -138,6 +147,7 @@ Request
 ```
 
 **Improvements:**
+
 - ✅ Requires valid authentication token
 - ✅ Requires admin role verification
 - ✅ All access is logged with timestamp and admin ID
@@ -151,6 +161,7 @@ Request
 ### Who Can Access?
 
 Only users who:
+
 1. **Are authenticated** - Have a valid JWT token
 2. **Are admins** - Database record has `is_admin = true`
 3. **Have explicit permission** - The `requireAdmin` middleware verified their role
@@ -177,6 +188,7 @@ All debug endpoint access is logged to console:
 ```
 
 ### Log Fields
+
 - `[DEBUG ENDPOINT ACCESS]` - Log type
 - `Admin <ID>` - Which admin accessed it
 - `accessed /api/<endpoint>` - Which endpoint
@@ -185,6 +197,7 @@ All debug endpoint access is logged to console:
 ### Recommended Monitoring
 
 In production, forward these logs to:
+
 - Datadog, Splunk, or ELK stack for monitoring
 - Alert on suspicious patterns:
   - Multiple failed access attempts (401/403)
@@ -209,6 +222,7 @@ Comment out the route registration in `server/index.ts`:
 ### Permanently Remove
 
 Delete:
+
 1. Route registration in `server/index.ts`
 2. Handler functions in `server/routes/debug.ts`
 3. Import statement in `server/index.ts`
@@ -218,12 +232,14 @@ Delete:
 ## Testing Debug Endpoints
 
 ### Test 1: Without Authentication
+
 ```bash
 curl http://localhost:3000/api/debug/orders-list
 # Expected: 401 Unauthorized
 ```
 
 ### Test 2: With Invalid Token
+
 ```bash
 curl -H "Authorization: Bearer invalid-token" \
   http://localhost:3000/api/debug/orders-list
@@ -231,6 +247,7 @@ curl -H "Authorization: Bearer invalid-token" \
 ```
 
 ### Test 3: With Valid Token (Non-Admin)
+
 ```bash
 # Get token from normal user login
 curl -H "Authorization: Bearer $TOKEN" \
@@ -239,6 +256,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 ```
 
 ### Test 4: With Valid Admin Token
+
 ```bash
 # Get token from admin login
 curl -H "Authorization: Bearer $ADMIN_TOKEN" \
@@ -266,6 +284,7 @@ curl -H "Authorization: Bearer $ADMIN_TOKEN" \
 ## Compliance
 
 This implementation aligns with:
+
 - **OWASP Top 10 2021 / A01:2021** - Broken Access Control
 - **PCI-DSS 2.1** - Restrict access to system components by business need-to-know
 - **SOC 2 Type II** - User access controls and audit trails
@@ -276,6 +295,7 @@ This implementation aligns with:
 ## Changelog
 
 ### Version 2.0 (2025-02-03) - SECURITY UPDATE
+
 - **REMOVED:** NODE_ENV-based access control for debug endpoints
 - **ADDED:** `verifyToken` middleware requirement (authentication)
 - **ADDED:** `requireAdmin` middleware requirement (authorization)
@@ -285,6 +305,7 @@ This implementation aligns with:
 - **IMPROVED:** Error handling with proper HTTP status codes (401, 403, 500)
 
 ### Version 1.0 (pre-2025-02-03)
+
 - Debug endpoints protected by `NODE_ENV !== "production"`
 - No authentication or authorization required
 - No audit logging

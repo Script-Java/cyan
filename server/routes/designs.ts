@@ -222,7 +222,9 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
     if (isNaN(orderIdNum) || orderIdNum <= 0) {
       return res.status(400).json({
         error: "Request validation failed",
-        details: [{ field: "orderId", message: "Order ID must be a positive integer" }],
+        details: [
+          { field: "orderId", message: "Order ID must be a positive integer" },
+        ],
       });
     }
 
@@ -299,7 +301,10 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
 export const handleUploadDesignFile: RequestHandler = async (req, res) => {
   try {
     // VALIDATION: Validate request body against schema
-    const validationResult = await validate(UploadDesignRequestSchema, req.body);
+    const validationResult = await validate(
+      UploadDesignRequestSchema,
+      req.body,
+    );
     if (!validationResult.success) {
       return res.status(400).json({
         error: "Request validation failed",

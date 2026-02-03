@@ -22,7 +22,7 @@ import {
 
 /**
  * Order Routes - Customer, Admin, and Public order management
- * 
+ *
  * Customer routes: /api/orders/* - require authentication
  * Admin routes: /api/admin/orders/* - require authentication + admin role
  * Public routes: /api/public/orders/* - no authentication (order tracking)
@@ -52,22 +52,47 @@ export function createOrderRouter() {
 
   // ===== ADMIN ROUTES (Protected - admin only) =====
   // GET /api/admin/orders/:orderId - Get order details (admin)
-  router.get("/admin/:orderId", verifyToken, requireAdmin, handleGetOrderDetail);
+  router.get(
+    "/admin/:orderId",
+    verifyToken,
+    requireAdmin,
+    handleGetOrderDetail,
+  );
 
   // GET /api/admin/orders/pending - Get pending orders
-  router.get("/admin/pending", verifyToken, requireAdmin, handleGetAdminPendingOrders);
+  router.get(
+    "/admin/pending",
+    verifyToken,
+    requireAdmin,
+    handleGetAdminPendingOrders,
+  );
 
   // GET /api/admin/all-orders - Get all orders
   router.get("/admin/all", verifyToken, requireAdmin, handleGetAllAdminOrders);
 
   // PUT /api/admin/orders/:orderId/status - Update order status
-  router.put("/admin/:orderId/status", verifyToken, requireAdmin, handleUpdateOrderStatus);
+  router.put(
+    "/admin/:orderId/status",
+    verifyToken,
+    requireAdmin,
+    handleUpdateOrderStatus,
+  );
 
   // PUT /api/admin/orders/:orderId/shipping-address - Update shipping address
-  router.put("/admin/:orderId/shipping-address", verifyToken, requireAdmin, handleUpdateShippingAddress);
+  router.put(
+    "/admin/:orderId/shipping-address",
+    verifyToken,
+    requireAdmin,
+    handleUpdateShippingAddress,
+  );
 
   // POST /api/admin/update-order-item-options - Update order item options
-  router.post("/admin/update-item-options", verifyToken, requireAdmin, handleUpdateOrderItemOptions);
+  router.post(
+    "/admin/update-item-options",
+    verifyToken,
+    requireAdmin,
+    handleUpdateOrderItemOptions,
+  );
 
   // GET /api/admin/orders/test - Test admin orders endpoint
   router.get("/admin/test", verifyToken, requireAdmin, handleTestAdminOrders);

@@ -7,6 +7,7 @@ This document describes the refactoring strategy to reduce reliance on Supabase'
 ## Problem Statement
 
 **Before Refactoring:**
+
 - All backend routes created Supabase clients using `SUPABASE_SERVICE_KEY`
 - Service Role Key bypasses all RLS policies
 - Administrative routes with elevated access could be exploited if authentication was weak
@@ -28,6 +29,7 @@ export const supabase = createClient(supabaseUrl, keyToUse, {...});
 ```
 
 **Usage:**
+
 - ✅ Background jobs and scheduled tasks
 - ✅ Database migrations
 - ✅ Admin-only operations that explicitly check authorization
@@ -36,6 +38,7 @@ export const supabase = createClient(supabaseUrl, keyToUse, {...});
 
 **Comment Requirements:**
 When Service Role Key is required, add inline comment:
+
 ```typescript
 // SECURITY: Service Role Key required for [specific justification]
 // Alternative: [explain why RLS-scoped approach won't work]
@@ -60,12 +63,14 @@ export function getScopedSupabaseClient(req: any): SupabaseClient {
 ```
 
 **How It Works:**
+
 1. JWT token passed to Supabase client
 2. Supabase uses JWT's claims to identify authenticated user
 3. RLS policies check `auth.uid()` and other JWT claims
 4. Database enforces access control, not just application code
 
 **Example RLS Policy:**
+
 ```sql
 CREATE POLICY "Customers can only access their own data"
   ON customers
@@ -86,34 +91,35 @@ CREATE POLICY "Customers can only access their own data"
 
 Routes that should use scoped clients (enforce RLS):
 
-| Route Module | Endpoints | Status |
-|---|---|---|
-| `server/routes/customers.ts` | GET/PUT customer profile, addresses | ✅ Refactored |
-| `server/routes/orders.ts` | GET orders, order status | 🔄 In Progress |
-| `server/routes/designs.ts` | Upload design, get designs | Pending |
-| `server/routes/checkout.ts` | Create order, payment | Pending |
-| `server/routes/store-credit.ts` | Get/update store credit | Pending |
-| `server/routes/support.ts` | Support tickets | Pending |
-| `server/routes/invoices.ts` | Get customer invoices | Pending |
+| Route Module                    | Endpoints                           | Status         |
+| ------------------------------- | ----------------------------------- | -------------- |
+| `server/routes/customers.ts`    | GET/PUT customer profile, addresses | ✅ Refactored  |
+| `server/routes/orders.ts`       | GET orders, order status            | 🔄 In Progress |
+| `server/routes/designs.ts`      | Upload design, get designs          | Pending        |
+| `server/routes/checkout.ts`     | Create order, payment               | Pending        |
+| `server/routes/store-credit.ts` | Get/update store credit             | Pending        |
+| `server/routes/support.ts`      | Support tickets                     | Pending        |
+| `server/routes/invoices.ts`     | Get customer invoices               | Pending        |
 
 #### Phase 3: Document Service Role Usage
 
 Routes that require Service Role Key with justification:
 
-| Route Module | Endpoints | Justification |
-|---|---|---|
-| `server/routes/admin-products.ts` | Create/update/delete products | Admin-only; requires elevated access for bulk operations |
-| `server/routes/admin-orders.ts` | View all orders, debug | Admin-only; explicitly requires `verifyToken` + `requireAdmin` |
-| `server/routes/admin-customers.ts` | Customer management | Admin-only; explicitly requires `verifyToken` + `requireAdmin` |
-| `server/routes/blogs.ts` | Manage blogs | Admin-only; requires elevated access |
-| `server/routes/webhooks.ts` | Process webhooks | Public endpoint; doesn't require auth |
-| `server/routes/auth.ts` | Login, signup | Authentication setup; requires service role |
+| Route Module                       | Endpoints                     | Justification                                                  |
+| ---------------------------------- | ----------------------------- | -------------------------------------------------------------- |
+| `server/routes/admin-products.ts`  | Create/update/delete products | Admin-only; requires elevated access for bulk operations       |
+| `server/routes/admin-orders.ts`    | View all orders, debug        | Admin-only; explicitly requires `verifyToken` + `requireAdmin` |
+| `server/routes/admin-customers.ts` | Customer management           | Admin-only; explicitly requires `verifyToken` + `requireAdmin` |
+| `server/routes/blogs.ts`           | Manage blogs                  | Admin-only; requires elevated access                           |
+| `server/routes/webhooks.ts`        | Process webhooks              | Public endpoint; doesn't require auth                          |
+| `server/routes/auth.ts`            | Login, signup                 | Authentication setup; requires service role                    |
 
 ## Implementation Guidelines
 
 ### For Customer-Facing Routes
 
 **Pattern:**
+
 ```typescript
 import { getScopedSupabaseClient } from "../utils/supabase";
 
@@ -132,7 +138,7 @@ export const handleGetCustomerData: RequestHandler = async (req, res) => {
       .from("table")
       .select("*")
       .eq("customer_id", customerId);
-    
+
     res.json({ data });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -143,6 +149,7 @@ export const handleGetCustomerData: RequestHandler = async (req, res) => {
 ### For Admin Routes
 
 **Pattern:**
+
 ```typescript
 // SECURITY: Service Role Key required for admin bulk operations
 // RLS cannot be enforced for operations spanning multiple customers
@@ -156,6 +163,7 @@ const { data } = await supabase
 ### For Public Endpoints
 
 **Pattern:**
+
 ```typescript
 // Public endpoint (no authentication required)
 // getScopedSupabaseClient() falls back to service role (no RLS applied)
@@ -301,6 +309,7 @@ const scoped = getScopedSupabaseClient(req);  // req.userJwt is undefined
 
 **Cause:** RLS policy blocking access
 **Check:**
+
 1. Is RLS enabled on the table?
 2. Does RLS policy match the user's auth.uid()?
 3. Is the user's JWT being passed correctly?
@@ -310,6 +319,7 @@ const scoped = getScopedSupabaseClient(req);  // req.userJwt is undefined
 
 **Cause:** RLS policy too restrictive
 **Check:**
+
 1. Verify `auth.uid()` in RLS policy matches table's user identifier
 2. Check JWT token has correct `sub` claim (user ID)
 3. Test policy: `SELECT * FROM table WHERE auth.uid() = user_id`
@@ -318,6 +328,7 @@ const scoped = getScopedSupabaseClient(req);  // req.userJwt is undefined
 
 **Cause:** RLS policies don't include admin exemption
 **Check:**
+
 1. Use service role client for admin operations
 2. Or add RLS policy: `CREATE POLICY "Admins bypass RLS" ... USING (auth.jwt() ->> 'is_admin' = 'true')`
 3. Ensure JWT includes `is_admin` claim

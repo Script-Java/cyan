@@ -81,7 +81,9 @@ export default function OrderStatus() {
   const [error, setError] = useState("");
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
-  const [publicAccessToken, setPublicAccessToken] = useState<string | null>(null);
+  const [publicAccessToken, setPublicAccessToken] = useState<string | null>(
+    null,
+  );
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {

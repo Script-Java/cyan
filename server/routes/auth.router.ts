@@ -29,7 +29,11 @@ export function createAuthRouter() {
   router.post("/admin-setup", authLimiter, handleAdminSetup);
 
   // POST /api/auth/request-password-reset - Request password reset
-  router.post("/request-password-reset", authLimiter, handleRequestPasswordReset);
+  router.post(
+    "/request-password-reset",
+    authLimiter,
+    handleRequestPasswordReset,
+  );
 
   // POST /api/auth/reset-password - Reset password with token
   router.post("/reset-password", handleResetPassword);

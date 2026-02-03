@@ -1,9 +1,6 @@
 import { Router } from "express";
 import { verifyToken, requireAdmin } from "../middleware/auth";
-import {
-  handleGetProduct,
-  handleGetProductOptions,
-} from "./products";
+import { handleGetProduct, handleGetProductOptions } from "./products";
 import {
   handleCreateProduct,
   handleUpdateProduct,
@@ -61,7 +58,12 @@ export function createAdminProductRouter() {
   router.put("/:productId", verifyToken, requireAdmin, handleUpdateProduct);
 
   // DELETE /api/admin/products/:productId - Delete product
-  router.delete("/:productId", verifyToken, requireAdmin, handleDeleteAdminProduct);
+  router.delete(
+    "/:productId",
+    verifyToken,
+    requireAdmin,
+    handleDeleteAdminProduct,
+  );
 
   return router;
 }

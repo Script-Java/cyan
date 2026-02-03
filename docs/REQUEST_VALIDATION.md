@@ -24,6 +24,7 @@ export type UpdateCustomerInput = z.infer<typeof UpdateCustomerSchema>;
 ```
 
 **Benefits:**
+
 - ✅ Single source of truth for validation rules
 - ✅ Type-safe: TypeScript infers types from schemas
 - ✅ Reusable: Schemas can be composed from other schemas
@@ -40,9 +41,10 @@ import { validateBody } from "../middleware/validation";
 import { CreateProductSchema } from "../schemas/validation";
 
 // Validates ALL requests before handler is called
-app.post("/api/products", 
+app.post(
+  "/api/products",
   validateBody(CreateProductSchema),
-  handleCreateProduct  // req.body is now guaranteed to be valid
+  handleCreateProduct, // req.body is now guaranteed to be valid
 );
 ```
 
@@ -55,14 +57,14 @@ import { validate } from "../schemas/validation";
 
 export const handleCheckout: RequestHandler = async (req, res) => {
   const validationResult = await validate(CheckoutSchema, req.body);
-  
+
   if (!validationResult.success) {
     return res.status(400).json({
       error: "Request validation failed",
       details: validationResult.errors,
     });
   }
-  
+
   const data = validationResult.data; // TypeScript knows type here
   // ... rest of handler
 };
@@ -77,7 +79,9 @@ const orderIdNum = parseInt(productId, 10);
 if (isNaN(orderIdNum) || orderIdNum <= 0) {
   return res.status(400).json({
     error: "Request validation failed",
-    details: [{ field: "productId", message: "Product ID must be a positive integer" }],
+    details: [
+      { field: "productId", message: "Product ID must be a positive integer" },
+    ],
   });
 }
 ```
@@ -89,6 +93,7 @@ if (isNaN(orderIdNum) || orderIdNum <= 0) {
 All validation errors follow a consistent format:
 
 ### Validation Failed
+
 ```json
 {
   "error": "Request validation failed",
@@ -100,6 +105,7 @@ All validation errors follow a consistent format:
 ```
 
 ### Unauthorized
+
 ```json
 {
   "error": "Unauthorized"
@@ -107,6 +113,7 @@ All validation errors follow a consistent format:
 ```
 
 ### Server Error
+
 ```json
 {
   "error": "Failed to create product",
@@ -124,43 +131,43 @@ All validation errors follow a consistent format:
 
 ### Customer Routes
 
-| Route | Schema | Validations |
-|-------|--------|------------|
-| `PUT /api/customer` | `UpdateCustomerSchema` | Optional name, optional email, optional phone |
-| `POST /api/addresses` | `CreateCustomerAddressSchema` | All address fields required, country code 2 chars |
-| `PUT /api/addresses/:id` | `UpdateCustomerAddressSchema` | Same as create |
-| `DELETE /api/addresses/:id` | (ID param) | ID must be positive integer |
+| Route                       | Schema                        | Validations                                       |
+| --------------------------- | ----------------------------- | ------------------------------------------------- |
+| `PUT /api/customer`         | `UpdateCustomerSchema`        | Optional name, optional email, optional phone     |
+| `POST /api/addresses`       | `CreateCustomerAddressSchema` | All address fields required, country code 2 chars |
+| `PUT /api/addresses/:id`    | `UpdateCustomerAddressSchema` | Same as create                                    |
+| `DELETE /api/addresses/:id` | (ID param)                    | ID must be positive integer                       |
 
 ### Order Routes
 
-| Route | Schema | Validations |
-|-------|--------|------------|
-| `POST /api/checkout` | `CheckoutSchema` | All address fields, ≥1 product, valid customer_id |
+| Route                     | Schema                    | Validations                                           |
+| ------------------------- | ------------------------- | ----------------------------------------------------- |
+| `POST /api/checkout`      | `CheckoutSchema`          | All address fields, ≥1 product, valid customer_id     |
 | `POST /api/orders/verify` | `VerifyOrderAccessSchema` | Order number digits only, verification field required |
-| `GET /api/orders/:id` | (ID param) | ID must be positive integer |
+| `GET /api/orders/:id`     | (ID param)                | ID must be positive integer                           |
 
 ### Design Routes
 
-| Route | Schema | Validations |
-|-------|--------|------------|
-| `POST /api/designs/upload` | `UploadDesignRequestSchema` | Base64 file data, file name, ≤50MB file size |
-| `GET /api/designs/:orderId` | (ID param) | Order ID must be positive integer |
+| Route                       | Schema                      | Validations                                  |
+| --------------------------- | --------------------------- | -------------------------------------------- |
+| `POST /api/designs/upload`  | `UploadDesignRequestSchema` | Base64 file data, file name, ≤50MB file size |
+| `GET /api/designs/:orderId` | (ID param)                  | Order ID must be positive integer            |
 
 ### Product Routes (Admin)
 
-| Route | Schema | Validations |
-|-------|--------|------------|
-| `POST /api/admin/products` | `CreateProductSchema` | Product name required, base_price ≥ 0, complex nested validation |
-| `PUT /api/admin/products/:id` | `UpdateProductSchema` | Same as create (all fields optional for PATCH) |
-| `GET /api/admin/products/:id` | (ID param) | Product ID must be positive integer |
-| `DELETE /api/admin/products/:id` | (ID param) | Product ID must be positive integer |
+| Route                            | Schema                | Validations                                                      |
+| -------------------------------- | --------------------- | ---------------------------------------------------------------- |
+| `POST /api/admin/products`       | `CreateProductSchema` | Product name required, base_price ≥ 0, complex nested validation |
+| `PUT /api/admin/products/:id`    | `UpdateProductSchema` | Same as create (all fields optional for PATCH)                   |
+| `GET /api/admin/products/:id`    | (ID param)            | Product ID must be positive integer                              |
+| `DELETE /api/admin/products/:id` | (ID param)            | Product ID must be positive integer                              |
 
 ### Invoice Routes
 
-| Route | Schema | Validations |
-|-------|--------|------------|
-| `POST /api/invoices` | `CreateInvoiceSchema` | Customer name/email required, due_date required |
-| `PUT /api/invoices/:id` | `UpdateInvoiceSchema` | Same as create (all optional) |
+| Route                   | Schema                | Validations                                     |
+| ----------------------- | --------------------- | ----------------------------------------------- |
+| `POST /api/invoices`    | `CreateInvoiceSchema` | Customer name/email required, due_date required |
+| `PUT /api/invoices/:id` | `UpdateInvoiceSchema` | Same as create (all optional)                   |
 
 ## Implementation Guide
 
@@ -181,14 +188,12 @@ export type MyNewInput = z.infer<typeof MyNewSchema>;
 #### Step 2: Use in Route Handler
 
 **Option A: Middleware (Recommended for simple routes)**
+
 ```typescript
 import { validateBody } from "../middleware/validation";
 import { MyNewSchema } from "../schemas/validation";
 
-app.post("/api/new-endpoint", 
-  validateBody(MyNewSchema),
-  handleNewEndpoint
-);
+app.post("/api/new-endpoint", validateBody(MyNewSchema), handleNewEndpoint);
 
 export const handleNewEndpoint: RequestHandler = async (req, res) => {
   // req.body is already validated and typed
@@ -198,20 +203,21 @@ export const handleNewEndpoint: RequestHandler = async (req, res) => {
 ```
 
 **Option B: Handler-level (For conditional validation)**
+
 ```typescript
 import { validate } from "../schemas/validation";
 import { MyNewSchema } from "../schemas/validation";
 
 export const handleNewEndpoint: RequestHandler = async (req, res) => {
   const result = await validate(MyNewSchema, req.body);
-  
+
   if (!result.success) {
     return res.status(400).json({
       error: "Request validation failed",
       details: result.errors,
     });
   }
-  
+
   const { name, email, age } = result.data;
   // ... handler logic
 };
@@ -252,7 +258,7 @@ export type CreateProductInput = z.infer<typeof CreateProductSchema>;
 export const handleCreateProduct: RequestHandler = async (req, res) => {
   const validationResult = await validate(CreateProductSchema, req.body);
   if (!validationResult.success) return res.status(400).json({...});
-  
+
   // TypeScript knows the type here
   const data: CreateProductInput = validationResult.data;
   // ✅ Autocomplete works
@@ -263,39 +269,43 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
 ## Common Validation Patterns
 
 ### Optional vs Required
+
 ```typescript
 // Required
-z.string().min(1, "Field is required")
+z.string().min(1, "Field is required");
 
 // Optional (client can omit)
-z.string().optional()
+z.string().optional();
 
 // Optional but if provided, must meet criteria
-z.string().min(1, "If provided, must be at least 1 char").optional()
+z.string().min(1, "If provided, must be at least 1 char").optional();
 ```
 
 ### Numeric Ranges
+
 ```typescript
 // Positive integer
-z.number().int().min(1)
+z.number().int().min(1);
 
 // Percentage (0-100)
-z.number().min(0).max(100)
+z.number().min(0).max(100);
 
 // Non-negative decimal
-z.number().min(0)
+z.number().min(0);
 ```
 
 ### Array Validation
+
 ```typescript
 // At least one item
-z.array(ItemSchema).min(1, "At least one item required")
+z.array(ItemSchema).min(1, "At least one item required");
 
 // Optional array (defaults to empty)
-z.array(ItemSchema).optional().default([])
+z.array(ItemSchema).optional().default([]);
 ```
 
 ### Custom Validation Rules
+
 ```typescript
 // Phone must be digits only (with optional +)
 PhoneSchema = z
@@ -304,15 +314,13 @@ PhoneSchema = z
   .optional();
 
 // Email lowercase transform
-EmailSchema = z
-  .string()
-  .email()
-  .toLowerCase()
+EmailSchema = z.string().email().toLowerCase();
 ```
 
 ## Testing Validation
 
 ### Unit Test Example
+
 ```typescript
 import { CreateProductSchema } from "../schemas/validation";
 
@@ -339,11 +347,12 @@ describe("Product Validation", () => {
 ```
 
 ### API Test Example
+
 ```typescript
 // Invalid request
 const response = await fetch("/api/products", {
   method: "POST",
-  body: JSON.stringify({ name: "" }) // Missing required fields
+  body: JSON.stringify({ name: "" }), // Missing required fields
 });
 
 // Should return 400 with validation details
@@ -352,17 +361,18 @@ const json = await response.json();
 expect(json.error).toBe("Request validation failed");
 expect(json.details).toContainEqual({
   field: "name",
-  message: "Product name is required"
+  message: "Product name is required",
 });
 ```
 
 ## Migration from Manual Validation
 
 ### Before: Manual Checks
+
 ```typescript
 export const handleUpdateCustomer = async (req, res) => {
   const { firstName, lastName, phone, email } = req.body;
-  
+
   // ❌ Many manual checks
   if (!firstName || !lastName) {
     return res.status(400).json({ error: "Name is required" });
@@ -373,12 +383,13 @@ export const handleUpdateCustomer = async (req, res) => {
   if (phone && !/^\+?[0-9\s\-]+$/.test(phone)) {
     return res.status(400).json({ error: "Invalid phone" });
   }
-  
+
   // Handler logic
 };
 ```
 
 ### After: Zod Validation
+
 ```typescript
 export const handleUpdateCustomer: RequestHandler = async (req, res) => {
   // ✅ One validation call
@@ -389,24 +400,24 @@ export const handleUpdateCustomer: RequestHandler = async (req, res) => {
       details: result.errors,
     });
   }
-  
+
   const { firstName, lastName, phone, email } = result.data;
-  
+
   // Handler logic
 };
 ```
 
 ## Benefits Summary
 
-| Aspect | Manual Validation | Zod Validation |
-|--------|-------------------|----------------|
-| **Code Duplication** | High (rules repeated) | Low (DRY) |
-| **Type Safety** | Manual types | Automatic inference |
-| **Error Messages** | Inconsistent | Consistent |
-| **Maintainability** | Hard (scattered) | Easy (centralized) |
-| **Testing** | Hard (many branches) | Easy (test schemas) |
-| **Documentation** | Separate docs | Schemas are self-documenting |
-| **Composability** | Limited | Full (nested schemas) |
+| Aspect               | Manual Validation     | Zod Validation               |
+| -------------------- | --------------------- | ---------------------------- |
+| **Code Duplication** | High (rules repeated) | Low (DRY)                    |
+| **Type Safety**      | Manual types          | Automatic inference          |
+| **Error Messages**   | Inconsistent          | Consistent                   |
+| **Maintainability**  | Hard (scattered)      | Easy (centralized)           |
+| **Testing**          | Hard (many branches)  | Easy (test schemas)          |
+| **Documentation**    | Separate docs         | Schemas are self-documenting |
+| **Composability**    | Limited               | Full (nested schemas)        |
 
 ## Compliance & Standards
 

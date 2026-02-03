@@ -27,7 +27,9 @@ export const handleDebugOrdersList: RequestHandler = async (req, res) => {
   try {
     // Log access to debug endpoint
     const adminId = (req as any).customerId;
-    console.log(`[DEBUG ENDPOINT ACCESS] Admin ${adminId} accessed /api/debug/orders-list at ${new Date().toISOString()}`);
+    console.log(
+      `[DEBUG ENDPOINT ACCESS] Admin ${adminId} accessed /api/debug/orders-list at ${new Date().toISOString()}`,
+    );
 
     const { data: orders, error } = await supabase
       .from("orders")

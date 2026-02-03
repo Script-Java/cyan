@@ -99,14 +99,22 @@ export const CreateOrderItemSchema = z.object({
   price: z.number().optional(),
   price_inc_tax: z.number().optional(),
   options: z.record(z.unknown()).optional(),
-  design_file_url: z.string().url("Invalid design file URL").optional().nullable(),
+  design_file_url: z
+    .string()
+    .url("Invalid design file URL")
+    .optional()
+    .nullable(),
 });
 
 export const CheckoutSchema = z.object({
   customer_id: z.number().int("Customer ID must be an integer"),
   billing_address: AddressSchema,
-  shipping_addresses: z.array(AddressSchema).min(1, "At least one shipping address is required"),
-  products: z.array(CreateOrderItemSchema).min(1, "At least one product is required"),
+  shipping_addresses: z
+    .array(AddressSchema)
+    .min(1, "At least one shipping address is required"),
+  products: z
+    .array(CreateOrderItemSchema)
+    .min(1, "At least one product is required"),
   discount_amount: z.number().min(0).optional().default(0),
   discount_code: z.string().optional().nullable(),
 });
@@ -197,13 +205,23 @@ export const TaxConfigSchema = z.object({
 
 export const SEOSchema = z.object({
   productUrl: z.string().url("Invalid product URL").optional(),
-  pageTitle: z.string().max(60, "Page title must be 60 characters or less").optional(),
-  metaDescription: z.string().max(160, "Meta description must be 160 characters or less").optional(),
+  pageTitle: z
+    .string()
+    .max(60, "Page title must be 60 characters or less")
+    .optional(),
+  metaDescription: z
+    .string()
+    .max(160, "Meta description must be 160 characters or less")
+    .optional(),
 });
 
 export const CreateProductSchema = z.object({
   name: z.string().min(1, "Product name is required").max(255),
-  basePrice: z.number().min(0, "Base price must be non-negative").optional().default(0),
+  basePrice: z
+    .number()
+    .min(0, "Base price must be non-negative")
+    .optional()
+    .default(0),
   description: z.string().optional().default(""),
   sku: z.string().optional().default(""),
   weight: z.number().min(0).optional().default(0),
@@ -211,16 +229,23 @@ export const CreateProductSchema = z.object({
   options: z.array(ProductOptionSchema).optional().default([]),
   pricingRules: z.array(PricingRuleSchema).optional().default([]),
   sharedVariants: z.array(SharedVariantSchema).optional().default([]),
-  customerUploadConfig: z.object({
-    enabled: z.boolean(),
-    maxFileSize: z.number().int().min(1),
-    allowedFormats: z.array(z.string()),
-    description: z.string().optional(),
-  }).optional(),
-  optionalFields: z.array(z.object({
-    name: z.string().min(1),
-    type: z.string().min(1),
-  })).optional().default([]),
+  customerUploadConfig: z
+    .object({
+      enabled: z.boolean(),
+      maxFileSize: z.number().int().min(1),
+      allowedFormats: z.array(z.string()),
+      description: z.string().optional(),
+    })
+    .optional(),
+  optionalFields: z
+    .array(
+      z.object({
+        name: z.string().min(1),
+        type: z.string().min(1),
+      }),
+    )
+    .optional()
+    .default([]),
   textArea: z.string().optional().default(""),
   uploadedFiles: z.array(z.any()).optional().default([]),
   conditionLogic: z.string().optional().default("all"),
@@ -345,7 +370,9 @@ export const ModifyStoreCreditSchema = z.object({
  */
 
 export type UpdateCustomerInput = z.infer<typeof UpdateCustomerSchema>;
-export type CreateCustomerAddressInput = z.infer<typeof CreateCustomerAddressSchema>;
+export type CreateCustomerAddressInput = z.infer<
+  typeof CreateCustomerAddressSchema
+>;
 export type CheckoutInput = z.infer<typeof CheckoutSchema>;
 export type VerifyOrderAccessInput = z.infer<typeof VerifyOrderAccessSchema>;
 export type UploadDesignFileInput = z.infer<typeof UploadDesignFileSchema>;

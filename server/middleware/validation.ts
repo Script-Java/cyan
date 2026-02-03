@@ -17,9 +17,7 @@ interface ValidationErrorResponse {
 /**
  * Parse Zod validation errors into a user-friendly format
  */
-export function parseValidationErrors(
-  error: z.ZodError,
-): ValidationError[] {
+export function parseValidationErrors(error: z.ZodError): ValidationError[] {
   return error.errors.map((err) => ({
     field: err.path.join(".") || "unknown",
     message: err.message,
@@ -28,14 +26,14 @@ export function parseValidationErrors(
 
 /**
  * Validate request body against a Zod schema
- * 
+ *
  * Usage:
  * ```typescript
- * app.post('/api/endpoint', 
+ * app.post('/api/endpoint',
  *   validateBody(MySchema),
  *   handleMyRoute
  * );
- * 
+ *
  * // In handler:
  * const data = req.body; // TypeScript-safe, already validated
  * ```
@@ -66,14 +64,14 @@ export function validateBody(schema: ZodSchema) {
 
 /**
  * Validate request parameters against a Zod schema
- * 
+ *
  * Usage:
  * ```typescript
  * app.get('/api/endpoint/:id',
  *   validateParams(z.object({ id: z.string().uuid() })),
  *   handleMyRoute
  * );
- * 
+ *
  * // In handler:
  * const { id } = req.params; // TypeScript-safe, already validated
  * ```
@@ -103,17 +101,17 @@ export function validateParams(schema: ZodSchema) {
 
 /**
  * Validate request query parameters against a Zod schema
- * 
+ *
  * Usage:
  * ```typescript
  * app.get('/api/list',
- *   validateQuery(z.object({ 
+ *   validateQuery(z.object({
  *     page: z.coerce.number().optional(),
  *     limit: z.coerce.number().optional(),
  *   })),
  *   handleMyRoute
  * );
- * 
+ *
  * // In handler:
  * const { page, limit } = req.query; // TypeScript-safe, already validated
  * ```
@@ -149,7 +147,7 @@ export function validateQuery(schema: ZodSchema) {
 /**
  * Type-safe response builder
  * Ensures consistent error response format
- * 
+ *
  * Usage:
  * ```typescript
  * if (validationResult.error) {

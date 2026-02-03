@@ -27,7 +27,12 @@ export function createCustomerRouter(upload: multer.Multer) {
   router.patch("/me", verifyToken, handleUpdateCustomer);
 
   // POST /api/customers/me/avatar - Upload customer avatar
-  router.post("/me/avatar", verifyToken, upload.single("avatar"), handleUploadAvatar);
+  router.post(
+    "/me/avatar",
+    verifyToken,
+    upload.single("avatar"),
+    handleUploadAvatar,
+  );
 
   // GET /api/customers/me/addresses - Get customer addresses
   router.get("/me/addresses", verifyToken, handleGetCustomerAddresses);
@@ -36,10 +41,18 @@ export function createCustomerRouter(upload: multer.Multer) {
   router.post("/me/addresses", verifyToken, handleCreateCustomerAddress);
 
   // PATCH /api/customers/me/addresses/:addressId - Update address
-  router.patch("/me/addresses/:addressId", verifyToken, handleUpdateCustomerAddress);
+  router.patch(
+    "/me/addresses/:addressId",
+    verifyToken,
+    handleUpdateCustomerAddress,
+  );
 
   // DELETE /api/customers/me/addresses/:addressId - Delete address
-  router.delete("/me/addresses/:addressId", verifyToken, handleDeleteCustomerAddress);
+  router.delete(
+    "/me/addresses/:addressId",
+    verifyToken,
+    handleDeleteCustomerAddress,
+  );
 
   // DELETE /api/customers/me/account - Delete customer account
   router.delete("/me/account", verifyToken, handleDeleteCustomerAccount);

@@ -528,12 +528,7 @@ export function createServer() {
     requireAdmin,
     handleDebugOrdersList,
   );
-  app.get(
-    "/api/debug/health",
-    verifyToken,
-    requireAdmin,
-    handleDebugHealth,
-  );
+  app.get("/api/debug/health", verifyToken, requireAdmin, handleDebugHealth);
 
   // ===== Design Routes (Protected) =====
   app.get("/api/designs", verifyToken, handleGetDesigns);

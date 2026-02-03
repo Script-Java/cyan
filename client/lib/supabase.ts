@@ -7,14 +7,13 @@ if (!supabaseUrl) {
   console.error("VITE_SUPABASE_URL is not configured. Check your .env file.");
 }
 if (!supabaseAnonKey) {
-  console.error("VITE_SUPABASE_ANON_KEY is not configured. Check your .env file.");
+  console.error(
+    "VITE_SUPABASE_ANON_KEY is not configured. Check your .env file.",
+  );
 }
 
 // Create client - both URL and key are required for functionality
-export const supabase = createClient(
-  supabaseUrl || "",
-  supabaseAnonKey || ""
-);
+export const supabase = createClient(supabaseUrl || "", supabaseAnonKey || "");
 
 export type Database = {
   public: {
