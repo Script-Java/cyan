@@ -246,7 +246,7 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
     const { data: orderItems, error: itemsError } = await supabase
       .from("order_items")
       .select("id, product_name, design_file_url, quantity, created_at")
-      .eq("order_id", parseInt(orderId))
+      .eq("order_id", orderIdNum)
       .not("design_file_url", "is", null);
 
     if (itemsError) {
