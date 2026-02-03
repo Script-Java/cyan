@@ -69,11 +69,6 @@ interface OrderDetail {
   proofs?: ProofStatus[];
 }
 
-const generateOrderNumber = (orderId: number): string => {
-  const orderNumber = 4001 + orderId;
-  return `SY-5${orderNumber}`;
-};
-
 export default function AdminOrderDetail() {
   const { orderId } = useParams<{ orderId: string }>();
   const navigate = useNavigate();
