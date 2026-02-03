@@ -163,7 +163,7 @@ export default function CustomerInvoiceView() {
                     {invoice.status}
                   </p>
                   <p className="text-3xl font-bold text-gray-900 mt-2">
-                    ${invoice.total.toFixed(2)}
+                    ${(Number(invoice.total) || 0).toFixed(2)}
                   </p>
                 </div>
               </div>
