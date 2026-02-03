@@ -284,6 +284,7 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
  * Accepts base64-encoded file data and returns a secure cloud URL
  * Used during checkout to store customer artwork files
  *
+ * VALIDATION: All request fields validated with Zod schemas
  * SECURITY NOTES:
  * - NEVER fallback to base64 data URLs when upload fails (prevents database bloat)
  * - File size limited to 50MB to prevent large payloads in database
@@ -291,20 +292,16 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
  */
 export const handleUploadDesignFile: RequestHandler = async (req, res) => {
   try {
-    const { fileData, fileName, fileType } = req.body;
-
-    if (!fileData || !fileName) {
+    // VALIDATION: Validate request body against schema
+    const validationResult = await validate(UploadDesignRequestSchema, req.body);
+    if (!validationResult.success) {
       return res.status(400).json({
-        error: "File data and file name are required",
+        error: "Request validation failed",
+        details: validationResult.errors,
       });
     }
 
-    // Strict validation: reject if fileData looks like base64 encoded content
-    if (typeof fileData !== "string" || fileData.length === 0) {
-      return res.status(400).json({
-        error: "Invalid file data format",
-      });
-    }
+    const { fileData, fileName, fileType } = validationResult.data;
 
     // Validate file size (50MB max) BEFORE processing
     let buffer: Buffer;
@@ -312,7 +309,8 @@ export const handleUploadDesignFile: RequestHandler = async (req, res) => {
       buffer = Buffer.from(fileData, "base64");
     } catch (e) {
       return res.status(400).json({
-        error: "Invalid base64 file data",
+        error: "Request validation failed",
+        details: [{ field: "fileData", message: "Invalid base64 file data" }],
       });
     }
 
@@ -325,7 +323,13 @@ export const handleUploadDesignFile: RequestHandler = async (req, res) => {
         maxSize: MAX_FILE_SIZE,
       });
       return res.status(413).json({
-        error: `File size exceeds ${MAX_FILE_SIZE / 1024 / 1024}MB limit`,
+        error: "Request validation failed",
+        details: [
+          {
+            field: "fileData",
+            message: `File size exceeds ${MAX_FILE_SIZE / 1024 / 1024}MB limit`,
+          },
+        ],
       });
     }
 
