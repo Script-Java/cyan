@@ -5,6 +5,22 @@ import { processImage } from "../utils/image-processor";
 
 const supabaseUrl = process.env.SUPABASE_URL || "";
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
+
+/**
+ * SECURITY: Service Role Key is required for this route
+ *
+ * Justification:
+ * - Blog management is admin-only (create/update/delete operations)
+ * - RLS policies cannot enforce blog ownership (blogs are shared admin resource)
+ * - Public read endpoints don't require auth, but admin writes need elevated access
+ *
+ * Mitigation:
+ * - All admin endpoints verify authentication and admin status
+ * - Audit logging should be added for blog modifications
+ * - Public read endpoints (getPublishedBlogs) only return visible blogs
+ *
+ * See: docs/RLS_SCOPING.md for security architecture
+ */
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface BlogFormData {
@@ -18,7 +34,12 @@ interface BlogFormData {
   show_in_listing?: boolean;
 }
 
-// Get all published blogs (public) - only show blogs with show_in_listing = true
+/**
+ * Get all published blogs (public endpoint)
+ * SECURITY: Public endpoint - no authentication required
+ * Filters to only visible blogs (visibility = 'visible' AND show_in_listing = true)
+ * Service Role Key is used for read-only access to public data
+ */
 export const handleGetPublishedBlogs: RequestHandler = async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -39,7 +60,11 @@ export const handleGetPublishedBlogs: RequestHandler = async (req, res) => {
   }
 };
 
-// Get single blog by ID (public)
+/**
+ * Get single blog by ID (public endpoint)
+ * SECURITY: Public endpoint - no authentication required
+ * Only returns blogs with visibility = 'visible'
+ */
 export const handleGetBlogById: RequestHandler = async (req, res) => {
   try {
     const { blogId } = req.params;
