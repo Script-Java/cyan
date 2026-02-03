@@ -206,9 +206,11 @@ export default function OrderStatus() {
 
   const handleReset = () => {
     setOrderNumber("");
+    setVerificationField("");
     setOrderData(null);
     setError("");
     setHasSearched(false);
+    setPublicAccessToken(null);
   };
 
   return (
