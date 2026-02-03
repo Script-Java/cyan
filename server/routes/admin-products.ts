@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { createClient } from "@supabase/supabase-js";
+import { CreateProductSchema, UpdateProductSchema, validate } from "../schemas/validation";
 
 const supabaseUrl = process.env.SUPABASE_URL || "";
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
