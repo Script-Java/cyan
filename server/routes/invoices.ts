@@ -222,6 +222,14 @@ export const handleGetInvoice: RequestHandler = async (req, res) => {
       .eq("id", id)
       .single();
 
+    // Handle missing table gracefully
+    if (invoiceError && (invoiceError.code === "PGRST205" || invoiceError.message.includes("Could not find the table"))) {
+      return res.status(404).json({
+        success: false,
+        error: "Invoice not found",
+      });
+    }
+
     if (invoiceError || !invoice) {
       return res.status(404).json({
         success: false,
