@@ -1,18 +1,14 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
 import {
   getCustomerOrders,
   getOrderById,
   getPendingOrders,
+  supabase,
+  getScopedSupabaseClient,
 } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
 
 import { parseOrderNumber } from "../utils/order";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_KEY || "",
-);
 
 /**
  * Get customer's orders from Ecwid, BigCommerce, and Supabase with pagination
