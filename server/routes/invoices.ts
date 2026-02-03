@@ -740,15 +740,20 @@ export const handleCancelInvoice: RequestHandler = async (req, res) => {
 // Get or create payment token for invoice
 export const handleGetPaymentToken: RequestHandler = async (req, res) => {
   try {
-    const { invoiceId } = req.params;
+    const { invoiceId } = await import("../utils/supabase").then(
+      (m) => m.supabase,
+    );
+    const { invoiceId: id } = req.params;
 
     // Try to get existing token
     const { data: existingToken } = await supabase
       .from("invoice_tokens")
       .select("token")
-      .eq("invoice_id", invoiceId)
-      .eq("is_active", true)
-      .single();
+      .eq("invoice_id", id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single()
+      .catch(() => ({ data: null }));
 
     if (existingToken) {
       return res.status(200).json({
@@ -763,9 +768,8 @@ export const handleGetPaymentToken: RequestHandler = async (req, res) => {
     const { data: createdToken, error } = await supabase
       .from("invoice_tokens")
       .insert({
-        invoice_id: parseInt(invoiceId),
+        invoice_id: parseInt(id),
         token: newToken,
-        is_active: true,
       })
       .select()
       .single();
