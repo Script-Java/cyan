@@ -27,6 +27,7 @@ import { supabase } from "../utils/supabase";
 
 /**
  * Middleware to verify JWT token and extract customer info
+ * SECURITY: Stores JWT in request for creating scoped Supabase clients in routes
  */
 export const verifyToken = async (
   req: Request,
@@ -50,6 +51,7 @@ export const verifyToken = async (
 
     req.customerId = decoded.customerId;
     req.email = decoded.email;
+    req.userJwt = token; // Store JWT for creating scoped Supabase clients
 
     // Fetch customer to get isAdmin status
     try {
