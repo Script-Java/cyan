@@ -169,8 +169,14 @@ export function useAdminNotifications() {
     return () => {
       isMounted = false;
       clearInterval(interval);
-      // Abort all pending requests
-      abortControllers.forEach((controller) => controller.abort());
+      // Abort all pending requests safely
+      abortControllers.forEach((controller) => {
+        try {
+          controller.abort();
+        } catch {
+          // Ignore errors when aborting already-aborted controllers
+        }
+      });
     };
   }, []);
 
