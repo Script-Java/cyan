@@ -76,6 +76,8 @@ import ReturnRefundPolicy from "./pages/ReturnRefundPolicy";
 import AdminReturnRefundPolicy from "./pages/AdminReturnRefundPolicy";
 import AdminGallery from "./pages/AdminGallery";
 import AdminDiscounts from "./pages/AdminDiscounts";
+import AdminCustomers from "./pages/AdminCustomers";
+import AdminCustomerDetail from "./pages/AdminCustomerDetail";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 
