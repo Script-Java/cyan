@@ -76,10 +76,12 @@ interface OrderData {
 
 export default function OrderStatus() {
   const [orderNumber, setOrderNumber] = useState("SY-54002");
+  const [verificationField, setVerificationField] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const [publicAccessToken, setPublicAccessToken] = useState<string | null>(null);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
