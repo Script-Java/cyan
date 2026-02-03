@@ -76,6 +76,7 @@ export const verifyToken = async (
 
 /**
  * Middleware to optionally verify token (doesn't fail if missing)
+ * SECURITY: Stores JWT in request for creating scoped Supabase clients in routes
  */
 export const optionalVerifyToken = async (
   req: Request,
@@ -94,6 +95,7 @@ export const optionalVerifyToken = async (
 
       req.customerId = decoded.customerId;
       req.email = decoded.email;
+      req.userJwt = token; // Store JWT for creating scoped Supabase clients
 
       // Fetch customer to get isAdmin status
       try {
