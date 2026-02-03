@@ -376,7 +376,7 @@ export default function AdminInvoices() {
                             {invoice.customer_email}
                           </td>
                           <td className="py-3 px-4 text-right font-semibold">
-                            ${invoice.total.toFixed(2)}
+                            ${(Number(invoice.total) || 0).toFixed(2)}
                           </td>
                           <td className="py-3 px-4">
                             <span
