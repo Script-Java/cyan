@@ -268,9 +268,14 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
 };
 
 /**
- * Upload a design file to Supabase Storage
- * Accepts base64-encoded file data and returns a public URL
+ * Upload a design file to Cloudinary
+ * Accepts base64-encoded file data and returns a secure cloud URL
  * Used during checkout to store customer artwork files
+ *
+ * SECURITY NOTES:
+ * - NEVER fallback to base64 data URLs when upload fails (prevents database bloat)
+ * - File size limited to 50MB to prevent large payloads in database
+ * - Cloudinary is required for file storage - no local fallback available
  */
 export const handleUploadDesignFile: RequestHandler = async (req, res) => {
   try {
@@ -282,11 +287,41 @@ export const handleUploadDesignFile: RequestHandler = async (req, res) => {
       });
     }
 
-    // Validate file size (50MB max)
-    const buffer = Buffer.from(fileData, "base64");
-    if (buffer.length > 50 * 1024 * 1024) {
+    // Strict validation: reject if fileData looks like base64 encoded content
+    if (typeof fileData !== "string" || fileData.length === 0) {
       return res.status(400).json({
-        error: "File size exceeds 50MB limit",
+        error: "Invalid file data format",
+      });
+    }
+
+    // Validate file size (50MB max) BEFORE processing
+    let buffer: Buffer;
+    try {
+      buffer = Buffer.from(fileData, "base64");
+    } catch (e) {
+      return res.status(400).json({
+        error: "Invalid base64 file data",
+      });
+    }
+
+    // Guard: Reject oversized files to prevent database bloat
+    const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+    if (buffer.length > MAX_FILE_SIZE) {
+      console.warn("File size validation failed:", {
+        fileName,
+        attemptedSize: buffer.length,
+        maxSize: MAX_FILE_SIZE,
+      });
+      return res.status(413).json({
+        error: `File size exceeds ${MAX_FILE_SIZE / 1024 / 1024}MB limit`,
+      });
+    }
+
+    // Validate Cloudinary is configured
+    if (!process.env.CLOUDINARY_CLOUD_NAME) {
+      console.error("Cloudinary not configured - cannot process uploads");
+      return res.status(503).json({
+        error: "File upload service is temporarily unavailable",
       });
     }
 
@@ -298,9 +333,9 @@ export const handleUploadDesignFile: RequestHandler = async (req, res) => {
       .substring(0, 100);
     const publicId = `sticker-designs/${timestamp}-${randomId}`;
 
-    // Upload to Cloudinary
+    // Upload to Cloudinary (no fallback)
     try {
-      const uploadResult = await new Promise((resolve, reject) => {
+      const uploadResult = await new Promise<any>((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
           {
             public_id: publicId,
@@ -317,47 +352,63 @@ export const handleUploadDesignFile: RequestHandler = async (req, res) => {
         stream.end(buffer);
       });
 
-      const result = uploadResult as any;
-
-      if (!result?.secure_url) {
-        return res.status(500).json({
+      if (!uploadResult?.secure_url) {
+        console.error("Cloudinary upload failed - no URL returned:", {
+          fileName,
+          publicId,
+        });
+        return res.status(502).json({
           error: "Failed to upload design file to cloud storage",
+          details:
+            process.env.NODE_ENV === "development"
+              ? "Cloudinary did not return a valid URL"
+              : undefined,
         });
       }
 
       console.log("Design file uploaded successfully to Cloudinary:", {
         fileName,
         publicId,
-        url: result.secure_url,
+        url: uploadResult.secure_url,
+        size: buffer.length,
       });
 
-      res.json({
+      // Success response
+      res.status(200).json({
         success: true,
-        fileUrl: result.secure_url,
+        fileUrl: uploadResult.secure_url,
         fileName: sanitizedFileName,
         size: buffer.length,
         uploadedAt: new Date().toISOString(),
       });
     } catch (uploadError) {
-      console.error("Error uploading to Cloudinary:", uploadError);
-      // If Cloudinary upload fails, return the base64 data URL as fallback
-      const dataUrl = `data:${fileType || "image/png"};base64,${fileData}`;
-      console.warn(
-        "Falling back to base64 data URL for design file (Cloudinary upload failed)",
-      );
-      return res.json({
-        success: true,
-        fileUrl: dataUrl,
-        fileName: sanitizedFileName,
-        size: buffer.length,
-        uploadedAt: new Date().toISOString(),
-        warning: "File stored locally, not in cloud storage",
+      // Log the error for debugging but don't expose internals
+      console.error("Cloudinary upload error:", {
+        fileName,
+        error:
+          uploadError instanceof Error
+            ? uploadError.message
+            : String(uploadError),
+      });
+
+      // Return error - NO fallback to base64 data URLs
+      // Client must retry or handle the failure gracefully
+      return res.status(502).json({
+        error: "Failed to upload design file to cloud storage",
+        details:
+          process.env.NODE_ENV === "development"
+            ? "Check that Cloudinary credentials are configured correctly"
+            : undefined,
+        code: "CLOUDINARY_UPLOAD_FAILED",
       });
     }
   } catch (error) {
     console.error("Upload design file error:", error);
     const message =
       error instanceof Error ? error.message : "Failed to upload design";
-    res.status(500).json({ error: message });
+    res.status(500).json({
+      error: message,
+      code: "DESIGN_UPLOAD_ERROR",
+    });
   }
 };
