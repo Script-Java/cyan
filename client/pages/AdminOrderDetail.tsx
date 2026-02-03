@@ -356,7 +356,7 @@ export default function AdminOrderDetail() {
         <div className="mb-6">
           <div className="flex items-center gap-3 flex-wrap mb-2">
             <h1 className="text-3xl font-bold text-gray-900">
-              {generateOrderNumber(order.id)}
+              {formatOrderNumber(order.id)}
             </h1>
             <span
               className={`px-3 py-1.5 rounded-full text-sm font-medium ${getStatusColor(
