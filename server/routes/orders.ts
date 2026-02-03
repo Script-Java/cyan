@@ -14,6 +14,7 @@ import { parseOrderNumber } from "../utils/order";
  * Get customer's orders from Ecwid, BigCommerce, and Supabase with pagination
  * Requires: customerId in JWT token
  * Supports page and limit query parameters for pagination
+ * SECURITY: Uses scoped Supabase client with RLS enforcement
  */
 export const handleGetOrders: RequestHandler = async (req, res) => {
   try {
@@ -34,6 +35,10 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
     console.log(
       `Fetching orders for customer ${customerId} - Page: ${page}, Limit: ${limit}`,
     );
+
+    // SECURITY: Use scoped client to enforce RLS policies
+    // Customer can only access their own orders
+    const scoped = getScopedSupabaseClient(req);
 
     // Fetch orders from Ecwid
     let ecwidOrders = [];
@@ -56,7 +61,7 @@ export const handleGetOrders: RequestHandler = async (req, res) => {
     let ecwidDigitalFilesMap = new Map();
     if (ecwidOrders.length > 0) {
       try {
-        const { data: digitalFilesData } = await supabase
+        const { data: digitalFilesData } = await scoped
           .from("digital_files")
           .select("*")
           .in(
