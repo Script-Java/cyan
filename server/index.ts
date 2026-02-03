@@ -10,35 +10,10 @@ import express from "express";
 import cors from "cors";
 import multer from "multer";
 import { handleDemo } from "./routes/demo";
-import {
-  handleLogin,
-  handleSignup,
-  handleLogout,
-  handleAdminSetup,
-  handleRequestPasswordReset,
-  handleResetPassword,
-} from "./routes/auth";
-import {
-  handleGetCustomer,
-  handleUpdateCustomer,
-  handleGetCustomerAddresses,
-  handleCreateCustomerAddress,
-  handleUpdateCustomerAddress,
-  handleDeleteCustomerAddress,
-  handleDeleteCustomerAccount,
-  handleGetStoreCredit,
-  handleUploadAvatar,
-} from "./routes/customers";
-import {
-  handleGetOrders,
-  handleGetOrder,
-  handleCreateOrder,
-  handleAdminGetOrder,
-  handleGetPendingOrders,
-  handleGetOrderPublic,
-  handleGetOrderStatus,
-  handleVerifyOrderAccess,
-} from "./routes/orders";
+import { createAuthRouter } from "./routes/auth.router";
+import { createCustomerRouter } from "./routes/customer.router";
+import { createOrderRouter } from "./routes/order.router";
+import { createProductRouter } from "./routes/product.router";
 import {
   handleGetDesigns,
   handleGetOrderDesigns,
