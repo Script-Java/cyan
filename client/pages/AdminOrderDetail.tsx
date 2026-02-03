@@ -379,6 +379,11 @@ export default function AdminOrderDetail() {
             {formatDate(order.dateCreated)} • {order.customerName} •{" "}
             <span className="text-gray-500">{order.customerEmail}</span>
           </p>
+          {order.squarePaymentId && (
+            <p className="text-xs text-gray-500 mt-2">
+              Square Transaction ID: <span className="font-mono text-gray-600">{order.squarePaymentId}</span>
+            </p>
+          )}
         </div>
 
         {/* Action Buttons */}
