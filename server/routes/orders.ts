@@ -7,8 +7,8 @@ import {
   getScopedSupabaseClient,
 } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
-
 import { parseOrderNumber } from "../utils/order";
+import { VerifyOrderAccessSchema, validate } from "../schemas/validation";
 
 /**
  * Get customer's orders from Ecwid, BigCommerce, and Supabase with pagination
