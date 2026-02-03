@@ -586,12 +586,54 @@ export const handleSendInvoice: RequestHandler = async (req, res) => {
       description: "Invoice sent to customer",
     });
 
-    // TODO: Send email via Resend with payment link
+    // Generate payment link
     const paymentLink = `https://stickyslap.app/invoice/${token}`;
 
-    console.log(
-      `Invoice sent to ${invoice.customer_email} - Payment link: ${paymentLink}`,
-    );
+    // Send email via Resend
+    let emailSent = false;
+    if (resend && process.env.RESEND_API_KEY) {
+      try {
+        const emailHtml = generateInvoiceEmailHtml(
+          invoice.customer_name,
+          invoice.invoice_number,
+          invoice.total.toFixed(2),
+          invoice.due_date,
+          paymentLink,
+          {
+            company: invoice.company,
+            notes: invoice.notes,
+          },
+        );
+
+        const emailResult = await resend.emails.send({
+          from: INVOICE_EMAIL_FROM,
+          to: invoice.customer_email,
+          subject: `Invoice ${invoice.invoice_number} from Sticky Slap - Payment Required`,
+          html: emailHtml,
+        });
+
+        if (emailResult.data?.id) {
+          emailSent = true;
+          console.log(
+            `Invoice email sent to ${invoice.customer_email} - Email ID: ${emailResult.data.id}`,
+          );
+        } else {
+          console.warn(
+            `Failed to send invoice email to ${invoice.customer_email}:`,
+            emailResult.error,
+          );
+        }
+      } catch (emailError) {
+        console.error(
+          `Error sending invoice email to ${invoice.customer_email}:`,
+          emailError,
+        );
+      }
+    } else {
+      console.warn(
+        "Resend API key not configured. Invoice email not sent. Set RESEND_API_KEY environment variable to enable email sending.",
+      );
+    }
 
     res.status(200).json({
       success: true,
@@ -599,6 +641,7 @@ export const handleSendInvoice: RequestHandler = async (req, res) => {
         invoice,
         payment_link: paymentLink,
         token,
+        email_sent: emailSent,
       },
     });
   } catch (error) {
