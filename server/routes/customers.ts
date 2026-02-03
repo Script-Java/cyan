@@ -1,14 +1,8 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
 import { v2 as cloudinary } from "cloudinary";
 import { processImage } from "../utils/image-processor";
-import { getCustomerStoreCredit } from "../utils/supabase";
+import { getCustomerStoreCredit, getScopedSupabaseClient } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_KEY || "",
-);
 
 /**
  * Get current customer profile with addresses
