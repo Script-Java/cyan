@@ -576,6 +576,7 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
         tracking_carrier: order.tracking_carrier,
         tracking_url: order.tracking_url,
         shipped_date: order.shipped_date,
+        square_payment_id: order.square_payment_details?.payment_id || null,
         digital_files: digitalFiles,
       },
     });
