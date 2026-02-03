@@ -547,15 +547,7 @@ export function createServer() {
   app.post("/api/checkout", checkoutLimiter, handleCheckout);
   app.get("/api/checkout/:cartId", handleGetCheckoutDetails);
 
-  // ===== Products Routes (Public) =====
-  app.get("/api/products/:productId", handleGetProduct);
-  app.get("/api/products/:productId/options", handleGetProductOptions);
-
-  // ===== Admin Products Routes (Public - for customer-facing product pages) =====
-  // NOTE: More specific routes MUST come first, or they will be caught by the generic route!
-  app.get("/api/public/products/admin/:id", handleGetAdminProductPublic);
-  app.get("/api/public/products/imported/:id", handleGetImportedProductPublic);
-  app.get("/api/public/products/:productId", handleGetPublicProduct);
+  // Product routes handled by createProductRouter() above
 
   // ===== Product Reviews Routes (Public) =====
   app.post("/api/reviews", handleSubmitReview);
