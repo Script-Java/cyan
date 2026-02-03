@@ -13,7 +13,12 @@ import { handleDemo } from "./routes/demo";
 import { createAuthRouter } from "./routes/auth.router";
 import { createCustomerRouter } from "./routes/customer.router";
 import { createOrderRouter } from "./routes/order.router";
-import { createProductRouter } from "./routes/product.router";
+import {
+  createProductRouter,
+  createAdminProductRouter,
+  createPublicProductRouter,
+  createStorefrontRouter,
+} from "./routes/product.router";
 // Additional route imports - will be refactored to routers in phase 2
 import {
   handleGetDesigns,
