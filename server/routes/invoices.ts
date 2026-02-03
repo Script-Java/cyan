@@ -742,17 +742,17 @@ export const handleGetPaymentToken: RequestHandler = async (req, res) => {
   try {
     const { invoiceId } = req.params;
 
-    // Try to get existing token
-    const { data: existingToken } = await supabase
+    // Try to get existing token (most recent one)
+    const { data: existingToken, error: fetchError } = await supabase
       .from("invoice_tokens")
       .select("token")
       .eq("invoice_id", invoiceId)
       .order("created_at", { ascending: false })
       .limit(1)
-      .single()
-      .catch(() => ({ data: null }));
+      .maybeSingle();
 
-    if (existingToken) {
+    // Return existing token if found
+    if (existingToken && !fetchError) {
       return res.status(200).json({
         success: true,
         token: existingToken.token,
