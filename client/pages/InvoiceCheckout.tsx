@@ -238,7 +238,7 @@ export default function InvoiceCheckout() {
                       Total Amount Due
                     </span>
                     <span className="text-2xl font-bold text-blue-600">
-                      ${invoice.total.toFixed(2)}
+                      ${(Number(invoice.total) || 0).toFixed(2)}
                     </span>
                   </div>
                 </div>
