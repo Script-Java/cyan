@@ -48,8 +48,7 @@ export default function CustomerInvoiceView() {
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(
-            errorData.error ||
-              `Invoice not found (${response.status})`,
+            errorData.error || `Invoice not found (${response.status})`,
           );
         }
 
@@ -61,7 +60,9 @@ export default function CustomerInvoiceView() {
       } catch (error) {
         console.error("Error fetching invoice:", error);
         const errorMessage =
-          error instanceof Error ? error.message : "Invoice not found or has expired";
+          error instanceof Error
+            ? error.message
+            : "Invoice not found or has expired";
         toast.error(errorMessage);
       } finally {
         setIsLoading(false);

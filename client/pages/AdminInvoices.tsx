@@ -19,21 +19,21 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
-    Loader2,
-    Plus,
-    Search,
-    Filter,
-    Eye,
-    Edit2,
-    Send,
-    Copy,
-    X,
-    MoreHorizontal,
-    DollarSign,
-    Clock,
-    AlertTriangle,
-    FileText,
-  } from "lucide-react";
+  Loader2,
+  Plus,
+  Search,
+  Filter,
+  Eye,
+  Edit2,
+  Send,
+  Copy,
+  X,
+  MoreHorizontal,
+  DollarSign,
+  Clock,
+  AlertTriangle,
+  FileText,
+} from "lucide-react";
 import { toast } from "sonner";
 
 interface Invoice {
