@@ -862,3 +862,130 @@ export const handleGetInvoiceByToken: RequestHandler = async (req, res) => {
     });
   }
 };
+
+// Create Square payment link for invoice
+export const handleCreateInvoicePaymentLink: RequestHandler = async (
+  req,
+  res,
+) => {
+  try {
+    const { token } = req.params;
+
+    // Get token and invoice
+    const { data: tokenData } = await supabase
+      .from("invoice_tokens")
+      .select("invoice_id")
+      .eq("token", token)
+      .single();
+
+    if (!tokenData) {
+      return res.status(404).json({
+        success: false,
+        error: "Invalid invoice token",
+      });
+    }
+
+    // Get invoice details
+    const { data: invoice } = await supabase
+      .from("invoices")
+      .select("*")
+      .eq("id", tokenData.invoice_id)
+      .single();
+
+    if (!invoice) {
+      return res.status(404).json({
+        success: false,
+        error: "Invoice not found",
+      });
+    }
+
+    // Check if invoice is already paid
+    if (invoice.status === "Paid") {
+      return res.status(400).json({
+        success: false,
+        error: "Invoice has already been paid",
+      });
+    }
+
+    // Get line items for description
+    const { data: lineItems } = await supabase
+      .from("invoice_line_items")
+      .select("*")
+      .eq("invoice_id", invoice.id);
+
+    // Import Square utilities
+    const { createSquarePaymentLink } = await import("../utils/square");
+
+    // Build description from line items
+    let description = `Invoice #${invoice.invoice_number}`;
+    if (lineItems && lineItems.length > 0) {
+      const itemNames = lineItems.slice(0, 3).map((item) => item.item_name);
+      description += ` - ${itemNames.join(", ")}`;
+      if (lineItems.length > 3) {
+        description += ` + ${lineItems.length - 3} more`;
+      }
+    }
+
+    // Determine redirect URL
+    const baseUrl =
+      process.env.BASE_URL ||
+      (process.env.NODE_ENV === "production"
+        ? "https://stickyslap.app"
+        : "http://localhost:5173");
+    const redirectUrl = `${baseUrl}/invoice/${token}`;
+
+    // Create Square payment link
+    const paymentLinkResult = await createSquarePaymentLink({
+      orderId: invoice.id.toString(),
+      amount: invoice.total,
+      currency: "USD",
+      description,
+      customerEmail: invoice.customer_email,
+      customerName: invoice.customer_name,
+      redirectUrl,
+      subtotal: invoice.subtotal,
+      tax: invoice.tax_amount,
+      shipping: invoice.shipping || 0,
+      discount: invoice.discount_amount || 0,
+      items: (lineItems || []).map((item) => ({
+        product_name: item.item_name,
+        quantity: item.quantity,
+        price: item.unit_price,
+      })),
+    });
+
+    if (!paymentLinkResult.success || !paymentLinkResult.paymentLinkUrl) {
+      console.error("Failed to create Square payment link:", paymentLinkResult);
+      return res.status(400).json({
+        success: false,
+        error:
+          paymentLinkResult.error || "Failed to create payment link",
+      });
+    }
+
+    // Log activity
+    await supabase.from("invoice_activity").insert({
+      invoice_id: invoice.id,
+      action: "payment_initiated",
+      description: "Customer initiated Square payment",
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        payment_link: paymentLinkResult.paymentLinkUrl,
+        invoice_number: invoice.invoice_number,
+        amount: invoice.total,
+      },
+    });
+  } catch (error) {
+    console.error("Create invoice payment link error:", error);
+    res.status(500).json({
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to create payment link",
+    });
+  }
+};
