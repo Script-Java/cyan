@@ -340,8 +340,23 @@ export const handleCreateInvoice: RequestHandler = async (req, res) => {
       .select()
       .single();
 
-    if (invoiceError || !invoice) {
-      throw invoiceError || new Error("Failed to create invoice");
+    if (invoiceError) {
+      // Handle missing invoices table gracefully
+      if (
+        invoiceError.code === "PGRST205" ||
+        invoiceError.message.includes("Could not find the table")
+      ) {
+        console.log("Invoices table not yet created");
+        return res.status(503).json({
+          success: false,
+          error: "Invoicing system is not yet available. Please contact support.",
+        });
+      }
+      throw invoiceError;
+    }
+
+    if (!invoice) {
+      throw new Error("Failed to create invoice");
     }
 
     // Add line items
@@ -355,15 +370,27 @@ export const handleCreateInvoice: RequestHandler = async (req, res) => {
         amount: item.quantity * item.unit_price,
       }));
 
-      await supabase.from("invoice_line_items").insert(itemsToInsert);
+      const { error: itemsError } = await supabase
+        .from("invoice_line_items")
+        .insert(itemsToInsert);
+
+      if (itemsError) {
+        console.warn("Failed to add invoice line items:", itemsError);
+      }
     }
 
     // Log activity
-    await supabase.from("invoice_activity").insert({
-      invoice_id: invoice.id,
-      action: "created",
-      description: "Invoice created",
-    });
+    const { error: activityError } = await supabase
+      .from("invoice_activity")
+      .insert({
+        invoice_id: invoice.id,
+        action: "created",
+        description: "Invoice created",
+      });
+
+    if (activityError) {
+      console.warn("Failed to log invoice activity:", activityError);
+    }
 
     res.status(201).json({
       success: true,
