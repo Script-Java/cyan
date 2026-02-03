@@ -558,22 +558,25 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
 /**
  * Verify public order access with customer verification (email or phone)
  * No authentication required - customers verify with order number and email/phone
+ * VALIDATION: Request body validated against VerifyOrderAccessSchema
  */
 export const handleVerifyOrderAccess: RequestHandler = async (req, res) => {
   try {
-    const { orderNumber, verificationField } = req.body;
-
-    if (!orderNumber || !verificationField) {
+    // VALIDATION: Validate request body (order_number and verification_field)
+    const validationResult = await validate(VerifyOrderAccessSchema, req.body);
+    if (!validationResult.success) {
       return res.status(400).json({
-        success: false,
-        error: "Order number and verification field are required",
+        error: "Request validation failed",
+        details: validationResult.errors,
       });
     }
+
+    const { order_number, verification_field } = validationResult.data;
 
     // Parse order number to numeric ID
     let orderIdNum: number;
     try {
-      orderIdNum = parseOrderNumber(orderNumber as string);
+      orderIdNum = parseOrderNumber(order_number);
     } catch (err) {
       // Return 404 for invalid format - don't reveal format issues
       return res.status(404).json({
