@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
+import { Loader2, Lock, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
 interface Invoice {
@@ -13,23 +12,28 @@ interface Invoice {
   customer_name: string;
   customer_email: string;
   total: number;
+  subtotal: number;
+  tax_amount: number;
+  shipping: number;
+  discount_amount: number;
   due_date: string;
   status: string;
-  line_items?: any[];
+  shipping_address?: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    country?: string;
+  };
+  notes?: string;
 }
 
 export default function InvoiceCheckout() {
-  const [searchParams] = useSearchParams();
+  const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    amount: 0,
-  });
-
-  const token = searchParams.get("token");
 
   useEffect(() => {
     if (!token) {
@@ -39,7 +43,7 @@ export default function InvoiceCheckout() {
     }
 
     fetchInvoice();
-  }, [token]);
+  }, [token, navigate]);
 
   const fetchInvoice = async () => {
     try {
@@ -51,11 +55,7 @@ export default function InvoiceCheckout() {
       }
 
       const data = await response.json();
-      setInvoice(data.invoice);
-      setFormData({
-        email: data.invoice.customer_email || "",
-        amount: data.invoice.total,
-      });
+      setInvoice(data.data || data.invoice);
     } catch (error) {
       console.error("Error fetching invoice:", error);
       toast.error("Failed to load invoice");
@@ -81,27 +81,10 @@ export default function InvoiceCheckout() {
           amount: Math.round(invoice.total * 100), // Convert to cents
           currency: "USD",
           description: `Invoice #${invoice.invoice_number}`,
-          customer_email: formData.email,
+          customer_email: invoice.customer_email,
           customer_name: invoice.customer_name,
           invoice_id: invoice.id,
-          line_items: invoice.line_items?.map((item) => ({
-            name: item.item_name,
-            quantity: item.quantity,
-            price_money: {
-              amount: Math.round(item.unit_price * 100),
-              currency: "USD",
-            },
-          })) || [
-            {
-              name: `Invoice #${invoice.invoice_number}`,
-              quantity: 1,
-              price_money: {
-                amount: Math.round(invoice.total * 100),
-                currency: "USD",
-              },
-            },
-          ],
-          redirect_url: `${window.location.origin}/checkout-success/${invoice.id}`,
+          redirect_url: `${window.location.origin}/invoice/${token}`,
         }),
       });
 
