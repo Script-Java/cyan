@@ -760,7 +760,9 @@ export const handleGetPaymentToken: RequestHandler = async (req, res) => {
     if (existingToken && !fetchError) {
       return res.status(200).json({
         success: true,
-        token: existingToken.token,
+        data: {
+          token: existingToken.token,
+        },
       });
     }
 
@@ -782,7 +784,9 @@ export const handleGetPaymentToken: RequestHandler = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      token: newToken,
+      data: {
+        token: newToken,
+      },
     });
   } catch (error) {
     console.error("Get payment token error:", error);
