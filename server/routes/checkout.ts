@@ -1,11 +1,9 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
-import { createSupabaseOrder, createOrderItems } from "../utils/supabase";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_KEY || "",
-);
+import {
+  createSupabaseOrder,
+  createOrderItems,
+  getScopedSupabaseClient,
+} from "../utils/supabase";
 
 /**
  * Validate UUID format (v4 and general UUID)
