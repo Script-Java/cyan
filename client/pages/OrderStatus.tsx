@@ -162,7 +162,7 @@ export default function OrderStatus() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          publicAccessToken: orderNumber, // We'll need to get this from somewhere
+          orderNumber: orderNumber.trim(),
           verificationField: verificationField.trim(),
         }),
       });
