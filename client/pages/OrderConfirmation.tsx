@@ -54,6 +54,7 @@ interface Order {
   estimated_delivery_date?: string;
   shipping_address?: ShippingAddress;
   orderItems?: OrderItem[];
+  square_payment_id?: string;
 }
 
 export default function OrderConfirmation() {
