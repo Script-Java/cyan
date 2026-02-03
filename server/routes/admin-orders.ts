@@ -289,6 +289,7 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
       trackingCarrier: order.tracking_carrier || undefined,
       trackingUrl: order.tracking_url || undefined,
       shippedDate: order.shipped_date || undefined,
+      squarePaymentId: order.square_payment_details?.payment_id || undefined,
       orderItems: (order.order_items || []).map((item: any) => ({
         id: item.id,
         quantity: item.quantity,
