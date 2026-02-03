@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { formatOrderNumber } from "@/lib/orderFormatting";
 import AdminLayout from "@/components/AdminLayout";
 import DesignThumbnail from "@/components/DesignThumbnail";
 import OrderStatusEditor from "@/components/OrderStatusEditor";
