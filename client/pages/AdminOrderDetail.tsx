@@ -45,8 +45,10 @@ interface ShippingAddress {
 interface OrderDetail {
   id: number;
   customerId: number;
+  customerRecordId?: number;
   customerName: string;
   customerEmail: string;
+  customerPhone?: string;
   status: string;
   total: number;
   subtotal?: number;
