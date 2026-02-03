@@ -519,6 +519,7 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
         tracking_carrier,
         tracking_url,
         shipped_date,
+        square_payment_details,
         order_items (
           id,
           product_id,
