@@ -203,31 +203,34 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
   }
 };
 
+/**
+ * Update an existing product in admin catalog
+ * VALIDATION: All request fields validated against UpdateProductSchema
+ * SECURITY: Requires verifyToken + requireAdmin middleware
+ */
 export const handleUpdateProduct: RequestHandler = async (req, res) => {
   try {
     const { productId } = req.params;
-    const productData: ProductFormData = req.body;
 
-    if (!productId) {
-      return res.status(400).json({ error: "Product ID is required" });
-    }
-
+    // VALIDATION: Validate product ID
     const id = parseInt(productId, 10);
-    if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid product ID format" });
-    }
-
-    if (!productData.name?.trim()) {
-      return res.status(400).json({ error: "Product name is required" });
-    }
-
-    const hasSharedVariants =
-      productData.sharedVariants && productData.sharedVariants.length > 0;
-    if (productData.basePrice < 0 && !hasSharedVariants) {
+    if (isNaN(id) || id <= 0) {
       return res.status(400).json({
-        error: "Base price cannot be negative (or add shared variants)",
+        error: "Request validation failed",
+        details: [{ field: "productId", message: "Product ID must be a positive integer" }],
       });
     }
+
+    // VALIDATION: Validate entire product request
+    const validationResult = await validate(UpdateProductSchema, req.body);
+    if (!validationResult.success) {
+      return res.status(400).json({
+        error: "Request validation failed",
+        details: validationResult.errors,
+      });
+    }
+
+    const productData = validationResult.data;
 
     // Build complete product object with all supported columns
     const dbProduct: any = {
