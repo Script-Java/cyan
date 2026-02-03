@@ -142,132 +142,178 @@ export default function InvoiceCheckout() {
     );
   }
 
+  const isPaid = invoice.status === "Paid";
+
   return (
     <>
       <Header />
       <main className="min-h-screen bg-gray-50 pt-20">
         <div className="max-w-2xl mx-auto px-4 py-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>Invoice Payment</CardTitle>
+          {/* Invoice Confirmation */}
+          <Card className="mb-6">
+            <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
+              <CardTitle className="text-2xl">Invoice Confirmation</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Invoice Summary */}
-              <div className="border-b pb-6">
-                <h3 className="font-semibold text-lg mb-4">Invoice Details</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Invoice #</span>
-                    <span className="font-medium">{invoice.invoice_number}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Customer</span>
-                    <span className="font-medium">{invoice.customer_name}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Due Date</span>
-                    <span className="font-medium">
-                      {new Date(invoice.due_date).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Status</span>
-                    <span className="font-medium">{invoice.status}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Line Items */}
-              {invoice.line_items && invoice.line_items.length > 0 && (
-                <div className="border-b pb-6">
-                  <h3 className="font-semibold text-lg mb-4">Items</h3>
-                  <div className="space-y-2 text-sm">
-                    {invoice.line_items.map((item, index) => (
-                      <div key={index} className="flex justify-between">
-                        <span className="text-gray-600">
-                          {item.item_name} x {item.quantity}
-                        </span>
-                        <span className="font-medium">
-                          ${(Number(item.amount || item.quantity * item.unit_price) || 0).toFixed(
-                            2
-                          )}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Payment Form */}
-              <div className="space-y-4">
+            <CardContent className="pt-6">
+              <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address
-                  </label>
-                  <Input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    placeholder="your@email.com"
-                  />
-                </div>
-
-                {/* Payment Amount */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg font-semibold text-gray-900">
-                      Total Amount Due
-                    </span>
-                    <span className="text-2xl font-bold text-blue-600">
-                      ${(Number(invoice.total) || 0).toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Square Payment Form Placeholder */}
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                  <p className="text-sm text-gray-500 mb-4">
-                    Payment form will be displayed here
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    Secure payment powered by Square
+                  <p className="text-sm text-gray-600 mb-1">Invoice Number</p>
+                  <p className="text-lg font-semibold text-gray-900">
+                    {invoice.invoice_number}
                   </p>
                 </div>
-
-                {/* Pay Button */}
-                <Button
-                  onClick={handlePayment}
-                  disabled={isProcessing}
-                  className="w-full bg-blue-600 hover:bg-blue-700 h-12 text-lg"
-                >
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    `Pay $${(Number(invoice.total) || 0).toFixed(2)}`
-                  )}
-                </Button>
-
-                {/* Security Notice */}
-                <p className="text-xs text-center text-gray-500">
-                  Your payment information is encrypted and secure
-                </p>
+                <div className="text-right">
+                  <p className="text-sm text-gray-600 mb-1">Due Date</p>
+                  <p className="text-lg font-semibold text-gray-900">
+                    {new Date(invoice.due_date).toLocaleDateString()}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Bill To</p>
+                  <p className="font-semibold text-gray-900">
+                    {invoice.customer_name}
+                  </p>
+                  <p className="text-sm text-gray-600">{invoice.customer_email}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-gray-600 mb-1">Status</p>
+                  <p className={`text-lg font-semibold ${
+                    isPaid ? "text-green-600" : "text-yellow-600"
+                  }`}>
+                    {invoice.status}
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Help Text */}
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h4 className="font-semibold text-blue-900 mb-2">Need Help?</h4>
-            <p className="text-sm text-blue-800">
-              If you have any questions about this invoice, please contact us at
-              support@stickyslap.app
-            </p>
-          </div>
+          {/* Shipping Address */}
+          {invoice.shipping_address && (
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="text-lg">Shipping Address</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <p className="font-medium text-gray-900">
+                    {invoice.customer_name}
+                  </p>
+                  {invoice.shipping_address.street && (
+                    <p className="text-gray-600">{invoice.shipping_address.street}</p>
+                  )}
+                  {invoice.shipping_address.city && (
+                    <p className="text-gray-600">
+                      {invoice.shipping_address.city}
+                      {invoice.shipping_address.state && `, ${invoice.shipping_address.state}`}
+                      {invoice.shipping_address.zip && ` ${invoice.shipping_address.zip}`}
+                    </p>
+                  )}
+                  {invoice.shipping_address.country && (
+                    <p className="text-gray-600">{invoice.shipping_address.country}</p>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Invoice Totals */}
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="text-lg">Invoice Totals</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Subtotal</span>
+                  <span className="font-medium">
+                    ${(Number(invoice.subtotal) || 0).toFixed(2)}
+                  </span>
+                </div>
+                {Number(invoice.tax_amount || 0) > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Tax</span>
+                    <span className="font-medium">
+                      ${(Number(invoice.tax_amount) || 0).toFixed(2)}
+                    </span>
+                  </div>
+                )}
+                {Number(invoice.shipping || 0) > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Shipping</span>
+                    <span className="font-medium">
+                      ${(Number(invoice.shipping) || 0).toFixed(2)}
+                    </span>
+                  </div>
+                )}
+                {Number(invoice.discount_amount || 0) > 0 && (
+                  <div className="flex justify-between text-sm text-green-600">
+                    <span>Discount</span>
+                    <span className="font-medium">
+                      -${(Number(invoice.discount_amount) || 0).toFixed(2)}
+                    </span>
+                  </div>
+                )}
+                <div className="border-t pt-3 flex justify-between items-center">
+                  <span className="font-semibold text-gray-900">Amount Due</span>
+                  <span className="text-3xl font-bold text-blue-600">
+                    ${(Number(invoice.total) || 0).toFixed(2)}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Notes Section */}
+          {invoice.notes && (
+            <Card className="mb-6 bg-blue-50 border-blue-200">
+              <CardContent className="pt-6">
+                <p className="text-sm font-medium text-blue-900 mb-2">Notes</p>
+                <p className="text-sm text-blue-800">{invoice.notes}</p>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Payment Status */}
+          {isPaid && (
+            <Card className="mb-6 bg-green-50 border-green-200">
+              <CardContent className="pt-6 flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-green-600" />
+                <p className="text-green-800 font-medium">
+                  This invoice has been paid. Thank you!
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Payment Button */}
+          {!isPaid && (
+            <Button
+              onClick={handlePayment}
+              disabled={isProcessing}
+              className="w-full bg-blue-600 hover:bg-blue-700 py-6 text-lg font-semibold mb-4"
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Lock className="w-4 h-4 mr-2" />
+                  Pay with Square ${(Number(invoice.total) || 0).toFixed(2)}
+                </>
+              )}
+            </Button>
+          )}
+
+          {/* Security Notice */}
+          {!isPaid && (
+            <div className="text-center">
+              <p className="text-xs text-gray-500">
+                Your payment is securely processed by Square
+              </p>
+            </div>
+          )}
         </div>
       </main>
     </>
