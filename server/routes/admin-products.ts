@@ -412,17 +412,21 @@ export const handleGetAdminProduct: RequestHandler = async (req, res) => {
   }
 };
 
+/**
+ * Delete a product by ID
+ * VALIDATION: Product ID must be a positive integer
+ */
 export const handleDeleteAdminProduct: RequestHandler = async (req, res) => {
   try {
     const { productId } = req.params;
 
-    if (!productId) {
-      return res.status(400).json({ error: "Product ID is required" });
-    }
-
+    // VALIDATION: Validate product ID
     const id = parseInt(productId, 10);
-    if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid product ID format" });
+    if (isNaN(id) || id <= 0) {
+      return res.status(400).json({
+        error: "Request validation failed",
+        details: [{ field: "productId", message: "Product ID must be a positive integer" }],
+      });
     }
 
     const { error } = await supabase
