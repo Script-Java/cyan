@@ -556,31 +556,43 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
 
 /**
  * Verify public order access with customer verification (email or phone)
- * No authentication required - customers verify with email or phone
+ * No authentication required - customers verify with order number and email/phone
  */
 export const handleVerifyOrderAccess: RequestHandler = async (req, res) => {
   try {
-    const { publicAccessToken, verificationField } = req.body;
+    const { orderNumber, verificationField } = req.body;
 
-    if (!publicAccessToken || !verificationField) {
+    if (!orderNumber || !verificationField) {
       return res.status(400).json({
         success: false,
-        error: "Public access token and verification field are required",
+        error: "Order number and verification field are required",
+      });
+    }
+
+    // Parse order number to numeric ID
+    let orderIdNum: number;
+    try {
+      orderIdNum = parseOrderNumber(orderNumber as string);
+    } catch (err) {
+      // Return 404 for invalid format - don't reveal format issues
+      return res.status(404).json({
+        success: false,
+        error: "Order not found",
       });
     }
 
     const { supabase } = await import("../utils/supabase");
 
-    // Get the order by public access token
+    // Get the order by ID
     const { data: order, error: orderError } = await supabase
       .from("orders")
       .select("id, customer_id, public_access_token")
-      .eq("public_access_token", publicAccessToken)
+      .eq("id", orderIdNum)
       .maybeSingle();
 
     if (orderError || !order) {
-      // Return 404 for any lookup failure - don't reveal if token exists
-      console.warn("Order not found for token:", publicAccessToken);
+      // Return 404 for any lookup failure - don't reveal if order exists
+      console.warn("Order not found for ID:", orderIdNum);
       return res.status(404).json({
         success: false,
         error: "Order not found",
@@ -615,13 +627,12 @@ export const handleVerifyOrderAccess: RequestHandler = async (req, res) => {
       });
     }
 
-    // Verification successful - return a short-lived session token for this order
-    // In a real app, you'd generate a session JWT here
+    // Verification successful - return public access token
     return res.status(200).json({
       success: true,
       verified: true,
       orderId: order.id,
-      publicAccessToken: publicAccessToken,
+      publicAccessToken: order.public_access_token,
     });
   } catch (error) {
     console.error("Verify order access error:", error);
