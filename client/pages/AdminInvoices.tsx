@@ -19,21 +19,22 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
-  Loader2,
-  Plus,
-  Search,
-  Filter,
-  Eye,
-  Edit2,
-  Send,
-  Copy,
-  X,
-  MoreHorizontal,
-  DollarSign,
-  Clock,
-  AlertTriangle,
-  FileText,
-} from "lucide-react";
+    Loader2,
+    Plus,
+    Search,
+    Filter,
+    Eye,
+    Edit2,
+    Send,
+    Copy,
+    X,
+    MoreHorizontal,
+    DollarSign,
+    Clock,
+    AlertTriangle,
+    FileText,
+    EyeOpen,
+  } from "lucide-react";
 import { toast } from "sonner";
 
 interface Invoice {
@@ -186,6 +187,36 @@ export default function AdminInvoices() {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success("Copied to clipboard");
+  };
+
+  const handleViewAsCustomer = async (invoiceId: number) => {
+    try {
+      const response = await fetch(
+        `/api/admin/invoices/${invoiceId}/payment-token`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to get customer view link");
+      }
+
+      const data = await response.json();
+      const token = data.data?.token;
+
+      if (!token) {
+        throw new Error("No token received");
+      }
+
+      // Open in new tab
+      window.open(`/invoice/${token}`, "_blank");
+    } catch (error) {
+      console.error("Error viewing as customer:", error);
+      toast.error("Failed to generate customer view link");
+    }
   };
 
   return (
@@ -397,23 +428,17 @@ export default function AdminInvoices() {
                                   navigate(`/admin/invoices/${invoice.id}`)
                                 }
                                 className="text-gray-600 hover:text-gray-900"
-                                title="View"
+                                title="Edit"
+                              >
+                                <Edit2 className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleViewAsCustomer(invoice.id)}
+                                className="text-blue-600 hover:text-blue-900"
+                                title="View as Customer"
                               >
                                 <Eye className="w-4 h-4" />
                               </button>
-                              {invoice.status === "Draft" && (
-                                <button
-                                  onClick={() =>
-                                    navigate(
-                                      `/admin/invoices/${invoice.id}/edit`,
-                                    )
-                                  }
-                                  className="text-gray-600 hover:text-gray-900"
-                                  title="Edit"
-                                >
-                                  <Edit2 className="w-4 h-4" />
-                                </button>
-                              )}
                               {invoice.status === "Sent" ||
                               invoice.status === "Unpaid" ? (
                                 <button
