@@ -62,6 +62,7 @@ export const handleGetCustomer: RequestHandler = async (req, res) => {
 /**
  * Update customer profile
  * Requires: customerId in JWT token
+ * SECURITY: Uses scoped Supabase client with RLS enforcement
  */
 export const handleUpdateCustomer: RequestHandler = async (req, res) => {
   try {
@@ -86,8 +87,12 @@ export const handleUpdateCustomer: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "No fields to update" });
     }
 
+    // SECURITY: Use scoped client to enforce RLS policies
+    // Customer can only update their own record
+    const scoped = getScopedSupabaseClient(req);
+
     // Update customer in Supabase
-    const { data: updatedCustomer, error } = await supabase
+    const { data: updatedCustomer, error } = await scoped
       .from("customers")
       .update(updateData)
       .eq("id", customerId)
