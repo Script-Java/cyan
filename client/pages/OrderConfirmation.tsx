@@ -351,6 +351,11 @@ export default function OrderConfirmation() {
                     {orderNumber}
                   </CardTitle>
                   <CardDescription>Ordered on {orderDate}</CardDescription>
+                  {order.square_payment_id && (
+                    <p className="text-xs text-gray-500 mt-2">
+                      Transaction ID: <span className="font-mono">{order.square_payment_id}</span>
+                    </p>
+                  )}
                 </div>
                 {getStatusBadge()}
               </div>
