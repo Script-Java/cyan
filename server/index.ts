@@ -1282,7 +1282,8 @@ export function createServer() {
   );
   app.get(
     "/api/admin/invoices/:invoiceId/payment-token",
-    verifySupabaseToken,
+    verifyToken,
+    requireAdmin,
     handleGetPaymentToken,
   );
 
