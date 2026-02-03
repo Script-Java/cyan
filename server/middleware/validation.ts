@@ -142,52 +142,9 @@ export function validateQuery(schema: ZodSchema) {
 }
 
 /**
- * Utility to validate data within a route handler
- * Useful for complex validation or conditional validation
- * 
- * Usage:
- * ```typescript
- * const validated = await validate(MySchema, req.body);
- * if (!validated.success) {
- *   return res.status(400).json({
- *     error: "Validation failed",
- *     details: validated.errors,
- *   });
- * }
- * const data = validated.data;
- * ```
+ * NOTE: validate() function is defined in server/schemas/validation.ts
+ * Import from there instead: import { validate } from "../schemas/validation";
  */
-export async function validate<T>(
-  schema: z.ZodSchema<T>,
-  data: unknown,
-): Promise<
-  | { success: true; data: T }
-  | { success: false; errors: ValidationError[] }
-> {
-  try {
-    const validated = await schema.parseAsync(data);
-    return { success: true, data: validated };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        errors: parseValidationErrors(error),
-      };
-    }
-
-    // Unexpected error
-    console.error("Validation error:", error);
-    return {
-      success: false,
-      errors: [
-        {
-          field: "unknown",
-          message: "An unexpected validation error occurred",
-        },
-      ],
-    };
-  }
-}
 
 /**
  * Type-safe response builder
