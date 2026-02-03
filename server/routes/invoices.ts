@@ -425,11 +425,19 @@ export const handleUpdateInvoice: RequestHandler = async (req, res) => {
     } = req.body;
 
     // Get existing invoice
-    const { data: existing } = await supabase
+    const { data: existing, error: existingError } = await supabase
       .from("invoices")
       .select("*")
       .eq("id", id)
       .single();
+
+    // Handle missing invoices table
+    if (existingError && (existingError.code === "PGRST205" || existingError.message.includes("Could not find the table"))) {
+      return res.status(503).json({
+        success: false,
+        error: "Invoicing system is not yet available. Please contact support.",
+      });
+    }
 
     if (!existing) {
       return res.status(404).json({
