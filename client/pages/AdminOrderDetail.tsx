@@ -701,10 +701,80 @@ export default function AdminOrderDetail() {
           {/* Customer Info */}
           <div className="bg-white border border-gray-200 rounded-lg p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              Customer
+              Customer Information
             </h2>
-            <p className="text-sm text-gray-900">{order.customerName}</p>
-            <p className="text-sm text-gray-600">{order.customerEmail}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Contact Information */}
+              <div className="space-y-4">
+                <div>
+                  <p className="text-xs text-gray-600 font-medium mb-1">
+                    FULL NAME
+                  </p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {order.customerName}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-600 font-medium mb-1">
+                    EMAIL ADDRESS
+                  </p>
+                  <a
+                    href={`mailto:${order.customerEmail}`}
+                    className="text-sm text-blue-600 hover:text-blue-700 break-all"
+                  >
+                    {order.customerEmail}
+                  </a>
+                </div>
+                {order.shippingAddress?.phone && (
+                  <div>
+                    <p className="text-xs text-gray-600 font-medium mb-1">
+                      PHONE NUMBER
+                    </p>
+                    <a
+                      href={`tel:${order.shippingAddress.phone}`}
+                      className="text-sm text-blue-600 hover:text-blue-700"
+                    >
+                      {order.shippingAddress.phone}
+                    </a>
+                  </div>
+                )}
+              </div>
+
+              {/* Shipping Address */}
+              <div>
+                <p className="text-xs text-gray-600 font-medium mb-3">
+                  SHIPPING ADDRESS
+                </p>
+                {order.shippingAddress ? (
+                  <div className="text-sm space-y-1">
+                    <p className="text-gray-900 font-medium">
+                      {order.shippingAddress.first_name}{" "}
+                      {order.shippingAddress.last_name}
+                    </p>
+                    <p className="text-gray-600">
+                      {order.shippingAddress.street_1}
+                    </p>
+                    {order.shippingAddress.street_2 && (
+                      <p className="text-gray-600">
+                        {order.shippingAddress.street_2}
+                      </p>
+                    )}
+                    <p className="text-gray-600">
+                      {order.shippingAddress.city},{" "}
+                      {order.shippingAddress.state_or_province}{" "}
+                      {order.shippingAddress.postal_code}
+                    </p>
+                    <p className="text-gray-600">
+                      {order.shippingAddress.country_iso2}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-600 italic">
+                    No shipping address available
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* Artwork Proofs Status */}
