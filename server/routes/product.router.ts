@@ -3,8 +3,6 @@ import { verifyToken, requireAdmin } from "../middleware/auth";
 import {
   handleGetProduct,
   handleGetProductOptions,
-  handleGetPublicProduct,
-  handleGetStorefrontProducts,
 } from "./products";
 import {
   handleCreateProduct,
@@ -15,6 +13,8 @@ import {
   handleImportAdminProduct,
   handleGetAdminProductPublic,
   handleGetImportedProductPublic,
+  handleGetPublicProduct,
+  handleGetStorefrontProducts,
 } from "./admin-products";
 
 /**
