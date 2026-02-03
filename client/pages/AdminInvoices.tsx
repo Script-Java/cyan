@@ -33,7 +33,6 @@ import {
     Clock,
     AlertTriangle,
     FileText,
-    EyeOpen,
   } from "lucide-react";
 import { toast } from "sonner";
 
