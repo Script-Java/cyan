@@ -1,134 +1,57 @@
 import { RequestHandler } from "express";
+import { z } from "zod";
 import {
   createSupabaseOrder,
   createOrderItems,
   getScopedSupabaseClient,
+  supabase,
 } from "../utils/supabase";
+import { CheckoutSchema, validate } from "../schemas/validation";
 
 /**
- * Validate UUID format (v4 and general UUID)
- * Matches format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+ * Extended checkout schema with optional fields for backward compatibility
+ * Allows extra fields from Ecwid/BigCommerce integrations
  */
-function isValidUUID(uuid: string): boolean {
-  const uuidRegex =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  return uuidRegex.test(uuid);
-}
-
-interface CheckoutRequest {
-  customer_id: number;
-  billing_address: {
-    first_name: string;
-    last_name: string;
-    street_1: string;
-    street_2?: string;
-    city: string;
-    state_or_province: string;
-    postal_code: string;
-    country_code: string;
-  };
-  shipping_addresses: Array<{
-    first_name: string;
-    last_name: string;
-    street_1: string;
-    street_2?: string;
-    city: string;
-    state_or_province: string;
-    postal_code: string;
-    country_code: string;
-  }>;
-  products: Array<{
-    product_id: number;
-    product_name?: string;
-    quantity: number;
-    price_inc_tax?: number;
-    price?: number;
-    design_file_url?: string;
-    options?: Array<{
-      option_id?: string | number;
-      option_name?: string;
-      option_value?: string;
-      modifier_price?: number;
-      price?: number;
-    }>;
-  }>;
-  order_total?: number;
-  subtotal_inc_tax?: number;
-  subtotal_ex_tax?: number;
-  total_inc_tax?: number;
-  total_ex_tax?: number;
-  total_tax?: number;
-  total_shipping?: number;
-  status_id?: number;
-  shipping_option_id?: number;
-}
+const ExtendedCheckoutSchema = CheckoutSchema.extend({
+  order_total: z.number().optional(),
+  subtotal_inc_tax: z.number().optional(),
+  subtotal_ex_tax: z.number().optional(),
+  total_inc_tax: z.number().optional(),
+  total_ex_tax: z.number().optional(),
+  total_tax: z.number().optional(),
+  total_shipping: z.number().optional(),
+  status_id: z.number().optional(),
+  shipping_option_id: z.number().optional(),
+}).passthrough(); // Allow unknown fields from integrations
 
 /**
  * Create an order from checkout
  * Primary: Supabase (always succeeds)
  * Secondary: Ecwid (optional, errors are logged but don't fail the order)
+ * VALIDATION: All request fields validated against schema before processing
  */
 export const handleCheckout: RequestHandler = async (req, res) => {
   try {
-    const checkoutData = req.body as CheckoutRequest;
     const requestCustomerId = (req as any).customerId;
 
-    // Validate required fields (customer_id is optional for guest checkout)
-    if (
-      !checkoutData.billing_address ||
-      !checkoutData.shipping_addresses ||
-      !checkoutData.products ||
-      checkoutData.products.length === 0
-    ) {
+    // VALIDATION: Validate entire checkout request
+    // This replaces all manual if (!field) checks
+    const validationResult = await validate(ExtendedCheckoutSchema, req.body);
+    if (!validationResult.success) {
       return res.status(400).json({
-        error:
-          "Missing required fields: billing_address, shipping_addresses, products",
+        error: "Request validation failed",
+        details: validationResult.errors,
       });
     }
+
+    const checkoutData = validationResult.data;
 
     // Use customer_id from request (auth) or from body (guest/provided), default to null for guests
     const customerId = requestCustomerId || checkoutData.customer_id || null;
 
-    // Validate billing address
+    // At this point, all required fields are validated and present
     const billingAddr = checkoutData.billing_address;
-    if (
-      !billingAddr.first_name ||
-      !billingAddr.last_name ||
-      !billingAddr.street_1 ||
-      !billingAddr.city ||
-      !billingAddr.state_or_province ||
-      !billingAddr.postal_code ||
-      !billingAddr.country_code
-    ) {
-      return res.status(400).json({
-        error: "Incomplete billing address",
-      });
-    }
-
-    // Validate shipping address
-    if (
-      !checkoutData.shipping_addresses ||
-      checkoutData.shipping_addresses.length === 0
-    ) {
-      return res.status(400).json({
-        error: "At least one shipping address is required",
-      });
-    }
-
     const shippingAddr = checkoutData.shipping_addresses[0];
-    if (
-      !shippingAddr.first_name ||
-      !shippingAddr.last_name ||
-      !shippingAddr.street_1 ||
-      !shippingAddr.city ||
-      !shippingAddr.state_or_province ||
-      !shippingAddr.postal_code ||
-      !shippingAddr.country_code
-    ) {
-      return res.status(400).json({
-        error: "Incomplete shipping address",
-      });
-    }
 
     // Calculate totals
     const subtotal = checkoutData.subtotal_inc_tax || 0;
