@@ -512,11 +512,11 @@ export function createServer() {
   app.use("/api/admin/orders", createOrderRouter());
   app.use("/api/public/orders", createOrderRouter());
 
-  // Product routes (public and admin)
+  // Product routes (public, admin, storefront)
   app.use("/api/products", createProductRouter());
-  app.use("/api/admin/products", createProductRouter());
-  app.use("/api/public/products", createProductRouter());
-  app.use("/api/storefront", createProductRouter());
+  app.use("/api/admin/products", createAdminProductRouter());
+  app.use("/api/public/products", createPublicProductRouter());
+  app.use("/api/storefront", createStorefrontRouter());
 
   // ===== Debug Endpoints (Protected by authentication + admin role) =====
   // SECURITY: These endpoints require both verifyToken and requireAdmin
