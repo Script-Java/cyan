@@ -147,21 +147,51 @@ export default function OrderStatus() {
       return;
     }
 
+    if (!verificationField.trim()) {
+      setError("Please enter your email or phone number");
+      return;
+    }
+
     try {
       setIsLoading(true);
 
-      const response = await fetch(
-        `/api/public/order-status?orderNumber=${encodeURIComponent(orderNumber)}`,
-      );
+      // Step 1: Verify order ownership with email or phone
+      const verifyResponse = await fetch("/api/public/orders/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          publicAccessToken: orderNumber, // We'll need to get this from somewhere
+          verificationField: verificationField.trim(),
+        }),
+      });
 
-      if (!response.ok) {
-        const errorData = await response.json();
+      if (!verifyResponse.ok) {
+        const errorData = await verifyResponse.json();
         throw new Error(errorData.error || "Unable to find order");
       }
 
-      const data = await response.json();
+      const verifyData = await verifyResponse.json();
+      if (!verifyData.verified) {
+        setError("Order verification failed. Please check your details.");
+        return;
+      }
+
+      // Step 2: Fetch order details using public access token
+      const orderResponse = await fetch(
+        `/api/public/order-status?publicAccessToken=${encodeURIComponent(verifyData.publicAccessToken)}`,
+      );
+
+      if (!orderResponse.ok) {
+        const errorData = await orderResponse.json();
+        throw new Error(errorData.error || "Unable to find order");
+      }
+
+      const data = await orderResponse.json();
       if (data.success) {
         setOrderData(data.data);
+        setPublicAccessToken(verifyData.publicAccessToken);
       } else {
         setError(data.error || "Unable to find order");
       }
