@@ -227,7 +227,7 @@ export default function OrderConfirmation() {
     return null;
   }
 
-  const orderNumber = `SY-${order.id}`;
+  const orderNumber = formatOrderNumber(order.id);
   const orderDate = new Date(order.created_at).toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
