@@ -210,7 +210,7 @@ export default function AdminInvoices() {
                     <div>
                       <p className="text-sm text-gray-600">Outstanding</p>
                       <p className="text-2xl font-bold text-gray-900">
-                        ${stats.total_outstanding.toFixed(2)}
+                        ${(Number(stats.total_outstanding) || 0).toFixed(2)}
                       </p>
                     </div>
                     <DollarSign className="w-8 h-8 text-yellow-600" />
