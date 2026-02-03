@@ -228,6 +228,7 @@ import {
   handleDeleteArtwork,
   uploadMiddleware,
 } from "./routes/invoice-artwork";
+import { handleDebugOrdersList, handleDebugHealth } from "./routes/debug";
 import {
   handleEcwidMigration,
   handleGetMigrationStatus,
