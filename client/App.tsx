@@ -180,7 +180,11 @@ export default function App() {
                   path="/admin/orders/:orderId"
                   element={<AdminOrderDetail />}
                 />
-                <Route path="/admin/customers" element={<Customers />} />
+                <Route path="/admin/customers" element={<AdminCustomers />} />
+                <Route
+                  path="/admin/customers/:customerId"
+                  element={<AdminCustomerDetail />}
+                />
                 <Route path="/admin/products" element={<AdminProducts />} />
                 <Route path="/admin/products/new" element={<ProductForm />} />
                 <Route
