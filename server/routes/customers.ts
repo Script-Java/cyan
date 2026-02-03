@@ -7,6 +7,7 @@ import { ecwidAPI } from "../utils/ecwid";
 /**
  * Get current customer profile with addresses
  * Requires: customerId in JWT token
+ * SECURITY: Uses scoped Supabase client with RLS enforcement
  */
 export const handleGetCustomer: RequestHandler = async (req, res) => {
   try {
@@ -16,7 +17,11 @@ export const handleGetCustomer: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const { data: customer, error } = await supabase
+    // SECURITY: Use scoped client to enforce RLS policies
+    // Customer can only access their own data
+    const scoped = getScopedSupabaseClient(req);
+
+    const { data: customer, error } = await scoped
       .from("customers")
       .select("*")
       .eq("id", customerId)
@@ -26,7 +31,7 @@ export const handleGetCustomer: RequestHandler = async (req, res) => {
       return res.status(404).json({ error: "Customer not found" });
     }
 
-    const { data: addresses, error: addressError } = await supabase
+    const { data: addresses, error: addressError } = await scoped
       .from("addresses")
       .select("*")
       .eq("customer_id", customerId)
