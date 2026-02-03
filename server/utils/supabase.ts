@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 const supabaseUrl =
   process.env.SUPABASE_URL ||
@@ -26,6 +26,10 @@ const buildTimeKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1idWlsZC1wbGFjZWhvbGRlciJ9.dummy";
 const keyToUse = supabaseServiceKey || buildTimeKey;
 
+/**
+ * Service role client - ONLY for background jobs and migrations
+ * SECURITY: This client bypasses RLS. Use sparingly and document why.
+ */
 export const supabase = createClient(supabaseUrl, keyToUse, {
   auth: {
     persistSession: false,
@@ -36,6 +40,28 @@ export const supabase = createClient(supabaseUrl, keyToUse, {
     },
   },
 });
+
+/**
+ * Create a scoped Supabase client using user's JWT token
+ * SECURITY: This enforces Row Level Security (RLS) by using the authenticated user's JWT
+ *
+ * Use this for all customer-facing API routes to ensure RLS policies are enforced
+ *
+ * @param userJwt - The user's JWT token from the Authorization header
+ * @returns Scoped Supabase client with RLS enforcement
+ */
+export function createScopedSupabaseClient(userJwt: string): SupabaseClient {
+  return createClient(supabaseUrl, userJwt, {
+    auth: {
+      persistSession: false,
+    },
+    global: {
+      fetch: (url, options) => {
+        return fetch(url, { ...options, timeout: 20000 } as any);
+      },
+    },
+  });
+}
 
 // Verify connection
 (async () => {
