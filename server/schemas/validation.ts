@@ -1,6 +1,42 @@
 import { z } from "zod";
 
 /**
+ * Validate data against a Zod schema
+ * Used within route handlers for conditional or complex validation
+ */
+export async function validate<T>(
+  schema: z.ZodSchema<T>,
+  data: unknown,
+): Promise<
+  | { success: true; data: T }
+  | { success: false; errors: Array<{ field: string; message: string }> }
+> {
+  try {
+    const validated = await schema.parseAsync(data);
+    return { success: true, data: validated };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const errors = error.errors.map((err) => ({
+        field: err.path.join(".") || "unknown",
+        message: err.message,
+      }));
+      return { success: false, errors };
+    }
+
+    console.error("Validation error:", error);
+    return {
+      success: false,
+      errors: [
+        {
+          field: "unknown",
+          message: "An unexpected validation error occurred",
+        },
+      ],
+    };
+  }
+}
+
+/**
  * COMMON SCHEMAS
  * Reusable base schemas for addresses, contact info, etc.
  */
