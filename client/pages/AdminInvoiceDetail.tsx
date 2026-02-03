@@ -237,23 +237,23 @@ export default function AdminInvoiceDetail() {
               <div className="mt-4 space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span>Subtotal:</span>
-                  <span>${invoice.subtotal.toFixed(2)}</span>
+                  <span>${(Number(invoice.subtotal) || 0).toFixed(2)}</span>
                 </div>
-                {invoice.tax_amount > 0 && (
+                {Number(invoice.tax_amount || 0) > 0 && (
                   <div className="flex justify-between">
                     <span>Tax:</span>
-                    <span>${invoice.tax_amount.toFixed(2)}</span>
+                    <span>${(Number(invoice.tax_amount) || 0).toFixed(2)}</span>
                   </div>
                 )}
-                {invoice.shipping > 0 && (
+                {Number(invoice.shipping || 0) > 0 && (
                   <div className="flex justify-between">
                     <span>Shipping:</span>
-                    <span>${invoice.shipping.toFixed(2)}</span>
+                    <span>${(Number(invoice.shipping) || 0).toFixed(2)}</span>
                   </div>
                 )}
                 <div className="border-t pt-2 font-bold flex justify-between">
                   <span>Total:</span>
-                  <span>${invoice.total.toFixed(2)}</span>
+                  <span>${(Number(invoice.total) || 0).toFixed(2)}</span>
                 </div>
               </div>
             </CardContent>
