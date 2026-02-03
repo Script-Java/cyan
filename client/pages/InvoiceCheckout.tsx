@@ -205,7 +205,7 @@ export default function InvoiceCheckout() {
                           {item.item_name} x {item.quantity}
                         </span>
                         <span className="font-medium">
-                          ${(item.amount || item.quantity * item.unit_price).toFixed(
+                          ${(Number(item.amount || item.quantity * item.unit_price) || 0).toFixed(
                             2
                           )}
                         </span>
