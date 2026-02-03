@@ -17,6 +17,35 @@ export function useAdminNotifications() {
 
   useEffect(() => {
     let isMounted = true;
+    const abortControllers: AbortController[] = [];
+
+    const fetchWithTimeout = async (
+      url: string,
+      token: string,
+      timeoutMs: number = 8000,
+    ): Promise<Response | null> => {
+      const controller = new AbortController();
+      abortControllers.push(controller);
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+      try {
+        const response = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        return response;
+      } catch (err) {
+        clearTimeout(timeoutId);
+        // Ignore abort errors when component is unmounting
+        if (err instanceof Error && err.name === "AbortError") {
+          if (!isMounted) return null;
+          console.warn(`Request timeout for ${url}`);
+          return null;
+        }
+        throw err;
+      }
+    };
 
     const fetchNotifications = async () => {
       try {
@@ -36,16 +65,12 @@ export function useAdminNotifications() {
 
         // Fetch support tickets count
         try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 8000);
+          const ticketsResponse = await fetchWithTimeout(
+            "/api/admin/tickets",
+            token,
+          );
 
-          const ticketsResponse = await fetch("/api/admin/tickets", {
-            headers: { Authorization: `Bearer ${token}` },
-            signal: controller.signal,
-          });
-          clearTimeout(timeoutId);
-
-          if (ticketsResponse.ok) {
+          if (ticketsResponse?.ok) {
             const ticketsText = await ticketsResponse.text();
             const ticketsData = ticketsText ? JSON.parse(ticketsText) : [];
             openTickets = (
@@ -57,23 +82,21 @@ export function useAdminNotifications() {
             ).length;
           }
         } catch (err) {
-          console.warn("Error fetching tickets:", {
-            error: err instanceof Error ? err.message : String(err),
-          });
+          if (isMounted) {
+            console.warn("Error fetching tickets:", {
+              error: err instanceof Error ? err.message : String(err),
+            });
+          }
         }
 
         // Fetch pending orders count
         try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 8000);
+          const ordersResponse = await fetchWithTimeout(
+            "/api/admin/pending-orders",
+            token,
+          );
 
-          const ordersResponse = await fetch("/api/admin/pending-orders", {
-            headers: { Authorization: `Bearer ${token}` },
-            signal: controller.signal,
-          });
-          clearTimeout(timeoutId);
-
-          if (ordersResponse.ok) {
+          if (ordersResponse?.ok) {
             const ordersText = await ordersResponse.text();
             const ordersData = ordersText
               ? JSON.parse(ordersText)
@@ -81,23 +104,21 @@ export function useAdminNotifications() {
             pendingOrders = ordersData.count || 0;
           }
         } catch (err) {
-          console.warn("Error fetching pending orders:", {
-            error: err instanceof Error ? err.message : String(err),
-          });
+          if (isMounted) {
+            console.warn("Error fetching pending orders:", {
+              error: err instanceof Error ? err.message : String(err),
+            });
+          }
         }
 
         // Fetch proofs with revisions requested count
         try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 8000);
+          const proofsResponse = await fetchWithTimeout(
+            "/api/admin/proofs",
+            token,
+          );
 
-          const proofsResponse = await fetch("/api/admin/proofs", {
-            headers: { Authorization: `Bearer ${token}` },
-            signal: controller.signal,
-          });
-          clearTimeout(timeoutId);
-
-          if (proofsResponse.ok) {
+          if (proofsResponse?.ok) {
             const proofsText = await proofsResponse.text();
             const proofsData = proofsText
               ? JSON.parse(proofsText)
@@ -107,9 +128,11 @@ export function useAdminNotifications() {
             ).length;
           }
         } catch (err) {
-          console.warn("Error fetching proofs:", {
-            error: err instanceof Error ? err.message : String(err),
-          });
+          if (isMounted) {
+            console.warn("Error fetching proofs:", {
+              error: err instanceof Error ? err.message : String(err),
+            });
+          }
         }
 
         if (isMounted) {
@@ -121,10 +144,10 @@ export function useAdminNotifications() {
           setError(null);
         }
       } catch (err) {
-        console.error("Error in fetchNotifications:", {
-          error: err instanceof Error ? err.message : String(err),
-        });
         if (isMounted) {
+          console.error("Error in fetchNotifications:", {
+            error: err instanceof Error ? err.message : String(err),
+          });
           setError(
             err instanceof Error
               ? err.message
@@ -146,6 +169,8 @@ export function useAdminNotifications() {
     return () => {
       isMounted = false;
       clearInterval(interval);
+      // Abort all pending requests
+      abortControllers.forEach((controller) => controller.abort());
     };
   }, []);
 
