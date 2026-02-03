@@ -19,50 +19,57 @@ import {
 
 /**
  * Product Routes - Public and Admin product management
- * 
- * Public routes: /api/products/* - no authentication
- * Admin routes: /api/admin/products/* - require authentication + admin role
+ *
+ * This router is mounted at multiple paths:
+ * - /api/products
+ * - /api/admin/products
+ * - /api/public/products
+ * - /api/storefront
+ *
+ * Routes are designed to work correctly at each mount point
  */
 export function createProductRouter() {
   const router = Router();
 
-  // ===== PUBLIC ROUTES =====
+  // ===== PUBLIC ROUTES (mounted at /api/products) =====
   // GET /api/products/:productId - Get product details
   router.get("/:productId", handleGetProduct);
 
   // GET /api/products/:productId/options - Get product options
   router.get("/:productId/options", handleGetProductOptions);
 
+  // ===== PUBLIC ADMIN PRODUCT DISPLAY (mounted at /api/public/products) =====
   // GET /api/public/products/:productId - Get public product
-  router.get("/public/:productId", handleGetPublicProduct);
+  router.get("/:productId", handleGetPublicProduct);
 
   // GET /api/public/products/admin/:id - Get admin product (public)
-  router.get("/public/admin/:id", handleGetAdminProductPublic);
+  router.get("/admin/:id", handleGetAdminProductPublic);
 
   // GET /api/public/products/imported/:id - Get imported product (public)
-  router.get("/public/imported/:id", handleGetImportedProductPublic);
+  router.get("/imported/:id", handleGetImportedProductPublic);
 
+  // ===== STOREFRONT PRODUCTS (mounted at /api/storefront) =====
   // GET /api/storefront/products - Get all storefront products
-  router.get("/storefront/list", handleGetStorefrontProducts);
+  router.get("/products", handleGetStorefrontProducts);
 
-  // ===== ADMIN ROUTES (Protected - admin only) =====
-  // POST /api/products - Create product
+  // ===== ADMIN ROUTES (mounted at /api/admin/products) =====
+  // POST /api/admin/products - Create product
   router.post("/", verifyToken, requireAdmin, handleCreateProduct);
 
   // GET /api/admin/products - Get all admin products
-  router.get("/admin/list", verifyToken, requireAdmin, handleGetAdminProducts);
+  router.get("/", verifyToken, requireAdmin, handleGetAdminProducts);
 
   // POST /api/admin/products/import - Import product
-  router.post("/admin/import", verifyToken, requireAdmin, handleImportAdminProduct);
+  router.post("/import", verifyToken, requireAdmin, handleImportAdminProduct);
 
   // GET /api/admin/products/:productId - Get product (admin)
-  router.get("/admin/:productId", verifyToken, requireAdmin, handleGetAdminProduct);
+  router.get("/:productId", verifyToken, requireAdmin, handleGetAdminProduct);
 
-  // PUT /api/products/:productId - Update product
+  // PUT /api/admin/products/:productId - Update product
   router.put("/:productId", verifyToken, requireAdmin, handleUpdateProduct);
 
   // DELETE /api/admin/products/:productId - Delete product
-  router.delete("/admin/:productId", verifyToken, requireAdmin, handleDeleteAdminProduct);
+  router.delete("/:productId", verifyToken, requireAdmin, handleDeleteAdminProduct);
 
   return router;
 }
