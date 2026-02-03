@@ -662,9 +662,22 @@ export default function AdminOrderDetail() {
 
           {/* Customer Info */}
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              Customer Information
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Customer Information
+              </h2>
+              {order.customerRecordId && (
+                <button
+                  onClick={() =>
+                    navigate(`/admin/customers/${order.customerRecordId}`)
+                  }
+                  className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-100 hover:bg-blue-200 border border-blue-300 rounded-lg text-blue-700 hover:text-blue-800 transition-colors text-sm font-medium"
+                >
+                  <User className="w-4 h-4" />
+                  View Profile
+                </button>
+              )}
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Contact Information */}
               <div className="space-y-4">
@@ -687,16 +700,16 @@ export default function AdminOrderDetail() {
                     {order.customerEmail}
                   </a>
                 </div>
-                {order.shippingAddress?.phone && (
+                {(order.customerPhone || order.shippingAddress?.phone) && (
                   <div>
                     <p className="text-xs text-gray-600 font-medium mb-1">
                       PHONE NUMBER
                     </p>
                     <a
-                      href={`tel:${order.shippingAddress.phone}`}
+                      href={`tel:${order.customerPhone || order.shippingAddress?.phone}`}
                       className="text-sm text-blue-600 hover:text-blue-700"
                     >
-                      {order.shippingAddress.phone}
+                      {order.customerPhone || order.shippingAddress?.phone}
                     </a>
                   </div>
                 )}
