@@ -454,18 +454,19 @@ export const handleGetPendingOrders: RequestHandler = async (req, res) => {
 /**
  * Get order by ID for public access (guest orders after checkout)
  * No authentication required - used for order confirmation after payment
+ * VALIDATION: Order ID must be a valid positive integer
  */
 export const handleGetOrderPublic: RequestHandler = async (req, res) => {
   try {
     const { orderId } = req.params;
 
-    if (!orderId) {
-      return res.status(400).json({ error: "Order ID required" });
-    }
-
-    const orderIdNum = parseInt(orderId);
-    if (isNaN(orderIdNum)) {
-      return res.status(400).json({ error: "Invalid order ID format" });
+    // VALIDATION: Parse and validate orderId
+    const orderIdNum = parseInt(orderId, 10);
+    if (isNaN(orderIdNum) || orderIdNum <= 0) {
+      return res.status(400).json({
+        error: "Request validation failed",
+        details: [{ field: "orderId", message: "Order ID must be a positive integer" }],
+      });
     }
 
     const { supabase } = await import("../utils/supabase");
