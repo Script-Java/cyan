@@ -495,69 +495,23 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
-  // ===== Authentication Routes =====
-  app.post("/api/auth/login", authLimiter, handleLogin);
-  app.post("/api/auth/signup", authLimiter, handleSignup);
-  app.post("/api/auth/logout", handleLogout);
-  app.post("/api/auth/admin-setup", authLimiter, handleAdminSetup);
-  app.post(
-    "/api/auth/request-password-reset",
-    authLimiter,
-    handleRequestPasswordReset,
-  );
-  app.post("/api/auth/reset-password", handleResetPassword);
+  // ===== Mount Routers =====
+  // Authentication routes
+  app.use("/api/auth", createAuthRouter());
 
-  // ===== Customer Routes (Protected) =====
-  app.get("/api/customers/me", verifyToken, handleGetCustomer);
-  app.patch("/api/customers/me", verifyToken, handleUpdateCustomer);
-  app.post(
-    "/api/customers/me/avatar",
-    verifyToken,
-    upload.single("avatar"),
-    handleUploadAvatar,
-  );
-  app.get(
-    "/api/customers/me/addresses",
-    verifyToken,
-    handleGetCustomerAddresses,
-  );
-  app.post(
-    "/api/customers/me/addresses",
-    verifyToken,
-    handleCreateCustomerAddress,
-  );
-  app.patch(
-    "/api/customers/me/addresses/:addressId",
-    verifyToken,
-    handleUpdateCustomerAddress,
-  );
-  app.delete(
-    "/api/customers/me/addresses/:addressId",
-    verifyToken,
-    handleDeleteCustomerAddress,
-  );
-  app.delete(
-    "/api/customers/me/account",
-    verifyToken,
-    handleDeleteCustomerAccount,
-  );
-  app.get("/api/customers/me/store-credit", verifyToken, handleGetStoreCredit);
+  // Customer routes (protected)
+  app.use("/api/customers", createCustomerRouter(upload));
 
-  // ===== Order Routes (Protected) =====
-  app.get("/api/orders", verifyToken, handleGetOrders);
-  app.post("/api/orders", verifyToken, handleCreateOrder);
-  app.get("/api/orders/:orderId", verifyToken, handleGetOrder);
-  app.get(
-    "/api/admin/orders/pending",
-    verifyToken,
-    requireAdmin,
-    handleGetPendingOrders,
-  );
+  // Order routes (customer, admin, and public)
+  app.use("/api/orders", createOrderRouter());
+  app.use("/api/admin/orders", createOrderRouter());
+  app.use("/api/public/orders", createOrderRouter());
 
-  // ===== Order Routes (Public - for guest order confirmation) =====
-  app.get("/api/public/orders/:orderId", handleGetOrderPublic);
-  app.post("/api/public/orders/verify", handleVerifyOrderAccess);
-  app.get("/api/public/order-status", handleGetOrderStatus);
+  // Product routes (public and admin)
+  app.use("/api/products", createProductRouter());
+  app.use("/api/admin/products", createProductRouter());
+  app.use("/api/public/products", createProductRouter());
+  app.use("/api/storefront", createProductRouter());
 
   // ===== Debug Endpoints (Protected by authentication + admin role) =====
   // SECURITY: These endpoints require both verifyToken and requireAdmin
