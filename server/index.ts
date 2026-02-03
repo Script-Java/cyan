@@ -1306,6 +1306,7 @@ export function createServer() {
 
   // Public routes
   app.get("/api/invoice/:token", handleGetInvoiceByToken);
+  app.post("/api/invoice/:token/create-payment-link", handleCreateInvoicePaymentLink);
 
   // Database setup route
   app.post("/api/admin/setup/init-invoices", requireAdmin, handleInitializeInvoicesDatabase);
