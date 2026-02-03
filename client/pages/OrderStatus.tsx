@@ -269,6 +269,27 @@ export default function OrderStatus() {
                   </p>
                 </div>
 
+                <div>
+                  <label
+                    htmlFor="verification"
+                    className="block text-sm font-semibold text-gray-900 mb-2"
+                  >
+                    Verification
+                  </label>
+                  <input
+                    id="verification"
+                    type="text"
+                    placeholder="Enter your email or phone number"
+                    value={verificationField}
+                    onChange={(e) => setVerificationField(e.target.value)}
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-50 text-gray-900 placeholder-gray-500"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Email or phone number associated with your order
+                  </p>
+                </div>
+
                 <div className="flex flex-col sm:flex-row gap-3 pt-4">
                   <button
                     type="submit"
