@@ -352,31 +352,86 @@ export default function OrderConfirmation() {
               <CardTitle>Order Items</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {order.orderItems?.map((item) => (
                   <div
                     key={item.id}
-                    className="flex gap-4 pb-4 border-b last:pb-0 last:border-b-0"
+                    className="flex gap-6 pb-6 border-b last:pb-0 last:border-b-0"
                   >
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900">
-                        {item.product_name}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Quantity: {item.quantity}
-                      </p>
-                      {item.design_file_url && (
-                        <p className="text-sm text-blue-600 mt-1">
-                          Design uploaded
-                        </p>
+                    {/* Design Thumbnail */}
+                    <div className="flex-shrink-0">
+                      {item.design_file_url ? (
+                        <div className="relative w-32 h-32 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                          <img
+                            src={item.design_file_url}
+                            alt={item.product_name}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all flex items-center justify-center opacity-0 hover:opacity-100">
+                            <Eye className="w-6 h-6 text-white" />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="w-32 h-32 bg-gray-100 rounded-lg border border-gray-300 flex items-center justify-center">
+                          <Package className="w-8 h-8 text-gray-400" />
+                        </div>
                       )}
                     </div>
-                    <div className="text-right">
-                      <p className="font-medium text-gray-900">
+
+                    {/* Item Details */}
+                    <div className="flex-1">
+                      <div className="space-y-3">
+                        <div>
+                          <p className="font-bold text-lg text-gray-900">
+                            {item.product_name}
+                          </p>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Product ID: #{item.product_id}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center gap-4 bg-gray-50 rounded-lg p-3">
+                          <div>
+                            <p className="text-xs text-gray-600 font-medium">QUANTITY</p>
+                            <p className="text-lg font-bold text-gray-900">
+                              {item.quantity} {item.quantity === 1 ? 'item' : 'items'}
+                            </p>
+                          </div>
+                          <div className="border-l border-gray-300"></div>
+                          <div>
+                            <p className="text-xs text-gray-600 font-medium">PRICE PER ITEM</p>
+                            <p className="text-lg font-bold text-gray-900">
+                              ${item.price.toFixed(2)}
+                            </p>
+                          </div>
+                        </div>
+
+                        {item.design_file_url && (
+                          <div className="space-y-2 pt-2">
+                            <p className="text-sm font-medium text-gray-700">Design Included</p>
+                            <div className="flex gap-2">
+                              <button className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm text-gray-700 font-medium">
+                                <Eye className="w-4 h-4" />
+                                View Design
+                              </button>
+                              <button className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm text-gray-700 font-medium">
+                                <Download className="w-4 h-4" />
+                                Download
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Price Section */}
+                    <div className="flex-shrink-0 text-right">
+                      <p className="text-sm text-gray-600 mb-1">Subtotal</p>
+                      <p className="font-bold text-2xl text-[#FFD713]">
                         ${(item.price * item.quantity).toFixed(2)}
                       </p>
-                      <p className="text-sm text-gray-600">
-                        ${item.price.toFixed(2)} each
+                      <p className="text-xs text-gray-600 mt-2">
+                        ${item.price.toFixed(2)} × {item.quantity}
                       </p>
                     </div>
                   </div>
