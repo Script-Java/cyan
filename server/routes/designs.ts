@@ -206,6 +206,7 @@ export const handleGetDesigns: RequestHandler = async (req, res) => {
 /**
  * Get designs for a specific order from Supabase
  * Requires: customerId in JWT token, orderId in params
+ * VALIDATION: Order ID parameter validated as positive integer
  */
 export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
   try {
@@ -216,15 +217,20 @@ export const handleGetOrderDesigns: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    if (!orderId) {
-      return res.status(400).json({ error: "Order ID required" });
+    // VALIDATION: Validate orderId is a positive integer
+    const orderIdNum = parseInt(orderId, 10);
+    if (isNaN(orderIdNum) || orderIdNum <= 0) {
+      return res.status(400).json({
+        error: "Request validation failed",
+        details: [{ field: "orderId", message: "Order ID must be a positive integer" }],
+      });
     }
 
     // Get the order and verify it belongs to the customer
     const { data: order, error: orderError } = await supabase
       .from("orders")
       .select("id, customer_id, status, created_at")
-      .eq("id", parseInt(orderId))
+      .eq("id", orderIdNum)
       .single();
 
     if (orderError || !order) {
