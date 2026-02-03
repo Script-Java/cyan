@@ -38,15 +38,31 @@ export default function CustomerInvoiceView() {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const response = await fetch(`/api/invoice/${token}`);
+        const response = await fetch(`/api/invoice/${token}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
         if (!response.ok) {
-          throw new Error("Invoice not found");
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(
+            errorData.error ||
+              `Invoice not found (${response.status})`,
+          );
         }
+
         const data = await response.json();
+        if (!data.data) {
+          throw new Error("Invalid response format");
+        }
         setInvoice(data.data);
       } catch (error) {
         console.error("Error fetching invoice:", error);
-        toast.error("Invoice not found or has expired");
+        const errorMessage =
+          error instanceof Error ? error.message : "Invoice not found or has expired";
+        toast.error(errorMessage);
       } finally {
         setIsLoading(false);
       }
