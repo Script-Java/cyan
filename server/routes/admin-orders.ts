@@ -257,11 +257,23 @@ export const handleGetOrderDetail: RequestHandler = async (req, res) => {
         ? order.customers[0]?.email || "N/A"
         : order.customers?.email || "N/A";
 
+    const customerPhone =
+      order.customers && Array.isArray(order.customers)
+        ? order.customers[0]?.phone || undefined
+        : order.customers?.phone || undefined;
+
+    const customerRecordId =
+      order.customers && Array.isArray(order.customers)
+        ? order.customers[0]?.id
+        : order.customers?.id;
+
     const formattedOrder = {
       id: order.id,
       customerId: order.customer_id,
+      customerRecordId,
       customerName,
       customerEmail,
+      customerPhone,
       status: order.status,
       total: order.total || 0,
       subtotal: order.subtotal || 0,
