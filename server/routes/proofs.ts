@@ -1054,17 +1054,29 @@ export const handleApproveProofPublic: RequestHandler = async (req, res) => {
 };
 
 /**
- * Deny a proof - request revisions (public - no authentication required)
- * Used for proof review links sent via email
+ * Deny a proof - request revisions (public - requires secure access token)
+ * SECURITY: Requires valid one-time-use public access token
+ * Prevents unauthorized revision requests and enumeration attacks
+ *
+ * Usage: POST /api/proofs/:proofId/deny?token=<secure-token>
  */
 export const handleDenyProofPublic: RequestHandler = async (req, res) => {
   try {
-    const { proofId } = req.params;
+    const { token } = req.query;
     const { revision_notes } = req.body;
 
-    if (!proofId) {
-      return res.status(400).json({ error: "Proof ID is required" });
+    if (!token || typeof token !== "string") {
+      return res.status(404).json({ error: "Proof not found" });
     }
+
+    // SECURITY: Validate token atomically (prevents enumeration and reuse)
+    const validation = await validatePublicAccessToken(token, "proof");
+    if (!validation.success) {
+      // Generic 404 - never reveal why token failed
+      return res.status(404).json({ error: "Proof not found" });
+    }
+
+    const proofId = validation.resourceId;
 
     // Get proof
     const { data: proof, error: proofError } = await supabase
@@ -1089,7 +1101,7 @@ export const handleDenyProofPublic: RequestHandler = async (req, res) => {
 
     if (updateError) {
       console.error("Error requesting revisions:", updateError);
-      return res.status(500).json({ error: "Failed to request revisions" });
+      return res.status(404).json({ error: "Proof not found" });
     }
 
     // Create admin notification
@@ -1114,6 +1126,6 @@ export const handleDenyProofPublic: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     console.error("Deny proof public error:", error);
-    res.status(500).json({ error: "Failed to request revisions" });
+    res.status(404).json({ error: "Proof not found" });
   }
 };
