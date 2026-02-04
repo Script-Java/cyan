@@ -25,17 +25,38 @@ export default function ProofNotificationBadge() {
       const token = localStorage.getItem("authToken");
       if (!token) return;
 
-      const response = await fetch("/api/proofs", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      // Use AbortController with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-      if (!response.ok) return;
+      try {
+        const response = await fetch("/api/proofs", {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: controller.signal,
+        });
 
-      const data: ProofsResponse = await response.json();
-      const pending = (data.proofs || []).filter(
-        (p) => p.status === "pending",
-      ).length;
-      setPendingCount(pending);
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          console.warn(`Proofs endpoint returned ${response.status}`);
+          return;
+        }
+
+        const data: ProofsResponse = await response.json();
+        const pending = (data.proofs || []).filter(
+          (p) => p.status === "pending",
+        ).length;
+        setPendingCount(pending);
+      } catch (fetchError) {
+        clearTimeout(timeoutId);
+        if (fetchError instanceof TypeError && fetchError.message === "Failed to fetch") {
+          console.warn("Network error or CORS issue fetching proofs");
+        } else if ((fetchError as any).name === "AbortError") {
+          console.warn("Proofs fetch timed out");
+        } else {
+          throw fetchError;
+        }
+      }
     } catch (error) {
       console.error("Error fetching proofs:", error);
     }
