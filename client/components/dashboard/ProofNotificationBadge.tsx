@@ -49,7 +49,10 @@ export default function ProofNotificationBadge() {
         setPendingCount(pending);
       } catch (fetchError) {
         clearTimeout(timeoutId);
-        if (fetchError instanceof TypeError && fetchError.message === "Failed to fetch") {
+        if (
+          fetchError instanceof TypeError &&
+          fetchError.message === "Failed to fetch"
+        ) {
           console.warn("Network error or CORS issue fetching proofs");
         } else if ((fetchError as any).name === "AbortError") {
           console.warn("Proofs fetch timed out");
