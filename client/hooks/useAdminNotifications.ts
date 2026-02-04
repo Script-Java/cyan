@@ -26,7 +26,7 @@ export function useAdminNotifications() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => {
         if (!controller.signal.aborted) {
-          controller.abort();
+          controller.abort(new Error("Request timeout"));
         }
       }, timeoutMs);
 
