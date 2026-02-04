@@ -115,7 +115,8 @@ export const perTokenRateLimiter = rateLimit({
   standardHeaders: false,
   legacyHeaders: false,
   handler: (req: Request, res: Response) => {
-    const tokenPrefix = (req.query.token as string)?.substring(0, 8) || "unknown";
+    const tokenPrefix =
+      (req.query.token as string)?.substring(0, 8) || "unknown";
     console.warn("[SECURITY] Per-token rate limit exceeded", {
       tokenPrefix,
       path: req.path,
@@ -197,7 +198,12 @@ export function applyPublicTokenRateLimit(...limiters: any[]) {
 export function logSuspiciousTokenActivity(
   token: string,
   resourceType: string,
-  reason: "expired" | "invalid" | "wrong_resource" | "already_used" | "not_found",
+  reason:
+    | "expired"
+    | "invalid"
+    | "wrong_resource"
+    | "already_used"
+    | "not_found",
 ) {
   const tokenPrefix = token?.substring(0, 8) || "unknown";
 

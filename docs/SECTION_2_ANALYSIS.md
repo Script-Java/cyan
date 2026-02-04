@@ -5,8 +5,10 @@
 ### Identified Public Verification/Lookup Endpoints
 
 #### 1. **Order Verification** (HIGH RISK)
+
 **Endpoint**: `POST /api/public/orders/verify`
 **Current Flow**:
+
 ```typescript
 {
   order_number: "12345",        // Sequential numeric ID - guessable
@@ -15,6 +17,7 @@
 ```
 
 **Attack Vectors**:
+
 - **Enumeration**: Attacker tries order_numbers 1-100000 to enumerate all orders
 - **Brute Force**: Once valid order found, try common email patterns
 - **Timing Analysis**: Slow DB query on invalid order vs fast on valid
@@ -22,8 +25,9 @@
 - **Sequential ID Abuse**: Knowing one valid order_number, attacker can guess others
 
 **Risk Level**: 🔴 CRITICAL
+
 - No rate limiting per order number
-- No lockout after failed attempts  
+- No lockout after failed attempts
 - Response times vary (timing attack)
 - No hashing of identifiers for tracking
 
@@ -32,13 +36,16 @@
 ---
 
 #### 2. **Invoice Lookup** (HIGH RISK)
+
 **Endpoint**: `GET /api/invoices/:invoiceId/token`
 **Current Flow**:
+
 ```
 invoice IDs likely sequential (1, 2, 3, ...)
 ```
 
 **Attack Vectors**:
+
 - **Sequential ID Enumeration**: Try invoice IDs 1-10000
 - **Timing Attacks**: Different response times for valid vs invalid
 - **Resource Existence Leak**: Know exactly which invoices exist
@@ -50,8 +57,10 @@ invoice IDs likely sequential (1, 2, 3, ...)
 ---
 
 #### 3. **Payment Token Lookup** (MEDIUM RISK)
+
 **Endpoint**: `POST /api/invoices/:invoiceId/payment`
 **Attack Vectors**:
+
 - Brute force invoice + amount combinations
 - Sequential ID enumeration
 - Timing-based detection of valid invoices
@@ -61,8 +70,10 @@ invoice IDs likely sequential (1, 2, 3, ...)
 ---
 
 #### 4. **Design File Access** (MEDIUM RISK)
+
 **Endpoint**: `POST /api/designs/upload` (if using sequential IDs)
 **Attack Vectors**:
+
 - Enumerate design IDs
 - Access designs before payment
 - Timing analysis to detect valid designs
@@ -74,6 +85,7 @@ invoice IDs likely sequential (1, 2, 3, ...)
 ## Protection Strategy: Progressive Rate Limiting with Lockout
 
 ### Tier 1: Normal Usage (First 3-5 Attempts)
+
 ```
 Limit: 5 attempts per 15 minutes per IP
 Backoff: None
@@ -82,6 +94,7 @@ Action: Log normally
 ```
 
 ### Tier 2: Elevated Usage (6-10 Attempts)
+
 ```
 Limit: 2 additional attempts per 15 minutes per IP
 Backoff: 500ms forced delay
@@ -90,6 +103,7 @@ Action: Log as warning, alert if pattern continues
 ```
 
 ### Tier 3: Attack Suspected (11-20 Attempts)
+
 ```
 Limit: 1 attempt per 15 minutes per IP
 Backoff: 2 second forced delay + CAPTCHA required
@@ -98,6 +112,7 @@ Action: Log security event, trigger monitoring alert
 ```
 
 ### Tier 4: Attack Confirmed (20+ Attempts)
+
 ```
 Limit: 0 - Temporary Lockout for 1 hour
 Backoff: N/A
@@ -110,9 +125,11 @@ Action: Block IP, alert security team, log incident
 ## Implementation Components
 
 ### 1. Identifier Hashing for Tracking
+
 **Purpose**: Track attempt patterns without storing raw identifiers
 
 **Strategy**:
+
 ```typescript
 // Hash order_number to track attempts without storing actual number
 const hash = hashIdentifier("order:12345");
@@ -120,6 +137,7 @@ const hash = hashIdentifier("order:12345");
 ```
 
 **Benefits**:
+
 - No PII in logs/cache
 - Can group similar patterns
 - Hash collision unlikely (SHA-256)
@@ -128,9 +146,11 @@ const hash = hashIdentifier("order:12345");
 ---
 
 ### 2. Anti-Enumeration Response Masking
+
 **Purpose**: All failures return identical responses (no information leakage)
 
 **Current Problem**:
+
 ```
 "Order not found" - Different from
 "Customer email doesn't match" - Different from
@@ -138,6 +158,7 @@ const hash = hashIdentifier("order:12345");
 ```
 
 **Solution**:
+
 ```
 All failures return:
 {
@@ -152,9 +173,11 @@ HTTP Status: Always 400 or 404 (consistent)
 ---
 
 ### 3. Timing Attack Prevention
+
 **Purpose**: Prevent attackers from detecting valid resources via response time
 
 **Current Problem**:
+
 ```
 Valid order:   100ms (DB lookup succeeds fast)
 Invalid order: 50ms (DB lookup fails immediately)
@@ -162,6 +185,7 @@ Attackers detect: Valid orders respond slower
 ```
 
 **Solution**:
+
 ```
 All responses: Minimum 500ms (padded with artificial delay if needed)
 - Fast operation (50ms): Wait 450ms
@@ -172,9 +196,11 @@ All responses: Minimum 500ms (padded with artificial delay if needed)
 ---
 
 ### 4. Identifier Normalization
+
 **Purpose**: Prevent bypass via format manipulation
 
 **Examples**:
+
 ```
 Order Number: "12345" = "12,345" = "0x3039" (hex)
 Email: "user@test.com" = "USER@TEST.COM" (case variation)
@@ -182,6 +208,7 @@ Phone: "555-123-4567" = "+1 (555) 123-4567" (formatting)
 ```
 
 **Solution**:
+
 ```typescript
 // All identifiers normalized before comparison
 normalizeOrderNumber("12,345") → "12345"
@@ -192,9 +219,11 @@ normalizePhone("(555) 123-4567") → "5551234567"
 ---
 
 ### 5. IP-Based Rate Limiting with Bypasses
+
 **Problem**: Distributed attacks from multiple IPs
 
 **Solution**:
+
 ```
 Primary limit: Per IP (catches basic attacks)
 Secondary limit: Per identifier (tracks attempts across IPs)
@@ -209,19 +238,22 @@ Example:
 ---
 
 ### 6. Progressive Delay Strategy
+
 **Purpose**: Increase cost of attacks as severity increases
 
 **Progression**:
+
 ```
 Tier 1 (0-5 attempts):   0ms delay     - Normal usage
 Tier 2 (6-10 attempts):  500ms delay   - Elevated
-Tier 3 (11-20 attempts): 2000ms delay  - Attack suspected  
+Tier 3 (11-20 attempts): 2000ms delay  - Attack suspected
 Tier 4 (20+ attempts):   Blocked/Timeout - Attack confirmed
 ```
 
 ---
 
 ### 7. Suspicious Activity Detection
+
 **Patterns that trigger alerts**:
 
 ```
@@ -249,7 +281,9 @@ Pattern E: Known vulnerability scanning
 ---
 
 ### 8. Logging Strategy (No PII/Secrets)
+
 **What to Log**:
+
 ```
 ✅ IP address (hashed if possible)
 ✅ Endpoint accessed
@@ -262,6 +296,7 @@ Pattern E: Known vulnerability scanning
 ```
 
 **What NOT to Log**:
+
 ```
 ❌ Full order numbers
 ❌ Email addresses
@@ -273,6 +308,7 @@ Pattern E: Known vulnerability scanning
 ```
 
 **Example Log Entry**:
+
 ```json
 {
   "timestamp": "2025-02-04T12:34:56Z",
@@ -292,24 +328,28 @@ Pattern E: Known vulnerability scanning
 ## Implementation Plan
 
 ### Phase 1: Core Abuse Detection (Week 1)
+
 1. Create identifier hashing utilities
 2. Create progressive rate limiter
 3. Create anti-enumeration middleware
 4. Create timing attack prevention wrapper
 
 ### Phase 2: Integration (Week 2)
+
 5. Refactor order verification endpoint
 6. Refactor invoice endpoints
 7. Refactor design endpoints
 8. Add security logging
 
 ### Phase 3: Monitoring (Week 3)
+
 9. Create security event detector
 10. Create alerting rules
 11. Create monitoring dashboard
 12. Load test with simulated attacks
 
 ### Phase 4: Documentation (Week 4)
+
 13. Complete security documentation
 14. Create incident response guide
 15. Create admin playbook
@@ -332,6 +372,7 @@ Pattern E: Known vulnerability scanning
 ## Testing Strategy
 
 ### Security Testing
+
 ```bash
 # Test 1: Enumeration prevention
 for i in {1000..1100}; do
@@ -339,7 +380,7 @@ for i in {1000..1100}; do
 done
 # Expect: All fail identically, attacker rate limited by attempt 10
 
-# Test 2: Timing attack prevention  
+# Test 2: Timing attack prevention
 time curl "GET /api/orders/verify?order=999999&email=test@test.com"  # Invalid
 time curl "GET /api/orders/verify?order=1&email=test@test.com"      # Maybe valid
 # Expect: Response times identical (±50ms)
@@ -354,7 +395,7 @@ done
 
 # Test 4: Identifier normalization bypass
 curl "GET /api/orders/verify?order=0001234&email=USER@TEST.COM"
-curl "GET /api/orders/verify?order=1,234&email=user@test.com"  
+curl "GET /api/orders/verify?order=1,234&email=user@test.com"
 curl "GET /api/orders/verify?order=1234&email=user@test.com"
 # Expect: All identical (normalized), count as same identifier
 ```
@@ -364,6 +405,7 @@ curl "GET /api/orders/verify?order=1234&email=user@test.com"
 ## Monitoring & Alerting
 
 ### Alerts to Create
+
 ```
 - IP attempting >20 verifications/hour → Immediate block
 - Sequential order enumeration detected → Lock endpoint
@@ -377,6 +419,7 @@ curl "GET /api/orders/verify?order=1234&email=user@test.com"
 ## Rollback Plan
 
 If false positives block legitimate users:
+
 1. Reduce rate limits by 50%
 2. Increase delay thresholds
 3. Add whitelist for known good IPs

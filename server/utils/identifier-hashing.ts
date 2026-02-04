@@ -123,10 +123,7 @@ export function hashIPAddress(ip: string): string {
   const month = new Date().toISOString().substring(0, 7); // YYYY-MM
   const salt = `ip-hash:${month}`;
 
-  return crypto
-    .createHmac("sha256", salt)
-    .update(ip)
-    .digest("hex");
+  return crypto.createHmac("sha256", salt).update(ip).digest("hex");
 }
 
 /**
@@ -333,7 +330,8 @@ export function looksLikeEnumeration(
 
     // Check if last digit incremented
     if (normCurrent.length === normPrevious.length) {
-      const diffAtEnd = parseInt(normCurrent[normCurrent.length - 1]) -
+      const diffAtEnd =
+        parseInt(normCurrent[normCurrent.length - 1]) -
         parseInt(normPrevious[normPrevious.length - 1]);
       return Math.abs(diffAtEnd) === 1;
     }

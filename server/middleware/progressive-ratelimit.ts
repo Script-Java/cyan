@@ -90,7 +90,9 @@ class InMemoryRateLimitStore {
     entriesToDelete.forEach((key) => this.store.delete(key));
 
     if (entriesToDelete.length > 0) {
-      console.log(`[RATELIMIT] Cleaned up ${entriesToDelete.length} expired entries`);
+      console.log(
+        `[RATELIMIT] Cleaned up ${entriesToDelete.length} expired entries`,
+      );
     }
   }
 
@@ -117,7 +119,7 @@ export class ProgressiveRateLimiter {
       lockoutDurationMs: config.lockoutDurationMs || 3600000,
       windowMs: config.windowMs || 900000,
       keyPrefix: config.keyPrefix || "rl:",
-      storage: config.storage || new InMemoryRateLimitStore() as any,
+      storage: config.storage || (new InMemoryRateLimitStore() as any),
     };
 
     this.store = this.config.storage;
@@ -293,9 +295,10 @@ export function createProgressiveRateLimitMiddleware(
   limiter: ProgressiveRateLimiter,
   keyFn: string | ((req: Request) => string),
 ) {
-  const getKey = typeof keyFn === "string"
-    ? (req: Request) => req.ip || req.socket.remoteAddress || "unknown"
-    : keyFn;
+  const getKey =
+    typeof keyFn === "string"
+      ? (req: Request) => req.ip || req.socket.remoteAddress || "unknown"
+      : keyFn;
 
   return async (req: Request, res: Response, next: NextFunction) => {
     const key = getKey(req);
@@ -346,7 +349,7 @@ export function createProgressiveRateLimitMiddleware(
  *
  * Usage:
  * ```typescript
- * router.post('/api/verify', 
+ * router.post('/api/verify',
  *   createProgressiveRateLimitMiddleware(ipLimiter, 'ip'),
  *   createIdentifierRateLimitMiddleware(idLimiter, (req) => req.body.order_number),
  *   handler
@@ -367,9 +370,7 @@ export function createIdentifierRateLimitMiddleware(
 
     // If identifier-level rate limit exceeded, block
     if (!check.allowed && check.tier === RateLimitTier.LOCKOUT) {
-      console.warn(
-        `[RATELIMIT] Identifier lockout: ${identifier}`,
-      );
+      console.warn(`[RATELIMIT] Identifier lockout: ${identifier}`);
       return res.status(429).json({
         error: "Too many requests. Please try again later.",
       });

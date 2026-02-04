@@ -38,7 +38,9 @@ interface AntiEnumerationConfig {
  * router.post('/api/verify', wrapper, handler);
  * ```
  */
-export function createAntiEnumerationWrapper(config: AntiEnumerationConfig = {}) {
+export function createAntiEnumerationWrapper(
+  config: AntiEnumerationConfig = {},
+) {
   const {
     minResponseTimeMs = 500,
     returnStatus = 404,
@@ -83,10 +85,7 @@ export function createAntiEnumerationWrapper(config: AntiEnumerationConfig = {})
         // Optionally pad response to target size to prevent size-based detection
         if (padResponseSize) {
           const responseStr = JSON.stringify(normalizedResponse);
-          const padding = Math.max(
-            0,
-            targetResponseSize - responseStr.length,
-          );
+          const padding = Math.max(0, targetResponseSize - responseStr.length);
 
           if (padding > 0) {
             // Add padding with random data (not JSON structure)
@@ -167,7 +166,11 @@ export function enforceMinResponseTime(minMs: number = 500) {
  * - Cache status
  * - Database info
  */
-export function removeEnumerationHeaders(req: Request, res: Response, next: NextFunction) {
+export function removeEnumerationHeaders(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   // Remove potentially informative headers
   res.removeHeader("X-Total-Count"); // Leaks total resource count
   res.removeHeader("X-Page"); // Leaks pagination info
@@ -224,7 +227,10 @@ export function normalizeErrorResponses(
  * @param minJitterMs - Minimum random delay
  * @param maxJitterMs - Maximum random delay
  */
-export function addResponseJitter(minJitterMs: number = 50, maxJitterMs: number = 150) {
+export function addResponseJitter(
+  minJitterMs: number = 50,
+  maxJitterMs: number = 150,
+) {
   return (req: Request, res: Response, next: NextFunction) => {
     const jitter = Math.random() * (maxJitterMs - minJitterMs) + minJitterMs;
     const startTime = Date.now();
@@ -298,7 +304,9 @@ export function padResponseSize(targetSize: number = 256) {
  * router.post('/api/verify', createFullAntiEnumerationMiddleware(), handler);
  * ```
  */
-export function createFullAntiEnumerationMiddleware(config: AntiEnumerationConfig = {}) {
+export function createFullAntiEnumerationMiddleware(
+  config: AntiEnumerationConfig = {},
+) {
   const {
     minResponseTimeMs = 500,
     returnStatus = 404,
@@ -311,7 +319,9 @@ export function createFullAntiEnumerationMiddleware(config: AntiEnumerationConfi
     removeEnumerationHeaders,
     normalizeErrorResponses(returnStatus, returnMessage),
     enforceMinResponseTime(minResponseTimeMs),
-    shouldPad ? padResponseSize(targetResponseSize) : (req: Request, res: Response, next: NextFunction) => next(),
+    shouldPad
+      ? padResponseSize(targetResponseSize)
+      : (req: Request, res: Response, next: NextFunction) => next(),
     addResponseJitter(25, 100),
   ];
 }

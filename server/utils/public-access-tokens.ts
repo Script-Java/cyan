@@ -110,7 +110,9 @@ export async function validatePublicAccessToken(
     // Step 1: Find the token and validate all conditions atomically
     const { data: tokenRecord, error: lookupError } = await supabase
       .from("public_access_tokens")
-      .select("token, resource_type, resource_id, expires_at, one_time_use, used_at")
+      .select(
+        "token, resource_type, resource_id, expires_at, one_time_use, used_at",
+      )
       .eq("token", token)
       .maybeSingle();
 

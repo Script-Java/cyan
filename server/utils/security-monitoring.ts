@@ -115,10 +115,7 @@ export class SecurityEventLog {
    * @param action - Recommended action
    * @returns Alert ID
    */
-  createAlert(
-    event: SecurityEvent,
-    action?: string,
-  ): string {
+  createAlert(event: SecurityEvent, action?: string): string {
     const alertId = `alert-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     const alert: SecurityAlert = {
@@ -221,7 +218,8 @@ export class SecurityEventLog {
       eventsByType[e.type] = (eventsByType[e.type] || 0) + 1;
       eventsBySeverity[e.severity] = (eventsBySeverity[e.severity] || 0) + 1;
       if (e.endpointPath) {
-        endpointCounts[e.endpointPath] = (endpointCounts[e.endpointPath] || 0) + 1;
+        endpointCounts[e.endpointPath] =
+          (endpointCounts[e.endpointPath] || 0) + 1;
       }
     });
 
@@ -385,7 +383,8 @@ export class AttackPatternDetector {
 
     events.forEach((e) => {
       if (e.identifierHash) {
-        byIdentifier[e.identifierHash] = (byIdentifier[e.identifierHash] || 0) + 1;
+        byIdentifier[e.identifierHash] =
+          (byIdentifier[e.identifierHash] || 0) + 1;
 
         if (!ipsByIdentifier[e.identifierHash]) {
           ipsByIdentifier[e.identifierHash] = new Set();

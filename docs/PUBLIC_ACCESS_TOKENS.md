@@ -41,13 +41,13 @@ Each public access operation now requires a **secure public access token**:
 1. **Generation**: Token created when resource is first shared
    - Triggered by admin/system when sending proof review email
    - Triggered by customer when requesting public order link
-   
 2. **Storage**: Token stored in `public_access_tokens` table
+
    ```
    id | token (unique) | resource_type | resource_id | expires_at | one_time_use | used_at | created_at
    ```
 
-3. **Validation**: 
+3. **Validation**:
    - Token must exist and not be expired
    - Token must match requested resource type and ID
    - If one-time-use, token must not have been used before
@@ -137,6 +137,7 @@ Each public access operation now requires a **secure public access token**:
 ## Usage Examples
 
 ### Before (INSECURE)
+
 ```bash
 # Attacker can guess and enumerate proof IDs
 curl -X POST https://api.stickyslap.com/api/proofs/uuid-1234/approve
@@ -146,6 +147,7 @@ curl -X POST https://api.stickyslap.com/api/proofs/uuid-1236/approve
 ```
 
 ### After (SECURE)
+
 ```bash
 # Token is cryptographically random, not guessable
 curl -X POST 'https://api.stickyslap.com/api/proofs/uuid-1234/approve?token=a3f7d9c2b1e8f4a6c5d2e9b3f7a1c4d8e2b5f8a1c4d7e9b2c5f8a1e4d7c0b'
@@ -156,6 +158,7 @@ curl -X POST 'https://api.stickyslap.com/api/proofs/uuid-1234/approve?token=a3f7
 ```
 
 ### Email Link Generation
+
 ```typescript
 // When sending proof review email:
 const token = await createPublicAccessToken({
@@ -163,7 +166,7 @@ const token = await createPublicAccessToken({
   resourceId: proof.id,
   expiresInHours: 72,
   oneTimeUse: true,
-  createdBy: "admin@stickyslap.com"
+  createdBy: "admin@stickyslap.com",
 });
 
 // Email link includes token:
@@ -193,43 +196,48 @@ CREATE TABLE public_access_tokens (
 ## Endpoint Changes Summary
 
 ### Proof Endpoints (COMPLETED)
-| Endpoint | Change | Status |
-|----------|--------|--------|
-| GET /api/proofs/:proofId/public | Path param → Query token | ✅ |
-| POST /api/proofs/:proofId/approve | Path param → Query token, one-time | ✅ |
-| POST /api/proofs/:proofId/revise | Path param → Query token, one-time | ✅ |
-| POST /api/proofs/:proofId/deny | Path param → Query token, one-time | ✅ |
+
+| Endpoint                          | Change                             | Status |
+| --------------------------------- | ---------------------------------- | ------ |
+| GET /api/proofs/:proofId/public   | Path param → Query token           | ✅     |
+| POST /api/proofs/:proofId/approve | Path param → Query token, one-time | ✅     |
+| POST /api/proofs/:proofId/revise  | Path param → Query token, one-time | ✅     |
+| POST /api/proofs/:proofId/deny    | Path param → Query token, one-time | ✅     |
 
 ### Order Endpoints (IN PROGRESS)
-| Endpoint | Change | Status |
-|----------|--------|--------|
-| GET /api/public/orders/:orderId | Numeric ID → Query token | 🔄 |
-| POST /api/public/orders/verify | Already secure (email/phone verification) | ✅ |
-| GET /api/public/order-status | Already secure (uses public_access_token) | ✅ |
+
+| Endpoint                        | Change                                    | Status |
+| ------------------------------- | ----------------------------------------- | ------ |
+| GET /api/public/orders/:orderId | Numeric ID → Query token                  | 🔄     |
+| POST /api/public/orders/verify  | Already secure (email/phone verification) | ✅     |
+| GET /api/public/order-status    | Already secure (uses public_access_token) | ✅     |
 
 ### Invoice Endpoints (PENDING)
-| Endpoint | Change | Status |
-|----------|--------|--------|
-| GET /api/invoices/:invoiceId/pay | Numeric ID → Query token | 🔄 |
-| POST /api/invoices/:invoiceId/payment | Numeric ID → Query token | 🔄 |
+
+| Endpoint                              | Change                   | Status |
+| ------------------------------------- | ------------------------ | ------ |
+| GET /api/invoices/:invoiceId/pay      | Numeric ID → Query token | 🔄     |
+| POST /api/invoices/:invoiceId/payment | Numeric ID → Query token | 🔄     |
 
 ## Testing Strategy
 
 ### Unit Tests (for token utilities)
+
 ```typescript
-test('generatePublicAccessToken generates 64 hex characters', () => {
+test("generatePublicAccessToken generates 64 hex characters", () => {
   const token = generatePublicAccessToken();
   expect(token).toMatch(/^[0-9a-f]{64}$/);
 });
 
-test('validatePublicAccessToken rejects expired tokens', async () => {
-  const result = await validatePublicAccessToken(expiredToken, 'proof');
+test("validatePublicAccessToken rejects expired tokens", async () => {
+  const result = await validatePublicAccessToken(expiredToken, "proof");
   expect(result.success).toBe(false);
-  expect(result.error).toBe('Not found'); // Generic error
+  expect(result.error).toBe("Not found"); // Generic error
 });
 ```
 
 ### Integration Tests (for endpoints)
+
 ```typescript
 test('POST /api/proofs/:id/approve requires valid token', async () => {
   const response = await POST('/api/proofs/123/approve?token=invalid');
@@ -246,14 +254,15 @@ test('POST /api/proofs/:id/approve with valid token succeeds', async () => {
 ```
 
 ### Security Tests
+
 ```typescript
 test('Token cannot be reused (one-time-use)', async () => {
   const token = await createPublicAccessToken({oneTimeUse: true, ...});
-  
+
   // First use succeeds
   let response = await POST(`/api/proofs/123/approve?token=${token}`);
   expect(response.status).toBe(200);
-  
+
   // Second use fails
   response = await POST(`/api/proofs/123/approve?token=${token}`);
   expect(response.status).toBe(404);
@@ -266,7 +275,7 @@ test('Enumeration attack is prevented', async () => {
     const response = await GET(`/api/proofs/public?token=${fakeToken}`);
     results.push(response.status);
   }
-  
+
   // All should be 404, no information leakage
   expect(results.every(status => status === 404)).toBe(true);
 });
