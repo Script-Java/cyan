@@ -549,12 +549,35 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
       return res.status(500).json({ error: "Failed to send proof" });
     }
 
+    // SECURITY: Generate secure one-time-use tokens for proof approval/revision
+    const approvalTokenResult = await createPublicAccessToken({
+      resourceType: "proof",
+      resourceId: proof.id,
+      expiresInHours: 72, // 3 days for email links
+      oneTimeUse: true,
+      createdBy: "admin-proof-email",
+    });
+
+    const revisionTokenResult = await createPublicAccessToken({
+      resourceType: "proof",
+      resourceId: proof.id,
+      expiresInHours: 72, // 3 days for email links
+      oneTimeUse: true,
+      createdBy: "admin-proof-email",
+    });
+
+    if (!approvalTokenResult.success || !revisionTokenResult.success) {
+      console.error("Failed to generate access tokens for proof email");
+      return res.status(500).json({ error: "Failed to send proof" });
+    }
+
     // Send proof email
     if (process.env.RESEND_API_KEY && resend) {
       try {
         const baseUrl = process.env.FRONTEND_URL || "https://stickyslap.com";
-        const approvalLink = `${baseUrl}/proofs/${proof.id}/approve`;
-        const revisionLink = `${baseUrl}/proofs/${proof.id}/request-revisions`;
+        // SECURITY: Include tokens in email links
+        const approvalLink = `${baseUrl}/proofs/review?token=${approvalTokenResult.token}&action=approve`;
+        const revisionLink = `${baseUrl}/proofs/review?token=${revisionTokenResult.token}&action=revise`;
 
         const { data: customer } = await supabase
           .from("customers")
