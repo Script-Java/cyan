@@ -464,17 +464,25 @@ export const handleGetPendingOrders: RequestHandler = async (req, res) => {
  */
 export const handleGetOrderPublic: RequestHandler = async (req, res) => {
   try {
-    const { orderId } = req.params;
+    const { token } = req.query;
+
+    if (!token || typeof token !== "string") {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // SECURITY: Validate token atomically (prevents enumeration)
+    const validation = await validatePublicAccessToken(token, "order");
+    if (!validation.success) {
+      // Generic 404 - never reveal why token failed
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    const orderId = validation.resourceId;
 
     // VALIDATION: Parse and validate orderId
     const orderIdNum = parseInt(orderId, 10);
     if (isNaN(orderIdNum) || orderIdNum <= 0) {
-      return res.status(400).json({
-        error: "Request validation failed",
-        details: [
-          { field: "orderId", message: "Order ID must be a positive integer" },
-        ],
-      });
+      return res.status(404).json({ error: "Order not found" });
     }
 
     const { supabase } = await import("../utils/supabase");
@@ -513,7 +521,7 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
       .single();
 
     if (orderError || !order) {
-      console.warn("Order not found for public access:", orderIdNum);
+      console.warn("Order not found for public access:", orderId);
       return res.status(404).json({ error: "Order not found" });
     }
 
