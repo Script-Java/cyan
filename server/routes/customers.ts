@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import { v2 as cloudinary } from "cloudinary";
 import { processImage } from "../utils/image-processor";
 import {
+  supabase,
   getCustomerStoreCredit,
   getScopedSupabaseClient,
 } from "../utils/supabase";
