@@ -797,16 +797,28 @@ export const handleAddAdminProofComment: RequestHandler = async (req, res) => {
 };
 
 /**
- * Get a single proof (public - no authentication required)
- * Used for proof review links sent via email
+ * Get a single proof (public - requires secure access token)
+ * SECURITY: Requires valid public access token instead of guessable proof ID
+ * Prevents enumeration attacks and unauthorized access
+ *
+ * Usage: GET /api/proofs/public/:proofId?token=<secure-token>
  */
 export const handleGetProofDetailPublic: RequestHandler = async (req, res) => {
   try {
-    const { proofId } = req.params;
+    const { token } = req.query;
 
-    if (!proofId) {
-      return res.status(400).json({ error: "Proof ID is required" });
+    if (!token || typeof token !== "string") {
+      return res.status(404).json({ error: "Proof not found" });
     }
+
+    // SECURITY: Validate token atomically (prevents enumeration)
+    const validation = await validatePublicAccessToken(token, "proof");
+    if (!validation.success) {
+      // Generic 404 - never reveal why token failed
+      return res.status(404).json({ error: "Proof not found" });
+    }
+
+    const proofId = validation.resourceId;
 
     // Get proof
     const { data: proof, error: proofError } = await supabase
@@ -828,7 +840,7 @@ export const handleGetProofDetailPublic: RequestHandler = async (req, res) => {
 
     if (commentsError) {
       console.error("Error fetching comments:", commentsError);
-      return res.status(500).json({ error: "Failed to fetch proof details" });
+      return res.status(404).json({ error: "Proof not found" });
     }
 
     res.json({
@@ -840,7 +852,7 @@ export const handleGetProofDetailPublic: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     console.error("Get proof detail public error:", error);
-    res.status(500).json({ error: "Failed to fetch proof details" });
+    res.status(404).json({ error: "Proof not found" });
   }
 };
 
