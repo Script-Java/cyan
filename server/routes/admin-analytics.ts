@@ -48,12 +48,12 @@ export const handleGetAnalytics: RequestHandler = async (req, res) => {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-    // Fetch page view events (with fallback if page_path column doesn't exist)
+    // Fetch page view events (with fallback if columns don't exist)
     let pageViewEvents = null;
     try {
       const { data: events } = await supabase
         .from("analytics_events")
-        .select("device_type, referrer, created_at", {
+        .select("event_type, created_at", {
           count: "exact",
         })
         .eq("event_type", "page_view")
