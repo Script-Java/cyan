@@ -221,27 +221,26 @@ export const handleTrackEvent: RequestHandler = async (req, res) => {
     // Process event asynchronously in background
     (async () => {
       try {
-        let userId: number | null = null;
+        let userId: string | null = null;
         if (token) {
           const { data: userData } = await supabase.auth.getUser(token);
-          userId = userData.user?.id ? parseInt(userData.user.id) : null;
+          userId = userData.user?.id || null;
         }
 
-        // Only insert fields that exist in the table
+        // Only insert fields that definitely exist in the table
+        // Note: Supabase schema cache may be stale, so we use minimal fields
         const eventData: any = {
           event_type,
           event_name,
           user_id: userId,
         };
 
-        // Add optional fields if provided (schema cache may be stale for some columns)
-        if (session_id) eventData.session_id = session_id;
-        if (referrer) eventData.referrer = referrer;
-        if (device_type) eventData.device_type = device_type;
+        // Optionally add browser and country if provided (less likely to have schema issues)
         if (browser) eventData.browser = browser;
         if (country) eventData.country = country;
         if (data) eventData.data = data;
-        // Note: page_path field doesn't exist in schema, skip it
+
+        // Skip optional fields that have schema cache issues: session_id, page_path, referrer, device_type
 
         const { error } = await supabase
           .from("analytics_events")
