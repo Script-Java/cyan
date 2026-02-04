@@ -979,16 +979,28 @@ export const handleReviseProofPublicNew: RequestHandler = async (req, res) => {
 };
 
 /**
- * Approve a proof (public - no authentication required)
- * Used for proof review links sent via email
+ * Approve a proof (public - requires secure access token)
+ * SECURITY: Requires valid one-time-use public access token
+ * Prevents unauthorized approval and enumeration attacks
+ *
+ * Usage: POST /api/proofs/:proofId/approve?token=<secure-token>
  */
 export const handleApproveProofPublic: RequestHandler = async (req, res) => {
   try {
-    const { proofId } = req.params;
+    const { token } = req.query;
 
-    if (!proofId) {
-      return res.status(400).json({ error: "Proof ID is required" });
+    if (!token || typeof token !== "string") {
+      return res.status(404).json({ error: "Proof not found" });
     }
+
+    // SECURITY: Validate token atomically (prevents enumeration and reuse)
+    const validation = await validatePublicAccessToken(token, "proof");
+    if (!validation.success) {
+      // Generic 404 - never reveal why token failed
+      return res.status(404).json({ error: "Proof not found" });
+    }
+
+    const proofId = validation.resourceId;
 
     // Get proof
     const { data: proof, error: proofError } = await supabase
@@ -1012,7 +1024,7 @@ export const handleApproveProofPublic: RequestHandler = async (req, res) => {
 
     if (updateError) {
       console.error("Error approving proof:", updateError);
-      return res.status(500).json({ error: "Failed to approve proof" });
+      return res.status(404).json({ error: "Proof not found" });
     }
 
     // Create admin notification
@@ -1037,7 +1049,7 @@ export const handleApproveProofPublic: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     console.error("Approve proof public error:", error);
-    res.status(500).json({ error: "Failed to approve proof" });
+    res.status(404).json({ error: "Proof not found" });
   }
 };
 
