@@ -20,8 +20,8 @@ export const handleGetCustomer: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    // SECURITY: Use scoped client to enforce RLS policies
-    // Customer can only access their own data
+    // NOTE: Using service role client temporarily
+    // TODO: Replace with scoped JWT when Supabase auth is properly integrated
     const scoped = getScopedSupabaseClient(req);
 
     const { data: customer, error } = await scoped
