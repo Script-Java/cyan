@@ -49,15 +49,15 @@ export default function ProofNotificationBadge() {
     <div
       className="flex items-center gap-2 px-3 py-2 border rounded-lg backdrop-blur-sm mt-6"
       style={{
-        backgroundColor: "rgba(0, 0, 0, 0.2)",
-        borderColor: "rgba(59, 130, 246, 0.3)",
+        backgroundColor: "#000000",
+        borderColor: "rgba(255, 255, 255, 0.3)",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         backgroundSize: "cover",
       }}
     >
-      <Bell className="w-4 h-4 text-blue-400" />
-      <span className="text-xs font-medium text-blue-200">
+      <Bell className="w-4 h-4 text-white" />
+      <span className="text-xs font-medium text-white">
         {pendingCount} {pendingCount === 1 ? "proof" : "proofs"} ready to review
       </span>
     </div>
