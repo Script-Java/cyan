@@ -232,10 +232,10 @@ export const handleTrackEvent: RequestHandler = async (req, res) => {
           event_type,
           event_name,
           user_id: userId,
-          session_id,
         };
 
-        // Add optional fields if provided
+        // Add optional fields if provided (schema cache may be stale for some columns)
+        if (session_id) eventData.session_id = session_id;
         if (referrer) eventData.referrer = referrer;
         if (device_type) eventData.device_type = device_type;
         if (browser) eventData.browser = browser;
