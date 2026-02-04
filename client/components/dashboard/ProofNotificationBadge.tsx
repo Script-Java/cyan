@@ -46,7 +46,16 @@ export default function ProofNotificationBadge() {
   }
 
   return (
-    <div className="flex items-center gap-2 px-3 py-2 bg-blue-600/20 border border-blue-500/30 rounded-lg backdrop-blur-sm">
+    <div
+      className="flex items-center gap-2 px-3 py-2 border rounded-lg backdrop-blur-sm mt-6"
+      style={{
+        backgroundColor: "rgba(0, 0, 0, 0.2)",
+        borderColor: "rgba(59, 130, 246, 0.3)",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
+    >
       <Bell className="w-4 h-4 text-blue-400" />
       <span className="text-xs font-medium text-blue-200">
         {pendingCount} {pendingCount === 1 ? "proof" : "proofs"} ready to review
