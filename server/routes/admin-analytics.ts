@@ -245,18 +245,25 @@ export const handleTrackEvent: RequestHandler = async (req, res) => {
           userId = userData.user?.id ? parseInt(userData.user.id) : null;
         }
 
-        const { error } = await supabase.from("analytics_events").insert({
+        // Only insert fields that exist in the table
+        const eventData: any = {
           event_type,
           event_name,
           user_id: userId,
           session_id,
-          page_path,
-          referrer,
-          device_type,
-          browser,
-          country,
-          data,
-        });
+        };
+
+        // Add optional fields if provided
+        if (referrer) eventData.referrer = referrer;
+        if (device_type) eventData.device_type = device_type;
+        if (browser) eventData.browser = browser;
+        if (country) eventData.country = country;
+        if (data) eventData.data = data;
+        // Note: page_path field doesn't exist in schema, skip it
+
+        const { error } = await supabase
+          .from("analytics_events")
+          .insert(eventData);
 
         if (error) {
           console.error("Error tracking event:", error);
