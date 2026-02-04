@@ -123,18 +123,9 @@ export const handleGetAnalytics: RequestHandler = async (req, res) => {
         ).length || 0,
     };
 
-    // Top pages
-    const pagePathCounts = new Map<string, number>();
-    pageViewEvents?.forEach((event) => {
-      pagePathCounts.set(
-        event.page_path,
-        (pagePathCounts.get(event.page_path) || 0) + 1,
-      );
-    });
-    const topPages = Array.from(pagePathCounts.entries())
-      .map(([path, views]) => ({ path, views }))
-      .sort((a, b) => b.views - a.views)
-      .slice(0, 5);
+    // Top pages (disabled - page_path column doesn't exist)
+    // TODO: Implement proper page tracking with session data
+    const topPages = [];
 
     // Product sales (from order_items)
     const productSales = new Map<
