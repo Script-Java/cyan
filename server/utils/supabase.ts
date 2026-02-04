@@ -72,19 +72,18 @@ export function createScopedSupabaseClient(userJwt: string): SupabaseClient {
 
 /**
  * Get or create a scoped Supabase client from request
- * SECURITY: Returns RLS-enforced client if authenticated, otherwise returns service role client
+ * SECURITY: Currently returns service role client for all authenticated endpoints
  *
- * For customer-facing endpoints, prefer this for consistency with authentication state
+ * NOTE: The app's JWT (signed with JWT_SECRET) cannot be used directly with Supabase RLS
+ * because Supabase expects its own JWT format. RLS enforcement will be implemented when
+ * Supabase Auth integration is properly set up.
  *
  * @param req - Express request with optional userJwt from auth middleware
- * @returns Scoped client if JWT present, otherwise service role client (bypass RLS)
+ * @returns Service role client (RLS enforcement not yet active)
  */
 export function getScopedSupabaseClient(req: any): SupabaseClient {
-  if (req.userJwt) {
-    return createScopedSupabaseClient(req.userJwt);
-  }
-  // Fall back to service role if no JWT (public endpoints)
-  // NOTE: This should only happen for public endpoints that don't require auth
+  // TODO: Replace with proper Supabase JWT when auth is integrated
+  // For now, return service role client for all endpoints
   return supabase;
 }
 
