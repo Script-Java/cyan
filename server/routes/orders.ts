@@ -9,6 +9,10 @@ import {
 import { ecwidAPI } from "../utils/ecwid";
 import { parseOrderNumber } from "../utils/order";
 import { VerifyOrderAccessSchema, validate } from "../schemas/validation";
+import {
+  validatePublicAccessToken,
+  createPublicAccessToken,
+} from "../utils/public-access-tokens";
 
 /**
  * Get customer's orders from Ecwid, BigCommerce, and Supabase with pagination
