@@ -72,6 +72,7 @@ export default function OrderConfirmation() {
       const isPreview = !orderId || orderId === "preview";
 
       if (isPreview) {
+        // ... (existing mock logic) ...
         // Mock order for testing/editing
         const mockOrder: Order = {
           id: 1001,
@@ -138,6 +139,31 @@ export default function OrderConfirmation() {
 
         console.log(`Fetching order details for display ID: ${orderId} (Raw ID: ${rawId})`);
 
+        // =================================================================
+        // STEP 1: Confirm the checkout (critical for payment verification)
+        // =================================================================
+        try {
+          console.log(`Attempting to confirm checkout for Order #${rawId}...`);
+          const confirmResponse = await fetch("/api/square/confirm-checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ orderId: rawId }),
+          });
+
+          if (confirmResponse.ok) {
+            const confirmResult = await confirmResponse.json();
+            console.log("✅ Checkout confirmed successfully:", confirmResult);
+          } else {
+            console.warn("⚠️ Checkout confirmation returned non-200 status:", confirmResponse.status);
+          }
+        } catch (confirmError) {
+          console.error("❌ Error verifying payment:", confirmError);
+          // Don't block loading the page if confirmation fails (it might be already paid)
+        }
+
+        // =================================================================
+        // STEP 2: Fetch order details for display
+        // =================================================================
         // Use the rawId (numeric) for the API call
         const response = await fetch(`/api/public/orders/${rawId}`);
 
