@@ -222,6 +222,8 @@ export async function getCheckoutApi() {
   return client.checkout;
 }
 
+import { formatOrderNumber } from "./order";
+
 export async function processSquarePayment(paymentData: {
   sourceId: string;
   amount: number;
@@ -519,7 +521,7 @@ export async function createSquarePaymentLink(data: {
     // Build order with detailed line items to show Order Summary on Square checkout page
     const orderObject: any = {
       location_id: locationId,
-      reference_id: `order-${data.orderId}`,
+      reference_id: formatOrderNumber(data.orderId),
       line_items: lineItems,
       discounts: [],
     };

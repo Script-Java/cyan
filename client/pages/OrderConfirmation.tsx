@@ -424,7 +424,7 @@ export default function OrderConfirmation() {
                 {order.orderItems?.map((item) => (
                   <div
                     key={item.id}
-                    className="flex gap-6 pb-6 border-b last:pb-0 last:border-b-0"
+                    className="flex flex-col md:flex-row gap-6 pb-6 border-b last:pb-0 last:border-b-0"
                   >
                     {/* Design Thumbnail */}
                     <div className="flex-shrink-0">
@@ -500,7 +500,7 @@ export default function OrderConfirmation() {
                     </div>
 
                     {/* Price Section */}
-                    <div className="flex-shrink-0 text-right">
+                    <div className="flex-shrink-0 text-left md:text-right">
                       <p className="text-sm text-gray-600 mb-1">Subtotal</p>
                       <p className="font-bold text-2xl">
                         <span style={{ color: "rgba(20, 20, 20, 1)" }}>$</span>
