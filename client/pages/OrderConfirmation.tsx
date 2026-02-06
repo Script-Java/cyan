@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { formatOrderNumber } from "@/lib/orderFormatting";
+// CHANGE 1: Import parseOrderNumber
+import { formatOrderNumber, parseOrderNumber } from "@/lib/orderFormatting";
 import Header from "@/components/Header";
 import {
   Card,
@@ -68,9 +69,7 @@ export default function OrderConfirmation() {
 
   useEffect(() => {
     const fetchOrder = async () => {
-      // Allow preview mode with mock data for development
-      const isPreview =
-        !orderId || orderId === "preview" || isNaN(Number(orderId));
+      const isPreview = !orderId || orderId === "preview";
 
       if (isPreview) {
         // Mock order for testing/editing
@@ -122,9 +121,25 @@ export default function OrderConfirmation() {
       }
 
       try {
-        console.log("Fetching order details:", orderId);
+        // CHANGE 2: Parse the ID before sending to server
+        let rawId;
+        try {
+          // If orderId is defined, try to parse it (handles both SY-XXXX and plain numbers)
+          if (orderId) {
+            rawId = parseOrderNumber(orderId);
+          } else {
+            throw new Error("Order ID is missing");
+          }
+        } catch (e) {
+          console.error("Error parsing order ID:", e);
+          // Fallback to trying to use it as is if parsing failed (though unlikely to work if it's SY- format)
+          rawId = orderId;
+        }
 
-        const response = await fetch(`/api/public/orders/${orderId}`);
+        console.log(`Fetching order details for display ID: ${orderId} (Raw ID: ${rawId})`);
+
+        // Use the rawId (numeric) for the API call
+        const response = await fetch(`/api/public/orders/${rawId}`);
 
         if (!response.ok) {
           throw new Error(`Failed to fetch order (${response.status})`);
@@ -139,17 +154,18 @@ export default function OrderConfirmation() {
 
         const data = result.data;
 
-        // Only show order if payment is confirmed
-        if (
-          data.status !== "paid" &&
-          data.status !== "completed" &&
-          data.status !== "processing" &&
-          data.status !== "shipped" &&
-          data.status !== "delivered"
-        ) {
-          throw new Error(
-            "Order is not yet confirmed. Please wait for payment verification.",
-          );
+        // CHANGE: Add 'pending_payment' to this list so it doesn't throw an error
+        const validStatuses = [
+          "paid",
+          "completed",
+          "processing",
+          "shipped",
+          "delivered",
+          "pending_payment", // <--- CRITICAL: Allow this status
+        ];
+
+        if (!validStatuses.includes(data.status)) {
+          throw new Error("Order status not recognized.");
         }
 
         // Transform the data to match our Order interface
@@ -241,9 +257,9 @@ export default function OrderConfirmation() {
   });
 
   // Calculate shipping timeline
-  const PROCESSING_DAYS = 3; // 2-3 business days to process
-  const SHIPPING_DAYS_MIN = 7; // Minimum 7 business days for shipping
-  const SHIPPING_DAYS_MAX = 21; // Maximum 21 business days for shipping
+  const PROCESSING_DAYS = 3;
+  const SHIPPING_DAYS_MIN = 7;
+  const SHIPPING_DAYS_MAX = 21;
 
   const processingEndDate = new Date(
     Date.now() + PROCESSING_DAYS * 24 * 60 * 60 * 1000,
@@ -257,17 +273,17 @@ export default function OrderConfirmation() {
 
   const estimatedDelivery = order.estimated_delivery_date
     ? new Date(order.estimated_delivery_date).toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      })
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
     : deliveryMaxDate.toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
 
   const processingDateStr = processingEndDate.toLocaleDateString("en-US", {
     month: "short",
@@ -287,16 +303,12 @@ export default function OrderConfirmation() {
 
   const getStatusBadge = () => {
     switch (order.status) {
+      // CHANGE: Group 'pending_payment' with 'paid' and 'processing'
+      case "pending_payment":
       case "paid":
-        return (
-          <div className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-            <Package className="w-4 h-4" />
-            Processing
-          </div>
-        );
       case "processing":
         return (
-          <div className="flex items-center gap-2 px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">
+          <div className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
             <Package className="w-4 h-4" />
             Processing
           </div>

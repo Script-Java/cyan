@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { formatOrderNumber } from "@/lib/orderFormatting";
 
 export default function CheckoutSuccess() {
   const navigate = useNavigate();
@@ -30,7 +31,8 @@ export default function CheckoutSuccess() {
     // Redirect to order confirmation after a short delay
     setTimeout(() => {
       setIsLoading(false);
-      navigate(`/order-confirmation/${orderId}`);
+      const formattedOrderId = formatOrderNumber(orderId);
+      navigate(`/order-confirmation/${formattedOrderId}`);
     }, 1500);
   }, [orderId, navigate]);
 
@@ -62,7 +64,10 @@ export default function CheckoutSuccess() {
                 </Alert>
                 <div className="flex gap-2">
                   <Button
-                    onClick={() => navigate(`/order-confirmation/${orderId}`)}
+                    onClick={() => {
+                      const formattedOrderId = formatOrderNumber(orderId || "");
+                      navigate(`/order-confirmation/${formattedOrderId}`);
+                    }}
                     className="flex-1 bg-blue-600 hover:bg-blue-700"
                   >
                     View Order Status

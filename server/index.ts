@@ -12,7 +12,7 @@ import multer from "multer";
 import { handleDemo } from "./routes/demo";
 import { createAuthRouter } from "./routes/auth.router";
 import { createCustomerRouter } from "./routes/customer.router";
-import { createOrderRouter } from "./routes/order.router";
+import { createOrderRouter, createPublicOrderRouter } from "./routes/order.router";
 import {
   createProductRouter,
   createAdminProductRouter,
@@ -507,10 +507,9 @@ export function createServer() {
   // Customer routes (protected)
   app.use("/api/customers", createCustomerRouter(upload));
 
-  // Order routes (customer, admin, and public)
+  // Order routes (customer and public only - admin routes are defined directly below)
   app.use("/api/orders", createOrderRouter());
-  app.use("/api/admin/orders", createOrderRouter());
-  app.use("/api/public/orders", createOrderRouter());
+  app.use("/api/public/orders", createPublicOrderRouter());
 
   // Product routes (public, admin, storefront)
   app.use("/api/products", createProductRouter());
@@ -627,12 +626,28 @@ export function createServer() {
   );
 
   // ===== Admin Routes (Protected - Admin only) =====
+  // Admin order detail route (direct - not using router)
   app.get(
     "/api/admin/orders/:orderId",
     verifyToken,
     requireAdmin,
     handleGetOrderDetail,
   );
+
+  // Other admin order status/shipping routes
+  app.put(
+    "/api/admin/orders/:orderId/status",
+    verifyToken,
+    requireAdmin,
+    handleUpdateOrderStatus,
+  );
+  app.put(
+    "/api/admin/orders/:orderId/shipping-address",
+    verifyToken,
+    requireAdmin,
+    handleUpdateShippingAddress,
+  );
+
   app.get(
     "/api/admin/customers",
     verifyToken,
@@ -788,6 +803,9 @@ export function createServer() {
     "/api/email-preview/order-status-update",
     handleOrderStatusUpdatePreview,
   );
+
+  // ===== Admin Order Routes (Direct - these paths don't use the router) =====
+  // Note: These are separate from /api/admin/orders/* router-based routes
   app.get(
     "/api/admin/pending-orders",
     verifyToken,
@@ -795,34 +813,10 @@ export function createServer() {
     handleGetAdminPendingOrders,
   );
   app.get(
-    "/api/admin/orders/test",
-    verifyToken,
-    requireAdmin,
-    handleTestAdminOrders,
-  );
-  app.get(
-    "/api/admin/orders/debug",
-    verifyToken,
-    requireAdmin,
-    handleDebugOrders,
-  );
-  app.get(
     "/api/admin/all-orders",
     verifyToken,
     requireAdmin,
     handleGetAllAdminOrders,
-  );
-  app.put(
-    "/api/admin/orders/:orderId/status",
-    verifyToken,
-    requireAdmin,
-    handleUpdateOrderStatus,
-  );
-  app.put(
-    "/api/admin/orders/:orderId/shipping-address",
-    verifyToken,
-    requireAdmin,
-    handleUpdateShippingAddress,
   );
   app.post(
     "/api/admin/update-order-item-options",

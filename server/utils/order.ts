@@ -25,12 +25,13 @@ export function parseOrderNumber(orderNumber: string): number {
   const trimmed = orderNumber.trim();
 
   if (trimmed.toUpperCase().startsWith("SY-5")) {
-    // Format: SY-54011 where 4011 = 4001 + id, so id = 4011 - 4001
-    const displayNumber = parseInt(trimmed.substring(4), 10);
+    // Format: SY-54011 where 54011 = 4001 + id, so id = 54011 - 54001
+    // Extract everything after "SY-" (position 3 onwards)
+    const displayNumber = parseInt(trimmed.substring(3), 10);
     if (isNaN(displayNumber)) {
       throw new Error("Invalid order number format");
     }
-    const id = displayNumber - 4001;
+    const id = displayNumber - 54001;
     if (id <= 0) {
       throw new Error("Invalid order number format");
     }

@@ -40,39 +40,45 @@ export function createOrderRouter() {
   // GET /api/orders/:orderId - Get specific order details
   router.get("/:orderId", verifyToken, handleGetOrder);
 
-  // ===== PUBLIC ROUTES (No authentication - for guest order tracking) =====
-  // GET /api/public/orders/:orderId - Get public order summary
-  router.get("/public/:orderId", handleGetOrderPublic);
-
-  // POST /api/public/orders/verify - Verify order access with email/phone
-  router.post("/public/verify", handleVerifyOrderAccess);
-
-  // GET /api/public/order-status - Get order status by token
-  router.get("/public/status", handleGetOrderStatus);
-
   // ===== ADMIN ROUTES (Protected - admin only) =====
-  // GET /api/admin/orders/:orderId - Get order details (admin)
-  router.get(
-    "/admin/:orderId",
-    verifyToken,
-    requireAdmin,
-    handleGetOrderDetail,
-  );
+  // IMPORTANT: Specific routes MUST come before parameterized routes like /:orderId
+
+  // GET /api/admin/orders/test - Test admin orders endpoint
+  router.get("/test", verifyToken, requireAdmin, handleTestAdminOrders);
+
+  // GET /api/admin/orders/debug - Debug orders (admin only)
+  router.get("/debug", verifyToken, requireAdmin, handleDebugOrders);
 
   // GET /api/admin/orders/pending - Get pending orders
   router.get(
-    "/admin/pending",
+    "/pending",
     verifyToken,
     requireAdmin,
     handleGetAdminPendingOrders,
   );
 
   // GET /api/admin/all-orders - Get all orders
-  router.get("/admin/all", verifyToken, requireAdmin, handleGetAllAdminOrders);
+  router.get("/all", verifyToken, requireAdmin, handleGetAllAdminOrders);
+
+  // POST /api/admin/update-order-item-options - Update order item options
+  router.post(
+    "/update-item-options",
+    verifyToken,
+    requireAdmin,
+    handleUpdateOrderItemOptions,
+  );
+
+  // GET /api/admin/orders/:orderId - Get order details (admin)
+  router.get(
+    "/:orderId",
+    verifyToken,
+    requireAdmin,
+    handleGetOrderDetail,
+  );
 
   // PUT /api/admin/orders/:orderId/status - Update order status
   router.put(
-    "/admin/:orderId/status",
+    "/:orderId/status",
     verifyToken,
     requireAdmin,
     handleUpdateOrderStatus,
@@ -80,25 +86,30 @@ export function createOrderRouter() {
 
   // PUT /api/admin/orders/:orderId/shipping-address - Update shipping address
   router.put(
-    "/admin/:orderId/shipping-address",
+    "/:orderId/shipping-address",
     verifyToken,
     requireAdmin,
     handleUpdateShippingAddress,
   );
 
-  // POST /api/admin/update-order-item-options - Update order item options
-  router.post(
-    "/admin/update-item-options",
-    verifyToken,
-    requireAdmin,
-    handleUpdateOrderItemOptions,
-  );
+  return router;
+}
 
-  // GET /api/admin/orders/test - Test admin orders endpoint
-  router.get("/admin/test", verifyToken, requireAdmin, handleTestAdminOrders);
+/**
+ * Public Order Routes - No authentication required
+ * Used for guest order tracking and confirmation pages
+ */
+export function createPublicOrderRouter() {
+  const router = Router();
 
-  // GET /api/admin/orders/debug - Debug orders (admin only)
-  router.get("/admin/debug", verifyToken, requireAdmin, handleDebugOrders);
+  // GET /api/public/orders/:orderId - Get public order summary
+  router.get("/:orderId", handleGetOrderPublic);
+
+  // POST /api/public/orders/verify - Verify order access with email/phone
+  router.post("/verify", handleVerifyOrderAccess);
+
+  // GET /api/public/orders/status - Get order status by token
+  router.get("/status", handleGetOrderStatus);
 
   return router;
 }

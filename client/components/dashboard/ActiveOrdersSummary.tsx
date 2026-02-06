@@ -27,16 +27,16 @@ interface OrderItem {
   option_price?: number;
   total_price?: number;
   options?:
-    | Record<string, any>
-    | Array<{
-        option_id?: string;
-        option_name?: string;
-        name?: string;
-        option_value?: string;
-        value?: string;
-        price?: number;
-        modifier_price?: number;
-      }>;
+  | Record<string, any>
+  | Array<{
+    option_id?: string;
+    option_name?: string;
+    name?: string;
+    option_value?: string;
+    value?: string;
+    price?: number;
+    modifier_price?: number;
+  }>;
   design_file_url?: string;
 }
 
@@ -103,7 +103,10 @@ export default function ActiveOrdersSummary({
   };
 
   const getStatusBadgeColor = (status: string) => {
-    switch (status) {
+    // OPTIMISTIC UI: Normalize pending_payment to processing
+    const normalizedStatus = status === "pending_payment" ? "processing" : status;
+
+    switch (normalizedStatus) {
       case "pending":
         return "bg-orange-100 text-orange-700 border-2 border-orange-300";
       case "processing":
@@ -199,8 +202,8 @@ export default function ActiveOrdersSummary({
                       <span
                         className={`text-xs font-semibold px-2 sm:px-3 py-1 rounded-full border-2 w-fit ${getStatusBadgeColor(order.status)}`}
                       >
-                        {order.status.charAt(0).toUpperCase() +
-                          order.status.slice(1)}
+                        {(order.status === "pending_payment" ? "processing" : order.status).charAt(0).toUpperCase() +
+                          (order.status === "pending_payment" ? "processing" : order.status).slice(1)}
                       </span>
                     </div>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs text-gray-600 mt-2">
@@ -407,9 +410,9 @@ export default function ActiveOrdersSummary({
                             {item.design_file_url && (
                               <div className="flex gap-2 mb-2">
                                 {item.design_file_url.startsWith("data:") ||
-                                item.design_file_url.match(
-                                  /\.(jpg|jpeg|png|gif|webp)$/i,
-                                ) ? (
+                                  item.design_file_url.match(
+                                    /\.(jpg|jpeg|png|gif|webp)$/i,
+                                  ) ? (
                                   <a
                                     href={item.design_file_url}
                                     target="_blank"
@@ -472,42 +475,42 @@ export default function ActiveOrdersSummary({
                                 <div className="flex flex-wrap gap-1">
                                   {Array.isArray(item.options)
                                     ? item.options.map(
-                                        (option: any, idx: number) => {
-                                          const optionName =
-                                            option.option_id ||
-                                            option.name ||
-                                            `Option ${idx + 1}`;
-                                          const optionValue =
-                                            option.option_value ||
-                                            option.value ||
-                                            "";
-                                          return (
-                                            <span
-                                              key={idx}
-                                              className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
-                                            >
-                                              {optionName}: {optionValue}
-                                            </span>
-                                          );
-                                        },
-                                      )
+                                      (option: any, idx: number) => {
+                                        const optionName =
+                                          option.option_id ||
+                                          option.name ||
+                                          `Option ${idx + 1}`;
+                                        const optionValue =
+                                          option.option_value ||
+                                          option.value ||
+                                          "";
+                                        return (
+                                          <span
+                                            key={idx}
+                                            className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
+                                          >
+                                            {optionName}: {optionValue}
+                                          </span>
+                                        );
+                                      },
+                                    )
                                     : Object.entries(item.options).map(
-                                        ([key, value]) => {
-                                          const displayValue =
-                                            formatOptionValue(value);
-                                          const label = /^\d+$/.test(key)
-                                            ? displayValue
-                                            : `${key}: ${displayValue}`;
-                                          return (
-                                            <span
-                                              key={key}
-                                              className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
-                                            >
-                                              {label}
-                                            </span>
-                                          );
-                                        },
-                                      )}
+                                      ([key, value]) => {
+                                        const displayValue =
+                                          formatOptionValue(value);
+                                        const label = /^\d+$/.test(key)
+                                          ? displayValue
+                                          : `${key}: ${displayValue}`;
+                                        return (
+                                          <span
+                                            key={key}
+                                            className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs border border-blue-300"
+                                          >
+                                            {label}
+                                          </span>
+                                        );
+                                      },
+                                    )}
                                 </div>
                               </div>
                             )}
@@ -555,72 +558,72 @@ export default function ActiveOrdersSummary({
                                     <div className="space-y-1">
                                       {Array.isArray(item.options)
                                         ? item.options.map(
-                                            (option: any, idx: number) => {
-                                              const optionName =
-                                                option.option_id ||
-                                                option.name ||
-                                                `Option ${idx + 1}`;
-                                              const optionValue =
-                                                option.option_value ||
-                                                option.value ||
-                                                "";
-                                              const optionPrice =
-                                                option.price ||
-                                                option.modifier_price ||
-                                                0;
-                                              return (
-                                                <div
-                                                  key={idx}
-                                                  className="flex justify-between items-center text-xs"
-                                                >
-                                                  <span className="text-gray-700">
-                                                    {optionName}{" "}
-                                                    {optionValue &&
-                                                      `(${optionValue})`}
+                                          (option: any, idx: number) => {
+                                            const optionName =
+                                              option.option_id ||
+                                              option.name ||
+                                              `Option ${idx + 1}`;
+                                            const optionValue =
+                                              option.option_value ||
+                                              option.value ||
+                                              "";
+                                            const optionPrice =
+                                              option.price ||
+                                              option.modifier_price ||
+                                              0;
+                                            return (
+                                              <div
+                                                key={idx}
+                                                className="flex justify-between items-center text-xs"
+                                              >
+                                                <span className="text-gray-700">
+                                                  {optionName}{" "}
+                                                  {optionValue &&
+                                                    `(${optionValue})`}
+                                                </span>
+                                                {optionPrice > 0 && (
+                                                  <span className="text-blue-600 font-medium">
+                                                    +$
+                                                    {formatPrice(optionPrice)}
                                                   </span>
-                                                  {optionPrice > 0 && (
-                                                    <span className="text-blue-600 font-medium">
-                                                      +$
-                                                      {formatPrice(optionPrice)}
-                                                    </span>
-                                                  )}
-                                                </div>
-                                              );
-                                            },
-                                          )
+                                                )}
+                                              </div>
+                                            );
+                                          },
+                                        )
                                         : Object.entries(item.options).map(
-                                            ([key, value]: [string, any]) => {
-                                              const optionPrice =
-                                                typeof value === "object"
-                                                  ? value.price ||
-                                                    value.modifier_price
-                                                  : 0;
-                                              const displayValue =
-                                                typeof value === "object"
-                                                  ? value.value || value.name
-                                                  : value;
-                                              const formattedKey =
-                                                formatOptionKey(key);
-                                              return (
-                                                <div
-                                                  key={key}
-                                                  className="flex justify-between items-center text-xs"
-                                                >
-                                                  <span className="text-gray-700">
-                                                    {formattedKey}{" "}
-                                                    {displayValue &&
-                                                      `(${formatOptionValue(displayValue)})`}
+                                          ([key, value]: [string, any]) => {
+                                            const optionPrice =
+                                              typeof value === "object"
+                                                ? value.price ||
+                                                value.modifier_price
+                                                : 0;
+                                            const displayValue =
+                                              typeof value === "object"
+                                                ? value.value || value.name
+                                                : value;
+                                            const formattedKey =
+                                              formatOptionKey(key);
+                                            return (
+                                              <div
+                                                key={key}
+                                                className="flex justify-between items-center text-xs"
+                                              >
+                                                <span className="text-gray-700">
+                                                  {formattedKey}{" "}
+                                                  {displayValue &&
+                                                    `(${formatOptionValue(displayValue)})`}
+                                                </span>
+                                                {optionPrice > 0 && (
+                                                  <span className="text-blue-600 font-medium">
+                                                    +$
+                                                    {formatPrice(optionPrice)}
                                                   </span>
-                                                  {optionPrice > 0 && (
-                                                    <span className="text-blue-600 font-medium">
-                                                      +$
-                                                      {formatPrice(optionPrice)}
-                                                    </span>
-                                                  )}
-                                                </div>
-                                              );
-                                            },
-                                          )}
+                                                )}
+                                              </div>
+                                            );
+                                          },
+                                        )}
                                     </div>
                                   </div>
                                 )}

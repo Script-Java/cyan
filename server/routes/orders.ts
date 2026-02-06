@@ -7,7 +7,7 @@ import {
   getScopedSupabaseClient,
 } from "../utils/supabase";
 import { ecwidAPI } from "../utils/ecwid";
-import { parseOrderNumber } from "../utils/order";
+import { parseOrderNumber, formatOrderNumber } from "../utils/order";
 import { VerifyOrderAccessSchema, validate } from "../schemas/validation";
 import {
   validatePublicAccessToken,
@@ -464,31 +464,61 @@ export const handleGetPendingOrders: RequestHandler = async (req, res) => {
  */
 export const handleGetOrderPublic: RequestHandler = async (req, res) => {
   try {
+    const { orderId } = req.params;
     const { token } = req.query;
 
-    if (!token || typeof token !== "string") {
-      return res.status(404).json({ error: "Order not found" });
+    let orderIdNum: number;
+
+    // 1. Parse the Order ID
+    if (token && typeof token === "string") {
+      const validation = await validatePublicAccessToken(token, "order");
+      if (!validation.success) {
+        return res.status(404).json({ error: "Order not found (Invalid Token)" });
+      }
+      orderIdNum = parseInt(validation.resourceId, 10);
+    } else if (orderId && typeof orderId === "string") {
+      try {
+        orderIdNum = parseOrderNumber(orderId);
+      } catch (parseError) {
+        orderIdNum = parseInt(orderId, 10);
+      }
+    } else {
+      return res.status(404).json({ error: "Order ID missing" });
     }
 
-    // SECURITY: Validate token atomically (prevents enumeration)
-    const validation = await validatePublicAccessToken(token, "order");
-    if (!validation.success) {
-      // Generic 404 - never reveal why token failed
-      return res.status(404).json({ error: "Order not found" });
+    if (!orderIdNum || isNaN(orderIdNum) || orderIdNum <= 0) {
+      return res.status(404).json({ error: "Invalid Order ID" });
     }
 
-    const orderId = validation.resourceId;
+    console.log(`[Public Access] Attempting to fetch Order ID: ${orderIdNum}`);
 
-    // VALIDATION: Parse and validate orderId
-    const orderIdNum = parseInt(orderId, 10);
-    if (isNaN(orderIdNum) || orderIdNum <= 0) {
-      return res.status(404).json({ error: "Order not found" });
+    // 2. SETUP ADMIN CLIENT (Crucial Step)
+    const { createClient } = await import("@supabase/supabase-js");
+
+    // Check for both common naming conventions for the Service Role Key
+    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
+
+    if (!supabaseUrl || !supabaseServiceKey) {
+      console.error("CRITICAL ERROR: Missing SUPABASE_SERVICE_ROLE_KEY. Cannot bypass RLS.");
+      console.error("Available env vars:", {
+        hasUrl: !!process.env.SUPABASE_URL,
+        hasServiceRoleKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+        hasServiceKey: !!process.env.SUPABASE_SERVICE_KEY,
+      });
+      return res.status(500).json({ error: "Server configuration error" });
     }
 
-    const { supabase } = await import("../utils/supabase");
+    // Create a fresh admin client for this request
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      }
+    });
 
-    // Get the order from Supabase
-    const { data: order, error: orderError } = await supabase
+    // 3. Fetch Order using Admin Client
+    const { data: order, error: orderError } = await supabaseAdmin
       .from("orders")
       .select(
         `
@@ -513,7 +543,8 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
           product_id,
           product_name,
           quantity,
-          price
+          price,
+          design_file_url
         )
       `,
       )
@@ -521,12 +552,15 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
       .single();
 
     if (orderError || !order) {
-      console.warn("Order not found for public access:", orderId);
+      console.warn(`[Public Access] Order ${orderIdNum} not found. Error:`, orderError?.message);
+      // If error is PGRST116, it means no rows found (RLS or ID doesn't exist)
       return res.status(404).json({ error: "Order not found" });
     }
 
-    // Fetch digital files if any exist
-    const { data: digitalFilesData } = await supabase
+    console.log(`[Public Access] Successfully found Order ${orderIdNum}`);
+
+    // 4. Fetch Digital Files (using Admin Client)
+    const { data: digitalFilesData } = await supabaseAdmin
       .from("digital_files")
       .select("*")
       .eq("order_id", orderIdNum);
@@ -540,6 +574,7 @@ export const handleGetOrderPublic: RequestHandler = async (req, res) => {
       uploaded_at: file.uploaded_at,
     }));
 
+    // 5. Return Response
     res.json({
       success: true,
       data: {
@@ -646,7 +681,7 @@ export const handleVerifyOrderAccess: RequestHandler = async (req, res) => {
     const phoneMatch =
       customer.phone &&
       customer.phone.replace(/\D/g, "") ===
-        verification_field.replace(/\D/g, "");
+      verification_field.replace(/\D/g, "");
 
     if (!emailMatch && !phoneMatch) {
       // Log suspicious activity but return generic error
@@ -864,7 +899,7 @@ export const handleGetOrderStatus: RequestHandler = async (req, res) => {
     const { data: digitalFilesData } = await supabase
       .from("digital_files")
       .select("*")
-      .eq("order_id", orderIdNum);
+      .eq("order_id", order.id);
 
     const digitalFiles = (digitalFilesData || []).map((file: any) => ({
       id: file.id,

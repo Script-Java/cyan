@@ -357,6 +357,7 @@ export async function createSquarePaymentLink(data: {
 }): Promise<{
   success: boolean;
   paymentLinkUrl?: string;
+  orderId?: string;
   error?: string;
 }> {
   try {
@@ -493,6 +494,7 @@ export async function createSquarePaymentLink(data: {
         enable_coupon: true,
         enable_loyalty: true,
         merchant_support_email: "sticky@stickyslap.com",
+        redirect_url: data.redirectUrl, // Redirect to website after payment
         accepted_payment_methods: {
           afterpay_clearpay: true,
           apple_pay: true,
@@ -620,11 +622,6 @@ export async function createSquarePaymentLink(data: {
 
     paymentLinkBody.order = orderObject;
 
-    // Add the redirect URL for after payment completion
-    if (data.redirectUrl) {
-      paymentLinkBody.redirect_url = data.redirectUrl;
-    }
-
     // Add the total amount the payment link should collect
     // This is the grand total including all line items, taxes, and shipping
     paymentLinkBody.amount_money = {
@@ -733,14 +730,18 @@ export async function createSquarePaymentLink(data: {
     }
 
     if (responseData?.payment_link?.url) {
+      const squareOrderId = responseData.payment_link?.order_id || responseData.order?.id;
+
       console.log("Payment Link created successfully:", {
         linkId: responseData.payment_link.id,
         url: responseData.payment_link.url,
+        orderId: squareOrderId,
       });
 
       return {
         success: true,
         paymentLinkUrl: responseData.payment_link.url,
+        orderId: squareOrderId,
       };
     }
 

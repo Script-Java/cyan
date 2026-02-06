@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useStoreCredit } from "@/hooks/useStoreCredit";
+import { formatOrderNumber } from "@/lib/orderFormatting";
 
 interface CartItem {
   product_id: number;
@@ -604,10 +605,10 @@ export default function CheckoutNew() {
         (
           opt:
             | {
-                option_id?: number;
-                option_value?: string;
-                modifier_price?: number;
-              }
+              option_id?: number;
+              option_value?: string;
+              modifier_price?: number;
+            }
             | string,
         ) => {
           if (typeof opt === "string") {
@@ -687,25 +688,25 @@ export default function CheckoutNew() {
         },
         billingAddress: billingInfo.sameAsShipping
           ? {
-              firstName: customerInfo.firstName,
-              lastName: customerInfo.lastName,
-              street: customerInfo.street,
-              street2: customerInfo.street2,
-              city: customerInfo.city,
-              state: customerInfo.state,
-              postalCode: customerInfo.postalCode,
-              country: customerInfo.country,
-            }
+            firstName: customerInfo.firstName,
+            lastName: customerInfo.lastName,
+            street: customerInfo.street,
+            street2: customerInfo.street2,
+            city: customerInfo.city,
+            state: customerInfo.state,
+            postalCode: customerInfo.postalCode,
+            country: customerInfo.country,
+          }
           : {
-              firstName: billingInfo.firstName,
-              lastName: billingInfo.lastName,
-              street: billingInfo.street,
-              street2: billingInfo.street2,
-              city: billingInfo.city,
-              state: billingInfo.state,
-              postalCode: billingInfo.postalCode,
-              country: billingInfo.country,
-            },
+            firstName: billingInfo.firstName,
+            lastName: billingInfo.lastName,
+            street: billingInfo.street,
+            street2: billingInfo.street2,
+            city: billingInfo.city,
+            state: billingInfo.state,
+            postalCode: billingInfo.postalCode,
+            country: billingInfo.country,
+          },
         subtotal: orderData.subtotal,
         tax: orderData.tax,
         shipping: orderData.shipping,
@@ -833,10 +834,11 @@ export default function CheckoutNew() {
     localStorage.removeItem("cart");
     localStorage.removeItem("cart_id");
 
-    // Redirect to order confirmation page
+    // Redirect to order confirmation page with formatted order number
     if (createdOrderId) {
       setTimeout(() => {
-        navigate(`/order-confirmation/${createdOrderId}`);
+        const formattedOrderId = formatOrderNumber(createdOrderId);
+        navigate(`/order-confirmation/${formattedOrderId}`);
       }, 1000);
     }
   };
@@ -938,7 +940,7 @@ export default function CheckoutNew() {
                             {item.design_file_url.match(
                               /\.(jpg|jpeg|png|gif|webp)$/i,
                             ) ||
-                            item.design_file_url.startsWith("data:image") ? (
+                              item.design_file_url.startsWith("data:image") ? (
                               <img
                                 src={item.design_file_url}
                                 alt="Design thumbnail"
@@ -964,13 +966,13 @@ export default function CheckoutNew() {
                             </h3>
                             <div className="text-sm space-y-1">
                               {item.savePercentage &&
-                              item.savePercentage > 0 ? (
+                                item.savePercentage > 0 ? (
                                 <>
                                   {(() => {
                                     const basePrice =
                                       item.basePrice ||
                                       item.price /
-                                        (1 - item.savePercentage / 100);
+                                      (1 - item.savePercentage / 100);
                                     const regularTotal =
                                       basePrice * item.quantity;
                                     const amountSaved =
@@ -1083,9 +1085,9 @@ export default function CheckoutNew() {
                                     (
                                       opt:
                                         | {
-                                            option_id?: number;
-                                            option_value?: string;
-                                          }
+                                          option_id?: number;
+                                          option_value?: string;
+                                        }
                                         | string,
                                       idx: number,
                                     ) => {
@@ -1098,12 +1100,12 @@ export default function CheckoutNew() {
                                       // Try to find the option name from the options array
                                       const optionName =
                                         typeof opt !== "string" &&
-                                        opt.option_id &&
-                                        item.options
+                                          opt.option_id &&
+                                          item.options
                                           ? item.options.find(
-                                              (o: any) =>
-                                                o.id === opt.option_id,
-                                            )?.name
+                                            (o: any) =>
+                                              o.id === opt.option_id,
+                                          )?.name
                                           : null;
 
                                       return (
@@ -1235,9 +1237,8 @@ export default function CheckoutNew() {
                       Return & Refund Policy
                     </h4>
                     <ChevronDown
-                      className={`w-5 h-5 text-gray-600 transition-transform ${
-                        showPolicyDropdown ? "rotate-180" : ""
-                      }`}
+                      className={`w-5 h-5 text-gray-600 transition-transform ${showPolicyDropdown ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
 
@@ -1505,14 +1506,14 @@ export default function CheckoutNew() {
                   {(!agreedToPrivacy ||
                     !agreedToTerms ||
                     !agreedToShippingPolicy) && (
-                    <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2">
-                      <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-amber-800">
-                        You must agree to all policies and terms to complete
-                        your purchase.
-                      </p>
-                    </div>
-                  )}
+                      <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2">
+                        <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                        <p className="text-xs text-amber-800">
+                          You must agree to all policies and terms to complete
+                          your purchase.
+                        </p>
+                      </div>
+                    )}
 
                   {/* Support Contact Info */}
                   <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6 mt-6">
