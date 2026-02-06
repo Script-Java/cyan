@@ -675,6 +675,92 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
         // Even if DB update fails, return success to frontend to avoid user panic
       } else {
         console.log("Order successfully marked as paid:", id);
+
+        // Send confirmation email as backup (in case webhook is delayed/missing)
+        try {
+          console.log(
+            "Sending backup confirmation email for order (webhook may be delayed):",
+            id,
+          );
+
+          const { data: customer } = await supabase
+            .from("customers")
+            .select("*")
+            .eq("id", data.customer_id)
+            .single();
+
+          const { data: orderItems } = await supabase
+            .from("order_items")
+            .select("*")
+            .eq("order_id", id);
+
+          const baseUrl = process.env.BASE_URL || "https://stickyslap.app";
+          const customerEmail = customer?.email || "";
+
+          if (customerEmail) {
+            const emailSent = await sendOrderConfirmationEmail({
+              customerEmail,
+              customerName:
+                customer?.first_name && customer?.last_name
+                  ? `${customer.first_name} ${customer.last_name}`
+                  : customer?.first_name || "Valued Customer",
+              orderNumber: formatOrderNumber(id),
+              orderDate: new Date().toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }),
+              items:
+                orderItems?.map((item) => ({
+                  name: item.product_name,
+                  quantity: item.quantity,
+                  price: item.price,
+                  designFileUrl: item.design_file_url,
+                  options: item.options,
+                })) || [],
+              subtotal: data.subtotal || 0,
+              tax: data.tax || 0,
+              shipping: data.shipping || 0,
+              discount: data.discount || 0,
+              discountCode: data.discount_code,
+              total: data.total || 0,
+              estimatedDelivery: data.estimated_delivery_date
+                ? new Date(data.estimated_delivery_date).toLocaleDateString(
+                  "en-US",
+                  {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                  },
+                )
+                : new Date(
+                  Date.now() + 14 * 24 * 60 * 60 * 1000,
+                ).toLocaleDateString("en-US", {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                }),
+              orderLink: `${baseUrl}/order-status?orderNumber=${formatOrderNumber(id)}`,
+              shippingAddress: data.shipping_address || undefined,
+              policies: undefined,
+            });
+
+            if (emailSent) {
+              console.log(
+                `✓ Backup confirmation email sent to ${customerEmail} for order #${formatOrderNumber(id)}`,
+              );
+            }
+          } else {
+            console.warn("No customer email available for backup confirmation");
+          }
+        } catch (emailError) {
+          console.error("Failed to send backup confirmation email:", {
+            orderId: id,
+            error:
+              emailError instanceof Error ? emailError.message : emailError,
+          });
+          // Don't fail the confirmation if email fails
+        }
       }
 
       return res.json({
@@ -1100,10 +1186,10 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
 
     console.log("Order marked as paid with payment details:", orderId);
 
-    // Get updated order for credit and email
+    // Get updated order with complete data for credit and email
     const { data: order } = await supabase
       .from("orders")
-      .select("id, customer_id, total")
+      .select("*")
       .eq("id", orderId)
       .single();
 
@@ -1125,6 +1211,8 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
 
     // Send order confirmation email now that payment is confirmed
     try {
+      console.log("Preparing to send order confirmation email for order:", orderId);
+
       const { data: customer } = await supabase
         .from("customers")
         .select("*")
@@ -1136,15 +1224,22 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
         .select("*")
         .eq("order_id", orderId);
 
-      const baseUrl = process.env.BASE_URL || "http://localhost:5173";
+      const baseUrl = process.env.BASE_URL || "https://stickyslap.app";
+      const customerEmail = customer?.email || order?.email || "";
 
-      await sendOrderConfirmationEmail({
-        customerEmail:
-          customer?.email || order?.email || "customer@example.com",
+      if (!customerEmail) {
+        console.error("No customer email found for order:", orderId);
+        throw new Error("Customer email is required to send confirmation");
+      }
+
+      console.log("Sending confirmation email to:", customerEmail);
+
+      const emailSent = await sendOrderConfirmationEmail({
+        customerEmail,
         customerName:
           customer?.first_name && customer?.last_name
             ? `${customer.first_name} ${customer.last_name}`
-            : "Valued Customer",
+            : customer?.first_name || "Valued Customer",
         orderNumber: formatOrderNumber(orderId),
         orderDate: new Date().toLocaleDateString("en-US", {
           year: "numeric",
@@ -1187,11 +1282,21 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
         policies: undefined,
       });
 
-      console.log(
-        `Order confirmation email sent to ${customer?.email} after payment confirmation`,
-      );
+      if (emailSent) {
+        console.log(
+          `✓ Order confirmation email successfully sent to ${customerEmail} for order #${formatOrderNumber(orderId)}`,
+        );
+      } else {
+        console.warn(
+          `✗ Order confirmation email failed to send to ${customerEmail} for order #${formatOrderNumber(orderId)}`,
+        );
+      }
     } catch (emailError) {
-      console.error("Failed to send confirmation email:", emailError);
+      console.error("Failed to send confirmation email:", {
+        orderId,
+        error: emailError instanceof Error ? emailError.message : emailError,
+        stack: emailError instanceof Error ? emailError.stack : undefined,
+      });
       // Don't fail the payment confirmation if email fails
     }
   } catch (error) {
