@@ -115,11 +115,12 @@ const generateInvoiceNumber = async (): Promise<string> => {
   const month = String(date.getMonth() + 1).padStart(2, "0");
 
   // Get count of invoices this month
+  const lastDay = new Date(year, date.getMonth() + 1, 0).getDate();
   const { data, error } = await supabase
     .from("invoices")
     .select("id", { count: "exact" })
     .gte("created_at", `${year}-${month}-01`)
-    .lte("created_at", `${year}-${month}-31`);
+    .lte("created_at", `${year}-${month}-${lastDay}`);
 
   const count = (data?.length || 0) + 1;
   return `INV-${year}${month}-${String(count).padStart(4, "0")}`;
@@ -133,7 +134,8 @@ const generateInvoiceToken = (): string => {
 // Get all invoices (admin)
 export const handleGetInvoices: RequestHandler = async (req, res) => {
   try {
-    const { status, type, search, sort_by, sort_order } = req.query;
+    const { status, type, sort_by, sort_order } = req.query;
+    const search = req.query.search as string | undefined;
 
     let query = supabase.from("invoices").select("*, invoice_line_items(*)");
 
@@ -745,7 +747,7 @@ export const handleCancelInvoice: RequestHandler = async (req, res) => {
 // Get or create payment token for invoice
 export const handleGetPaymentToken: RequestHandler = async (req, res) => {
   try {
-    const { invoiceId } = req.params;
+    const invoiceId = req.params.invoiceId as string;
 
     // Try to get existing token (most recent one)
     const { data: existingToken, error: fetchError } = await supabase
@@ -840,17 +842,17 @@ export const handleGetInvoiceByToken: RequestHandler = async (req, res) => {
     }
 
     // Update view count (non-blocking - fire and forget)
-    supabase
+    const { error: viewError } = await supabase
       .from("invoice_tokens")
       .update({
         views: (tokenData.views || 0) + 1,
         last_viewed_at: new Date().toISOString(),
       })
-      .eq("token", token)
-      .then(() => {
-        // View count updated successfully
-      })
-      .catch((err) => console.error("Error updating token views:", err));
+      .eq("token", token);
+
+    if (viewError) {
+      console.error("Error updating token views:", viewError);
+    }
 
     // Get invoice
     const { data: invoice, error: invoiceError } = await supabase

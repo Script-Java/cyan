@@ -386,9 +386,9 @@ export function createServer() {
       [
         "default-src 'self'",
         "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://connect.squareup.com https://*.ecwid.com https://*.google.com https://*.googleapis.com https://*.gstatic.com https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:*",
-        "connect-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://*.squareupsandbox.com https://*.squareup.com https://connect.squareup.com https://connect.squareupsandbox.com https://*.ecwid.com https://*.google.com https://*.googleapis.com https://*.gstatic.com https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:*",
+        "connect-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://*.squareupsandbox.com https://*.squareup.com https://connect.squareup.com https://connect.squareupsandbox.com https://*.ecwid.com https://*.google.com https://*.googleapis.com https://*.gstatic.com https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:* https://api.cloudinary.com https://res.cloudinary.com",
         "frame-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://square.com https://*.squareupsandbox.com https://*.squareup.com https://*.ecwid.com https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:*",
-        "img-src 'self' https: data: https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:*",
+        "img-src 'self' https: data: https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:* https://res.cloudinary.com",
         "style-src 'self' 'unsafe-inline' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://fonts.googleapis.com https://*.ecwid.com https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:*",
         "font-src 'self' https://web.squarecdn.com https://sandbox.web.squarecdn.com https://fonts.googleapis.com https://*.gstatic.com https://d34ikvsdm2rlij.cloudfront.net https://storefront.ecwid.dev:*",
         "object-src 'none'",

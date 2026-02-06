@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import { supabase } from "../utils/supabase";
 
 export const handleInitializeInvoicesDatabase: RequestHandler = async (req, res) => {
   try {
@@ -180,6 +181,50 @@ export const handleInitializeInvoicesDatabase: RequestHandler = async (req, res)
         );
     `;
 
+    const publicAccessTokensQuery = `
+      CREATE TABLE IF NOT EXISTS public_access_tokens (
+        id BIGSERIAL PRIMARY KEY,
+        token VARCHAR(64) UNIQUE NOT NULL,
+        
+        -- Resource identification
+        resource_type VARCHAR(50) NOT NULL CHECK (resource_type IN ('proof', 'order', 'invoice', 'design')),
+        resource_id VARCHAR(255) NOT NULL,
+        
+        -- Expiration and usage
+        expires_at TIMESTAMPTZ NOT NULL,
+        one_time_use BOOLEAN DEFAULT FALSE,
+        used_at TIMESTAMPTZ,
+        
+        -- Audit trail
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        created_by VARCHAR(255),
+        metadata JSONB,
+        
+        -- Constraints
+        CONSTRAINT token_not_too_long CHECK (LENGTH(token) = 64),
+        CONSTRAINT token_hex_format CHECK (token ~ '^[0-9a-f]{64}$')
+      );
+
+      -- INDEXES
+      CREATE INDEX IF NOT EXISTS idx_public_access_tokens_token 
+        ON public_access_tokens(token) 
+        WHERE used_at IS NULL;
+      
+      CREATE INDEX IF NOT EXISTS idx_public_access_tokens_resource 
+        ON public_access_tokens(resource_type, resource_id);
+      
+      CREATE INDEX IF NOT EXISTS idx_public_access_tokens_expires 
+        ON public_access_tokens(expires_at) 
+        WHERE used_at IS NULL;
+
+      -- COMMENTS
+      COMMENT ON TABLE public_access_tokens IS 'Cryptographically secure access tokens for public endpoints. Replaces guessable ID-based access.';
+
+      -- PERMISSIONS
+      REVOKE ALL ON public_access_tokens FROM anon, authenticated;
+      GRANT USAGE ON SEQUENCE public_access_tokens_id_seq TO anon, authenticated;
+    `;
+
     // Try to create tables using direct query execution
     // Fallback: Return SQL for manual execution if RPC doesn't work
     const errors = [];
@@ -218,6 +263,7 @@ export const handleInitializeInvoicesDatabase: RequestHandler = async (req, res)
           tokens_table: invoiceTokensQuery,
           artwork_table: invoiceArtworkQuery,
           activity_table: invoiceActivityQuery,
+          public_access_tokens_table: publicAccessTokensQuery,
           rls_policies: rlsQuery,
         },
         url: "https://app.supabase.com/project/nbzttuomtdtsfzcagfnh/sql/new",
