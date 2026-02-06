@@ -330,6 +330,13 @@ export function createServer() {
     frontendUrl: process.env.FRONTEND_URL,
   });
 
+  // Phase 1: Environment & Config Verification
+  console.log("=== PHASE 1: Environment & Config Verification ===");
+  console.log("✅ SQUARE_APPLICATION_ID:", process.env.SQUARE_APPLICATION_ID ? "Loaded" : "❌ MISSING");
+  console.log("✅ SQUARE_ACCESS_TOKEN:", process.env.SQUARE_ACCESS_TOKEN ? "Loaded" : "❌ MISSING");
+  console.log("✅ RESEND_API_KEY:", process.env.RESEND_API_KEY ? "Loaded" : "❌ MISSING");
+  console.log("=================================================");
+
   // Middleware
   app.use(cors(corsOptions));
 

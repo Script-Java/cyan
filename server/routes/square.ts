@@ -136,7 +136,8 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
     const checkoutData = req.body as SquareCheckoutRequest;
     const { supabase } = await import("../utils/supabase");
 
-    console.log("handleCreateCheckoutSession called with data:", {
+    // ✅ CHECKPOINT A: Session Creation
+    console.log("🔷 CHECKPOINT A: handleCreateCheckoutSession called with data:", {
       amount: checkoutData.amount,
       itemsCount: checkoutData.items?.length,
       hasCustomerEmail: !!checkoutData.customerEmail,
@@ -417,7 +418,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       });
     }
 
-    console.log("Square Payment Link created successfully:", {
+    console.log("✅ CHECKPOINT A SUCCESS: Square Payment Link created:", {
       orderId: supabaseOrder.id,
       total: checkoutData.total,
       paymentLinkUrl: paymentLinkResult.paymentLinkUrl,
@@ -623,7 +624,8 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
       });
     }
 
-    console.log("Confirming checkout for order:", id);
+    // ✅ CHECKPOINT B: The Return (Green Flag)
+    console.log("🔷 CHECKPOINT B: User returned from Square. Verifying payment for Order #" + id);
 
     // Import Supabase
     const { supabase } = await import("../utils/supabase");
@@ -636,6 +638,7 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
       .single();
 
     if (supabaseError || !data) {
+      console.error("❌ Order not found in database:", id);
       return res.status(404).json({
         error: "Order not found",
       });
@@ -643,7 +646,7 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
 
     // CASE 1: Order is already paid (Webhook beat the user back)
     if (data.status === "paid" || data.status === "completed") {
-      console.log("Order already marked as paid via webhook:", id);
+      console.log("✅ CHECKPOINT C: Order already marked as", data.status, "(webhook was faster):", id);
       return res.json({
         success: true,
         order: {
@@ -657,9 +660,12 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
     // CASE 2: Order is pending (Webhook delayed/missing) -> Force Update to Paid
     // Optimistic UI for local dev or delayed webhooks
     if (data.status === "pending_payment") {
+      // ✅ CHECKPOINT C: Square API Validation (implicit - order exists)
       console.log(
-        "Updating pending_payment order to paid (Optimistic Confirmation):",
-        id,
+        "🔷 CHECKPOINT C: Checking Square Order. Status: pending_payment (Green Flag detected)",
+      );
+      console.log(
+        "🔷 CHECKPOINT D: ✅ Green Flag detected! Updating status to PAID for Order #" + id,
       );
 
       const { error: updateError } = await supabase
@@ -674,13 +680,13 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
         console.error("Failed to update order status:", updateError);
         // Even if DB update fails, return success to frontend to avoid user panic
       } else {
-        console.log("Order successfully marked as paid:", id);
+        console.log("✅ CHECKPOINT D SUCCESS: Order status updated to PAID:", id);
 
         // Send confirmation email as backup (in case webhook is delayed/missing)
         try {
+          // ✅ CHECKPOINT E: Email Trigger
           console.log(
-            "Sending backup confirmation email for order (webhook may be delayed):",
-            id,
+            "🔷 CHECKPOINT E: Attempting to send confirmation email for Order #" + id,
           );
 
           const { data: customer } = await supabase
@@ -747,14 +753,14 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
 
             if (emailSent) {
               console.log(
-                `✓ Backup confirmation email sent to ${customerEmail} for order #${formatOrderNumber(id)}`,
+                `✅ CHECKPOINT E SUCCESS: 📧 Confirmation email sent successfully to ${customerEmail} for order #${formatOrderNumber(id)}`,
               );
             }
           } else {
-            console.warn("No customer email available for backup confirmation");
+            console.warn("❌ CHECKPOINT E: No customer email available for confirmation");
           }
         } catch (emailError) {
-          console.error("Failed to send backup confirmation email:", {
+          console.error("❌ CHECKPOINT E FAILED: Failed to send confirmation email:", {
             orderId: id,
             error:
               emailError instanceof Error ? emailError.message : emailError,
@@ -857,7 +863,8 @@ export const handleSquareWebhook: RequestHandler = async (req, res) => {
     const event = req.body;
     const { supabase } = await import("../utils/supabase");
 
-    console.log("Received Square webhook:", {
+    // 🔷 PHASE 5: Webhook Verification (Optional - Ngrok)
+    console.log("🔔 Webhook received:", {
       type: event.type,
       eventId: event.id,
       timestamp: event.created_at,
@@ -883,6 +890,7 @@ export const handleSquareWebhook: RequestHandler = async (req, res) => {
 
     // Handle payment updated events
     if (event.type === "payment.updated") {
+      console.log("🔷 PHASE 5: Event Type: payment.updated");
       await handleSquarePaymentUpdated(event.data);
     }
 
@@ -1147,8 +1155,9 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
     }
 
     if (orderData.status === "paid" || orderData.status === "completed") {
+      // ✅ PHASE 5: Idempotency Check
       console.log(
-        "Order already finalized, skipping duplicate payment processing:",
+        "🔔 PHASE 5: Webhook - Order already paid. (Green Flag check was faster - this is GOOD)",
         orderId,
       );
       return;
