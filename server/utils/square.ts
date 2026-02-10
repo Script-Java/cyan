@@ -497,6 +497,7 @@ export async function createSquarePaymentLink(data: {
         enable_loyalty: true,
         merchant_support_email: "sticky@stickyslap.com",
         redirect_url: data.redirectUrl, // Redirect to website after payment
+        note: `Order: ${formatOrderNumber(data.orderId)}`,
         accepted_payment_methods: {
           afterpay_clearpay: true,
           apple_pay: true,
@@ -522,6 +523,7 @@ export async function createSquarePaymentLink(data: {
     const orderObject: any = {
       location_id: locationId,
       reference_id: formatOrderNumber(data.orderId),
+      note: `Order: ${formatOrderNumber(data.orderId)}`,
       line_items: lineItems,
       discounts: [],
     };
