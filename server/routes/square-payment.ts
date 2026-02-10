@@ -1,6 +1,7 @@
 import type { RequestHandler } from "express";
 import { getPaymentsApi, getOrdersApi, getLocationsApi } from "../utils/square";
 import { supabase, updateCustomerStoreCredit } from "../utils/supabase";
+import { formatOrderNumber } from "../utils/order";
 
 export const processSquarePayment: RequestHandler = async (req, res) => {
   try {
@@ -84,10 +85,12 @@ export const processSquarePayment: RequestHandler = async (req, res) => {
     let squareOrderId: string | undefined;
 
     if (locationId) {
+      const formattedOrderNum = formatOrderNumber(orderId);
       const orderRequest = {
         order: {
           locationId: locationId,
-          referenceId: `order-${orderId}`, // This makes it searchable by our internal Order ID
+          referenceId: formattedOrderNum,
+          note: `Order: ${formattedOrderNum}`,
           lineItems,
           totalMoney: {
             amount: BigInt(amountInCents),
@@ -113,6 +116,7 @@ export const processSquarePayment: RequestHandler = async (req, res) => {
     }
 
     // Create payment with Square
+    const formattedOrderNumber = formatOrderNumber(orderId);
     const paymentRequest: any = {
       sourceId: token,
       amountMoney: {
@@ -120,10 +124,9 @@ export const processSquarePayment: RequestHandler = async (req, res) => {
         currency: "USD",
       },
       customerId: `customer-${orderId}`,
-      referenceId: String(orderId), // Simplified reference ID
-      note: `Order: ${orderId}`, // Exact format requested by user
+      referenceId: formattedOrderNumber,
+      note: `Order: ${formattedOrderNumber}`,
       receiptEmail: customerEmail,
-      receiptNumber: String(orderId),
       idempotencyKey: `payment-${orderId}-${Date.now()}`,
     };
 

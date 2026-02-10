@@ -1348,6 +1348,7 @@ export const handleCreatePayment: RequestHandler = async (req, res) => {
     });
 
     // Create the payment using Square's Payments API
+    const formattedOrderNum = orderId ? formatOrderNumber(orderId) : undefined;
     const paymentBody = {
       sourceId: paymentRequest.sourceId,
       amountMoney: {
@@ -1357,6 +1358,10 @@ export const handleCreatePayment: RequestHandler = async (req, res) => {
       autocomplete: true,
       idempotencyKey: `${Date.now()}-${Math.random()}`,
       ...(orderId && { orderId: orderId.toString() }),
+      ...(formattedOrderNum && {
+        referenceId: formattedOrderNum,
+        note: `Order: ${formattedOrderNum}`,
+      }),
       ...(paymentRequest.customerEmail && {
         receiptEmail: paymentRequest.customerEmail,
       }),
