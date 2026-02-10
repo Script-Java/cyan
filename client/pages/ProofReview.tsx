@@ -52,9 +52,8 @@ export default function ProofReview() {
             setError(null);
 
             // Call the approve endpoint with the token
-            // The backend will validate the token and extract the proof ID
-            // Using 'token' as placeholder for :proofId since backend extracts real ID from token
-            const response = await fetch(`/api/proofs/token/approve?token=${token}`, {
+            // Using /public/ path to avoid conflict with protected route
+            const response = await fetch(`/api/proofs/public/token/approve?token=${token}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
             });
@@ -95,8 +94,8 @@ export default function ProofReview() {
             setIsSubmitting(true);
             setError(null);
 
-            // Using 'token' as placeholder for :proofId since backend extracts real ID from token
-            const response = await fetch(`/api/proofs/token/revise?token=${token}`, {
+            // Using /public/ path and 'deny' endpoint (backend calls it deny, not revise)
+            const response = await fetch(`/api/proofs/public/token/deny?token=${token}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ revision_notes: revisionNotes }),
