@@ -33,6 +33,7 @@ import Designs from "./pages/Designs";
 import Proofs from "./pages/Proofs";
 import ProofApproval from "./pages/ProofApproval";
 import ProofApprovalPublic from "./pages/ProofApprovalPublic";
+import ProofReview from "./pages/ProofReview";
 import AccountSettings from "./pages/AccountSettings";
 import Support from "./pages/Support";
 import MyTickets from "./pages/MyTickets";
@@ -148,6 +149,7 @@ export default function App() {
                 <Route path="/finances" element={<Finances />} />
                 <Route path="/designs" element={<Designs />} />
                 <Route path="/proofs" element={<Proofs />} />
+                <Route path="/proofs/review" element={<ProofReview />} />
                 <Route
                   path="/proofs/:proofId/approve"
                   element={<ProofApproval />}
