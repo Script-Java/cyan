@@ -64,7 +64,8 @@ const trustBadges = [
 
 function EcwidStoreContent() {
     const searchParams = useSearchParams();
-    const searchQuery = searchParams.get("search") || "";
+    // Adding the '?' ensures it only calls .get if searchParams exists
+    const searchQuery = searchParams?.get("search") || "";
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
