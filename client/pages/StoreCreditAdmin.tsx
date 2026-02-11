@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -224,7 +223,6 @@ export default function StoreCreditAdmin() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="pt-20 min-h-screen bg-gray-50 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         </main>
@@ -234,7 +232,6 @@ export default function StoreCreditAdmin() {
 
   return (
     <>
-      <Header />
       <main className="pt-20 min-h-screen bg-gray-50 py-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="mb-8">

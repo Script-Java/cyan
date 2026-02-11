@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
+import AdminLayout from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -74,7 +74,7 @@ export default function AdminInvoiceDetail() {
         throw new Error("No payment token received");
       }
 
-      const link = `https://stickyslap.app/invoice/${token}`;
+      const link = `https://stickerland.app/invoice/${token}`;
 
       // Try modern Clipboard API first
       try {
@@ -125,33 +125,25 @@ export default function AdminInvoiceDetail() {
 
   if (isLoading) {
     return (
-      <>
-        <Header />
-        <main className="min-h-screen flex items-center justify-center bg-gray-50 pt-20">
+      <AdminLayout>
+        <div className="min-h-screen flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-        </main>
-      </>
+        </div>
+      </AdminLayout>
     );
   }
 
   if (!invoice) {
     return (
-      <>
-        <Header />
-        <main className="min-h-screen bg-gray-50 pt-20">
-          <div className="max-w-4xl mx-auto px-4 py-8">
-            <p>Invoice not found</p>
-          </div>
-        </main>
-      </>
+      <AdminLayout>
+        <p>Invoice not found</p>
+      </AdminLayout>
     );
   }
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen bg-gray-50 pt-20">
-        <div className="max-w-4xl mx-auto px-4 py-8">
+    <AdminLayout>
+      <div className="py-8">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -350,8 +342,7 @@ export default function AdminInvoiceDetail() {
               </Button>
             )}
           </div>
-        </div>
-      </main>
+      </div>
 
       {/* Payment Link Modal */}
       <AlertDialog open={showLinkModal} onOpenChange={setShowLinkModal}>
@@ -372,6 +363,6 @@ export default function AdminInvoiceDetail() {
           </div>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </AdminLayout>
   );
 }

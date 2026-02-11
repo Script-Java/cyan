@@ -100,9 +100,9 @@ try {
   });
 
   await resend.emails.send({
-    from: "invoices@stickyslap.com",
+    from: "invoices@stickerland.com",
     to: invoice.customer_email,
-    subject: `Invoice #${invoice.invoice_number} from Sticky Slap`,
+    subject: `Invoice #${invoice.invoice_number} from Stickerland`,
     html: emailHtml,
   });
 } catch (emailError) {
@@ -227,7 +227,7 @@ export async function notifyOverdueInvoices() {
 
     for (const invoice of overdueInvoices || []) {
       await resend.emails.send({
-        from: "invoices@stickyslap.com",
+        from: "invoices@stickerland.com",
         to: invoice.customer_email,
         subject: `Reminder: Invoice #${invoice.invoice_number} is overdue`,
         html: `<p>Your invoice is now overdue. Please pay as soon as possible.</p>`
@@ -294,7 +294,7 @@ export const handleMarkInvoicePaid: RequestHandler = async (req, res) => {
     });
 
     await resend.emails.send({
-      from: "invoices@stickyslap.com",
+      from: "invoices@stickerland.com",
       to: data.customer_email,
       subject: `Payment Received: Invoice #${data.invoice_number}`,
       html: emailHtml,

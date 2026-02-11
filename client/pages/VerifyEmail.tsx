@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Mail, AlertCircle, CheckCircle, Loader } from "lucide-react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -53,7 +52,6 @@ export default function VerifyEmail() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
           <div className="max-w-md mx-auto px-4">
             <div className="bg-white rounded-lg shadow-lg p-8">
@@ -79,7 +77,6 @@ export default function VerifyEmail() {
   if (error) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
           <div className="max-w-md mx-auto px-4">
             <div className="bg-white rounded-lg shadow-lg p-8">
@@ -117,7 +114,6 @@ export default function VerifyEmail() {
   if (success) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
           <div className="max-w-md mx-auto px-4">
             <div className="bg-white rounded-lg shadow-lg p-8">

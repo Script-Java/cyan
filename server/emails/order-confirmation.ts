@@ -101,7 +101,7 @@ export function generateOrderConfirmationEmail(params: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Confirmation - Sticky Slap</title>
+  <title>Order Confirmation - Stickerland</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -234,7 +234,7 @@ export function generateOrderConfirmationEmail(params: {
   <div class="container">
     <!-- Header -->
     <div class="header">
-      <img src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Ff76c51c7227242dc8bd4b1757ab321af" alt="Sticky Slap Logo" style="max-width: 200px; height: auto; margin-bottom: 15px;" />
+      <img src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Ff76c51c7227242dc8bd4b1757ab321af" alt="Stickerland Logo" style="max-width: 200px; height: auto; margin-bottom: 15px;" />
       <h1>✓ Order Confirmed</h1>
       <p>Thank you for your order! We're preparing your custom stickers.</p>
     </div>
@@ -341,7 +341,7 @@ export function generateOrderConfirmationEmail(params: {
 
     <!-- Footer -->
     <div class="footer">
-      <p>© 2024 Sticky Slap. All rights reserved.</p>
+      <p>© 2024 Stickerland. All rights reserved.</p>
       <p>Questions? Contact our support team anytime.</p>
     </div>
   </div>

@@ -111,7 +111,7 @@ export default function AdminBlogs() {
         {/* Header Section */}
         <div className="border-b border-gray-200 bg-white">
           <div className="px-4 sm:px-10 py-8">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">
@@ -135,7 +135,7 @@ export default function AdminBlogs() {
 
         {/* Main Content */}
         <main className="min-h-screen text-gray-900 px-4 sm:px-10 py-12">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Messages */}
             {error && (
               <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800">

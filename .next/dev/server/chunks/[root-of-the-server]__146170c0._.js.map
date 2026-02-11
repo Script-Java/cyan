@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 16, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/atrin/Desktop/PRODUCTS/cyan/prd/pages/api/%5B...slug%5D.ts"],"sourcesContent":["import type { NextApiRequest, NextApiResponse } from 'next';\r\nimport serverless from 'serverless-http';\r\nimport { createServer } from '../../../server/index';\r\n\r\n// Initialize the Express app\r\nconst app = createServer();\r\n\r\n// Create the serverless handler\r\nconst handler = serverless(app);\r\n\r\n// Disable Next.js body parsing to let Express handle it\r\nexport const config = {\r\n    api: {\r\n        bodyParser: false,\r\n        externalResolver: true,\r\n    },\r\n};\r\n\r\nexport default async function (req: NextApiRequest, res: NextApiResponse) {\r\n    // Add protocol if missing (fix for some internal redirects)\r\n    if (!req.url?.startsWith('http')) {\r\n        // @ts-ignore\r\n        req.protocol = 'https';\r\n    }\r\n\r\n    return handler(req, res);\r\n}\r\n"],"names":[],"mappings":";;;;;;AACA;;;;;;;;AAGA,6BAA6B;AAC7B,MAAM,MAAM;AAEZ,gCAAgC;AAChC,MAAM,UAAU,IAAA,iMAAU,EAAC;AAGpB,MAAM,SAAS;IAClB,KAAK;QACD,YAAY;QACZ,kBAAkB;IACtB;AACJ;AAEe,8CAAgB,GAAmB,EAAE,GAAoB;IACpE,4DAA4D;IAC5D,IAAI,CAAC,IAAI,GAAG,EAAE,WAAW,SAAS;QAC9B,aAAa;QACb,IAAI,QAAQ,GAAG;IACnB;IAEA,OAAO,QAAQ,KAAK;AACxB"}}]
+}

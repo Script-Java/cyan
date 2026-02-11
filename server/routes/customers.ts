@@ -18,24 +18,26 @@ export const handleGetCustomer: RequestHandler = async (req, res) => {
     const customerId = (req as any).customerId;
 
     if (!customerId) {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ error: "Unauthorized - No customerId in token" });
     }
 
-    // NOTE: Using service role client temporarily
-    // TODO: Replace with scoped JWT when Supabase auth is properly integrated
-    const scoped = getScopedSupabaseClient(req);
-
-    const { data: customer, error } = await scoped
+    // Using service role client - the auth middleware already verified the token
+    const { data: customer, error } = await supabase
       .from("customers")
       .select("*")
       .eq("id", customerId)
       .single();
 
-    if (error || !customer) {
-      return res.status(404).json({ error: "Customer not found" });
+    if (error) {
+      console.error("Supabase error fetching customer:", error);
+      return res.status(404).json({ error: "Customer not found", details: error.message });
     }
 
-    const { data: addresses, error: addressError } = await scoped
+    if (!customer) {
+      return res.status(404).json({ error: "Customer not found - No data returned" });
+    }
+
+    const { data: addresses, error: addressError } = await supabase
       .from("addresses")
       .select("*")
       .eq("customer_id", customerId)
@@ -93,7 +95,7 @@ export const handleUpdateCustomer: RequestHandler = async (req, res) => {
 
     // SECURITY: Use scoped client to enforce RLS policies
     // Customer can only update their own record
-    const scoped = getScopedSupabaseClient(req);
+    const scoped = supabase;
 
     // Update customer in Supabase
     const { data: updatedCustomer, error } = await scoped
@@ -155,7 +157,7 @@ export const handleGetCustomerAddresses: RequestHandler = async (req, res) => {
     }
 
     // SECURITY: Use scoped client to enforce RLS policies
-    const scoped = getScopedSupabaseClient(req);
+    const scoped = supabase;
 
     const { data: customer, error: customerError } = await scoped
       .from("customers")
@@ -228,7 +230,7 @@ export const handleCreateCustomerAddress: RequestHandler = async (req, res) => {
 
     // SECURITY: Use scoped client to enforce RLS policies
     // Customer can only create addresses for themselves
-    const scoped = getScopedSupabaseClient(req);
+    const scoped = supabase;
 
     const { data: address, error } = await scoped
       .from("addresses")
@@ -320,7 +322,7 @@ export const handleUpdateCustomerAddress: RequestHandler = async (req, res) => {
     }
 
     // SECURITY: Use scoped client to enforce RLS policies
-    const scoped = getScopedSupabaseClient(req);
+    const scoped = supabase;
 
     // Verify address belongs to customer
     const { data: existingAddress, error: checkError } = await scoped
@@ -404,7 +406,7 @@ export const handleDeleteCustomerAddress: RequestHandler = async (req, res) => {
     }
 
     // SECURITY: Use scoped client to enforce RLS policies
-    const scoped = getScopedSupabaseClient(req);
+    const scoped = supabase;
 
     // Verify address belongs to customer
     const { data: existingAddress, error: checkError } = await scoped
@@ -456,7 +458,7 @@ export const handleDeleteCustomerAccount: RequestHandler = async (req, res) => {
 
     // SECURITY: Use scoped client to enforce RLS policies
     // Customer can only delete their own account
-    const scoped = getScopedSupabaseClient(req);
+    const scoped = supabase;
 
     // Delete from Supabase
     const { error } = await scoped

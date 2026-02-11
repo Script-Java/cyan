@@ -11,7 +11,7 @@ export function generateSignupConfirmationEmail(params: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to Sticky Slap</title>
+  <title>Welcome to Stickerland</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -108,7 +108,7 @@ export function generateSignupConfirmationEmail(params: {
   <div class="container">
     <!-- Header -->
     <div class="header">
-      <h1>🎨 Welcome to Sticky Slap</h1>
+      <h1>🎨 Welcome to Stickerland</h1>
       <p>Your custom sticker design partner</p>
     </div>
 
@@ -116,7 +116,7 @@ export function generateSignupConfirmationEmail(params: {
     <div class="content">
       <p>Hi <strong>${customerName}</strong>,</p>
 
-      <p>Welcome aboard! We're thrilled to have you join the Sticky Slap community. Your account has been successfully created, and you're ready to start designing amazing custom stickers.</p>
+      <p>Welcome aboard! We're thrilled to have you join the Stickerland community. Your account has been successfully created, and you're ready to start designing amazing custom stickers.</p>
 
       <h2>What you can do now:</h2>
       <div class="features">
@@ -141,12 +141,12 @@ export function generateSignupConfirmationEmail(params: {
 
       <p>If you have any questions or need assistance getting started, don't hesitate to reach out to our support team. We're here to help!</p>
 
-      <p>Happy designing!<br><strong>The Sticky Slap Team</strong></p>
+      <p>Happy designing!<br><strong>The Stickerland Team</strong></p>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-      <p>© 2024 Sticky Slap. All rights reserved.</p>
+      <p>© 2024 Stickerland. All rights reserved.</p>
       <p>${email}</p>
     </div>
   </div>

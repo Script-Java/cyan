@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, AlertCircle, CheckCircle, ArrowLeft } from "lucide-react";
-import Header from "@/components/Header";
 import { toast } from "sonner";
 
 export default function ForgotPassword() {
@@ -49,7 +48,6 @@ export default function ForgotPassword() {
   if (success) {
     return (
       <>
-        <Header />
         <main className="pt-20 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
           <div className="max-w-md mx-auto px-4 py-12 sm:py-20">
             <div className="bg-[#fafafa] rounded-2xl shadow-xl p-8 sm:p-10">
@@ -97,7 +95,6 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <Header />
       <main className="pt-20 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="max-w-md mx-auto px-4 py-12 sm:py-20">
           <div className="bg-[#fafafa] rounded-2xl shadow-xl p-8 sm:p-10">

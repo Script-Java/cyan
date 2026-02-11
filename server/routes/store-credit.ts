@@ -19,13 +19,21 @@ interface GetCustomerCreditRequest {
 
 /**
  * Get customer's store credit balance
+ * SECURITY: Users can only access their own credit (unless admin)
  */
 export const handleGetCustomerCredit: RequestHandler = async (req, res) => {
   try {
     const { customerId } = req.params;
+    const requestingCustomerId = (req as any).customerId;
+    const isAdmin = (req as any).isAdmin;
 
     if (!customerId) {
       return res.status(400).json({ error: "Customer ID required" });
+    }
+
+    // SECURITY: Verify user can only access their own data (unless admin)
+    if (parseInt(customerId) !== requestingCustomerId && !isAdmin) {
+      return res.status(403).json({ error: "Unauthorized" });
     }
 
     const { data: customer, error } = await supabase

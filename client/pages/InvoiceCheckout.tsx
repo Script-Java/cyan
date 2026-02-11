@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Lock, CheckCircle } from "lucide-react";
@@ -108,7 +107,6 @@ export default function InvoiceCheckout() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-gray-50 pt-20">
           <div className="max-w-2xl mx-auto px-4 py-8">
             <div className="flex items-center justify-center py-12">
@@ -123,7 +121,6 @@ export default function InvoiceCheckout() {
   if (!invoice) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-gray-50 pt-20">
           <div className="max-w-2xl mx-auto px-4 py-8">
             <Card>
@@ -143,13 +140,12 @@ export default function InvoiceCheckout() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-gray-50 pt-20">
         <div className="max-w-2xl mx-auto px-4 py-8">
           {/* Invoice Confirmation */}
           <Card className="mb-6">
             <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
-              <CardTitle className="text-2xl">Invoice Confirmation</CardTitle>
+                <CardTitle className="text-2xl">Invoice Confirmation</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="grid grid-cols-2 gap-6">

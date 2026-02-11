@@ -9,9 +9,24 @@ const supabase = createClient(
 /**
  * Handle Zapier webhook from Ecwid
  * Receives order data from Zapier trigger and syncs to Supabase
+ * SECURITY: Requires API key authentication
  */
 export const handleZapierEcwidWebhook: RequestHandler = async (req, res) => {
   try {
+    // SECURITY: Verify API key
+    const apiKey = req.headers['x-api-key'];
+    const expectedKey = process.env.ZAPIER_WEBHOOK_API_KEY;
+    
+    if (!expectedKey) {
+      console.error("[SECURITY] ZAPIER_WEBHOOK_API_KEY not configured");
+      return res.status(503).json({ error: "Webhook not configured" });
+    }
+    
+    if (!apiKey || apiKey !== expectedKey) {
+      console.warn("[SECURITY] Invalid Zapier webhook API key attempt");
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
     const zapierData = req.body;
 
     console.log("Zapier webhook received from Ecwid:", {

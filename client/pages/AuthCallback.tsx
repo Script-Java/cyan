@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Header from "@/components/Header";
 
 export default function AuthCallback() {
   const navigate = useNavigate();
@@ -32,7 +31,6 @@ export default function AuthCallback() {
 
   return (
     <>
-      <Header />
       <main className="pt-20 min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-[#030140] mb-4">

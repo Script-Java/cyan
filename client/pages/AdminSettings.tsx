@@ -11,8 +11,8 @@ export default function AdminSettings() {
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   const [settings, setSettings] = useState({
-    storeName: "Sticky Slap",
-    storeEmail: "support@stickyslap.com",
+    storeName: "Stickerland",
+    storeEmail: "support@stickerland.com",
     storePhone: "+1 (555) 123-4567",
     storeAddress: "123 Main Street, Anytown, ST 12345",
     timeZone: "UTC",
@@ -71,7 +71,7 @@ export default function AdminSettings() {
   return (
     <AdminLayout>
       <main className="min-h-screen bg-black py-6">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-white">Store Settings</h1>

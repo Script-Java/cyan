@@ -12,7 +12,7 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
-const INVOICE_EMAIL_FROM = "invoices@stickyslap.com";
+const INVOICE_EMAIL_FROM = "invoices@stickerland.com";
 
 // Middleware to verify JWT token for invoices (uses custom JWT format from system)
 export const verifySupabaseToken = async (
@@ -147,8 +147,11 @@ export const handleGetInvoices: RequestHandler = async (req, res) => {
       query = query.eq("invoice_type", type);
     }
     if (search) {
+      // SECURITY: Sanitize search input to prevent SQL injection
+      // Escape special SQL LIKE characters (% and _)
+      const sanitizedSearch = search.replace(/[%_]/g, '\\$&');
       query = query.or(
-        `customer_name.ilike.%${search}%,customer_email.ilike.%${search}%,invoice_number.ilike.%${search}%`,
+        `customer_name.ilike.%${sanitizedSearch}%,customer_email.ilike.%${sanitizedSearch}%,invoice_number.ilike.%${sanitizedSearch}%`,
       );
     }
 
@@ -594,7 +597,7 @@ export const handleSendInvoice: RequestHandler = async (req, res) => {
     });
 
     // Generate payment link
-    const paymentLink = `https://stickyslap.app/invoice/${token}`;
+    const paymentLink = `https://stickerland.app/invoice/${token}`;
 
     // Send email via Resend
     let emailSent = false;
@@ -615,7 +618,7 @@ export const handleSendInvoice: RequestHandler = async (req, res) => {
         const emailResult = await resend.emails.send({
           from: INVOICE_EMAIL_FROM,
           to: invoice.customer_email,
-          subject: `Invoice ${invoice.invoice_number} from Sticky Slap - Payment Required`,
+          subject: `Invoice ${invoice.invoice_number} from Stickerland - Payment Required`,
           html: emailHtml,
         });
 
@@ -987,7 +990,7 @@ export const handleCreateInvoicePaymentLink: RequestHandler = async (
     const baseUrl =
       process.env.BASE_URL ||
       (process.env.NODE_ENV === "production"
-        ? "https://stickyslap.app"
+        ? "https://stickerland.app"
         : "http://localhost:5173");
     const redirectUrl = `${baseUrl}/invoice/${token}`;
 

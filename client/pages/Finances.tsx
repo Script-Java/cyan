@@ -20,7 +20,6 @@ import {
   ArrowRight,
   AlertCircle,
 } from "lucide-react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 
 interface Order {
@@ -145,7 +144,6 @@ export default function Finances() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-gray-50 py-8">
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex justify-center items-center h-64">
@@ -161,7 +159,6 @@ export default function Finances() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-6xl mx-auto px-4">
           {/* Header */}
@@ -387,7 +384,7 @@ export default function Finances() {
                       You're Saving Big!
                     </h3>
                     <p className="text-gray-700 mb-3">
-                      By choosing Sticky Slap, you save{" "}
+                      By choosing Stickerland, you save{" "}
                       <span className="font-bold text-emerald-600">50%</span>{" "}
                       compared to traditional sticker shops.
                     </p>

@@ -6,8 +6,8 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
-const ORDER_EMAIL_FROM = "orders@stickyslap.com";
-const SUPPORT_EMAIL_FROM = "support@stickyslap.com";
+const ORDER_EMAIL_FROM = "orders@stickerland.com";
+const SUPPORT_EMAIL_FROM = "support@stickerland.com";
 
 export async function sendTicketCreationEmail(
   customerEmail: string,
@@ -24,7 +24,7 @@ export async function sendTicketCreationEmail(
     }
 
     await resend.emails.send({
-      from: "support@stickyslap.com",
+      from: "support@stickerland.com",
       to: customerEmail,
       subject: `Support Ticket Confirmation - ${subject}`,
       html: `
@@ -65,7 +65,7 @@ export async function sendTicketCreationEmail(
             
             <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-top: 30px;">
               Best regards,<br>
-              <strong>Sticky Slap Support Team</strong>
+              <strong>Stickerland Support Team</strong>
             </p>
           </div>
         </div>
@@ -97,7 +97,7 @@ export async function sendTicketReplyEmail(
     }
 
     await resend.emails.send({
-      from: "support@stickyslap.com",
+      from: "support@stickerland.com",
       to: customerEmail,
       subject: `Re: ${subject} - Support Response`,
       html: `
@@ -129,7 +129,7 @@ export async function sendTicketReplyEmail(
 
             <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-top: 30px;">
               Best regards,<br>
-              <strong>Sticky Slap Support Team</strong>
+              <strong>Stickerland Support Team</strong>
             </p>
           </div>
         </div>
@@ -233,7 +233,7 @@ export async function sendPasswordResetEmail(
     await resend.emails.send({
       from: SUPPORT_EMAIL_FROM,
       to: customerEmail,
-      subject: "Reset Your Password - Sticky Slap",
+      subject: "Reset Your Password - Stickerland",
       html: emailHtml,
     });
 

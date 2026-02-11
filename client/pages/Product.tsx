@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import ProductGallery from "@/components/ProductGallery";
 import ProductBenefits from "@/components/ProductBenefits";
 import ProductReviews from "@/components/ProductReviews";
@@ -485,7 +484,6 @@ export default function Product() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <div className="min-h-screen bg-[#fafafa] text-black flex items-center justify-center pt-20">
           <div className="text-center">
             <p className="text-gray-600">Loading product...</p>
@@ -498,7 +496,6 @@ export default function Product() {
   if (error || !product) {
     return (
       <>
-        <Header />
         <div className="pt-20 min-h-screen bg-[#fafafa]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="text-center">
@@ -530,7 +527,6 @@ export default function Product() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-white text-black">
         <div
           style={{

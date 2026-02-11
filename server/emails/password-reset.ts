@@ -11,7 +11,7 @@ export function generatePasswordResetEmail(params: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset Your Password - Sticky Slap</title>
+  <title>Reset Your Password - Stickerland</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -106,14 +106,14 @@ export function generatePasswordResetEmail(params: {
     <!-- Header -->
     <div class="header">
       <h1>🔐 Reset Your Password</h1>
-      <p>We received a request to reset your Sticky Slap account password</p>
+      <p>We received a request to reset your Stickerland account password</p>
     </div>
 
     <!-- Content -->
     <div class="content">
       <p>Hi <strong>${customerName}</strong>,</p>
 
-      <p>We received a request to reset the password for your Sticky Slap account. Click the button below to create a new password.</p>
+      <p>We received a request to reset the password for your Stickerland account. Click the button below to create a new password.</p>
 
       <a href="${resetLink}" class="cta-button">Reset Password</a>
 
@@ -146,7 +146,7 @@ export function generatePasswordResetEmail(params: {
 
     <!-- Footer -->
     <div class="footer">
-      <p>© 2024 Sticky Slap. All rights reserved.</p>
+      <p>© 2024 Stickerland. All rights reserved.</p>
       <p>This is an automated message. Please do not reply to this email.</p>
     </div>
   </div>

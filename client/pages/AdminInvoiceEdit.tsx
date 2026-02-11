@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Header from "@/components/Header";
 import InvoiceBuilder from "@/components/InvoiceBuilder";
+import AdminLayout from "@/components/AdminLayout";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -40,33 +40,27 @@ export default function AdminInvoiceEdit() {
 
   if (isLoading) {
     return (
-      <>
-        <Header />
-        <main className="min-h-screen flex items-center justify-center bg-gray-50 pt-20">
+      <AdminLayout>
+        <div className="min-h-screen flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-        </main>
-      </>
+        </div>
+      </AdminLayout>
     );
   }
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen bg-gray-50 pt-20">
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              Edit Invoice
-            </h1>
-            <p className="text-gray-600">
-              Update invoice details and send to customer
-            </p>
-          </div>
-          {invoiceData && (
-            <InvoiceBuilder initialData={invoiceData} invoiceId={parseInt(id || "")} />
-          )}
-        </div>
-      </main>
-    </>
+    <AdminLayout>
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          Edit Invoice
+        </h1>
+        <p className="text-gray-600">
+          Update invoice details and send to customer
+        </p>
+      </div>
+      {invoiceData && (
+        <InvoiceBuilder initialData={invoiceData} invoiceId={parseInt(id || "")} />
+      )}
+    </AdminLayout>
   );
 }

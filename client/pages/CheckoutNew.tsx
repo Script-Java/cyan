@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Header from "@/components/Header";
 import CheckoutForm from "@/components/CheckoutForm";
 import ShippingOptionsSelector from "@/components/ShippingOptionsSelector";
 import SquarePaymentForm from "@/components/SquarePaymentForm";
@@ -880,7 +879,6 @@ export default function CheckoutNew() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="pt-20 min-h-screen bg-[#fafafa] flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         </main>
@@ -890,8 +888,6 @@ export default function CheckoutNew() {
 
   return (
     <>
-      <Header />
-
       {/* Skip to Main Content Link - Accessibility */}
       <a
         href="#checkout-form"
@@ -1526,10 +1522,10 @@ export default function CheckoutNew() {
                           Email Support
                         </p>
                         <a
-                          href="mailto:sticky@stickyslap.com"
+                          href="mailto:sticky@stickerland.com"
                           className="text-blue-600 hover:text-blue-700 font-medium text-sm break-all"
                         >
-                          sticky@stickyslap.com
+                          sticky@stickerland.com
                         </a>
                       </div>
                       <div>

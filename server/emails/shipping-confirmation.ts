@@ -23,7 +23,7 @@ export function generateShippingConfirmationEmail(params: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Order Has Shipped - Sticky Slap</title>
+  <title>Your Order Has Shipped - Stickerland</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -210,13 +210,13 @@ export function generateShippingConfirmationEmail(params: {
       <a href="${orderLink}" class="cta-button">View Full Order Details</a>
 
       <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
-        Thank you for choosing Sticky Slap for your custom sticker needs. We hope you love your designs!
+        Thank you for choosing Stickerland for your custom sticker needs. We hope you love your designs!
       </p>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-      <p>© 2024 Sticky Slap. All rights reserved.</p>
+      <p>© 2024 Stickerland. All rights reserved.</p>
       <p>Questions? Contact our support team anytime.</p>
     </div>
   </div>

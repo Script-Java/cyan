@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Download, Upload } from "lucide-react";
@@ -116,7 +115,6 @@ export default function CustomerInvoiceView() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="min-h-screen flex items-center justify-center bg-gray-50 pt-20">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         </main>
@@ -127,7 +125,6 @@ export default function CustomerInvoiceView() {
   if (!invoice) {
     return (
       <>
-        <Header />
         <main className="min-h-screen flex items-center justify-center bg-gray-50 pt-20">
           <Card className="max-w-md w-full">
             <CardContent className="pt-6 text-center">
@@ -150,7 +147,6 @@ export default function CustomerInvoiceView() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-gray-50 pt-20">
         <div className="max-w-3xl mx-auto px-4 py-8">
           {/* Header */}

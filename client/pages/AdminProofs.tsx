@@ -153,7 +153,7 @@ export default function AdminProofs() {
     return (
       <AdminLayout>
         <div className="w-full pb-20 md:pb-0 py-6 md:py-8 px-3 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-center items-center h-48 sm:h-64">
               <div className="text-gray-600 text-sm">Loading proofs...</div>
             </div>
@@ -164,9 +164,9 @@ export default function AdminProofs() {
   }
 
   return (
-    <AdminLayout>
+      <AdminLayout>
       <div className="w-full pb-20 md:pb-0 px-3 sm:px-6 lg:px-8 pt-6 md:pt-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-6 sm:mb-8 border-b border-gray-300 pb-6 sm:pb-8">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-4">

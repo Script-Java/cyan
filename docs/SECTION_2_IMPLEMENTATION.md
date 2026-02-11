@@ -469,7 +469,7 @@ router.post(
 ```bash
 # Attempt to enumerate order IDs
 for i in {1000..1100}; do
-  curl -X POST https://api.stickyslap.com/api/orders/verify \
+  curl -X POST https://api.stickerland.com/api/orders/verify \
     -d "{\"order_number\": $i, \"verification_field\": \"test@test.com\"}"
 done
 

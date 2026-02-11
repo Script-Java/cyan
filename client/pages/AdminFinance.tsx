@@ -77,7 +77,7 @@ export default function AdminFinance() {
         {/* Header Section */}
         <div className="border-b border-gray-200 bg-white">
           <div className="px-4 sm:px-10 py-8">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">
                 Finance
               </h1>
@@ -90,7 +90,7 @@ export default function AdminFinance() {
 
         {/* Main Content */}
         <main className="min-h-screen text-gray-900 px-4 sm:px-10 py-12">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {isLoading ? (
               <div className="flex justify-center items-center h-64">
                 <div className="text-gray-600">Loading finance data...</div>

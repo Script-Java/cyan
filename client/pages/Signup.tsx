@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -94,6 +93,10 @@ export default function Signup() {
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("customerId", data.customer.id.toString());
       localStorage.setItem("isAdmin", String(data.customer.isAdmin || false));
+      
+      // Dispatch auth change event to update Header navigation
+      window.dispatchEvent(new Event("auth-change"));
+      
       navigate("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Signup failed");
@@ -104,7 +107,6 @@ export default function Signup() {
 
   return (
     <>
-      <Header />
       <main className="pt-20 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
           <div className="bg-[#fafafa] rounded-2xl shadow-xl p-8 sm:p-10">
@@ -113,7 +115,7 @@ export default function Signup() {
                 Create Account
               </h1>
               <p className="text-gray-600">
-                Join Sticky Slap and start creating today
+                Join Stickerland and start creating today
               </p>
             </div>
 
@@ -139,7 +141,7 @@ export default function Signup() {
                       value={formData.firstName}
                       onChange={handleChange}
                       autoComplete="given-name"
-                      className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                      className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F63049] focus:border-transparent transition-all"
                       placeholder="John"
                     />
                   </div>
@@ -158,7 +160,7 @@ export default function Signup() {
                       value={formData.lastName}
                       onChange={handleChange}
                       autoComplete="family-name"
-                      className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                      className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F63049] focus:border-transparent transition-all"
                       placeholder="Doe"
                     />
                   </div>
@@ -178,7 +180,7 @@ export default function Signup() {
                     value={formData.email}
                     onChange={handleChange}
                     autoComplete="email"
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F63049] focus:border-transparent transition-all"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -197,7 +199,7 @@ export default function Signup() {
                     value={formData.password}
                     onChange={handleChange}
                     autoComplete="new-password"
-                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F63049] focus:border-transparent transition-all"
                     placeholder="••••••••"
                   />
                   <button
@@ -250,7 +252,7 @@ export default function Signup() {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     autoComplete="new-password"
-                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F63049] focus:border-transparent transition-all"
                     placeholder="••••••••"
                   />
                   <button
@@ -288,14 +290,14 @@ export default function Signup() {
                   I agree to the{" "}
                   <a
                     href="#"
-                    className="text-[#FFD713] hover:text-[#FFA500] transition-colors font-medium"
+                    className="text-[#F63049] hover:text-[#d62a3f] transition-colors font-medium"
                   >
                     Terms of Service
                   </a>{" "}
                   and{" "}
                   <a
                     href="#"
-                    className="text-[#FFD713] hover:text-[#FFA500] transition-colors font-medium"
+                    className="text-[#F63049] hover:text-[#d62a3f] transition-colors font-medium"
                   >
                     Privacy Policy
                   </a>
@@ -305,7 +307,7 @@ export default function Signup() {
               <button
                 type="submit"
                 disabled={!canSubmit || isLoading}
-                className="w-full py-3 bg-[#FFD713] text-[#030140] rounded-lg font-bold hover:bg-[#FFD713]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#FFD713]/30"
+                className="w-full py-3 bg-[#F63049] text-white rounded-lg font-bold hover:bg-[#d62a3f] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#F63049]/30"
               >
                 {isLoading ? "Creating Account..." : "Create Account"}
               </button>
@@ -316,7 +318,7 @@ export default function Signup() {
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-[#FFD713] hover:text-[#FFA500] font-semibold transition-colors"
+                  className="text-[#F63049] hover:text-[#d62a3f] font-semibold transition-colors"
                 >
                   Log in
                 </Link>

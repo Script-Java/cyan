@@ -7,9 +7,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
-import AdminQuickAccess from "@/components/AdminQuickAccess";
-import MobileAdminPanel from "@/components/MobileAdminPanel";
+import AdminLayout from "@/components/AdminLayout";
 
 interface SupportTicket {
   id: number;
@@ -219,16 +217,8 @@ export default function AdminSupport() {
 
   if (selectedTicket) {
     return (
-      <>
-        <Header />
-        <main className="min-h-screen bg-gray-50 py-6">
-          {/* Quick Access Links */}
-          <div className="bg-white border-b border-gray-200 px-4 sm:px-10 py-6 mb-8">
-            <div className="max-w-4xl mx-auto">
-              <AdminQuickAccess />
-            </div>
-          </div>
-
+      <AdminLayout>
+        <div>
           {/* Header Section */}
           <div className="border-b border-gray-200 bg-white">
             <div className="px-4 sm:px-10 py-6 max-w-4xl mx-auto">
@@ -406,16 +396,14 @@ export default function AdminSupport() {
               </div>
             </div>
           </div>
-        </main>
-        <MobileAdminPanel />
-      </>
+        </div>
+      </AdminLayout>
     );
   }
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen bg-gray-50 pt-16">
+    <AdminLayout>
+      <div>
         {/* Header Section */}
         <div className="border-b border-gray-200 bg-white">
           <div className="px-4 sm:px-10 py-8 max-w-7xl mx-auto">
@@ -472,11 +460,6 @@ export default function AdminSupport() {
                 <div className="text-4xl opacity-50">✅</div>
               </div>
             </div>
-          </div>
-
-          {/* Quick Access Links */}
-          <div className="mb-8">
-            <AdminQuickAccess />
           </div>
 
           {/* Tickets Table */}
@@ -563,8 +546,7 @@ export default function AdminSupport() {
             </div>
           )}
         </div>
-      </main>
-      <MobileAdminPanel />
-    </>
+      </div>
+    </AdminLayout>
   );
 }

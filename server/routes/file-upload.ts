@@ -16,6 +16,12 @@ cloudinary.config({
 
 export const handleUploadCustomerDesign: RequestHandler = async (req, res) => {
   try {
+    // SECURITY: Verify authentication
+    const authenticatedCustomerId = (req as any).customerId;
+    if (!authenticatedCustomerId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
     const { fileName, fileData, customerId, orderId } =
       req.body as UploadRequest;
 
@@ -25,13 +31,29 @@ export const handleUploadCustomerDesign: RequestHandler = async (req, res) => {
       });
     }
 
+    // SECURITY: Validate file type
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.svg', '.webp'];
+    const fileExtension = fileName.toLowerCase().substring(fileName.lastIndexOf('.'));
+    if (!allowedExtensions.includes(fileExtension)) {
+      return res.status(400).json({ error: "Invalid file type. Allowed: JPG, PNG, GIF, PDF, SVG, WebP" });
+    }
+
     const base64Data = fileData.includes("base64,")
       ? fileData.split("base64,")[1]
       : fileData;
 
+    // SECURITY: Validate file size (10MB limit)
     const buffer = Buffer.from(base64Data, "base64");
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (buffer.length > maxSize) {
+      return res.status(413).json({ error: "File size exceeds 10MB limit" });
+    }
 
-    const publicId = `customer-designs/${customerId || "guest"}/${Date.now()}-${fileName.split(".")[0]}`;
+    // SECURITY: Sanitize filename to prevent path traversal
+    const sanitizedFileName = fileName.replace(/[^a-zA-Z0-9.-]/g, '_');
+    
+    // SECURITY: Use authenticated customer ID, ignore provided customerId
+    const publicId = `customer-designs/${authenticatedCustomerId}/${Date.now()}-${sanitizedFileName.split(".")[0]}`;
 
     const result = await new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(

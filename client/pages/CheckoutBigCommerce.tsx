@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -372,7 +371,6 @@ export default function CheckoutBigCommerce() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="pt-20 min-h-screen bg-gray-50 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         </main>
@@ -383,7 +381,6 @@ export default function CheckoutBigCommerce() {
   if (error && isLoading === false && !checkoutData) {
     return (
       <>
-        <Header />
         <main className="pt-20 min-h-screen bg-gray-50 py-12">
           <div className="max-w-2xl mx-auto px-4">
             <Alert variant="destructive">
@@ -404,7 +401,6 @@ export default function CheckoutBigCommerce() {
 
   return (
     <>
-      <Header />
       <main className="pt-20 min-h-screen bg-gray-50 py-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="mb-8">

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
 import { Calendar, User, ArrowRight, Eye, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -94,7 +93,6 @@ export default function Blogs() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-50 to-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
           {/* Hero Section */}

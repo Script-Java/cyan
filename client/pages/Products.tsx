@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import { Star, ShoppingCart, ChevronDown } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
@@ -164,7 +163,66 @@ export default function Products() {
     }
   };
 
+  const FEATURED_PRODUCTS: Product[] = [
+    {
+      id: "astronaut-moon",
+      name: "Astronaut on Moon",
+      price: 4.0,
+      image: "/images/stickers/astronaut-moon.png",
+      rating: 5.0,
+      reviews: 12,
+      description: "High-quality vinyl sticker featuring an astronaut sitting on a circuit board moon.",
+      badge: "New Arrival",
+      category: "vinyl",
+    },
+    {
+      id: "psychedelic-smiley",
+      name: "Melting Smiley",
+      price: 3.5,
+      image: "/images/stickers/psychedelic-smiley.png",
+      rating: 4.8,
+      reviews: 8,
+      description: "Trippy melting smiley face with vibrant psychedelic colors.",
+      badge: "Best Seller",
+      category: "holographic",
+    },
+    {
+      id: "neon-cassette",
+      name: "Neon Cassette",
+      price: 3.0,
+      image: "/images/stickers/neon-cassette.png",
+      rating: 4.9,
+      reviews: 15,
+      description: "Retro synthwave style cassette tape with neon cyber aesthetics.",
+      badge: "Retro",
+      category: "vinyl",
+    },
+    {
+      id: "graffiti-sneaker",
+      name: "Graffiti Sneaker",
+      price: 4.5,
+      image: "/images/stickers/graffiti-sneaker.png",
+      rating: 4.7,
+      reviews: 6,
+      description: "Urban style chunky sneaker with dripping graffiti art details.",
+      badge: "Street",
+      category: "vinyl",
+    },
+    {
+      id: "cyber-wolf",
+      name: "Cyber Wolf",
+      price: 5.0,
+      image: "/images/stickers/cyber-wolf.png",
+      rating: 5.0,
+      reviews: 20,
+      description: "Intricate red and black cybernetic wolf mask design.",
+      badge: "Premium",
+      category: "chrome",
+    },
+  ];
+
   const getDefaultProducts = (): Product[] => [
+    ...FEATURED_PRODUCTS,
     {
       id: "test-square-product",
       name: "Test Square Product",
@@ -266,7 +324,6 @@ export default function Products() {
 
   return (
     <>
-      <Header />
       <main className="pt-16 bg-white text-gray-900 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Category Section */}
@@ -382,11 +439,10 @@ export default function Products() {
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`w-3 h-3 ${
-                              i < Math.floor(product.rating || 0)
+                            className={`w-3 h-3 ${i < Math.floor(product.rating || 0)
                                 ? "fill-yellow-400 text-yellow-400"
                                 : "text-gray-300"
-                            }`}
+                              }`}
                           />
                         ))}
                       </div>
@@ -415,9 +471,8 @@ export default function Products() {
                       >
                         View {product.variations.length} Options
                         <ChevronDown
-                          className={`w-3 h-3 transition-transform ${
-                            expandedProduct === product.id ? "rotate-180" : ""
-                          }`}
+                          className={`w-3 h-3 transition-transform ${expandedProduct === product.id ? "rotate-180" : ""
+                            }`}
                         />
                       </button>
                     )}
@@ -447,7 +502,7 @@ export default function Products() {
                           >
                             <div>
                               {variation.attributes &&
-                              Object.keys(variation.attributes).length > 0 ? (
+                                Object.keys(variation.attributes).length > 0 ? (
                                 <div className="text-gray-800">
                                   {Object.entries(variation.attributes)
                                     .map(([key, val]) => `${val}`)

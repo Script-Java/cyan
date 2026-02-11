@@ -11,8 +11,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
-import Header from "@/components/Header";
-import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import DashboardLayout from "@/components/DashboardLayout";
 
 interface Customer {
   id: number;
@@ -415,6 +414,11 @@ export default function AccountSettings() {
       // Clear auth data and redirect
       localStorage.removeItem("authToken");
       localStorage.removeItem("customerId");
+      localStorage.removeItem("isAdmin");
+      
+      // Dispatch auth change event to update Header navigation
+      window.dispatchEvent(new Event("auth-change"));
+      
       navigate("/");
     } catch (err) {
       const message =
@@ -428,7 +432,6 @@ export default function AccountSettings() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-[#fafafa] py-20">
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex justify-center items-center h-64">
@@ -444,7 +447,6 @@ export default function AccountSettings() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-[#fafafa]">
         <DashboardLayout>
           <div className="max-w-4xl mx-auto py-8">

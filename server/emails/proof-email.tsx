@@ -219,7 +219,7 @@ export function ProofEmail({
         }}
       >
         <p style={{ margin: "0 0 10px 0" }}>
-          © 2024 Sticky Slap. All rights reserved.
+          © 2024 Stickerland. All rights reserved.
         </p>
         <p style={{ margin: "0" }}>
           This is an automated message. Please do not reply to this email

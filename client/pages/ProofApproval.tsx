@@ -4,9 +4,8 @@ import {
   CheckCircle2,
   AlertCircle,
   Loader2,
-  Image as ImageIcon,
+    Image as ImageIcon,
 } from "lucide-react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { formatOrderNumber } from "@/lib/order-number";
@@ -145,7 +144,6 @@ export default function ProofApproval() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Header />
         <div className="flex items-center justify-center min-h-[60vh]">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         </div>
@@ -156,7 +154,6 @@ export default function ProofApproval() {
   if (error || !proof) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Header />
         <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
           <div className="bg-white rounded-lg shadow p-6 sm:p-8">
             <div className="flex items-start gap-4">
@@ -182,7 +179,6 @@ export default function ProofApproval() {
   if (actionType) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Header />
         <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
           <div className="bg-white rounded-lg shadow p-6 sm:p-8 text-center">
             <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-4" />
@@ -212,7 +208,6 @@ export default function ProofApproval() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
         <div className="bg-white rounded-lg shadow overflow-hidden">
           {/* Proof Image */}

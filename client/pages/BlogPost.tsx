@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
 import { Calendar, User, Eye, ArrowLeft } from "lucide-react";
 
 interface BlogData {
@@ -46,7 +45,6 @@ export default function BlogPost() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-[#fafafa] py-12">
           <div className="flex justify-center items-center h-96">
             <div className="text-gray-600">Loading blog...</div>
@@ -59,7 +57,6 @@ export default function BlogPost() {
   if (error || !blog) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-[#fafafa] py-12">
           <div className="max-w-4xl mx-auto px-4">
             <button
@@ -93,8 +90,6 @@ export default function BlogPost() {
 
   return (
     <>
-      <Header />
-
       {/* Featured Image Hero Banner */}
       <section className="relative w-full h-96 overflow-hidden bg-gradient-to-r from-gray-200 to-gray-300">
         {blog.featured_image_url ? (

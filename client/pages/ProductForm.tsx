@@ -10,7 +10,6 @@ import {
   Image as ImageIcon,
   GripVertical,
 } from "lucide-react";
-import Header from "@/components/Header";
 import MobileAdminPanel from "@/components/MobileAdminPanel";
 import CollapsibleSection from "@/components/forms/CollapsibleSection";
 import { Button } from "@/components/ui/button";
@@ -751,7 +750,6 @@ export default function ProductForm() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-[#fafafa] text-gray-900 pb-20 md:pb-0">
         <div className="border-b border-gray-200">
           <div className="px-6 lg:px-8 py-6">

@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import { Star, ShoppingCart, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -273,7 +272,7 @@ export default function Deals() {
       case "hot":
         return "bg-red-600 text-white";
       case "deal":
-        return "bg-[#FFD713] text-[#030140]";
+        return "bg-[#F63049] text-white";
       case "green":
         return "bg-emerald-600 text-white";
       case "popular":
@@ -285,7 +284,6 @@ export default function Deals() {
 
   return (
     <>
-      <Header />
       <main className="pt-20 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <div
           className="max-w-full mx-auto px-2 sm:px-3 lg:px-4"
@@ -305,7 +303,7 @@ export default function Deals() {
           {isLoading && (
             <div className="flex justify-center items-center py-12">
               <div className="text-center">
-                <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-[#FFD713] mb-3"></div>
+                <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-[#F63049] mb-3"></div>
                 <p className="text-gray-600 text-sm">Loading deals...</p>
               </div>
             </div>
@@ -350,7 +348,7 @@ export default function Deals() {
 
                   {/* Product Info */}
                   <div className="p-2 flex flex-col flex-grow">
-                    <h3 className="font-semibold text-[#030140] text-xs mb-1 group-hover:text-[#FFD713] transition-colors line-clamp-2">
+                    <h3 className="font-semibold text-[#030140] text-xs mb-1 group-hover:text-[#F63049] transition-colors line-clamp-2">
                       {product.name}
                     </h3>
                   </div>
@@ -358,7 +356,7 @@ export default function Deals() {
                   {/* CTA Button */}
                   <Link
                     to={`/product/${product.id}`}
-                    className="mx-2 mb-2 py-2 px-2 bg-[#FFD713] hover:bg-[#FFA500] text-[#030140] rounded-md text-center flex items-center justify-center gap-1 text-xs font-semibold transition-all shadow-sm hover:shadow-md"
+                    className="mx-2 mb-2 py-2 px-2 bg-[#F63049] hover:bg-[#d62a3f] text-white rounded-md text-center flex items-center justify-center gap-1 text-xs font-semibold transition-all shadow-sm hover:shadow-md"
                   >
                     <ShoppingCart className="w-3 h-3" />
                     View
@@ -372,7 +370,7 @@ export default function Deals() {
           <div className="mt-10 text-center">
             <Link
               to="/products"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#FFD713] hover:bg-[#FFA500] text-[#030140] rounded-lg font-bold transition-all text-base shadow-lg shadow-[#FFD713]/30"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#F63049] hover:bg-[#d62a3f] text-white rounded-lg font-bold transition-all text-base shadow-lg shadow-[#F63049]/30"
             >
               Explore All Products
               <ArrowRight className="w-4 h-4" />
@@ -389,7 +387,7 @@ export default function Deals() {
               color: "rgba(0, 0, 0, 0.5)",
             }}
           >
-            <p>© Sticky Slap LLC</p>
+            <p>© Stickerland LLC</p>
           </div>
         </div>
       </main>

@@ -17,7 +17,7 @@ const supabase = createClient(
 const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
-const PROOF_EMAIL_FROM = "sticky@stickyslap.com";
+const PROOF_EMAIL_FROM = "sticky@stickerland.com";
 
 interface ProofComment {
   id: string;
@@ -574,7 +574,7 @@ export const handleSendProofToCustomer: RequestHandler = async (req, res) => {
     // Send proof email
     if (process.env.RESEND_API_KEY && resend) {
       try {
-        const baseUrl = process.env.FRONTEND_URL || "https://stickyslap.com";
+        const baseUrl = process.env.FRONTEND_URL || "https://stickerland.com";
         // SECURITY: Include tokens in email links
         const approvalLink = `${baseUrl}/proofs/review?token=${approvalTokenResult.token}&action=approve`;
         const revisionLink = `${baseUrl}/proofs/review?token=${revisionTokenResult.token}&action=revise`;

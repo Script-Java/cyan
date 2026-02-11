@@ -13,7 +13,7 @@ export function generateSupportTicketReplyEmail(params: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support Ticket Reply - Sticky Slap</title>
+  <title>Support Ticket Reply - Stickerland</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -175,14 +175,14 @@ export function generateSupportTicketReplyEmail(params: {
       <a href="${viewLink}" class="cta-button">View Ticket & Reply</a>
 
       <p style="margin-top: 30px; color: #6b7280; font-size: 13px;">
-        Thank you for your patience and for choosing Sticky Slap. 
+        Thank you for your patience and for choosing Stickerland. 
         If you need further assistance, our support team is always here to help!
       </p>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-      <p>© 2024 Sticky Slap. All rights reserved.</p>
+      <p>© 2024 Stickerland. All rights reserved.</p>
       <p>Questions? Reply directly to this email or contact our support team.</p>
     </div>
   </div>

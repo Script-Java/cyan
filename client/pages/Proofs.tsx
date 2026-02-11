@@ -12,10 +12,7 @@ import {
   AlertTriangle,
   Bell,
   Download,
-  FileIcon,
-  Image,
 } from "lucide-react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { formatOrderNumber } from "@/lib/order-number";
@@ -305,7 +302,6 @@ export default function Proofs() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-gray-50 py-8">
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex justify-center items-center h-64">
@@ -321,7 +317,6 @@ export default function Proofs() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-gray-50 py-6 sm:py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           {/* Header */}

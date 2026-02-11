@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { trackPageView } from "@/lib/analytics";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
@@ -106,9 +107,10 @@ export default function App() {
         <QueryClientProvider client={queryClient}>
           <Toaster />
           <Sonner />
-          <PageTracker />
+<PageTracker />
           <div className="flex flex-col min-h-screen">
-            <div className="flex-1">
+            <Header />
+            <div className="flex-1 pt-20">
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/login" element={<Login />} />

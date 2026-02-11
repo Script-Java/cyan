@@ -1,5 +1,4 @@
-// Only load dotenv in development (not in production on Netlify)
-// In production, environment variables should be set via Netlify
+// Load environment variables
 if (process.env.NODE_ENV !== "production") {
   // Use dynamic import for dotenv to avoid issues in ES modules
   import("dotenv/config").catch(() => {
@@ -250,10 +249,14 @@ export function createServer() {
   // CORS Configuration - Allow only trusted origins
   const allowedOrigins = [
     // Frontend URLs - Development
+    "http://localhost:3000",  // Next.js dev server
+    "http://localhost:3001",  // Next.js alt port
     "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:5175",
     "http://localhost:8080", // Vite dev server proxy
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
     "http://127.0.0.1:5173",
     "http://127.0.0.1:5174",
     "http://127.0.0.1:5175",
@@ -262,18 +265,15 @@ export function createServer() {
     process.env.FRONTEND_URL || "http://localhost:5173",
     "https://stickershop.test", // Local testing
     // Production domains
-    "https://stickyslap.app",
-    "https://www.stickyslap.app",
+    "https://stickerland.app",
+    "https://www.stickerland.app",
     // Add production domains here as environment variables
     ...(process.env.ALLOWED_ORIGINS
       ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
       : []),
   ];
 
-  // Allow Netlify deployments
-  if (process.env.NETLIFY_SITE_NAME) {
-    allowedOrigins.push(`https://${process.env.NETLIFY_SITE_NAME}.netlify.app`);
-  }
+
 
   // Allow www subdomain for production URLs
   const allowWwwVariants = (url: string) => {
@@ -302,15 +302,20 @@ export function createServer() {
       origin: string | undefined,
       callback: (err: Error | null, allow?: boolean) => void,
     ) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
+      // Reject requests with no origin in production (prevents CSRF)
       if (!origin) {
+        if (process.env.NODE_ENV === 'production') {
+          console.warn("[SECURITY] CORS request with no origin blocked in production");
+          return callback(new Error("Origin header required"));
+        }
+        // Allow in development only
         return callback(null, true);
       }
 
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        console.warn(`CORS request blocked from origin: ${origin}`, {
+        console.warn(`[SECURITY] CORS request blocked from origin: ${origin}`, {
           allowedOrigins,
           flyAppName: process.env.FLY_APP_NAME,
           frontendUrl: process.env.FRONTEND_URL,
@@ -326,7 +331,6 @@ export function createServer() {
 
   console.log("✅ CORS Configuration initialized:", {
     allowedOrigins,
-    netliftySiteName: process.env.NETLIFY_SITE_NAME,
     frontendUrl: process.env.FRONTEND_URL,
   });
 
@@ -340,14 +344,23 @@ export function createServer() {
   // Middleware
   app.use(cors(corsOptions));
 
-  // Middleware to handle pre-parsed bodies (Netlify/serverless-http often parses JSON automatically)
+  // Middleware to handle pre-parsed bodies (Vercel/serverless-http often parses JSON automatically)
   app.use((req: any, _res, next) => {
     // Check if body is a Buffer (happens in some serverless environments)
     if (req.body && Buffer.isBuffer(req.body)) {
+      // Skip parsing if buffer is empty
+      if (req.body.length === 0) {
+        req.body = {};
+        return next();
+      }
+
       try {
         const bodyString = req.body.toString("utf8");
-        req.body = JSON.parse(bodyString);
-        console.log("✅ Parsed Buffer body to JSON successfully");
+        // Only parse if string is valid JSON
+        if (bodyString.trim().startsWith('{') || bodyString.trim().startsWith('[')) {
+          req.body = JSON.parse(bodyString);
+          console.log("✅ Parsed Buffer body to JSON successfully");
+        }
       } catch (error) {
         console.error("❌ Failed to parse Buffer body:", error);
         // Don't error here, let express.json() or routes handle it
@@ -423,6 +436,12 @@ export function createServer() {
     res.setHeader(
       "Permissions-Policy",
       "geolocation=(), microphone=(), camera=(), payment=self, usb=()",
+    );
+
+    // Certificate Transparency - Enforce CT monitoring
+    res.setHeader(
+      "Expect-CT",
+      "max-age=86400, enforce",
     );
 
     // Prevent MIME sniffing for PCI security
@@ -524,17 +543,19 @@ export function createServer() {
   app.use("/api/public/products", createPublicProductRouter());
   app.use("/api/storefront", createStorefrontRouter());
 
-  // ===== Debug Endpoints (Protected by authentication + admin role) =====
-  // SECURITY: These endpoints require both verifyToken and requireAdmin
-  // They are NO LONGER protected by NODE_ENV checks
-  // Access is logged and audited
-  app.get(
-    "/api/debug/orders-list",
-    verifyToken,
-    requireAdmin,
-    handleDebugOrdersList,
-  );
-  app.get("/api/debug/health", verifyToken, requireAdmin, handleDebugHealth);
+  // ===== Debug Endpoints (Development Only) =====
+  // SECURITY: These endpoints are ONLY available in development environment
+  // They expose sensitive system information and should never be enabled in production
+  if (process.env.NODE_ENV !== 'production') {
+    app.get(
+      "/api/debug/orders-list",
+      verifyToken,
+      requireAdmin,
+      handleDebugOrdersList,
+    );
+    app.get("/api/debug/health", verifyToken, requireAdmin, handleDebugHealth);
+    console.log("[SECURITY] Debug endpoints enabled for development");
+  }
 
   // ===== Design Routes (Protected) =====
   app.get("/api/designs", verifyToken, handleGetDesigns);
@@ -796,18 +817,23 @@ export function createServer() {
     requireAdmin,
     handleSendProofDirectly,
   );
-  app.get("/api/email-preview/proof", handleProofEmailPreview);
-  app.post("/api/email-preview/send", handleSendProofEmailPreview);
-  app.get("/api/email-preview/signup", handleSignupConfirmationPreview);
+  // SECURITY: Email preview endpoints require admin authentication
+  app.get("/api/email-preview/proof", verifyToken, requireAdmin, handleProofEmailPreview);
+  app.post("/api/email-preview/send", verifyToken, requireAdmin, handleSendProofEmailPreview);
+  app.get("/api/email-preview/signup", verifyToken, requireAdmin, handleSignupConfirmationPreview);
   app.get(
     "/api/email-preview/order-confirmation",
+    verifyToken,
+    requireAdmin,
     handleOrderConfirmationPreview,
   );
-  app.get("/api/email-preview/shipping", handleShippingConfirmationPreview);
-  app.get("/api/email-preview/password-reset", handlePasswordResetPreview);
-  app.get("/api/email-preview/support-reply", handleSupportTicketReplyPreview);
+  app.get("/api/email-preview/shipping", verifyToken, requireAdmin, handleShippingConfirmationPreview);
+  app.get("/api/email-preview/password-reset", verifyToken, requireAdmin, handlePasswordResetPreview);
+  app.get("/api/email-preview/support-reply", verifyToken, requireAdmin, handleSupportTicketReplyPreview);
   app.get(
     "/api/email-preview/order-status-update",
+    verifyToken,
+    requireAdmin,
     handleOrderStatusUpdatePreview,
   );
 

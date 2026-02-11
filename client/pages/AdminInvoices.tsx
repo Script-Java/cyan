@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
+import AdminLayout from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -219,10 +219,8 @@ export default function AdminInvoices() {
   };
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen bg-gray-50 pt-20">
-        <div className="max-w-7xl mx-auto px-4 py-8">
+    <AdminLayout>
+      <div className="py-8">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">Invoices</h1>
@@ -469,7 +467,6 @@ export default function AdminInvoices() {
             </CardContent>
           </Card>
         </div>
-      </main>
 
       {/* Cancel Dialog */}
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
@@ -500,6 +497,6 @@ export default function AdminInvoices() {
           </div>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </AdminLayout>
   );
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import AdminLayout from "@/components/AdminLayout";
 import { AlertCircle, CheckCircle, Clock, Users, ShoppingCart, Upload, X, Link2, Server } from "lucide-react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
@@ -304,10 +304,8 @@ export default function AdminEcwidMigration() {
   };
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen bg-[#fafafa] text-black">
-        <div className="max-w-4xl mx-auto px-4 py-12">
+    <AdminLayout>
+      <div className="max-w-4xl mx-auto px-4 py-12">
           <div className="mb-8">
             <h1 className="text-4xl font-bold mb-2">Ecwid Data Migration</h1>
             <p className="text-gray-600">
@@ -688,7 +686,6 @@ export default function AdminEcwidMigration() {
             </div>
           </div>
         </div>
-      </main>
-    </>
+    </AdminLayout>
   );
 }

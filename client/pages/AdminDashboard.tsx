@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
-import ProofNotificationAlert from "@/components/dashboard/ProofNotificationAlert";
-import DashboardSalesCalendar from "@/components/dashboard/DashboardSalesCalendar";
-import ProductionBreakdown from "@/components/dashboard/ProductionBreakdown";
-import ApprovedProofs from "@/components/dashboard/ApprovedProofs";
-import DashboardRecentOrders from "@/components/dashboard/DashboardRecentOrders";
+import ProofNotificationAlert from "@/components/ProofNotificationAlert";
+import DashboardSalesCalendar from "@/components/DashboardSalesCalendar";
+import ProductionBreakdown from "@/components/ProductionBreakdown";
+import ApprovedProofs from "@/components/ApprovedProofs";
+import DashboardRecentOrders from "@/components/DashboardRecentOrders";
 import { RefreshCw } from "lucide-react";
 
 interface OrderItem {
@@ -225,53 +225,51 @@ export default function AdminDashboard() {
   return (
     <AdminLayout>
       <div className="py-6">
-        <div className="max-w-7xl mx-auto px-4">
-          {/* Header */}
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600 mt-1">
-              Welcome back! Here's what's happening with your store today.
-            </p>
-          </div>
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <p className="text-gray-600 mt-1">
+            Welcome back! Here's what's happening with your store today.
+          </p>
+        </div>
 
-          {/* Proof Notifications */}
-          <div className="mb-6">
-            <ProofNotificationAlert />
-          </div>
+        {/* Proof Notifications */}
+        <div className="mb-6">
+          <ProofNotificationAlert />
+        </div>
 
-          <div className="space-y-6">
-            {/* Sales Calendar */}
-            <DashboardSalesCalendar
-              salesData={salesData}
-              selectedDate={selectedDate}
-              onDateSelect={setSelectedDate}
+        <div className="space-y-6">
+          {/* Sales Calendar */}
+          <DashboardSalesCalendar
+            salesData={salesData}
+            selectedDate={selectedDate}
+            onDateSelect={setSelectedDate}
+          />
+
+          {/* Production Status Cards */}
+          <ProductionBreakdown
+            printingCount={printingCount}
+            printedCount={printedCount}
+            shippedCount={shippedCount}
+            selectedDate={selectedDate}
+            onRefresh={handleRefreshProduction}
+            isRefreshing={isRefreshing}
+          />
+
+          {/* Two Column Layout for Proofs and Recent Orders */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Approved Proofs */}
+            <ApprovedProofs
+              proofs={approvedProofs}
+              isLoading={proofsLoading}
             />
 
-            {/* Production Status Cards */}
-            <ProductionBreakdown
-              printingCount={printingCount}
-              printedCount={printedCount}
-              shippedCount={shippedCount}
+            {/* Recent Orders */}
+            <DashboardRecentOrders
+              orders={recentOrders}
+              isLoading={ordersLoading}
               selectedDate={selectedDate}
-              onRefresh={handleRefreshProduction}
-              isRefreshing={isRefreshing}
             />
-
-            {/* Two Column Layout for Proofs and Recent Orders */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Approved Proofs */}
-              <ApprovedProofs
-                proofs={approvedProofs}
-                isLoading={proofsLoading}
-              />
-
-              {/* Recent Orders */}
-              <DashboardRecentOrders
-                orders={recentOrders}
-                isLoading={ordersLoading}
-                selectedDate={selectedDate}
-              />
-            </div>
           </div>
         </div>
       </div>

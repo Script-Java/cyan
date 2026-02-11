@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
-import Header from "@/components/Header";
 
 interface ProductOption {
   name: string;
@@ -123,7 +122,6 @@ export default function EcwidProductDetail() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#fafafa]">
-        <Header />
         <main className="pt-24">
           <div className="max-w-7xl mx-auto px-4 py-12">
             <div className="animate-pulse">
@@ -140,7 +138,6 @@ export default function EcwidProductDetail() {
   if (error || !product) {
     return (
       <div className="min-h-screen bg-[#fafafa]">
-        <Header />
         <main className="pt-24">
           <div className="max-w-7xl mx-auto px-4 py-12">
             <button
@@ -164,7 +161,6 @@ export default function EcwidProductDetail() {
 
   return (
     <div className="min-h-screen bg-[#fafafa]">
-      <Header />
       <main className="pt-24">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <button

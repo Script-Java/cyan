@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Header from "@/components/Header";
 
 interface PolicyContent {
   guarantee_days: number;
@@ -36,7 +35,6 @@ export default function ReturnRefundPolicy() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="pt-24 min-h-screen bg-[#fafafa] text-gray-900 px-10 py-12 flex items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         </main>
@@ -47,7 +45,6 @@ export default function ReturnRefundPolicy() {
   if (!policy) {
     return (
       <>
-        <Header />
         <main className="pt-24 min-h-screen bg-[#fafafa] text-gray-900 px-10 py-12">
           <div className="text-center">
             <p className="text-gray-600">Policy not found</p>
@@ -59,7 +56,6 @@ export default function ReturnRefundPolicy() {
 
   return (
     <>
-      <Header />
       <main className="pt-24 min-h-screen bg-[#fafafa] text-gray-900 px-10 py-12">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl font-bold mb-8">Return & Refund Policy</h1>
@@ -69,7 +65,7 @@ export default function ReturnRefundPolicy() {
             <section className="bg-white border border-gray-200 rounded-2xl p-6">
               <h2 className="text-2xl font-bold mb-4">Overview</h2>
               <p className="text-gray-600 leading-relaxed">
-                At Sticky Slap, we want you to be completely satisfied with your purchase.
+                At Stickerland, we want you to be completely satisfied with your purchase.
                 If you're not happy with your custom stickers, we offer a straightforward
                 return and refund policy to ensure your peace of mind.
               </p>

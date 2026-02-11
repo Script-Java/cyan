@@ -15,7 +15,6 @@ import {
   ExternalLink,
   ArrowRight,
 } from "lucide-react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { formatOrderNumber, parseOrderNumber } from "@/lib/order-number";
 
@@ -217,7 +216,6 @@ export default function OrderStatus() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-white text-gray-900 pt-16">
         {/* Hero Section */}
         <section className="relative bg-white overflow-hidden py-12 sm:py-16">
@@ -228,7 +226,7 @@ export default function OrderStatus() {
             <div className="text-center max-w-3xl mx-auto">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
                 Track Your Order
-                <span className="block bg-gradient-to-r from-[#FFD713] to-[#FFA500] bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-[#F63049] to-[#d62a3f] bg-clip-text text-transparent">
                   Status & Delivery
                 </span>
               </h1>

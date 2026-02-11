@@ -277,7 +277,7 @@ export default function AdminAnalytics() {
         {/* Header Section */}
         <div className="border-b border-gray-200 bg-white">
           <div className="px-4 sm:px-10 py-8">
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">
@@ -304,7 +304,7 @@ export default function AdminAnalytics() {
 
         {/* Main Content */}
         <main className="min-h-screen text-gray-900 px-4 sm:px-10 py-12">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* TODAY'S QUICK VIEW */}
             <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
               <h2 className="text-lg font-bold text-gray-900 mb-4">

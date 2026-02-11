@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 // CHANGE 1: Import parseOrderNumber
 import { formatOrderNumber, parseOrderNumber } from "@/lib/orderFormatting";
-import Header from "@/components/Header";
 import {
   Card,
   CardContent,
@@ -233,7 +232,6 @@ export default function OrderConfirmation() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="pt-20 min-h-screen bg-gray-50 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-[#FFD713]" />
         </main>
@@ -244,7 +242,6 @@ export default function OrderConfirmation() {
   if (error) {
     return (
       <>
-        <Header />
         <main className="pt-20 min-h-screen bg-gray-50 py-12">
           <div className="max-w-2xl mx-auto px-4">
             <Card>
@@ -364,14 +361,13 @@ export default function OrderConfirmation() {
 
   return (
     <>
-      <Header />
       <main className="pt-20 min-h-screen bg-gray-50 py-12">
         <div className="max-w-4xl mx-auto px-4 space-y-8">
           {/* Logo Section */}
           <div className="flex justify-center mb-8">
             <img
               src="https://cdn.builder.io/api/v1/image/assets%2F1e00ee8c48924560b1c928d354e4521b%2Ff76c51c7227242dc8bd4b1757ab321af"
-              alt="Sticky Slap"
+              alt="Stickerland"
               className="h-24 w-auto"
             />
           </div>

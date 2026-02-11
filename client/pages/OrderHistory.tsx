@@ -17,7 +17,6 @@ import {
   MessageSquare,
   Image as ImageIcon,
 } from "lucide-react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { formatOrderNumber } from "@/lib/order-number";
 
@@ -286,7 +285,6 @@ export default function OrderHistory() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-gray-50 py-8">
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex justify-center items-center h-64">
@@ -302,7 +300,6 @@ export default function OrderHistory() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-gray-50 py-6 sm:py-8">
         <div className="max-w-6xl mx-auto px-3 sm:px-4">
           {/* Header */}

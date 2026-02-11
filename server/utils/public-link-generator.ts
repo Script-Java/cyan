@@ -20,12 +20,12 @@ export interface ProofReviewLinks {
  * Creates one-time-use tokens that expire in 72 hours
  *
  * @param proofId - The proof ID to generate links for
- * @param baseUrl - Frontend base URL (e.g., https://stickyslap.app)
+ * @param baseUrl - Frontend base URL (e.g., https://stickerland.app)
  * @returns Links and tokens for email generation
  */
 export async function generateProofReviewLinks(
   proofId: string,
-  baseUrl: string = process.env.FRONTEND_URL || "https://stickyslap.app",
+  baseUrl: string = process.env.FRONTEND_URL || "https://stickerland.app",
 ): Promise<ProofReviewLinks | null> {
   try {
     // Generate two separate one-time-use tokens
@@ -79,7 +79,7 @@ export interface OrderStatusLink {
  */
 export async function generateOrderStatusLink(
   orderId: string,
-  baseUrl: string = process.env.FRONTEND_URL || "https://stickyslap.app",
+  baseUrl: string = process.env.FRONTEND_URL || "https://stickerland.app",
 ): Promise<OrderStatusLink | null> {
   try {
     const tokenResult = await createPublicAccessToken({
@@ -121,7 +121,7 @@ export interface InvoicePaymentLink {
  */
 export async function generateInvoicePaymentLink(
   invoiceId: string,
-  baseUrl: string = process.env.FRONTEND_URL || "https://stickyslap.app",
+  baseUrl: string = process.env.FRONTEND_URL || "https://stickerland.app",
 ): Promise<InvoicePaymentLink | null> {
   try {
     const tokenResult = await createPublicAccessToken({
@@ -157,7 +157,7 @@ export async function generateInvoicePaymentLink(
  */
 export async function generateDesignAccessLink(
   designId: string,
-  baseUrl: string = process.env.FRONTEND_URL || "https://stickyslap.app",
+  baseUrl: string = process.env.FRONTEND_URL || "https://stickerland.app",
 ): Promise<{ link: string; token: string } | null> {
   try {
     const tokenResult = await createPublicAccessToken({

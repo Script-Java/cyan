@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, AlertCircle, Eye, EyeOff } from "lucide-react";
@@ -37,6 +36,10 @@ export default function Login() {
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("customerId", data.customer.id.toString());
       localStorage.setItem("isAdmin", String(data.customer.isAdmin || false));
+      
+      // Dispatch auth change event to update Header navigation
+      window.dispatchEvent(new Event("auth-change"));
+      
       // Redirect to home
       navigate("/");
     } catch (err) {
@@ -48,7 +51,6 @@ export default function Login() {
 
   return (
     <>
-      <Header />
       <main className="pt-20 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="max-w-md mx-auto px-4 py-12 sm:py-20">
           <div className="bg-[#fafafa] rounded-2xl shadow-xl p-8 sm:p-10">
@@ -57,7 +59,7 @@ export default function Login() {
                 Welcome Back
               </h1>
               <p className="text-gray-600">
-                Log in to your Sticky Slap account
+                Log in to your Stickerland account
               </p>
             </div>
 
@@ -81,7 +83,7 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     autoComplete="email"
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F63049] focus:border-transparent transition-all"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -99,7 +101,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     autoComplete="current-password"
-                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F63049] focus:border-transparent transition-all"
                     placeholder="••••••••"
                   />
                   <button
@@ -126,7 +128,7 @@ export default function Login() {
                 </label>
                 <Link
                   to="/forgot-password"
-                  className="text-sm text-[#FFD713] hover:text-[#FFA500] transition-colors font-medium"
+                  className="text-sm text-[#F63049] hover:text-[#d62a3f] transition-colors font-medium"
                 >
                   Forgot password?
                 </Link>
@@ -135,7 +137,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3 bg-[#FFD713] text-[#030140] rounded-lg font-bold hover:bg-[#FFD713]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#FFD713]/30"
+                className="w-full py-3 bg-[#F63049] text-white rounded-lg font-bold hover:bg-[#d62a3f] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#F63049]/30"
               >
                 {isLoading ? "Logging in..." : "Log In"}
               </button>
@@ -146,7 +148,7 @@ export default function Login() {
                 Don't have an account?{" "}
                 <Link
                   to="/signup"
-                  className="text-[#FFD713] hover:text-[#FFA500] font-semibold transition-colors"
+                  className="text-[#F63049] hover:text-[#d62a3f] font-semibold transition-colors"
                 >
                   Sign up
                 </Link>
@@ -158,14 +160,14 @@ export default function Login() {
             By logging in, you agree to our{" "}
             <a
               href="#"
-              className="text-[#FFD713] hover:text-[#FFA500] transition-colors"
+              className="text-[#F63049] hover:text-[#d62a3f] transition-colors"
             >
               Terms of Service
             </a>{" "}
             and{" "}
             <a
               href="#"
-              className="text-[#FFD713] hover:text-[#FFA500] transition-colors"
+              className="text-[#F63049] hover:text-[#d62a3f] transition-colors"
             >
               Privacy Policy
             </a>

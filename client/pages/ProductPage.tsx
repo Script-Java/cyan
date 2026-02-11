@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Upload, X, ChevronLeft, ChevronRight } from "lucide-react";
-import Header from "@/components/Header";
 import ProductGallery from "@/components/ProductGallery";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -445,7 +444,6 @@ export default function ProductPage() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <div className="min-h-screen bg-[#fafafa] text-black flex items-center justify-center">
           <div className="text-center">
             <p className="text-gray-600">Loading product...</p>
@@ -458,7 +456,6 @@ export default function ProductPage() {
   if (!product) {
     return (
       <>
-        <Header />
         <div className="min-h-screen bg-[#fafafa] text-black flex items-center justify-center">
           <div className="text-center">
             <p className="text-gray-600">Product not found</p>
@@ -470,7 +467,6 @@ export default function ProductPage() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-white text-black">
         <div
           style={{

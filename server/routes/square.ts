@@ -361,7 +361,7 @@ export const handleCreateCheckoutSession: RequestHandler = async (req, res) => {
       baseUrl = process.env.BASE_URL;
     } else if (!isLocal) {
       // FORCE production URL for all non-local environments
-      baseUrl = "https://stickyslap.app";
+      baseUrl = "https://stickerland.app";
     }
 
     const redirectUrl = `${baseUrl}/checkout-success/${supabaseOrder.id}`;
@@ -700,7 +700,7 @@ export const handleConfirmCheckout: RequestHandler = async (req, res) => {
             .select("*")
             .eq("order_id", id);
 
-          const baseUrl = process.env.BASE_URL || "https://stickyslap.app";
+          const baseUrl = process.env.BASE_URL || "https://stickerland.app";
           const customerEmail = customer?.email || "";
 
           if (customerEmail) {
@@ -1233,7 +1233,7 @@ async function handleSquarePaymentCreated(data: any): Promise<void> {
         .select("*")
         .eq("order_id", orderId);
 
-      const baseUrl = process.env.BASE_URL || "https://stickyslap.app";
+      const baseUrl = process.env.BASE_URL || "https://stickerland.app";
       const customerEmail = customer?.email || order?.email || "";
 
       if (!customerEmail) {

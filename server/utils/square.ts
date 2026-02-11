@@ -495,7 +495,7 @@ export async function createSquarePaymentLink(data: {
         allow_tipping: false,
         enable_coupon: true,
         enable_loyalty: true,
-        merchant_support_email: "sticky@stickyslap.com",
+        merchant_support_email: "sticky@stickerland.com",
         redirect_url: data.redirectUrl, // Redirect to website after payment
         note: `Order: ${formatOrderNumber(data.orderId)}`,
         accepted_payment_methods: {
@@ -647,8 +647,7 @@ export async function createSquarePaymentLink(data: {
 
     // Make direct HTTP call to Square Payment Links API
     console.log("Square API Details:", {
-      tokenLength: accessToken.length,
-      tokenPrefix: accessToken.substring(0, 10),
+      tokenConfigured: !!accessToken,
       locationId: locationId,
     });
 
@@ -710,7 +709,7 @@ export async function createSquarePaymentLink(data: {
       console.error("Square Payment Link API error:", {
         status: response.status,
         statusText: response.statusText,
-        tokenLength: accessToken.length,
+        tokenConfigured: !!accessToken,
         fullError: responseData,
         errorDetails:
           responseData?.errors?.map((e: any) => ({

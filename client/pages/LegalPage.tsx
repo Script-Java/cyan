@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
 import { ArrowLeft, FileText } from "lucide-react";
 
 interface LegalPageData {
@@ -78,8 +77,6 @@ export default function LegalPage() {
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      <Header />
-
       <main className="flex-1">
         {/* Hero Section */}
         <div

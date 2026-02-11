@@ -7,21 +7,17 @@ const supabase = createClient(
 );
 
 /**
- * DEBUG ENDPOINT: Get list of all orders with customer emails
+ * DEBUG ENDPOINT: Get list of all orders (without PII)
  *
  * SECURITY:
  * - Requires authentication via verifyToken middleware
  * - Requires admin role via requireAdmin middleware
- * - NOT protected by NODE_ENV (production check removed)
- * - Returns PII (emails) - admin only
+ * - Does NOT return PII (emails removed for security)
+ * - Access is logged and audited
  *
  * USAGE:
  * - Development: Admin dashboard debugging
  * - Production: Admin troubleshooting only
- *
- * AUDIT:
- * - This endpoint is logged and audited
- * - Access is restricted to authenticated admins only
  */
 export const handleDebugOrdersList: RequestHandler = async (req, res) => {
   try {
@@ -52,51 +48,20 @@ export const handleDebugOrdersList: RequestHandler = async (req, res) => {
       });
     }
 
-    if (!orders || orders.length === 0) {
-      return res.json({
-        success: true,
-        orders: [],
-        total: 0,
-      });
-    }
-
-    // Fetch customer info for each order (includes PII - emails)
-    const ordersWithCustomers = await Promise.all(
-      orders.map(async (order) => {
-        if (!order.customer_id) {
-          return {
-            id: order.id,
-            display_number: `SY-5${4001 + order.id}`,
-            created_at: order.created_at,
-            status: order.status,
-            total: order.total,
-            customer_id: order.customer_id,
-            customer_email: null,
-          };
-        }
-
-        const { data: customer } = await supabase
-          .from("customers")
-          .select("email")
-          .eq("id", order.customer_id)
-          .single();
-
-        return {
-          id: order.id,
-          display_number: `SY-5${4001 + order.id}`,
-          created_at: order.created_at,
-          status: order.status,
-          total: order.total,
-          customer_id: order.customer_id,
-          customer_email: customer?.email || null,
-        };
-      }),
-    );
+    // Return orders without PII (no email addresses)
+    const sanitizedOrders = (orders || []).map((order) => ({
+      id: order.id,
+      display_number: `SY-5${4001 + order.id}`,
+      created_at: order.created_at,
+      status: order.status,
+      total: order.total,
+      has_customer: !!order.customer_id,
+    }));
 
     res.status(200).json({
       success: true,
-      orders: ordersWithCustomers,
-      total: orders.length,
+      orders: sanitizedOrders,
+      total: orders?.length || 0,
       _debug: {
         endpoint: "/api/debug/orders-list",
         protected_by: ["verifyToken", "requireAdmin"],

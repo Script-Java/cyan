@@ -6,7 +6,6 @@ import {
     Loader,
     Send,
 } from "lucide-react";
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
 
@@ -125,7 +124,6 @@ export default function ProofReview() {
     if (isProcessing) {
         return (
             <>
-                <Header />
                 <main className="flex-1 flex items-center justify-center min-h-screen bg-gradient-to-b from-slate-50 to-white">
                     <div className="text-center">
                         <Loader className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
@@ -140,7 +138,6 @@ export default function ProofReview() {
     if (error) {
         return (
             <>
-                <Header />
                 <main className="flex-1 flex items-center justify-center min-h-screen bg-gradient-to-b from-slate-50 to-white">
                     <div className="text-center max-w-md mx-auto px-4">
                         <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-4" />
@@ -165,7 +162,6 @@ export default function ProofReview() {
 
     return (
         <>
-            <Header />
             <main className="flex-1 min-h-screen bg-gradient-to-b from-slate-50 to-white py-12">
                 <div className="max-w-2xl mx-auto px-4">
                     {/* Header */}

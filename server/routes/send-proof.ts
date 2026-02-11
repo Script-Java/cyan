@@ -12,7 +12,7 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
-const PROOF_EMAIL_FROM = "sticky@stickyslap.com";
+const PROOF_EMAIL_FROM = "sticky@stickerland.com";
 
 export const handleSendProofDirectly: RequestHandler = async (req, res) => {
   try {
@@ -137,7 +137,7 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
     console.log("Successfully created proof:", proofId);
 
     // Generate approval and revision links
-    const baseUrl = process.env.FRONTEND_URL || "https://stickyslap.app";
+    const baseUrl = process.env.FRONTEND_URL || "https://stickerland.app";
     const approvalLink = `${baseUrl}/proof/${proofId}/approve`;
     const revisionLink = `${baseUrl}/proof/${proofId}/request-revisions`;
 
@@ -183,8 +183,8 @@ export const handleSendProofDirectly: RequestHandler = async (req, res) => {
           </div>
           
           <div class="footer">
-            <p>&copy; 2026 Sticky Slap. All rights reserved.</p>
-            <p>Questions? Reply to this email or contact us at sticky@stickyslap.com</p>
+            <p>&copy; 2026 Stickerland. All rights reserved.</p>
+            <p>Questions? Reply to this email or contact us at sticky@stickerland.com</p>
           </div>
         </div>
       </body>

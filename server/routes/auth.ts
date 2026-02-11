@@ -29,6 +29,37 @@ if (!JWT_SECRET) {
   );
 }
 
+// Admin setup key - MUST be set in production
+const ADMIN_SETUP_KEY = process.env.ADMIN_SETUP_KEY;
+if (process.env.NODE_ENV === 'production' && !ADMIN_SETUP_KEY) {
+  throw new Error(
+    "ADMIN_SETUP_KEY environment variable is required in production. Set a strong random value.",
+  );
+}
+
+/**
+ * Validate password strength
+ * Requires: 8+ chars, uppercase, lowercase, number, special char
+ */
+function validatePasswordStrength(password: string): { valid: boolean; message: string } {
+  if (password.length < 8) {
+    return { valid: false, message: "Password must be at least 8 characters long" };
+  }
+  if (!/[A-Z]/.test(password)) {
+    return { valid: false, message: "Password must contain at least one uppercase letter" };
+  }
+  if (!/[a-z]/.test(password)) {
+    return { valid: false, message: "Password must contain at least one lowercase letter" };
+  }
+  if (!/[0-9]/.test(password)) {
+    return { valid: false, message: "Password must contain at least one number" };
+  }
+  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+    return { valid: false, message: "Password must contain at least one special character" };
+  }
+  return { valid: true, message: "" };
+}
+
 /**
  * Generate JWT token for session
  */
@@ -36,7 +67,7 @@ function generateToken(customerId: number, email: string): string {
   return jwt.sign(
     { customerId, email, iat: Math.floor(Date.now() / 1000) },
     JWT_SECRET,
-    { expiresIn: "30d" },
+    { expiresIn: "7d" }, // Reduced from 30d for security
   );
 }
 
@@ -64,7 +95,9 @@ export const handleLogin: RequestHandler = async (req, res) => {
         debug: {
           receivedBodyType: typeof req.body,
           receivedBodyKeys: Object.keys(req.body || {}),
-          receivedBody: req.body, // TEMPORARY: Return body to see what we got
+          // SECURITY: Never expose request body or password in responses
+          hasEmail: !!req.body?.email,
+          hasPassword: !!req.body?.password,
           contentType: req.headers["content-type"],
         },
       });
@@ -125,8 +158,10 @@ export const handleSignup: RequestHandler = async (req, res) => {
         "Content-Length": req.get("Content-Length"),
       },
       bodyType: typeof req.body,
-      body: req.body,
+      // SECURITY: Never log request body as it may contain passwords
       bodyKeys: Object.keys(req.body || {}),
+      hasEmail: !!req.body?.email,
+      hasPassword: !!req.body?.password,
     });
 
     const { firstName, lastName, email, password } = req.body as SignupRequest;
@@ -145,10 +180,11 @@ export const handleSignup: RequestHandler = async (req, res) => {
     }
 
     // Validate password strength
-    if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ error: "Password must be at least 6 characters long" });
+    const passwordValidation = validatePasswordStrength(password);
+    if (!passwordValidation.valid) {
+      return res.status(400).json({ 
+        error: passwordValidation.message 
+      });
     }
 
     console.log("Signup attempt for:", email);
@@ -206,8 +242,9 @@ export const handleSignup: RequestHandler = async (req, res) => {
       lastName,
     });
 
-    // Check if this is the admin email (special case for initial setup)
-    const isAdminEmail = email === "sticky@stickyslap.com";
+    // Check admin status - only allow specific admin emails from environment
+    const adminEmails = process.env.ADMIN_EMAILS?.split(',').map(e => e.trim().toLowerCase()) || [];
+    const isAdminEmail = adminEmails.includes(email.toLowerCase());
 
     // Create customer in Supabase
     const { data: newCustomer, error } = await supabase
@@ -274,10 +311,16 @@ export const handleSignup: RequestHandler = async (req, res) => {
 export const handleAdminSetup: RequestHandler = async (req, res) => {
   try {
     const { email, password, firstName, lastName } = req.body;
-    const ADMIN_SETUP_KEY = process.env.ADMIN_SETUP_KEY || "admin-setup-key";
     const setupKey = req.headers["x-admin-setup-key"];
 
+    // Validate setup key is configured
+    if (!ADMIN_SETUP_KEY) {
+      console.error("[SECURITY] ADMIN_SETUP_KEY not configured");
+      return res.status(503).json({ error: "Admin setup is not configured" });
+    }
+
     if (setupKey !== ADMIN_SETUP_KEY) {
+      console.warn("[SECURITY] Invalid admin setup key attempt");
       return res.status(403).json({ error: "Invalid setup key" });
     }
 
@@ -442,10 +485,9 @@ export const handleResetPassword: RequestHandler = async (req, res) => {
         .json({ error: "Token and new password are required" });
     }
 
-    if (newPassword.length < 6) {
-      return res
-        .status(400)
-        .json({ error: "Password must be at least 6 characters long" });
+    const passwordValidation = validatePasswordStrength(newPassword);
+    if (!passwordValidation.valid) {
+      return res.status(400).json({ error: passwordValidation.message });
     }
 
     // Verify reset token

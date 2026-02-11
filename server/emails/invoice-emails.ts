@@ -48,7 +48,7 @@ export function generateInvoiceSentEmail(params: {
       </p>
 
       <p style="color: #6b7280; font-size: 12px; margin-top: 20px;">
-        © 2024 Sticky Slap. All rights reserved.
+        © 2024 Stickerland. All rights reserved.
       </p>
     </div>
   </div>
@@ -107,7 +107,7 @@ export function generateInvoicePaidEmail(params: {
       </p>
 
       <p style="color: #6b7280; font-size: 12px; margin-top: 30px; border-top: 1px solid #e5e7eb; padding-top: 20px;">
-        © 2024 Sticky Slap. All rights reserved.
+        © 2024 Stickerland. All rights reserved.
       </p>
     </div>
   </div>
@@ -157,7 +157,7 @@ export function generateInvoiceCanceledEmail(params: {
       </p>
 
       <p style="color: #6b7280; font-size: 12px; margin-top: 30px; border-top: 1px solid #e5e7eb; padding-top: 20px;">
-        © 2024 Sticky Slap. All rights reserved.
+        © 2024 Stickerland. All rights reserved.
       </p>
     </div>
   </div>

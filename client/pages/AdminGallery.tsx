@@ -218,7 +218,7 @@ export default function AdminGallery() {
 
   return (
     <AdminLayout>
-      <div className="p-6 sm:p-8 max-w-6xl mx-auto">
+      <div className="p-6 sm:p-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Gallery Management</h1>
           <p className="text-gray-600">

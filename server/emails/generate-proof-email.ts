@@ -184,7 +184,7 @@ export function generateProofEmailHtml(params: {
 
     <!-- Footer -->
     <div class="footer">
-      <p>© 2024 Sticky Slap. All rights reserved.</p>
+      <p>© 2024 Stickerland. All rights reserved.</p>
       <p>This is an automated message. Please do not reply to this email address directly.</p>
     </div>
   </div>

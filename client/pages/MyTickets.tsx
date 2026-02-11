@@ -11,7 +11,6 @@ import {
   Send,
   Loader,
 } from "lucide-react";
-import Header from "@/components/Header";
 import { toast } from "sonner";
 
 interface Ticket {
@@ -212,7 +211,6 @@ export default function MyTickets() {
   if (selectedTicket) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-6 sm:py-8 md:py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Back button */}
@@ -383,7 +381,6 @@ export default function MyTickets() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-6 sm:py-8 md:py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           {/* Header */}

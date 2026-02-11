@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
@@ -39,7 +38,6 @@ export default function CheckoutSuccess() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="pt-20 min-h-screen bg-gray-50 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-[#FFD713]" />
         </main>
@@ -50,7 +48,6 @@ export default function CheckoutSuccess() {
   if (error) {
     return (
       <>
-        <Header />
         <main className="pt-20 min-h-screen bg-gray-50 py-12">
           <div className="max-w-md mx-auto px-4">
             <Card>
@@ -90,7 +87,6 @@ export default function CheckoutSuccess() {
 
   return (
     <>
-      <Header />
       <main className="pt-20 min-h-screen bg-gray-50 py-12">
         <div className="max-w-md mx-auto px-4">
           <Card>

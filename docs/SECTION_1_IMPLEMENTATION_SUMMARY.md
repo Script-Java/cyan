@@ -129,8 +129,8 @@ REVOKE ALL ON public_access_tokens FROM anon, authenticated;
 const links = await generateProofReviewLinks("proof-uuid-1234");
 // Returns:
 // {
-//   approveLink: "https://stickyslap.app/proofs/review?token=a3f7d9c2...&action=approve",
-//   reviseLink: "https://stickyslap.app/proofs/review?token=b1e8f4a6...&action=revise",
+//   approveLink: "https://stickerland.app/proofs/review?token=a3f7d9c2...&action=approve",
+//   reviseLink: "https://stickerland.app/proofs/review?token=b1e8f4a6...&action=revise",
 //   approvalToken: "a3f7d9c2...",
 //   revisionToken: "b1e8f4a6..."
 // }

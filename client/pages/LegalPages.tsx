@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
 import {
   Calendar,
   ArrowRight,
@@ -127,7 +126,6 @@ export default function LegalPages() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-50 to-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
           {/* Hero Section */}
@@ -400,7 +398,7 @@ export default function LegalPages() {
           {/* Divider */}
           <div className="border-t border-gray-200 pt-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <p className="text-gray-600 text-sm">© 2025 Sticky Slap.</p>
+              <p className="text-gray-600 text-sm">© 2025 Stickerland.</p>
               <p className="text-gray-500 text-xs">
                 Last updated{" "}
                 {new Date().toLocaleDateString("en-US", {

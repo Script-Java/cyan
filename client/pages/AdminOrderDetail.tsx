@@ -307,7 +307,7 @@ export default function AdminOrderDetail() {
   if (errorMessage || !order) {
     return (
       <AdminLayout>
-        <div className="max-w-6xl mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <button
             onClick={() => navigate("/admin/orders")}
             className="inline-flex items-center gap-2 mb-6 px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors"
@@ -342,7 +342,7 @@ export default function AdminOrderDetail() {
 
   return (
     <AdminLayout>
-      <div className="max-w-6xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Back Button */}
         <button
           onClick={() => navigate("/admin/orders")}

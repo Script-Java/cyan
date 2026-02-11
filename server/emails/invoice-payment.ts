@@ -19,7 +19,7 @@ export function generateInvoiceEmailHtml(
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
       <!-- Header -->
       <div style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0;">
-        <h1 style="margin: 0; color: #000; font-size: 32px; font-weight: bold;">Sticky Slap</h1>
+        <h1 style="margin: 0; color: #000; font-size: 32px; font-weight: bold;">Stickerland</h1>
         <p style="margin: 10px 0 0 0; color: #333; font-size: 14px;">Invoice Payment Required</p>
       </div>
 
@@ -82,7 +82,7 @@ export function generateInvoiceEmailHtml(
             If you have any questions about this invoice, please reply to this email or contact our support team.
           </p>
           <p style="color: #9ca3af; font-size: 11px; margin: 10px 0 0 0;">
-            © ${new Date().getFullYear()} Sticky Slap. All rights reserved.
+            © ${new Date().getFullYear()} Stickerland. All rights reserved.
           </p>
         </div>
       </div>

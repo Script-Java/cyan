@@ -12,7 +12,7 @@ import { Resend } from "resend";
 const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
-const PROOF_EMAIL_FROM = "sticky@stickyslap.com";
+const PROOF_EMAIL_FROM = "sticky@stickerland.com";
 
 export const handleProofEmailPreview: RequestHandler = async (req, res) => {
   try {
@@ -179,7 +179,7 @@ All materials are high-quality and designed to last. The choice depends on your 
 Would you like recommendations for your specific project? Feel free to share more details about what you're planning!
 
 Best regards,
-Sticky Slap Support Team`,
+Stickerland Support Team`,
     viewLink: `${baseUrl}/my-tickets/TKT-2024-0042`,
   });
   res.setHeader("Content-Type", "text/html; charset=utf-8");

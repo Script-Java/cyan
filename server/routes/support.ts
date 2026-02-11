@@ -164,11 +164,20 @@ export const handleGetTickets: RequestHandler = async (req, res) => {
 export const handleGetTicketDetails: RequestHandler = async (req, res) => {
   try {
     const { ticketId } = req.params;
-    const customerId = req.query.customerId as string;
+    // SECURITY: Use authenticated customer ID from request, not query parameter
+    const customerId = (req as any).customerId;
+    const isAdmin = (req as any).isAdmin;
 
     if (!ticketId) {
       res.status(400).json({
         error: "Ticket ID is required",
+      });
+      return;
+    }
+
+    if (!customerId) {
+      res.status(401).json({
+        error: "Authentication required",
       });
       return;
     }
@@ -186,14 +195,12 @@ export const handleGetTicketDetails: RequestHandler = async (req, res) => {
       return;
     }
 
-    // Verify customer owns the ticket (or admin accessing with customerId=0)
-    if (customerId && customerId !== "0") {
-      if (ticket.customer_id !== parseInt(customerId)) {
-        res.status(403).json({
-          error: "Unauthorized: You can only view your own tickets",
-        });
-        return;
-      }
+    // SECURITY: Verify customer owns the ticket (admins can view all)
+    if (!isAdmin && ticket.customer_id !== customerId) {
+      res.status(403).json({
+        error: "Unauthorized: You can only view your own tickets",
+      });
+      return;
     }
 
     const { data: replies, error: repliesError } = await supabase
@@ -290,7 +297,7 @@ export const handleAdminReplyToTicket: RequestHandler = async (req, res) => {
         ticket_id: ticketId,
         sender_type: "admin",
         sender_name: adminName,
-        sender_email: "support@stickyslap.com",
+        sender_email: "support@stickerland.com",
         message,
       })
       .select("id")

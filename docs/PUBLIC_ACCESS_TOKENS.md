@@ -140,9 +140,9 @@ Each public access operation now requires a **secure public access token**:
 
 ```bash
 # Attacker can guess and enumerate proof IDs
-curl -X POST https://api.stickyslap.com/api/proofs/uuid-1234/approve
-curl -X POST https://api.stickyslap.com/api/proofs/uuid-1235/approve
-curl -X POST https://api.stickyslap.com/api/proofs/uuid-1236/approve
+curl -X POST https://api.stickerland.com/api/proofs/uuid-1234/approve
+curl -X POST https://api.stickerland.com/api/proofs/uuid-1235/approve
+curl -X POST https://api.stickerland.com/api/proofs/uuid-1236/approve
 # ... iterate through all UUIDs
 ```
 
@@ -150,7 +150,7 @@ curl -X POST https://api.stickyslap.com/api/proofs/uuid-1236/approve
 
 ```bash
 # Token is cryptographically random, not guessable
-curl -X POST 'https://api.stickyslap.com/api/proofs/uuid-1234/approve?token=a3f7d9c2b1e8f4a6c5d2e9b3f7a1c4d8e2b5f8a1c4d7e9b2c5f8a1e4d7c0b'
+curl -X POST 'https://api.stickerland.com/api/proofs/uuid-1234/approve?token=a3f7d9c2b1e8f4a6c5d2e9b3f7a1c4d8e2b5f8a1c4d7e9b2c5f8a1e4d7c0b'
 
 # If token is wrong, expired, or already used:
 # Returns: { "error": "Proof not found" }  (generic 404)
@@ -166,11 +166,11 @@ const token = await createPublicAccessToken({
   resourceId: proof.id,
   expiresInHours: 72,
   oneTimeUse: true,
-  createdBy: "admin@stickyslap.com",
+  createdBy: "admin@stickerland.com",
 });
 
 // Email link includes token:
-// https://stickyslap.app/proofs/review?token=<token>
+// https://stickerland.app/proofs/review?token=<token>
 
 // Frontend redirects to:
 // GET /api/proofs/public/detail?token=<token>

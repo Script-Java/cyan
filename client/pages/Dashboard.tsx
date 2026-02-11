@@ -8,16 +8,15 @@ import {
   Package,
   AlertCircle,
 } from "lucide-react";
-import Header from "@/components/Header";
-import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import GreetingBanner from "@/components/dashboard/GreetingBanner";
-import ProfileCard from "@/components/dashboard/ProfileCard";
-import OrdersSection from "@/components/dashboard/OrdersSection";
-import DashboardNavigation from "@/components/dashboard/DashboardNavigation";
-import ExpandedNavigation from "@/components/dashboard/ExpandedNavigation";
-import ProofNotificationBadge from "@/components/dashboard/ProofNotificationBadge";
-import PromoBanner from "@/components/dashboard/PromoBanner";
-import ActiveOrdersSummary from "@/components/dashboard/ActiveOrdersSummary";
+import DashboardLayout from "@/components/DashboardLayout";
+import GreetingBanner from "@/components/GreetingBanner";
+import ProfileCard from "@/components/ProfileCard";
+import OrdersSection from "@/components/OrdersSection";
+import DashboardNavigation from "@/components/DashboardNavigation";
+import ExpandedNavigation from "@/components/ExpandedNavigation";
+import ProofNotificationBadge from "@/components/ProofNotificationBadge";
+import PromoBanner from "@/components/PromoBanner";
+import ActiveOrdersSummary from "@/components/ActiveOrdersSummary";
 
 interface Customer {
   id: number;
@@ -187,13 +186,17 @@ export default function Dashboard() {
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("customerId");
+    localStorage.removeItem("isAdmin");
+    
+    // Dispatch auth change event to update Header navigation
+    window.dispatchEvent(new Event("auth-change"));
+    
     navigate("/login");
   };
 
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-[#fafafa] py-20">
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex justify-center items-center h-64">
@@ -209,7 +212,6 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-black text-white">
         <DashboardLayout>
           {error && (

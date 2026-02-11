@@ -24,7 +24,6 @@ import {
   Tag,
   SortAsc,
 } from "lucide-react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -250,7 +249,6 @@ export default function Designs() {
   if (isLoading) {
     return (
       <>
-        <Header />
         <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 py-8">
           <div className="max-w-7xl mx-auto px-4">
             <div className="space-y-8">
@@ -292,7 +290,6 @@ export default function Designs() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 py-12">
         <div className="max-w-7xl mx-auto px-4">
           {/* Header Section */}
