@@ -6,7 +6,7 @@ import { routeMap, matchRoute, availableRoutes } from "./route-map";
 const LoadingFallback = () => (
     <div className="flex justify-center items-center min-h-[60vh]">
         <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-[#FFD713] mb-3"></div>
+            <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-[#F63049] mb-3"></div>
             <p className="text-gray-600 text-sm">Loading...</p>
         </div>
     </div>

@@ -88,8 +88,8 @@ export function getScopedSupabaseClient(req: any): SupabaseClient {
   return createScopedSupabaseClient(userJwt);
 }
 
-// Verify connection
-(async () => {
+// Verify connection - wrapped in setImmediate to avoid blocking server startup
+setImmediate(async () => {
   try {
     const { error } = await supabase
       .from("customers")
@@ -103,7 +103,7 @@ export function getScopedSupabaseClient(req: any): SupabaseClient {
   } catch (err) {
     console.error("Supabase connection check error:", err);
   }
-})();
+});
 
 interface CustomerData {
   id: number;

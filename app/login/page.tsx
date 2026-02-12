@@ -53,7 +53,7 @@ export default function Login() {
             <div className="w-full max-w-md px-4">
                 <div className="bg-[#fafafa] rounded-2xl shadow-xl p-8 sm:p-10">
                     <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold text-[#030140] mb-2">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-[#F63049] to-[#D02752] bg-clip-text text-transparent mb-2">
                             Welcome Back
                         </h1>
                         <p className="text-gray-600">
@@ -81,7 +81,7 @@ export default function Login() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     autoComplete="email"
-                                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F63049] focus:border-transparent transition-all"
                                     placeholder="you@example.com"
                                 />
                             </div>
@@ -99,7 +99,7 @@ export default function Login() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     autoComplete="current-password"
-                                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD713] focus:border-transparent transition-all"
+                                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F63049] focus:border-transparent transition-all"
                                     placeholder="••••••••"
                                 />
                                 <button
@@ -126,7 +126,7 @@ export default function Login() {
                             </label>
                             <Link
                                 href="/forgot-password"
-                                className="text-sm text-[#FFD713] hover:text-[#FFA500] transition-colors font-medium"
+                                className="text-sm text-[#F63049] hover:text-[#D02752] transition-colors font-medium"
                             >
                                 Forgot password?
                             </Link>
@@ -135,7 +135,7 @@ export default function Login() {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full py-3 bg-[#FFD713] text-[#030140] rounded-lg font-bold hover:bg-[#FFD713]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#FFD713]/30"
+                            className="w-full py-3 bg-[#F63049] text-white rounded-lg font-bold hover:bg-[#D02752] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#F63049]/30"
                         >
                             {isLoading ? "Logging in..." : "Log In"}
                         </button>
@@ -144,12 +144,12 @@ export default function Login() {
                     <div className="text-center">
                         <p className="text-gray-600">
                             Don't have an account?{" "}
-                            <Link
-                                href="/signup"
-                                className="text-[#FFD713] hover:text-[#FFA500] font-semibold transition-colors"
-                            >
-                                Sign up
-                            </Link>
+                        <Link
+                            href="/signup"
+                            className="text-[#F63049] hover:text-[#D02752] font-semibold transition-colors"
+                        >
+                            Sign up
+                        </Link>
                         </p>
                     </div>
                 </div>
@@ -158,14 +158,14 @@ export default function Login() {
                     By logging in, you agree to our{" "}
                     <Link
                         href="/terms"
-                        className="text-[#FFD713] hover:text-[#FFA500] transition-colors"
+                        className="text-[#F63049] hover:text-[#D02752] transition-colors"
                     >
                         Terms of Service
-                    </Link>{" "}
+                    </Link>
                     and{" "}
                     <Link
                         href="/privacy"
-                        className="text-[#FFD713] hover:text-[#FFA500] transition-colors"
+                        className="text-[#F63049] hover:text-[#D02752] transition-colors"
                     >
                         Privacy Policy
                     </Link>

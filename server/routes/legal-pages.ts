@@ -1,25 +1,5 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseUrl = process.env.SUPABASE_URL || "";
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
-
-/**
- * SECURITY: Service Role Key is required for this route
- *
- * Justification:
- * - Legal page management is admin-only (create/update/delete operations)
- * - RLS policies cannot enforce page ownership (legal pages are shared resource)
- * - Public read endpoints don't require auth, but admin writes need elevated access
- *
- * Mitigation:
- * - All admin endpoints require verifyToken + requireAdmin middleware
- * - Public read endpoints only return visible pages
- * - No customer data is accessed (only shared legal content)
- *
- * See: docs/RLS_SCOPING.md for security architecture
- */
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from "../utils/supabase";
 
 interface LegalPageFormData {
   page_type:
