@@ -5,8 +5,8 @@ import Header from "@/components/Header"; // Ensure Header is compatible or wrap
 import Footer from "@/components/Footer"; // Ensure Footer is compatible or wrapped
 
 export const metadata: Metadata = {
-    title: "Fusion Starter",
-    description: "Starter project",
+    title: "Stickerland",
+    description: "Custom stickers and decals",
 };
 
 export default function RootLayout({

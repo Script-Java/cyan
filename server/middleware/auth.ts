@@ -3,10 +3,15 @@ import jwt from "jsonwebtoken";
 // import { createClient } from "@supabase/supabase-js";
 
 const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  throw new Error(
-    "JWT_SECRET environment variable is not configured. This is required for authentication. Set JWT_SECRET in your environment variables.",
-  );
+
+// Lazy check - don't throw at module load time to prevent server crash
+function getJwtSecret(): string {
+  if (!JWT_SECRET) {
+    throw new Error(
+      "JWT_SECRET environment variable is not configured. This is required for authentication. Set JWT_SECRET in your environment variables.",
+    );
+  }
+  return JWT_SECRET;
 }
 
 declare global {
@@ -44,7 +49,7 @@ export const verifyToken = async (
 
     const token = authHeader.substring(7);
 
-    const decoded = jwt.verify(token, JWT_SECRET) as {
+    const decoded = jwt.verify(token, getJwtSecret()) as {
       customerId: number;
       email: string;
     };
@@ -88,7 +93,7 @@ export const optionalVerifyToken = async (
 
     if (authHeader && authHeader.startsWith("Bearer ")) {
       const token = authHeader.substring(7);
-      const decoded = jwt.verify(token, JWT_SECRET) as {
+      const decoded = jwt.verify(token, getJwtSecret()) as {
         customerId: number;
         email: string;
       };
