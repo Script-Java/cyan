@@ -114,10 +114,11 @@ function EcwidStoreContent() {
         document.head.appendChild(style);
 
         // Initialize Ecwid configuration before loading the script
-        if (!window.ec) {
-            (window as any).ec = {};
+        const win = window as any;
+        if (!win.ec) {
+            win.ec = {};
         }
-        (window as any).ec.config = {
+        win.ec.config = {
             store_id: ECWID_STORE_ID,
             language: "en",
         };
@@ -130,7 +131,7 @@ function EcwidStoreContent() {
 
         script1.onload = () => {
             const waitForEcwid = () => {
-                if ((window as any).ec && (window as any).ec.ready) {
+                if (win.ec && win.ec.ready) {
                     const script2 = document.createElement("script");
                     script2.type = "text/javascript";
 
