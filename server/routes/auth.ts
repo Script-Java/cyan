@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { ecwidAPI } from "../utils/ecwid";
 import { sendPasswordResetEmail } from "../utils/email";
 
-import { supabase } from "../utils/supabase";
+import { supabase, isSupabaseConfigured } from "../utils/supabase";
 
 // Removed local Supabase initialization in favor of shared client
 // const supabase = createClient(...)
@@ -64,6 +64,15 @@ function generateToken(customerId: number, email: string): string {
 
 export const handleLogin: RequestHandler = async (req, res) => {
   try {
+    // Check Supabase is configured
+    if (!isSupabaseConfigured()) {
+      console.error("❌ LOGIN FAILED: Supabase not configured");
+      return res.status(503).json({
+        error: "Database not configured",
+        message: "SUPABASE_URL and SUPABASE_SERVICE_KEY environment variables must be set",
+      });
+    }
+
     // Check JWT_SECRET is configured
     if (!JWT_SECRET) {
       console.error("JWT_SECRET environment variable is not configured");

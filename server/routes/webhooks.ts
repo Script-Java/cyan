@@ -1,11 +1,6 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../utils/supabase";
 import crypto from "crypto";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_KEY || "",
-);
 
 /**
  * Map Ecwid fulfillment status to internal order status

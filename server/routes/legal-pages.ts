@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { supabase } from "../utils/supabase";
+import { supabase, isSupabaseConfigured } from "../utils/supabase";
 
 interface LegalPageFormData {
   page_type:
@@ -20,6 +20,15 @@ export const handleGetPublishedLegalPages: RequestHandler = async (
   req,
   res,
 ) => {
+  // Check if Supabase is configured
+  if (!isSupabaseConfigured()) {
+    console.error("❌ Legal pages API: Supabase not configured");
+    return res.status(503).json({
+      error: "Database not configured",
+      message: "SUPABASE_URL and SUPABASE_SERVICE_KEY environment variables must be set",
+    });
+  }
+
   try {
     const { data, error } = await supabase
       .from("legal_pages")
@@ -59,6 +68,15 @@ export const handleGetAllLegalPages: RequestHandler = async (req, res) => {
 
 // Get legal page by type (public)
 export const handleGetLegalPageByType: RequestHandler = async (req, res) => {
+  // Check if Supabase is configured
+  if (!isSupabaseConfigured()) {
+    console.error("❌ Legal page API: Supabase not configured");
+    return res.status(503).json({
+      error: "Database not configured",
+      message: "SUPABASE_URL and SUPABASE_SERVICE_KEY environment variables must be set",
+    });
+  }
+
   try {
     const { pageType } = req.params;
 

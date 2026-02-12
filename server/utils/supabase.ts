@@ -3,40 +3,48 @@ import { createClient, SupabaseClient } from "@supabase/supabase-js";
 const supabaseUrl =
   process.env.SUPABASE_URL ||
   process.env.VITE_SUPABASE_URL ||
-  "https://bxkphaslciswfspuqdgo.supabase.co";
+  "";
 const supabaseServiceKey =
   process.env.SUPABASE_SERVICE_KEY || process.env.VITE_SUPABASE_ANON_KEY || "";
 
 console.log("Supabase Client Initialization:");
-console.log("  URL:", supabaseUrl);
-console.log(
-  "  Key Length:",
-  supabaseServiceKey ? supabaseServiceKey.length : "0 (Missing)",
-);
+console.log("  URL configured:", supabaseUrl ? "Yes" : "No");
+console.log("  Key configured:", supabaseServiceKey ? "Yes" : "No");
 
-if (!supabaseServiceKey) {
-  console.warn(
-    "SUPABASE_SERVICE_KEY not configured - Supabase operations may fail",
+// Validate configuration
+const isConfigValid = supabaseUrl && supabaseServiceKey;
+
+if (!isConfigValid) {
+  console.error(
+    "❌ CRITICAL: Supabase configuration missing!\n" +
+    "   Set SUPABASE_URL and SUPABASE_SERVICE_KEY environment variables.\n" +
+    "   All database operations will fail until this is fixed."
   );
 }
 
-// Use a placeholder key during build/initialization if no key is provided
-// This prevents errors during module evaluation
+// Use placeholder values only if real ones are missing - this allows the module to load
+// but operations will fail gracefully
+const buildTimeUrl = "https://placeholder.supabase.co";
 const buildTimeKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1idWlsZC1wbGFjZWhvbGRlciJ9.dummy";
+
+const urlToUse = supabaseUrl || buildTimeUrl;
 const keyToUse = supabaseServiceKey || buildTimeKey;
 
 /**
  * Service role client - ONLY for background jobs and migrations
  * SECURITY: This client bypasses RLS. Use sparingly and document why.
+ * NOTE: If environment variables are not set, this will use placeholder values
+ * and all operations will fail with authentication errors.
  */
-export const supabase = createClient(supabaseUrl, keyToUse, {
+export const supabase = createClient(urlToUse, keyToUse, {
   auth: {
     persistSession: false,
   },
   global: {
     fetch: (url, options) => {
-      return fetch(url, { ...options, timeout: 20000 } as any);
+      // Reduce timeout to 8 seconds to fit within Vercel's 10s limit
+      return fetch(url, { ...options, timeout: 8000 } as any);
     },
   },
 });
@@ -90,18 +98,24 @@ export function getScopedSupabaseClient(req: any): SupabaseClient {
 
 // Verify connection - wrapped in setImmediate to avoid blocking server startup
 setImmediate(async () => {
+  // Skip connection check if config is invalid to avoid unnecessary errors
+  if (!isConfigValid) {
+    console.warn("⚠️  Skipping Supabase connection check - configuration missing");
+    return;
+  }
+  
   try {
     const { error } = await supabase
       .from("customers")
       .select("count", { count: "exact", head: true });
 
     if (error) {
-      console.error("Supabase connection check failed:", error.message);
+      console.error("❌ Supabase connection check failed:", error.message);
     } else {
-      console.log("Supabase connection check successful");
+      console.log("✅ Supabase connection check successful");
     }
   } catch (err) {
-    console.error("Supabase connection check error:", err);
+    console.error("❌ Supabase connection check error:", err);
   }
 });
 
@@ -457,6 +471,14 @@ export async function getActiveOrders(): Promise<any[]> {
     console.error("Error getting active orders:", error);
     return [];
   }
+}
+
+/**
+ * Check if Supabase is properly configured
+ * Use this in route handlers to provide better error messages
+ */
+export function isSupabaseConfigured(): boolean {
+  return isConfigValid;
 }
 
 /**

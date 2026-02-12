@@ -1,17 +1,17 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/account/page": "app/dashboard/account/page.js",
+  "/dashboard/designs/page": "app/dashboard/designs/page.js",
   "/[...slug]/page": "app/[...slug]/page.js",
   "/dashboard/finances/page": "app/dashboard/finances/page.js",
-  "/dashboard/designs/page": "app/dashboard/designs/page.js",
   "/dashboard/my-tickets/page": "app/dashboard/my-tickets/page.js",
-  "/dashboard/account/page": "app/dashboard/account/page.js",
   "/dashboard/orders/page": "app/dashboard/orders/page.js",
   "/dashboard/page": "app/dashboard/page.js",
   "/dashboard/proofs/page": "app/dashboard/proofs/page.js",
-  "/login/page": "app/login/page.js",
   "/dashboard/support/page": "app/dashboard/support/page.js",
-  "/page": "app/page.js",
   "/debug/page": "app/debug/page.js",
-  "/product-page/[productId]/page": "app/product-page/[productId]/page.js",
-  "/ecwid-store/page": "app/ecwid-store/page.js"
+  "/ecwid-store/page": "app/ecwid-store/page.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/product-page/[productId]/page": "app/product-page/[productId]/page.js"
 }

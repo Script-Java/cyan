@@ -1,11 +1,6 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../utils/supabase";
 import { z } from "zod";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_KEY || "",
-);
 
 const ShippingOptionSchema = z.object({
   name: z.string().min(1, "Name is required"),
