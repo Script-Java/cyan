@@ -23,19 +23,7 @@ interface SignupRequest {
 }
 
 const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  throw new Error(
-    "JWT_SECRET environment variable is not configured. This is required for authentication. Set JWT_SECRET in your environment variables.",
-  );
-}
-
-// Admin setup key - MUST be set in production
 const ADMIN_SETUP_KEY = process.env.ADMIN_SETUP_KEY;
-if (process.env.NODE_ENV === 'production' && !ADMIN_SETUP_KEY) {
-  throw new Error(
-    "ADMIN_SETUP_KEY environment variable is required in production. Set a strong random value.",
-  );
-}
 
 /**
  * Validate password strength
@@ -64,6 +52,9 @@ function validatePasswordStrength(password: string): { valid: boolean; message: 
  * Generate JWT token for session
  */
 function generateToken(customerId: number, email: string): string {
+  if (!JWT_SECRET) {
+    throw new Error("JWT_SECRET environment variable is not configured");
+  }
   return jwt.sign(
     { customerId, email, iat: Math.floor(Date.now() / 1000) },
     JWT_SECRET,
@@ -73,6 +64,12 @@ function generateToken(customerId: number, email: string): string {
 
 export const handleLogin: RequestHandler = async (req, res) => {
   try {
+    // Check JWT_SECRET is configured
+    if (!JWT_SECRET) {
+      console.error("JWT_SECRET environment variable is not configured");
+      return res.status(500).json({ error: "Server configuration error" });
+    }
+
     console.log("LOGIN ATTEMPT:", {
       headers: {
         "content-type": req.headers["content-type"],
@@ -150,6 +147,12 @@ export const handleLogin: RequestHandler = async (req, res) => {
 
 export const handleSignup: RequestHandler = async (req, res) => {
   try {
+    // Check JWT_SECRET is configured
+    if (!JWT_SECRET) {
+      console.error("JWT_SECRET environment variable is not configured");
+      return res.status(500).json({ error: "Server configuration error" });
+    }
+
     console.log("Signup request received:", {
       method: req.method,
       url: req.url,
@@ -422,6 +425,12 @@ export const handleLogout: RequestHandler = (req, res) => {
 
 export const handleRequestPasswordReset: RequestHandler = async (req, res) => {
   try {
+    // Check JWT_SECRET is configured
+    if (!JWT_SECRET) {
+      console.error("JWT_SECRET environment variable is not configured");
+      return res.status(500).json({ error: "Server configuration error" });
+    }
+
     const { email } = req.body;
 
     if (!email) {
@@ -477,6 +486,12 @@ export const handleRequestPasswordReset: RequestHandler = async (req, res) => {
 
 export const handleResetPassword: RequestHandler = async (req, res) => {
   try {
+    // Check JWT_SECRET is configured
+    if (!JWT_SECRET) {
+      console.error("JWT_SECRET environment variable is not configured");
+      return res.status(500).json({ error: "Server configuration error" });
+    }
+
     const { token, newPassword } = req.body;
 
     if (!token || !newPassword) {
