@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../utils/supabase";
 import { Resend } from "resend";
 import { generateProofEmailHtml } from "../emails/generate-proof-email";
 import { formatOrderNumber } from "../utils/order";
@@ -8,11 +8,6 @@ import {
   createPublicAccessToken,
   revokeResourceTokens,
 } from "../utils/public-access-tokens";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_SERVICE_KEY || "",
-);
 
 const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)

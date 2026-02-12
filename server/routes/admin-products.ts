@@ -1,30 +1,10 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../utils/supabase";
 import {
   CreateProductSchema,
   UpdateProductSchema,
   validate,
 } from "../schemas/validation";
-
-const supabaseUrl = process.env.SUPABASE_URL || "";
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
-
-/**
- * SECURITY: Service Role Key is required for this route
- *
- * Justification:
- * - Admin operations need to manage ALL products, not just their own
- * - RLS policies cannot enforce product ownership (products are shared admin resource)
- * - Alternative: Use scoped client would require complex RLS with admin exemptions
- *
- * Mitigation:
- * - All endpoints using this client have verifyToken + requireAdmin middleware
- * - All product operations are admin-only and audit logged
- * - No customer data is accessed (only shared product catalog)
- *
- * See: docs/RLS_SCOPING.md for security architecture
- */
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface ProductImage {
   id: string;

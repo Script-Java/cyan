@@ -1,31 +1,6 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../utils/supabase";
 import { sendTicketCreationEmail, sendTicketReplyEmail } from "../utils/email";
-
-const supabaseUrl = process.env.SUPABASE_URL || "";
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY || "";
-
-/**
- * SECURITY: Service Role Key fallback for this route
- *
- * Justification:
- * - Support tickets are public submissions (don't require authentication)
- * - Guests can create tickets without login
- * - Admin endpoints require explicit verifyToken + requireAdmin middleware
- * - RLS policies can still protect customer tickets (customer_id based)
- *
- * Current Implementation:
- * - Falls back to anon key if SERVICE_KEY unavailable
- * - Public endpoints use this client for guest submissions
- * - Admin endpoints (admin replies) require authentication
- *
- * TODO: Refactor to use getScopedSupabaseClient for authenticated endpoints
- * See: docs/RLS_SCOPING.md for security architecture
- */
-const supabase = createClient(
-  supabaseUrl,
-  supabaseServiceKey || process.env.SUPABASE_ANON_KEY || "",
-);
 
 interface SupportSubmission {
   name: string;

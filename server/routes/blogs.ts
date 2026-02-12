@@ -1,27 +1,7 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../utils/supabase";
 import { v2 as cloudinary } from "cloudinary";
 import { processImage } from "../utils/image-processor";
-
-const supabaseUrl = process.env.SUPABASE_URL || "";
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
-
-/**
- * SECURITY: Service Role Key is required for this route
- *
- * Justification:
- * - Blog management is admin-only (create/update/delete operations)
- * - RLS policies cannot enforce blog ownership (blogs are shared admin resource)
- * - Public read endpoints don't require auth, but admin writes need elevated access
- *
- * Mitigation:
- * - All admin endpoints verify authentication and admin status
- * - Audit logging should be added for blog modifications
- * - Public read endpoints (getPublishedBlogs) only return visible blogs
- *
- * See: docs/RLS_SCOPING.md for security architecture
- */
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface BlogFormData {
   title: string;

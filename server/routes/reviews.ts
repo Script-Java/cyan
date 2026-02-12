@@ -1,29 +1,7 @@
 import { RequestHandler } from "express";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../utils/supabase";
 import { v2 as cloudinary } from "cloudinary";
 import { processImage } from "../utils/image-processor";
-
-const supabaseUrl = process.env.SUPABASE_URL || "";
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY || "";
-
-/**
- * SECURITY: Service Role Key is required for this route
- *
- * Justification:
- * - Review management requires unrestricted access for moderation
- * - RLS policies would need to allow guests to write but only specific fields
- * - Admin needs ability to approve/reject reviews without customer-specific restrictions
- * - Alternative: Complex RLS policies with guest tokens would be harder to manage
- *
- * Mitigation:
- * - Review submissions have rate limiting applied in middleware
- * - Spam protection and validation on all fields (email, rating, content)
- * - All reviews require admin approval before display (hidden by default)
- * - No customer data is accessed (only user-submitted reviews)
- *
- * See: docs/RLS_SCOPING.md for security architecture
- */
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
