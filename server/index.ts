@@ -407,17 +407,8 @@ export function createServer() {
       ].join("; "),
     );
 
-    // HTTPS enforcement (Secure Context requirement)
-    // Redirect HTTP to HTTPS in production
-    if (
-      process.env.NODE_ENV === "production" &&
-      req.header("x-forwarded-proto") !== "https"
-    ) {
-      return res.redirect(
-        301,
-        `https://${req.header("host")}${req.originalUrl}`,
-      );
-    }
+    // Note: HTTPS enforcement is handled by Vercel/hosting platform at the edge.
+    // Do NOT add HTTP-to-HTTPS redirects here — they break serverless-http.
 
     // Additional security headers for PCI DSS compliance
     res.setHeader("X-Content-Type-Options", "nosniff");
