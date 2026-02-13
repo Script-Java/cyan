@@ -302,17 +302,16 @@ export function createServer() {
       origin: string | undefined,
       callback: (err: Error | null, allow?: boolean) => void,
     ) => {
-      // Reject requests with no origin in production (prevents CSRF)
+      // Allow requests with no origin (same-origin API calls from
+      // serverless-http bridge, server-side requests, health checks, etc.)
       if (!origin) {
-        if (process.env.NODE_ENV === 'production') {
-          console.warn("[SECURITY] CORS request with no origin blocked in production");
-          return callback(new Error("Origin header required"));
-        }
-        // Allow in development only
         return callback(null, true);
       }
 
       if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else if (origin.endsWith('.vercel.app')) {
+        // Allow all Vercel deployment/preview URLs
         callback(null, true);
       } else {
         console.warn(`[SECURITY] CORS request blocked from origin: ${origin}`, {
