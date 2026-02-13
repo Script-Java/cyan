@@ -1,12 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import serverless from 'serverless-http';
 import { createServer } from '../../server/index';
 
-// Initialize the Express app
+// Initialize the Express app once (reused across invocations in the same container)
 const app = createServer();
-
-// Create the serverless handler
-const handler = serverless(app);
 
 // Disable Next.js body parsing to let Express handle it
 export const config = {
@@ -16,12 +12,13 @@ export const config = {
     },
 };
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
-    // Add protocol if missing (fix for some internal redirects)
-    if (!req.url?.startsWith('http')) {
-        // @ts-ignore
-        req.protocol = 'https';
-    }
-
-    return handler(req, res);
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+    return new Promise<void>((resolve, reject) => {
+        // Express app is a (req, res, next) function — call it directly
+        // No need for serverless-http; Next.js API routes already provide
+        // Node.js-compatible IncomingMessage / ServerResponse objects.
+        app(req as any, res as any);
+        res.on('finish', resolve);
+        res.on('error', reject);
+    });
 }
